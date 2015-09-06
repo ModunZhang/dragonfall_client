@@ -36,5 +36,21 @@ public:
     virtual void applicationWillEnterForeground();
 };
 
+class AppDelegateExtern : public cocos2d::Ref
+{
+public:
+    AppDelegateExtern(){};
+    ~AppDelegateExtern(){};
+    void restartGame(float dt);
+    static void initLuaEngine();
+    static void loadConfigFile();
+    static bool checkPath();
+    static const char* getAppVersion();
+    static bool isNotUpdate();
+    static void extendApplication();
+    static std::string getGameZipcrc32(const char *filePath);
+};
+
+
 #endif  // __APP_DELEGATE_H__
 

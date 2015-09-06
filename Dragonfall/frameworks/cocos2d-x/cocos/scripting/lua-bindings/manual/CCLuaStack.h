@@ -330,6 +330,11 @@ public:
      */
     int luaLoadChunksFromZIP(lua_State *L);
     
+    //dannyhe
+    int executeChunkFromZip(const char *zipFilePath,const char *chunkName);
+    int luaExecuteChunkFromZip(lua_State *L);
+    //end
+    
 protected:
     LuaStack(void)
     : _state(nullptr)

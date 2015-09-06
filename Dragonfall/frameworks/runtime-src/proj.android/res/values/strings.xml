@@ -1,4 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Dragonfall</string>
+    <string name="send_mail_tip">选择邮件客户端</string>
+    <string name="ok">好的</string>
+	<string name="remind_me_later">稍后提醒我</string>
+    <string name="exit_game_title">确认要退出游戏?</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    
+    <!-- Unzip res start -->
+    <string name="dialog_title_unzipping_file">首次游戏</string>
+   	<string name="sorry">对不起</string>
+    <string name="dialog_msg_sd_space_not_enough">手机/SD卡空间不足。\n你需要腾出更多空间才能进入游戏。</string>
+    <string name="dialog_msg_unzip_failed">解压游戏资源失败。</string>
+    <string name="dialog_msg_unzipping_file">初始化游戏资源，请稍后...\n已完成：%1$d%%</string>
+    <!-- Unzip res end -->
+
+    <!-- Google Billing start -->
+    <string name="dialog_title_payment_failed">购买失败</string>
+	<string name="dialog_msg_payment_purchased">购买成功！您购买的物品将随后到账。</string>
+    <!-- Google Billing end -->
+
+	<!-- Google GCM start -->
+	<string name="dialog_title_gcm_error">无法注册谷歌通知服务</string>
+	<string name="dialog_msg_gcm_error_account_missing">如果你想收到我们的特殊活动通知，你需要在设备上绑定一个谷歌账户。</string>
+	<string name="dialog_msg_gcm_error_authentication_failed">你的谷歌账户设置不正确。\n开启账户的同步功能以便接收我们的特殊活动通知。</string>
+	<!-- Google GCM end -->
 </resources>
