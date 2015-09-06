@@ -370,8 +370,8 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
         return ret;
 }
 
-
--(void) handleTouchesAfterKeyboardShow
+//dannyhe
+-(BOOL) handleTouchesAfterKeyboardShow
 {
     NSArray *subviews = self.subviews;
     
@@ -383,10 +383,11 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
             if ([view isFirstResponder])
             {
                 [view resignFirstResponder];
-                return;
+                 return YES;
             }
         }
     }
+    return NO;
 }
 
 // Pass the touches to the superview
@@ -395,7 +396,11 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 {
     if (isKeyboardShown_)
     {
-        [self handleTouchesAfterKeyboardShow];
+        //dannyhe
+        if ([self handleTouchesAfterKeyboardShow])
+        {
+            return;
+        }
     }
     
     UITouch* ids[IOS_MAX_TOUCHES_COUNT] = {0};
@@ -811,27 +816,29 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
     cocos2d::IMEDispatcher* dispatcher = cocos2d::IMEDispatcher::sharedDispatcher();
     if (UIKeyboardWillShowNotification == type) 
     {
+         isKeyboardShown_ = YES;//dannyhe
         self.keyboardShowNotification = notif; // implicit copy
         dispatcher->dispatchKeyboardWillShow(notiInfo);
     }
     else if (UIKeyboardDidShowNotification == type)
     {
+        isKeyboardShown_ = YES;//dannyhe
         //CGSize screenSize = self.window.screen.bounds.size;
         dispatcher->dispatchKeyboardDidShow(notiInfo);
         caretRect_ = end;
         caretRect_.origin.y = viewSize.height - (caretRect_.origin.y + caretRect_.size.height + [UIFont smallSystemFontSize]);
         caretRect_.size.height = 0;
-        isKeyboardShown_ = YES;
     }
     else if (UIKeyboardWillHideNotification == type)
     {
+        isKeyboardShown_ = NO;//dannyhe
         dispatcher->dispatchKeyboardWillHide(notiInfo);
     }
     else if (UIKeyboardDidHideNotification == type)
     {
+        isKeyboardShown_ = NO;//dannyhe
         caretRect_ = CGRectZero;
         dispatcher->dispatchKeyboardDidHide(notiInfo);
-        isKeyboardShown_ = NO;
     }
 }
 
