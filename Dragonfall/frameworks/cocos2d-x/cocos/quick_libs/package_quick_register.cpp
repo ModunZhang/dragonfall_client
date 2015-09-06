@@ -6,6 +6,9 @@
 #include "quick_extensions.h"
 #include "lua/quick/lua_cocos2dx_quick_manual.hpp"
 #include "CCLuaEngine.h"
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+#include "luabinding/cocos2dx_extra_ios_iap_luabinding.h" //dannyhe
+#endif
 
 
 void package_quick_register()
@@ -23,6 +26,9 @@ void package_quick_register()
         register_all_cocos2dx_extension_nanovg(L);
         register_all_cocos2dx_extension_nanovg_manual(L);
         luaopen_HelperFunc_luabinding(L);
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+        luaopen_cocos2dx_extra_ios_iap_luabinding(L); //dannyhe
+#endif
     }
     lua_pop(L, 1);
 }

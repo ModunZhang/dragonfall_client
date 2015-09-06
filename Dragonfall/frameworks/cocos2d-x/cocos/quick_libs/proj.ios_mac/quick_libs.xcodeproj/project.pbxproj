@@ -7,6 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3FABD2801B9C717A00C71BEB /* CCStore.h in Headers */ = {isa = PBXBuildFile; fileRef = 3FABD2781B9C717A00C71BEB /* CCStore.h */; };
+		3FABD2811B9C717A00C71BEB /* CCStorePaymentTransaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3FABD2791B9C717A00C71BEB /* CCStorePaymentTransaction.cpp */; };
+		3FABD2821B9C717A00C71BEB /* CCStorePaymentTransaction.h in Headers */ = {isa = PBXBuildFile; fileRef = 3FABD27A1B9C717A00C71BEB /* CCStorePaymentTransaction.h */; };
+		3FABD2831B9C717A00C71BEB /* CCStorePaymentTransactionWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 3FABD27B1B9C717A00C71BEB /* CCStorePaymentTransactionWrapper.h */; };
+		3FABD2841B9C717A00C71BEB /* CCStoreProduct.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3FABD27C1B9C717A00C71BEB /* CCStoreProduct.cpp */; };
+		3FABD2851B9C717A00C71BEB /* CCStoreProduct.h in Headers */ = {isa = PBXBuildFile; fileRef = 3FABD27D1B9C717A00C71BEB /* CCStoreProduct.h */; };
+		3FABD2861B9C717A00C71BEB /* CCStoreProductsRequestDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 3FABD27E1B9C717A00C71BEB /* CCStoreProductsRequestDelegate.h */; };
+		3FABD2871B9C717A00C71BEB /* CCStoreTransactionObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 3FABD27F1B9C717A00C71BEB /* CCStoreTransactionObserver.h */; };
+		3FABD2901B9C719700C71BEB /* MBProgressHUD.h in Headers */ = {isa = PBXBuildFile; fileRef = 3FABD2881B9C719700C71BEB /* MBProgressHUD.h */; };
+		3FABD2911B9C719700C71BEB /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FABD2891B9C719700C71BEB /* MBProgressHUD.m */; };
+		3FABD2921B9C719700C71BEB /* CCStore.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3FABD28A1B9C719700C71BEB /* CCStore.mm */; };
+		3FABD2931B9C719700C71BEB /* CCStoreIOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 3FABD28B1B9C719700C71BEB /* CCStoreIOS.h */; };
+		3FABD2941B9C719700C71BEB /* CCStoreIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3FABD28C1B9C719700C71BEB /* CCStoreIOS.mm */; };
+		3FABD2951B9C719700C71BEB /* CCStorePaymentTransactionWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3FABD28D1B9C719700C71BEB /* CCStorePaymentTransactionWrapper.mm */; };
+		3FABD2961B9C719700C71BEB /* CCStoreReceiptVerifyRequestIOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 3FABD28E1B9C719700C71BEB /* CCStoreReceiptVerifyRequestIOS.h */; };
+		3FABD2971B9C719700C71BEB /* CCStoreReceiptVerifyRequestIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3FABD28F1B9C719700C71BEB /* CCStoreReceiptVerifyRequestIOS.mm */; };
+		3FABD2991B9C728100C71BEB /* cocos2dx_extra_ios_iap_luabinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3FABD2981B9C728100C71BEB /* cocos2dx_extra_ios_iap_luabinding.cpp */; };
 		871E458B1ABA18D700A60D65 /* fpconv.c in Sources */ = {isa = PBXBuildFile; fileRef = 871E45751ABA18D700A60D65 /* fpconv.c */; };
 		871E458C1ABA18D700A60D65 /* fpconv.c in Sources */ = {isa = PBXBuildFile; fileRef = 871E45751ABA18D700A60D65 /* fpconv.c */; };
 		871E458D1ABA18D700A60D65 /* fpconv.h in Headers */ = {isa = PBXBuildFile; fileRef = 871E45761ABA18D700A60D65 /* fpconv.h */; };
@@ -289,6 +306,23 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3FABD2781B9C717A00C71BEB /* CCStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCStore.h; sourceTree = "<group>"; };
+		3FABD2791B9C717A00C71BEB /* CCStorePaymentTransaction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCStorePaymentTransaction.cpp; sourceTree = "<group>"; };
+		3FABD27A1B9C717A00C71BEB /* CCStorePaymentTransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCStorePaymentTransaction.h; sourceTree = "<group>"; };
+		3FABD27B1B9C717A00C71BEB /* CCStorePaymentTransactionWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCStorePaymentTransactionWrapper.h; sourceTree = "<group>"; };
+		3FABD27C1B9C717A00C71BEB /* CCStoreProduct.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCStoreProduct.cpp; sourceTree = "<group>"; };
+		3FABD27D1B9C717A00C71BEB /* CCStoreProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCStoreProduct.h; sourceTree = "<group>"; };
+		3FABD27E1B9C717A00C71BEB /* CCStoreProductsRequestDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCStoreProductsRequestDelegate.h; sourceTree = "<group>"; };
+		3FABD27F1B9C717A00C71BEB /* CCStoreTransactionObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCStoreTransactionObserver.h; sourceTree = "<group>"; };
+		3FABD2881B9C719700C71BEB /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		3FABD2891B9C719700C71BEB /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		3FABD28A1B9C719700C71BEB /* CCStore.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CCStore.mm; sourceTree = "<group>"; };
+		3FABD28B1B9C719700C71BEB /* CCStoreIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCStoreIOS.h; sourceTree = "<group>"; };
+		3FABD28C1B9C719700C71BEB /* CCStoreIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CCStoreIOS.mm; sourceTree = "<group>"; };
+		3FABD28D1B9C719700C71BEB /* CCStorePaymentTransactionWrapper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CCStorePaymentTransactionWrapper.mm; sourceTree = "<group>"; };
+		3FABD28E1B9C719700C71BEB /* CCStoreReceiptVerifyRequestIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCStoreReceiptVerifyRequestIOS.h; sourceTree = "<group>"; };
+		3FABD28F1B9C719700C71BEB /* CCStoreReceiptVerifyRequestIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CCStoreReceiptVerifyRequestIOS.mm; sourceTree = "<group>"; };
+		3FABD2981B9C728100C71BEB /* cocos2dx_extra_ios_iap_luabinding.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cocos2dx_extra_ios_iap_luabinding.cpp; sourceTree = "<group>"; };
 		871E45751ABA18D700A60D65 /* fpconv.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fpconv.c; sourceTree = "<group>"; };
 		871E45761ABA18D700A60D65 /* fpconv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fpconv.h; sourceTree = "<group>"; };
 		871E45771ABA18D700A60D65 /* lua_cjson.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lua_cjson.c; sourceTree = "<group>"; };
@@ -489,6 +523,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3FABD2771B9C717A00C71BEB /* store */ = {
+			isa = PBXGroup;
+			children = (
+				3FABD2781B9C717A00C71BEB /* CCStore.h */,
+				3FABD2791B9C717A00C71BEB /* CCStorePaymentTransaction.cpp */,
+				3FABD27A1B9C717A00C71BEB /* CCStorePaymentTransaction.h */,
+				3FABD27B1B9C717A00C71BEB /* CCStorePaymentTransactionWrapper.h */,
+				3FABD27C1B9C717A00C71BEB /* CCStoreProduct.cpp */,
+				3FABD27D1B9C717A00C71BEB /* CCStoreProduct.h */,
+				3FABD27E1B9C717A00C71BEB /* CCStoreProductsRequestDelegate.h */,
+				3FABD27F1B9C717A00C71BEB /* CCStoreTransactionObserver.h */,
+			);
+			path = store;
+			sourceTree = "<group>";
+		};
 		871E45721ABA18D700A60D65 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -578,6 +627,7 @@
 		DABC96861A81E02900BF5CC4 /* extra */ = {
 			isa = PBXGroup;
 			children = (
+				3FABD2771B9C717A00C71BEB /* store */,
 				DABC98DF1A820F1500BF5CC4 /* platform */,
 				DABC96881A81E02900BF5CC4 /* apptools */,
 				DABC968B1A81E02900BF5CC4 /* cocos2dx_extra.h */,
@@ -758,6 +808,7 @@
 		DABC96F91A81E02900BF5CC4 /* luabinding */ = {
 			isa = PBXGroup;
 			children = (
+				3FABD2981B9C728100C71BEB /* cocos2dx_extra_ios_iap_luabinding.cpp */,
 				DABC96FD1A81E02900BF5CC4 /* cocos2dx_extra_ios_iap_luabinding.h */,
 				DABC96FE1A81E02900BF5CC4 /* cocos2dx_extra_ios_iap_luabinding.tolua */,
 				DABC96FF1A81E02900BF5CC4 /* cocos2dx_extra_luabinding.cpp */,
@@ -875,6 +926,14 @@
 		DABC99521A8214CC00BF5CC4 /* ios */ = {
 			isa = PBXGroup;
 			children = (
+				3FABD2881B9C719700C71BEB /* MBProgressHUD.h */,
+				3FABD2891B9C719700C71BEB /* MBProgressHUD.m */,
+				3FABD28A1B9C719700C71BEB /* CCStore.mm */,
+				3FABD28B1B9C719700C71BEB /* CCStoreIOS.h */,
+				3FABD28C1B9C719700C71BEB /* CCStoreIOS.mm */,
+				3FABD28D1B9C719700C71BEB /* CCStorePaymentTransactionWrapper.mm */,
+				3FABD28E1B9C719700C71BEB /* CCStoreReceiptVerifyRequestIOS.h */,
+				3FABD28F1B9C719700C71BEB /* CCStoreReceiptVerifyRequestIOS.mm */,
 				DABC99761A82184500BF5CC4 /* json */,
 				DABC997F1A82184500BF5CC4 /* openudid */,
 				DABC99531A8214CC00BF5CC4 /* CCCryptoIOS.mm */,
@@ -1019,12 +1078,14 @@
 				DABC984F1A81E08700BF5CC4 /* ccFilterShader_saturation_frag.h in Headers */,
 				871E45961ABA18D700A60D65 /* strbuf.h in Headers */,
 				871E45A21ABA18D700A60D65 /* lsqlite3.h in Headers */,
+				3FABD2801B9C717A00C71BEB /* CCStore.h in Headers */,
 				871E459E1ABA18D700A60D65 /* lpack.h in Headers */,
 				DABC98501A81E08700BF5CC4 /* ccFilterShader_test_frag.h in Headers */,
 				DABC98521A81E08700BF5CC4 /* ccFilterShader_vblur_vert.h in Headers */,
 				DABC99651A8214CC00BF5CC4 /* CCNativeIOS.h in Headers */,
 				DABC98531A81E08700BF5CC4 /* CCSharpenFilter.h in Headers */,
 				DABC98541A81E08700BF5CC4 /* CCCustomFilter.h in Headers */,
+				3FABD2931B9C719700C71BEB /* CCStoreIOS.h in Headers */,
 				DABC98561A81E08700BF5CC4 /* ccFilterShader_rgb_frag.h in Headers */,
 				DABC98581A81E08700BF5CC4 /* ccFilterShader_drop_shadow_vert.h in Headers */,
 				DABC98591A81E08700BF5CC4 /* CCMaskFilter.h in Headers */,
@@ -1037,6 +1098,7 @@
 				DABC98611A81E08700BF5CC4 /* CCHueFilter.h in Headers */,
 				DABC98621A81E08700BF5CC4 /* FilterShaders.h in Headers */,
 				DABC98631A81E08700BF5CC4 /* CCGammaFilter.h in Headers */,
+				3FABD2851B9C717A00C71BEB /* CCStoreProduct.h in Headers */,
 				DABC98641A81E08700BF5CC4 /* CCSepiaFilter.h in Headers */,
 				DABC98651A81E08700BF5CC4 /* stb_truetype.h in Headers */,
 				DABC98661A81E08700BF5CC4 /* CCFilter.h in Headers */,
@@ -1058,6 +1120,7 @@
 				DABC98761A81E08700BF5CC4 /* CCHazeFilter.h in Headers */,
 				DABC98771A81E08700BF5CC4 /* CCHTTPRequest.h in Headers */,
 				871E45AE1ABA18D700A60D65 /* lua_zlib.h in Headers */,
+				3FABD2961B9C719700C71BEB /* CCStoreReceiptVerifyRequestIOS.h in Headers */,
 				871E45AA1ABA18D700A60D65 /* quick_extensions.h in Headers */,
 				871E45A61ABA18D700A60D65 /* sqlite3.h in Headers */,
 				DABC98781A81E08700BF5CC4 /* ccFilterShader_motion_blur_frag.h in Headers */,
@@ -1073,6 +1136,8 @@
 				DABC98821A81E08700BF5CC4 /* cocos2dx_extra.h in Headers */,
 				DABC98831A81E08700BF5CC4 /* ccFilterShader_hue_frag.h in Headers */,
 				DABC98841A81E08700BF5CC4 /* lua_cocos2dx_extension_nanovg_manual.hpp in Headers */,
+				3FABD2901B9C719700C71BEB /* MBProgressHUD.h in Headers */,
+				3FABD2861B9C717A00C71BEB /* CCStoreProductsRequestDelegate.h in Headers */,
 				DABC98851A81E08700BF5CC4 /* ccFilterShader_gray_frag.h in Headers */,
 				DABC99751A82179700BF5CC4 /* quick_libs.pch in Headers */,
 				DABC98861A81E08700BF5CC4 /* CCHTTPRequestDelegate.h in Headers */,
@@ -1080,6 +1145,7 @@
 				DABC98881A81E08700BF5CC4 /* ccFilterShaders.h in Headers */,
 				DABC98891A81E08700BF5CC4 /* CCCrypto.h in Headers */,
 				DABC988A1A81E08700BF5CC4 /* ccFilterShader_motion_blur_vert.h in Headers */,
+				3FABD2831B9C717A00C71BEB /* CCStorePaymentTransactionWrapper.h in Headers */,
 				DABC988B1A81E08700BF5CC4 /* ccFilterShader_sharpen_frag.h in Headers */,
 				DABC988D1A81E08700BF5CC4 /* ccFilterShader_gaussian_vblur_frag.h in Headers */,
 				DABC988E1A81E08700BF5CC4 /* ccFilterShader_exposure_frag.h in Headers */,
@@ -1096,6 +1162,8 @@
 				DABC99821A82184500BF5CC4 /* SBJSON.h in Headers */,
 				DABC989E1A81E08700BF5CC4 /* fontstash.h in Headers */,
 				DABC989F1A81E08700BF5CC4 /* CCDropShadowFilter.h in Headers */,
+				3FABD2871B9C717A00C71BEB /* CCStoreTransactionObserver.h in Headers */,
+				3FABD2821B9C717A00C71BEB /* CCStorePaymentTransaction.h in Headers */,
 				DABC98A01A81E08700BF5CC4 /* stb_image.h in Headers */,
 				DABC98A11A81E08700BF5CC4 /* ccFilterShader_gaussian_blur_frag.h in Headers */,
 				DABC98A21A81E08700BF5CC4 /* ccFilterShader_test_vert.h in Headers */,
@@ -1234,6 +1302,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DABC98031A81E08700BF5CC4 /* CCSepiaFilter.cpp in Sources */,
+				3FABD2811B9C717A00C71BEB /* CCStorePaymentTransaction.cpp in Sources */,
 				DABC98061A81E08700BF5CC4 /* lua_cocos2dx_extension_nanovg_manual.cpp in Sources */,
 				DABC994A1A820F8600BF5CC4 /* ReachabilityIOSMac.m in Sources */,
 				DABC98091A81E08700BF5CC4 /* cocos2dx_extra_luabinding.cpp in Sources */,
@@ -1245,6 +1314,7 @@
 				DABC98121A81E08700BF5CC4 /* CCNetwork.cpp in Sources */,
 				871E458C1ABA18D700A60D65 /* fpconv.c in Sources */,
 				DABC99891A82184500BF5CC4 /* SBJsonWriter.m in Sources */,
+				3FABD2941B9C719700C71BEB /* CCStoreIOS.mm in Sources */,
 				DABC98151A81E08700BF5CC4 /* CCHTTPRequest.cpp in Sources */,
 				DABC98171A81E08700BF5CC4 /* CCContrastFilter.cpp in Sources */,
 				DABC98191A81E08700BF5CC4 /* CCFilter.cpp in Sources */,
@@ -1256,6 +1326,8 @@
 				DABC981E1A81E08700BF5CC4 /* HelperFunc_luabinding.cpp in Sources */,
 				DABC981F1A81E08700BF5CC4 /* lua_cocos2dx_extension_filter_auto.cpp in Sources */,
 				DABC99641A8214CC00BF5CC4 /* CCNative.mm in Sources */,
+				3FABD2841B9C717A00C71BEB /* CCStoreProduct.cpp in Sources */,
+				3FABD2991B9C728100C71BEB /* cocos2dx_extra_ios_iap_luabinding.cpp in Sources */,
 				DABC98201A81E08700BF5CC4 /* NVGNode.cpp in Sources */,
 				DABC98211A81E08700BF5CC4 /* CCFilteredSprite.cpp in Sources */,
 				DABC99871A82184500BF5CC4 /* SBJsonParser.m in Sources */,
@@ -1278,6 +1350,7 @@
 				DABC98331A81E08700BF5CC4 /* CCRGBFilter.cpp in Sources */,
 				DABC98351A81E08700BF5CC4 /* CCHazeFilter.cpp in Sources */,
 				DABC98371A81E08700BF5CC4 /* CCHueFilter.cpp in Sources */,
+				3FABD2951B9C719700C71BEB /* CCStorePaymentTransactionWrapper.mm in Sources */,
 				DABC99831A82184500BF5CC4 /* SBJSON.m in Sources */,
 				DABC98391A81E08700BF5CC4 /* CCBrightnessFilter.cpp in Sources */,
 				DABC983A1A81E08700BF5CC4 /* nanovg.c in Sources */,
@@ -1285,7 +1358,10 @@
 				871E459C1ABA18D700A60D65 /* lpack.c in Sources */,
 				DABC98401A81E08700BF5CC4 /* HelperFunc.cpp in Sources */,
 				DABC98441A81E08700BF5CC4 /* CCCrypto.cpp in Sources */,
+				3FABD2921B9C719700C71BEB /* CCStore.mm in Sources */,
 				DABC998B1A82184500BF5CC4 /* OpenUDIDIOS.m in Sources */,
+				3FABD2911B9C719700C71BEB /* MBProgressHUD.m in Sources */,
+				3FABD2971B9C719700C71BEB /* CCStoreReceiptVerifyRequestIOS.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

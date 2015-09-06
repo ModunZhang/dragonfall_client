@@ -4,6 +4,13 @@ require("framework.init")
 require("framework.shortcodes")
 require("framework.cc.init")
 
+local Store
+if device.platform == 'ios' then
+    Store = import(".Store")
+elseif device.platform == 'android' then
+    Store = import(".Store-Android")
+end
+
 local UIDemoApp = class("UIDemoApp", cc.mvc.AppBase)
 
 if device.platform == "ios" then
@@ -114,5 +121,62 @@ end
 function UIDemoApp:getFontFilePath()
     return "Droid Sans Fallback.ttf"
 end
+
+
+-- Store
+------------------------------------------------------------------------------------------------------------------
+function UIDemoApp:getStore()
+    if device.platform == 'ios' then
+        if not cc.storeProvider then
+            Store.init(handler(self, self.transactionObserver))
+        end
+        return Store
+    elseif device.platform == 'android' then
+        if not cc.storeProvider then
+            Store.init(handler(self, self.verifyGooglePlayPurchase),handler(self, self.transitionFailedInGooglePlay))
+        end
+        return Store
+    end
+end
+
+-- android
+--------------------
+function UIDemoApp:verifyGooglePlayPurchase(orderId,purchaseData,signature)
+    print("verifyGooglePlayPurchase---->",orderId,purchaseData,signature)
+    local transaction = Store.getTransactionDataWithPurchaseData(purchaseData)
+    local info = DataUtils:getIapInfo(transaction.productIdentifier)
+    device.hideActivityIndicator()
+    if true then --TODO: verify v3 in server 
+        Store.finishTransaction(transaction)
+        device.showAlert("提示","购买成功",{"确定"})
+    end
+
+end
+function UIDemoApp:transitionFailedInGooglePlay()
+    print("transitionFailedInGooglePlay---->")
+    device.hideActivityIndicator()
+end
+-- iOS
+--------------------
+function UIDemoApp:transactionObserver(event)
+    print("transactionObserver------>")
+    local transaction = event.transaction
+    local transaction_state = transaction.state
+    if transaction_state == 'restored' then
+        device.showAlert("提示","已为你恢复以前的购买",{"确定"})
+        Store.finishTransaction(transaction)
+        device.hideActivityIndicator()
+    elseif transaction_state == 'purchased' then
+         device.showAlert("提示","购买成功",{"确定"})
+         Store.finishTransaction(transaction)
+    elseif transaction_state == 'purchasing' then
+        --不作任何处理
+        device.hideActivityIndicator()
+    else
+        Store.finishTransaction(transaction)
+        device.hideActivityIndicator()
+    end
+end
+
 
 return UIDemoApp

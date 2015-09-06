@@ -37,6 +37,10 @@ public:
     void restore(void);
     void finishTransactionLua @ finishTransaction (const char* transactionIdentifier);
 
+    void updateTransactionStates(); /*dannyhe*/
+    bool purchaseWithIdentifier(const char* productId,int count = 1); /*dannyhe*/
+
+
     CCStoreReceiptVerifyMode getReceiptVerifyMode(void);
     void setReceiptVerifyMode(CCStoreReceiptVerifyMode mode, bool isSandbox = true);
     const char* getReceiptVerifyServerUrl(void);

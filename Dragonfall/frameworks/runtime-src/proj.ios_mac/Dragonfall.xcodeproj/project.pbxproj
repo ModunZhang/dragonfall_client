@@ -43,6 +43,7 @@
 		3F0841031B9BE6ED00A52544 /* res in Resources */ = {isa = PBXBuildFile; fileRef = 3F0841011B9BE6ED00A52544 /* res */; };
 		3F0841041B9BE6ED00A52544 /* scripts in Resources */ = {isa = PBXBuildFile; fileRef = 3F0841021B9BE6ED00A52544 /* scripts */; };
 		3FABD26E1B9C3BF300C71BEB /* Droid Sans Fallback.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3FABD26D1B9C3BF300C71BEB /* Droid Sans Fallback.ttf */; };
+		3FABD29B1B9C72F300C71BEB /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FABD29A1B9C72F300C71BEB /* StoreKit.framework */; };
 		5023811817EBBCAC00990C9B /* AppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5023810817EBBCAC00990C9B /* AppController.mm */; };
 		5023811917EBBCAC00990C9B /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5023810917EBBCAC00990C9B /* Default-568h@2x.png */; };
 		5023811A17EBBCAC00990C9B /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 5023810A17EBBCAC00990C9B /* Default.png */; };
@@ -248,6 +249,7 @@
 		3F0841011B9BE6ED00A52544 /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; name = res; path = ../../../update/res; sourceTree = "<group>"; };
 		3F0841021B9BE6ED00A52544 /* scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = scripts; path = ../../../update/scripts; sourceTree = "<group>"; };
 		3FABD26D1B9C3BF300C71BEB /* Droid Sans Fallback.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Droid Sans Fallback.ttf"; path = "../../../dev/res/fonts/Droid Sans Fallback.ttf"; sourceTree = "<group>"; };
+		3FABD29A1B9C72F300C71BEB /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.4.sdk/System/Library/Frameworks/StoreKit.framework; sourceTree = DEVELOPER_DIR; };
 		5023810717EBBCAC00990C9B /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		5023810817EBBCAC00990C9B /* AppController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppController.mm; sourceTree = "<group>"; };
 		5023810917EBBCAC00990C9B /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -318,6 +320,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FABD29B1B9C72F300C71BEB /* StoreKit.framework in Frameworks */,
 				3F0840FC1B9BE33200A52544 /* MessageUI.framework in Frameworks */,
 				3F0840FA1B9BE31F00A52544 /* GameKit.framework in Frameworks */,
 				3F0840F81B9BE31800A52544 /* CoreTelephony.framework in Frameworks */,
@@ -740,6 +743,7 @@
 		F293B3CB15EB7BE500256477 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3FABD29A1B9C72F300C71BEB /* StoreKit.framework */,
 				3F0840FB1B9BE33200A52544 /* MessageUI.framework */,
 				3F0840F91B9BE31F00A52544 /* GameKit.framework */,
 				3F0840F71B9BE31800A52544 /* CoreTelephony.framework */,

@@ -157,7 +157,8 @@ function TestBaseScene:IapTest()
             size = 18
         }))
         :onButtonClicked(function(event)
-            
+            device.showActivityIndicator()
+            app:getStore().purchaseWithProductId("com.dragonfall.2500dragoncoins",1)
         end)
         :align(display.LEFT_CENTER, display.left + 10, display.top - 290)
         :addTo(self)
