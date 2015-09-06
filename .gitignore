@@ -1,0 +1,17 @@
+!.gitignore
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+*.log
+project.xcworkspace/
+*/xcuserdata/*
+xcuserdata/
+Dragonfall/frameworks/runtime-src/proj.android/gen/
+Dragonfall/frameworks/runtime-src/proj.android/obj/
+Dragonfall/frameworks/runtime-src/proj.android/bin/
+Dragonfall/frameworks/cocos2d-x/cocos/platform/android/java/bin/
+Dragonfall/frameworks/cocos2d-x/cocos/platform/android/java/gen/
+external/Android/google-play-services_lib_3225130/google-play-services_lib/bin/
+external/Android/google-play-services_lib_3225130/google-play-services_lib/gen/
+
+local.properties
