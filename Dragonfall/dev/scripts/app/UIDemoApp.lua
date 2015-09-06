@@ -24,6 +24,7 @@ function UIDemoApp:ctor()
     self.scenes_ = {
         "TestUILabelFont",
         "TestBaseScene",
+        "TestCocostuido",
         -- "TestUIPageViewScene",
         -- "TestUIListViewScene",
         -- "TestUIScrollViewScene",
