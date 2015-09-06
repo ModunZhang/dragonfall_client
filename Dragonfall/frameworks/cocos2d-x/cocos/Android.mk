@@ -70,6 +70,7 @@ cocos2d.cpp \
 2d/CCSprite.cpp \
 2d/CCSpriteBatchNode.cpp \
 2d/CCSpriteFrame.cpp \
+2d/CCSpriteTileMap.cpp \
 2d/CCSpriteFrameCache.cpp \
 2d/CCTMXLayer.cpp \
 2d/CCFastTMXLayer.cpp \
