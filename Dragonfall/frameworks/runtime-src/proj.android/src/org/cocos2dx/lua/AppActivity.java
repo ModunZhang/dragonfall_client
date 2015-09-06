@@ -34,6 +34,11 @@ import org.cocos2dx.lib.Cocos2dxLuaJavaBridge;
 
 import com.batcatstudio.dragonfall.R;
 import com.batcatstudio.dragonfall.data.DataHelper;
+import com.batcatstudio.dragonfall.google.billing.StoreKit;
+import com.batcatstudio.dragonfall.google.gcm.GCMIntentService;
+import com.batcatstudio.dragonfall.google.gcm.GCMUtils;
+import com.batcatstudio.dragonfall.notifications.NotificationUtils;
+import com.batcatstudio.dragonfall.sdk.MarketSDK;
 import com.batcatstudio.dragonfall.utils.CommonUtils;
 import com.batcatstudio.dragonfall.utils.LaunchHelper;
 
@@ -98,9 +103,11 @@ public class AppActivity extends Cocos2dxActivity{
             hostIPAdress = getHostIpAddress();
         }
         /** Init Java **/
-        //TODO:
         CommonUtils.getInstance();
-        DataHelper.initHelper();
+		MarketSDK.initSDK();
+		GCMUtils.registerGCMService(this);
+		StoreKit.init();
+		DataHelper.initHelper();
     }
     private boolean isNetworkConnected() {
             ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);  
@@ -141,23 +148,20 @@ public class AppActivity extends Cocos2dxActivity{
     @Override
 	protected void onResume() {
 		super.onResume();
-		//TODO:
-//		MarketSDK.onResume(this);
-//		NotificationUtils.stopLocalPushService();
+		MarketSDK.onResume(this);
+		NotificationUtils.stopLocalPushService();
 		onEnterForeground();
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		//TODO:
-//		MarketSDK.onPause(this);
+		MarketSDK.onPause(this);
 	}
 
 	@Override
 	protected void onStop() {
-		//TODO:
-//		NotificationUtils.startLocalPushService();
+		NotificationUtils.startLocalPushService();
 		onEnterBackground();
 		super.onStop();
 	}
@@ -167,17 +171,15 @@ public class AppActivity extends Cocos2dxActivity{
 	}
 	@Override
 	protected void onDestroy() {
-		//TODO:
-//		StoreKit.purge();
+		StoreKit.purge();
 		super.onDestroy();
 	}
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		//TODO:
-//		if(StoreKit.handleActivityResult(requestCode, resultCode, data)) {
-//			super.onActivityResult(requestCode, resultCode, data);
-//		}
+		if(StoreKit.handleActivityResult(requestCode, resultCode, data)) {
+			super.onActivityResult(requestCode, resultCode, data);
+		}
 	}
 	/************************Dialog************************/
     
@@ -293,8 +295,7 @@ public class AppActivity extends Cocos2dxActivity{
 		return new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				//TODO:
-//				GCMIntentService.isAlertMute = true;
+				GCMIntentService.isAlertMute = true;
 			}
 		};
 	}

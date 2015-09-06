@@ -31,6 +31,10 @@ public class QuickHTTPInterface {
         URL url;
         HttpURLConnection urlConnection;
         try {
+        	if(!strURL.startsWith("http://") && !strURL.startsWith("https://") )
+        	{
+        		strURL = String.format("http://%s", strURL); //dannyhe 如果没有protocol 默认使用http协议
+        	}
             url = new URL(strURL);
             urlConnection = (HttpURLConnection)url.openConnection();
             urlConnection.setRequestProperty("Accept-Encoding", "identity");

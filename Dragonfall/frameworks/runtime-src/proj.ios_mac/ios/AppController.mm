@@ -30,8 +30,10 @@
 #import "AppDelegate.h"
 #import "RootViewController.h"
 #import "platform/ios/CCEAGLView-ios.h"
+#include "MarketSDKTool.h" // dannyhe
 
 @implementation AppController
+@synthesize remoteDeviceToken;//dannyhe
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -42,6 +44,11 @@ static AppDelegate s_sharedApplication;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 
+    [self setRemoteDeviceToken:@""];//dannyhe 清空一次远程push标识码
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0]; //dannyhe 清空红圈
+#ifdef DEBUG
+    [self redirectConsoleLogToDocumentFolder]; //dannyhe
+#endif
     cocos2d::Application *app = cocos2d::Application::getInstance();
     app->initGLContextAttrs();
     cocos2d::GLViewImpl::convertAttrs();
@@ -86,6 +93,8 @@ static AppDelegate s_sharedApplication;
     cocos2d::Director::getInstance()->setOpenGLView(glview);
 
     app->run();
+    //启动sdk dannyhe
+    MarketSDKTool::getInstance()->initSDK();
     return YES;
 }
 
@@ -143,6 +152,36 @@ static AppDelegate s_sharedApplication;
     [super dealloc];
 }
 
+#pragma mark -
+#pragma mark extensions
+//debug环境重定向日志文件
+#ifdef DEBUG
+- (void) redirectConsoleLogToDocumentFolder {
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *logPath = [documentsDirectory stringByAppendingPathComponent:@"iOS.log"];
+    freopen([logPath cStringUsingEncoding:NSUTF8StringEncoding],"a+",stderr);
+    NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSString *time = [formatter stringFromDate:[NSDate date]];
+    NSLog("-------------- Start Game [%@] --------------",time);
+    [formatter release];
+}
+#endif
+//localNotification
+-(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0]; //清空红圈
+}
+//remote app push
+-(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    [self setRemoteDeviceToken:[NSString stringWithFormat:@"%@",deviceToken]];
+    NSLog(@"didRegisterForRemoteNotificationsWithDeviceToken-->%@",deviceToken);
+}
 
+-(void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+    NSLog(@"didFailToRegisterForRemoteNotificationsWithError-->%@",[error localizedDescription]);
+}
 @end
 

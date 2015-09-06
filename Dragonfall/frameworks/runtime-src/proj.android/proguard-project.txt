@@ -18,3 +18,88 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+#================2dx========================
+
+-keep class org.cocos2dx.lib.** {*;}
+
+#================sdks========================
+#talkingdata
+-libraryjars ./libs/Game_Analytics_SDK_Android_3.1.68.jar
+-keep class com.talkingdata.** {*;}
+-keep class com.tendcloud.** {*;}
+-dontwarn com.tendcloud.**
+-dontwarn com.talkingdata.**
+
+#================jni========================
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+-keep class com.batcatstudio.dragonfall.notifications.NotificationUtils {
+	public static boolean addLocalPush(...);
+	public static void cancelAllLocalPush(...);
+	public static boolean cancelNotificationWithIdentity(...);
+}
+
+-keep class com.batcatstudio.dragonfall.sdk.MarketSDK {
+	public static void initSDK();
+	public static void onPlayerLogin(...);
+	public static void onPlayerChargeRequst(...);
+	public static void onPlayerChargeSuccess(...);
+	public static void onPlayerBuyGameItems(...);
+	public static void onPlayerUseGameItems(...);
+	public static void onPlayerReward(...);
+	public static void onPlayerEvent(...);
+	public static void onPlayerLevelUp(...);
+}
+
+-keep class com.batcatstudio.dragonfall.utils.CommonUtils {
+	public static java.lang.String getUDID();
+
+	public static void copyText(...);
+
+	public static java.lang.String getAppVersion();
+
+	public static java.lang.String getOSVersion();
+
+	public static java.lang.String getDeviceModel();
+
+	public static java.lang.String getAppBundleVersion();
+
+	public static java.lang.String getDeviceLanguage();
+
+	public static boolean sendMail(...);
+	
+	public static boolean canSendMail();
+
+	public static void checkGameFirstInstall(...);
+
+	public static void disableIdleTimer(...);
+
+	public static float batteryLevel();
+
+	public static java.lang.String getInternetConnectionStatus();
+	
+	public static java.lang.String getAppMinVersion();
+	
+	public static boolean isAppHocMode();
+}
+
+-keep class com.batcatstudio.dragonfall.io.JniFileOperation {
+	public static boolean createDir(...);
+	public static boolean copyFileTo(...);
+	public static boolean removeDir(...);
+}
+-keep class com.batcatstudio.dragonfall.google.billing.StoreKit {
+	public static void requestProductData(...);
+	public static void buy(...);
+	public static void consumePurchase(...);
+	public static void updateTransactionStates(...);
+
+}
+#================Start for Google Billing========================
+-keep class com.android.vending.billing.**
+#================End for Google Billing=========================
+
+#play service
+-keep class com.google.android.gms.** {*;}
+-dontwarn com.google.android.gms.**

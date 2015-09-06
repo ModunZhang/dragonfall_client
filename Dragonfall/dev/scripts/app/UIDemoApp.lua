@@ -15,13 +15,14 @@ end
 function UIDemoApp:ctor()
     UIDemoApp.super.ctor(self)
     self.scenes_ = {
+        "TestUILabelFont",
         "TestBaseScene",
-        "TestUIPageViewScene",
-        "TestUIListViewScene",
-        "TestUIScrollViewScene",
-        "TestUIImageScene",
-        "TestUIButtonScene",
-        "TestUISliderScene",
+        -- "TestUIPageViewScene",
+        -- "TestUIListViewScene",
+        -- "TestUIScrollViewScene",
+        -- "TestUIImageScene",
+        -- "TestUIButtonScene",
+        -- "TestUISliderScene",
     }
 end
 
@@ -108,6 +109,10 @@ function HDrawRect(rect, parent, color)
     }
     local box = display.newPolygon(points, {borderColor = color})
     parent:addChild(box)
+end
+
+function UIDemoApp:getFontFilePath()
+    return "Droid Sans Fallback.ttf"
 end
 
 return UIDemoApp
