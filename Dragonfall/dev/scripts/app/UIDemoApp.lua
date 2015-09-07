@@ -37,6 +37,10 @@ function UIDemoApp:ctor()
     if device.platform == 'android' then
         table.insert(self.scenes_,"TestETCNode")
     end
+    -- 当前音乐播放完成回调(只播放一次的音乐)
+    local eventDispatcher = cc.Director:getInstance():getEventDispatcher()
+    local customListenerBg = cc.EventListenerCustom:create("APP_BACKGROUND_MUSIC_COMPLETION",handler(self, self.onBackgroundMusicCompletion))
+    eventDispatcher:addEventListenerWithFixedPriority(customListenerBg, 1)
 end
 
 function UIDemoApp:run()
@@ -203,6 +207,10 @@ end
 
 function UIDemoApp:onEnterForeground()
     print("---- Game onEnterForeground ----")
+end
+
+function UIDemoApp:onBackgroundMusicCompletion()
+    print("---- Game onBackgroundMusicCompletion ----")
 end
 
 return UIDemoApp

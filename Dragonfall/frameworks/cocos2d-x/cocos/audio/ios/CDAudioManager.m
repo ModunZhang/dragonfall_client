@@ -346,7 +346,7 @@ static BOOL configured = FALSE;
             CDLOGINFO(@"Denshion::CDAudioManager - Audio will be shared");
             //_audioSessionCategory = kAudioSessionCategory_AmbientSound;
             _audioSessionCategory = AVAudioSessionCategoryAmbient;
-            willPlayBackgroundMusic = NO;
+            willPlayBackgroundMusic = YES; //dannyhe 如果音乐播放器正在播放音乐不停止它 并且播放游戏的音乐
             break;
             
         case kAMM_FxPlusMusic:
@@ -383,7 +383,7 @@ static BOOL configured = FALSE;
             } else {
                 CDLOGINFO(@"Denshion::CDAudioManager - Other audio is not playing audio will be exclusive");
                 //_audioSessionCategory = kAudioSessionCategory_SoloAmbientSound;
-                _audioSessionCategory = AVAudioSessionCategorySoloAmbient;
+                _audioSessionCategory = AVAudioSessionCategoryAmbient;//dannyhe 只使用AVAudioSessionCategoryAmbient 防止其他播放器导致音乐停止
                 willPlayBackgroundMusic = YES;
             }    
             

@@ -25,7 +25,26 @@ THE SOFTWARE.
 #include "audio/include/SimpleAudioEngine.h"
 #include "SimpleAudioEngine_objc.h"
 #include "cocos2d.h"
+//MARK:Objective - c dannyhe
+@interface BackgroundMusicObserver : NSObject
+-(void)backgroundMusicCompletionListener;
+@end
+@implementation BackgroundMusicObserver
+
+-(void)backgroundMusicCompletionListener{
+    cocos2d::Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("APP_BACKGROUND_MUSIC_COMPLETION");
+}
+@end
+
 USING_NS_CC;
+
+//dannyhe
+static BackgroundMusicObserver * _observer = NULL;
+
+static void setBackgroundMusicCompletionListener(id listener,SEL selector)
+{
+    [[SimpleAudioEngine sharedEngine]setBackgroundMusicCompletionListener:listener selector:selector];
+}
 
 static void static_end()
 {
@@ -158,6 +177,9 @@ SimpleAudioEngine* SimpleAudioEngine::getInstance()
     if (! s_pEngine)
     {
         s_pEngine = new (std::nothrow) SimpleAudioEngine();
+        //dannyhe
+        _observer = [[BackgroundMusicObserver alloc]init];
+        setBackgroundMusicCompletionListener(_observer,@selector(backgroundMusicCompletionListener));
     }
     
     return s_pEngine;

@@ -236,5 +236,9 @@ static CDBufferManager *bufferManager = nil;
         return nil;
     }    
 }    
+//dannyhe
+-(void) setBackgroundMusicCompletionListener:(id) listener selector:(SEL) selector {
+    [am setBackgroundMusicCompletionListener:listener selector:selector];
+}
 
 @end 

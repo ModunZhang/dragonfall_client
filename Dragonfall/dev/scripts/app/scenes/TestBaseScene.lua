@@ -20,6 +20,7 @@ function TestBaseScene:ctor()
     self:createMailTest()
     self:createCopyText()
     self:IapTest()
+    self:MusicTest()
     app:createTitle(self, "Test Base")
     app:createNextButton(self)
 end
@@ -161,6 +162,13 @@ function TestBaseScene:IapTest()
             app:getStore().purchaseWithProductId("com.dragonfall.2500dragoncoins",1)
         end)
         :align(display.LEFT_CENTER, display.left + 10, display.top - 290)
+        :addTo(self)
+end
+
+function TestBaseScene:MusicTest()
+    app:getCommonButton("Play Music"):onButtonClicked(function(event)
+        audio.playMusic("audios/sfx_ballista_attack.mp3",false)
+    end):align(display.RIGHT_CENTER, display.right - 10, display.top - 290)
         :addTo(self)
 end
 
