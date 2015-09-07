@@ -197,4 +197,12 @@ function UIDemoApp:getCommonButton(text)
         }))
 end
 
+function UIDemoApp:onEnterBackground()
+    print("---- Game onEnterBackground ----")
+end
+
+function UIDemoApp:onEnterForeground()
+    print("---- Game onEnterForeground ----")
+end
+
 return UIDemoApp

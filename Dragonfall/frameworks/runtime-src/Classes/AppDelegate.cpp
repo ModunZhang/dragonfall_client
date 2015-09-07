@@ -88,16 +88,30 @@ bool AppDelegate::applicationDidFinishLaunching()
 void AppDelegate::applicationDidEnterBackground()
 {
     Director::getInstance()->stopAnimation();
+    Director::getInstance()->pause();
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    SimpleAudioEngine::getInstance()->resumeAllEffects();
+    Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("APP_ENTER_BACKGROUND_EVENT");
+#else
     SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
+    SimpleAudioEngine::getInstance()->pauseAllEffects();
+#endif
 }
 
 // this function will be called when the app is active again
 void AppDelegate::applicationWillEnterForeground()
 {
     Director::getInstance()->startAnimation();
+    Director::getInstance()->startAnimation();
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    SimpleAudioEngine::getInstance()->pauseAllEffects();
+    Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("APP_ENTER_FOREGROUND_EVENT");
+#else
     SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
+    SimpleAudioEngine::getInstance()->resumeAllEffects();
+#endif
 }
 
 
@@ -337,22 +351,34 @@ bool AppDelegateExtern::checkPath()
     }
     return need_Load_zip_from_bundle;
 }
+
 /**************************Android************************************/
+//dannyhe
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 extern "C"
 {
+    //启动游戏
     void Java_com_batcatstudio_dragonfall_utils_LaunchHelper_nativeInitLuaEngine(JNIEnv *env, jobject thisz,jstring bundlePath)
     {
         std::string bundle_path("");
         bundle_path = cocos2d::JniHelper::jstring2string(bundlePath);
-        
-        LOGD("Java_com_batcatstudio_dragonfall_utils_LaunchHelper_nativeInitLuaEngine--->%s",bundle_path.c_str());
+
         std::vector<std::string> paths;
         bundle_path = bundle_path + "/";
         FileUtils::getInstance()->setDefaultResourceRootPath(bundle_path.c_str());
         FileUtils::getInstance()->setSearchPaths(paths);
         default_file_util_search_pahts = paths;
         AppDelegateExtern::initLuaEngine();
+    }
+    //发送游戏自定义事件(暂时只会发送 进入/退出后台的事件，与iOS统一)
+    void Java_org_cocos2dx_lua_AppActivity_dispatchGameEvent(JNIEnv *env, jobject thisz,jstring jgameEventName)
+    {
+        std::string eventName("");
+        eventName = cocos2d::JniHelper::jstring2string(jgameEventName);
+        if(eventName.length() > 0)
+        {
+            Director::getInstance()->getEventDispatcher()->dispatchCustomEvent(eventName);
+        }
     }
 }
 #endif

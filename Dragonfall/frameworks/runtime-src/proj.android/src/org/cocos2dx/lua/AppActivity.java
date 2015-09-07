@@ -30,7 +30,6 @@ import java.util.ArrayList;
 
 import org.cocos2dx.lib.Cocos2dxActivity;
 import org.cocos2dx.lib.Cocos2dxHelper;
-import org.cocos2dx.lib.Cocos2dxLuaJavaBridge;
 
 import com.batcatstudio.dragonfall.R;
 import com.batcatstudio.dragonfall.data.DataHelper;
@@ -145,6 +144,8 @@ public class AppActivity extends Cocos2dxActivity{
     
     /************************Extension Android************************/
     
+    private static native void dispatchGameEvent(String eventName); //发送自定义事件到游戏
+
     @Override
 	protected void onResume() {
 		super.onResume();
@@ -378,7 +379,7 @@ public class AppActivity extends Cocos2dxActivity{
 					 	 Cocos2dxHelper.runOnGLThread(new Runnable() {
 					 		@Override
 					 		public void run() {
-					 			Cocos2dxLuaJavaBridge.callLuaGlobalFunctionWithString("AndroidGlobalCallback","onEnterForeground");
+					 			dispatchGameEvent("APP_ENTER_FOREGROUND_EVENT");
 					 		}
 					 	});
 					  }
@@ -401,7 +402,7 @@ public class AppActivity extends Cocos2dxActivity{
 						 	Cocos2dxHelper.runOnGLThread(new Runnable() {
 						 		@Override
 						 		public void run() {
-						 			Cocos2dxLuaJavaBridge.callLuaGlobalFunctionWithString("AndroidGlobalCallback","onEnterBackground");
+						 			dispatchGameEvent("APP_ENTER_BACKGROUND_EVENT");
 						 		}
 						 	});
 					}
