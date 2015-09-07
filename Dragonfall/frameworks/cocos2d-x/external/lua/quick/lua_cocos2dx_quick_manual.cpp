@@ -280,6 +280,19 @@ tolua_lerror:
     return 0;
 #endif
 }
+//dannyhe fix #422
+int removeLuaTouchNode(Node *node)
+{
+    auto mng = LuaNodeManager::getInstance();
+    auto lnode = mng->getLuaNodeByNode(node, false);
+    if (!lnode) {
+        return -1;
+    }
+        lnode->setLuaTouchEnabled(false);
+        lnode->detachNode();  //this LuaEventNode will be removed in TouchTargetNode
+        mng->removeLuaNode(lnode);
+        return 0;
+    }
 
 static int tolua_Cocos2d_Node_removeTouchEvent(lua_State* tolua_S)
 {
@@ -298,14 +311,7 @@ static int tolua_Cocos2d_Node_removeTouchEvent(lua_State* tolua_S)
         if (!node) tolua_error(tolua_S,"invalid 'self' in function 'removeTouchEvent'", nullptr);
 #endif
         {
-            auto mng = LuaNodeManager::getInstance();
-            auto lnode = mng->getLuaNodeByNode(node, false);
-            if (!lnode) {
-                return 0;
-            }
-            lnode->setLuaTouchEnabled(false);
-            lnode->detachNode();  //this LuaEventNode will be removed in TouchTargetNode
-            mng->removeLuaNode(lnode);
+            removeLuaTouchNode(node);//dannyhe fix #422
         }
     }
     return 0;

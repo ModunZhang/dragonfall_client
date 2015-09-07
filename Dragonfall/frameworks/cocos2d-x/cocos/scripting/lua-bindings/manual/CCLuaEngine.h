@@ -121,6 +121,8 @@ public:
      */
     virtual void removeScriptHandler(int nHandler) override;
     
+    virtual void removeTouchNodeEvent(Node *node);//dannyhe fix 422
+    
     /**
      * Reallocate Lua function reference index to the Lua function pointer to add refrence.
      *

@@ -43,9 +43,9 @@ LuaEventNode::LuaEventNode(Node *node)
 , _bTouchSwallowEnabled(true)
 , _bTouchEnabled(false)
 , _eTouchMode(modeTouchesOneByOne)
-, _nodePreuse(nullptr)
 {
     _node = node;
+    _nodeID = node->_ID;
 }
 
 LuaEventNode::~LuaEventNode()
@@ -53,13 +53,9 @@ LuaEventNode::~LuaEventNode()
 
 }
 
-Node *LuaEventNode::getDetachedNode() const
+unsigned int LuaEventNode::getNodeID() const
 {
-    if (_node)
-    {
-        return  _node;
-    }
-    return  _nodePreuse;
+    return  _nodeID;
 }
 
 Node *LuaEventNode::getActiveNode() const
@@ -120,7 +116,6 @@ bool LuaEventNode::isRunning() const
 void LuaEventNode::detachNode()
 {
 //    log("---> Detach LuaEventNode %p", this);
-    _nodePreuse = _node;
     _node = nullptr;
 }
 
