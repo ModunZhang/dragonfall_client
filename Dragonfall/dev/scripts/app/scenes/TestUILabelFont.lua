@@ -22,6 +22,17 @@ function TestUILabelFont:createTest()
 		color = display.COLOR_BLACK,
 		font = app:getFontFilePath()
 	}):align(display.CENTER, display.cx, display.top - 70):addTo(self)
+
+	local label = cc.ui.UILabel.new({
+		text = "gg,省略号Label测试.阿西吧",
+		size = 24, 
+		color = display.COLOR_BLACK,
+		font = app:getFontFilePath(),
+		dimensions = cc.size(240, 30)
+	}):align(display.CENTER, display.cx, display.top - 120):addTo(self)
+
+	label:setLineBreakWithoutSpace(true)
+	label:setEllipsisEabled(true)
 end
 
 return TestUILabelFont

@@ -404,6 +404,11 @@ public:
 
     bool isClipMarginEnabled() const { return _clipEnabled; }
 
+    //dannyhe label省略号
+    /**
+    */
+    void setEllipsisEabled(bool ellipsisEabled) { _ellipsisEabled = ellipsisEabled; }
+
     /** Sets the line height of the Label.
      * @warning Not support system font.
      * @since v3.2.0
@@ -591,6 +596,7 @@ protected:
     GLuint _uniformTextColor;
     CustomCommand _customCommand;   
 
+    bool    _ellipsisEabled; // dannyhe label省略号
     bool    _shadowDirty;
     bool    _shadowEnabled;
     Size    _shadowOffset;

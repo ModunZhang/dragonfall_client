@@ -40926,6 +40926,58 @@ static int lua_cocos2dx_Label_finalize(lua_State* tolua_S)
     printf("luabindings: finalizing LUA object (Label)");
     return 0;
 }
+//dannyhe
+int lua_cocos2dx_Label_setEllipsisEabled(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::Label* cobj = nullptr;
+    bool ok  = true;
+    
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+    
+    
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"cc.Label",0,&tolua_err)) goto tolua_lerror;
+#endif
+    
+    cobj = (cocos2d::Label*)tolua_tousertype(tolua_S,1,0);
+    
+#if COCOS2D_DEBUG >= 1
+    if (!cobj)
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_Label_setEllipsisEabled'", nullptr);
+        return 0;
+    }
+#endif
+    
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1)
+    {
+        bool arg0;
+        
+        ok &= luaval_to_boolean(tolua_S, 2,&arg0, "cc.Label:setEllipsisEabled");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_Label_setEllipsisEabled'", nullptr);
+            return 0;
+        }
+        cobj->setEllipsisEabled(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.Label:setEllipsisEabled",argc, 1);
+    return 0;
+    
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_Label_setEllipsisEabled'.",&tolua_err);
+#endif
+    
+    return 0;
+}
+//end
 
 int lua_register_cocos2dx_Label(lua_State* tolua_S)
 {
@@ -40981,6 +41033,8 @@ int lua_register_cocos2dx_Label(lua_State* tolua_S)
         tolua_function(tolua_S,"create", lua_cocos2dx_Label_create);
         tolua_function(tolua_S,"createWithCharMap", lua_cocos2dx_Label_createWithCharMap);
         tolua_function(tolua_S,"createWithSystemFont", lua_cocos2dx_Label_createWithSystemFont);
+        //dannyhe
+        tolua_function(tolua_S,"setEllipsisEabled",lua_cocos2dx_Label_setEllipsisEabled);
     tolua_endmodule(tolua_S);
     std::string typeName = typeid(cocos2d::Label).name();
     g_luaType[typeName] = "cc.Label";

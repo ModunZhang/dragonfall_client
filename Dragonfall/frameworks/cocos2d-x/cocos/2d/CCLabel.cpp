@@ -258,6 +258,7 @@ Label::Label(FontAtlas *atlas /* = nullptr */, TextHAlignment hAlignment /* = Te
 , _uniformEffectColor(0)
 , _shadowDirty(false)
 , _insideBounds(true)
+, _ellipsisEabled(false) //dannyhe
 {
     setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     reset();
@@ -971,7 +972,15 @@ void Label::updateContent()
     std::u16string utf16String;
     if (StringUtils::UTF8ToUTF16(_originalUTF8String, utf16String))
     {
-        _currentUTF16String  = utf16String;
+        //dannyhe
+        if ( _ellipsisEabled )
+        {
+            LabelTextFormatter::ellipsisText(this, utf16String, _currentUTF16String);
+        }
+        else
+        {
+            _currentUTF16String  = utf16String;
+        }
     }
 
     computeStringNumLines();
