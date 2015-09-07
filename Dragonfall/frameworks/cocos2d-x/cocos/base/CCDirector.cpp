@@ -238,8 +238,12 @@ void Director::setDefaultValues(void)
         Texture2D::setDefaultAlphaPixelFormat(Texture2D::PixelFormat::RGB5A1);
 
     // PVR v2 has alpha premultiplied ?
-    bool pvr_alpha_premultipled = conf->getValue("cocos2d.x.texture.pvrv2_has_alpha_premultiplied", Value(false)).asBool();
+    bool pvr_alpha_premultipled = conf->getValue("cocos2d.x.texture.pvrv2_has_alpha_premultiplied", Value(true)).asBool(); //dannyhe iOS true
+#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
     Image::setPVRImagesHavePremultipliedAlpha(pvr_alpha_premultipled);
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+    Image::setPVRImagesHavePremultipliedAlpha(false); //dannyhe Android false
+#endif
 }
 
 void Director::setGLDefaultValues()

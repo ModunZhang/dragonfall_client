@@ -460,7 +460,11 @@ Image::Image()
 , _fileType(Format::UNKNOWN)
 , _renderFormat(Texture2D::PixelFormat::NONE)
 , _numberOfMipmaps(0)
-, _hasPremultipliedAlpha(true)
+#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+, _hasPremultipliedAlpha(true) //dannyhe iOS true
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+, _hasPremultipliedAlpha(false) // dannyhe Android false
+#endif
 {
 
 }

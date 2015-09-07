@@ -24,6 +24,7 @@ function UIDemoApp:ctor()
     self.scenes_ = {
         "TestUILabelFont",
         "TestBaseScene",
+        "TestTexture",
         "TestCocostuido",
         -- "TestUIPageViewScene",
         -- "TestUIListViewScene",
@@ -179,5 +180,17 @@ function UIDemoApp:transactionObserver(event)
     end
 end
 
+
+function UIDemoApp:getCommonButton(text)
+    return  cc.ui.UIPushButton.new({ normal = "Button01.png",
+    pressed = "Button01Pressed.png",
+    disabled = "Button01Disabled.png",}, {scale9 = true})
+        :setButtonSize(240, 60)
+        :setButtonLabel("normal", cc.ui.UILabel.new({
+            UILabelType = 2,
+            text = text,
+            size = 18
+        }))
+end
 
 return UIDemoApp

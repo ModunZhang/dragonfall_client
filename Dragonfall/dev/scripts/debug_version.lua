@@ -1,3 +1,3 @@
-local __debugVer = 7
+local __debugVer = 8
 		return __debugVer
 	
