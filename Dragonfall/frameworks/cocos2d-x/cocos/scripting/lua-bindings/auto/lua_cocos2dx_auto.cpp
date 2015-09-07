@@ -34669,6 +34669,7 @@ int lua_cocos2dx_GLProgramState_applyAttributes(lua_State* tolua_S)
 
     return 0;
 }
+//dannyhe fix argments error?
 int lua_cocos2dx_GLProgramState_setUniformFloat(lua_State* tolua_S)
 {
     int argc = 0;
@@ -34692,8 +34693,8 @@ int lua_cocos2dx_GLProgramState_setUniformFloat(lua_State* tolua_S)
     argc = lua_gettop(tolua_S)-1;
     do{
         if (argc == 2) {
-            int arg0;
-            ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "cc.GLProgramState:setUniformFloat");
+            std::string arg0;
+            ok &= luaval_to_std_string(tolua_S, 2,&arg0, "cc.GLProgramState:setUniformFloat");
 
             if (!ok) { break; }
             double arg1;
@@ -34708,8 +34709,8 @@ int lua_cocos2dx_GLProgramState_setUniformFloat(lua_State* tolua_S)
     ok  = true;
     do{
         if (argc == 2) {
-            std::string arg0;
-            ok &= luaval_to_std_string(tolua_S, 2,&arg0, "cc.GLProgramState:setUniformFloat");
+            int arg0;
+            ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "cc.GLProgramState:setUniformFloat");
 
             if (!ok) { break; }
             double arg1;
