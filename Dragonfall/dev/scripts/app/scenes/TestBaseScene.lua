@@ -43,6 +43,7 @@ function TestBaseScene:createEditBox()
     editbox:setPlaceholderFontColor(cc.c3b(204,196,158))
     editbox:setReturnType(cc.KEYBOARD_RETURNTYPE_SEND)
     editbox:align(display.CENTER,display.cx, display.top - 70):addTo(self)
+    editbox:setEnabled(false)
 end
 
 function TestBaseScene:createTestButton()
