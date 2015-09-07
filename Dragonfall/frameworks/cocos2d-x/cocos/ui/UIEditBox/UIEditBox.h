@@ -157,6 +157,10 @@ namespace ui {
              * The user is allowed to enter any text, except for line breaks.
              */
             SINGLE_LINE,
+            /**
+             * by dannyhe,this is for ASCII default keyboard.
+             */
+            ASCII_CAPABLE,
         };
             
         /**
@@ -468,7 +472,12 @@ namespace ui {
          * @lua NA
          */
         void touchDownAction(Ref *sender, TouchEventType controlEvent);
-            
+        
+        /**
+         * by dannyhe,this for unable editbox.
+         */
+        void setEnable(bool enable);
+         
     protected:
         virtual void adaptRenderers() override;
 

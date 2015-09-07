@@ -22672,7 +22672,12 @@ int lua_cocos2dx_ui_EditBox_setPlaceholderFontColor(lua_State* tolua_S)
         if (argc == 1) {
             cocos2d::Color4B arg0;
             ok &=luaval_to_color4b(tolua_S, 2, &arg0, "ccui.EditBox:setPlaceholderFontColor");
-
+            //dannyhe check color4b argment?
+            lua_pushstring(tolua_S, "a");
+            lua_gettable(tolua_S,2);
+            ok &= !lua_isnil(tolua_S,-1);
+            lua_pop(tolua_S,1);
+            //end
             if (!ok) { break; }
             cobj->setPlaceholderFontColor(arg0);
             lua_settop(tolua_S, 1);
@@ -22727,7 +22732,12 @@ int lua_cocos2dx_ui_EditBox_setFontColor(lua_State* tolua_S)
         if (argc == 1) {
             cocos2d::Color4B arg0;
             ok &=luaval_to_color4b(tolua_S, 2, &arg0, "ccui.EditBox:setFontColor");
-
+            //dannyhe check color4b argment?
+            lua_pushstring(tolua_S, "a");
+            lua_gettable(tolua_S,2);
+            ok &= !lua_isnil(tolua_S,-1);
+            lua_pop(tolua_S,1);
+            //end
             if (!ok) { break; }
             cobj->setFontColor(arg0);
             lua_settop(tolua_S, 1);

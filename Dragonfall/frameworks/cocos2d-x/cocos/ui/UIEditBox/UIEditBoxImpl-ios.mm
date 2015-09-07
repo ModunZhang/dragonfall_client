@@ -84,6 +84,10 @@ static const int CC_EDIT_BOX_PADDING = 5;
         textField_.delegate = self;
         textField_.hidden = true;
 		textField_.returnKeyType = UIReturnKeyDefault;
+	//dannyhe
+        textField_.clearButtonMode = UITextFieldViewModeWhileEditing;
+        [textField_ setAutocapitalizationType:UITextAutocapitalizationTypeNone];
+        [textField_ setAutocorrectionType:UITextAutocorrectionTypeNo];
         [textField_ addTarget:self action:@selector(textChanged) forControlEvents:UIControlEventEditingChanged];
         self.editBox = editBox;
     }
@@ -132,9 +136,22 @@ static const int CC_EDIT_BOX_PADDING = 5;
     [textField_ resignFirstResponder];
     [textField_ removeFromSuperview];
 }
-
+//dannyhe 将lua回调移到这里了 只有按下return键才会执行return事件
 - (BOOL)textFieldShouldReturn:(UITextField *)sender
 {
+#if CC_ENABLE_SCRIPT_BINDING
+    cocos2d::ui::EditBox*  pEditBox= getEditBoxImplIOS()->getEditBox();
+    if (NULL != pEditBox && 0 != pEditBox->getScriptEditBoxHandler())
+    {
+        cocos2d::CommonScriptData data(pEditBox->getScriptEditBoxHandler(), "ended",pEditBox);
+        cocos2d::ScriptEvent event(cocos2d::kCommonEvent,(void*)&data);
+        cocos2d::ScriptEngineManager::getInstance()->getScriptEngine()->sendEvent(&event);
+        memset(data.eventName, 0, sizeof(data.eventName));
+        strncpy(data.eventName, "return", sizeof(data.eventName));
+        event.data = (void*)&data;
+        cocos2d::ScriptEngineManager::getInstance()->getScriptEngine()->sendEvent(&event);
+    }
+#endif
     if (sender == textField_) {
         [sender resignFirstResponder];
     }
@@ -199,10 +216,11 @@ static const int CC_EDIT_BOX_PADDING = 5;
         cocos2d::CommonScriptData data(pEditBox->getScriptEditBoxHandler(), "ended",pEditBox);
         cocos2d::ScriptEvent event(cocos2d::kCommonEvent,(void*)&data);
         cocos2d::ScriptEngineManager::getInstance()->getScriptEngine()->sendEvent(&event);
-        memset(data.eventName, 0, sizeof(data.eventName));
-        strncpy(data.eventName, "return", sizeof(data.eventName));
-        event.data = (void*)&data;
-        cocos2d::ScriptEngineManager::getInstance()->getScriptEngine()->sendEvent(&event);
+//dannyhe
+//        memset(data.eventName, 0, sizeof(data.eventName));
+//        strncpy(data.eventName, "return", sizeof(data.eventName));
+//        event.data = (void*)&data;
+//        cocos2d::ScriptEngineManager::getInstance()->getScriptEngine()->sendEvent(&event);
     }
 #endif
     
@@ -235,12 +253,28 @@ static const int CC_EDIT_BOX_PADDING = 5;
     
     return newLength <= getEditBoxImplIOS()->getMaxLength();
 }
+//dannyhe
+-(NSString*)trimAllWhiteSpace:(NSString *)str
+{
+    NSCharacterSet *set = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+    NSString *trimedString = [str stringByTrimmingCharactersInSet:set];
+    
+    return [trimedString stringByReplacingOccurrencesOfString:@" " withString:@""];
+}
 
 /**
  * Called each time when the text field's text has changed.
  */
 - (void) textChanged
 {
+    //dannyhe
+    if (getEditBoxImplIOS()->getMaxLength() > 0)
+    {
+        if (textField_.text.length > getEditBoxImplIOS()->getMaxLength())
+        {
+            textField_.text = [textField_.text substringToIndex:getEditBoxImplIOS()->getMaxLength()];
+        }
+    }
     // NSLog(@"text is %@", self.textField.text);
     cocos2d::ui::EditBoxDelegate* pDelegate = getEditBoxImplIOS()->getDelegate();
     if (pDelegate != NULL)
@@ -318,7 +352,12 @@ bool EditBoxImplIOS::initWithSize(const Size& size)
     
     return false;
 }
-
+//dannyhe
+void EditBoxImplIOS::setEnable(bool enable)
+{
+    [_systemControl.textField setEnabled:enable?YES:NO];
+}
+    
 void EditBoxImplIOS::initInactiveLabels(const Size& size)
 {
 	const char* pDefaultFontName = [[_systemControl.textField.font fontName] UTF8String];
@@ -394,6 +433,9 @@ void EditBoxImplIOS::setFont(const char* pFontName, int fontSize)
 
 	_label->setSystemFontName(pFontName);
 	_label->setSystemFontSize(fontSize);
+	//dannyhe
+	_labelPlaceHolder->setSystemFontName(pFontName);
+        _labelPlaceHolder->setSystemFontSize(fontSize);
 }
 
 void EditBoxImplIOS::setFontColor(const Color4B& color)
@@ -434,6 +476,10 @@ void EditBoxImplIOS::setInputMode(EditBox::InputMode inputMode)
             break;
         case EditBox::InputMode::SINGLE_LINE:
             _systemControl.textField.keyboardType = UIKeyboardTypeDefault;
+            break;
+	//dannyhe
+        case EditBox::InputMode::ASCII_CAPABLE:
+            _systemControl.textField.keyboardType = UIKeyboardTypeASCIICapable;
             break;
         default:
             _systemControl.textField.keyboardType = UIKeyboardTypeDefault;
