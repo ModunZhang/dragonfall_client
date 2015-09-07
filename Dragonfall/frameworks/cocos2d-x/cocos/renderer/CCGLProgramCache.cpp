@@ -67,6 +67,10 @@ enum {
     kShaderType_PositionColor_noMVP_GrayScale,
 #endif
     kShaderType_MAX,
+//dannyhe ETC
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+    kShaderType_ETC_Alpha,
+#endif
 };
 
 static GLProgramCache *_sharedGLProgramCache = 0;
@@ -128,6 +132,13 @@ void GLProgramCache::loadDefaultGLPrograms()
     loadDefaultGLProgram(p, kShaderType_PositionTextureColor);
     _programs.insert( std::make_pair( GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR, p ) );
 
+    //ETC dannyhe
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+    p = new (std::nothrow) GLProgram();
+    loadDefaultGLProgram(p, kShaderType_ETC_Alpha);
+    _programs.insert( std::make_pair( GLProgram::SHADER_NAME_ETC_ALPHA, p ) );
+#endif
+    
     // Position Texture Color without MVP shader
     p = new (std::nothrow) GLProgram();
     loadDefaultGLProgram(p, kShaderType_PositionTextureColor_noMVP);
@@ -255,7 +266,14 @@ void GLProgramCache::reloadDefaultGLPrograms()
     GLProgram *p = getGLProgram(GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR);    
     p->reset();
     loadDefaultGLProgram(p, kShaderType_PositionTextureColor);
-
+ 
+    //dannyhe ETC
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+    p = getGLProgram(GLProgram::SHADER_NAME_ETC_ALPHA);
+    p->reset();
+    loadDefaultGLProgram(p, kShaderType_ETC_Alpha);
+#endif
+    
     // Position Texture Color without MVP shader
     p = getGLProgram(GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR_NO_MVP);
     p->reset();    
@@ -377,6 +395,12 @@ void GLProgramCache::reloadDefaultGLPrograms()
 void GLProgramCache::loadDefaultGLProgram(GLProgram *p, int type)
 {
     switch (type) {
+            //dannyhe ETC
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+        case kShaderType_ETC_Alpha:
+            p->initWithByteArrays(ccShader_etc_shader_vert, ccShader_etc_shader_frag);
+            break;
+#endif
         case kShaderType_PositionTextureColor:
             p->initWithByteArrays(ccPositionTextureColor_vert, ccPositionTextureColor_frag);
             break;

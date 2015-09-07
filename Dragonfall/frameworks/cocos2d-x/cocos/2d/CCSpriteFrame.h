@@ -188,6 +188,13 @@ public:
     // Overrides
 	virtual SpriteFrame *clone() const override;
     
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+    //dannyhe 添加贴图文件名的访问接口
+    inline void setTextureFilename(std::string fileName) { _textureFilename = fileName; }
+    inline std::string getTextureFilename(){return _textureFilename;}
+    //end
+#endif
+    
 CC_CONSTRUCTOR_ACCESS:
     /**
      * @lua NA

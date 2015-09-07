@@ -30,7 +30,14 @@
 #include "renderer/CCGLProgram.h"
 #include "ui/shaders/UIShaders.h"
 #include "renderer/ccShaders.h"
-
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA //dannyhe
+#define BIND_ALPAH_SPRITE(texture,sprite)  if (_textureName.length()>0) \
+{ \
+sprite->bindAlphaDataToETCTextureIf(texture,_textureName); \
+}
+#else
+#define BIND_ALPAH_SPRITE(texture,sprite) CC_UNUSED_PARAM(sprite);CC_UNUSED_PARAM(texture);
+#endif
 NS_CC_BEGIN
 namespace ui {
     
@@ -55,7 +62,11 @@ namespace ui {
     , _insetBottom(0)
     ,_flippedX(false)
     ,_flippedY(false)
-
+    
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA //dannyhe
+    ,_textureName("")
+#endif
+    
     {
         this->setAnchorPoint(Vec2(0.5,0.5));
     }
@@ -525,6 +536,7 @@ namespace ui {
         {
             _centerSprite = Sprite::createWithTexture(_scale9Image->getTexture(), rotatedCenterBounds, _spriteFrameRotated);
             _centerSprite->retain();
+            BIND_ALPAH_SPRITE(_scale9Image->getTexture(),_centerSprite);
             this->addProtectedChild(_centerSprite);
         }
         
@@ -533,6 +545,7 @@ namespace ui {
         {
             _topSprite = Sprite::createWithTexture(_scale9Image->getTexture(), rotatedCenterTopBounds, _spriteFrameRotated);
             _topSprite->retain();
+            BIND_ALPAH_SPRITE(_scale9Image->getTexture(),_topSprite);
             this->addProtectedChild(_topSprite);
         }
         
@@ -541,6 +554,7 @@ namespace ui {
         {
             _bottomSprite = Sprite::createWithTexture(_scale9Image->getTexture(), rotatedCenterBottomBounds, _spriteFrameRotated);
             _bottomSprite->retain();
+            BIND_ALPAH_SPRITE(_scale9Image->getTexture(),_bottomSprite);
             this->addProtectedChild(_bottomSprite);
         }
         
@@ -549,6 +563,7 @@ namespace ui {
         {
             _leftSprite = Sprite::createWithTexture(_scale9Image->getTexture(), rotatedLeftCenterBounds, _spriteFrameRotated);
             _leftSprite->retain();
+            BIND_ALPAH_SPRITE(_scale9Image->getTexture(),_leftSprite);
             this->addProtectedChild(_leftSprite);
         }
         
@@ -557,6 +572,7 @@ namespace ui {
         {
             _rightSprite = Sprite::createWithTexture(_scale9Image->getTexture(), rotatedRightCenterBounds, _spriteFrameRotated);
             _rightSprite->retain();
+            BIND_ALPAH_SPRITE(_scale9Image->getTexture(),_rightSprite);
             this->addProtectedChild(_rightSprite);
         }
         
@@ -565,6 +581,7 @@ namespace ui {
         {
             _topLeftSprite = Sprite::createWithTexture(_scale9Image->getTexture(), rotatedLeftTopBounds, _spriteFrameRotated);
             _topLeftSprite->retain();
+            BIND_ALPAH_SPRITE(_scale9Image->getTexture(),_topLeftSprite);
             this->addProtectedChild(_topLeftSprite);
         }
         
@@ -573,6 +590,7 @@ namespace ui {
         {
             _topRightSprite = Sprite::createWithTexture(_scale9Image->getTexture(), rotatedRightTopBounds, _spriteFrameRotated);
             _topRightSprite->retain();
+            BIND_ALPAH_SPRITE(_scale9Image->getTexture(),_topRightSprite);
             this->addProtectedChild(_topRightSprite);
         }
         
@@ -581,6 +599,7 @@ namespace ui {
         {
             _bottomLeftSprite = Sprite::createWithTexture(_scale9Image->getTexture(), rotatedLeftBottomBounds, _spriteFrameRotated);
             _bottomLeftSprite->retain();
+            BIND_ALPAH_SPRITE(_scale9Image->getTexture(),_bottomLeftSprite);
             this->addProtectedChild(_bottomLeftSprite);
         }
         
@@ -589,6 +608,7 @@ namespace ui {
         {
             _bottomRightSprite = Sprite::createWithTexture(_scale9Image->getTexture(), rotatedRightBottomBounds, _spriteFrameRotated);
             _bottomRightSprite->retain();
+            BIND_ALPAH_SPRITE(_scale9Image->getTexture(),_bottomRightSprite);
             this->addProtectedChild(_bottomRightSprite);
         }
     }
@@ -683,6 +703,9 @@ namespace ui {
     bool Scale9Sprite::initWithFile(const std::string& file, const Rect& rect,  const Rect& capInsets)
     {
         Sprite *sprite = Sprite::create(file);
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA //dannyhe
+        _textureName = file;
+#endif
         bool pReturn = this->init(sprite, rect, capInsets);
         return pReturn;
     }
@@ -760,6 +783,11 @@ namespace ui {
         Texture2D* texture = spriteFrame->getTexture();
         CCASSERT(texture != NULL, "CCTexture must be not nil");
         
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+        std::string alphaDataFile = spriteFrame->getTextureFilename();
+        _textureName = alphaDataFile;
+#endif
+    
         Sprite *sprite = Sprite::createWithSpriteFrame(spriteFrame);
         CCASSERT(sprite != NULL, "sprite must be not nil");
         

@@ -83,4 +83,10 @@ NS_CC_BEGIN
 #include "ccShader_3D_Particle.vert"
 #include "ccShader_3D_Particle.frag"
 
+//ETC dannyhe
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+#include "ccShader_etc_shader.vert"
+#include "ccShader_etc_shader.frag"
+#endif
+
 NS_CC_END

@@ -50872,6 +50872,57 @@ static int lua_cocos2dx_Sprite_finalize(lua_State* tolua_S)
     return 0;
 }
 
+//dannyhe
+static int lua_cocos2dx_Sprite_bindAlphaDataToETCTextureIf(lua_State* tolua_S)
+{
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+    int argc = 0;
+    cocos2d::Sprite* cobj = nullptr;
+    bool ok  = true;
+    
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+    
+    
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"cc.Sprite",0,&tolua_err)) goto tolua_lerror;
+#endif
+    
+    cobj = (cocos2d::Sprite*)tolua_tousertype(tolua_S,1,0);
+    
+#if COCOS2D_DEBUG >= 1
+    if (!cobj)
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_Sprite_bindAlphaDataToETCTextureIf'", nullptr);
+        return 0;
+    }
+#endif
+    
+    
+    argc = lua_gettop(tolua_S)-1;
+    
+    if (argc == 2)
+    {
+        cocos2d::Texture2D* arg0;
+        ok &= luaval_to_object<cocos2d::Texture2D>(tolua_S, 2, "cc.Texture2D",&arg0);
+        if (!ok) { return 0; }
+        std::string arg1;
+        ok &= luaval_to_std_string(tolua_S, 3,&arg1, "cc.Sprite:bindAlphaDataToETCTextureIf");
+        if (!ok) { return 0; }
+        cobj->bindAlphaDataToETCTextureIf(arg0, arg1);
+    }
+    
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_Sprite_bindAlphaDataToETCTextureIf'.",&tolua_err);
+#endif
+    
+#endif
+    return 0;
+}
+
+
 int lua_register_cocos2dx_Sprite(lua_State* tolua_S)
 {
     tolua_usertype(tolua_S,"cc.Sprite");
@@ -50908,6 +50959,8 @@ int lua_register_cocos2dx_Sprite(lua_State* tolua_S)
         tolua_function(tolua_S,"createWithTexture", lua_cocos2dx_Sprite_createWithTexture);
         tolua_function(tolua_S,"createWithSpriteFrameName", lua_cocos2dx_Sprite_createWithSpriteFrameName);
         tolua_function(tolua_S,"createWithSpriteFrame", lua_cocos2dx_Sprite_createWithSpriteFrame);
+        //dannyhe
+        tolua_function(tolua_S,"bindAlphaDataToETCTextureIf", lua_cocos2dx_Sprite_bindAlphaDataToETCTextureIf);
     tolua_endmodule(tolua_S);
     std::string typeName = typeid(cocos2d::Sprite).name();
     g_luaType[typeName] = "cc.Sprite";

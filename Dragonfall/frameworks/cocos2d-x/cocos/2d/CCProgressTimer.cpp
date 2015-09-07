@@ -32,7 +32,10 @@ THE SOFTWARE.
 #include "2d/CCSprite.h"
 #include "renderer/ccGLStateCache.h"
 #include "renderer/CCRenderer.h"
-
+//dannyhe ETC
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+#include "CCRenderTexture.h"
+#endif
 NS_CC_BEGIN
 
 #define kProgressTextureCoordsCount 4
@@ -54,6 +57,21 @@ ProgressTimer::ProgressTimer()
 ProgressTimer* ProgressTimer::create(Sprite* sp)
 {
     ProgressTimer *progressTimer = new (std::nothrow) ProgressTimer();
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+    Texture2D::PixelFormat _textureFormat = sp->getTexture()->getPixelFormat();
+    if (_textureFormat == Texture2D::PixelFormat::ETC)
+    {
+        sp->setFlippedY(true);
+        sp->setAnchorPoint(Vec2(0, 0));
+        sp->setPosition(Vec2(0,0));
+        Size __size = sp->getContentSize();
+        RenderTexture *__canva = RenderTexture::create(__size.width, __size.height);
+        __canva->begin();
+        sp->visit();
+        __canva->end();
+        sp = Sprite::createWithTexture(__canva->getSprite()->getTexture());
+    }
+#endif
     if (progressTimer->initWithSprite(sp))
     {
         progressTimer->autorelease();

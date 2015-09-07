@@ -40,6 +40,10 @@ THE SOFTWARE.
 
 #include "deprecated/CCString.h"
 
+//dannyhe
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+#include "renderer/CCGLProgramCache.h"
+#endif
 
 NS_CC_BEGIN
 
@@ -164,7 +168,14 @@ bool Sprite::initWithFile(const std::string& filename)
     {
         Rect rect = Rect::ZERO;
         rect.size = texture->getContentSize();
-        return initWithTexture(texture, rect);
+        bool ret = initWithTexture(texture, rect);
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+        if(ret)
+        {
+            bindAlphaDataToETCTextureIf(texture,filename);
+        }
+#endif
+        return ret;
     }
 
     // don't release here.
@@ -180,7 +191,14 @@ bool Sprite::initWithFile(const std::string &filename, const Rect& rect)
     Texture2D *texture = Director::getInstance()->getTextureCache()->addImage(filename);
     if (texture)
     {
-        return initWithTexture(texture, rect);
+        bool ret =  initWithTexture(texture, rect);
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+        if(ret)
+        {
+            bindAlphaDataToETCTextureIf(texture,filename);
+        }
+#endif
+        return ret;
     }
 
     // don't release here.
@@ -313,6 +331,9 @@ void Sprite::setTexture(const std::string &filename)
     if (texture)
         rect.size = texture->getContentSize();
     setTextureRect(rect);
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+    bindAlphaDataToETCTextureIf(texture,filename);
+#endif
 }
 
 void Sprite::setTexture(Texture2D *texture)
@@ -913,6 +934,39 @@ void Sprite::updateColor(void)
     // do nothing
 }
 
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+//dannyhe Android获取alpha图片
+void Sprite::bindAlphaDataToETCTextureIf(Texture2D * texture,std::string etc1_file)
+{
+    CCASSERT(texture, "CCSprite#bindAlphaDataToETCTextureIf: texture not found");
+    Texture2D::PixelFormat _textureFormat = texture->getPixelFormat();
+    CCLOG("Sprite:bindAlphaDataToETCTextureIf---%s,%d",etc1_file.c_str(),_textureFormat);
+    if (_textureFormat == Texture2D::PixelFormat::ETC)
+    {
+        CCASSERT(etc1_file.size() > 0, "CCSprite#bindAlphaDataToETCTextureIf: texture file name not found");
+        std::string alpha_file = etc1_file.erase(etc1_file.find_last_of("."));
+        alpha_file = alpha_file + "_alpha_etc1.png";
+        
+        Texture2D *texture_alpha = Director::getInstance()->getTextureCache()->addImage(alpha_file);
+        if (texture_alpha)
+        {
+            CCLOG("Sprite:bindAlphaDataToETCTextureIf:Bind alpha data %s -> %s",alpha_file.c_str(),etc1_file.c_str());
+            auto program = GLProgramCache::getInstance()->getGLProgram(GLProgram::SHADER_NAME_ETC_ALPHA); //新加的etc shader
+            auto etc_program_state = GLProgramState::create(program);
+            etc_program_state->setUniformTexture("u_texture1", texture_alpha);
+            setGLProgramState(etc_program_state);
+        }
+    }
+    else
+    {
+        CCLOG("Sprite:bindAlphaDataToETCTextureIf:Normal GLProgramState");
+        setGLProgramState(GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR_NO_MVP));
+    }
+}
+
+#endif
+
+
 void Sprite::setOpacityModifyRGB(bool modify)
 {
     if (_opacityModifyRGB != modify)
@@ -961,6 +1015,11 @@ void Sprite::setSpriteFrame(SpriteFrame *spriteFrame)
     // update rect
     _rectRotated = spriteFrame->isRotated();
     setTextureRect(spriteFrame->getRect(), _rectRotated, spriteFrame->getOriginalSize());
+    
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+    CCLOG("setSpriteFrame------->%s",spriteFrame->getTextureFilename().c_str());
+    bindAlphaDataToETCTextureIf(texture,spriteFrame->getTextureFilename());
+#endif
 }
 
 void Sprite::setDisplayFrameWithAnimationName(const std::string& animationName, ssize_t frameIndex)

@@ -53,6 +53,9 @@ namespace ui {
     class CC_GUI_DLL Scale9Sprite : public Node , public cocos2d::BlendProtocol
     {
     public:
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+        inline std::string getTextureName(){return _textureName;}
+#endif
         /**
          * Default constructor.
          * @js ctor
@@ -733,6 +736,10 @@ namespace ui {
         
         bool _flippedX;
         bool _flippedY;
+        
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+        std::string _textureName;
+#endif
     };
     
 }}  //end of namespace

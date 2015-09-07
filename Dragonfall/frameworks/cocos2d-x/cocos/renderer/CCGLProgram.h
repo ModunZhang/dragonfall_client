@@ -213,6 +213,12 @@ public:
     */
     static const char* SHADER_3D_PARTICLE_COLOR;
     
+    // ETC dannyhe
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+    /**ETC1+Alpha**/
+    static const char* SHADER_NAME_ETC_ALPHA;
+#endif
+    
     /**
     end of built shader types.
     @}
@@ -277,6 +283,7 @@ public:
     static const char* ATTRIBUTE_NAME_BLEND_WEIGHT;
     /**Attribute blend index.*/
     static const char* ATTRIBUTE_NAME_BLEND_INDEX;
+    
     /**
     end of Built Attribute names
     @}

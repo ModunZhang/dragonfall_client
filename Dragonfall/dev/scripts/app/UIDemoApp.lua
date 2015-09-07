@@ -21,6 +21,7 @@ end
 
 function UIDemoApp:ctor()
     UIDemoApp.super.ctor(self)
+    cc.FileUtils:getInstance():addSearchPath("res/animations")
     self.scenes_ = {
         "TestUILabelFont",
         "TestBaseScene",
@@ -33,6 +34,9 @@ function UIDemoApp:ctor()
         -- "TestUIButtonScene",
         -- "TestUISliderScene",
     }
+    if device.platform == 'android' then
+        table.insert(self.scenes_,"TestETCNode")
+    end
 end
 
 function UIDemoApp:run()

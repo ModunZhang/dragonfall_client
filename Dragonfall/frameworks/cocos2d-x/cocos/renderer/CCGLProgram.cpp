@@ -73,6 +73,10 @@ const char* GLProgram::SHADER_3D_SKINPOSITION_NORMAL_TEXTURE = "Shader3DSkinPosi
 const char* GLProgram::SHADER_3D_PARTICLE_COLOR = "Shader3DParticleColor";
 const char* GLProgram::SHADER_3D_PARTICLE_TEXTURE = "Shader3DParticleTexture";
 
+//ETC dannyhe
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+const char* GLProgram::SHADER_NAME_ETC_ALPHA = "etc_alpha";
+#endif
 
 // uniform names
 const char* GLProgram::UNIFORM_NAME_AMBIENT_COLOR = "CC_AmbientColor";

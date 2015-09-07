@@ -88,5 +88,5 @@
     <!-- end for Google Billing -->
     
     <!-- devices must support etc1 texture format -->
-   <!--  <supports-gl-texture android:name="GL_OES_compressed_ETC1_RGB8_texture" /> -->
+    <supports-gl-texture android:name="GL_OES_compressed_ETC1_RGB8_texture" />
 </manifest> 

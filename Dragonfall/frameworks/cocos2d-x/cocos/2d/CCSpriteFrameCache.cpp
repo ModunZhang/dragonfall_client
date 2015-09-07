@@ -93,12 +93,17 @@ void SpriteFrameCache::addSpriteFramesWithDictionary(ValueMap& dictionary, Textu
     
     ValueMap& framesDict = dictionary["frames"].asValueMap();
     int format = 0;
-
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+    std::string textureFileName = "";//dannyhe
+#endif
     // get the format
     if (dictionary.find("metadata") != dictionary.end())
     {
         ValueMap& metadataDict = dictionary["metadata"].asValueMap();
         format = metadataDict["format"].asInt();
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+        textureFileName = metadataDict["textureFileName"].asString(); //dannyhe get texture file name
+#endif
     }
 
     // check the format
@@ -191,7 +196,13 @@ void SpriteFrameCache::addSpriteFramesWithDictionary(ValueMap& dictionary, Textu
                                                          spriteOffset,
                                                          spriteSourceSize);
         }
-
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+        //dannyhe 为SpriteFrame提供Plist中的贴图文件名信息
+        if (textureFileName.length() > 0)
+        {
+            spriteFrame->setTextureFilename(textureFileName);
+        }
+#endif
         // add sprite frame
         _spriteFrames.insert(spriteFrameName, spriteFrame);
     }

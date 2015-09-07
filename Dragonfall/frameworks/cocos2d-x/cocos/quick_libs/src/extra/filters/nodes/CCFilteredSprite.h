@@ -42,6 +42,14 @@ public:
 	FilteredSprite();
 	~FilteredSprite();
 
+    //dannyhe
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+    virtual bool initWithFile(const std::string& filename) override;
+    virtual bool initWithFile(const std::string& filename, const Rect& rect) override;
+    virtual bool initWithSpriteFrame(SpriteFrame *pSpriteFrame) override;
+    virtual	void setSpriteFrame(SpriteFrame *spriteFrame) override;
+#endif
+    
     virtual void draw(Renderer *renderer, const Mat4 &transform, uint32_t flags) override;
 
 	virtual Filter* getFilter(unsigned int $index = 0);

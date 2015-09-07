@@ -82,6 +82,124 @@ void FilteredSprite::setFilters(Vector<Filter*>& $pFilters)
 	updateFilters();
 }
 
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+bool FilteredSprite::initWithFile(const std::string& filename)
+{
+    CCASSERT(filename.size()>0, "Invalid filename for sprite");
+    cocos2d::log("FilteredSprite::initWithFile--->%s",filename.c_str());
+    Texture2D *texture = Director::getInstance()->getTextureCache()->addImage(filename);
+    if(texture)
+    {
+        Texture2D::PixelFormat _textureFormat = texture->getPixelFormat();
+        cocos2d::log("FilteredSprite::initWithFile--->2-->%d",_textureFormat == Texture2D::PixelFormat::ETC);
+        if (_textureFormat == Texture2D::PixelFormat::ETC)
+        {
+            Sprite *__sp = Sprite::create(filename);
+            __sp->setFlippedY(true);
+            __sp->setAnchorPoint(Vec2(0, 0));
+            __sp->setPosition(Vec2(0,0));
+            Size __size = texture->getContentSize();
+            RenderTexture *__canva = RenderTexture::create(__size.width, __size.height);
+            // __canva->retain();
+            __canva->begin();
+            __sp->visit();
+            __canva->end();
+            bool ret = initWithTexture(__canva->getSprite()->getTexture());
+            return ret;
+        }
+        else
+        {
+            return Sprite::initWithFile(filename);
+        }
+    }
+    
+    return false;
+}
+bool FilteredSprite::initWithFile(const std::string& filename, const Rect& rect)
+{
+    CCASSERT(filename.size()>0, "Invalid filename");
+    Texture2D *texture = Director::getInstance()->getTextureCache()->addImage(filename);
+    if (texture)
+    {
+        Texture2D::PixelFormat _textureFormat = texture->getPixelFormat();
+        if (_textureFormat == Texture2D::PixelFormat::ETC)
+        {
+            Sprite *__sp = Sprite::create(filename);
+            __sp->setFlippedY(true);
+            __sp->setAnchorPoint(Vec2(0, 0));
+            __sp->setPosition(Vec2(0,0));
+            Size __size = __sp->getContentSize();
+            RenderTexture *__canva = RenderTexture::create(__size.width, __size.height);
+            __canva->begin();
+            __sp->visit();
+            __canva->end();
+            bool ret = initWithTexture(__canva->getSprite()->getTexture(), rect);
+            return ret;
+        }
+        else
+        {
+            return Sprite::initWithFile(filename, rect);
+        }
+    }
+    return false;
+}
+bool FilteredSprite::initWithSpriteFrame(SpriteFrame *spriteFrame)
+{
+    CCASSERT(spriteFrame != nullptr, "");
+    cocos2d::log("FilteredSprite::initWithSpriteFrame--->1");
+    Sprite *__sp = Sprite::createWithSpriteFrame(spriteFrame);
+    if (__sp != nullptr)
+    {
+        Texture2D::PixelFormat _textureFormat = spriteFrame->getTexture()->getPixelFormat();
+        if (_textureFormat == Texture2D::PixelFormat::ETC)
+        {
+            __sp->setFlippedY(true);
+            __sp->setAnchorPoint(Vec2(0, 0));
+            __sp->setPosition(Vec2(0,0));
+            cocos2d::log("FilteredSprite::initWithSpriteFrame--->2");
+            Size __size = __sp->getContentSize();
+            RenderTexture *__canva = RenderTexture::create(__size.width, __size.height);
+            __canva->begin();
+            __sp->visit();
+            __canva->end();
+            bool ret = initWithTexture(__canva->getSprite()->getTexture());
+            return ret;
+        }
+        else
+        {
+            return Sprite::initWithSpriteFrame(spriteFrame);
+        }
+    }
+    return false;
+}
+void FilteredSprite::setSpriteFrame(SpriteFrame *spriteFrame)
+{
+    CCASSERT(spriteFrame != nullptr, "");
+    Texture2D *texture = spriteFrame->getTexture();
+    Texture2D::PixelFormat _textureFormat = texture->getPixelFormat();
+    if (_textureFormat == Texture2D::PixelFormat::ETC)
+    {
+        Sprite *__sp = Sprite::createWithSpriteFrame(spriteFrame);
+        if (__sp != nullptr)
+        {
+            __sp->setAnchorPoint(Vec2(0, 0));
+            __sp->setPosition(Vec2(0,0));
+            Size __size = __sp->getContentSize();
+            RenderTexture *__canva = RenderTexture::create(__size.width, __size.height);
+            __canva->begin();
+            __sp->visit();
+            __canva->end();
+            setTexture(__canva->getSprite()->getTexture());
+            setFlippedY(true);
+        }
+    }
+    else
+    {
+        Sprite::setSpriteFrame(spriteFrame);
+    }
+}
+#endif
+
 //================== FilteredSpriteWithOne
 
 FilteredSpriteWithOne* FilteredSpriteWithOne::create()

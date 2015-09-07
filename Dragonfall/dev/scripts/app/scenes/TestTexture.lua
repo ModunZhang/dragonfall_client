@@ -9,9 +9,9 @@ end)
 
 function TestTexture:ctor()
 	app:createGrid(self)
+    self:createTest()
     app:createTitle(self, "TestTexture")
     app:createNextButton(self)
-    self:createTest()
 end
 
 
@@ -23,6 +23,8 @@ function TestTexture:createTest()
 	local pvr = display.newSprite(pvr_image, display.cx, display.cy):addTo(self)
 	local pvrtool = display.newSprite("images/battleHunger_128x128.png", display.cx, display.cy):addTo(self)
 	app:getCommonButton("Image Info"):onButtonClicked(function()
+		print("format--->ui_animation_0.pvr.ccz",pvr:getTexture():getPixelFormat())
+		print("format--->battleHunger_128x128.png",pvrtool:getTexture():getPixelFormat())
 		print("hasPremultipliedAlpha--->ui_animation_0.pvr.ccz",pvr:getTexture():hasPremultipliedAlpha())
 		print("hasPremultipliedAlpha--->battleHunger_128x128.png",pvrtool:getTexture():hasPremultipliedAlpha())
 	end):align(display.CENTER, display.cx, display.bottom + 50):addTo(self)

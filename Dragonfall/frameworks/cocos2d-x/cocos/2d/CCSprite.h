@@ -74,6 +74,10 @@ struct transformValues_;
 class CC_DLL Sprite : public Node, public TextureProtocol
 {
 public:
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+    //dannyhe Android获取alpha图片
+    void bindAlphaDataToETCTextureIf(Texture2D * texture,std::string etc1_file);
+#endif
      /** Sprite invalid index on the SpriteBatchNode. */
     static const int INDEX_NOT_INITIALIZED = -1;
 
