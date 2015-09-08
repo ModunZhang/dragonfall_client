@@ -56,7 +56,6 @@ namespace cocos2d {
             virtual int  getMaxLength() = 0;
             virtual void setReturnType(EditBox::KeyboardReturnType returnType) = 0;
             virtual bool isEditing() = 0;
-            virtual void setEnable(bool enable) = 0; //dannyhe
             
             virtual void setText(const char* pText) = 0;
             virtual const char* getText(void) = 0;

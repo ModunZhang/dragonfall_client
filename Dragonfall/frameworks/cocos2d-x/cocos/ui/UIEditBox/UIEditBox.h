@@ -473,11 +473,6 @@ namespace ui {
          */
         void touchDownAction(Ref *sender, TouchEventType controlEvent);
         
-        /**
-         * by dannyhe,this for unable editbox.
-         */
-        void setEnable(bool enable);
-         
     protected:
         virtual void adaptRenderers() override;
 

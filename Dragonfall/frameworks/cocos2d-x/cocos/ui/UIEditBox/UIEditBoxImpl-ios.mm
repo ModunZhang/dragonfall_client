@@ -352,11 +352,6 @@ bool EditBoxImplIOS::initWithSize(const Size& size)
     
     return false;
 }
-//dannyhe
-void EditBoxImplIOS::setEnable(bool enable)
-{
-    [_systemControl.textField setEnabled:enable?YES:NO];
-}
     
 void EditBoxImplIOS::initInactiveLabels(const Size& size)
 {
