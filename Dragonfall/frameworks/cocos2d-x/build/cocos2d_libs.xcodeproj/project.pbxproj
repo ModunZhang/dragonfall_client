@@ -1154,26 +1154,6 @@
 		1AC0269D1914068200FA920D /* ConvertUTF.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AC026991914068200FA920D /* ConvertUTF.h */; };
 		29031E0719BFE8D400EFA1DF /* libchipmunk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29031E0619BFE8D400EFA1DF /* libchipmunk.a */; };
 		29031E0919BFE8DE00EFA1DF /* libchipmunk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29031E0819BFE8DE00EFA1DF /* libchipmunk.a */; };
-		292DB13D19B4574100A80320 /* UIEditBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 292DB12F19B4574100A80320 /* UIEditBox.cpp */; };
-		292DB13E19B4574100A80320 /* UIEditBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 292DB12F19B4574100A80320 /* UIEditBox.cpp */; };
-		292DB13F19B4574100A80320 /* UIEditBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 292DB13019B4574100A80320 /* UIEditBox.h */; };
-		292DB14019B4574100A80320 /* UIEditBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 292DB13019B4574100A80320 /* UIEditBox.h */; };
-		292DB14119B4574100A80320 /* UIEditBoxImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 292DB13119B4574100A80320 /* UIEditBoxImpl.h */; };
-		292DB14219B4574100A80320 /* UIEditBoxImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 292DB13119B4574100A80320 /* UIEditBoxImpl.h */; };
-		292DB14319B4574100A80320 /* UIEditBoxImpl-android.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 292DB13219B4574100A80320 /* UIEditBoxImpl-android.cpp */; };
-		292DB14419B4574100A80320 /* UIEditBoxImpl-android.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 292DB13219B4574100A80320 /* UIEditBoxImpl-android.cpp */; };
-		292DB14519B4574100A80320 /* UIEditBoxImpl-android.h in Headers */ = {isa = PBXBuildFile; fileRef = 292DB13319B4574100A80320 /* UIEditBoxImpl-android.h */; };
-		292DB14619B4574100A80320 /* UIEditBoxImpl-android.h in Headers */ = {isa = PBXBuildFile; fileRef = 292DB13319B4574100A80320 /* UIEditBoxImpl-android.h */; };
-		292DB14719B4574100A80320 /* UIEditBoxImpl-ios.h in Headers */ = {isa = PBXBuildFile; fileRef = 292DB13419B4574100A80320 /* UIEditBoxImpl-ios.h */; };
-		292DB14819B4574100A80320 /* UIEditBoxImpl-ios.h in Headers */ = {isa = PBXBuildFile; fileRef = 292DB13419B4574100A80320 /* UIEditBoxImpl-ios.h */; };
-		292DB14919B4574100A80320 /* UIEditBoxImpl-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 292DB13519B4574100A80320 /* UIEditBoxImpl-ios.mm */; };
-		292DB14A19B4574100A80320 /* UIEditBoxImpl-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 292DB13519B4574100A80320 /* UIEditBoxImpl-ios.mm */; };
-		292DB14B19B4574100A80320 /* UIEditBoxImpl-mac.h in Headers */ = {isa = PBXBuildFile; fileRef = 292DB13619B4574100A80320 /* UIEditBoxImpl-mac.h */; };
-		292DB14C19B4574100A80320 /* UIEditBoxImpl-mac.h in Headers */ = {isa = PBXBuildFile; fileRef = 292DB13619B4574100A80320 /* UIEditBoxImpl-mac.h */; };
-		292DB14D19B4574100A80320 /* UIEditBoxImpl-mac.mm in Sources */ = {isa = PBXBuildFile; fileRef = 292DB13719B4574100A80320 /* UIEditBoxImpl-mac.mm */; };
-		292DB14E19B4574100A80320 /* UIEditBoxImpl-mac.mm in Sources */ = {isa = PBXBuildFile; fileRef = 292DB13719B4574100A80320 /* UIEditBoxImpl-mac.mm */; };
-		292DB14F19B4574100A80320 /* UIEditBoxImpl-stub.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 292DB13819B4574100A80320 /* UIEditBoxImpl-stub.cpp */; };
-		292DB15019B4574100A80320 /* UIEditBoxImpl-stub.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 292DB13819B4574100A80320 /* UIEditBoxImpl-stub.cpp */; };
 		292DB15F19B461CA00A80320 /* ExtensionDeprecated.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 292DB15D19B461CA00A80320 /* ExtensionDeprecated.cpp */; };
 		292DB16019B461CA00A80320 /* ExtensionDeprecated.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 292DB15D19B461CA00A80320 /* ExtensionDeprecated.cpp */; };
 		292DB16119B461CA00A80320 /* ExtensionDeprecated.h in Headers */ = {isa = PBXBuildFile; fileRef = 292DB15E19B461CA00A80320 /* ExtensionDeprecated.h */; };
@@ -1308,6 +1288,24 @@
 		3EACC9A519F5014D00EB3C5E /* CCLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EACC99E19F5014D00EB3C5E /* CCLight.cpp */; };
 		3EACC9A619F5014D00EB3C5E /* CCLight.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EACC99F19F5014D00EB3C5E /* CCLight.h */; };
 		3EACC9A719F5014D00EB3C5E /* CCLight.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EACC99F19F5014D00EB3C5E /* CCLight.h */; };
+		3F4A20331B9E858F00B4BE92 /* UIEditBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3F4A20231B9E858F00B4BE92 /* UIEditBox.cpp */; };
+		3F4A20341B9E858F00B4BE92 /* UIEditBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3F4A20231B9E858F00B4BE92 /* UIEditBox.cpp */; };
+		3F4A20351B9E858F00B4BE92 /* UIEditBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 3F4A20241B9E858F00B4BE92 /* UIEditBox.h */; };
+		3F4A20361B9E858F00B4BE92 /* UIEditBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 3F4A20241B9E858F00B4BE92 /* UIEditBox.h */; };
+		3F4A203B1B9E858F00B4BE92 /* UIEditBoxImpl-common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3F4A20271B9E858F00B4BE92 /* UIEditBoxImpl-common.cpp */; };
+		3F4A203C1B9E858F00B4BE92 /* UIEditBoxImpl-common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3F4A20271B9E858F00B4BE92 /* UIEditBoxImpl-common.cpp */; };
+		3F4A203D1B9E858F00B4BE92 /* UIEditBoxImpl-common.h in Headers */ = {isa = PBXBuildFile; fileRef = 3F4A20281B9E858F00B4BE92 /* UIEditBoxImpl-common.h */; };
+		3F4A203E1B9E858F00B4BE92 /* UIEditBoxImpl-common.h in Headers */ = {isa = PBXBuildFile; fileRef = 3F4A20281B9E858F00B4BE92 /* UIEditBoxImpl-common.h */; };
+		3F4A203F1B9E858F00B4BE92 /* UIEditBoxImpl-ios.h in Headers */ = {isa = PBXBuildFile; fileRef = 3F4A20291B9E858F00B4BE92 /* UIEditBoxImpl-ios.h */; };
+		3F4A20401B9E858F00B4BE92 /* UIEditBoxImpl-ios.h in Headers */ = {isa = PBXBuildFile; fileRef = 3F4A20291B9E858F00B4BE92 /* UIEditBoxImpl-ios.h */; };
+		3F4A20411B9E858F00B4BE92 /* UIEditBoxImpl-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3F4A202A1B9E858F00B4BE92 /* UIEditBoxImpl-ios.mm */; };
+		3F4A20421B9E858F00B4BE92 /* UIEditBoxImpl-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3F4A202A1B9E858F00B4BE92 /* UIEditBoxImpl-ios.mm */; };
+		3F4A20431B9E858F00B4BE92 /* UIEditBoxImpl-mac.h in Headers */ = {isa = PBXBuildFile; fileRef = 3F4A202B1B9E858F00B4BE92 /* UIEditBoxImpl-mac.h */; };
+		3F4A20441B9E858F00B4BE92 /* UIEditBoxImpl-mac.h in Headers */ = {isa = PBXBuildFile; fileRef = 3F4A202B1B9E858F00B4BE92 /* UIEditBoxImpl-mac.h */; };
+		3F4A20451B9E858F00B4BE92 /* UIEditBoxImpl-mac.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3F4A202C1B9E858F00B4BE92 /* UIEditBoxImpl-mac.mm */; };
+		3F4A20461B9E858F00B4BE92 /* UIEditBoxImpl-mac.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3F4A202C1B9E858F00B4BE92 /* UIEditBoxImpl-mac.mm */; };
+		3F4A20511B9E858F00B4BE92 /* UIEditBoxImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 3F4A20321B9E858F00B4BE92 /* UIEditBoxImpl.h */; };
+		3F4A20521B9E858F00B4BE92 /* UIEditBoxImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 3F4A20321B9E858F00B4BE92 /* UIEditBoxImpl.h */; };
 		3FABD2A21B9C799900C71BEB /* CCSpriteTileMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3FABD2A01B9C799900C71BEB /* CCSpriteTileMap.cpp */; };
 		3FABD2A31B9C799900C71BEB /* CCSpriteTileMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3FABD2A01B9C799900C71BEB /* CCSpriteTileMap.cpp */; };
 		3FABD2A41B9C799900C71BEB /* CCSpriteTileMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 3FABD2A11B9C799900C71BEB /* CCSpriteTileMap.h */; };
@@ -1770,14 +1768,6 @@
 		50ED2BD919BE5D5D00A0AB90 /* CCEventListenerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E6176631960F89B00DE83F5 /* CCEventListenerController.cpp */; };
 		50ED2BDA19BE76D300A0AB90 /* UIVideoPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EA0FB69191C841D00B170C8 /* UIVideoPlayer.h */; };
 		50ED2BDB19BE76D500A0AB90 /* UIVideoPlayer-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3EA0FB6A191C841D00B170C8 /* UIVideoPlayer-ios.mm */; };
-		50ED2BE019BEAF7900A0AB90 /* UIEditBoxImpl-win32.h in Headers */ = {isa = PBXBuildFile; fileRef = 50ED2BDC19BEAF7900A0AB90 /* UIEditBoxImpl-win32.h */; };
-		50ED2BE119BEAF7900A0AB90 /* UIEditBoxImpl-win32.h in Headers */ = {isa = PBXBuildFile; fileRef = 50ED2BDC19BEAF7900A0AB90 /* UIEditBoxImpl-win32.h */; };
-		50ED2BE219BEAF7900A0AB90 /* UIEditBoxImpl-wp8.h in Headers */ = {isa = PBXBuildFile; fileRef = 50ED2BDD19BEAF7900A0AB90 /* UIEditBoxImpl-wp8.h */; };
-		50ED2BE319BEAF7900A0AB90 /* UIEditBoxImpl-wp8.h in Headers */ = {isa = PBXBuildFile; fileRef = 50ED2BDD19BEAF7900A0AB90 /* UIEditBoxImpl-wp8.h */; };
-		50ED2BE419BEAF7900A0AB90 /* UIEditBoxImpl-win32.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50ED2BDE19BEAF7900A0AB90 /* UIEditBoxImpl-win32.cpp */; };
-		50ED2BE519BEAF7900A0AB90 /* UIEditBoxImpl-win32.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50ED2BDE19BEAF7900A0AB90 /* UIEditBoxImpl-win32.cpp */; };
-		50ED2BE619BEAF7900A0AB90 /* UIEditBoxImpl-wp8.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50ED2BDF19BEAF7900A0AB90 /* UIEditBoxImpl-wp8.cpp */; };
-		50ED2BE719BEAF7900A0AB90 /* UIEditBoxImpl-wp8.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50ED2BDF19BEAF7900A0AB90 /* UIEditBoxImpl-wp8.cpp */; };
 		52B47A2E1A5349A3004E4C60 /* HttpAsynConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 52B47A291A5349A3004E4C60 /* HttpAsynConnection.h */; };
 		52B47A2F1A5349A3004E4C60 /* HttpAsynConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 52B47A2A1A5349A3004E4C60 /* HttpAsynConnection.m */; };
 		52B47A301A5349A3004E4C60 /* HttpClient-apple.mm in Sources */ = {isa = PBXBuildFile; fileRef = 52B47A2B1A5349A3004E4C60 /* HttpClient-apple.mm */; };
@@ -3015,16 +3005,6 @@
 		2905FA1318CF08D100240AA3 /* UIWidget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UIWidget.cpp; sourceTree = "<group>"; };
 		2905FA1418CF08D100240AA3 /* UIWidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIWidget.h; sourceTree = "<group>"; };
 		29080DEB191B82CE0066F8DF /* UIDeprecated.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIDeprecated.h; sourceTree = "<group>"; };
-		292DB12F19B4574100A80320 /* UIEditBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UIEditBox.cpp; sourceTree = "<group>"; };
-		292DB13019B4574100A80320 /* UIEditBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIEditBox.h; sourceTree = "<group>"; };
-		292DB13119B4574100A80320 /* UIEditBoxImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIEditBoxImpl.h; sourceTree = "<group>"; };
-		292DB13219B4574100A80320 /* UIEditBoxImpl-android.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "UIEditBoxImpl-android.cpp"; sourceTree = "<group>"; };
-		292DB13319B4574100A80320 /* UIEditBoxImpl-android.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIEditBoxImpl-android.h"; sourceTree = "<group>"; };
-		292DB13419B4574100A80320 /* UIEditBoxImpl-ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIEditBoxImpl-ios.h"; sourceTree = "<group>"; };
-		292DB13519B4574100A80320 /* UIEditBoxImpl-ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIEditBoxImpl-ios.mm"; sourceTree = "<group>"; };
-		292DB13619B4574100A80320 /* UIEditBoxImpl-mac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIEditBoxImpl-mac.h"; sourceTree = "<group>"; };
-		292DB13719B4574100A80320 /* UIEditBoxImpl-mac.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIEditBoxImpl-mac.mm"; sourceTree = "<group>"; };
-		292DB13819B4574100A80320 /* UIEditBoxImpl-stub.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "UIEditBoxImpl-stub.cpp"; sourceTree = "<group>"; };
 		292DB15D19B461CA00A80320 /* ExtensionDeprecated.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExtensionDeprecated.cpp; sourceTree = "<group>"; };
 		292DB15E19B461CA00A80320 /* ExtensionDeprecated.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtensionDeprecated.h; sourceTree = "<group>"; };
 		292F1A5B1A5151CE00E479F8 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libcrypto.a; sourceTree = "<group>"; };
@@ -3124,6 +3104,22 @@
 		3EACC99D19F5014D00EB3C5E /* CCCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCCamera.h; sourceTree = "<group>"; };
 		3EACC99E19F5014D00EB3C5E /* CCLight.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCLight.cpp; sourceTree = "<group>"; };
 		3EACC99F19F5014D00EB3C5E /* CCLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCLight.h; sourceTree = "<group>"; };
+		3F4A20231B9E858F00B4BE92 /* UIEditBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UIEditBox.cpp; sourceTree = "<group>"; };
+		3F4A20241B9E858F00B4BE92 /* UIEditBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIEditBox.h; sourceTree = "<group>"; };
+		3F4A20251B9E858F00B4BE92 /* UIEditBoxImpl-android.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "UIEditBoxImpl-android.cpp"; sourceTree = "<group>"; };
+		3F4A20261B9E858F00B4BE92 /* UIEditBoxImpl-android.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIEditBoxImpl-android.h"; sourceTree = "<group>"; };
+		3F4A20271B9E858F00B4BE92 /* UIEditBoxImpl-common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "UIEditBoxImpl-common.cpp"; sourceTree = "<group>"; };
+		3F4A20281B9E858F00B4BE92 /* UIEditBoxImpl-common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIEditBoxImpl-common.h"; sourceTree = "<group>"; };
+		3F4A20291B9E858F00B4BE92 /* UIEditBoxImpl-ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIEditBoxImpl-ios.h"; sourceTree = "<group>"; };
+		3F4A202A1B9E858F00B4BE92 /* UIEditBoxImpl-ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIEditBoxImpl-ios.mm"; sourceTree = "<group>"; };
+		3F4A202B1B9E858F00B4BE92 /* UIEditBoxImpl-mac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIEditBoxImpl-mac.h"; sourceTree = "<group>"; };
+		3F4A202C1B9E858F00B4BE92 /* UIEditBoxImpl-mac.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIEditBoxImpl-mac.mm"; sourceTree = "<group>"; };
+		3F4A202D1B9E858F00B4BE92 /* UIEditBoxImpl-stub.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "UIEditBoxImpl-stub.cpp"; sourceTree = "<group>"; };
+		3F4A202E1B9E858F00B4BE92 /* UIEditBoxImpl-win32.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "UIEditBoxImpl-win32.cpp"; sourceTree = "<group>"; };
+		3F4A202F1B9E858F00B4BE92 /* UIEditBoxImpl-win32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIEditBoxImpl-win32.h"; sourceTree = "<group>"; };
+		3F4A20301B9E858F00B4BE92 /* UIEditBoxImpl-winrt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "UIEditBoxImpl-winrt.cpp"; sourceTree = "<group>"; };
+		3F4A20311B9E858F00B4BE92 /* UIEditBoxImpl-winrt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIEditBoxImpl-winrt.h"; sourceTree = "<group>"; };
+		3F4A20321B9E858F00B4BE92 /* UIEditBoxImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIEditBoxImpl.h; sourceTree = "<group>"; };
 		3FABD2A01B9C799900C71BEB /* CCSpriteTileMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCSpriteTileMap.cpp; sourceTree = "<group>"; };
 		3FABD2A11B9C799900C71BEB /* CCSpriteTileMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCSpriteTileMap.h; sourceTree = "<group>"; };
 		464AD6E3197EBB1400E502D8 /* pvr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pvr.cpp; path = ../base/pvr.cpp; sourceTree = "<group>"; };
@@ -3535,10 +3531,6 @@
 		50E6D33118E174130051CA34 /* UIRelativeBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIRelativeBox.h; sourceTree = "<group>"; };
 		50E6D33218E174130051CA34 /* UIVBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UIVBox.cpp; sourceTree = "<group>"; };
 		50E6D33318E174130051CA34 /* UIVBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIVBox.h; sourceTree = "<group>"; };
-		50ED2BDC19BEAF7900A0AB90 /* UIEditBoxImpl-win32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIEditBoxImpl-win32.h"; sourceTree = "<group>"; };
-		50ED2BDD19BEAF7900A0AB90 /* UIEditBoxImpl-wp8.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIEditBoxImpl-wp8.h"; sourceTree = "<group>"; };
-		50ED2BDE19BEAF7900A0AB90 /* UIEditBoxImpl-win32.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "UIEditBoxImpl-win32.cpp"; sourceTree = "<group>"; };
-		50ED2BDF19BEAF7900A0AB90 /* UIEditBoxImpl-wp8.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "UIEditBoxImpl-wp8.cpp"; sourceTree = "<group>"; };
 		50FCEB6A18C72017004AD434 /* ButtonReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ButtonReader.cpp; sourceTree = "<group>"; };
 		50FCEB6B18C72017004AD434 /* ButtonReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonReader.h; sourceTree = "<group>"; };
 		50FCEB6D18C72017004AD434 /* CheckBoxReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CheckBoxReader.cpp; sourceTree = "<group>"; };
@@ -5192,27 +5184,6 @@
 			path = ../cocos/ui;
 			sourceTree = "<group>";
 		};
-		292DB12E19B4574100A80320 /* UIEditBox */ = {
-			isa = PBXGroup;
-			children = (
-				50ED2BDC19BEAF7900A0AB90 /* UIEditBoxImpl-win32.h */,
-				50ED2BDD19BEAF7900A0AB90 /* UIEditBoxImpl-wp8.h */,
-				50ED2BDE19BEAF7900A0AB90 /* UIEditBoxImpl-win32.cpp */,
-				50ED2BDF19BEAF7900A0AB90 /* UIEditBoxImpl-wp8.cpp */,
-				292DB12F19B4574100A80320 /* UIEditBox.cpp */,
-				292DB13019B4574100A80320 /* UIEditBox.h */,
-				292DB13119B4574100A80320 /* UIEditBoxImpl.h */,
-				292DB13219B4574100A80320 /* UIEditBoxImpl-android.cpp */,
-				292DB13319B4574100A80320 /* UIEditBoxImpl-android.h */,
-				292DB13419B4574100A80320 /* UIEditBoxImpl-ios.h */,
-				292DB13519B4574100A80320 /* UIEditBoxImpl-ios.mm */,
-				292DB13619B4574100A80320 /* UIEditBoxImpl-mac.h */,
-				292DB13719B4574100A80320 /* UIEditBoxImpl-mac.mm */,
-				292DB13819B4574100A80320 /* UIEditBoxImpl-stub.cpp */,
-			);
-			path = UIEditBox;
-			sourceTree = "<group>";
-		};
 		292F1A5F1A52446100E479F8 /* mac */ = {
 			isa = PBXGroup;
 			children = (
@@ -5286,7 +5257,7 @@
 		29CB8F531929D67D00C841D6 /* widgets */ = {
 			isa = PBXGroup;
 			children = (
-				292DB12E19B4574100A80320 /* UIEditBox */,
+				3F4A20221B9E858F00B4BE92 /* UIEditBox */,
 				2905F9FE18CF08D000240AA3 /* UIListView.cpp */,
 				2905F9FF18CF08D000240AA3 /* UIListView.h */,
 				2905FA0018CF08D000240AA3 /* UILoadingBar.cpp */,
@@ -5418,6 +5389,29 @@
 				38F5263D1A48363B000DB7F7 /* CSArmatureNode_generated.h */,
 			);
 			path = ArmatureNodeReader;
+			sourceTree = "<group>";
+		};
+		3F4A20221B9E858F00B4BE92 /* UIEditBox */ = {
+			isa = PBXGroup;
+			children = (
+				3F4A20231B9E858F00B4BE92 /* UIEditBox.cpp */,
+				3F4A20241B9E858F00B4BE92 /* UIEditBox.h */,
+				3F4A20251B9E858F00B4BE92 /* UIEditBoxImpl-android.cpp */,
+				3F4A20261B9E858F00B4BE92 /* UIEditBoxImpl-android.h */,
+				3F4A20271B9E858F00B4BE92 /* UIEditBoxImpl-common.cpp */,
+				3F4A20281B9E858F00B4BE92 /* UIEditBoxImpl-common.h */,
+				3F4A20291B9E858F00B4BE92 /* UIEditBoxImpl-ios.h */,
+				3F4A202A1B9E858F00B4BE92 /* UIEditBoxImpl-ios.mm */,
+				3F4A202B1B9E858F00B4BE92 /* UIEditBoxImpl-mac.h */,
+				3F4A202C1B9E858F00B4BE92 /* UIEditBoxImpl-mac.mm */,
+				3F4A202D1B9E858F00B4BE92 /* UIEditBoxImpl-stub.cpp */,
+				3F4A202E1B9E858F00B4BE92 /* UIEditBoxImpl-win32.cpp */,
+				3F4A202F1B9E858F00B4BE92 /* UIEditBoxImpl-win32.h */,
+				3F4A20301B9E858F00B4BE92 /* UIEditBoxImpl-winrt.cpp */,
+				3F4A20311B9E858F00B4BE92 /* UIEditBoxImpl-winrt.h */,
+				3F4A20321B9E858F00B4BE92 /* UIEditBoxImpl.h */,
+			);
+			path = UIEditBox;
 			sourceTree = "<group>";
 		};
 		46A15FD01807A56F005B8026 /* audio */ = {
@@ -6556,8 +6550,8 @@
 				15AE1A5319AAD40300C27E9E /* b2Draw.h in Headers */,
 				B665E25C1AA80A6500DDB1C5 /* CCPUDoEnableComponentEventHandler.h in Headers */,
 				38B8E2E319E671D2002D7CE7 /* UILayoutComponent.h in Headers */,
+				3F4A20351B9E858F00B4BE92 /* UIEditBox.h in Headers */,
 				5034CA39191D591100CE6051 /* ccShader_PositionColorLengthTexture.frag in Headers */,
-				292DB14B19B4574100A80320 /* UIEditBoxImpl-mac.h in Headers */,
 				B29A7E3F19EE1B7700872B35 /* AnimationState.h in Headers */,
 				D0FD03591A3B51AA00825BB5 /* CCAllocatorStrategyDefault.h in Headers */,
 				B665E2901AA80A6500DDB1C5 /* CCPUDynamicAttributeTranslator.h in Headers */,
@@ -6565,7 +6559,6 @@
 				50ABBE8D1925AB6F00A911A9 /* CCNS.h in Headers */,
 				B29A7DFD19EE1B7700872B35 /* IkConstraintData.h in Headers */,
 				50ABBEA51925AB6F00A911A9 /* CCScriptSupport.h in Headers */,
-				292DB14519B4574100A80320 /* UIEditBoxImpl-android.h in Headers */,
 				15AE1B9A19AADFDF00C27E9E /* UIHBox.h in Headers */,
 				B665E2E41AA80A6500DDB1C5 /* CCPULineAffectorTranslator.h in Headers */,
 				B665E2781AA80A6500DDB1C5 /* CCPUDoPlacementParticleEventHandlerTranslator.h in Headers */,
@@ -6675,6 +6668,7 @@
 				182C5CB31A95964700C30D34 /* Node3DReader.h in Headers */,
 				1A570083180BC5A10088DEC7 /* CCActionManager.h in Headers */,
 				1A570087180BC5A10088DEC7 /* CCActionPageTurn3D.h in Headers */,
+				3F4A203D1B9E858F00B4BE92 /* UIEditBoxImpl-common.h in Headers */,
 				50ABBD911925AB4100A911A9 /* CCGLProgramCache.h in Headers */,
 				50ED2BDA19BE76D300A0AB90 /* UIVideoPlayer.h in Headers */,
 				15AE199919AAD39600C27E9E /* LoadingBarReader.h in Headers */,
@@ -6723,6 +6717,7 @@
 				1A570110180BC8EE0088DEC7 /* CCDrawingPrimitives.h in Headers */,
 				50CB247D19D9C5A100687767 /* AudioPlayer.h in Headers */,
 				1A570114180BC8EE0088DEC7 /* CCDrawNode.h in Headers */,
+				3F4A20511B9E858F00B4BE92 /* UIEditBoxImpl.h in Headers */,
 				B665E3141AA80A6500DDB1C5 /* CCPUObserverManager.h in Headers */,
 				B665E2E01AA80A6500DDB1C5 /* CCPULineAffector.h in Headers */,
 				15AE1A6019AAD40300C27E9E /* b2ContactManager.h in Headers */,
@@ -6734,7 +6729,6 @@
 				1A57011D180BC90D0088DEC7 /* CCGrabber.h in Headers */,
 				B665E3C81AA80A6600DDB1C5 /* CCPUScaleVelocityAffector.h in Headers */,
 				B29A7E2B19EE1B7700872B35 /* AtlasAttachmentLoader.h in Headers */,
-				50ED2BE219BEAF7900A0AB90 /* UIEditBoxImpl-wp8.h in Headers */,
 				B665E3781AA80A6500DDB1C5 /* CCPUParticleFollowerTranslator.h in Headers */,
 				15AE1B6819AADA9900C27E9E /* UIScale9Sprite.h in Headers */,
 				1A570121180BC90D0088DEC7 /* CCGrid.h in Headers */,
@@ -6766,7 +6760,6 @@
 				15AE182219AAD2F700C27E9E /* CCBundleReader.h in Headers */,
 				15AE18A519AAD33D00C27E9E /* CCScale9SpriteLoader.h in Headers */,
 				5E9F61281A3FFE3D0038DE01 /* CCFrustum.h in Headers */,
-				50ED2BE019BEAF7900A0AB90 /* UIEditBoxImpl-win32.h in Headers */,
 				15AE197119AAD35700C27E9E /* CCFrame.h in Headers */,
 				15AE1A6519AAD40300C27E9E /* b2TimeStep.h in Headers */,
 				15AE182E19AAD2F700C27E9E /* CCMeshVertexIndexData.h in Headers */,
@@ -6855,6 +6848,7 @@
 				B29A7DE719EE1B7700872B35 /* spine.h in Headers */,
 				B665E3841AA80A6500DDB1C5 /* CCPUPathFollower.h in Headers */,
 				B665E3F81AA80A6600DDB1C5 /* CCPUSlaveEmitterTranslator.h in Headers */,
+				3F4A20431B9E858F00B4BE92 /* UIEditBoxImpl-mac.h in Headers */,
 				50ABBD891925AB4100A911A9 /* CCCustomCommand.h in Headers */,
 				15AE1A8719AAD40300C27E9E /* b2MouseJoint.h in Headers */,
 				5034CA43191D591100CE6051 /* ccShader_Label.vert in Headers */,
@@ -6894,7 +6888,6 @@
 				B29A7DF519EE1B7700872B35 /* Skeleton.h in Headers */,
 				382384031A259005002C4610 /* CSParseBinary_generated.h in Headers */,
 				5034CA49191D591100CE6051 /* ccShader_Label_df.frag in Headers */,
-				292DB14119B4574100A80320 /* UIEditBoxImpl.h in Headers */,
 				B29A7DD919EE1B7700872B35 /* SkeletonRenderer.h in Headers */,
 				50CB247919D9C5A100687767 /* AudioEngine-inl.h in Headers */,
 				1A01C68C18F57BE800EFE3A6 /* CCDeprecated.h in Headers */,
@@ -6906,7 +6899,6 @@
 				5034CA3D191D591100CE6051 /* ccShader_PositionColor.frag in Headers */,
 				15AE18FB19AAD35000C27E9E /* CCColliderDetector.h in Headers */,
 				1A570280180BCC900088DEC7 /* CCSprite.h in Headers */,
-				292DB14719B4574100A80320 /* UIEditBoxImpl-ios.h in Headers */,
 				B665E3FC1AA80A6600DDB1C5 /* CCPUSphere.h in Headers */,
 				15AE1A9119AAD40300C27E9E /* b2WeldJoint.h in Headers */,
 				15AE1A5419AAD40300C27E9E /* b2GrowableStack.h in Headers */,
@@ -7069,6 +7061,7 @@
 				B665E3641AA80A6500DDB1C5 /* CCPUOnTimeObserver.h in Headers */,
 				15AE1A8519AAD40300C27E9E /* b2Joint.h in Headers */,
 				15AE1A8D19AAD40300C27E9E /* b2RevoluteJoint.h in Headers */,
+				3F4A203F1B9E858F00B4BE92 /* UIEditBoxImpl-ios.h in Headers */,
 				50ABBE291925AB6F00A911A9 /* CCAutoreleasePool.h in Headers */,
 				299CF1FD19A434BC00C378C1 /* ccRandom.h in Headers */,
 				15AE1A2F19AAD3D500C27E9E /* b2TimeOfImpact.h in Headers */,
@@ -7159,7 +7152,6 @@
 				50ABBEB91925AB6F00A911A9 /* ccUTF8.h in Headers */,
 				15AE191A19AAD35000C27E9E /* CCSSceneReader.h in Headers */,
 				B665E2241AA80A6500DDB1C5 /* CCPUBehaviourTranslator.h in Headers */,
-				292DB13F19B4574100A80320 /* UIEditBox.h in Headers */,
 				B665E3881AA80A6500DDB1C5 /* CCPUPathFollowerTranslator.h in Headers */,
 				B665E2541AA80A6500DDB1C5 /* CCPUDoAffectorEventHandler.h in Headers */,
 				50ABBE671925AB6F00A911A9 /* CCEventListenerCustom.h in Headers */,
@@ -7237,6 +7229,7 @@
 				B29A7E1A19EE1B7700872B35 /* Event.h in Headers */,
 				15AE1AC719AAD40300C27E9E /* b2GearJoint.h in Headers */,
 				B665E2ED1AA80A6500DDB1C5 /* CCPULinearForceAffectorTranslator.h in Headers */,
+				3F4A20361B9E858F00B4BE92 /* UIEditBox.h in Headers */,
 				50ABBDA21925AB4100A911A9 /* CCGroupCommand.h in Headers */,
 				15AE18C219AAD33D00C27E9E /* CCLayerColorLoader.h in Headers */,
 				50643BDA19BFAF4400EF68ED /* CCApplication.h in Headers */,
@@ -7249,7 +7242,6 @@
 				B665E33D1AA80A6500DDB1C5 /* CCPUOnEventFlagObserver.h in Headers */,
 				15AE18B119AAD33D00C27E9E /* CCBMemberVariableAssigner.h in Headers */,
 				B665E3791AA80A6500DDB1C5 /* CCPUParticleFollowerTranslator.h in Headers */,
-				292DB14019B4574100A80320 /* UIEditBox.h in Headers */,
 				50ABBD3B1925AB0000A911A9 /* CCAffineTransform.h in Headers */,
 				5034CA38191D591100CE6051 /* ccShader_PositionColorLengthTexture.vert in Headers */,
 				15AE1B8119AADA9A00C27E9E /* UITextAtlas.h in Headers */,
@@ -7390,7 +7382,6 @@
 				15AE184919AAD2F700C27E9E /* cocos3d.h in Headers */,
 				1A5700A1180BC5D20088DEC7 /* CCNode.h in Headers */,
 				15AE181919AAD2F700C27E9E /* CCAttachNode.h in Headers */,
-				292DB14C19B4574100A80320 /* UIEditBoxImpl-mac.h in Headers */,
 				15AE1BF019AAE01E00C27E9E /* CCControlHuePicker.h in Headers */,
 				B665E3611AA80A6500DDB1C5 /* CCPUOnRandomObserverTranslator.h in Headers */,
 				B665E3111AA80A6500DDB1C5 /* CCPUObserver.h in Headers */,
@@ -7434,7 +7425,6 @@
 				D0FD035E1A3B51AA00825BB5 /* CCAllocatorStrategyGlobalSmallBlock.h in Headers */,
 				50ABBD411925AB0000A911A9 /* CCMath.h in Headers */,
 				1A5701A0180BCB590088DEC7 /* CCFont.h in Headers */,
-				292DB14819B4574100A80320 /* UIEditBoxImpl-ios.h in Headers */,
 				3E2BDADE19C030ED0055CDCD /* AudioEngine.h in Headers */,
 				B665E3011AA80A6500DDB1C5 /* CCPUMaterialTranslator.h in Headers */,
 				50ABBD9A1925AB4100A911A9 /* CCGLProgramStateCache.h in Headers */,
@@ -7446,7 +7436,6 @@
 				B60C5BD719AC68B10056FBDE /* CCBillBoard.h in Headers */,
 				B230ED7419B417AE00364AA8 /* CCTrianglesCommand.h in Headers */,
 				B665E2911AA80A6500DDB1C5 /* CCPUDynamicAttributeTranslator.h in Headers */,
-				50ED2BE119BEAF7900A0AB90 /* UIEditBoxImpl-win32.h in Headers */,
 				15AE1ACB19AAD40300C27E9E /* b2MouseJoint.h in Headers */,
 				B665E3491AA80A6500DDB1C5 /* CCPUOnExpireObserverTranslator.h in Headers */,
 				50ABBD3F1925AB0000A911A9 /* CCGeometry.h in Headers */,
@@ -7485,7 +7474,6 @@
 				B665E2411AA80A6500DDB1C5 /* CCPUCircleEmitterTranslator.h in Headers */,
 				15AE1AA619AAD40300C27E9E /* b2Fixture.h in Headers */,
 				15AE1BBA19AADFF000C27E9E /* HttpClient.h in Headers */,
-				292DB14619B4574100A80320 /* UIEditBoxImpl-android.h in Headers */,
 				B665E2DD1AA80A6500DDB1C5 /* CCPUJetAffectorTranslator.h in Headers */,
 				15AE1B9419AADA9A00C27E9E /* GUIDefine.h in Headers */,
 				15AE183B19AAD2F700C27E9E /* CCRay.h in Headers */,
@@ -7500,6 +7488,7 @@
 				B665E2E11AA80A6500DDB1C5 /* CCPULineAffector.h in Headers */,
 				B29A7E0419EE1B7700872B35 /* BoundingBoxAttachment.h in Headers */,
 				52B47A2E1A5349A3004E4C60 /* HttpAsynConnection.h in Headers */,
+				3F4A20401B9E858F00B4BE92 /* UIEditBoxImpl-ios.h in Headers */,
 				15AE1BBC19AADFF000C27E9E /* HttpResponse.h in Headers */,
 				15AE186019AAD31200C27E9E /* SimpleAudioEngine_objc.h in Headers */,
 				50ABBDA61925AB4100A911A9 /* CCQuadCommand.h in Headers */,
@@ -7671,12 +7660,12 @@
 				15AE1AC519AAD40300C27E9E /* b2FrictionJoint.h in Headers */,
 				15AE1B8D19AADA9A00C27E9E /* UIScale9Sprite.h in Headers */,
 				15AE18AC19AAD33D00C27E9E /* CCBAnimationManager.h in Headers */,
-				292DB14219B4574100A80320 /* UIEditBoxImpl.h in Headers */,
 				1A570303180BCE890088DEC7 /* CCParallaxNode.h in Headers */,
 				50ABBE2A1925AB6F00A911A9 /* CCAutoreleasePool.h in Headers */,
 				1A57030F180BCF190088DEC7 /* CCComponent.h in Headers */,
 				B665E22D1AA80A6500DDB1C5 /* CCPUBoxCollider.h in Headers */,
 				15AE1AD519AAD40300C27E9E /* b2WeldJoint.h in Headers */,
+				3F4A20441B9E858F00B4BE92 /* UIEditBoxImpl-mac.h in Headers */,
 				15AE18B019AAD33D00C27E9E /* CCBKeyframe.h in Headers */,
 				15AE18C419AAD33D00C27E9E /* CCLayerGradientLoader.h in Headers */,
 				B665E3511AA80A6500DDB1C5 /* CCPUOnPositionObserverTranslator.h in Headers */,
@@ -7709,7 +7698,6 @@
 				15AE1A9519AAD40300C27E9E /* b2BlockAllocator.h in Headers */,
 				5034CA48191D591100CE6051 /* ccShader_Label_normal.frag in Headers */,
 				15AE183F19AAD2F700C27E9E /* CCSkeleton3D.h in Headers */,
-				50ED2BE319BEAF7900A0AB90 /* UIEditBoxImpl-wp8.h in Headers */,
 				50ABBD531925AB0000A911A9 /* Quaternion.h in Headers */,
 				15AE19B119AAD39700C27E9E /* ScrollViewReader.h in Headers */,
 				503DD8E81926736A00CD74DD /* CCES2Renderer-ios.h in Headers */,
@@ -7779,6 +7767,7 @@
 				38B8E2E419E671D2002D7CE7 /* UILayoutComponent.h in Headers */,
 				B665E2CD1AA80A6500DDB1C5 /* CCPUGravityAffectorTranslator.h in Headers */,
 				50ABBD4F1925AB0000A911A9 /* MathUtil.h in Headers */,
+				3F4A20521B9E858F00B4BE92 /* UIEditBoxImpl.h in Headers */,
 				1A01C69718F57BE800EFE3A6 /* CCInteger.h in Headers */,
 				15AE1C0619AAE01E00C27E9E /* CCTableViewCell.h in Headers */,
 				B665E4251AA80A6600DDB1C5 /* CCPUTranslateManager.h in Headers */,
@@ -7868,6 +7857,7 @@
 				15AE184D19AAD30800C27E9E /* SimpleAudioEngine.h in Headers */,
 				B665E3551AA80A6500DDB1C5 /* CCPUOnQuotaObserver.h in Headers */,
 				B665E3C91AA80A6600DDB1C5 /* CCPUScaleVelocityAffector.h in Headers */,
+				3F4A203E1B9E858F00B4BE92 /* UIEditBoxImpl-common.h in Headers */,
 				B665E3FD1AA80A6600DDB1C5 /* CCPUSphere.h in Headers */,
 				B68778FB1A8CA82E00643ABF /* CCParticle3DAffector.h in Headers */,
 				B665E3B51AA80A6500DDB1C5 /* CCPURendererTranslator.h in Headers */,
@@ -7987,7 +7977,6 @@
 				B29A7E3B19EE1B7700872B35 /* Animation.c in Sources */,
 				15AE1BDE19AAE01E00C27E9E /* CCInvocation.cpp in Sources */,
 				B665E2F21AA80A6500DDB1C5 /* CCPULineEmitterTranslator.cpp in Sources */,
-				292DB14F19B4574100A80320 /* UIEditBoxImpl-stub.cpp in Sources */,
 				B29A7E0B19EE1B7700872B35 /* Atlas.c in Sources */,
 				15AE199419AAD39600C27E9E /* LayoutReader.cpp in Sources */,
 				1A01C68A18F57BE800EFE3A6 /* CCDeprecated.cpp in Sources */,
@@ -8146,7 +8135,6 @@
 				B665E3B61AA80A6500DDB1C5 /* CCPURibbonTrail.cpp in Sources */,
 				B29A7E1319EE1B7700872B35 /* Bone.c in Sources */,
 				B665E1F61AA80A6500DDB1C5 /* CCPUAffectorManager.cpp in Sources */,
-				292DB14919B4574100A80320 /* UIEditBoxImpl-ios.mm in Sources */,
 				15AE181019AAD2F700C27E9E /* CCAnimation3D.cpp in Sources */,
 				1A01C68418F57BE800EFE3A6 /* CCArray.cpp in Sources */,
 				1A570112180BC8EE0088DEC7 /* CCDrawNode.cpp in Sources */,
@@ -8189,7 +8177,6 @@
 				1A5701BD180BCB5A0088DEC7 /* CCLabelAtlas.cpp in Sources */,
 				15AE1B5319AADA9900C27E9E /* UIRichText.cpp in Sources */,
 				B665E3121AA80A6500DDB1C5 /* CCPUObserverManager.cpp in Sources */,
-				292DB13D19B4574100A80320 /* UIEditBox.cpp in Sources */,
 				50ABBE551925AB6F00A911A9 /* CCEventFocus.cpp in Sources */,
 				15AE1A8819AAD40300C27E9E /* b2PrismaticJoint.cpp in Sources */,
 				182C5CB21A95964700C30D34 /* Node3DReader.cpp in Sources */,
@@ -8262,7 +8249,6 @@
 				1A570208180BCBDF0088DEC7 /* CCMotionStreak.cpp in Sources */,
 				1A570210180BCBF40088DEC7 /* CCProgressTimer.cpp in Sources */,
 				292DB15F19B461CA00A80320 /* ExtensionDeprecated.cpp in Sources */,
-				292DB14D19B4574100A80320 /* UIEditBoxImpl-mac.mm in Sources */,
 				50ABBDB51925AB4100A911A9 /* CCTexture2D.cpp in Sources */,
 				B29A7DD719EE1B7700872B35 /* SkeletonData.c in Sources */,
 				3EACC9A019F5014D00EB3C5E /* CCCamera.cpp in Sources */,
@@ -8292,11 +8278,13 @@
 				B29A7E2F19EE1B7700872B35 /* SkeletonAnimation.cpp in Sources */,
 				B60C5BD419AC68B10056FBDE /* CCBillBoard.cpp in Sources */,
 				15AE199619AAD39600C27E9E /* ListViewReader.cpp in Sources */,
+				3F4A20331B9E858F00B4BE92 /* UIEditBox.cpp in Sources */,
 				50ABC0191926664800A911A9 /* CCSAXParser.cpp in Sources */,
 				15AE189219AAD33D00C27E9E /* CCLayerGradientLoader.cpp in Sources */,
 				15AE1B6A19AADA9900C27E9E /* UIDeprecated.cpp in Sources */,
 				15AE183C19AAD2F700C27E9E /* CCSkeleton3D.cpp in Sources */,
 				15AE1A2319AAD3D500C27E9E /* b2BroadPhase.cpp in Sources */,
+				3F4A20451B9E858F00B4BE92 /* UIEditBoxImpl-mac.mm in Sources */,
 				382384211A2590DA002C4610 /* GameMapReader.cpp in Sources */,
 				B29A7DF319EE1B7700872B35 /* AttachmentLoader.c in Sources */,
 				382383F01A258FA7002C4610 /* flatc.cpp in Sources */,
@@ -8459,13 +8447,12 @@
 				B68778FC1A8CA82E00643ABF /* CCParticle3DEmitter.cpp in Sources */,
 				B665E2921AA80A6500DDB1C5 /* CCPUEmitter.cpp in Sources */,
 				15B3708419EE414C00ABE682 /* Downloader.cpp in Sources */,
+				3F4A20411B9E858F00B4BE92 /* UIEditBoxImpl-ios.mm in Sources */,
 				50ABC0631926664800A911A9 /* CCDevice-mac.mm in Sources */,
 				15AE1A2819AAD3D500C27E9E /* b2Collision.cpp in Sources */,
 				15AE1B6719AADA9900C27E9E /* UIScale9Sprite.cpp in Sources */,
-				292DB14319B4574100A80320 /* UIEditBoxImpl-android.cpp in Sources */,
 				B665E2EA1AA80A6500DDB1C5 /* CCPULinearForceAffectorTranslator.cpp in Sources */,
 				15AE1A5219AAD40300C27E9E /* b2Draw.cpp in Sources */,
-				50ED2BE419BEAF7900A0AB90 /* UIEditBoxImpl-win32.cpp in Sources */,
 				50ABBE1F1925AB6F00A911A9 /* atitc.cpp in Sources */,
 				1A01C69818F57BE800EFE3A6 /* CCSet.cpp in Sources */,
 				B29A7DF119EE1B7700872B35 /* AtlasAttachmentLoader.c in Sources */,
@@ -8523,6 +8510,7 @@
 				15AE1A7E19AAD40300C27E9E /* b2DistanceJoint.cpp in Sources */,
 				15AE190919AAD35000C27E9E /* CCDecorativeDisplay.cpp in Sources */,
 				B665E40E1AA80A6600DDB1C5 /* CCPUTechniqueTranslator.cpp in Sources */,
+				3F4A203B1B9E858F00B4BE92 /* UIEditBoxImpl-common.cpp in Sources */,
 				B665E21E1AA80A6500DDB1C5 /* CCPUBehaviourManager.cpp in Sources */,
 				15AE18E319AAD35000C27E9E /* TriggerObj.cpp in Sources */,
 				15AE1BA119AADFDF00C27E9E /* UILayoutParameter.cpp in Sources */,
@@ -8569,7 +8557,6 @@
 				B665E20A1AA80A6500DDB1C5 /* CCPUBaseColliderTranslator.cpp in Sources */,
 				B665E3E61AA80A6600DDB1C5 /* CCPUSineForceAffectorTranslator.cpp in Sources */,
 				15AE1B5119AADA9900C27E9E /* UIPageView.cpp in Sources */,
-				50ED2BE619BEAF7900A0AB90 /* UIEditBoxImpl-wp8.cpp in Sources */,
 				15AE18EC19AAD35000C27E9E /* CCActionObject.cpp in Sources */,
 				296BF6181A4405CB0038EC44 /* UIShaders.cpp in Sources */,
 				B665E2821AA80A6500DDB1C5 /* CCPUDoStopSystemEventHandler.cpp in Sources */,
@@ -8616,7 +8603,6 @@
 				50ABC0161926664800A911A9 /* CCImage.cpp in Sources */,
 				B665E3AB1AA80A6500DDB1C5 /* CCPURandomiserTranslator.cpp in Sources */,
 				1A01C6A518F58F7500EFE3A6 /* CCNotificationCenter.cpp in Sources */,
-				292DB14E19B4574100A80320 /* UIEditBoxImpl-mac.mm in Sources */,
 				B665E3A71AA80A6500DDB1C5 /* CCPURandomiser.cpp in Sources */,
 				15AE1BFB19AAE01E00C27E9E /* CCControlUtils.cpp in Sources */,
 				B665E30F1AA80A6500DDB1C5 /* CCPUObserver.cpp in Sources */,
@@ -8697,7 +8683,6 @@
 				B665E2C71AA80A6500DDB1C5 /* CCPUGravityAffector.cpp in Sources */,
 				B665E2E31AA80A6500DDB1C5 /* CCPULineAffectorTranslator.cpp in Sources */,
 				15AE1AB619AAD40300C27E9E /* b2ContactSolver.cpp in Sources */,
-				292DB13E19B4574100A80320 /* UIEditBox.cpp in Sources */,
 				B29A7E0619EE1B7700872B35 /* extension.c in Sources */,
 				3E6176681960F89B00DE83F5 /* CCController-iOS.mm in Sources */,
 				15AE18B219AAD33D00C27E9E /* CCBReader.cpp in Sources */,
@@ -8752,7 +8737,6 @@
 				15AE18C119AAD33D00C27E9E /* CCLayerColorLoader.cpp in Sources */,
 				50ABBD551925AB0000A911A9 /* TransformUtils.cpp in Sources */,
 				B665E2CF1AA80A6500DDB1C5 /* CCPUInterParticleCollider.cpp in Sources */,
-				292DB14419B4574100A80320 /* UIEditBoxImpl-android.cpp in Sources */,
 				15AE193619AAD35100C27E9E /* CCArmature.cpp in Sources */,
 				1A57007A180BC5A10088DEC7 /* CCActionInstant.cpp in Sources */,
 				15AE1AC419AAD40300C27E9E /* b2FrictionJoint.cpp in Sources */,
@@ -8809,7 +8793,6 @@
 				15AE193019AAD35100C27E9E /* CCActionManagerEx.cpp in Sources */,
 				15B3708119EE414C00ABE682 /* CCEventListenerAssetsManagerEx.cpp in Sources */,
 				503DD8E21926736A00CD74DD /* CCCommon-ios.mm in Sources */,
-				292DB14A19B4574100A80320 /* UIEditBoxImpl-ios.mm in Sources */,
 				15AE1A9419AAD40300C27E9E /* b2BlockAllocator.cpp in Sources */,
 				B29A7E3C19EE1B7700872B35 /* Animation.c in Sources */,
 				15AE1A4D19AAD3D500C27E9E /* b2PolygonShape.cpp in Sources */,
@@ -8844,6 +8827,7 @@
 				B665E26B1AA80A6500DDB1C5 /* CCPUDoFreezeEventHandler.cpp in Sources */,
 				15AE1A3F19AAD3D500C27E9E /* b2Collision.cpp in Sources */,
 				1A5701BA180BCB5A0088DEC7 /* CCLabel.cpp in Sources */,
+				3F4A20461B9E858F00B4BE92 /* UIEditBoxImpl-mac.mm in Sources */,
 				15AE18AD19AAD33D00C27E9E /* CCBFileLoader.cpp in Sources */,
 				15AE18AB19AAD33D00C27E9E /* CCBAnimationManager.cpp in Sources */,
 				15AE1B7219AADA9A00C27E9E /* UIListView.cpp in Sources */,
@@ -8859,7 +8843,6 @@
 				B665E3471AA80A6500DDB1C5 /* CCPUOnExpireObserverTranslator.cpp in Sources */,
 				15AE1AA519AAD40300C27E9E /* b2Fixture.cpp in Sources */,
 				B29A7DE219EE1B7700872B35 /* MeshAttachment.c in Sources */,
-				50ED2BE719BEAF7900A0AB90 /* UIEditBoxImpl-wp8.cpp in Sources */,
 				15AE1BAD19AADFDF00C27E9E /* UILayoutParameter.cpp in Sources */,
 				3823843E1A259140002C4610 /* SingleNodeReader.cpp in Sources */,
 				B29A7DDE19EE1B7700872B35 /* BoneData.c in Sources */,
@@ -8918,7 +8901,6 @@
 				15AE194019AAD35100C27E9E /* CCBone.cpp in Sources */,
 				1A570215180BCBF40088DEC7 /* CCRenderTexture.cpp in Sources */,
 				1A570222180BCC1A0088DEC7 /* CCParticleBatchNode.cpp in Sources */,
-				292DB15019B4574100A80320 /* UIEditBoxImpl-stub.cpp in Sources */,
 				B665E25B1AA80A6500DDB1C5 /* CCPUDoEnableComponentEventHandler.cpp in Sources */,
 				B665E3431AA80A6500DDB1C5 /* CCPUOnExpireObserver.cpp in Sources */,
 				15AE185F19AAD31200C27E9E /* SimpleAudioEngine.mm in Sources */,
@@ -8981,6 +8963,7 @@
 				15AE1AAE19AAD40300C27E9E /* b2ChainAndCircleContact.cpp in Sources */,
 				15AE194D19AAD35100C27E9E /* CCDataReaderHelper.cpp in Sources */,
 				15AE1B8C19AADA9A00C27E9E /* UIScale9Sprite.cpp in Sources */,
+				3F4A203C1B9E858F00B4BE92 /* UIEditBoxImpl-common.cpp in Sources */,
 				15AE19AE19AAD39700C27E9E /* PageViewReader.cpp in Sources */,
 				B68778FD1A8CA82E00643ABF /* CCParticle3DEmitter.cpp in Sources */,
 				1A570297180BCCAB0088DEC7 /* CCAnimationCache.cpp in Sources */,
@@ -9119,7 +9102,6 @@
 				15AE18C319AAD33D00C27E9E /* CCLayerGradientLoader.cpp in Sources */,
 				15AE197919AAD35700C27E9E /* CCActionTimelineCache.cpp in Sources */,
 				1AAF5850180E40B9000584C8 /* LocalStorage.cpp in Sources */,
-				50ED2BE519BEAF7900A0AB90 /* UIEditBoxImpl-win32.cpp in Sources */,
 				15AE192E19AAD35100C27E9E /* CCActionFrameEasing.cpp in Sources */,
 				B665E3531AA80A6500DDB1C5 /* CCPUOnQuotaObserver.cpp in Sources */,
 				B665E29F1AA80A6500DDB1C5 /* CCPUEventHandler.cpp in Sources */,
@@ -9128,6 +9110,7 @@
 				15AE1BA719AADFDF00C27E9E /* UIRelativeBox.cpp in Sources */,
 				15AE1ACE19AAD40300C27E9E /* b2PulleyJoint.cpp in Sources */,
 				B665E2DF1AA80A6500DDB1C5 /* CCPULineAffector.cpp in Sources */,
+				3F4A20421B9E858F00B4BE92 /* UIEditBoxImpl-ios.mm in Sources */,
 				1A9DCA28180E6955007A3AD4 /* CCGLBufferedNode.cpp in Sources */,
 				15AE1BF919AAE01E00C27E9E /* CCControlSwitch.cpp in Sources */,
 				B665E3FB1AA80A6600DDB1C5 /* CCPUSphere.cpp in Sources */,
@@ -9196,6 +9179,7 @@
 				1A1645B1191B726C008C7C7F /* ConvertUTF.c in Sources */,
 				B665E2FF1AA80A6500DDB1C5 /* CCPUMaterialTranslator.cpp in Sources */,
 				50ABBE3A1925AB6F00A911A9 /* CCData.cpp in Sources */,
+				3F4A20341B9E858F00B4BE92 /* UIEditBox.cpp in Sources */,
 				1A1645B3191B726C008C7C7F /* ConvertUTFWrapper.cpp in Sources */,
 				15B3708519EE414C00ABE682 /* Downloader.cpp in Sources */,
 				1ABA68AF1888D700007D1BB4 /* CCFontCharMap.cpp in Sources */,

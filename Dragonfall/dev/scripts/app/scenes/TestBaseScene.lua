@@ -31,19 +31,19 @@ function TestBaseScene:createEditBox()
     end
 	local editbox = cc.ui.UIInput.new({
         UIInputType = 1,
-        image = "SliderBarFixed.png",
+        image = "input_box.png",
         size = cc.size(417,51),
         listener = onEdit,
     })
     editbox:setPlaceHolder(string.format("最多可输入%d字符",140))
     editbox:setMaxLength(140)
     -- edit box 和 textview还未实现
-    editbox:setFont(app:getFontFilePath(),22)
+    editbox:setFont("DroidSansFallback",22)
     editbox:setFontColor(cc.c3b(0,0,0))
     editbox:setPlaceholderFontColor(cc.c3b(204,196,158))
     editbox:setReturnType(cc.KEYBOARD_RETURNTYPE_SEND)
     editbox:align(display.CENTER,display.cx, display.top - 70):addTo(self)
-    editbox:setEnabled(false)
+    -- editbox:setEnabled(false)
 end
 
 function TestBaseScene:createTestButton()

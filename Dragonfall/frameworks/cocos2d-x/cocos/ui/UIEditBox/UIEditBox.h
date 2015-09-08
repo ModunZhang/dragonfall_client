@@ -45,21 +45,18 @@ namespace ui {
     /**
      *@brief Editbox delgate class.
      * It's useful when you want to do some customization duing Editbox input event
+     *
+     * @js NA
+     * @lua NA
      */
     class CC_GUI_DLL EditBoxDelegate
     {
     public:
-        /**
-         * @js NA
-         * @lua NA
-         */
         virtual ~EditBoxDelegate() {};
             
         /**
          * This method is called when an edit box gains focus after keyboard is shown.
          * @param editBox The edit box object that generated the event.
-         * @js NA
-         * @lua NA
          */
         virtual void editBoxEditingDidBegin(EditBox* editBox) {};
             
@@ -67,8 +64,6 @@ namespace ui {
         /**
          * This method is called when an edit box loses focus after keyboard is hidden.
          * @param editBox The edit box object that generated the event.
-         * @js NA
-         * @lua NA
          */
         virtual void editBoxEditingDidEnd(EditBox* editBox) {};
             
@@ -76,16 +71,12 @@ namespace ui {
          * This method is called when the edit box text was changed.
          * @param editBox The edit box object that generated the event.
          * @param text The new text.
-         * @js NA
-         * @lua NA
          */
         virtual void editBoxTextChanged(EditBox* editBox, const std::string& text) {};
             
         /**
          * This method is called when the return button was pressed or the outside area of keyboard was touched.
          * @param editBox The edit box object that generated the event.
-         * @js NA
-         * @lua NA
          */
         virtual void editBoxReturn(EditBox* editBox) = 0;
             
@@ -158,7 +149,7 @@ namespace ui {
              */
             SINGLE_LINE,
             /**
-             * by dannyhe,this is for ASCII default keyboard.
+             * The user is allowed to enter english,dannyhe
              */
             ASCII_CAPABLE,
         };
@@ -221,6 +212,7 @@ namespace ui {
         /**
          * Constructor.
          * @js ctor
+         * @lua new
          */
         EditBox(void);
             
@@ -320,14 +312,14 @@ namespace ui {
         const char* getText(void);
             
         /**
-         * Set the font.
+         * Set the font. Only system font is allowed.
          * @param pFontName The font name.
          * @param fontSize The font size.
          */
         void setFont(const char* pFontName, int fontSize);
             
         /**
-         * Set the font name.
+         * Set the font name. Only system font is allowed.
          * @param pFontName The font name.
          */
         void setFontName(const char* pFontName);
@@ -345,14 +337,14 @@ namespace ui {
         void setFontColor(const Color4B& color);
             
         /**
-         * Set the placeholder's font.
+         * Set the placeholder's font. Only system font is allowed.
          * @param pFontName The font name.
          * @param fontSize The font size.
          */
         void setPlaceholderFont(const char* pFontName, int fontSize);
             
         /**
-         * Set the placeholder's font name.
+         * Set the placeholder's font name. only system font is allowed.
          * @param pFontName The font name.
          */
         void setPlaceholderFontName(const char* pFontName);
@@ -435,7 +427,7 @@ namespace ui {
          * @js NA
          * @lua NA
          */
-        virtual void visit(Renderer *renderer, const Mat4 &parentTransform, uint32_t parentFlags) override;
+        virtual void draw(Renderer *renderer, const Mat4 &parentTransform, uint32_t parentFlags) override;
         /**
          * @js NA
          * @lua NA
@@ -472,7 +464,7 @@ namespace ui {
          * @lua NA
          */
         void touchDownAction(Ref *sender, TouchEventType controlEvent);
-        
+            
     protected:
         virtual void adaptRenderers() override;
 
