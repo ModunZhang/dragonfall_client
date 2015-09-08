@@ -102,7 +102,7 @@ void AppDelegate::applicationDidEnterBackground()
 // this function will be called when the app is active again
 void AppDelegate::applicationWillEnterForeground()
 {
-    Director::getInstance()->startAnimation();
+    Director::getInstance()->resume();
     Director::getInstance()->startAnimation();
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
