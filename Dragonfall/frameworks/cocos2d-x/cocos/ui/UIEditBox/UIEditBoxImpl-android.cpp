@@ -35,7 +35,7 @@
 #include "math/Vec2.h"
 #include "ui/UIHelper.h"
 #include "base/CCDirector.h"
-
+#include "platform/CCFileUtils.h" //dannyhe
 NS_CC_BEGIN
 
 
@@ -45,6 +45,8 @@ namespace ui {
 static void editBoxEditingDidBegin(int index);
 static void editBoxEditingDidChanged(int index, const std::string& text);
 static void editBoxEditingDidEnd(int index, const std::string& text);
+//dannyhe
+static void editBoxEditingDidReturn(int index);
 extern "C"{
     JNIEXPORT void JNICALL Java_org_cocos2dx_lib_Cocos2dxEditBoxHelper_editBoxEditingDidBegin(JNIEnv *env, jclass, jint index) {
         editBoxEditingDidBegin(index);
@@ -58,6 +60,10 @@ extern "C"{
     JNIEXPORT void JNICALL Java_org_cocos2dx_lib_Cocos2dxEditBoxHelper_editBoxEditingDidEnd(JNIEnv *env, jclass, jint index, jstring text) {
         std::string textString = StringUtils::getStringUTFCharsJNI(env,text);
         editBoxEditingDidEnd(index, textString);
+    }
+    //dannyhe
+    JNIEXPORT void JNICALL Java_org_cocos2dx_lib_Cocos2dxEditBoxHelper_editBoxEditingDidReturn(JNIEnv *env, jclass, jint index) {
+        editBoxEditingDidReturn(index);
     }
 }
 
@@ -107,7 +113,19 @@ void EditBoxImplAndroid::setNativeFont(const char* pFontName, int fontSize)
 {
     auto director = cocos2d::Director::getInstance();
     auto glView = director->getOpenGLView();
-    setFontEditBoxJNI(_editBoxIndex, pFontName, fontSize * glView->getScaleX());
+    auto fileUtils = FileUtils::getInstance();
+    if(fileUtils->isFileExist(pFontName))
+    {   
+        std::string reallyFontName("");
+        reallyFontName = fileUtils->fullPathForFilename(pFontName);
+        LOGD("get font path:%s",reallyFontName.c_str());
+        setFontEditBoxJNI(_editBoxIndex, reallyFontName.c_str(), fontSize * glView->getScaleX());
+    }
+    else
+    {
+        LOGD("get font path failed");
+        setFontEditBoxJNI(_editBoxIndex, pFontName, fontSize * glView->getScaleX());
+    }
 }
 
 void EditBoxImplAndroid::setNativeFontColor(const Color4B& color)
@@ -208,6 +226,15 @@ void editBoxEditingDidEnd(int index, const std::string& text)
     if (it != s_allEditBoxes.end())
     {
         s_allEditBoxes[index]->editBoxEditingDidEnd(text);
+    }
+}
+//dannyhe
+void editBoxEditingDidReturn(int index)
+{
+    auto it = s_allEditBoxes.find(index);
+    if (it != s_allEditBoxes.end())
+    {
+        s_allEditBoxes[index]->editBoxEditingDidReturn();
     }
 }
 

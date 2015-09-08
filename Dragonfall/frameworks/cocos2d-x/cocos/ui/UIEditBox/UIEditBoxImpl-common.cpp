@@ -342,7 +342,7 @@ void EditBoxImplCommon::editBoxEditingDidEnd(const std::string& text)
         cocos2d::ScriptEvent event(cocos2d::kCommonEvent, (void *)&data);
         cocos2d::ScriptEngineManager::getInstance()->getScriptEngine()->sendEvent(&event);
 //dannyhe ios not
-#if CC_TARGET_PLATFORM != CC_PLATFORM_IOS
+#if CC_TARGET_PLATFORM != CC_PLATFORM_IOS && CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID
         memset(data.eventName, 0, sizeof(data.eventName));
         strncpy(data.eventName, "return", sizeof(data.eventName));
         event.data = (void *)&data;

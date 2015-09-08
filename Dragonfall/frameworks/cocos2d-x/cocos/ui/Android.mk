@@ -35,6 +35,7 @@ UIWebView.cpp \
 UIWebViewImpl-android.cpp \
 UIEditBox/UIEditBox.cpp \
 UIEditBox/UIEditBoxImpl-android.cpp \
+UIEditBox/UIEditBoxImpl-common.cpp \
 UILayoutComponent.cpp \
 shaders/UIShaders.cpp \
 

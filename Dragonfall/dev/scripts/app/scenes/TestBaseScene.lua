@@ -38,7 +38,11 @@ function TestBaseScene:createEditBox()
     editbox:setPlaceHolder(string.format("最多可输入%d字符",140))
     editbox:setMaxLength(140)
     -- edit box 和 textview还未实现
-    editbox:setFont("DroidSansFallback",22)
+    local fontArg = "DroidSansFallback"
+    if device.platform == 'android' then
+        fontArg = app:getFontFilePath()
+    end
+    editbox:setFont(fontArg,22)
     editbox:setFontColor(cc.c3b(0,0,0))
     editbox:setPlaceholderFontColor(cc.c3b(204,196,158))
     editbox:setReturnType(cc.KEYBOARD_RETURNTYPE_SEND)
