@@ -3132,6 +3132,8 @@
 		3F4A20301B9E858F00B4BE92 /* UIEditBoxImpl-winrt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "UIEditBoxImpl-winrt.cpp"; sourceTree = "<group>"; };
 		3F4A20311B9E858F00B4BE92 /* UIEditBoxImpl-winrt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIEditBoxImpl-winrt.h"; sourceTree = "<group>"; };
 		3F4A20321B9E858F00B4BE92 /* UIEditBoxImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIEditBoxImpl.h; sourceTree = "<group>"; };
+		3F5B3CD91B9FDAEA0021BDA2 /* UITextViewImpl-android.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "UITextViewImpl-android.cpp"; sourceTree = "<group>"; };
+		3F5B3CDA1B9FDAEA0021BDA2 /* UITextViewImpl-android.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITextViewImpl-android.h"; sourceTree = "<group>"; };
 		3F8700921B9F072200DDD4B3 /* UITextView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UITextView.cpp; sourceTree = "<group>"; };
 		3F8700931B9F072200DDD4B3 /* UITextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITextView.h; sourceTree = "<group>"; };
 		3F8700981B9F0B1100DDD4B3 /* UITextViewImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITextViewImpl.h; sourceTree = "<group>"; };
@@ -5446,6 +5448,8 @@
 				3F8700A11B9F15D400DDD4B3 /* UITextViewImpl-stub.cpp */,
 				3F8700A41B9F165A00DDD4B3 /* UITextViewImpl-ios.mm */,
 				3F8700A51B9F165A00DDD4B3 /* UITextViewImpl-ios.h */,
+				3F5B3CD91B9FDAEA0021BDA2 /* UITextViewImpl-android.cpp */,
+				3F5B3CDA1B9FDAEA0021BDA2 /* UITextViewImpl-android.h */,
 			);
 			path = UITextView;
 			sourceTree = "<group>";

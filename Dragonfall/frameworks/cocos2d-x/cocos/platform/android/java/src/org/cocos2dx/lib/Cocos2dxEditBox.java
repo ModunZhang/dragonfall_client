@@ -146,7 +146,15 @@ public class Cocos2dxEditBox extends EditText {
     }
 
     public void setMultilineEnabled(boolean flag){
+        this.setGravity(Gravity.TOP | Gravity.LEFT);
+        this.setPadding(10, 10, 10, 10);
         this.mInputModeContraints |= InputType.TYPE_TEXT_FLAG_MULTI_LINE;
+        this.setInputType(this.mInputModeContraints | this.mInputFlagConstraints);
+    }
+
+    //dannyhe
+    public boolean isMultilineEnabled(){
+        return (this.getInputType() & InputType.TYPE_TEXT_FLAG_MULTI_LINE) == InputType.TYPE_TEXT_FLAG_MULTI_LINE;
     }
 
     public void setReturnType(int returnType) {
@@ -202,7 +210,6 @@ public class Cocos2dxEditBox extends EditText {
         }
 
         this.setInputType(this.mInputModeContraints | this.mInputFlagConstraints);
-
     }
 
     @Override

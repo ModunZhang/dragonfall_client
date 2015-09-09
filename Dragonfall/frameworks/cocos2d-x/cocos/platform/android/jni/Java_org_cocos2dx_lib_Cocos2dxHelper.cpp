@@ -527,3 +527,14 @@ void setPlaceHolderTextColorEditBoxJNI(int index, int red, int green, int blue, 
         t.env->DeleteLocalRef(t.classID);
     }
 }
+
+void setMultilineEnabledJNI(int index,bool flag)
+{
+    JniMethodInfo t;
+
+    if (JniHelper::getStaticMethodInfo(t, EDITBOX_CLASS_NAME, "setMultilineEnabled", "(IZ)V")) {
+        t.env->CallStaticVoidMethod(t.classID, t.methodID,index, flag);
+
+        t.env->DeleteLocalRef(t.classID);
+    }
+}

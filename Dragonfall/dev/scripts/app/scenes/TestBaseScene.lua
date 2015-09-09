@@ -36,8 +36,8 @@ function TestBaseScene:createEditBox()
         size = cc.size(417,51),
         listener = onEdit,
     })
-    editbox:setPlaceHolder(string.format("最多可输入%d字符",140))
     editbox:setMaxLength(140)
+    editbox:setPlaceHolder(string.format("最多可输入%d字符",140))
     -- edit box 和 textview还未实现
     local fontArg = "DroidSansFallback"
     if device.platform == 'android' then
@@ -185,11 +185,18 @@ end
 function TestBaseScene:UITextViewTest()
     local textView = ccui.UITextView:create(cc.size(549,379),display.newScale9Sprite("YellowBlock.png"))
         textView:align(display.CENTER_BOTTOM,display.cx, display.bottom + 10):addTo(self)
-        textView:setReturnType(cc.KEYBOARD_RETURNTYPE_SEND)    
-        textView:setFont("DroidSansFallback", 24)
+        textView:setReturnType(cc.KEYBOARD_RETURNTYPE_SEND)  
+         local fontArg = "DroidSansFallback"
+        if device.platform == 'android' then
+            fontArg = app:getFontFilePath()
+        end  
+        textView:setFont(fontArg, 24)
         textView:registerScriptTextViewHandler(function(event,textView)
             dump(event,"-- UITextView --")
         end)
+        textView:setPlaceHolder(string.format("最多可输入%d字符",140))
+        textView:setFontColor(cc.c3b(0,0,0))
+        textView:setPlaceholderFontColor(cc.c3b(204,196,158))
 end
 
 

@@ -74,6 +74,28 @@ public class Cocos2dxEditBoxHelper {
         editBoxEditingDidReturn(index);
     }
 
+    /******TextView******/
+
+    private static native void textViewEditingDidBegin(int index);
+    public static void __textViewEditingDidBegin(int index){
+        textViewEditingDidBegin(index);
+    }
+
+    private static native void textViewEditingChanged(int index, String text);
+    public static void __textViewEditingChanged(int index, String text){
+        textViewEditingChanged(index, text);
+    }
+
+    private static native void textViewEditingDidEnd(int index, String text);
+    public static void __textViewEditingDidEnd(int index, String text){
+        textViewEditingDidEnd(index, text);
+    }
+    //dannyhe
+    private static native void textViewEditingDidReturn(int index);
+    public static void __textViewEditingDidReturn(int index){
+        textViewEditingDidReturn(index);
+    }
+
 
 
     public Cocos2dxEditBoxHelper(ResizeLayout layout) {
@@ -147,7 +169,11 @@ public class Cocos2dxEditBoxHelper {
                         mCocos2dxActivity.runOnGLThread(new Runnable() {
                             @Override
                             public void run() {
-                                Cocos2dxEditBoxHelper.__editBoxEditingChanged(index, s.toString());
+                                if(!editBox.isMultilineEnabled()) {
+                                    Cocos2dxEditBoxHelper.__editBoxEditingChanged(index, s.toString());
+                                } else {
+                                    Cocos2dxEditBoxHelper.__textViewEditingChanged(index, s.toString());
+                                }
                             }
                         });
                     }
@@ -167,7 +193,11 @@ public class Cocos2dxEditBoxHelper {
                             mCocos2dxActivity.runOnGLThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Cocos2dxEditBoxHelper.__editBoxEditingDidBegin(index);
+                                    if(!editBox.isMultilineEnabled()) {
+                                        Cocos2dxEditBoxHelper.__editBoxEditingDidBegin(index);
+                                    } else {
+                                        Cocos2dxEditBoxHelper.__textViewEditingDidBegin(index);
+                                    }
                                 }
                             });
                             editBox.setSelection(editBox.getText().length());
@@ -179,7 +209,11 @@ public class Cocos2dxEditBoxHelper {
                             mCocos2dxActivity.runOnGLThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Cocos2dxEditBoxHelper.__editBoxEditingDidEnd(index, editBox.getText().toString());
+                                    if(!editBox.isMultilineEnabled()) {
+                                        Cocos2dxEditBoxHelper.__editBoxEditingDidEnd(index, editBox.getText().toString());
+                                    }else {
+                                        Cocos2dxEditBoxHelper.__textViewEditingDidEnd(index, editBox.getText().toString());
+                                    }
                                 }
                             });
                             mFrameLayout.setEnableForceDoLayout(false);
@@ -193,13 +227,15 @@ public class Cocos2dxEditBoxHelper {
                         // If the event is a key-down event on the "enter" button
                         if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                                 (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                            //dannyhe 
-                            Cocos2dxEditBoxHelper.__editBoxEditingDidReturn(index);
                             //if editbox doesn't support multiline, just hide the keyboard
-                            if ((editBox.getInputType() & InputType.TYPE_TEXT_FLAG_MULTI_LINE) != InputType.TYPE_TEXT_FLAG_MULTI_LINE) {
+                            //dannyhe
+                            if (!editBox.isMultilineEnabled()) {
+                                Cocos2dxEditBoxHelper.__editBoxEditingDidReturn(index);
                                 Cocos2dxEditBoxHelper.closeKeyboard(index);
                                 mCocos2dxActivity.getGLSurfaceView().requestFocus();
                                 return true;
+                            } else {
+                                Cocos2dxEditBoxHelper.__textViewEditingDidReturn(index);
                             }
                         }
                         return false;
@@ -417,5 +453,17 @@ public class Cocos2dxEditBoxHelper {
             imm.hideSoftInputFromWindow(editBox.getWindowToken(), 0);
             mCocos2dxActivity.getGLSurfaceView().setSoftKeyboardShown(false);
         }
+    }
+    //dannyhe
+    public static void setMultilineEnabled(final int index,final boolean flag) {
+        mCocos2dxActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Cocos2dxEditBox editBox = mEditBoxArray.get(index);
+                if (editBox != null) {
+                    editBox.setMultilineEnabled(flag);
+                }
+            }
+        });
     }
 }
