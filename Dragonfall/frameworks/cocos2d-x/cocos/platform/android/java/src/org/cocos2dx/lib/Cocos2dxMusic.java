@@ -32,6 +32,7 @@ import com.chukong.cocosplay.client.CocosPlayClient;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.util.Log;
 
 public class Cocos2dxMusic {
@@ -63,7 +64,12 @@ public class Cocos2dxMusic {
 
         this.initData();
     }
-
+    
+    // ===========================================================
+    // dannyhe native methods
+    // ===========================================================
+    
+    private native void onBackgroundMusicCompletion();
     // ===========================================================
     // Getter & Setter
     // ===========================================================
@@ -126,6 +132,18 @@ public class Cocos2dxMusic {
                     mBackgroundMediaPlayer.start();
                 }
                 mBackgroundMediaPlayer.setLooping(isLoop);
+                 //dannyhe
+                mBackgroundMediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+                    public void onCompletion(MediaPlayer mp) {
+                        Log.e(Cocos2dxMusic.TAG, "playBackgroundMusic: onCompletion-->");
+                        Cocos2dxHelper.runOnGLThread(new Runnable() {
+							@Override
+							public void run() {
+								onBackgroundMusicCompletion();
+							}
+						});
+                    }
+                });
                 mPaused = false;
                 mIsLoop = isLoop;
             } catch (final Exception e) {

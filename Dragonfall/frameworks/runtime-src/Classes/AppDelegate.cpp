@@ -380,5 +380,10 @@ extern "C"
             Director::getInstance()->getEventDispatcher()->dispatchCustomEvent(eventName);
         }
     }
+    //
+    void Java_org_cocos2dx_lib_Cocos2dxMusic_onBackgroundMusicCompletion(JNIEnv *env, jobject thisz)
+    {
+        Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("APP_BACKGROUND_MUSIC_COMPLETION");
+    }
 }
 #endif
