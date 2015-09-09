@@ -842,6 +842,113 @@ static void extendEditBox(lua_State* L)
     lua_pop(L, 1);
 }
 
+static int lua_cocos2dx_ui_UITextView_registerScriptTextViewHandler(lua_State* L)
+{
+    if (NULL == L)
+        return 0;
+    
+    int argc = 0;
+    UITextView* self = nullptr;
+    
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(L,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+    
+    self = static_cast<UITextView*>(tolua_tousertype(L,1,0));
+    
+#if COCOS2D_DEBUG >= 1
+    if (nullptr == self) {
+        tolua_error(L,"invalid 'self' in function 'lua_cocos2dx_ui_UITextView_registerScriptTextViewHandler'\n", NULL);
+        return 0;
+    }
+#endif
+    
+    argc = lua_gettop(L) - 1;
+    
+    if (1 == argc)
+    {
+#if COCOS2D_DEBUG >= 1
+        if (!toluafix_isfunction(L,2,"LUA_FUNCTION",0,&tolua_err))
+        {
+            goto tolua_lerror;
+        }
+#endif
+        LUA_FUNCTION handler = (  toluafix_ref_function(L,2,0));
+        self->registerScriptTextViewHandler(handler);
+        return 0;
+    }
+    
+    luaL_error(L, "%s function of UITextView  has wrong number of arguments: %d, was expecting %d\n", "ccui.UITextView:registerScriptTextViewHandler", argc, 1);
+    return 0;
+    
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(L,"#ferror in function 'lua_cocos2dx_ui_UITextView_registerScriptTextViewHandler'.",&tolua_err);
+    return 0;
+#endif
+    
+}
+
+static int lua_cocos2dx_ui_UITextView_unregisterScriptTextViewHandler(lua_State* L)
+{
+    
+    if (NULL == L)
+        return 0;
+    
+    int argc = 0;
+    UITextView* self = nullptr;
+    
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (!tolua_isusertype(L,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+    
+    self = static_cast<UITextView*>(tolua_tousertype(L,1,0));
+    
+#if COCOS2D_DEBUG >= 1
+    if (nullptr == self) {
+        tolua_error(L,"invalid 'self' in function 'lua_cocos2dx_ui_UITextView_unregisterScriptTextViewHandler'\n", NULL);
+        return 0;
+    }
+#endif
+    
+    argc = lua_gettop(L) - 1;
+    
+    if (0 == argc)
+    {
+        self->unregisterScriptTextViewHandler();
+        return 0;
+    }
+    
+    luaL_error(L, "%s function of UITextView  has wrong number of arguments: %d, was expecting %d\n", "ccui.UITextView:unregisterScriptTextViewHandlerr", argc, 0);
+    return 0;
+    
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(L,"#ferror in function 'lua_cocos2dx_ui_UITextView_unregisterScriptTextViewHandler'.",&tolua_err);
+    return 0;
+#endif
+}
+
+static void extendUITextView(lua_State* L)
+{
+    lua_pushstring(L, "ccui.UITextView");
+    lua_rawget(L, LUA_REGISTRYINDEX);
+    if (lua_istable(L,-1))
+    {
+        lua_pushstring(L,"registerScriptTextViewHandler");
+        lua_pushcfunction(L,lua_cocos2dx_ui_UITextView_registerScriptTextViewHandler );
+        lua_rawset(L,-3);
+        lua_pushstring(L,"unregisterScriptTextViewHandler");
+        lua_pushcfunction(L,lua_cocos2dx_ui_UITextView_unregisterScriptTextViewHandler );
+        lua_rawset(L,-3);
+    }
+    lua_pop(L, 1);
+}
+
+
+
 int register_all_cocos2dx_ui_manual(lua_State* L)
 {
     if (nullptr == L)
@@ -855,6 +962,7 @@ int register_all_cocos2dx_ui_manual(lua_State* L)
     extendListView(L);
     extendLayoutParameter(L);
     extendEditBox(L);
+    extendUITextView(L);
 
     return 0;
 }

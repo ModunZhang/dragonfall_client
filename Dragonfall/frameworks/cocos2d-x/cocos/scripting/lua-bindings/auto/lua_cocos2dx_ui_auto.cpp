@@ -26159,6 +26159,1655 @@ int lua_register_cocos2dx_ui_LayoutComponent(lua_State* tolua_S)
     g_typeCast["LayoutComponent"] = "ccui.LayoutComponent";
     return 1;
 }
+
+int lua_cocos2dx_ui_UITextView_registerScriptTextViewHandler(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::UITextView* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ui::UITextView*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_UITextView_registerScriptTextViewHandler'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        int arg0;
+
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "ccui.UITextView:registerScriptTextViewHandler");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_UITextView_registerScriptTextViewHandler'", nullptr);
+            return 0;
+        }
+        cobj->registerScriptTextViewHandler(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.UITextView:registerScriptTextViewHandler",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_UITextView_registerScriptTextViewHandler'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_UITextView_keyboardDidShow(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::UITextView* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ui::UITextView*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_UITextView_keyboardDidShow'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        cocos2d::IMEKeyboardNotificationInfo arg0;
+
+        #pragma warning NO CONVERSION TO NATIVE FOR IMEKeyboardNotificationInfo
+        ok = false;
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_UITextView_keyboardDidShow'", nullptr);
+            return 0;
+        }
+        cobj->keyboardDidShow(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.UITextView:keyboardDidShow",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_UITextView_keyboardDidShow'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_UITextView_unregisterScriptTextViewHandler(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::UITextView* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ui::UITextView*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_UITextView_unregisterScriptTextViewHandler'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_UITextView_unregisterScriptTextViewHandler'", nullptr);
+            return 0;
+        }
+        cobj->unregisterScriptTextViewHandler();
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.UITextView:unregisterScriptTextViewHandler",argc, 0);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_UITextView_unregisterScriptTextViewHandler'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_UITextView_getText(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::UITextView* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ui::UITextView*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_UITextView_getText'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_UITextView_getText'", nullptr);
+            return 0;
+        }
+        const char* ret = cobj->getText();
+        tolua_pushstring(tolua_S,(const char*)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.UITextView:getText",argc, 0);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_UITextView_getText'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_UITextView_keyboardDidHide(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::UITextView* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ui::UITextView*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_UITextView_keyboardDidHide'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        cocos2d::IMEKeyboardNotificationInfo arg0;
+
+        #pragma warning NO CONVERSION TO NATIVE FOR IMEKeyboardNotificationInfo
+        ok = false;
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_UITextView_keyboardDidHide'", nullptr);
+            return 0;
+        }
+        cobj->keyboardDidHide(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.UITextView:keyboardDidHide",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_UITextView_keyboardDidHide'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_UITextView_setPlaceholderFontName(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::UITextView* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ui::UITextView*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_UITextView_setPlaceholderFontName'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        const char* arg0;
+
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "ccui.UITextView:setPlaceholderFontName"); arg0 = arg0_tmp.c_str();
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_UITextView_setPlaceholderFontName'", nullptr);
+            return 0;
+        }
+        cobj->setPlaceholderFontName(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.UITextView:setPlaceholderFontName",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_UITextView_setPlaceholderFontName'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_UITextView_getPlaceHolder(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::UITextView* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ui::UITextView*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_UITextView_getPlaceHolder'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_UITextView_getPlaceHolder'", nullptr);
+            return 0;
+        }
+        const char* ret = cobj->getPlaceHolder();
+        tolua_pushstring(tolua_S,(const char*)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.UITextView:getPlaceHolder",argc, 0);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_UITextView_getPlaceHolder'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_UITextView_setFontName(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::UITextView* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ui::UITextView*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_UITextView_setFontName'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        const char* arg0;
+
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "ccui.UITextView:setFontName"); arg0 = arg0_tmp.c_str();
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_UITextView_setFontName'", nullptr);
+            return 0;
+        }
+        cobj->setFontName(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.UITextView:setFontName",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_UITextView_setFontName'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_UITextView_setPlaceholderFontSize(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::UITextView* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ui::UITextView*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_UITextView_setPlaceholderFontSize'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        int arg0;
+
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "ccui.UITextView:setPlaceholderFontSize");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_UITextView_setPlaceholderFontSize'", nullptr);
+            return 0;
+        }
+        cobj->setPlaceholderFontSize(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.UITextView:setPlaceholderFontSize",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_UITextView_setPlaceholderFontSize'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_UITextView_setInputMode(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::UITextView* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ui::UITextView*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_UITextView_setInputMode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        cocos2d::ui::EditBox::InputMode arg0;
+
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "ccui.UITextView:setInputMode");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_UITextView_setInputMode'", nullptr);
+            return 0;
+        }
+        cobj->setInputMode(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.UITextView:setInputMode",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_UITextView_setInputMode'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_UITextView_keyboardWillShow(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::UITextView* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ui::UITextView*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_UITextView_keyboardWillShow'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        cocos2d::IMEKeyboardNotificationInfo arg0;
+
+        #pragma warning NO CONVERSION TO NATIVE FOR IMEKeyboardNotificationInfo
+        ok = false;
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_UITextView_keyboardWillShow'", nullptr);
+            return 0;
+        }
+        cobj->keyboardWillShow(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.UITextView:keyboardWillShow",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_UITextView_keyboardWillShow'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_UITextView_setPlaceholderFontColor(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::UITextView* cobj = nullptr;
+    bool ok  = true;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (cocos2d::ui::UITextView*)tolua_tousertype(tolua_S,1,0);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj)
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_UITextView_setPlaceholderFontColor'", nullptr);
+        return 0;
+    }
+#endif
+    argc = lua_gettop(tolua_S)-1;
+    do{
+        if (argc == 1) {
+            cocos2d::Color4B arg0;
+            ok &=luaval_to_color4b(tolua_S, 2, &arg0, "ccui.UITextView:setPlaceholderFontColor");
+            //dannyhe check color4b argment?
+            lua_pushstring(tolua_S, "a");
+            lua_gettable(tolua_S,2);
+            ok &= !lua_isnil(tolua_S,-1);
+            lua_pop(tolua_S,1);
+            //end
+            if (!ok) { break; }
+            cobj->setPlaceholderFontColor(arg0);
+            lua_settop(tolua_S, 1);
+            return 1;
+        }
+    }while(0);
+    ok  = true;
+    do{
+        if (argc == 1) {
+            cocos2d::Color3B arg0;
+            ok &= luaval_to_color3b(tolua_S, 2, &arg0, "ccui.UITextView:setPlaceholderFontColor");
+
+            if (!ok) { break; }
+            cobj->setPlaceholderFontColor(arg0);
+            lua_settop(tolua_S, 1);
+            return 1;
+        }
+    }while(0);
+    ok  = true;
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n",  "ccui.UITextView:setPlaceholderFontColor",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_UITextView_setPlaceholderFontColor'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_UITextView_setFontColor(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::UITextView* cobj = nullptr;
+    bool ok  = true;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (cocos2d::ui::UITextView*)tolua_tousertype(tolua_S,1,0);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj)
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_UITextView_setFontColor'", nullptr);
+        return 0;
+    }
+#endif
+    argc = lua_gettop(tolua_S)-1;
+    do{
+        if (argc == 1) {
+            cocos2d::Color4B arg0;
+            ok &=luaval_to_color4b(tolua_S, 2, &arg0, "ccui.UITextView:setFontColor");
+            //dannyhe check color4b argment?
+            lua_pushstring(tolua_S, "a");
+            lua_gettable(tolua_S,2);
+            ok &= !lua_isnil(tolua_S,-1);
+            lua_pop(tolua_S,1);
+            //end
+            if (!ok) { break; }
+            cobj->setFontColor(arg0);
+            lua_settop(tolua_S, 1);
+            return 1;
+        }
+    }while(0);
+    ok  = true;
+    do{
+        if (argc == 1) {
+            cocos2d::Color3B arg0;
+            ok &= luaval_to_color3b(tolua_S, 2, &arg0, "ccui.UITextView:setFontColor");
+
+            if (!ok) { break; }
+            cobj->setFontColor(arg0);
+            lua_settop(tolua_S, 1);
+            return 1;
+        }
+    }while(0);
+    ok  = true;
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n",  "ccui.UITextView:setFontColor",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_UITextView_setFontColor'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_UITextView_setMaxLength(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::UITextView* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ui::UITextView*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_UITextView_setMaxLength'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        int arg0;
+
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "ccui.UITextView:setMaxLength");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_UITextView_setMaxLength'", nullptr);
+            return 0;
+        }
+        cobj->setMaxLength(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.UITextView:setMaxLength",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_UITextView_setMaxLength'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_UITextView_keyboardWillHide(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::UITextView* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ui::UITextView*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_UITextView_keyboardWillHide'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        cocos2d::IMEKeyboardNotificationInfo arg0;
+
+        #pragma warning NO CONVERSION TO NATIVE FOR IMEKeyboardNotificationInfo
+        ok = false;
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_UITextView_keyboardWillHide'", nullptr);
+            return 0;
+        }
+        cobj->keyboardWillHide(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.UITextView:keyboardWillHide",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_UITextView_keyboardWillHide'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_UITextView_touchDownAction(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::UITextView* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ui::UITextView*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_UITextView_touchDownAction'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 2) 
+    {
+        cocos2d::Ref* arg0;
+        cocos2d::ui::Widget::TouchEventType arg1;
+
+        ok &= luaval_to_object<cocos2d::Ref>(tolua_S, 2, "cc.Ref",&arg0);
+
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "ccui.UITextView:touchDownAction");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_UITextView_touchDownAction'", nullptr);
+            return 0;
+        }
+        cobj->touchDownAction(arg0, arg1);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.UITextView:touchDownAction",argc, 2);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_UITextView_touchDownAction'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_UITextView_getRectTrackedNode(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::UITextView* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ui::UITextView*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_UITextView_getRectTrackedNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_UITextView_getRectTrackedNode'", nullptr);
+            return 0;
+        }
+        cocos2d::Node* ret = cobj->getRectTrackedNode();
+        object_to_luaval<cocos2d::Node>(tolua_S, "cc.Node",(cocos2d::Node*)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.UITextView:getRectTrackedNode",argc, 0);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_UITextView_getRectTrackedNode'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_UITextView_setPlaceholderFont(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::UITextView* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ui::UITextView*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_UITextView_setPlaceholderFont'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 2) 
+    {
+        const char* arg0;
+        int arg1;
+
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "ccui.UITextView:setPlaceholderFont"); arg0 = arg0_tmp.c_str();
+
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "ccui.UITextView:setPlaceholderFont");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_UITextView_setPlaceholderFont'", nullptr);
+            return 0;
+        }
+        cobj->setPlaceholderFont(arg0, arg1);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.UITextView:setPlaceholderFont",argc, 2);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_UITextView_setPlaceholderFont'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_UITextView_getScriptTextViewHandler(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::UITextView* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ui::UITextView*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_UITextView_getScriptTextViewHandler'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_UITextView_getScriptTextViewHandler'", nullptr);
+            return 0;
+        }
+        int ret = cobj->getScriptTextViewHandler();
+        tolua_pushnumber(tolua_S,(lua_Number)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.UITextView:getScriptTextViewHandler",argc, 0);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_UITextView_getScriptTextViewHandler'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_UITextView_setFontSize(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::UITextView* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ui::UITextView*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_UITextView_setFontSize'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        int arg0;
+
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "ccui.UITextView:setFontSize");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_UITextView_setFontSize'", nullptr);
+            return 0;
+        }
+        cobj->setFontSize(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.UITextView:setFontSize",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_UITextView_setFontSize'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_UITextView_initWithSizeAndBackgroundSprite(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::UITextView* cobj = nullptr;
+    bool ok  = true;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+    cobj = (cocos2d::ui::UITextView*)tolua_tousertype(tolua_S,1,0);
+#if COCOS2D_DEBUG >= 1
+    if (!cobj)
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_UITextView_initWithSizeAndBackgroundSprite'", nullptr);
+        return 0;
+    }
+#endif
+    argc = lua_gettop(tolua_S)-1;
+    do{
+        if (argc == 2) {
+            cocos2d::Size arg0;
+            ok &= luaval_to_size(tolua_S, 2, &arg0, "ccui.UITextView:initWithSizeAndBackgroundSprite");
+
+            if (!ok) { break; }
+            cocos2d::ui::Scale9Sprite* arg1;
+            ok &= luaval_to_object<cocos2d::ui::Scale9Sprite>(tolua_S, 3, "ccui.Scale9Sprite",&arg1);
+
+            if (!ok) { break; }
+            bool ret = cobj->initWithSizeAndBackgroundSprite(arg0, arg1);
+            tolua_pushboolean(tolua_S,(bool)ret);
+            return 1;
+        }
+    }while(0);
+    ok  = true;
+    do{
+        if (argc == 2) {
+            cocos2d::Size arg0;
+            ok &= luaval_to_size(tolua_S, 2, &arg0, "ccui.UITextView:initWithSizeAndBackgroundSprite");
+
+            if (!ok) { break; }
+            std::string arg1;
+            ok &= luaval_to_std_string(tolua_S, 3,&arg1, "ccui.UITextView:initWithSizeAndBackgroundSprite");
+
+            if (!ok) { break; }
+            bool ret = cobj->initWithSizeAndBackgroundSprite(arg0, arg1);
+            tolua_pushboolean(tolua_S,(bool)ret);
+            return 1;
+        }
+    }while(0);
+    ok  = true;
+    do{
+        if (argc == 3) {
+            cocos2d::Size arg0;
+            ok &= luaval_to_size(tolua_S, 2, &arg0, "ccui.UITextView:initWithSizeAndBackgroundSprite");
+
+            if (!ok) { break; }
+            std::string arg1;
+            ok &= luaval_to_std_string(tolua_S, 3,&arg1, "ccui.UITextView:initWithSizeAndBackgroundSprite");
+
+            if (!ok) { break; }
+            cocos2d::ui::Widget::TextureResType arg2;
+            ok &= luaval_to_int32(tolua_S, 4,(int *)&arg2, "ccui.UITextView:initWithSizeAndBackgroundSprite");
+
+            if (!ok) { break; }
+            bool ret = cobj->initWithSizeAndBackgroundSprite(arg0, arg1, arg2);
+            tolua_pushboolean(tolua_S,(bool)ret);
+            return 1;
+        }
+    }while(0);
+    ok  = true;
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n",  "ccui.UITextView:initWithSizeAndBackgroundSprite",argc, 2);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_UITextView_initWithSizeAndBackgroundSprite'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_UITextView_setPlaceHolder(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::UITextView* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ui::UITextView*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_UITextView_setPlaceHolder'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        const char* arg0;
+
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "ccui.UITextView:setPlaceHolder"); arg0 = arg0_tmp.c_str();
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_UITextView_setPlaceHolder'", nullptr);
+            return 0;
+        }
+        cobj->setPlaceHolder(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.UITextView:setPlaceHolder",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_UITextView_setPlaceHolder'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_UITextView_setReturnType(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::UITextView* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ui::UITextView*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_UITextView_setReturnType'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        cocos2d::ui::EditBox::KeyboardReturnType arg0;
+
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "ccui.UITextView:setReturnType");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_UITextView_setReturnType'", nullptr);
+            return 0;
+        }
+        cobj->setReturnType(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.UITextView:setReturnType",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_UITextView_setReturnType'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_UITextView_setInputFlag(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::UITextView* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ui::UITextView*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_UITextView_setInputFlag'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        cocos2d::ui::EditBox::InputFlag arg0;
+
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "ccui.UITextView:setInputFlag");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_UITextView_setInputFlag'", nullptr);
+            return 0;
+        }
+        cobj->setInputFlag(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.UITextView:setInputFlag",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_UITextView_setInputFlag'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_UITextView_getMaxLength(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::UITextView* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ui::UITextView*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_UITextView_getMaxLength'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_UITextView_getMaxLength'", nullptr);
+            return 0;
+        }
+        int ret = cobj->getMaxLength();
+        tolua_pushnumber(tolua_S,(lua_Number)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.UITextView:getMaxLength",argc, 0);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_UITextView_getMaxLength'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_UITextView_setText(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::UITextView* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ui::UITextView*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_UITextView_setText'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        const char* arg0;
+
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "ccui.UITextView:setText"); arg0 = arg0_tmp.c_str();
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_UITextView_setText'", nullptr);
+            return 0;
+        }
+        cobj->setText(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.UITextView:setText",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_UITextView_setText'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_UITextView_setRectTrackedNode(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::UITextView* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ui::UITextView*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_UITextView_setRectTrackedNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        cocos2d::Node* arg0;
+
+        ok &= luaval_to_object<cocos2d::Node>(tolua_S, 2, "cc.Node",&arg0);
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_UITextView_setRectTrackedNode'", nullptr);
+            return 0;
+        }
+        cobj->setRectTrackedNode(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.UITextView:setRectTrackedNode",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_UITextView_setRectTrackedNode'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_UITextView_setFont(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::UITextView* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ui::UITextView*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_UITextView_setFont'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 2) 
+    {
+        const char* arg0;
+        int arg1;
+
+        std::string arg0_tmp; ok &= luaval_to_std_string(tolua_S, 2, &arg0_tmp, "ccui.UITextView:setFont"); arg0 = arg0_tmp.c_str();
+
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "ccui.UITextView:setFont");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_UITextView_setFont'", nullptr);
+            return 0;
+        }
+        cobj->setFont(arg0, arg1);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.UITextView:setFont",argc, 2);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_UITextView_setFont'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_UITextView_create(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"ccui.UITextView",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+
+    do 
+    {
+        if (argc == 2)
+        {
+            cocos2d::Size arg0;
+            ok &= luaval_to_size(tolua_S, 2, &arg0, "ccui.UITextView:create");
+            if (!ok) { break; }
+            std::string arg1;
+            ok &= luaval_to_std_string(tolua_S, 3,&arg1, "ccui.UITextView:create");
+            if (!ok) { break; }
+            cocos2d::ui::UITextView* ret = cocos2d::ui::UITextView::create(arg0, arg1);
+            object_to_luaval<cocos2d::ui::UITextView>(tolua_S, "ccui.UITextView",(cocos2d::ui::UITextView*)ret);
+            return 1;
+        }
+    } while (0);
+    ok  = true;
+    do 
+    {
+        if (argc == 3)
+        {
+            cocos2d::Size arg0;
+            ok &= luaval_to_size(tolua_S, 2, &arg0, "ccui.UITextView:create");
+            if (!ok) { break; }
+            std::string arg1;
+            ok &= luaval_to_std_string(tolua_S, 3,&arg1, "ccui.UITextView:create");
+            if (!ok) { break; }
+            cocos2d::ui::Widget::TextureResType arg2;
+            ok &= luaval_to_int32(tolua_S, 4,(int *)&arg2, "ccui.UITextView:create");
+            if (!ok) { break; }
+            cocos2d::ui::UITextView* ret = cocos2d::ui::UITextView::create(arg0, arg1, arg2);
+            object_to_luaval<cocos2d::ui::UITextView>(tolua_S, "ccui.UITextView",(cocos2d::ui::UITextView*)ret);
+            return 1;
+        }
+    } while (0);
+    ok  = true;
+    do 
+    {
+        if (argc == 2)
+        {
+            cocos2d::Size arg0;
+            ok &= luaval_to_size(tolua_S, 2, &arg0, "ccui.UITextView:create");
+            if (!ok) { break; }
+            cocos2d::ui::Scale9Sprite* arg1;
+            ok &= luaval_to_object<cocos2d::ui::Scale9Sprite>(tolua_S, 3, "ccui.Scale9Sprite",&arg1);
+            if (!ok) { break; }
+            cocos2d::ui::UITextView* ret = cocos2d::ui::UITextView::create(arg0, arg1);
+            object_to_luaval<cocos2d::ui::UITextView>(tolua_S, "ccui.UITextView",(cocos2d::ui::UITextView*)ret);
+            return 1;
+        }
+    } while (0);
+    ok  = true;
+    do 
+    {
+        if (argc == 3)
+        {
+            cocos2d::Size arg0;
+            ok &= luaval_to_size(tolua_S, 2, &arg0, "ccui.UITextView:create");
+            if (!ok) { break; }
+            cocos2d::ui::Scale9Sprite* arg1;
+            ok &= luaval_to_object<cocos2d::ui::Scale9Sprite>(tolua_S, 3, "ccui.Scale9Sprite",&arg1);
+            if (!ok) { break; }
+            cocos2d::ui::Scale9Sprite* arg2;
+            ok &= luaval_to_object<cocos2d::ui::Scale9Sprite>(tolua_S, 4, "ccui.Scale9Sprite",&arg2);
+            if (!ok) { break; }
+            cocos2d::ui::UITextView* ret = cocos2d::ui::UITextView::create(arg0, arg1, arg2);
+            object_to_luaval<cocos2d::ui::UITextView>(tolua_S, "ccui.UITextView",(cocos2d::ui::UITextView*)ret);
+            return 1;
+        }
+    } while (0);
+    ok  = true;
+    do 
+    {
+        if (argc == 4)
+        {
+            cocos2d::Size arg0;
+            ok &= luaval_to_size(tolua_S, 2, &arg0, "ccui.UITextView:create");
+            if (!ok) { break; }
+            cocos2d::ui::Scale9Sprite* arg1;
+            ok &= luaval_to_object<cocos2d::ui::Scale9Sprite>(tolua_S, 3, "ccui.Scale9Sprite",&arg1);
+            if (!ok) { break; }
+            cocos2d::ui::Scale9Sprite* arg2;
+            ok &= luaval_to_object<cocos2d::ui::Scale9Sprite>(tolua_S, 4, "ccui.Scale9Sprite",&arg2);
+            if (!ok) { break; }
+            cocos2d::ui::Scale9Sprite* arg3;
+            ok &= luaval_to_object<cocos2d::ui::Scale9Sprite>(tolua_S, 5, "ccui.Scale9Sprite",&arg3);
+            if (!ok) { break; }
+            cocos2d::ui::UITextView* ret = cocos2d::ui::UITextView::create(arg0, arg1, arg2, arg3);
+            object_to_luaval<cocos2d::ui::UITextView>(tolua_S, "ccui.UITextView",(cocos2d::ui::UITextView*)ret);
+            return 1;
+        }
+    } while (0);
+    ok  = true;
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d", "ccui.UITextView:create",argc, 2);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_UITextView_create'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_cocos2dx_ui_UITextView_constructor(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::UITextView* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_UITextView_constructor'", nullptr);
+            return 0;
+        }
+        cobj = new cocos2d::ui::UITextView();
+        cobj->autorelease();
+        int ID =  (int)cobj->_ID ;
+        int* luaID =  &cobj->_luaID ;
+        toluafix_pushusertype_ccobject(tolua_S, ID, luaID, (void*)cobj,"ccui.UITextView");
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.UITextView:UITextView",argc, 0);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_UITextView_constructor'.",&tolua_err);
+#endif
+
+    return 0;
+}
+
+static int lua_cocos2dx_ui_UITextView_finalize(lua_State* tolua_S)
+{
+    printf("luabindings: finalizing LUA object (UITextView)");
+    return 0;
+}
+
+int lua_register_cocos2dx_ui_UITextView(lua_State* tolua_S)
+{
+    tolua_usertype(tolua_S,"ccui.UITextView");
+    tolua_cclass(tolua_S,"UITextView","ccui.UITextView","ccui.Widget",nullptr);
+
+    tolua_beginmodule(tolua_S,"UITextView");
+        tolua_function(tolua_S,"new",lua_cocos2dx_ui_UITextView_constructor);
+        tolua_function(tolua_S,"registerScriptTextViewHandler",lua_cocos2dx_ui_UITextView_registerScriptTextViewHandler);
+        tolua_function(tolua_S,"keyboardDidShow",lua_cocos2dx_ui_UITextView_keyboardDidShow);
+        tolua_function(tolua_S,"unregisterScriptTextViewHandler",lua_cocos2dx_ui_UITextView_unregisterScriptTextViewHandler);
+        tolua_function(tolua_S,"getText",lua_cocos2dx_ui_UITextView_getText);
+        tolua_function(tolua_S,"keyboardDidHide",lua_cocos2dx_ui_UITextView_keyboardDidHide);
+        tolua_function(tolua_S,"setPlaceholderFontName",lua_cocos2dx_ui_UITextView_setPlaceholderFontName);
+        tolua_function(tolua_S,"getPlaceHolder",lua_cocos2dx_ui_UITextView_getPlaceHolder);
+        tolua_function(tolua_S,"setFontName",lua_cocos2dx_ui_UITextView_setFontName);
+        tolua_function(tolua_S,"setPlaceholderFontSize",lua_cocos2dx_ui_UITextView_setPlaceholderFontSize);
+        tolua_function(tolua_S,"setInputMode",lua_cocos2dx_ui_UITextView_setInputMode);
+        tolua_function(tolua_S,"keyboardWillShow",lua_cocos2dx_ui_UITextView_keyboardWillShow);
+        tolua_function(tolua_S,"setPlaceholderFontColor",lua_cocos2dx_ui_UITextView_setPlaceholderFontColor);
+        tolua_function(tolua_S,"setFontColor",lua_cocos2dx_ui_UITextView_setFontColor);
+        tolua_function(tolua_S,"setMaxLength",lua_cocos2dx_ui_UITextView_setMaxLength);
+        tolua_function(tolua_S,"keyboardWillHide",lua_cocos2dx_ui_UITextView_keyboardWillHide);
+        tolua_function(tolua_S,"touchDownAction",lua_cocos2dx_ui_UITextView_touchDownAction);
+        tolua_function(tolua_S,"getRectTrackedNode",lua_cocos2dx_ui_UITextView_getRectTrackedNode);
+        tolua_function(tolua_S,"setPlaceholderFont",lua_cocos2dx_ui_UITextView_setPlaceholderFont);
+        tolua_function(tolua_S,"getScriptTextViewHandler",lua_cocos2dx_ui_UITextView_getScriptTextViewHandler);
+        tolua_function(tolua_S,"setFontSize",lua_cocos2dx_ui_UITextView_setFontSize);
+        tolua_function(tolua_S,"initWithSizeAndBackgroundSprite",lua_cocos2dx_ui_UITextView_initWithSizeAndBackgroundSprite);
+        tolua_function(tolua_S,"setPlaceHolder",lua_cocos2dx_ui_UITextView_setPlaceHolder);
+        tolua_function(tolua_S,"setReturnType",lua_cocos2dx_ui_UITextView_setReturnType);
+        tolua_function(tolua_S,"setInputFlag",lua_cocos2dx_ui_UITextView_setInputFlag);
+        tolua_function(tolua_S,"getMaxLength",lua_cocos2dx_ui_UITextView_getMaxLength);
+        tolua_function(tolua_S,"setText",lua_cocos2dx_ui_UITextView_setText);
+        tolua_function(tolua_S,"setRectTrackedNode",lua_cocos2dx_ui_UITextView_setRectTrackedNode);
+        tolua_function(tolua_S,"setFont",lua_cocos2dx_ui_UITextView_setFont);
+        tolua_function(tolua_S,"create", lua_cocos2dx_ui_UITextView_create);
+    tolua_endmodule(tolua_S);
+    std::string typeName = typeid(cocos2d::ui::UITextView).name();
+    g_luaType[typeName] = "ccui.UITextView";
+    g_typeCast["UITextView"] = "ccui.UITextView";
+    return 1;
+}
+
 TOLUA_API int register_all_cocos2dx_ui(lua_State* tolua_S)
 {
 	tolua_open(tolua_S);
@@ -26195,7 +27844,7 @@ TOLUA_API int register_all_cocos2dx_ui(lua_State* tolua_S)
 	lua_register_cocos2dx_ui_RichText(tolua_S);
 	lua_register_cocos2dx_ui_RichElementImage(tolua_S);
 	lua_register_cocos2dx_ui_RelativeLayoutParameter(tolua_S);
-
+    lua_register_cocos2dx_ui_UITextView(tolua_S);
 	tolua_endmodule(tolua_S);
 	return 1;
 }

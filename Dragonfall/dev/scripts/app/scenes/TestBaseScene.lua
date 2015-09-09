@@ -21,6 +21,7 @@ function TestBaseScene:ctor()
     self:createCopyText()
     self:IapTest()
     self:MusicTest()
+    self:UITextViewTest()
     app:createTitle(self, "Test Base")
     app:createNextButton(self)
 end
@@ -178,6 +179,17 @@ function TestBaseScene:MusicTest()
         audio.playMusic("audios/sfx_ballista_attack.mp3",false)
     end):align(display.RIGHT_CENTER, display.right - 10, display.top - 290)
         :addTo(self)
+end
+
+
+function TestBaseScene:UITextViewTest()
+    local textView = ccui.UITextView:create(cc.size(549,379),display.newScale9Sprite("YellowBlock.png"))
+        textView:align(display.CENTER_BOTTOM,display.cx, display.bottom + 10):addTo(self)
+        textView:setReturnType(cc.KEYBOARD_RETURNTYPE_SEND)    
+        textView:setFont("DroidSansFallback", 24)
+        textView:registerScriptTextViewHandler(function(event,textView)
+            dump(event,"-- UITextView --")
+        end)
 end
 
 
