@@ -16,6 +16,12 @@
 * 为了Android和iOS输入框统一,EditBox在cocos2dx 3.8版本上构建，UITextView依赖于EditBox
 * Android下默认关闭Alpha预乘[ETC1压缩]，iOS默认打开Alpha预乘[PRVTC压缩]。
 
+######Android特性
+
+* Android上模拟了iOS的Bundle和Documents目录,首次安装的时候会根据储存空间的情况自动选择解压目录，`不包括检测SD卡损坏的情况`.
+    * 举例:如果SD的空间足够游戏解压,游戏将解压到`/sdcard/batcatstudio/`目录中
+* 实现并打开了ETC压缩+alpha支持,如果发现某张贴图是ETC格式将自动查找它的Alpha格式的贴图，详情查看git提交
+
 ######Functions[✗ ✓]
 |  Function  | iOS          | Android       | 
 |------------| ------------ | ------------- | 
@@ -29,4 +35,4 @@
 
 
 ---
-Last Modify @ September 8, 2015
+Last Modify @ September 9, 2015
