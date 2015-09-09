@@ -24,6 +24,7 @@ function UIDemoApp:ctor()
     cc.FileUtils:getInstance():addSearchPath("res/animations")
     self.scenes_ = {
         "TestUILabelFont",
+        "TestEditBoxEvent",
         "TestBaseScene",
         "TestTexture",
         "TestCocostuido",

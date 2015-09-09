@@ -385,7 +385,7 @@ namespace ui {
     
     std::string UITextView::getDescription() const
     {
-        return "EditBox";
+        return "UITextView";
     }
     
     void UITextView::draw(Renderer *renderer, const Mat4 &parentTransform, uint32_t parentFlags)
