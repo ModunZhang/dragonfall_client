@@ -103,5 +103,14 @@ void LuaNodeManager::removeLuaNode(LuaEventNode *lnode)
         destroyInstance();
     }
 }
-
+//dannyhe
+void LuaNodeManager::removeAllNodeAndEvents()
+{
+    for (auto it = _luaNodes.begin(); it != _luaNodes.end(); ++it)
+    {
+        auto lt = (LuaEventNode *)*it;
+        lt->setLuaTouchEnabled(false);
+    }
+    _luaNodes.clear();
+}
 NS_CC_END

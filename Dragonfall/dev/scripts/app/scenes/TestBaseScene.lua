@@ -21,6 +21,7 @@ function TestBaseScene:ctor()
     self:createCopyText()
     self:IapTest()
     self:MusicTest()
+    self:RestartTest()
     self:UITextViewTest()
     app:createTitle(self, "Test Base")
     app:createNextButton(self)
@@ -178,6 +179,13 @@ function TestBaseScene:MusicTest()
     app:getCommonButton("Play Music"):onButtonClicked(function(event)
         audio.playMusic("audios/sfx_ballista_attack.mp3",false)
     end):align(display.RIGHT_CENTER, display.right - 10, display.top - 290)
+        :addTo(self)
+end
+
+function TestBaseScene:RestartTest()
+    app:getCommonButton("Restart"):onButtonClicked(function(event)
+        ext.restart()
+    end):align(display.LEFT_CENTER, display.left + 10, display.top - 360)
         :addTo(self)
 end
 
