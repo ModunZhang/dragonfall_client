@@ -1,5 +1,5 @@
 
-编译 Android 工程
+#编译 Android 工程
 ================
 
 要编译 Android 功能，必须使用最新版本的 Android SDK 和`指定的 r9d 版本` Android NDK.
