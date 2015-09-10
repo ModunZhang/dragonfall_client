@@ -15,10 +15,7 @@ BUILD_USE_LUA_FILE=true #不编译lua为字节码(不加密的时候)
 
 # use jit on android
 if [[ $Platform = "Android" ]]; then
-	echo "------------------------------------"
-	echo "--warning: use luajit on Android----"
-	echo "------------------------------------"
-	JIT_ARGS="-jit"
+	JIT_ARGS=""
 else
 	JIT_ARGS=""
 fi

@@ -20,7 +20,8 @@ LOCAL_EXPORT_LDLIBS := -lGLESv2 \
                        -lz \
                        -landroid
 
-LOCAL_STATIC_LIBRARIES := luajit_static
+#LOCAL_STATIC_LIBRARIES := luajit_static
+LOCAL_STATIC_LIBRARIES := lua515_static
 
 include $(BUILD_STATIC_LIBRARY)
 
@@ -172,6 +173,6 @@ LOCAL_WHOLE_STATIC_LIBRARIES := cocos2d_lua_android_static
 LOCAL_STATIC_LIBRARIES := cocos2dx_static
 
 include $(BUILD_STATIC_LIBRARY)
-
-$(call import-module,lua/luajit/prebuilt/android)
+#$(call import-module,lua/luajit/prebuilt/android)
+$(call import-module,lua/lua)
 $(call import-module,.)
