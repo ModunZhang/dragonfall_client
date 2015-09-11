@@ -10543,7 +10543,7 @@ int lua_register_cocos2dx_extension_TableView(lua_State* tolua_S)
     g_typeCast["TableView"] = "cc.TableView";
     return 1;
 }
-
+#if CC_USE_CURL
 int lua_cocos2dx_extension_AssetsManager_setStoragePath(lua_State* tolua_S)
 {
     int argc = 0;
@@ -12478,6 +12478,7 @@ int lua_register_cocos2dx_extension_EventListenerAssetsManagerEx(lua_State* tolu
     g_typeCast["EventListenerAssetsManagerEx"] = "cc.EventListenerAssetsManagerEx";
     return 1;
 }
+#endif // CC_USE_CURL
 #if CC_USE_3D
 int lua_cocos2dx_extension_ParticleSystem3D_setKeepLocal(lua_State* tolua_S)
 {
@@ -15455,30 +15456,31 @@ TOLUA_API int register_all_cocos2dx_extension(lua_State* tolua_S)
 	tolua_module(tolua_S,"cc",0);
 	tolua_beginmodule(tolua_S,"cc");
 
-	lua_register_cocos2dx_extension_AssetsManagerEx(tolua_S);
 #if CC_USE_3D
-	lua_register_cocos2dx_extension_ParticleSystem3D(tolua_S);
+    lua_register_cocos2dx_extension_ParticleSystem3D(tolua_S);
 #endif
-	lua_register_cocos2dx_extension_Control(tolua_S);
-	lua_register_cocos2dx_extension_ControlHuePicker(tolua_S);
-	lua_register_cocos2dx_extension_TableViewCell(tolua_S);
-	lua_register_cocos2dx_extension_ControlStepper(tolua_S);
-	lua_register_cocos2dx_extension_AssetsManager(tolua_S);
-	lua_register_cocos2dx_extension_ControlColourPicker(tolua_S);
+    lua_register_cocos2dx_extension_Control(tolua_S);
+    lua_register_cocos2dx_extension_ControlHuePicker(tolua_S);
+    lua_register_cocos2dx_extension_TableViewCell(tolua_S);
+    lua_register_cocos2dx_extension_ControlStepper(tolua_S);
+    lua_register_cocos2dx_extension_ControlColourPicker(tolua_S);
 #if CC_USE_3D
-	lua_register_cocos2dx_extension_PUParticleSystem3D(tolua_S);
+    lua_register_cocos2dx_extension_PUParticleSystem3D(tolua_S);
 #endif
-	lua_register_cocos2dx_extension_ControlButton(tolua_S);
-	lua_register_cocos2dx_extension_ControlSlider(tolua_S);
-	lua_register_cocos2dx_extension_ControlSaturationBrightnessPicker(tolua_S);
-	lua_register_cocos2dx_extension_ScrollView(tolua_S);
-	lua_register_cocos2dx_extension_Manifest(tolua_S);
-	lua_register_cocos2dx_extension_ControlPotentiometer(tolua_S);
-	lua_register_cocos2dx_extension_EventAssetsManagerEx(tolua_S);
-	lua_register_cocos2dx_extension_TableView(tolua_S);
-	lua_register_cocos2dx_extension_EventListenerAssetsManagerEx(tolua_S);
-	lua_register_cocos2dx_extension_ControlSwitch(tolua_S);
-
+    lua_register_cocos2dx_extension_ControlButton(tolua_S);
+    lua_register_cocos2dx_extension_ControlSlider(tolua_S);
+    lua_register_cocos2dx_extension_ControlSaturationBrightnessPicker(tolua_S);
+    lua_register_cocos2dx_extension_ScrollView(tolua_S);
+    lua_register_cocos2dx_extension_ControlPotentiometer(tolua_S);
+    lua_register_cocos2dx_extension_TableView(tolua_S);
+    lua_register_cocos2dx_extension_ControlSwitch(tolua_S);
+#if CC_USE_CURL
+    lua_register_cocos2dx_extension_Manifest(tolua_S);
+    lua_register_cocos2dx_extension_AssetsManagerEx(tolua_S);
+    lua_register_cocos2dx_extension_EventListenerAssetsManagerEx(tolua_S);
+    lua_register_cocos2dx_extension_AssetsManager(tolua_S);
+    lua_register_cocos2dx_extension_EventAssetsManagerEx(tolua_S);
+#endif
 	tolua_endmodule(tolua_S);
 	return 1;
 }

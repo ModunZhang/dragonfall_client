@@ -69,10 +69,10 @@ LOCAL_SRC_FILES += ../manual/cocosdenshion/lua_cocos2dx_cocosdenshion_manual.cpp
                    ../auto/lua_cocos2dx_cocosdenshion_auto.cpp
 
 #network
+ifeq ($(CC_USE_NETWORK_SOKET),1)
 LOCAL_SRC_FILES += ../manual/network/lua_cocos2dx_network_manual.cpp \
                    ../manual/network/lua_extensions.c \
                    ../manual/network/Lua_web_socket.cpp \
-                   ../manual/network/lua_xml_http_request.cpp \
                    ../../../../external/lua/luasocket/auxiliar.c \
                    ../../../../external/lua/luasocket/buffer.c \
                    ../../../../external/lua/luasocket/except.c \
@@ -89,7 +89,10 @@ LOCAL_SRC_FILES += ../manual/network/lua_cocos2dx_network_manual.cpp \
                    ../../../../external/lua/luasocket/udp.c \
                    ../../../../external/lua/luasocket/unix.c \
                    ../../../../external/lua/luasocket/usocket.c
-
+endif
+ifeq ($(CC_USE_CURL),1)
+LOCAL_SRC_FILES += ../manual/network/lua_xml_http_request.cpp
+endif
 #cocosbuilder dannyhe remove it?
 ifeq ($(CC_USE_CCBUILDER),1)
 LOCAL_SRC_FILES += ../manual/cocosbuilder/lua_cocos2dx_cocosbuilder_manual.cpp \

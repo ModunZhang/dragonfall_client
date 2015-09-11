@@ -397,7 +397,7 @@ public:
         }
     }
 };
-
+#if CC_USE_CURL
 static int lua_cocos2dx_AssetsManager_setDelegate(lua_State* L)
 {
     if (nullptr == L)
@@ -471,7 +471,7 @@ static void extendAssetsManager(lua_State* L)
     }
     lua_pop(L, 1);
 }
-
+#endif // CC_USE_CURL
 #define KEY_TABLEVIEW_DATA_SOURCE  "TableViewDataSource"
 #define KEY_TABLEVIEW_DELEGATE     "TableViewDelegate"
 
@@ -945,7 +945,7 @@ static void extendManifest(lua_State* L)
     lua_rawget(L, LUA_REGISTRYINDEX);
     lua_pop(L, 1);
 }
-
+#if CC_USE_CURL
 static int lua_cocos2dx_Extension_EventListenerAssetsManagerEx_create(lua_State* L)
 {
     if (nullptr == L)
@@ -1005,7 +1005,7 @@ static void extendEventListenerAssetsManagerEx(lua_State* L)
     }
     lua_pop(L, 1);
 }
-
+#endif // CC_USE_CURL
 int lua_cocos2dx_extension_ParticleSystem3D_getParticlePool(lua_State* tolua_S)
 {
     int argc = 0;
@@ -1143,13 +1143,15 @@ static void extendParticlePool(lua_State* tolua_S)
 int register_all_cocos2dx_extension_manual(lua_State* tolua_S)
 {
     extendControl(tolua_S);
-    extendAssetsManager(tolua_S);
     extendScrollView(tolua_S);
     extendTableView(tolua_S);
     extendManifest(tolua_S);
-    extendEventListenerAssetsManagerEx(tolua_S);
     extendParticleSystem3D(tolua_S);
     extendParticlePool(tolua_S);
+#if CC_USE_CURL
+    extendAssetsManager(tolua_S);
+    extendEventListenerAssetsManagerEx(tolua_S);
+#endif
     return 0;
 }
 

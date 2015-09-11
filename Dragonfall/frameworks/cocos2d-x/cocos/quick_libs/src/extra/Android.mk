@@ -16,7 +16,9 @@ LOCAL_SRC_FILES := \
     $(LOCAL_PATH)/platform/android/CCCryptoAndroid.cpp \
     $(LOCAL_PATH)/platform/android/CCNativeAndroid.cpp \
     $(LOCAL_PATH)/platform/android/CCNetworkAndroid.cpp
-
+ifneq ($(CC_USE_CURL),1)
+LOCAL_SRC_FILES += $(LOCAL_PATH)/crypto/md5/md5.c
+endif
 
 #filters
 LOCAL_SRC_FILES += \
