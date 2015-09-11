@@ -208,8 +208,25 @@ Android 官方文档：http://developer.android.com/tools/device.html
   * 如何检查手机已经连接好了电脑:执行`adb devices`查看是否有你的设备信息
   * 如何不打开Eclipse的时候查看日志:执行命令`monitor`启动Android Monitor
   
-  
+### 使用模块化编译缩小 apk 体积 ###
+
+从quick 3.5开始,官方不再提供模块化编译的功能，我们项目参考3.3的编译宏定义提供部分模块化编译的功能
+
+> 测试编译麻烦，我们就不提供具体减少的app体积数据! iOS中将使用新target的方式减少二进制文件的大小！
+
+打开项目中的 proj.android/jni/Application.mk 文件，然后将不需要的模块值改为 0。
+
+MACRO        | 功能 
+------------ | ------------- 
+CC_USE_CURL  | 使用 CURL 库提供 HTTP 网络功能。关闭后，assetsmanager等相关功能也会被去掉。quick 在 Android 下使用 Android 系统的 Java 接口提供 HTTP 网络功能，所以 CURL 关闭后仍然可以使用HttpRequest。
+CC_USE_NETWORK_SOKET | 网络模块，如 socket 和 websocket 
+CC_USE_SIMULATOR | player文件
+CC_USE_PHYSICS | 使用box2d物理引擎
+CC_USE_SQLITE  | Sqlite 数据库扩展 lsqlite3
+CC_USE_3D    | 使用 3D 模块。 包括3D 粒子
+CC_USE_CCBUILDER | 使用 Cocos Builder 支持模块。
+
 ---
 
-Last Modify By Danny He@ September 10, 2015 
+Last Modify By Danny He@ September 11, 2015
    

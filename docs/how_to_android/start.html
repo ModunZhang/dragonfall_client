@@ -391,8 +391,56 @@ ant run
 </ul>
 
 
+<h3>使用模块化编译缩小 apk 体积</h3>
+
+<p>从quick 3.5开始,官方不再提供模块化编译的功能，我们项目参考3.3的编译宏定义提供部分模块化编译的功能</p>
+
+<blockquote><p>测试编译麻烦，我们就不提供具体减少的app体积数据! iOS中将使用新target的方式减少二进制文件的大小！</p></blockquote>
+
+<p>打开项目中的 proj.android/jni/Application.mk 文件，然后将不需要的模块值改为 0。</p>
+
+<table>
+<thead>
+<tr>
+<th>MACRO        </th>
+<th> 功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CC_USE_CURL  </td>
+<td> 使用 CURL 库提供 HTTP 网络功能。关闭后，assetsmanager等相关功能也会被去掉。quick 在 Android 下使用 Android 系统的 Java 接口提供 HTTP 网络功能，所以 CURL 关闭后仍然可以使用HttpRequest。</td>
+</tr>
+<tr>
+<td>CC_USE_NETWORK_SOKET </td>
+<td> 网络模块，如 socket 和 websocket</td>
+</tr>
+<tr>
+<td>CC_USE_SIMULATOR </td>
+<td> player文件</td>
+</tr>
+<tr>
+<td>CC_USE_PHYSICS </td>
+<td> 使用box2d物理引擎</td>
+</tr>
+<tr>
+<td>CC_USE_SQLITE  </td>
+<td> Sqlite 数据库扩展 lsqlite3</td>
+</tr>
+<tr>
+<td>CC_USE_3D    </td>
+<td> 使用 3D 模块。 包括3D 粒子</td>
+</tr>
+<tr>
+<td>CC_USE_CCBUILDER </td>
+<td> 使用 Cocos Builder 支持模块。</td>
+</tr>
+</tbody>
+</table>
+
+
 <hr />
 
-<p>Last Modify By Danny He@ September 10, 2015</p>
+<p>Last Modify By Danny He@ September 11, 2015</p>
 </body>
 </html>
