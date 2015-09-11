@@ -12478,7 +12478,7 @@ int lua_register_cocos2dx_extension_EventListenerAssetsManagerEx(lua_State* tolu
     g_typeCast["EventListenerAssetsManagerEx"] = "cc.EventListenerAssetsManagerEx";
     return 1;
 }
-
+#if CC_USE_3D
 int lua_cocos2dx_extension_ParticleSystem3D_setKeepLocal(lua_State* tolua_S)
 {
     int argc = 0;
@@ -15447,6 +15447,7 @@ int lua_register_cocos2dx_extension_PUParticleSystem3D(lua_State* tolua_S)
     g_typeCast["PUParticleSystem3D"] = "cc.PUParticleSystem3D";
     return 1;
 }
+#endif //CC_USE_3D
 TOLUA_API int register_all_cocos2dx_extension(lua_State* tolua_S)
 {
 	tolua_open(tolua_S);
@@ -15455,14 +15456,18 @@ TOLUA_API int register_all_cocos2dx_extension(lua_State* tolua_S)
 	tolua_beginmodule(tolua_S,"cc");
 
 	lua_register_cocos2dx_extension_AssetsManagerEx(tolua_S);
+#if CC_USE_3D
 	lua_register_cocos2dx_extension_ParticleSystem3D(tolua_S);
+#endif
 	lua_register_cocos2dx_extension_Control(tolua_S);
 	lua_register_cocos2dx_extension_ControlHuePicker(tolua_S);
 	lua_register_cocos2dx_extension_TableViewCell(tolua_S);
 	lua_register_cocos2dx_extension_ControlStepper(tolua_S);
 	lua_register_cocos2dx_extension_AssetsManager(tolua_S);
 	lua_register_cocos2dx_extension_ControlColourPicker(tolua_S);
+#if CC_USE_3D
 	lua_register_cocos2dx_extension_PUParticleSystem3D(tolua_S);
+#endif
 	lua_register_cocos2dx_extension_ControlButton(tolua_S);
 	lua_register_cocos2dx_extension_ControlSlider(tolua_S);
 	lua_register_cocos2dx_extension_ControlSaturationBrightnessPicker(tolua_S);

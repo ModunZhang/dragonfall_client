@@ -27,8 +27,9 @@ GUI/CCScrollView/CCScrollView.cpp \
 GUI/CCScrollView/CCTableView.cpp \
 GUI/CCScrollView/CCTableViewCell.cpp \
 physics-nodes/CCPhysicsDebugNode.cpp \
-physics-nodes/CCPhysicsSprite.cpp \
-Particle3D/CCParticle3DAffector.cpp \
+physics-nodes/CCPhysicsSprite.cpp 
+ifeq ($(CC_USE_3D),1)
+LOCAL_SRC_FILES += Particle3D/CCParticle3DAffector.cpp \
 Particle3D/CCParticle3DEmitter.cpp \
 Particle3D/CCParticle3DRender.cpp \
 Particle3D/CCParticleSystem3D.cpp \
@@ -178,11 +179,14 @@ Particle3D/PU/CCPUBehaviour.cpp \
 Particle3D/PU/CCPUBehaviourManager.cpp \
 Particle3D/PU/CCPUBehaviourTranslator.cpp \
 Particle3D/PU/CCPUSlaveBehaviour.cpp \
-Particle3D/PU/CCPUSlaveBehaviourTranslator.cpp \
+Particle3D/PU/CCPUSlaveBehaviourTranslator.cpp 
+endif
 
 LOCAL_STATIC_LIBRARIES := cocos2dx_internal_static
 LOCAL_STATIC_LIBRARIES += cocos_curl_static
+#ifeq ($(CC_USE_PHYSICS),1)
 LOCAL_STATIC_LIBRARIES += box2d_static
+#endif
 
 LOCAL_CXXFLAGS += -fexceptions
 

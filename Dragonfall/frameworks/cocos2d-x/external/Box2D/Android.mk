@@ -6,7 +6,9 @@ LOCAL_MODULE := box2d_static
 
 LOCAL_MODULE_FILENAME := libbox2d
 
-LOCAL_SRC_FILES := \
+LOCAL_SRC_FILES := 
+ifeq ($(CC_USE_PHYSICS),1)
+LOCAL_SRC_FILES += \
 Collision/b2BroadPhase.cpp \
 Collision/b2CollideCircle.cpp \
 Collision/b2CollideEdge.cpp \
@@ -53,7 +55,7 @@ Dynamics/Joints/b2RopeJoint.cpp \
 Dynamics/Joints/b2WeldJoint.cpp \
 Dynamics/Joints/b2WheelJoint.cpp \
 Rope/b2Rope.cpp
-
+endif
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/..
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/..

@@ -30,9 +30,9 @@ static luaL_Reg luax_exts[] = {
 #ifndef WP8
     {"lfs", luaopen_lfs},
 #endif
-//#if CC_USE_SQLITE
+#if CC_USE_SQLITE
     {"lsqlite3", luaopen_lsqlite3},
-//#endif
+#endif
     {NULL, NULL}
 };
 

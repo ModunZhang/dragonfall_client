@@ -249,7 +249,10 @@ THE SOFTWARE.
 
 /** Use physics integration API. */
 #ifndef CC_USE_PHYSICS
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#else
 #define CC_USE_PHYSICS 1
+#endif
 #endif
 
 /** Use culling or not. */

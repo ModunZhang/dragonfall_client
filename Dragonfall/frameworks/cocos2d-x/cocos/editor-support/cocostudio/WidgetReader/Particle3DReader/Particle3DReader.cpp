@@ -31,9 +31,9 @@
 
 #include "tinyxml2.h"
 #include "flatbuffers/flatbuffers.h"
-
+#if CC_USE_3D
 #include "Particle3D/PU/CCPUParticleSystem3D.h"
-
+#endif
 USING_NS_CC;
 using namespace flatbuffers;
 
@@ -137,6 +137,7 @@ namespace cocostudio
     
     Node* Particle3DReader::createNodeWithFlatBuffers(const flatbuffers::Table *particle3DOptions)
     {
+#if CC_USE_3D
         auto options = (Particle3DOptions*)particle3DOptions;
         
         auto fileData = options->fileData();
@@ -160,5 +161,8 @@ namespace cocostudio
         }
         
         return ret;
+#else
+        assert("CC_USE_3D is Close!");
+#endif
     }
 }

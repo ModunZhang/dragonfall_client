@@ -58,9 +58,11 @@ LOCAL_SRC_FILES := ../manual/CCLuaBridge.cpp \
           ../auto/lua_cocos2dx_audioengine_auto.cpp \
           ../manual/audioengine/lua_cocos2dx_audioengine_manual.cpp
 
-#3d
+#3d dannyhe remove it?
+ifeq ($(CC_USE_3D),1)
 LOCAL_SRC_FILES += ../manual/3d/lua_cocos2dx_3d_manual.cpp \
                    ../auto/lua_cocos2dx_3d_auto.cpp
+endif 
 
 #cocosdenshion
 LOCAL_SRC_FILES += ../manual/cocosdenshion/lua_cocos2dx_cocosdenshion_manual.cpp \
@@ -88,11 +90,12 @@ LOCAL_SRC_FILES += ../manual/network/lua_cocos2dx_network_manual.cpp \
                    ../../../../external/lua/luasocket/unix.c \
                    ../../../../external/lua/luasocket/usocket.c
 
-#cocosbuilder
+#cocosbuilder dannyhe remove it?
+ifeq ($(CC_USE_CCBUILDER),1)
 LOCAL_SRC_FILES += ../manual/cocosbuilder/lua_cocos2dx_cocosbuilder_manual.cpp \
                    ../manual/cocosbuilder/CCBProxy.cpp \
                    ../auto/lua_cocos2dx_cocosbuilder_auto.cpp
-
+endif
 #cocostudio
 LOCAL_SRC_FILES += ../manual/cocostudio/lua_cocos2dx_coco_studio_manual.cpp \
                    ../manual/cocostudio/CustomGUIReader.cpp \

@@ -48,7 +48,9 @@ $(LOCAL_PATH)/../../../../extensions/ext/LocalNotification \
 # _COCOS_HEADER_ANDROID_END
 
 LOCAL_STATIC_LIBRARIES := cocos2d_lua_static
+ifeq ($(CC_USE_SIMULATOR),1)
 LOCAL_STATIC_LIBRARIES += cocos2d_simulator_static
+endif
 LOCAL_STATIC_LIBRARIES += pomelo_static
 
 # _COCOS_LIB_ANDROID_BEGIN
@@ -59,8 +61,9 @@ include $(BUILD_SHARED_LIBRARY)
 
 $(call import-module,libpomelo)
 $(call import-module,scripting/lua-bindings/proj.android)
+ifeq ($(CC_USE_SIMULATOR),1)
 $(call import-module,tools/simulator/libsimulator/proj.android)
-
+endif
 # _COCOS_LIB_IMPORT_ANDROID_BEGIN
 $(call import-module,proj.android)
 # _COCOS_LIB_IMPORT_ANDROID_END
