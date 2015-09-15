@@ -72,7 +72,14 @@
 
 19. create_android_zip.sh
     Android下打包资源为zip
-          
+
+20. gcm_push.py
+    Android GCM推送测试脚本,用法:
+    
+    ~~~
+    python gcm_push.py --message="Bye Bye" --id="APA91bEv6GmHN3q5Swrsu_Lxxw9zds3Q2C2TPwtWIrBDbouo4uyyE5AdaKxFnZ39FYg0dyJcliPBZa_fqrc5figMZ5-M-gMNfWb_VAm6-HQS1QiDbdyBGTnPysaMw4cBsOGaUkPUbkm_"
+    ~~~
+        
 ******
 
 #### 本地化说明
@@ -221,4 +228,4 @@ AppMinVersion              | AppMinVersion
 [^5]:`AppHoc`
 
 ---
-September 10, 2015 By Danny He
+September 15, 2015 By Danny He

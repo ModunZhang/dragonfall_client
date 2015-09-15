@@ -14,7 +14,7 @@ public class LaunchHelper {
 	public static void checkGameFirstInstall(){
 		AppActivity.getGameActivity().setKeepScreenOn(true);
 		if(DataHelper.isAppVersionExpired() || !DataHelper.hasInstallUnzip()) { //需要解压
-			DebugUtil.LogDebug(TAG, "need unzip------->");
+			DebugUtil.LogDebug(TAG, "unzip resources");
 			int flag = getInstallFlag();
 			if(flag < 0) {
 				//error
@@ -30,7 +30,7 @@ public class LaunchHelper {
 				DataHelper.unzipGameResource(flag == 0);
 			}
 		}else {
-			DebugUtil.LogDebug(TAG, "initNativeLuaEngine------->");
+			DebugUtil.LogDebug(TAG, "launch game");
 			initNativeLuaEngine();
 		}
 	}
@@ -51,15 +51,13 @@ public class LaunchHelper {
 	//启动游戏lua part
 	public static void initNativeLuaEngine() {
 		DataHelper.preInitActivityData();
-		Cocos2dxHelper.runOnGLThread(new Runnable() {
-			
+		DebugUtil.LogErr(TAG, "game bundle path:"+Cocos2dxHelper.getCocos2dxBundlePath());
+		Cocos2dxHelper.runOnGLThread(new Runnable() {	
 			@Override
 			public void run() {
-				DebugUtil.LogErr(TAG, "启动游戏cpp--->"+Cocos2dxHelper.getCocos2dxBundlePath());
 				nativeInitLuaEngine(Cocos2dxHelper.getCocos2dxBundlePath());
 			}
 		});
-		
 		AppActivity.getGameActivity().setGameLaunched(true); 
 		AppActivity.getGameActivity().setKeepScreenOn(false);
 	}

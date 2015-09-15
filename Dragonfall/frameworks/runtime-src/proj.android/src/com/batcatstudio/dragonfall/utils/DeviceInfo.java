@@ -41,7 +41,7 @@ public class DeviceInfo {
 		osVersion = String.format("Android %s",Build.VERSION.RELEASE);
 		deviceModel = String.format("%s_%s_%s", Build.BRAND, Build.MODEL, Build.PRODUCT);
 		initPackageInfomation();
-		DebugUtil.LogInfo(TAG, "DeviceInfo init:deviceId:"+deviceId +",udid:"+udid);
+		DebugUtil.LogDebug(TAG, "DeviceInfo init:deviceId:"+deviceId +",udid:"+udid);
 	}
 	
 	private void initPackageInfomation()
@@ -83,7 +83,7 @@ public class DeviceInfo {
 	}
 
 	public String getUdid() {
-		DebugUtil.LogInfo(TAG, "DeviceInfo getUdid:"+udid);
+		DebugUtil.LogDebug(TAG, "DeviceInfo getUdid:"+udid);
 		return udid;
 	}
 	
@@ -114,7 +114,7 @@ public class DeviceInfo {
 		return appMinVersion;
 	}
 	public boolean isAppHocMode() {
-		DebugUtil.LogInfo(TAG, "DeviceInfo isAppHocMode:"+isAppHocMode);
+		DebugUtil.LogDebug(TAG, "DeviceInfo isAppHocMode:"+isAppHocMode);
 		return isAppHocMode;
 	}
 }

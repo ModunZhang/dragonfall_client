@@ -77,6 +77,7 @@ public class AppActivity extends Cocos2dxActivity{
         //2.Set the format of window
         
         // Check the wifi is opened when the native is debug.
+/** dannyhe 删除debbug功能
         if(nativeIsDebug())
         {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -101,7 +102,8 @@ public class AppActivity extends Cocos2dxActivity{
             }
             hostIPAdress = getHostIpAddress();
         }
-        /** Init Java **/
+**/
+        /** Init Java Native **/
         CommonUtils.getInstance();
 		MarketSDK.initSDK();
 		GCMUtils.registerGCMService(this);

@@ -16,7 +16,8 @@ static char* m_UDID = NULL;
 void CopyText(const char * text)
 {
     cocos2d::JniMethodInfo t;
-    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "copyText", "(Ljava/lang/String;)V")) {
+    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "copyText", "(Ljava/lang/String;)V"))
+    {
         jstring jtext = t.env->NewStringUTF(text);
         t.env->CallStaticVoidMethod(t.classID,t.methodID,jtext);
         t.env->DeleteLocalRef(jtext);
@@ -28,7 +29,8 @@ const char* GetAppVersion()
     //获取大版本号
     char* appVersion = NULL;
     cocos2d::JniMethodInfo t;
-    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "getAppVersion", "()Ljava/lang/String;")) {
+    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "getAppVersion", "()Ljava/lang/String;"))
+    {
 
          jstring jResult = (jstring)t.env->CallStaticObjectMethod(t.classID, t.methodID);
          const char *resultC = t.env->GetStringUTFChars(jResult, NULL);
@@ -45,20 +47,28 @@ const char* GetAppVersion()
 void DisableIdleTimer(bool disable)
 {
     cocos2d::JniMethodInfo t;
-    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "disableIdleTimer", "(Z)V")) {
+    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "disableIdleTimer", "(Z)V")) 
+    {
         t.env->CallStaticVoidMethod(t.classID,t.methodID,disable);
         t.env->DeleteLocalRef(t.classID);
     }
 }
-void CloseKeyboard()
-{
-    LOGD("CloseKeyboard暂不实现");
-}
+/**
+ * MARK:Android中不实现的方法
+ */
+//CloseKeyboard
+void CloseKeyboard(){}
+//游戏启动就会请求GCM
+void registereForRemoteNotifications(){}
+//debug方法
+void ClearOpenUdidData(){}
+
 const char* GetOSVersion()
 {   
     char* osVersion = NULL;
     cocos2d::JniMethodInfo t;
-    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "getOSVersion", "()Ljava/lang/String;")) {
+    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "getOSVersion", "()Ljava/lang/String;"))
+    {
 
          jstring jResult = (jstring)t.env->CallStaticObjectMethod(t.classID, t.methodID);
          const char *resultC = t.env->GetStringUTFChars(jResult, NULL);
@@ -75,7 +85,8 @@ const char* GetDeviceModel()
 {
     char* deviceModel = NULL;
     cocos2d::JniMethodInfo t;
-    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "getDeviceModel", "()Ljava/lang/String;")) {
+    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "getDeviceModel", "()Ljava/lang/String;")) 
+    {
 
          jstring jResult = (jstring)t.env->CallStaticObjectMethod(t.classID, t.methodID);
          const char *resultC = t.env->GetStringUTFChars(jResult, NULL);
@@ -97,55 +108,63 @@ const char* GetAppBundleVersion()
 {
     char* appBundleVersion = NULL;
     cocos2d::JniMethodInfo t;
-    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "getAppBundleVersion", "()Ljava/lang/String;")) {
+    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "getAppBundleVersion", "()Ljava/lang/String;")) 
+    {
+        jstring jResult = (jstring)t.env->CallStaticObjectMethod(t.classID, t.methodID);
+        const char *resultC = t.env->GetStringUTFChars(jResult, NULL);
 
-         jstring jResult = (jstring)t.env->CallStaticObjectMethod(t.classID, t.methodID);
-         const char *resultC = t.env->GetStringUTFChars(jResult, NULL);
-
-         appBundleVersion = new char[strlen(resultC) + 2];
-         strcpy(appBundleVersion, resultC);
-         t.env->ReleaseStringUTFChars(jResult, resultC);
-         t.env->DeleteLocalRef(jResult);
-         t.env->DeleteLocalRef(t.classID);
+        appBundleVersion = new char[strlen(resultC) + 2];
+        strcpy(appBundleVersion, resultC);
+        t.env->ReleaseStringUTFChars(jResult, resultC);
+        t.env->DeleteLocalRef(jResult);
+        t.env->DeleteLocalRef(t.classID);
     }
     return appBundleVersion;
 }
 const char* GetDeviceToken()
-{
-    LOGD("Android GetDeviceToken暂不实现");
+{   
+    char* deviceToken = NULL;
+    cocos2d::JniMethodInfo t;
+    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "GetDeviceToken", "()Ljava/lang/String;")) 
+    {
+
+        jstring jResult = (jstring)t.env->CallStaticObjectMethod(t.classID, t.methodID);
+        const char *resultC = t.env->GetStringUTFChars(jResult, NULL);
+        deviceToken = new char[strlen(resultC) + 2];
+        strcpy(deviceToken, resultC);
+        t.env->ReleaseStringUTFChars(jResult, resultC);
+        t.env->DeleteLocalRef(jResult);
+        t.env->DeleteLocalRef(t.classID);
+        return deviceToken;
+    }
     return "";
 }
 const char* GetOpenUdid()
 {
     if (m_UDID == NULL)
     {
-         cocos2d::JniMethodInfo t;
-         if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "getUDID", "()Ljava/lang/String;")) {
+        cocos2d::JniMethodInfo t;
+        if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "getUDID", "()Ljava/lang/String;")) 
+        {
 
-             jstring jResult = (jstring)t.env->CallStaticObjectMethod(t.classID, t.methodID);
-             const char *resultC = t.env->GetStringUTFChars(jResult, NULL);
+         jstring jResult = (jstring)t.env->CallStaticObjectMethod(t.classID, t.methodID);
+         const char *resultC = t.env->GetStringUTFChars(jResult, NULL);
 
-             m_UDID = new char[strlen(resultC) + 2];
-             strcpy(m_UDID, resultC);
-             t.env->ReleaseStringUTFChars(jResult, resultC);
-             t.env->DeleteLocalRef(jResult);
-             t.env->DeleteLocalRef(t.classID);
-         }
-     }
+         m_UDID = new char[strlen(resultC) + 2];
+         strcpy(m_UDID, resultC);
+         t.env->ReleaseStringUTFChars(jResult, resultC);
+         t.env->DeleteLocalRef(jResult);
+         t.env->DeleteLocalRef(t.classID);
+        }
+    }
     return m_UDID;
-}
-void registereForRemoteNotifications()
-{
-    LOGD("Android registereForRemoteNotifications暂不实现");
-}
-void ClearOpenUdidData()
-{
 }
 const char* GetDeviceLanguage()
 {
     char* languageCode = NULL;
     cocos2d::JniMethodInfo t;
-    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "getDeviceLanguage", "()Ljava/lang/String;")) {
+    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "getDeviceLanguage", "()Ljava/lang/String;")) 
+    {
 
          jstring jResult = (jstring)t.env->CallStaticObjectMethod(t.classID, t.methodID);
          const char *resultC = t.env->GetStringUTFChars(jResult, NULL);
@@ -161,15 +180,17 @@ const char* GetDeviceLanguage()
 void AndroidCheckFistInstall()
 {
     cocos2d::JniMethodInfo t;
-    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "checkGameFirstInstall", "()V")) {
-         t.env->CallStaticVoidMethod(t.classID, t.methodID);
-         t.env->DeleteLocalRef(t.classID);
+    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "checkGameFirstInstall", "()V")) 
+    {
+        t.env->CallStaticVoidMethod(t.classID, t.methodID);
+        t.env->DeleteLocalRef(t.classID);
     }
 }
 float getBatteryLevel()
 {
     cocos2d::JniMethodInfo t;
-    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "batteryLevel", "()F")) {
+    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "batteryLevel", "()F")) 
+    {
         jfloat level = t.env->CallStaticFloatMethod(t.classID, t.methodID);
         t.env->DeleteLocalRef(t.classID);
         return level;
@@ -181,7 +202,8 @@ const char* getInternetConnectionStatus()
     cocos2d::JniMethodInfo t;
     std::string ret("NotReachable");
 
-    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "getInternetConnectionStatus", "()Ljava/lang/String;")) {
+    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "getInternetConnectionStatus", "()Ljava/lang/String;")) 
+    {
         jstring jResult = (jstring)t.env->CallStaticObjectMethod(t.classID, t.methodID);
         t.env->DeleteLocalRef(t.classID);
         ret = cocos2d::JniHelper::jstring2string(jResult);
@@ -193,10 +215,10 @@ const bool isAppAdHocMode()
 {
     cocos2d::JniMethodInfo t;
     bool ret = false;
-    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "isAppHocMode", "()Z")) {
+    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "isAppHocMode", "()Z")) 
+    {
         ret = t.env->CallStaticBooleanMethod(t.classID, t.methodID);
         t.env->DeleteLocalRef(t.classID);
     }
-    LOGD("isAppAdHocMode---->%d",ret);
     return ret;
 }

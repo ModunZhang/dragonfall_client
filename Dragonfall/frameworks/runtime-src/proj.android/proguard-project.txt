@@ -82,6 +82,8 @@
 	public static java.lang.String getAppMinVersion();
 	
 	public static boolean isAppHocMode();
+
+	public static java.lang.String GetDeviceToken();
 }
 
 -keep class com.batcatstudio.dragonfall.io.JniFileOperation {

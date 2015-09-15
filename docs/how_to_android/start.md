@@ -225,8 +225,9 @@ CC_USE_PHYSICS | 使用box2d物理引擎
 CC_USE_SQLITE  | Sqlite 数据库扩展 lsqlite3
 CC_USE_3D    | 使用 3D 模块。 包括3D 粒子
 CC_USE_CCBUILDER | 使用 Cocos Builder 支持模块。
+CC_USE_SPINE | 使用骨骼动画
 
 ---
 
-Last Modify By Danny He@ September 11, 2015
+Last Modify By Danny He@ September 15, 2015
    

@@ -29,8 +29,7 @@ MY_SRC_LIST  := $(filter $(MY_FILES_SUFFIX),$(My_All_Files))
 MY_SRC_LIST  := $(MY_SRC_LIST:$(LOCAL_PATH)/%=%)
 LOCAL_SRC_FILES += $(MY_SRC_LIST)
 
-$(warning $(MY_SRC_LIST))
-$(warning $(APP_CPPFLAGS))
+$(warning APP_CPPFLAGS:$(APP_CPPFLAGS))
 LOCAL_C_INCLUDES := \
 $(LOCAL_PATH)/../../Classes/protobuf-lite \
 $(LOCAL_PATH)/../../Classes/runtime \

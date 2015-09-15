@@ -6,6 +6,8 @@ import org.cocos2dx.lua.AppActivity;
 import org.cocos2dx.utils.PSNetwork;
 
 import com.batcatstudio.dragonfall.R;
+import com.batcatstudio.dragonfall.data.DataHelper;
+import com.batcatstudio.dragonfall.google.gcm.GCMUtils;
 
 import android.content.Context;
 import android.content.Intent;
@@ -33,7 +35,6 @@ public class CommonUtils {
 	}
 
 	public CommonUtils() {
-		DebugUtil.LogDebug(TAG, "init deviceInfo");
 		deviceInfo = new DeviceInfo();
 		try {
 			clipManager = (ClipboardManager) AppActivity.getGameActivity().getSystemService(Context.CLIPBOARD_SERVICE);
@@ -53,7 +54,6 @@ public class CommonUtils {
 	// jni method
 	public static String getUDID() {
 		String udid = getInstance().getDeviceInfo().getUdid();
-		DebugUtil.LogDebug(TAG, "getUDID----->" + udid);
 		return udid;
 	}
 
@@ -168,5 +168,9 @@ public class CommonUtils {
 	}
 	public static boolean isAppHocMode() {
 		return getInstance().getDeviceInfo().isAppHocMode();
+	}
+
+	public static String GetDeviceToken() {
+		return GCMUtils.getRegisterId();
 	}
 }

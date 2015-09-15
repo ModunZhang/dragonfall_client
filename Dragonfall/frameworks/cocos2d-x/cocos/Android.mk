@@ -250,10 +250,24 @@ LOCAL_MODULE := cocos2dx_static
 LOCAL_MODULE_FILENAME := libcocos2d
 
 LOCAL_STATIC_LIBRARIES := cocostudio_static
+#ccbuilder
+ifeq ($(CC_USE_CCBUILDER),1)
 LOCAL_STATIC_LIBRARIES += cocosbuilder_static
+endif
+#3d
+ifeq ($(CC_USE_3D),1)
 LOCAL_STATIC_LIBRARIES += cocos3d_static
+endif
+
+#spine
+ifeq ($(CC_USE_SPINE),1)
 LOCAL_STATIC_LIBRARIES += spine_static
+endif
+
+#network || curl
+ifneq ($(CC_USE_CURL)_$(CC_USE_NETWORK_SOKET), 0_0)
 LOCAL_STATIC_LIBRARIES += cocos_network_static
+endif
 LOCAL_STATIC_LIBRARIES += audioengine_static
 
 include $(BUILD_STATIC_LIBRARY)

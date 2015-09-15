@@ -86,12 +86,10 @@ void FilteredSprite::setFilters(Vector<Filter*>& $pFilters)
 bool FilteredSprite::initWithFile(const std::string& filename)
 {
     CCASSERT(filename.size()>0, "Invalid filename for sprite");
-    cocos2d::log("FilteredSprite::initWithFile--->%s",filename.c_str());
     Texture2D *texture = Director::getInstance()->getTextureCache()->addImage(filename);
     if(texture)
     {
         Texture2D::PixelFormat _textureFormat = texture->getPixelFormat();
-        cocos2d::log("FilteredSprite::initWithFile--->2-->%d",_textureFormat == Texture2D::PixelFormat::ETC);
         if (_textureFormat == Texture2D::PixelFormat::ETC)
         {
             Sprite *__sp = Sprite::create(filename);
@@ -146,7 +144,6 @@ bool FilteredSprite::initWithFile(const std::string& filename, const Rect& rect)
 bool FilteredSprite::initWithSpriteFrame(SpriteFrame *spriteFrame)
 {
     CCASSERT(spriteFrame != nullptr, "");
-    cocos2d::log("FilteredSprite::initWithSpriteFrame--->1");
     Sprite *__sp = Sprite::createWithSpriteFrame(spriteFrame);
     if (__sp != nullptr)
     {
@@ -156,7 +153,6 @@ bool FilteredSprite::initWithSpriteFrame(SpriteFrame *spriteFrame)
             __sp->setFlippedY(true);
             __sp->setAnchorPoint(Vec2(0, 0));
             __sp->setPosition(Vec2(0,0));
-            cocos2d::log("FilteredSprite::initWithSpriteFrame--->2");
             Size __size = __sp->getContentSize();
             RenderTexture *__canva = RenderTexture::create(__size.width, __size.height);
             __canva->begin();

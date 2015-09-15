@@ -45,7 +45,7 @@ public class DataHelper {
 	
 	private static String PREFERENCES_NAME = "com.batcatstudio.game.preferences";
 	
-	public static final long ZIP_RESOURCE_SIZE = 138736278;
+	public static final long ZIP_RESOURCE_SIZE = 92889225;
 
 	private static int appVersionCode = -1;
 
@@ -356,6 +356,15 @@ public class DataHelper {
 	public static void saveIntValue(String key, int value) {
 		editor.putInt(key, value);
 		editor.commit();
+	}
+	
+	public static void saveStringValue(String key,String value) {
+		editor.putString(key, value);
+		editor.commit();
+	}
+	
+	public static String readStringValue(String key) {
+		return getSharedPreferences().getString(key, "");
 	}
 	
 	public static String getUnZipRootPath(boolean isSDCard) {

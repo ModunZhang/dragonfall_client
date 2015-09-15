@@ -10,7 +10,7 @@ PVRTOOL=`./functions.sh getPVRTexTool`
 IMAGEFORMAT="ETC1"
 IMAGEQUALITY="etcfast"
 CONVERTTOOL=`./functions.sh getConvertTool`
-ALPHA_USE_ETC=true
+ALPHA_USE_ETC=$fale
 TEMP_RES_DIR=`./functions.sh getTempDir $Platform`
 exportImagesRes()
 {
@@ -160,7 +160,7 @@ exportImagesRes()
 
 				$CONVERTTOOL "$file" -alpha Off "$tempRGBfile" 
 				$CONVERTTOOL "$file" -channel A -alpha extract "$tempAlphaFile"
-				if [[ $ALPHA_USE_ETC ]]; then
+				if [[ $ALPHA_USE_ETC  ]]; then
 					tempAlphaFile_ETC="${TEMP_RES_DIR}/${tempfileName}_alpha_etc1.pvr"
 					$PVRTOOL -f $IMAGEFORMAT -i "$tempAlphaFile" -o "$tempAlphaFile_ETC" -q $IMAGEQUALITY
 					mv -f "$tempAlphaFile_ETC" "$tempAlphaFile"

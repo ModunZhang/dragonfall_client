@@ -20,7 +20,6 @@ public class JniFileOperation {
 	public static boolean createDir(String path) {
 		File file = new File(path);
 		if (!file.exists()) {
-			DebugUtil.LogDebug(TAG, "java call createDir ::" + path);
 			try {
 				file.mkdirs();
 			} catch (Exception e) {
@@ -95,7 +94,6 @@ public class JniFileOperation {
 		InputStream myInput;
 		OutputStream myOutput;
 		AssetManager mAssetManager;
-		DebugUtil.LogDebug(TAG, "java call copyAssetsFile ::" + from + "-->" + to);
 		try {
 			myOutput = new FileOutputStream(to);
 			mAssetManager = AppActivity.getGameActivity().getAssets();
@@ -124,7 +122,6 @@ public class JniFileOperation {
 			
 			return copyAssetsFile(from,to);
 		} else {
-			DebugUtil.LogDebug(TAG, "java call copyFileTo ::" + from + "-->" + to);
 			File from_file = new File(from);
 			File to_file = new File(to);
 			try {
@@ -143,7 +140,6 @@ public class JniFileOperation {
 	}
 
 	public static boolean removeDir(String path) {
-		DebugUtil.LogDebug(TAG, "java call removeDir ::" + path);
 		File dir = new File(path);
 		return delDir(dir);
 	}

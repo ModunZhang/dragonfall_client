@@ -56,8 +56,8 @@ public class MarketSDK {
 	}
 
 	public static void onPlayerEvent(String event_id,String args) {
-		 HashMap<String,String>   hashmap = new HashMap<String,String>();   
-		 hashmap.put("desc",args);
+		HashMap<String,String>   hashmap = new HashMap<String,String>();   
+		hashmap.put("desc",args);
 		TalkingDataGA.onEvent(event_id,hashmap);
 	}
 

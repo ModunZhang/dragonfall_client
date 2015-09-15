@@ -5,9 +5,12 @@ LOCAL_MODULE := cocos_network_static
 
 LOCAL_MODULE_FILENAME := libnetwork
 
-LOCAL_SRC_FILES := \
+LOCAL_SRC_FILES := 
+ifeq ($(CC_USE_NETWORK_SOKET),1)
+LOCAL_SRC_FILES += \
 SocketIO.cpp \
-WebSocket.cpp \
+WebSocket.cpp 
+endif
 
 ifeq ($(CC_USE_CURL),1)
 LOCAL_SRC_FILES += HttpClient-android.cpp

@@ -11,8 +11,14 @@ public class GCMUtils {
 	private static final boolean DEBUG = true;
 	private static final boolean DEBUG_CHECK_MANIFEST = true;
 	public static final String SENDER_ID = "841456299792";
+	
 
-
+	public static String getRegisterId() {
+		if(mContext!=null) {
+			return GCMRegistrar.getRegistrationId(mContext);
+		}
+		return "";
+	}
 
 	private static AsyncTask<Void, Void, Void> mRegisterTask = null;
 	private static Context mContext = null;
@@ -88,7 +94,6 @@ public class GCMUtils {
 	 * @return whether the registration succeeded or not.
 	 */
 	public static boolean register(final Context context, final String regId) {
-		//TODO:发送到服务器
 		GCMRegistrar.setRegisteredOnServer(context, true);
 		return true;
 	}
@@ -97,7 +102,6 @@ public class GCMUtils {
 	 * Unregister this account/device pair within the server.
 	 */
 	public static void unregister(final Context context, final String regId) {
-		//TODO:发送到服务器
 		GCMRegistrar.setRegisteredOnServer(context, false);
 	}
 

@@ -31,7 +31,6 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.SparseArray;
@@ -296,7 +295,6 @@ public class Cocos2dxEditBoxHelper {
                     //TODO: The font size is not the same across all the anroid devices...
                     if (fontSize >= 0){
                         float density =  mCocos2dxActivity.getResources().getDisplayMetrics().density;
-//                        Log.e("XXX", "density is " + density);
                         editBox.setTextSize(TypedValue.COMPLEX_UNIT_SP,
                                 fontSize / density );
                     }
