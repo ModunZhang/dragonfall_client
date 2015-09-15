@@ -4,7 +4,7 @@ import android.util.Log;
 public class DebugUtil {
 	private static final boolean isLogErrorOn = true;
 	private static final boolean isLogExceptionOn = true;
-	private static final boolean isLogDebugOn = true;
+	private static final boolean isLogDebugOn = false;
 	
 	public static void LogErr(String TAG, String msg) {
 		if (isLogErrorOn)

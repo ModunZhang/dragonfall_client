@@ -44,6 +44,7 @@ THE SOFTWARE.
 #if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
 #include "renderer/CCGLProgramCache.h"
 #endif
+#define ETC_ALPHA_USE_A8 1
 
 NS_CC_BEGIN
 
@@ -946,8 +947,13 @@ void Sprite::bindAlphaDataToETCTextureIf(Texture2D * texture,std::string etc1_fi
         CCASSERT(etc1_file.size() > 0, "CCSprite#bindAlphaDataToETCTextureIf: texture file name not found");
         std::string alpha_file = etc1_file.erase(etc1_file.find_last_of("."));
         alpha_file = alpha_file + "_alpha_etc1.png";
-        
+#if ETC_ALPHA_USE_A8
+        Texture2D::setDefaultAlphaPixelFormat(Texture2D::PixelFormat::A8);
+#endif
         Texture2D *texture_alpha = Director::getInstance()->getTextureCache()->addImage(alpha_file);
+#if ETC_ALPHA_USE_A8
+        Texture2D::setDefaultAlphaPixelFormat(Texture2D::PixelFormat::RGBA8888);
+#endif
         if (texture_alpha)
         {
             CCLOG("Sprite:bindAlphaDataToETCTextureIf:Bind alpha data %s -> %s",alpha_file.c_str(),etc1_file.c_str());
