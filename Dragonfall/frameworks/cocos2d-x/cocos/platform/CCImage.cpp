@@ -541,7 +541,48 @@ bool Image::initWithImageData(const unsigned char * data, ssize_t dataLen)
         
         unsigned char* unpackedData = nullptr;
         ssize_t unpackedLen = 0;
-        
+#if USE_ETC1_ZLIB
+        //dannyhe
+        if(ZipUtils::isETCCompressedBuffer(data,dataLen))
+        {
+            CCLOG("Image: Use our etc format compressed!");
+            unsigned char* etcUnpackedData = nullptr;
+            ssize_t etcUnpackedLen = 0;
+            etcUnpackedLen = ZipUtils::inflateETCCompressedBuffer(data,dataLen,&etcUnpackedData);
+            //detecgt and unzip the compress file
+            if (ZipUtils::isCCZBuffer(etcUnpackedData, etcUnpackedLen))
+            {
+                unpackedLen = ZipUtils::inflateCCZBuffer(etcUnpackedData, etcUnpackedLen, &unpackedData);
+            }
+            else if (ZipUtils::isGZipBuffer(etcUnpackedData, etcUnpackedLen))
+            {
+                unpackedLen = ZipUtils::inflateMemory(const_cast<unsigned char*>(etcUnpackedData), etcUnpackedLen, &unpackedData);
+            }
+            else
+            {
+                unpackedData = const_cast<unsigned char*>(etcUnpackedData);
+                unpackedLen = etcUnpackedLen;
+            }
+        }
+        else
+        {
+            //detecgt and unzip the compress file
+            if (ZipUtils::isCCZBuffer(data, dataLen))
+            {
+                unpackedLen = ZipUtils::inflateCCZBuffer(data, dataLen, &unpackedData);
+            }
+            else if (ZipUtils::isGZipBuffer(data, dataLen))
+            {
+                unpackedLen = ZipUtils::inflateMemory(const_cast<unsigned char*>(data), dataLen, &unpackedData);
+            }
+            else
+            {
+                unpackedData = const_cast<unsigned char*>(data);
+                unpackedLen = dataLen;
+            }
+
+        }
+#else
         //detecgt and unzip the compress file
         if (ZipUtils::isCCZBuffer(data, dataLen))
         {
@@ -555,8 +596,8 @@ bool Image::initWithImageData(const unsigned char * data, ssize_t dataLen)
         {
             unpackedData = const_cast<unsigned char*>(data);
             unpackedLen = dataLen;
-        }
-
+        }        
+#endif
         _fileType = detectFormat(unpackedData, unpackedLen);
 
         switch (_fileType)

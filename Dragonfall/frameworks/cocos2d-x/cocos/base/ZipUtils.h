@@ -59,7 +59,13 @@ typedef struct unz_file_info_s unz_file_info;
         unsigned int    reserved;           /** Reserved for users. */
         unsigned int    len;                /** Size of the uncompressed file. */
     };
-
+#if USE_ETC1_ZLIB
+    //dannyhe ETC
+    struct ETCCompressedHeader{
+        int flag;
+        int fileSize;
+    };
+#endif
     enum {
         CCZ_COMPRESSION_ZLIB,               /** zlib format. */
         CCZ_COMPRESSION_BZIP2,              /** bzip2 format (not supported yet). */
@@ -154,7 +160,12 @@ typedef struct unz_file_info_s unz_file_info;
          */
         CC_DEPRECATED_ATTRIBUTE static bool ccIsCCZBuffer(const unsigned char *buffer, ssize_t len) { return isCCZBuffer(buffer, len); }
         static bool isCCZBuffer(const unsigned char *buffer, ssize_t len);
-
+        
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+        //dannyhe ETC
+        static bool isETCCompressedBuffer(const unsigned char *buffer, ssize_t len);
+        static int inflateETCCompressedBuffer(const unsigned char *buffer, ssize_t len, unsigned char **out);
+#endif
         /** 
          * Sets the pvr.ccz encryption key parts separately for added security.
          *
@@ -206,7 +217,6 @@ typedef struct unz_file_info_s unz_file_info;
          */
         CC_DEPRECATED_ATTRIBUTE static void ccSetPvrEncryptionKey(unsigned int keyPart1, unsigned int keyPart2, unsigned int keyPart3, unsigned int keyPart4) { setPvrEncryptionKey(keyPart1, keyPart2, keyPart3, keyPart4); }
         static void setPvrEncryptionKey(unsigned int keyPart1, unsigned int keyPart2, unsigned int keyPart3, unsigned int keyPart4);
-
     private:
         static int inflateMemoryWithHint(unsigned char *in, ssize_t inLength, unsigned char **out, ssize_t *outLength, ssize_t outLenghtHint);
         static inline void decodeEncodedPvr (unsigned int *data, ssize_t len);

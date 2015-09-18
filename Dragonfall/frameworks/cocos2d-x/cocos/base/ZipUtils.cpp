@@ -40,7 +40,9 @@
 #include "base/ccMacros.h"
 #include "platform/CCFileUtils.h"
 #include <map>
-
+#if USE_ETC1_ZLIB
+#define ETC1_COMPRESS_FLAG 0x12f8352 //dannyhe
+#endif
 // FIXME: Other platforms should use upstream minizip like mingw-w64  
 #ifdef MINIZIP_FROM_SYSTEM
 #define unzGoToFirstFile64(A,B,C,D) unzGoToFirstFile2(A,B,C,D, NULL, 0, NULL, 0)
@@ -341,7 +343,42 @@ bool ZipUtils::isCCZBuffer(const unsigned char *buffer, ssize_t len)
     struct CCZHeader *header = (struct CCZHeader*) buffer;
     return header->sig[0] == 'C' && header->sig[1] == 'C' && header->sig[2] == 'Z' && (header->sig[3] == '!' || header->sig[3] == 'p');
 }
+#if USE_ETC1_ZLIB
+bool ZipUtils::isETCCompressedBuffer(const unsigned char *buffer, ssize_t len)
+{
+    if (static_cast<size_t>(len) < sizeof(struct ETCCompressedHeader))
+    {
+        return false;
+    }
+    struct ETCCompressedHeader *header = (struct ETCCompressedHeader*) buffer;
+    return header->flag == ETC1_COMPRESS_FLAG && header->fileSize > 0;
+}
 
+int ZipUtils::inflateETCCompressedBuffer(const unsigned char *buffer, ssize_t bufferLen, unsigned char **out)
+{
+    struct ETCCompressedHeader *header = (struct ETCCompressedHeader*) buffer;
+    int len = header->fileSize;
+    
+    *out = (unsigned char*)malloc( len );
+    if(! *out )
+    {
+        CCLOG("cocos2d: ETCCompressed: Failed to allocate memory for texture");
+        return -1;
+    }
+    uLongf destlen = len;
+    int ret = uncompress(*out, &destlen, (Bytef*)buffer + sizeof(ETCCompressedHeader), bufferLen - sizeof(ETCCompressedHeader) );
+    
+    if( ret != Z_OK )
+    {
+        CCLOG("cocos2d: ETCCompressed: Failed to uncompress data");
+        free( *out );
+        *out = nullptr;
+        return -1;
+    }
+    
+    return len;
+}
+#endif
 
 bool ZipUtils::isGZipFile(const char *path)
 {
