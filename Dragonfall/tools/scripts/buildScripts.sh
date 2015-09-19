@@ -48,7 +48,7 @@ exportScriptsEncrypt()
 	if $NEED_ENCRYPT_SCRIPTS; then
 		$SCRIPT_COMPILE_TOOL -i $SCRIPTS_SRC_DIR -o "$tempfile" -e xxtea_zip -ex lua -ek $XXTEAKey -es $XXTEASign -q $JIT_ARGS
 	else
-		if [[ $BUILD_USE_LUA_FILE ]]; then
+		if $BUILD_USE_LUA_FILE; then
 			echo "-- 不编译lua为字节码"
 			DOCROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 			cd $SCRIPTS_SRC_DIR

@@ -40,9 +40,7 @@
 #include "base/ccMacros.h"
 #include "platform/CCFileUtils.h"
 #include <map>
-#if USE_ETC1_ZLIB
-#define ETC1_COMPRESS_FLAG 0x12f8352 //dannyhe
-#endif
+
 // FIXME: Other platforms should use upstream minizip like mingw-w64  
 #ifdef MINIZIP_FROM_SYSTEM
 #define unzGoToFirstFile64(A,B,C,D) unzGoToFirstFile2(A,B,C,D, NULL, 0, NULL, 0)
@@ -351,7 +349,7 @@ bool ZipUtils::isETCCompressedBuffer(const unsigned char *buffer, ssize_t len)
         return false;
     }
     struct ETCCompressedHeader *header = (struct ETCCompressedHeader*) buffer;
-    return header->flag == ETC1_COMPRESS_FLAG && header->fileSize > 0;
+    return header->sig[0] == '!' && header->sig[1] == 'E' && header->sig[2] == 'T' && header->sig[3] == 'C';
 }
 
 int ZipUtils::inflateETCCompressedBuffer(const unsigned char *buffer, ssize_t bufferLen, unsigned char **out)
@@ -366,7 +364,7 @@ int ZipUtils::inflateETCCompressedBuffer(const unsigned char *buffer, ssize_t bu
         return -1;
     }
     uLongf destlen = len;
-    int ret = uncompress(*out, &destlen, (Bytef*)buffer + sizeof(ETCCompressedHeader), bufferLen - sizeof(ETCCompressedHeader) );
+    int ret = uncompress(*out, &destlen, (Bytef*)buffer + sizeof(*header), bufferLen - sizeof(*header) );
     
     if( ret != Z_OK )
     {

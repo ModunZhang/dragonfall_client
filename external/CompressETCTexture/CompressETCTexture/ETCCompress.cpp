@@ -10,30 +10,18 @@
 
 #include <iostream>
 #include <stdlib.h>
-#include "StreamHelper.h"
 using namespace std;
 
 struct ZipHeaderInfo
 {
+    char sig[4];
     int fileSize;
-    int flag;
 };
-
-
-bool ETCCompress::checkETCFlag(int flag)
-{
-    return flag == ETC_HEADER_FLAG;
-}
-
-bool ETCCompress::checkETCIsCompressed(const char *filePath)
-{
-    return false;
-}
-
 
 int ETCCompress::compressETC(const char * destpath,const char *srcpath)
 {
     ZipHeaderInfo zipHeader;
+    
     
     FILE* inFile = fopen(srcpath, "rt");
     
@@ -48,10 +36,11 @@ int ETCCompress::compressETC(const char * destpath,const char *srcpath)
     fseek(inFile, 0, SEEK_SET);
     fread(fileData, 1, fileSize, inFile);
     fclose(inFile);
-    
     zipHeader.fileSize = fileSize;
-    zipHeader.flag = ETC_HEADER_FLAG;
-    
+    zipHeader.sig[0] = '!';
+    zipHeader.sig[1] = 'E';
+    zipHeader.sig[2] = 'T';
+    zipHeader.sig[3] = 'C';
     
     uLongf destLength = compressBound(fileSize);
 
@@ -72,23 +61,18 @@ int ETCCompress::compressETC(const char * destpath,const char *srcpath)
         return -1;
     }
     
-    
-    StreamHelper steamCompHeader(16*1024);
-    steamCompHeader.WriteInt(zipHeader.flag);
-    steamCompHeader.WriteInt(zipHeader.fileSize);
-    
     cout << "ETCCompress:: orignal size: " << fileSize
     << " , compressed size : " << destLength
-    << " , header size: " << steamCompHeader.GetLength()
-    << " , final size : " << steamCompHeader.GetLength() + destLength
-    << " compress ratio:" << (1 - (double)(steamCompHeader.GetLength() + destLength)/fileSize)*100 << "%"
+    << " , header size: " << sizeof(zipHeader)
+    << " , final size : " << sizeof(zipHeader) + destLength
+    << " compress ratio:" << (1 - (double)(sizeof(zipHeader) + destLength)/fileSize)*100 << "%"
     << '\n';
     
     
     FILE* fo = fopen(destpath, "wb");
     if(fo)
     {
-        fwrite(steamCompHeader.GetDataPtr(), steamCompHeader.GetLength(), 1, fo);
+        fwrite(&zipHeader, sizeof(zipHeader), 1, fo);
         fwrite(pDestBuf,destLength, 1, fo);
         fclose(fo);
         delete [] pDestBuf;
@@ -100,17 +84,16 @@ int ETCCompress::compressETC(const char * destpath,const char *srcpath)
 
 uLongf ETCCompress::unCompressETC(const char * packData,int packSize,Bytef* &buff)
 {
-    StreamHelper steamPakHeader(packData,packSize,true);
-    int flag = steamPakHeader.ReadInt();
-    if (!ETCCompress::checkETCFlag(flag)) {
-        printf("error: header error");
+    struct ZipHeaderInfo *header = (struct ZipHeaderInfo*) packData;
+    if (!(header->sig[0] == '!' && header->sig[1] == 'E' && header->sig[2] == 'T' && header->sig[3] == 'C')) {
+        printf("\n Error: header error");
         return -1;
     }
-    int orginSize = steamPakHeader.ReadInt();
-    int headerSize = sizeof(ZipHeaderInfo);
+    int orginSize = header->fileSize;
+    int headerSize = sizeof(*header);
     uLongf newSize = orginSize;
     Bytef* pUnBuf = new Bytef[newSize];
-    int result2 = uncompress(pUnBuf, &newSize,(const Bytef*)steamPakHeader.GetDataPtr() + headerSize,packSize - headerSize);
+    int result2 = uncompress(pUnBuf, &newSize,(const Bytef*)packData + headerSize,packSize - headerSize);
     if (result2 != Z_OK)
     {
         switch(result2)
@@ -145,7 +128,7 @@ int ETCCompress::unCompressETC(const char *destpath, const char *srcpath)
     uLongf newSize = unCompressETC(packData,packSize,pUnBuf);
     if (newSize == -1)
     {
-        printf("error!");
+        printf("\nuncompress error!");
         return -1;
     }
     

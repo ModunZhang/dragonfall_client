@@ -10,7 +10,6 @@
 		3F2CCCB71BA94D2F0093C12D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3F2CCCB61BA94D2F0093C12D /* main.cpp */; };
 		3F2CCD311BA9552E0093C12D /* ETCCompress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3F2CCD2F1BA9552E0093C12D /* ETCCompress.cpp */; };
 		3F2CCD3B1BA973BC0093C12D /* libzlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F2CCD3A1BA973BC0093C12D /* libzlib.a */; };
-		3F2CCD401BA978440093C12D /* StreamHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3F2CCD3E1BA978440093C12D /* StreamHelper.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,8 +30,6 @@
 		3F2CCD2F1BA9552E0093C12D /* ETCCompress.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ETCCompress.cpp; sourceTree = "<group>"; };
 		3F2CCD301BA9552E0093C12D /* ETCCompress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETCCompress.h; sourceTree = "<group>"; };
 		3F2CCD3A1BA973BC0093C12D /* libzlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libzlib.a; sourceTree = "<group>"; };
-		3F2CCD3E1BA978440093C12D /* StreamHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StreamHelper.cpp; sourceTree = "<group>"; };
-		3F2CCD3F1BA978440093C12D /* StreamHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StreamHelper.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,8 +67,6 @@
 				3F2CCCB61BA94D2F0093C12D /* main.cpp */,
 				3F2CCD2F1BA9552E0093C12D /* ETCCompress.cpp */,
 				3F2CCD301BA9552E0093C12D /* ETCCompress.h */,
-				3F2CCD3E1BA978440093C12D /* StreamHelper.cpp */,
-				3F2CCD3F1BA978440093C12D /* StreamHelper.h */,
 			);
 			path = CompressETCTexture;
 			sourceTree = "<group>";
@@ -134,7 +129,6 @@
 			files = (
 				3F2CCCB71BA94D2F0093C12D /* main.cpp in Sources */,
 				3F2CCD311BA9552E0093C12D /* ETCCompress.cpp in Sources */,
-				3F2CCD401BA978440093C12D /* StreamHelper.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

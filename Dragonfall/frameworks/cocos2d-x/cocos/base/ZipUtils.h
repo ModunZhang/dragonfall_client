@@ -62,7 +62,7 @@ typedef struct unz_file_info_s unz_file_info;
 #if USE_ETC1_ZLIB
     //dannyhe ETC
     struct ETCCompressedHeader{
-        int flag;
+        char sig[4];
         int fileSize;
     };
 #endif
