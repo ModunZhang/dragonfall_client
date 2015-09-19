@@ -246,4 +246,9 @@ getPlatformProjectRoot()
 		echo ${root_dir}/frameworks/runtime-src/proj.android
 	fi
 }
+getETCCompressTool()
+{
+	DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+	echo $DIR/../TextureTools/CompressETCTexture
+}
 $@

@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlib", "zlib.vcproj", "{7E839C1B-715F-4830-89BB-859AC16BD5BB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		PSP2 Debug|Win32 = PSP2 Debug|Win32
+		PSP2 Release|Win32 = PSP2 Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7E839C1B-715F-4830-89BB-859AC16BD5BB}.PSP2 Debug|Win32.ActiveCfg = PSP2 Debug|Win32
+		{7E839C1B-715F-4830-89BB-859AC16BD5BB}.PSP2 Debug|Win32.Build.0 = PSP2 Debug|Win32
+		{7E839C1B-715F-4830-89BB-859AC16BD5BB}.PSP2 Release|Win32.ActiveCfg = PSP2 Release|Win32
+		{7E839C1B-715F-4830-89BB-859AC16BD5BB}.PSP2 Release|Win32.Build.0 = PSP2 Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

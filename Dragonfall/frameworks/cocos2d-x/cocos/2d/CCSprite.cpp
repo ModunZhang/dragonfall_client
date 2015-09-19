@@ -44,7 +44,7 @@ THE SOFTWARE.
 #if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
 #include "renderer/CCGLProgramCache.h"
 #endif
-#define ETC_ALPHA_USE_A8 1
+#define ETC_ALPHA_USE_A8 0
 
 NS_CC_BEGIN
 

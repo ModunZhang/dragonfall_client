@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlib", "zlib.vcproj", "{7F7CCFA9-2079-4131-ADE5-C82AC1A0A3F8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		CTR Debug|Win32 = CTR Debug|Win32
+		CTR Development|Win32 = CTR Development|Win32
+		CTR Release|Win32 = CTR Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7F7CCFA9-2079-4131-ADE5-C82AC1A0A3F8}.CTR Debug|Win32.ActiveCfg = CTR Debug|Win32
+		{7F7CCFA9-2079-4131-ADE5-C82AC1A0A3F8}.CTR Debug|Win32.Build.0 = CTR Debug|Win32
+		{7F7CCFA9-2079-4131-ADE5-C82AC1A0A3F8}.CTR Development|Win32.ActiveCfg = CTR Development|Win32
+		{7F7CCFA9-2079-4131-ADE5-C82AC1A0A3F8}.CTR Development|Win32.Build.0 = CTR Development|Win32
+		{7F7CCFA9-2079-4131-ADE5-C82AC1A0A3F8}.CTR Release|Win32.ActiveCfg = CTR Release|Win32
+		{7F7CCFA9-2079-4131-ADE5-C82AC1A0A3F8}.CTR Release|Win32.Build.0 = CTR Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

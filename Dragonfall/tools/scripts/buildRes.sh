@@ -10,8 +10,12 @@ PVRTOOL=`./functions.sh getPVRTexTool`
 IMAGEFORMAT="ETC1"
 IMAGEQUALITY="etcfast"
 CONVERTTOOL=`./functions.sh getConvertTool`
-ALPHA_USE_ETC=$fale
+ALPHA_USE_ETC=true
+COMPRESS_ETC_FILE=true
 TEMP_RES_DIR=`./functions.sh getTempDir $Platform`
+ETCPackTool=`./functions.sh getETCCompressTool`
+
+
 exportImagesRes()
 {
 	echo -- 处理images文件夹
@@ -74,18 +78,30 @@ exportImagesRes()
 
 						$CONVERTTOOL "$file" -alpha Off "$tempRGBfile" 
 						$CONVERTTOOL "$file" -channel A -alpha extract "$tempAlphaFile"
-						if [[ $ALPHA_USE_ETC ]]; then
+						if $ALPHA_USE_ETC; then
 							tempAlphaFile_ETC="${TEMP_RES_DIR}/${tempfileName}_alpha_etc1.pvr"
 							$PVRTOOL -f $IMAGEFORMAT -i "$tempAlphaFile" -o "$tempAlphaFile_ETC" -q $IMAGEQUALITY
-							mv -f "$tempAlphaFile_ETC" "$tempAlphaFile"
+							if $COMPRESS_ETC_FILE; then
+								$ETCPackTool pack "$tempAlphaFile_ETC" "$tempAlphaFile"
+							else
+								mv -f "$tempAlphaFile_ETC" "$tempAlphaFile"
+							fi
 						fi
 						$PVRTOOL -f $IMAGEFORMAT -i "$tempRGBfile" -o "$tempRGBfile_ETC" -q $IMAGEQUALITY
 						if $NEED_ENCRYPT_RES;then
-							mv -f "$tempRGBfile_ETC" "$tempRGBfile"
+							if $COMPRESS_ETC_FILE; then
+								$ETCPackTool pack "$tempRGBfile_ETC" "$tempRGBfile"
+							else
+								mv -f "$tempRGBfile_ETC" "$tempRGBfile"
+							fi
 							test -d $finalDir || mkdir -p $finalDir && $RES_COMPILE_TOOL -i "$tempRGBfile" -o $finalDir -ek $XXTEAKey -es $XXTEASign -q
 							test -d $finalDir || mkdir -p $finalDir && $RES_COMPILE_TOOL -i "$tempAlphaFile" -o $finalDir -ek $XXTEAKey -es $XXTEASign -q
 						else
-							mv -f "$tempRGBfile_ETC" "$outfile"
+							if $COMPRESS_ETC_FILE; then
+								$ETCPackTool pack "$tempRGBfile_ETC" "$outfile"
+							else
+								mv -f "$tempRGBfile_ETC" "$outfile"
+							fi
 							mv -f "$tempAlphaFile" "$outAlphaFile"
 						fi
 					fi
@@ -160,18 +176,31 @@ exportImagesRes()
 
 				$CONVERTTOOL "$file" -alpha Off "$tempRGBfile" 
 				$CONVERTTOOL "$file" -channel A -alpha extract "$tempAlphaFile"
-				if [[ $ALPHA_USE_ETC  ]]; then
+				if $ALPHA_USE_ETC; then
 					tempAlphaFile_ETC="${TEMP_RES_DIR}/${tempfileName}_alpha_etc1.pvr"
 					$PVRTOOL -f $IMAGEFORMAT -i "$tempAlphaFile" -o "$tempAlphaFile_ETC" -q $IMAGEQUALITY
-					mv -f "$tempAlphaFile_ETC" "$tempAlphaFile"
+					if $COMPRESS_ETC_FILE; then
+						$ETCPackTool pack "$tempAlphaFile_ETC" "$tempAlphaFile"
+					else
+						mv -f "$tempAlphaFile_ETC" "$tempAlphaFile"
+					fi
+					
 				fi
 				$PVRTOOL -f $IMAGEFORMAT -i "$tempRGBfile" -o "$tempRGBfile_ETC" -q $IMAGEQUALITY
 				if $NEED_ENCRYPT_RES;then
-					mv -f "$tempRGBfile_ETC" "$tempRGBfile"
+					if $COMPRESS_ETC_FILE; then
+						$ETCPackTool pack "$tempRGBfile_ETC" "$tempRGBfile"
+					else
+						mv -f "$tempRGBfile_ETC" "$tempRGBfile"
+					fi
 					test -d $finalDir || mkdir -p $finalDir && $RES_COMPILE_TOOL -i "$tempRGBfile" -o $finalDir -ek $XXTEAKey -es $XXTEASign -q
 					test -d $finalDir || mkdir -p $finalDir && $RES_COMPILE_TOOL -i "$tempAlphaFile" -o $finalDir -ek $XXTEAKey -es $XXTEASign -q
 				else
-					mv -f "$tempRGBfile_ETC" "$outfile"
+					if $COMPRESS_ETC_FILE; then
+						$ETCPackTool pack "$tempRGBfile_ETC" "$outfile"
+					else
+						mv -f "$tempRGBfile_ETC" "$outfile"
+					fi
 					mv -f "$tempAlphaFile" "$outAlphaFile"
 				fi
 			fi
@@ -236,19 +265,31 @@ exportETCAnimationRes()
 					$CONVERTTOOL "$file" -alpha Off "$tempRGBfile" 
 					$CONVERTTOOL "$file" -channel A -alpha extract "$tempAlphaFile"
 
-					if [[ $ALPHA_USE_ETC ]]; then
+					if $ALPHA_USE_ETC; then
 						tempAlphaFile_ETC="${TEMP_RES_DIR}/${tempfileName}_alpha_etc1.pvr"
 						$PVRTOOL -f $IMAGEFORMAT -i "$tempAlphaFile" -o "$tempAlphaFile_ETC" -q $IMAGEQUALITY
-						mv -f "$tempAlphaFile_ETC" "$tempAlphaFile"
+						if $COMPRESS_ETC_FILE; then
+							$ETCPackTool pack "$tempAlphaFile_ETC" "$tempAlphaFile"
+						else
+							mv -f "$tempAlphaFile_ETC" "$tempAlphaFile"
+						fi
 					fi
 
 					$PVRTOOL -f $IMAGEFORMAT -i "$tempRGBfile" -o "$tempRGBfile_ETC" -q $IMAGEQUALITY
 					if $NEED_ENCRYPT_RES;then
-						mv -f "$tempRGBfile_ETC" "$tempRGBfile"
+						if $COMPRESS_ETC_FILE; then
+							$ETCPackTool pack "$tempRGBfile_ETC" "$tempRGBfile"
+						else
+							mv -f "$tempRGBfile_ETC" "$tempRGBfile"
+						fi
 						test -d $finalDir || mkdir -p $finalDir && $RES_COMPILE_TOOL -i "$tempRGBfile" -o $finalDir -ek $XXTEAKey -es $XXTEASign -q
 						test -d $finalDir || mkdir -p $finalDir && $RES_COMPILE_TOOL -i "$tempAlphaFile" -o $finalDir -ek $XXTEAKey -es $XXTEASign -q
 					else
-						mv -f "$tempRGBfile_ETC" "$outfile"
+						if $COMPRESS_ETC_FILE; then
+							$ETCPackTool pack "$tempRGBfile_ETC" "$outfile"
+						else
+							mv -f "$tempRGBfile_ETC" "$outfile"
+						fi
 						mv -f "$tempAlphaFile" "$outAlphaFile"
 					fi
 				fi
