@@ -1,5 +1,4 @@
 //
-//  CZlib.cpp
 //  CompressETCTexture
 //
 //  Created by DannyHe on 9/16/15.

@@ -15,6 +15,7 @@ int main(int argc, const char * argv[]) {
         printf("Help:\nCompressETCTexture options srcpath outpath\n");
         printf("options:\npack -- pack the file\n");
         printf("unpack -- unpack the file\n");
+        return -1;
     }
     std::string options = argv[1];
     std::string srcpath = argv[2];

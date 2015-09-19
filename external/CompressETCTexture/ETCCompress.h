@@ -1,5 +1,3 @@
-//
-//  CZlib.h
 //  CompressETCTexture
 //
 //  Created by DannyHe on 9/16/15.
@@ -8,7 +6,7 @@
 
 #ifndef __CompressETCTexture__CZlib__
 #define __CompressETCTexture__CZlib__
-#include "zlib.h"
+#include <zlib.h>
 
 class ETCCompress
 {
