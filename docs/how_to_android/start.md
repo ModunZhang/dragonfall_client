@@ -226,6 +226,7 @@ CC_USE_SQLITE  | Sqlite 数据库扩展 lsqlite3
 CC_USE_3D    | 使用 3D 模块。 包括3D 粒子
 CC_USE_CCBUILDER | 使用 Cocos Builder 支持模块。
 CC_USE_SPINE | 使用骨骼动画
+CC_USE_ETC1_ZLIB | 打开贴图文件的zlib压缩检查功能,用来压缩etc1文件。需要配合自定义的命令行工具CompressETCTexture用。
 
 ---
 
