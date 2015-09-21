@@ -50,21 +50,21 @@ int ETCCompress::compressETC(const char * destpath,const char *srcpath)
         switch(result)
         {
             case Z_MEM_ERROR:
-                printf("note enough memory for compression");
+                printf("ETCCompress:: note enough memory for compression");
                 break;
                 
             case Z_BUF_ERROR:
-                printf("note enough room in buffer to compress the data");
+                printf("ETCCompress:: note enough room in buffer to compress the data");
                 break;
         }
         return -1;
     }
     
-    cout << "ETCCompress:: orignal size: " << fileSize
-    << " , compressed size : " << destLength
-    << " , header size: " << sizeof(zipHeader)
-    << " , final size : " << sizeof(zipHeader) + destLength
-    << " compress ratio:" << (1 - (double)(sizeof(zipHeader) + destLength)/fileSize)*100 << "%"
+    cout << "ETCCompress:: orignal size: " << fileSize << " bytes"
+    << " , compressed size : " << destLength << " bytes"
+    << " , header size: " << sizeof(zipHeader) << " bytes"
+    << " , final size : " << sizeof(zipHeader) + destLength << " bytes"
+    << " , compress ratio:" << (1 - (double)(sizeof(zipHeader) + destLength)/fileSize)*100 << "%"
     << '\n';
     
     
@@ -85,7 +85,7 @@ uLongf ETCCompress::unCompressETC(const char * packData,int packSize,Bytef* &buf
 {
     struct ZipHeaderInfo *header = (struct ZipHeaderInfo*) packData;
     if (!(header->sig[0] == '!' && header->sig[1] == 'E' && header->sig[2] == 'T' && header->sig[3] == 'C')) {
-        printf("\n Error: header error");
+        printf("\nETCCompress:: header error");
         return -1;
     }
     int orginSize = header->fileSize;
@@ -98,18 +98,18 @@ uLongf ETCCompress::unCompressETC(const char * packData,int packSize,Bytef* &buf
         switch(result2)
         {
             case Z_MEM_ERROR:
-                printf("note enough memory for uncompression");
+                printf("ETCCompress:: note enough memory for uncompression");
                 break;
                 
             case Z_BUF_ERROR:
-                printf("note enough room in buffer to uncompress the data");
+                printf("ETCCompress:: note enough room in buffer to uncompress the data");
                 break;
         }
         return -1;
     }
     buff = pUnBuf;
-    cout << "orignal size: " << packSize
-    << " , ucompressed size : " << orginSize << '\n';
+    cout << "orignal size: " << packSize << " bytes" 
+    << " , ucompressed size : " << orginSize << " bytes" << '\n';
     return newSize;
 }
 
@@ -127,7 +127,7 @@ int ETCCompress::unCompressETC(const char *destpath, const char *srcpath)
     uLongf newSize = unCompressETC(packData,packSize,pUnBuf);
     if (newSize == -1)
     {
-        printf("\nuncompress error!");
+        printf("\nETCCompress:: uncompress error!");
         return -1;
     }
     
