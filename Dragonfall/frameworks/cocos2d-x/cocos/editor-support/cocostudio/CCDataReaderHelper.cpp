@@ -139,7 +139,7 @@ static const char *COLOR_INFO = "color";
 
 static const char *CONFIG_FILE_PATH = "config_file_path";
 static const char *CONTENT_SCALE = "content_scale";
-#ifdef COCOSTUDIO_JSON_USE_CONFIG_PNG_FILE //dannyhe
+#if COCOSTUDIO_JSON_USE_CONFIG_PNG_FILE //dannyhe
 static const char *CONFIG_PNG_PATH = "config_png_path";
 #endif
 namespace cocostudio {
@@ -488,7 +488,7 @@ void DataReaderHelper::addDataAsyncCallBack(float dt)
         while (!pDataInfo->configFileQueue.empty())
         {
             std::string configPath = pDataInfo->configFileQueue.front();
-#ifndef COCOSTUDIO_JSON_USE_CONFIG_PNG_FILE //dannyhe
+#if (COCOSTUDIO_JSON_USE_CONFIG_PNG_FILE == 0) //dannyhe
             _getFileMutex.lock();
             ArmatureDataManager::getInstance()->addSpriteFrameFromFile((pAsyncStruct->baseFilePath + configPath + ".plist").c_str(), (pAsyncStruct->baseFilePath + configPath + ".png").c_str(),pDataInfo->filename.c_str());
             _getFileMutex.unlock();
@@ -1324,7 +1324,7 @@ void DataReaderHelper::addDataFromJsonCache(const std::string& fileContent, Data
     bool autoLoad = dataInfo->asyncStruct == nullptr ? ArmatureDataManager::getInstance()->isAutoLoadSpriteFile() : dataInfo->asyncStruct->autoLoadSpriteFile;
     if (autoLoad)
     {
-#ifndef COCOSTUDIO_JSON_USE_CONFIG_PNG_FILE //dannyhe
+#if (COCOSTUDIO_JSON_USE_CONFIG_PNG_FILE == 0) //dannyhe
         length =  DICTOOL->getArrayCount_json(json, CONFIG_FILE_PATH); // json[CONFIG_FILE_PATH].IsNull() ? 0 : json[CONFIG_FILE_PATH].Size();
         for (int i = 0; i < length; i++)
         {

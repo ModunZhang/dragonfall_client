@@ -541,7 +541,7 @@ bool Image::initWithImageData(const unsigned char * data, ssize_t dataLen)
         
         unsigned char* unpackedData = nullptr;
         ssize_t unpackedLen = 0;
-#if USE_ETC1_ZLIB
+#if CC_USE_ETC1_ZLIB
         //dannyhe
         if(ZipUtils::isETCCompressedBuffer(data,dataLen))
         {

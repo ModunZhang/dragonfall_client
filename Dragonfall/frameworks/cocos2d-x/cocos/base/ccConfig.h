@@ -249,10 +249,7 @@ THE SOFTWARE.
 
 /** Use physics integration API. */
 #ifndef CC_USE_PHYSICS
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-#else
 #define CC_USE_PHYSICS 1
-#endif
 #endif
 
 /** Use culling or not. */
@@ -331,5 +328,44 @@ THE SOFTWARE.
 #ifndef CC_ALLOCATOR_GLOBAL_NEW_DELETE
 # define CC_ALLOCATOR_GLOBAL_NEW_DELETE cocos2d::allocator::AllocatorStrategyGlobalSmallBlock
 #endif
+
+//dannyhe
+/**
+ * 下面的这些宏只是为了显示的表明支持了这些宏,定义在这里.实质定义生效是在xcode的target编译设置里面，Android是在mk文件里
+ */
+#ifndef CC_USE_CCBUILDER
+#define CC_USE_CCBUILDER 1
+#endif
+
+#ifndef CC_USE_3D
+#define CC_USE_3D 1
+#endif
+
+#ifndef CC_USE_SQLITE
+#define CC_USE_SQLITE 1
+#endif
+
+#ifndef CC_USE_NETWORK_SOKET
+#define CC_USE_NETWORK_SOKET 1
+#endif
+
+
+#ifndef CC_USE_SPINE
+#define CC_USE_SPINE 1
+#endif
+
+#ifndef COCOSTUDIO_JSON_USE_CONFIG_PNG_FILE
+#define COCOSTUDIO_JSON_USE_CONFIG_PNG_FILE 1
+#endif
+
+#ifndef USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+#define USE_ETC1_TEXTURE_WITH_ALPHA_DATA 1
+#endif
+
+#ifndef CC_USE_ETC1_ZLIB
+#define CC_USE_ETC1_ZLIB 1
+#endif
+
+
 
 #endif // __CCCONFIG_H__

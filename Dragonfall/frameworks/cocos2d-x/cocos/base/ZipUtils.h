@@ -59,7 +59,7 @@ typedef struct unz_file_info_s unz_file_info;
         unsigned int    reserved;           /** Reserved for users. */
         unsigned int    len;                /** Size of the uncompressed file. */
     };
-#if USE_ETC1_ZLIB
+#if CC_USE_ETC1_ZLIB
     //dannyhe ETC
     struct ETCCompressedHeader{
         char sig[4];

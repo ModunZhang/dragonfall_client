@@ -341,7 +341,7 @@ bool ZipUtils::isCCZBuffer(const unsigned char *buffer, ssize_t len)
     struct CCZHeader *header = (struct CCZHeader*) buffer;
     return header->sig[0] == 'C' && header->sig[1] == 'C' && header->sig[2] == 'Z' && (header->sig[3] == '!' || header->sig[3] == 'p');
 }
-#if USE_ETC1_ZLIB
+#if CC_USE_ETC1_ZLIB
 bool ZipUtils::isETCCompressedBuffer(const unsigned char *buffer, ssize_t len)
 {
     if (static_cast<size_t>(len) < sizeof(struct ETCCompressedHeader))
