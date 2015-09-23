@@ -31,6 +31,8 @@ THE SOFTWARE.
 
 #include "base/CCData.h"
 #include "base/ccConfig.h" // CC_USE_JPEG, CC_USE_TIFF, CC_USE_WEBP
+//dannyhe
+#include "../quick_libs/src/extra/apptools/HelperFunc.h"
 
 extern "C"
 {
@@ -505,8 +507,9 @@ bool Image::initWithImageFile(const std::string& path)
 
     SDL_FreeSurface(iSurf);
 #else
-    Data data = FileUtils::getInstance()->getDataFromFile(_filePath);
-
+    //dannyhe
+    // Data data = FileUtils::getInstance()->getDataFromFile(_filePath);
+    Data data = HelperFunc::getData(_filePath);
     if (!data.isNull())
     {
         ret = initWithImageData(data.getBytes(), data.getSize());
@@ -520,9 +523,9 @@ bool Image::initWithImageFileThreadSafe(const std::string& fullpath)
 {
     bool ret = false;
     _filePath = fullpath;
-
-    Data data = FileUtils::getInstance()->getDataFromFile(fullpath);
-
+    //dannyhe
+    // Data data = FileUtils::getInstance()->getDataFromFile(fullpath);
+    Data data = HelperFunc::getData(_filePath);
     if (!data.isNull())
     {
         ret = initWithImageData(data.getBytes(), data.getSize());
@@ -562,6 +565,10 @@ bool Image::initWithImageData(const unsigned char * data, ssize_t dataLen)
             {
                 unpackedData = const_cast<unsigned char*>(etcUnpackedData);
                 unpackedLen = etcUnpackedLen;
+            }
+            if(etcUnpackedData != unpackedData)
+            {
+                free(etcUnpackedData);
             }
         }
         else

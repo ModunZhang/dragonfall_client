@@ -20,19 +20,6 @@
 		3F0840C01B9BDFC400A52544 /* Sysmail.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3F0840371B9BDFC300A52544 /* Sysmail.mm */; };
 		3F0840C11B9BDFC400A52544 /* UICKeyChainStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F08403A1B9BDFC300A52544 /* UICKeyChainStore.m */; };
 		3F0840C21B9BDFC400A52544 /* CCPomelo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3F08403D1B9BDFC300A52544 /* CCPomelo.cpp */; };
-		3F0840C31B9BDFC400A52544 /* dump.c in Sources */ = {isa = PBXBuildFile; fileRef = 3F0840421B9BDFC300A52544 /* dump.c */; };
-		3F0840C41B9BDFC400A52544 /* error.c in Sources */ = {isa = PBXBuildFile; fileRef = 3F0840431B9BDFC300A52544 /* error.c */; };
-		3F0840C51B9BDFC400A52544 /* hashtable.c in Sources */ = {isa = PBXBuildFile; fileRef = 3F0840441B9BDFC300A52544 /* hashtable.c */; };
-		3F0840C61B9BDFC400A52544 /* jansson.def in Resources */ = {isa = PBXBuildFile; fileRef = 3F0840461B9BDFC300A52544 /* jansson.def */; };
-		3F0840C71B9BDFC400A52544 /* jansson_config.h.in in Resources */ = {isa = PBXBuildFile; fileRef = 3F0840491B9BDFC300A52544 /* jansson_config.h.in */; };
-		3F0840C81B9BDFC400A52544 /* load.c in Sources */ = {isa = PBXBuildFile; fileRef = 3F08404B1B9BDFC300A52544 /* load.c */; };
-		3F0840C91B9BDFC400A52544 /* Makefile.am in Resources */ = {isa = PBXBuildFile; fileRef = 3F08404C1B9BDFC300A52544 /* Makefile.am */; };
-		3F0840CA1B9BDFC400A52544 /* memory.c in Sources */ = {isa = PBXBuildFile; fileRef = 3F08404D1B9BDFC300A52544 /* memory.c */; };
-		3F0840CB1B9BDFC400A52544 /* pack_unpack.c in Sources */ = {isa = PBXBuildFile; fileRef = 3F08404E1B9BDFC300A52544 /* pack_unpack.c */; };
-		3F0840CC1B9BDFC400A52544 /* strbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 3F08404F1B9BDFC300A52544 /* strbuffer.c */; };
-		3F0840CD1B9BDFC400A52544 /* strconv.c in Sources */ = {isa = PBXBuildFile; fileRef = 3F0840511B9BDFC300A52544 /* strconv.c */; };
-		3F0840CE1B9BDFC400A52544 /* utf.c in Sources */ = {isa = PBXBuildFile; fileRef = 3F0840521B9BDFC300A52544 /* utf.c */; };
-		3F0840CF1B9BDFC400A52544 /* value.c in Sources */ = {isa = PBXBuildFile; fileRef = 3F0840541B9BDFC300A52544 /* value.c */; };
 		3F0840D71B9BDFC400A52544 /* MarketSDKTool-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3F08407C1B9BDFC300A52544 /* MarketSDKTool-ios.mm */; };
 		3F0840F81B9BE31800A52544 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F0840F71B9BE31800A52544 /* CoreTelephony.framework */; };
 		3F0840FA1B9BE31F00A52544 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F0840F91B9BE31F00A52544 /* GameKit.framework */; };
@@ -189,25 +176,12 @@
 		3F08403A1B9BDFC300A52544 /* UICKeyChainStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICKeyChainStore.m; sourceTree = "<group>"; };
 		3F08403D1B9BDFC300A52544 /* CCPomelo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCPomelo.cpp; sourceTree = "<group>"; };
 		3F08403E1B9BDFC300A52544 /* CCPomelo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPomelo.h; sourceTree = "<group>"; };
-		3F0840421B9BDFC300A52544 /* dump.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dump.c; sourceTree = "<group>"; };
-		3F0840431B9BDFC300A52544 /* error.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = error.c; sourceTree = "<group>"; };
-		3F0840441B9BDFC300A52544 /* hashtable.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = hashtable.c; sourceTree = "<group>"; };
 		3F0840451B9BDFC300A52544 /* hashtable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hashtable.h; sourceTree = "<group>"; };
-		3F0840461B9BDFC300A52544 /* jansson.def */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = jansson.def; sourceTree = "<group>"; };
 		3F0840471B9BDFC300A52544 /* jansson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jansson.h; sourceTree = "<group>"; };
 		3F0840481B9BDFC300A52544 /* jansson_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jansson_config.h; sourceTree = "<group>"; };
-		3F0840491B9BDFC300A52544 /* jansson_config.h.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = jansson_config.h.in; sourceTree = "<group>"; };
 		3F08404A1B9BDFC300A52544 /* jansson_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jansson_private.h; sourceTree = "<group>"; };
-		3F08404B1B9BDFC300A52544 /* load.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = load.c; sourceTree = "<group>"; };
-		3F08404C1B9BDFC300A52544 /* Makefile.am */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.am; sourceTree = "<group>"; };
-		3F08404D1B9BDFC300A52544 /* memory.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = memory.c; sourceTree = "<group>"; };
-		3F08404E1B9BDFC300A52544 /* pack_unpack.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pack_unpack.c; sourceTree = "<group>"; };
-		3F08404F1B9BDFC300A52544 /* strbuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = strbuffer.c; sourceTree = "<group>"; };
 		3F0840501B9BDFC300A52544 /* strbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = strbuffer.h; sourceTree = "<group>"; };
-		3F0840511B9BDFC300A52544 /* strconv.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = strconv.c; sourceTree = "<group>"; };
-		3F0840521B9BDFC300A52544 /* utf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = utf.c; sourceTree = "<group>"; };
 		3F0840531B9BDFC300A52544 /* utf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utf.h; sourceTree = "<group>"; };
-		3F0840541B9BDFC300A52544 /* value.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = value.c; sourceTree = "<group>"; };
 		3F0840581B9BDFC300A52544 /* ngx-queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ngx-queue.h"; sourceTree = "<group>"; };
 		3F0840591B9BDFC300A52544 /* stdint-msvc2008.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "stdint-msvc2008.h"; sourceTree = "<group>"; };
 		3F08405A1B9BDFC300A52544 /* tree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tree.h; sourceTree = "<group>"; };
@@ -468,25 +442,12 @@
 		3F0840411B9BDFC300A52544 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				3F0840421B9BDFC300A52544 /* dump.c */,
-				3F0840431B9BDFC300A52544 /* error.c */,
-				3F0840441B9BDFC300A52544 /* hashtable.c */,
 				3F0840451B9BDFC300A52544 /* hashtable.h */,
-				3F0840461B9BDFC300A52544 /* jansson.def */,
 				3F0840471B9BDFC300A52544 /* jansson.h */,
 				3F0840481B9BDFC300A52544 /* jansson_config.h */,
-				3F0840491B9BDFC300A52544 /* jansson_config.h.in */,
 				3F08404A1B9BDFC300A52544 /* jansson_private.h */,
-				3F08404B1B9BDFC300A52544 /* load.c */,
-				3F08404C1B9BDFC300A52544 /* Makefile.am */,
-				3F08404D1B9BDFC300A52544 /* memory.c */,
-				3F08404E1B9BDFC300A52544 /* pack_unpack.c */,
-				3F08404F1B9BDFC300A52544 /* strbuffer.c */,
 				3F0840501B9BDFC300A52544 /* strbuffer.h */,
-				3F0840511B9BDFC300A52544 /* strconv.c */,
-				3F0840521B9BDFC300A52544 /* utf.c */,
 				3F0840531B9BDFC300A52544 /* utf.h */,
-				3F0840541B9BDFC300A52544 /* value.c */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -949,12 +910,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				3FDC6A061BB12D5300F29DE2 /* Images.xcassets in Resources */,
-				3F0840C71B9BDFC400A52544 /* jansson_config.h.in in Resources */,
 				3FA641D61BB1305F002107DC /* Info.plist in Resources */,
-				3F0840C61B9BDFC400A52544 /* jansson.def in Resources */,
 				3F0841041B9BE6ED00A52544 /* scripts in Resources */,
 				3FABD26E1B9C3BF300C71BEB /* Droid Sans Fallback.ttf in Resources */,
-				3F0840C91B9BDFC400A52544 /* Makefile.am in Resources */,
 				C05D1C121923449100B808A4 /* config.json in Resources */,
 				3F0841031B9BE6ED00A52544 /* res in Resources */,
 				3FA641DB1BB13186002107DC /* InfoPlist.strings in Resources */,
@@ -984,19 +942,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3F0840CF1B9BDFC400A52544 /* value.c in Sources */,
 				3F0840BD1B9BDFC400A52544 /* LuaExtension.cpp in Sources */,
 				3F0840BC1B9BDFC400A52544 /* LocalNotification.mm in Sources */,
 				3F0840B51B9BDFC400A52544 /* GameCenter.mm in Sources */,
 				3F0840C11B9BDFC400A52544 /* UICKeyChainStore.m in Sources */,
 				3F0840BE1B9BDFC400A52544 /* ext_sysmail.cpp in Sources */,
 				9FC760451A677A4A00D1E6E7 /* SimpleConfigParser.cpp in Sources */,
-				3F0840CD1B9BDFC400A52544 /* strconv.c in Sources */,
-				3F0840C41B9BDFC400A52544 /* error.c in Sources */,
 				3F0840C01B9BDFC400A52544 /* Sysmail.mm in Sources */,
-				3F0840C51B9BDFC400A52544 /* hashtable.c in Sources */,
 				5023812517EBBCAC00990C9B /* RootViewController.mm in Sources */,
-				3F0840C81B9BDFC400A52544 /* load.c in Sources */,
 				F293BB9C15EB831F00256477 /* AppDelegate.cpp in Sources */,
 				5023812417EBBCAC00990C9B /* main.m in Sources */,
 				3F0840C21B9BDFC400A52544 /* CCPomelo.cpp in Sources */,
@@ -1005,12 +958,7 @@
 				3F0840B61B9BDFC400A52544 /* FileOperation.cpp in Sources */,
 				3F0840BA1B9BDFC400A52544 /* ext_local_push.cpp in Sources */,
 				3F0840B41B9BDFC400A52544 /* crc32.c in Sources */,
-				3F0840CB1B9BDFC400A52544 /* pack_unpack.c in Sources */,
-				3F0840CA1B9BDFC400A52544 /* memory.c in Sources */,
 				5023811817EBBCAC00990C9B /* AppController.mm in Sources */,
-				3F0840CE1B9BDFC400A52544 /* utf.c in Sources */,
-				3F0840C31B9BDFC400A52544 /* dump.c in Sources */,
-				3F0840CC1B9BDFC400A52544 /* strbuffer.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

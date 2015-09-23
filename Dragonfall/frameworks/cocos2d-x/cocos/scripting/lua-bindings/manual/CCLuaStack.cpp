@@ -780,7 +780,29 @@ void LuaStack::cleanupXXTEAKeyAndSign()
         _xxteaSignLen = 0;
     }
 }
+//dannyhe
+const char* LuaStack::getXXTEAKey(int *len)
+{
+    if (_xxteaEnabled && _xxteaKey) {
+        if (len) {
+            *len = _xxteaKeyLen;
+        }
+        return _xxteaKey;
+    }
+    return nullptr;
+}
 
+const char* LuaStack::getXXTEASign(int *len)
+{
+    if (_xxteaEnabled && _xxteaSign) {
+        if (len) {
+            *len = _xxteaSignLen;
+        }
+        return _xxteaSign;
+    }
+    return nullptr;
+}
+//end
 int LuaStack::loadChunksFromZIP(const char *zipFilePath)
 {
     pushString(zipFilePath);

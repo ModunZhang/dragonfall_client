@@ -32,6 +32,8 @@ extern "C" {
 
 #include "cocos2d.h"
 #include "CCLuaValue.h"
+//dannyhe
+#define LUASTACK_USED_FOR_QUICK_COCOS2DX
 
 NS_CC_BEGIN
 
@@ -301,6 +303,11 @@ public:
      * free the key and sign for xxtea encryption algorithm.
      */
     virtual void cleanupXXTEAKeyAndSign();
+    
+    //dannyhe
+    virtual const char *getXXTEAKey(int *len);
+    
+    virtual const char *getXXTEASign(int *len);
     
     /**
      * Loads a buffer as a Lua chunk.This function uses lua_load to load the Lua chunk in the buffer pointed to by chunk with size chunkSize.
