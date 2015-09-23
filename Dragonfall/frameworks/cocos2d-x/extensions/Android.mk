@@ -176,11 +176,6 @@ Particle3D/PU/CCPUSlaveBehaviour.cpp \
 Particle3D/PU/CCPUSlaveBehaviourTranslator.cpp 
 endif
 
-LOCAL_STATIC_LIBRARIES := cocos2dx_internal_static
-#ifeq ($(CC_USE_PHYSICS),1)
-LOCAL_STATIC_LIBRARIES += box2d_static
-#endif
-
 ifeq ($(CC_USE_CURL),1)
 LOCAL_SRC_FILES += \
 assets-manager/AssetsManager.cpp \
@@ -188,9 +183,18 @@ assets-manager/Downloader.cpp \
 assets-manager/Manifest.cpp \
 assets-manager/AssetsManagerEx.cpp \
 assets-manager/CCEventAssetsManagerEx.cpp \
-assets-manager/CCEventListenerAssetsManagerEx.cpp \
+assets-manager/CCEventListenerAssetsManagerEx.cpp
+endif
+
+LOCAL_STATIC_LIBRARIES := cocos2dx_internal_static
+ifeq ($(CC_USE_CURL),1)
 LOCAL_STATIC_LIBRARIES += cocos_curl_static
 endif
+
+ifeq ($(CC_USE_PHYSICS),1)
+LOCAL_STATIC_LIBRARIES += box2d_static
+endif
+
 
 LOCAL_CXXFLAGS += -fexceptions
 
