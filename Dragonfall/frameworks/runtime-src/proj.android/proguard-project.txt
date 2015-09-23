@@ -18,9 +18,9 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
-#================2dx========================
-
+#================cocos2dx========================
 -keep class org.cocos2dx.lib.** {*;}
+-keep class com.chukong.cocosplay.** {*;}
 
 #================sdks========================
 #talkingdata
@@ -96,12 +96,12 @@
 	public static void buy(...);
 	public static void consumePurchase(...);
 	public static void updateTransactionStates(...);
-
+	public static boolean isGMSSupport();
+	public static void getGMSSupport();
 }
-#================Start for Google Billing========================
+#================Google Billing========================
 -keep class com.android.vending.billing.**
-#================End for Google Billing=========================
 
-#play service
+#================Google Play========================
 -keep class com.google.android.gms.** {*;}
 -dontwarn com.google.android.gms.**

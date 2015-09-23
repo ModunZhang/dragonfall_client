@@ -35,7 +35,8 @@ static jmethodID jmUpdateTransactionStates = NULL;
 static jclass jcList = NULL;
 static jmethodID jmInitList = NULL;
 static jmethodID jmAddList = NULL;
-
+static jmethodID jmIsGMSSupport = NULL;
+static jmethodID jmGetGMSSupport = NULL;
 
 
 static cocos2d::LUA_FUNCTION m_loadProductsCallback = 0;
@@ -53,6 +54,20 @@ static bool initJNI(JNIEnv* env, jclass cls) {
     jcStoreKit = (jclass) env->NewGlobalRef(cls);
     if (jcStoreKit == NULL) { /* Exception thrown */
         LOGE("Get jcStoreKit failed");
+        return false;
+    }
+
+    jmIsGMSSupport = env->GetStaticMethodID(jcStoreKit, "isGMSSupport", "()Z");
+    if (jmIsGMSSupport == NULL)
+    {
+        LOGE("Get jmIsGMSSupport failed");
+        return false;
+    }
+
+    jmGetGMSSupport = env->GetStaticMethodID(jcStoreKit, "getGMSSupport", "()V");
+    if (jmGetGMSSupport == NULL)
+    {
+        LOGE("Get jmGetGMSSupport failed");
         return false;
     }
 
@@ -122,6 +137,19 @@ static bool initJNI(JNIEnv* env, jclass cls) {
     return true;
 }
 
+bool isGMSSupport()
+{
+    jboolean ret = JNI_FALSE;
+    JNIEnv* env = cocos2d::JniHelper::getEnv();
+    ret = env->CallStaticBooleanMethod(jcStoreKit,jmIsGMSSupport);
+    return ret;
+}
+
+void getGMSSupport()
+{
+    JNIEnv* env = cocos2d::JniHelper::getEnv();
+    env->CallStaticVoidMethod(jcStoreKit,jmGetGMSSupport);
+}
 
 void buy(const char * sku)
 {
@@ -287,6 +315,19 @@ tolua_lerror:
 #endif
 }
 
+static int tolua_ext_store_canMakePurchases(lua_State *tolua_S)
+{
+    bool ret = isGMSSupport();
+    tolua_pushboolean(tolua_S,ret);
+    return 1;
+}
+
+static int tolua_ext_store_getStoreSupport(lua_State *tolua_S)
+{
+    getGMSSupport();
+    return 0;
+}
+
 void tolua_ext_module_store(lua_State* tolua_S)
 {
     tolua_module(tolua_S,EXT_MODULE_NAME_STORE_KIT,0);
@@ -296,6 +337,8 @@ void tolua_ext_module_store(lua_State* tolua_S)
     tolua_function(tolua_S,"loadProducts",tolua_ext_store_loadProductsLua);
     tolua_function(tolua_S,"init",tolua_ext_store_postInitWithTransactionListenerLua);
     tolua_function(tolua_S,"updateTransactionStates",tolua_ext_store_updateTransactionStatesLua);
+    tolua_function(tolua_S,"canMakePurchases",tolua_ext_store_canMakePurchases);
+    tolua_function(tolua_S,"getStoreSupport",tolua_ext_store_getStoreSupport);
     tolua_endmodule(tolua_S);
 }
 

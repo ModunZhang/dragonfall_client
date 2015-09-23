@@ -17,11 +17,11 @@ import android.content.Intent;
 
 public class StoreKit {
 
-	private static String googlePlayServicePackageName = "com.google.android.gms";
+	private static String GOOGLEPLAYSERVICEPACKAGENAME = "com.google.android.gms";
 
 	private static final String TAG = "StoreKit";
 
-	private static final boolean DEBUG = true;
+	private static final boolean DEBUG = false;
 	private static final long VERIFY_PURCHASE_DELAY = 60000;
 
 	private static final int BASE_REQUEST_CODE = 5000;
@@ -181,11 +181,11 @@ public class StoreKit {
 
 	// support
 	public static boolean isGMSSupport() {
-		return CommonUtils.hasInstallPackage(googlePlayServicePackageName);
+		return CommonUtils.hasInstallPackage(GOOGLEPLAYSERVICEPACKAGENAME);
 	}
 
 	public static void getGMSSupport() {
-		CommonUtils.openAppInGooglePlayMarket(googlePlayServicePackageName);
+		CommonUtils.openAppInGooglePlayMarket(GOOGLEPLAYSERVICEPACKAGENAME);
 	}
 
 	public static void init() {
@@ -193,26 +193,14 @@ public class StoreKit {
 		mHelper = new IabHelper(AppActivity.getGameActivity());
 		currentInv = new Inventory();
 
-//		final ArrayList<String> skuArray = new ArrayList<String>();
-//		skuArray.add("com.dragonfall.2500dragoncoins");
 		mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
 			public void onIabSetupFinished(IabResult result) {
-
-				if (DEBUG) {
-					DebugUtil.LogErr(TAG, "before !result.isSuccess()");
-				}
-
 				if (!result.isSuccess()) {
 					if (DEBUG) {
 						DebugUtil.LogErr(TAG, "Problem setting up in-app billing: " + result);
 					}
 					return;
 				}
-
-				if (DEBUG) {
-					DebugUtil.LogErr(TAG, "end !result.isSuccess()");
-				}
-//				mHelper.queryInventoryAsync(true, skuArray, mGotInventoryListener);
 			}
 		});
 	}

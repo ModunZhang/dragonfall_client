@@ -125,6 +125,11 @@ public class JniFileOperation {
 			File from_file = new File(from);
 			File to_file = new File(to);
 			try {
+				if(!from_file.exists())
+				{
+					DebugUtil.LogWarn(TAG, "file not exist:"+from);
+					return false;
+				}
 				return p_copyFileTo(from_file, to_file);
 			} catch (IOException e) {
 				DebugUtil.LogException(TAG, e);

@@ -51,7 +51,7 @@ public class LaunchHelper {
 	//启动游戏lua part
 	public static void initNativeLuaEngine() {
 		DataHelper.preInitActivityData();
-		DebugUtil.LogErr(TAG, "game bundle path:"+Cocos2dxHelper.getCocos2dxBundlePath());
+		DebugUtil.LogDebug(TAG, "-- game bundle path:"+Cocos2dxHelper.getCocos2dxBundlePath());
 		Cocos2dxHelper.runOnGLThread(new Runnable() {	
 			@Override
 			public void run() {

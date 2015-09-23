@@ -116,7 +116,6 @@ public class CommonUtils {
 			return true;
 		}
 	}
-	//
 	public static void openAppInGooglePlayMarket(String packageName)
 	{
 		Uri uri = Uri.parse("market://details?id=" + packageName);  

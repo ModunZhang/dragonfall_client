@@ -58,7 +58,7 @@ end
 
 function Store.canMakePurchases()
     if not checkCCStore() then return false end
-    printError("Store.canMakePurchases - Not support on Android")
+    return cc.storeProvider.canMakePurchases()
 end
 
 function Store.loadProducts(productsId, listener)
@@ -177,6 +177,15 @@ function Store.getTransactionDataWithPurchaseData(purchaseData)
         transactionIdentifier = json_obj.orderId,
         productIdentifier = json_obj.productId
     }
+end
+
+--[[ 
+    新加 获取默认购买框架的支持
+]] --
+
+function Store.getStoreSupport()
+    if Store.canMakePurchases() then return end
+    cc.storeProvider.getStoreSupport()
 end
 
 return Store
