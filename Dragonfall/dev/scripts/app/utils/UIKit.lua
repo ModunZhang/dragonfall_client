@@ -129,7 +129,11 @@ function UIKit:getFontFilePath()
 end
 
 function UIKit:getEditBoxFont()
-    return "DroidSansFallback"
+    if device.platform == 'android' then -- Android特殊处理,使用字体文件名作为参数,Java已修改。
+        return self:getFontFilePath()
+    else
+        return "DroidSansFallback"
+    end
 end
 
 local color_map = {}
