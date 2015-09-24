@@ -1,6 +1,8 @@
 
-#编译 Android 工程
+#Android 工程说明
 ================
+
+> 我们项目不使用Android Studio开发!
 
 要编译 Android 功能，必须使用最新版本的 Android SDK 和`指定的 r9d 版本` Android NDK.
 
@@ -58,9 +60,9 @@
 
 - SDK配置
 
-    1. 终端执行`android`命令,对 SDK 进行更新.至少要安装`android-10`
+    1. 终端执行`android`命令,对 SDK 进行更新.至少要安装`android-10`相关sdk
     
-    2. 按照[http://developer.android.com/tools/help/adt.html](http://developer.android.com/tools/help/adt.html)的步骤安装ADT到Eclipse.
+    2. 按照[http://developer.android.com/tools/help/adt.html](http://developer.android.com/tools/help/adt.html)的`Installing the Eclipse Plugin`步骤安装ADT到Eclipse.
 
 - Android配置文件
   
@@ -100,10 +102,16 @@
   * Dragonfall/frameworks/cocos2d-x/cocos/platform/android/java
   * external/Android/google-play-services_lib_3225130/google-play-services_lib
   
+- 验证开发环境  
 
-如果编译失败，请仔细检查 SDK/NDK 版本、安装路径.
+  完全退出所有终端,重新一个终端，分别验证下面的命令是否可以执行.
+  * android
+  * adb 
+  * ant
+  * monitor
+  
+  `如果失败，请仔细检查 SDK/NDK 版本、安装路径.`
 
-> 修改了环境设置后，必须重新打开终端窗口才能生效.
 
 ### 将项目导入 Eclipse ADT
 
@@ -206,8 +214,10 @@ Android 官方文档：http://developer.android.com/tools/device.html
   * 如果要快速安装到设备上(先卸载再安装新包),提供了`ant quickd`和`ant quickr`
   * 如果只是修改了Lua脚本并要在真机上测试,编译好脚本后执行`ant replaceLua`,然后`ant restart`
   * 如何检查手机已经连接好了电脑:执行`adb devices`查看是否有你的设备信息
-  * 如何不打开Eclipse的时候查看日志:执行命令`monitor`启动Android Monitor
-  
+  * 如何不打开Eclipse的时候查看日志:
+    * 执行命令`monitor`启动Android Monitor
+    * 执行命令`adb logcat`通过终端查看
+    
 ### 使用模块化编译缩小 apk 体积 ###
 
 从quick 3.5开始,官方不再提供模块化编译的功能，我们项目参考3.3的编译宏定义提供部分模块化编译的功能
@@ -230,5 +240,5 @@ CC_USE_ETC1_ZLIB | 打开贴图文件的zlib压缩检查功能,用来压缩etc1�
 
 ---
 
-Last Modify By Danny He@ September 15, 2015
+Last Modify By Danny He@ September 24, 2015
    

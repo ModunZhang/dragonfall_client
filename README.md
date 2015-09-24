@@ -22,6 +22,10 @@
     * 举例:如果SD的空间足够游戏解压,游戏将解压到`/sdcard/batcatstudio/`目录中
 * 实现并打开了ETC压缩+alpha支持,如果发现某张贴图是ETC格式将自动查找它的Alpha格式的贴图，详情查看git提交
 
+######iOS特别说明
+
+* 我们项目没有使用默认的quick target,而是在默认target的基础上新建的target，用于自定义模块化编译的宏，具体的宏定义看android的文档.
+
 ######Functions[✗ ✓]
 |  Function  | iOS          | Android       | 
 |------------| ------------ | ------------- | 
@@ -34,4 +38,4 @@
 
 
 ---
-Last Modify @ September 10, 2015
+Last Modify @ September 24, 2015

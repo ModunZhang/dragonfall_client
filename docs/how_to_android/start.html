@@ -152,13 +152,15 @@ sup {
 	}
 }
 </style>
-<title>编译 Android 工程</title>
+<title>Android 工程说明</title>
 
 </head>
 <body>
-<h1>编译 Android 工程</h1>
+<h1>Android 工程说明</h1>
 
 <hr />
+
+<blockquote><p>我们项目不使用Android Studio开发!</p></blockquote>
 
 <p>要编译 Android 功能，必须使用最新版本的 Android SDK 和<code>指定的 r9d 版本</code> Android NDK.</p>
 
@@ -214,8 +216,8 @@ export PATH=$PATH:${ANDROID_NDK_ROOT}:${ANT_ROOT}:${ANDROID_SDK_ROOT}:${ANDROID_
 <li><p>SDK配置</p>
 
 <ol>
-<li><p> 终端执行<code>android</code>命令,对 SDK 进行更新.至少要安装<code>android-10</code></p></li>
-<li><p> 按照<a href="http://developer.android.com/tools/help/adt.html">http://developer.android.com/tools/help/adt.html</a>的步骤安装ADT到Eclipse.</p></li>
+<li><p> 终端执行<code>android</code>命令,对 SDK 进行更新.至少要安装<code>android-10</code>相关sdk</p></li>
+<li><p> 按照<a href="http://developer.android.com/tools/help/adt.html">http://developer.android.com/tools/help/adt.html</a>的<code>Installing the Eclipse Plugin</code>步骤安装ADT到Eclipse.</p></li>
 </ol>
 </li>
 <li><p>Android配置文件</p>
@@ -256,12 +258,21 @@ sdk.dir=/Users/dannyhe/WorkSpace/Android/sdk/android-sdk-macosx
 <li>external/Android/google-play-services_lib_3225130/google-play-services_lib</li>
 </ul>
 </li>
+<li><p>验证开发环境</p>
+
+<p>完全退出所有终端,重新一个终端，分别验证下面的命令是否可以执行.</p>
+
+<ul>
+<li>android</li>
+<li>adb</li>
+<li>ant</li>
+<li>monitor</li>
 </ul>
 
 
-<p>如果编译失败，请仔细检查 SDK/NDK 版本、安装路径.</p>
+<p><code>如果失败，请仔细检查 SDK/NDK 版本、安装路径.</code></p></li>
+</ul>
 
-<blockquote><p>修改了环境设置后，必须重新打开终端窗口才能生效.</p></blockquote>
 
 <h3>将项目导入 Eclipse ADT</h3>
 
@@ -385,7 +396,13 @@ ant run
 <li>如果要快速安装到设备上(先卸载再安装新包),提供了<code>ant quickd</code>和<code>ant quickr</code></li>
 <li>如果只是修改了Lua脚本并要在真机上测试,编译好脚本后执行<code>ant replaceLua</code>,然后<code>ant restart</code></li>
 <li>如何检查手机已经连接好了电脑:执行<code>adb devices</code>查看是否有你的设备信息</li>
-<li>如何不打开Eclipse的时候查看日志:执行命令<code>monitor</code>启动Android Monitor</li>
+<li>如何不打开Eclipse的时候查看日志:
+
+<ul>
+<li>执行命令<code>monitor</code>启动Android Monitor</li>
+<li>执行命令<code>adb logcat</code>通过终端查看</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -449,6 +466,6 @@ ant run
 
 <hr />
 
-<p>Last Modify By Danny He@ September 15, 2015</p>
+<p>Last Modify By Danny He@ September 24, 2015</p>
 </body>
 </html>
