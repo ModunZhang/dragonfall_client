@@ -27,4 +27,7 @@
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />
   </ItemGroup>
+  <ItemGroup>
+    <Xml Include="StoreManifest.xml" />
+  </ItemGroup>
 </Project>

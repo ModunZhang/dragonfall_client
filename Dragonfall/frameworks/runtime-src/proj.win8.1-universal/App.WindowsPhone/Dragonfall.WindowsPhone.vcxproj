@@ -83,7 +83,7 @@
     <AppxBundlePlatforms>arm</AppxBundlePlatforms>
     <AppxPackageDir>C:\Users\dannyhe\Desktop\local\test\</AppxPackageDir>
     <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
-    <AppxBundle>Never</AppxBundle>
+    <AppxBundle>Auto</AppxBundle>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <ClCompile>
