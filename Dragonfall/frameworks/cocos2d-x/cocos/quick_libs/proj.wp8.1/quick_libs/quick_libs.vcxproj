@@ -1,0 +1,392 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|ARM">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM">
+      <Configuration>Release</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{ee76bd20-3a1b-4e80-9736-9a6f7c7a8a90}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectName>quick_libs</ProjectName>
+    <RootNamespace>quick_libs</RootNamespace>
+    <DefaultLanguage>zh-CN</DefaultLanguage>
+    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
+    <AppContainerApplication>true</AppContainerApplication>
+    <ApplicationType>Windows Phone</ApplicationType>
+    <ApplicationTypeRevision>8.1</ApplicationTypeRevision>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120_wp81</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v120_wp81</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120_wp81</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v120_wp81</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\2d\winrt_8.1_props\cocos2d_winrt_8.1.props" />
+    <Import Project="..\..\..\2d\wp_8.1_props\cocos2d_wp_8.1_platform.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\2d\winrt_8.1_props\cocos2d_winrt_8.1.props" />
+    <Import Project="..\..\..\2d\wp_8.1_props\cocos2d_wp_8.1_platform.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\2d\winrt_8.1_props\cocos2d_winrt_8.1.props" />
+    <Import Project="..\..\..\2d\wp_8.1_props\cocos2d_wp_8.1_platform.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\2d\winrt_8.1_props\cocos2d_winrt_8.1.props" />
+    <Import Project="..\..\..\2d\wp_8.1_props\cocos2d_wp_8.1_platform.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <CompileAsWinRT>true</CompileAsWinRT>
+      <SDLCheck>true</SDLCheck>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ForcedIncludeFiles>pch.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <PreprocessorDefinitions>WINRT;CC_USE_CURL=1;CC_LUA_ENGINE_ENABLED=1;COCOS2D_DEBUG=1;CC_ENABLE_CHIPMUNK_INTEGRATION=1;__STRICT_ANSI__;SQLITE_OS_WINRT;SQLITE_OMIT_WAL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\wp_8.1-specific\zlib\include;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(ProjectDir)..\..\src\extra;$(ProjectDir)..\..\src\extensions;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>$(EngineRoot)external\$(COCOS2D_PLATFORM)-specific\zlib\prebuilt\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <CompileAsWinRT>true</CompileAsWinRT>
+      <SDLCheck>true</SDLCheck>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ForcedIncludeFiles>pch.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <PreprocessorDefinitions>CC_USE_CURL=1;CC_LUA_ENGINE_ENABLED=1;COCOS2D_DEBUG=1;CC_ENABLE_CHIPMUNK_INTEGRATION=1;__STRICT_ANSI__;SQLITE_OS_WINRT;SQLITE_OMIT_WAL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <CompileAsWinRT>true</CompileAsWinRT>
+      <SDLCheck>true</SDLCheck>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ForcedIncludeFiles>pch.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <PreprocessorDefinitions>CC_USE_CURL=1;CC_LUA_ENGINE_ENABLED=1;COCOS2D_DEBUG=1;CC_ENABLE_CHIPMUNK_INTEGRATION=1;__STRICT_ANSI__;SQLITE_OS_WINRT;SQLITE_OMIT_WAL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <CompileAsWinRT>true</CompileAsWinRT>
+      <SDLCheck>true</SDLCheck>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ForcedIncludeFiles>pch.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <PreprocessorDefinitions>CC_USE_CURL=1;CC_LUA_ENGINE_ENABLED=1;COCOS2D_DEBUG=1;CC_ENABLE_CHIPMUNK_INTEGRATION=1;__STRICT_ANSI__;SQLITE_OS_WINRT;SQLITE_OMIT_WAL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\extensions\cjson\fpconv.h" />
+    <ClInclude Include="..\..\src\extensions\cjson\lua_cjson.h" />
+    <ClInclude Include="..\..\src\extensions\cjson\strbuf.h" />
+    <ClInclude Include="..\..\src\extensions\lpack\lpack.h" />
+    <ClInclude Include="..\..\src\extensions\lsqlite3\lsqlite3.h" />
+    <ClInclude Include="..\..\src\extensions\lsqlite3\sqlite3.h" />
+    <ClInclude Include="..\..\src\extensions\quick_extensions.h" />
+    <ClInclude Include="..\..\src\extensions\zlib\lua_zlib.h" />
+    <ClInclude Include="..\..\src\extra\apptools\HelperFunc.h" />
+    <ClInclude Include="..\..\src\extra\crypto\base64\libbase64.h" />
+    <ClInclude Include="..\..\src\extra\crypto\CCCrypto.h" />
+    <ClInclude Include="..\..\src\extra\crypto\md5\md5.h" />
+    <ClInclude Include="..\..\src\extra\filters\cocos2dFilters.h" />
+    <ClInclude Include="..\..\src\extra\filters\filters\CCBlurFilter.h" />
+    <ClInclude Include="..\..\src\extra\filters\filters\CCBrightnessFilter.h" />
+    <ClInclude Include="..\..\src\extra\filters\filters\CCContrastFilter.h" />
+    <ClInclude Include="..\..\src\extra\filters\filters\CCCustomFilter.h" />
+    <ClInclude Include="..\..\src\extra\filters\filters\CCDropShadowFilter.h" />
+    <ClInclude Include="..\..\src\extra\filters\filters\CCExposureFilter.h" />
+    <ClInclude Include="..\..\src\extra\filters\filters\CCFilter.h" />
+    <ClInclude Include="..\..\src\extra\filters\filters\CCGammaFilter.h" />
+    <ClInclude Include="..\..\src\extra\filters\filters\CCGrayFilter.h" />
+    <ClInclude Include="..\..\src\extra\filters\filters\CCHazeFilter.h" />
+    <ClInclude Include="..\..\src\extra\filters\filters\CCHueFilter.h" />
+    <ClInclude Include="..\..\src\extra\filters\filters\CCMaskFilter.h" />
+    <ClInclude Include="..\..\src\extra\filters\filters\CCRGBFilter.h" />
+    <ClInclude Include="..\..\src\extra\filters\filters\CCSaturationFilter.h" />
+    <ClInclude Include="..\..\src\extra\filters\filters\CCSepiaFilter.h" />
+    <ClInclude Include="..\..\src\extra\filters\filters\CCSharpenFilter.h" />
+    <ClInclude Include="..\..\src\extra\filters\filters\CCTestFilter.h" />
+    <ClInclude Include="..\..\src\extra\filters\nodes\CCFilteredSprite.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShaders.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_blur_frag.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_brightness_frag.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_colorramp_frag.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_contrast_frag.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_drop_shadow_frag.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_drop_shadow_vert.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_embossmov_frag.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_emboss_frag.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_exposure_frag.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_gamma_frag.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_gaussian_blur_frag.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_gaussian_hblur_frag.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_gaussian_vblur_frag.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_grass_frag.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_gray_frag.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_haze_frag.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_hblur_vert.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_hue_frag.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_motion_blur_frag.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_motion_blur_vert.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_rgb_frag.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_saturation_frag.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_sepia_frag.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_sharpen_frag.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_sharpen_vert.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_test_frag.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_test_vert.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_vblur_vert.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_zoom_blur_frag.h" />
+    <ClInclude Include="..\..\src\extra\filters\shaders\FilterShaders.h" />
+    <ClInclude Include="..\..\src\extra\luabinding\cocos2dx_extra_luabinding.h" />
+    <ClInclude Include="..\..\src\extra\luabinding\HelperFunc_luabinding.h" />
+    <ClInclude Include="..\..\src\extra\luabinding\lua_cocos2dx_extension_filter_auto.hpp" />
+    <ClInclude Include="..\..\src\extra\luabinding\lua_cocos2dx_extension_nanovg_auto.hpp" />
+    <ClInclude Include="..\..\src\extra\luabinding\lua_cocos2dx_extension_nanovg_manual.hpp" />
+    <ClInclude Include="..\..\src\extra\nanovg\nanonode\NVGDrawNode.h" />
+    <ClInclude Include="..\..\src\extra\nanovg\nanonode\NVGNode.h" />
+    <ClInclude Include="..\..\src\extra\nanovg\nanovg\fontstash.h" />
+    <ClInclude Include="..\..\src\extra\nanovg\nanovg\nanovg.h" />
+    <ClInclude Include="..\..\src\extra\nanovg\nanovg\nanovg_gl.h" />
+    <ClInclude Include="..\..\src\extra\nanovg\nanovg\nanovg_gl_utils.h" />
+    <ClInclude Include="..\..\src\extra\nanovg\nanovg\stb_image.h" />
+    <ClInclude Include="..\..\src\extra\nanovg\nanovg\stb_truetype.h" />
+    <ClInclude Include="..\..\src\extra\native\CCAlertViewDelegate.h" />
+    <ClInclude Include="..\..\src\extra\native\CCNative.h" />
+    <ClInclude Include="..\..\src\extra\network\CCHTTPRequest.h" />
+    <ClInclude Include="..\..\src\extra\network\CCHTTPRequestDelegate.h" />
+    <ClInclude Include="..\..\src\extra\network\CCNetwork.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="targetver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\package_quick_register.cpp" />
+    <ClCompile Include="..\..\src\extensions\cjson\fpconv.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsWinRT>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extensions\cjson\lua_cjson.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsWinRT>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extensions\cjson\strbuf.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsWinRT>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extensions\lpack\lpack.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsWinRT>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extensions\lsqlite3\lsqlite3.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsWinRT>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extensions\lsqlite3\sqlite3.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsWinRT>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extensions\quick_extensions.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsWinRT>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Default</CompileAs>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extensions\zlib\lua_zlib.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsWinRT>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\apptools\HelperFunc.cpp" />
+    <ClCompile Include="..\..\src\extra\crypto\base64\libbase64.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsWinRT>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\crypto\CCCrypto.cpp" />
+    <ClCompile Include="..\..\src\extra\crypto\md5\md5.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsWinRT>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\filters\filters\CCBlurFilter.cpp" />
+    <ClCompile Include="..\..\src\extra\filters\filters\CCBrightnessFilter.cpp" />
+    <ClCompile Include="..\..\src\extra\filters\filters\CCContrastFilter.cpp" />
+    <ClCompile Include="..\..\src\extra\filters\filters\CCCustomFilter.cpp" />
+    <ClCompile Include="..\..\src\extra\filters\filters\CCDropShadowFilter.cpp" />
+    <ClCompile Include="..\..\src\extra\filters\filters\CCExposureFilter.cpp" />
+    <ClCompile Include="..\..\src\extra\filters\filters\CCFilter.cpp" />
+    <ClCompile Include="..\..\src\extra\filters\filters\CCGammaFilter.cpp" />
+    <ClCompile Include="..\..\src\extra\filters\filters\CCGrayFilter.cpp" />
+    <ClCompile Include="..\..\src\extra\filters\filters\CCHazeFilter.cpp" />
+    <ClCompile Include="..\..\src\extra\filters\filters\CCHueFilter.cpp" />
+    <ClCompile Include="..\..\src\extra\filters\filters\CCMaskFilter.cpp" />
+    <ClCompile Include="..\..\src\extra\filters\filters\CCRGBFilter.cpp" />
+    <ClCompile Include="..\..\src\extra\filters\filters\CCSaturationFilter.cpp" />
+    <ClCompile Include="..\..\src\extra\filters\filters\CCSepiaFilter.cpp" />
+    <ClCompile Include="..\..\src\extra\filters\filters\CCSharpenFilter.cpp" />
+    <ClCompile Include="..\..\src\extra\filters\filters\CCTestFilter.cpp" />
+    <ClCompile Include="..\..\src\extra\filters\nodes\CCFilteredSprite.cpp" />
+    <ClCompile Include="..\..\src\extra\filters\shaders\ccFilterShaders.cpp" />
+    <ClCompile Include="..\..\src\extra\filters\shaders\FilterShaders.cpp" />
+    <ClCompile Include="..\..\src\extra\luabinding\cocos2dx_extra_luabinding.cpp" />
+    <ClCompile Include="..\..\src\extra\luabinding\HelperFunc_luabinding.cpp" />
+    <ClCompile Include="..\..\src\extra\luabinding\lua_cocos2dx_extension_filter_auto.cpp">
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4700;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\luabinding\lua_cocos2dx_extension_nanovg_auto.cpp" />
+    <ClCompile Include="..\..\src\extra\luabinding\lua_cocos2dx_extension_nanovg_manual.cpp" />
+    <ClCompile Include="..\..\src\extra\nanovg\nanonode\NVGDrawNode.cpp" />
+    <ClCompile Include="..\..\src\extra\nanovg\nanonode\NVGNode.cpp" />
+    <ClCompile Include="..\..\src\extra\nanovg\nanovg\nanovg.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsWinRT>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\network\CCHTTPRequest.cpp" />
+    <ClCompile Include="..\..\src\extra\network\CCNetwork.cpp" />
+    <ClCompile Include="..\..\src\extra\platform\wp8\CCCryptoWP8.cpp" />
+    <ClCompile Include="..\..\src\extra\platform\wp8\CCNativeWP8.cpp" />
+    <ClCompile Include="..\..\src\extra\platform\wp8\CCNetworkWP8.cpp" />
+    <ClCompile Include="pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\extra\filters\shaders\example_bloom.fsh" />
+    <None Include="..\..\src\extra\filters\shaders\example_Blur.fsh" />
+    <None Include="..\..\src\extra\filters\shaders\example_celShading.fsh" />
+    <None Include="..\..\src\extra\filters\shaders\example_ColorBars.fsh" />
+    <None Include="..\..\src\extra\filters\shaders\example_ColorBars.vsh" />
+    <None Include="..\..\src\extra\filters\shaders\example_edgeDetection.fsh" />
+    <None Include="..\..\src\extra\filters\shaders\example_Flower.fsh" />
+    <None Include="..\..\src\extra\filters\shaders\example_greyScale.fsh" />
+    <None Include="..\..\src\extra\filters\shaders\example_Heart.fsh" />
+    <None Include="..\..\src\extra\filters\shaders\example_HorizontalColor.fsh" />
+    <None Include="..\..\src\extra\filters\shaders\example_Julia.fsh" />
+    <None Include="..\..\src\extra\filters\shaders\example_lensFlare.fsh" />
+    <None Include="..\..\src\extra\filters\shaders\example_Mandelbrot.fsh" />
+    <None Include="..\..\src\extra\filters\shaders\example_Monjori.fsh" />
+    <None Include="..\..\src\extra\filters\shaders\example_MultiTexture.fsh" />
+    <None Include="..\..\src\extra\filters\shaders\example_MultiTexture.vsh" />
+    <None Include="..\..\src\extra\filters\shaders\example_Noisy.fsh" />
+    <None Include="..\..\src\extra\filters\shaders\example_normal.fsh" />
+    <None Include="..\..\src\extra\filters\shaders\example_outline.fsh" />
+    <None Include="..\..\src\extra\filters\shaders\example_Plasma.fsh" />
+    <None Include="..\..\src\extra\filters\shaders\example_sepia.fsh" />
+    <None Include="..\..\src\extra\filters\shaders\example_Twist.fsh" />
+    <None Include="..\..\src\extra\filters\shaders\shadertoy_FireBall.fsh" />
+    <None Include="..\..\src\extra\filters\shaders\shadertoy_Glow.fsh" />
+    <None Include="..\..\src\extra\filters\shaders\shadertoy_LensFlare.fsh" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

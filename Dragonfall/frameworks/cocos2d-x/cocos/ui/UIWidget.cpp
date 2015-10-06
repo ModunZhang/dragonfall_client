@@ -35,8 +35,10 @@ THE SOFTWARE.
 #include "renderer/CCGLProgramState.h"
 #include "renderer/ccShaders.h"
 #include "ui/shaders/UIShaders.h"
+#if CC_TARGET_PLATFORM != CC_PLATFORM_WINRT
 //dannyhe
 #include "../external/lua/quick/LuaNodeManager.h"
+#endif
 NS_CC_BEGIN
 
 namespace ui {
@@ -565,7 +567,7 @@ void Widget::setTouchEnabled(bool enable)
     if (_touchEnabled)
     {
 //dannyhe
- #if CC_ENABLE_SCRIPT_BINDING
+#if CC_ENABLE_SCRIPT_BINDING && CC_TARGET_PLATFORM != CC_PLATFORM_WINRT
          auto mng = LuaNodeManager::getInstance();
          auto lnode = mng->getLuaNodeByNode(this, true);
          if (!lnode) {
@@ -587,7 +589,7 @@ void Widget::setTouchEnabled(bool enable)
     else
     {
 //dannyhe
- #if CC_ENABLE_SCRIPT_BINDING
+#if CC_ENABLE_SCRIPT_BINDING && CC_TARGET_PLATFORM != CC_PLATFORM_WINRT
          auto mng = LuaNodeManager::getInstance();
          auto lnode = mng->getLuaNodeByNode(this, true);
          if (!lnode) {

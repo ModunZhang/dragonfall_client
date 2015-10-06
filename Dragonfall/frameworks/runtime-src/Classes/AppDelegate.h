@@ -35,7 +35,7 @@ public:
     */
     virtual void applicationWillEnterForeground();
 };
-
+#if CC_TARGET_PLATFORM != CC_PLATFORM_WINRT
 class AppDelegateExtern : public cocos2d::Ref
 {
 public:
@@ -50,7 +50,7 @@ public:
     static void extendApplication();
     static std::string getGameZipcrc32(const char *filePath);
 };
-
+#endif
 
 #endif  // __APP_DELEGATE_H__
 

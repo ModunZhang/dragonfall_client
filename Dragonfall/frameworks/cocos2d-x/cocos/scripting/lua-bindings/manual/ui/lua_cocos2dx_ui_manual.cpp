@@ -841,7 +841,7 @@ static void extendEditBox(lua_State* L)
     }
     lua_pop(L, 1);
 }
-
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_WINRT)
 static int lua_cocos2dx_ui_UITextView_registerScriptTextViewHandler(lua_State* L)
 {
     if (NULL == L)
@@ -947,7 +947,7 @@ static void extendUITextView(lua_State* L)
     lua_pop(L, 1);
 }
 
-
+#endif /* (CC_TARGET_PLATFORM != CC_PLATFORM_WINRT) */
 
 int register_all_cocos2dx_ui_manual(lua_State* L)
 {
@@ -962,8 +962,9 @@ int register_all_cocos2dx_ui_manual(lua_State* L)
     extendListView(L);
     extendLayoutParameter(L);
     extendEditBox(L);
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_WINRT)
     extendUITextView(L);
-
+#endif
     return 0;
 }
 

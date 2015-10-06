@@ -47,7 +47,8 @@ class CC_DLL GLViewImpl : public GLView
 {
 public:
     static GLViewImpl* create(const std::string& viewName);
-
+	static GLViewImpl* createWithRect(const std::string& viewName, cocos2d::Rect rect, float frameZoomFactor = 1.0f);
+	static GLViewImpl* createWithFullScreen(const std::string& viewName);
     /* override functions */
     virtual bool isOpenGLReady();
     virtual void end();

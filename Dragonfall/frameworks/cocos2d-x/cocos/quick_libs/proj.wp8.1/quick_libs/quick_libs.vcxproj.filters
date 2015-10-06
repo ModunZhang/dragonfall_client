@@ -1,0 +1,534 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{2a7e3af0-c958-498e-b08f-b03884623000}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\extensions">
+      <UniqueIdentifier>{863b9d12-26d8-48c0-bd9b-2c5a274164f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\extra">
+      <UniqueIdentifier>{b0987a58-9e2f-49d0-9df5-8fba22e037e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\extensions\cjson">
+      <UniqueIdentifier>{8b29872c-4a3e-4062-923a-24b5dd91e243}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\extensions\lpack">
+      <UniqueIdentifier>{88a769a7-1d7a-4023-a553-624dba7917bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\extensions\lsqlite3">
+      <UniqueIdentifier>{bb1e181a-04a6-4665-a376-39d10fdafa69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\extensions\zlib">
+      <UniqueIdentifier>{4788dc35-b407-41e0-a191-dae734b1749d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\extra\apptools">
+      <UniqueIdentifier>{3f3cf88a-9c26-473c-939b-a519c8e6db3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\extra\crypto">
+      <UniqueIdentifier>{39337f65-93d9-422b-9a4a-cd8dc06014d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\extra\filters">
+      <UniqueIdentifier>{b6ea2e85-bae3-4bd0-8158-92f27e9def9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\extra\luabinding">
+      <UniqueIdentifier>{5ca22b00-3bf3-4878-bab8-f25659d060d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\extra\filters\filters">
+      <UniqueIdentifier>{09059ef6-6861-4717-a7ec-0cd5d9cf0c17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\extra\filters\nodes">
+      <UniqueIdentifier>{3b65a23b-60c3-411f-b490-1be1c7618e3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\extra\filters\shaders">
+      <UniqueIdentifier>{b944f840-8c42-448e-9385-93630a5fa0b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\extra\nanovg">
+      <UniqueIdentifier>{3f2aa9bf-7bee-4d1c-8fbb-65abbf2f7458}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\extra\nanovg\nanonode">
+      <UniqueIdentifier>{e5aaed69-01f4-4079-8aa3-8c42ae488051}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\extra\nanovg\nanovg">
+      <UniqueIdentifier>{87acb7d6-41a3-4cf0-9ee6-6958e9dc6f90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\extra\native">
+      <UniqueIdentifier>{da3e8e92-598a-4362-ae58-6dfdccd47a19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\extra\network">
+      <UniqueIdentifier>{41868892-eefd-420c-8674-2e28f324fb95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\extra\platform">
+      <UniqueIdentifier>{15a40bbe-26e4-4c2a-aadb-d845f7ed083c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\extra\platform\wp8">
+      <UniqueIdentifier>{376e9072-3b87-4500-8262-4b5cb443fc1b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="..\..\src\extensions\cjson\fpconv.c">
+      <Filter>src\extensions\cjson</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extensions\cjson\lua_cjson.c">
+      <Filter>src\extensions\cjson</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extensions\cjson\strbuf.c">
+      <Filter>src\extensions\cjson</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extensions\lpack\lpack.c">
+      <Filter>src\extensions\lpack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extensions\lsqlite3\lsqlite3.c">
+      <Filter>src\extensions\lsqlite3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extensions\lsqlite3\sqlite3.c">
+      <Filter>src\extensions\lsqlite3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extensions\zlib\lua_zlib.c">
+      <Filter>src\extensions\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extensions\quick_extensions.c">
+      <Filter>src\extensions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\apptools\HelperFunc.cpp">
+      <Filter>src\extra\apptools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\crypto\base64\libbase64.c">
+      <Filter>src\extra\crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\crypto\md5\md5.c">
+      <Filter>src\extra\crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\crypto\CCCrypto.cpp">
+      <Filter>src\extra\crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\luabinding\cocos2dx_extra_luabinding.cpp">
+      <Filter>src\extra\luabinding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\luabinding\HelperFunc_luabinding.cpp">
+      <Filter>src\extra\luabinding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\luabinding\lua_cocos2dx_extension_filter_auto.cpp">
+      <Filter>src\extra\luabinding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\luabinding\lua_cocos2dx_extension_nanovg_auto.cpp">
+      <Filter>src\extra\luabinding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\luabinding\lua_cocos2dx_extension_nanovg_manual.cpp">
+      <Filter>src\extra\luabinding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\filters\filters\CCBlurFilter.cpp">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\filters\filters\CCBrightnessFilter.cpp">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\filters\filters\CCContrastFilter.cpp">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\filters\filters\CCCustomFilter.cpp">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\filters\filters\CCDropShadowFilter.cpp">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\filters\filters\CCExposureFilter.cpp">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\filters\filters\CCFilter.cpp">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\filters\filters\CCGammaFilter.cpp">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\filters\filters\CCGrayFilter.cpp">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\filters\filters\CCHazeFilter.cpp">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\filters\filters\CCHueFilter.cpp">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\filters\filters\CCMaskFilter.cpp">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\filters\filters\CCRGBFilter.cpp">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\filters\filters\CCSaturationFilter.cpp">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\filters\filters\CCSepiaFilter.cpp">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\filters\filters\CCSharpenFilter.cpp">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\filters\filters\CCTestFilter.cpp">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\filters\shaders\ccFilterShaders.cpp">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\filters\shaders\FilterShaders.cpp">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\filters\nodes\CCFilteredSprite.cpp">
+      <Filter>src\extra\filters\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\nanovg\nanonode\NVGDrawNode.cpp">
+      <Filter>src\extra\nanovg\nanonode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\nanovg\nanonode\NVGNode.cpp">
+      <Filter>src\extra\nanovg\nanonode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\nanovg\nanovg\nanovg.c">
+      <Filter>src\extra\nanovg\nanovg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\network\CCHTTPRequest.cpp">
+      <Filter>src\extra\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\network\CCNetwork.cpp">
+      <Filter>src\extra\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\platform\wp8\CCCryptoWP8.cpp">
+      <Filter>src\extra\platform\wp8</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\platform\wp8\CCNativeWP8.cpp">
+      <Filter>src\extra\platform\wp8</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\platform\wp8\CCNetworkWP8.cpp">
+      <Filter>src\extra\platform\wp8</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\package_quick_register.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="..\..\src\extensions\cjson\fpconv.h">
+      <Filter>src\extensions\cjson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extensions\cjson\lua_cjson.h">
+      <Filter>src\extensions\cjson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extensions\cjson\strbuf.h">
+      <Filter>src\extensions\cjson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extensions\lpack\lpack.h">
+      <Filter>src\extensions\lpack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extensions\lsqlite3\lsqlite3.h">
+      <Filter>src\extensions\lsqlite3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extensions\lsqlite3\sqlite3.h">
+      <Filter>src\extensions\lsqlite3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extensions\zlib\lua_zlib.h">
+      <Filter>src\extensions\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extensions\quick_extensions.h">
+      <Filter>src\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\apptools\HelperFunc.h">
+      <Filter>src\extra\apptools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\crypto\base64\libbase64.h">
+      <Filter>src\extra\crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\crypto\md5\md5.h">
+      <Filter>src\extra\crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\crypto\CCCrypto.h">
+      <Filter>src\extra\crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\luabinding\cocos2dx_extra_luabinding.h">
+      <Filter>src\extra\luabinding</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\luabinding\HelperFunc_luabinding.h">
+      <Filter>src\extra\luabinding</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\luabinding\lua_cocos2dx_extension_filter_auto.hpp">
+      <Filter>src\extra\luabinding</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\luabinding\lua_cocos2dx_extension_nanovg_auto.hpp">
+      <Filter>src\extra\luabinding</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\luabinding\lua_cocos2dx_extension_nanovg_manual.hpp">
+      <Filter>src\extra\luabinding</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\filters\CCBlurFilter.h">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\filters\CCBrightnessFilter.h">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\filters\CCContrastFilter.h">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\filters\CCCustomFilter.h">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\filters\CCDropShadowFilter.h">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\filters\CCExposureFilter.h">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\filters\CCFilter.h">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\filters\CCGammaFilter.h">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\filters\CCGrayFilter.h">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\filters\CCHazeFilter.h">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\filters\CCHueFilter.h">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\filters\CCMaskFilter.h">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\filters\CCRGBFilter.h">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\filters\CCSaturationFilter.h">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\filters\CCSepiaFilter.h">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\filters\CCSharpenFilter.h">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\filters\CCTestFilter.h">
+      <Filter>src\extra\filters\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_blur_frag.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_brightness_frag.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_colorramp_frag.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_contrast_frag.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_drop_shadow_frag.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_drop_shadow_vert.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_emboss_frag.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_embossmov_frag.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_exposure_frag.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_gamma_frag.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_gaussian_blur_frag.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_gaussian_hblur_frag.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_gaussian_vblur_frag.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_grass_frag.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_gray_frag.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_haze_frag.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_hblur_vert.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_hue_frag.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_motion_blur_frag.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_motion_blur_vert.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_rgb_frag.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_saturation_frag.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_sepia_frag.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_sharpen_frag.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_sharpen_vert.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_test_frag.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_test_vert.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_vblur_vert.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShader_zoom_blur_frag.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\ccFilterShaders.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\shaders\FilterShaders.h">
+      <Filter>src\extra\filters\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\nodes\CCFilteredSprite.h">
+      <Filter>src\extra\filters\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\filters\cocos2dFilters.h">
+      <Filter>src\extra\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\nanovg\nanonode\NVGDrawNode.h">
+      <Filter>src\extra\nanovg\nanonode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\nanovg\nanonode\NVGNode.h">
+      <Filter>src\extra\nanovg\nanonode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\nanovg\nanovg\fontstash.h">
+      <Filter>src\extra\nanovg\nanovg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\nanovg\nanovg\nanovg.h">
+      <Filter>src\extra\nanovg\nanovg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\nanovg\nanovg\nanovg_gl.h">
+      <Filter>src\extra\nanovg\nanovg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\nanovg\nanovg\nanovg_gl_utils.h">
+      <Filter>src\extra\nanovg\nanovg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\nanovg\nanovg\stb_image.h">
+      <Filter>src\extra\nanovg\nanovg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\nanovg\nanovg\stb_truetype.h">
+      <Filter>src\extra\nanovg\nanovg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\native\CCAlertViewDelegate.h">
+      <Filter>src\extra\native</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\native\CCNative.h">
+      <Filter>src\extra\native</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\network\CCHTTPRequest.h">
+      <Filter>src\extra\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\network\CCHTTPRequestDelegate.h">
+      <Filter>src\extra\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\network\CCNetwork.h">
+      <Filter>src\extra\network</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\extra\filters\shaders\example_bloom.fsh">
+      <Filter>src\extra\filters\shaders</Filter>
+    </None>
+    <None Include="..\..\src\extra\filters\shaders\example_Blur.fsh">
+      <Filter>src\extra\filters\shaders</Filter>
+    </None>
+    <None Include="..\..\src\extra\filters\shaders\example_celShading.fsh">
+      <Filter>src\extra\filters\shaders</Filter>
+    </None>
+    <None Include="..\..\src\extra\filters\shaders\example_ColorBars.fsh">
+      <Filter>src\extra\filters\shaders</Filter>
+    </None>
+    <None Include="..\..\src\extra\filters\shaders\example_ColorBars.vsh">
+      <Filter>src\extra\filters\shaders</Filter>
+    </None>
+    <None Include="..\..\src\extra\filters\shaders\example_edgeDetection.fsh">
+      <Filter>src\extra\filters\shaders</Filter>
+    </None>
+    <None Include="..\..\src\extra\filters\shaders\example_Flower.fsh">
+      <Filter>src\extra\filters\shaders</Filter>
+    </None>
+    <None Include="..\..\src\extra\filters\shaders\example_greyScale.fsh">
+      <Filter>src\extra\filters\shaders</Filter>
+    </None>
+    <None Include="..\..\src\extra\filters\shaders\example_Heart.fsh">
+      <Filter>src\extra\filters\shaders</Filter>
+    </None>
+    <None Include="..\..\src\extra\filters\shaders\example_HorizontalColor.fsh">
+      <Filter>src\extra\filters\shaders</Filter>
+    </None>
+    <None Include="..\..\src\extra\filters\shaders\example_Julia.fsh">
+      <Filter>src\extra\filters\shaders</Filter>
+    </None>
+    <None Include="..\..\src\extra\filters\shaders\example_lensFlare.fsh">
+      <Filter>src\extra\filters\shaders</Filter>
+    </None>
+    <None Include="..\..\src\extra\filters\shaders\example_Mandelbrot.fsh">
+      <Filter>src\extra\filters\shaders</Filter>
+    </None>
+    <None Include="..\..\src\extra\filters\shaders\example_Monjori.fsh">
+      <Filter>src\extra\filters\shaders</Filter>
+    </None>
+    <None Include="..\..\src\extra\filters\shaders\example_MultiTexture.fsh">
+      <Filter>src\extra\filters\shaders</Filter>
+    </None>
+    <None Include="..\..\src\extra\filters\shaders\example_MultiTexture.vsh">
+      <Filter>src\extra\filters\shaders</Filter>
+    </None>
+    <None Include="..\..\src\extra\filters\shaders\example_Noisy.fsh">
+      <Filter>src\extra\filters\shaders</Filter>
+    </None>
+    <None Include="..\..\src\extra\filters\shaders\example_normal.fsh">
+      <Filter>src\extra\filters\shaders</Filter>
+    </None>
+    <None Include="..\..\src\extra\filters\shaders\example_outline.fsh">
+      <Filter>src\extra\filters\shaders</Filter>
+    </None>
+    <None Include="..\..\src\extra\filters\shaders\example_Plasma.fsh">
+      <Filter>src\extra\filters\shaders</Filter>
+    </None>
+    <None Include="..\..\src\extra\filters\shaders\example_sepia.fsh">
+      <Filter>src\extra\filters\shaders</Filter>
+    </None>
+    <None Include="..\..\src\extra\filters\shaders\example_Twist.fsh">
+      <Filter>src\extra\filters\shaders</Filter>
+    </None>
+    <None Include="..\..\src\extra\filters\shaders\shadertoy_FireBall.fsh">
+      <Filter>src\extra\filters\shaders</Filter>
+    </None>
+    <None Include="..\..\src\extra\filters\shaders\shadertoy_Glow.fsh">
+      <Filter>src\extra\filters\shaders</Filter>
+    </None>
+    <None Include="..\..\src\extra\filters\shaders\shadertoy_LensFlare.fsh">
+      <Filter>src\extra\filters\shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>

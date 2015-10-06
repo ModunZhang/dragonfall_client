@@ -32,8 +32,9 @@ THE SOFTWARE.
 #include "base/CCData.h"
 #include "base/ccConfig.h" // CC_USE_JPEG, CC_USE_TIFF, CC_USE_WEBP
 //dannyhe
+#if CC_TARGET_PLATFORM != CC_PLATFORM_WINRT
 #include "../quick_libs/src/extra/apptools/HelperFunc.h"
-
+#endif
 extern "C"
 {
     // To resolve link error when building 32bits with Xcode 6.
@@ -464,8 +465,10 @@ Image::Image()
 , _numberOfMipmaps(0)
 #if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
 , _hasPremultipliedAlpha(true) //dannyhe iOS true
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID 
 , _hasPremultipliedAlpha(false) // dannyhe Android false
+#else
+, _hasPremultipliedAlpha(false)
 #endif
 {
 
@@ -508,8 +511,12 @@ bool Image::initWithImageFile(const std::string& path)
     SDL_FreeSurface(iSurf);
 #else
     //dannyhe
-    // Data data = FileUtils::getInstance()->getDataFromFile(_filePath);
+    // 
+#if CC_TARGET_PLATFORM != CC_PLATFORM_WINRT
     Data data = HelperFunc::getData(_filePath);
+#else
+	Data data = FileUtils::getInstance()->getDataFromFile(_filePath);
+#endif
     if (!data.isNull())
     {
         ret = initWithImageData(data.getBytes(), data.getSize());
@@ -524,8 +531,11 @@ bool Image::initWithImageFileThreadSafe(const std::string& fullpath)
     bool ret = false;
     _filePath = fullpath;
     //dannyhe
-    // Data data = FileUtils::getInstance()->getDataFromFile(fullpath);
+#if CC_TARGET_PLATFORM != CC_PLATFORM_WINRT
     Data data = HelperFunc::getData(_filePath);
+#else
+	Data data = FileUtils::getInstance()->getDataFromFile(fullpath);
+#endif
     if (!data.isNull())
     {
         ret = initWithImageData(data.getBytes(), data.getSize());

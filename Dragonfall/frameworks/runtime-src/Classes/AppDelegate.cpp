@@ -4,7 +4,7 @@
 #include "cocos2d.h"
 #include "lua_module_register.h"
 
-#include "LuaExtension.h"
+//#include "LuaExtension.h"
 //json
 #include "../cocos2d-x/external/json/document.h"
 #include "../cocos2d-x/external/json/rapidjson.h"
@@ -19,8 +19,6 @@
 #define LOGD(...) ((void)__android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__))
 #define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__))
 #endif
-
-
 
 using namespace CocosDenshion;
 
@@ -61,25 +59,26 @@ bool AppDelegate::applicationDidFinishLaunching()
     // set default FPS
     Director::getInstance()->setAnimationInterval(1.0 / 60.0f);
    
-    // register lua module
-//    auto engine = LuaEngine::getInstance();
-//    ScriptEngineManager::getInstance()->setScriptEngine(engine);
-//    lua_State* L = engine->getLuaStack()->getLuaState();
-//    lua_module_register(L);
-//
-//    register_all_packages();
-//
-//    LuaStack* stack = engine->getLuaStack();
-//    stack->setXXTEAKeyAndSign("2dxLua", strlen("2dxLua"), "XXTEA", strlen("XXTEA"));
-//    
-//    if (engine->executeScriptFile("src/main.lua"))
-//    {
-//        return false;
-//    }
+ 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
     AppDelegateExtern::initLuaEngine();
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     AndroidCheckFistInstall();
+#else
+	auto engine = LuaEngine::getInstance();
+	ScriptEngineManager::getInstance()->setScriptEngine(engine);
+	lua_State* L = engine->getLuaStack()->getLuaState();
+	lua_module_register(L);
+	
+	register_all_packages();
+	
+	LuaStack* stack = engine->getLuaStack();
+	stack->setXXTEAKeyAndSign("2dxLua", strlen("2dxLua"), "XXTEA", strlen("XXTEA"));
+	    
+	if (engine->executeScriptFile("scripts/main.lua"))
+	{
+	    return false;
+	}
 #endif
     return true;
 }
@@ -116,7 +115,7 @@ void AppDelegate::applicationWillEnterForeground()
 
 
 //MARK:Extern
-
+#if CC_TARGET_PLATFORM != CC_PLATFORM_WINRT
 void AppDelegateExtern::restartGame(float dt)
 {
     initLuaEngine();
@@ -351,7 +350,7 @@ bool AppDelegateExtern::checkPath()
     }
     return need_Load_zip_from_bundle;
 }
-
+#endif
 /**************************Android************************************/
 //dannyhe
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
