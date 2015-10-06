@@ -75,6 +75,7 @@ static int os_getenv (lua_State *L) {
 #else
 	lua_pushstring(L, "WINRT not support");
 #endif
+	return 1;
 }
 
 
