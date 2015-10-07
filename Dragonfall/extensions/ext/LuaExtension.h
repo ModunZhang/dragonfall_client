@@ -14,7 +14,7 @@ TOLUA_API int tolua_cc_pomelo_open(lua_State* tolua_S);
 TOLUA_API int tolua_cc_lua_extension(lua_State* tolua_S);
 unsigned long getFileCrc32(const char* filePath);
 
-
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
 #include "2d/CCTransition.h"
 NS_CC_BEGIN
 int lua_register_cocos2dx_TransitionCustom(lua_State* tolua_S);
@@ -35,6 +35,6 @@ private:
 };
 
 NS_CC_END
-
+#endif /* CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS */
 
 #endif /* defined(__battlefront__LuaExtension__) */

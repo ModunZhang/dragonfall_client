@@ -331,7 +331,7 @@ THE SOFTWARE.
 
 //dannyhe
 /**
- * 下面的这些宏只是为了显示的表明支持了这些宏,定义在这里.实质定义生效是在xcode的target编译设置里面，Android是在mk文件里
+ * 下面的这些宏只是为了显示的表明支持了这些宏,定义在这里.实质定义生效是在xcode的target编译设置里面，Android是在mk文件里,Windows RT 将使用
  */
 #ifndef CC_USE_CCBUILDER
 #define CC_USE_CCBUILDER 1
@@ -359,11 +359,19 @@ THE SOFTWARE.
 #endif
 
 #ifndef USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 #define USE_ETC1_TEXTURE_WITH_ALPHA_DATA 1
+#else
+#define USE_ETC1_TEXTURE_WITH_ALPHA_DATA 0
+#endif
 #endif
 
 #ifndef CC_USE_ETC1_ZLIB
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 #define CC_USE_ETC1_ZLIB 1
+#else
+#define CC_USE_ETC1_ZLIB 0
+#endif
 #endif
 
 

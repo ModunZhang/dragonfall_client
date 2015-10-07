@@ -16,6 +16,9 @@
     <ApplicationDefinition Include="$(MSBuildThisFileDirectory)App.xaml">
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LuaExtension.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\common\RTCommonUtils.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\WinRTHelper.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\Classes\AppDelegate.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)App.xaml.cpp">
       <DependentUpon>$(MSBuildThisFileDirectory)App.xaml</DependentUpon>
@@ -25,6 +28,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)OpenGLESPage.xaml.cpp">
       <DependentUpon>$(MSBuildThisFileDirectory)OpenGLESPage.xaml</DependentUpon>
     </ClCompile>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LuaExtension.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\common\RTCommonUtils.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\WinRTHelper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\Classes\AppDelegate.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)App.xaml.h">
       <DependentUpon>$(MSBuildThisFileDirectory)App.xaml</DependentUpon>

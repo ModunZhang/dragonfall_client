@@ -11,6 +11,15 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Cocos2dRenderer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)OpenGLES.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)OpenGLESPage.xaml.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LuaExtension.cpp">
+      <Filter>Classes\ext</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\common\RTCommonUtils.cpp">
+      <Filter>Classes\ext\common</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\WinRTHelper.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="$(MSBuildThisFileDirectory)App.xaml" />
@@ -19,6 +28,12 @@
     <Filter Include="Classes">
       <UniqueIdentifier>{38ad799c-8c3c-44a2-8e41-516c8f62f556}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\ext">
+      <UniqueIdentifier>{32c73696-0c4b-4140-81a9-44c03c25bbd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\ext\common">
+      <UniqueIdentifier>{e9fa4130-a85c-4ad8-9fc0-f4178f2d42d0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\Classes\AppDelegate.h">
@@ -26,6 +41,15 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)OpenGLES.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)OpenGLESPage.xaml.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LuaExtension.h">
+      <Filter>Classes\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\common\RTCommonUtils.h">
+      <Filter>Classes\ext\common</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\WinRTHelper.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Page Include="$(MSBuildThisFileDirectory)OpenGLESPage.xaml" />

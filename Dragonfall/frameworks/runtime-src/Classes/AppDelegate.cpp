@@ -4,7 +4,8 @@
 #include "cocos2d.h"
 #include "lua_module_register.h"
 
-//#include "LuaExtension.h"
+#include "LuaExtension.h"
+
 //json
 #include "../cocos2d-x/external/json/document.h"
 #include "../cocos2d-x/external/json/rapidjson.h"
@@ -69,7 +70,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 	ScriptEngineManager::getInstance()->setScriptEngine(engine);
 	lua_State* L = engine->getLuaStack()->getLuaState();
 	lua_module_register(L);
-	
+	tolua_cc_lua_extension(L);
 	register_all_packages();
 	
 	LuaStack* stack = engine->getLuaStack();
