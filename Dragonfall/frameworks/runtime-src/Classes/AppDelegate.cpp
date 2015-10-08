@@ -94,7 +94,6 @@ bool AppDelegate::applicationDidFinishLaunching()
 		msg->ShowAsync();
 	});
 #else
-	Windows::UI::Xaml::Application::Current->Resources->GetValue("sss");
 	auto engine = LuaEngine::getInstance();
 	ScriptEngineManager::getInstance()->setScriptEngine(engine);
 	lua_State* L = engine->getLuaStack()->getLuaState();
