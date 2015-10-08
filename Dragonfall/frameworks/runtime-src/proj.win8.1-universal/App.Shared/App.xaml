@@ -6,8 +6,7 @@
     xmlns:localData="using:Shared">
 
     <Application.Resources>
-
       <x:String x:Key="AppName">cpp_tests</x:String>
-
+      <x:Boolean x:Key="AppHoc">true</x:Boolean>
     </Application.Resources>
 </Application>
