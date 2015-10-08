@@ -16,8 +16,13 @@
     <ApplicationDefinition Include="$(MSBuildThisFileDirectory)App.xaml">
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LocalNotification\ext_local_push.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LocalNotification\LocalNotificationWinRT.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LuaExtension.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\sysmail\ext_sysmail.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\sysmail\SysmailWinRT.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\common\RTCommonUtils.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\io\RTFileOperation.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\WinRTHelper.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\Classes\AppDelegate.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)App.xaml.cpp">
@@ -28,8 +33,13 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)OpenGLESPage.xaml.cpp">
       <DependentUpon>$(MSBuildThisFileDirectory)OpenGLESPage.xaml</DependentUpon>
     </ClCompile>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LocalNotification\ext_local_push.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LocalNotification\LocalNotificationWinRT.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LuaExtension.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\sysmail\ext_sysmail.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\sysmail\SysmailWinRT.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\common\RTCommonUtils.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\io\RTFileOperation.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\WinRTHelper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\Classes\AppDelegate.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)App.xaml.h">

@@ -3,9 +3,7 @@
 #include "SimpleAudioEngine.h"
 #include "cocos2d.h"
 #include "lua_module_register.h"
-
 #include "LuaExtension.h"
-
 //json
 #include "../cocos2d-x/external/json/document.h"
 #include "../cocos2d-x/external/json/rapidjson.h"
@@ -19,6 +17,10 @@
 #define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__))
 #define LOGD(...) ((void)__android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__))
 #define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__))
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+#include "io/RTFileOperation.h"
+#include "common/RTCommonUtils.h"
+#include "WinRTHelper.h"
 #endif
 
 using namespace CocosDenshion;
@@ -65,6 +67,49 @@ bool AppDelegate::applicationDidFinishLaunching()
     AppDelegateExtern::initLuaEngine();
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     AndroidCheckFistInstall();
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT) 
+#if 0
+	FileUtils* fileUtils = FileUtils::getInstance();
+	std::string appVersion = GetAppVersion();
+	string writePath = fileUtils->getWritablePath();
+
+	string updatePath = writePath + "update/";
+	string appPath = updatePath + appVersion + "/";
+
+	RTFileOperation::createDirectory(updatePath);
+	RTFileOperation::createDirectory(appPath);
+	std::string luafile = fileUtils->fullPathForFilename("scripts/main.lua");
+
+	CCLog("1---->%d", fileUtils->isFileExist(luafile));
+	CCLog("2----1>%d", fileUtils->isFileExist(appPath + "main.lua"));
+	RTFileOperation::copyFile(luafile,appPath+"main.lua");
+	CCLog("2----2>%d", fileUtils->isFileExist(appPath+"main.lua"));
+
+	cocos2d::WinRTHelper::RunOnUIThread([=]()
+	{
+		// Show the message dialog
+		auto msg = ref new Windows::UI::Popups::MessageDialog(L"RunOnUIThread", L"Ok!");
+		// Set the command to be invoked when a user presses 'ESC'
+		msg->CancelCommandIndex = 1;
+		msg->ShowAsync();
+	});
+#else
+	Windows::UI::Xaml::Application::Current->Resources->GetValue("sss");
+	auto engine = LuaEngine::getInstance();
+	ScriptEngineManager::getInstance()->setScriptEngine(engine);
+	lua_State* L = engine->getLuaStack()->getLuaState();
+	lua_module_register(L);
+	tolua_cc_lua_extension(L);
+	register_all_packages();
+
+	LuaStack* stack = engine->getLuaStack();
+	stack->setXXTEAKeyAndSign("2dxLua", strlen("2dxLua"), "XXTEA", strlen("XXTEA"));
+
+	if (engine->executeScriptFile("scripts/main.lua"))
+	{
+		return false;
+	}
+#endif
 #else
 	auto engine = LuaEngine::getInstance();
 	ScriptEngineManager::getInstance()->setScriptEngine(engine);
@@ -80,7 +125,9 @@ bool AppDelegate::applicationDidFinishLaunching()
 	{
 	    return false;
 	}
+
 #endif
+
     return true;
 }
 
@@ -116,7 +163,7 @@ void AppDelegate::applicationWillEnterForeground()
 
 
 //MARK:Extern
-#if CC_TARGET_PLATFORM != CC_PLATFORM_WINRT
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
 void AppDelegateExtern::restartGame(float dt)
 {
     initLuaEngine();
@@ -182,11 +229,16 @@ void AppDelegateExtern::loadConfigFile()
 
 const char* AppDelegateExtern::getAppVersion()
 {
+#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
     const char*ipaVersion = GetAppVersion();
     if (ipaVersion != NULL)
     {
         return ipaVersion;
     }
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+	std::string ipaVersion = GetAppVersion();
+	return ipaVersion.c_str();
+#endif
     return "";
 }
 
@@ -259,23 +311,44 @@ bool AppDelegateExtern::checkPath()
     
     if(!fileUtils->isDirectoryExist(appPath)){
         if(fileUtils->isDirectoryExist(updatePath)){
+#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
             FileOperation::removeDirectory(updatePath.c_str());
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+			RTFileOperation::removeDirectory(updatePath);
+#endif
         }
+#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
         FileOperation::createDirectory(updatePath.c_str());
         FileOperation::createDirectory(appPath.c_str());
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+		RTFileOperation::createDirectory(updatePath);
+		RTFileOperation::createDirectory(appPath);
+#endif
     }
     string resPath = appPath + "res/";
     string scriptsPath = appPath + "scripts/";
     if (!fileUtils->isDirectoryExist(resPath)) {
+#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
         FileOperation::createDirectory(resPath.c_str());
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+		RTFileOperation::createDirectory(resPath);
+#endif
     }
     if (!fileUtils->isDirectoryExist(scriptsPath)) {
+#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
         FileOperation::createDirectory(scriptsPath.c_str());
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+		RTFileOperation::createDirectory(scriptsPath);
+#endif
     }
     string from = FileUtils::getInstance()->fullPathForFilename("res/fileList.json");
     string to = appPath + "res/fileList.json";
     if (!FileUtils::getInstance()->isFileExist(to)) {
+#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
         FileOperation::copyFile(from.c_str(), to.c_str());
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+		RTFileOperation::copyFile(from, to);
+#endif
     }
     
     string doucument_zip_path = scriptsPath + "game.zip";
@@ -284,7 +357,11 @@ bool AppDelegateExtern::checkPath()
         need_Load_zip_from_bundle = true;
         //还原版本信息重新执行自动更新
         if (FileUtils::getInstance()->isFileExist(from)) {
+#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
             FileOperation::copyFile(from.c_str(), to.c_str());
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+			RTFileOperation::copyFile(from, to);
+#endif
         }
     }
     else
@@ -300,7 +377,11 @@ bool AppDelegateExtern::checkPath()
             need_Load_zip_from_bundle = true;
             //还原版本信息重新执行自动更新
             if (FileUtils::getInstance()->isFileExist(from)) {
+#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
                 FileOperation::copyFile(from.c_str(), to.c_str());
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+				RTFileOperation::copyFile(from, to);
+#endif
             }
         }
         else

@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "WinRTHelper.h"
-
+#include "CCGLViewImpl-winrt.h"
 namespace cocos2d
 {
 	namespace WinRTHelper
@@ -60,6 +60,10 @@ namespace cocos2d
 			} while (0);
 
 			return ret;
+		}
+		void RunOnUIThread(std::function<void()> method)
+		{
+			GLViewImpl::sharedOpenGLView()->RunOnUIThread(method);
 		}
 	}
 }

@@ -20,6 +20,21 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\WinRTHelper.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\io\RTFileOperation.cpp">
+      <Filter>Classes\ext\io</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\sysmail\ext_sysmail.cpp">
+      <Filter>Classes\ext\sysmail</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\sysmail\SysmailWinRT.cpp">
+      <Filter>Classes\ext\sysmail</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LocalNotification\ext_local_push.cpp">
+      <Filter>Classes\ext\LocalNotification</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LocalNotification\LocalNotificationWinRT.cpp">
+      <Filter>Classes\ext\LocalNotification</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="$(MSBuildThisFileDirectory)App.xaml" />
@@ -33,6 +48,15 @@
     </Filter>
     <Filter Include="Classes\ext\common">
       <UniqueIdentifier>{e9fa4130-a85c-4ad8-9fc0-f4178f2d42d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\ext\io">
+      <UniqueIdentifier>{247fd30c-47a0-487f-b35b-a4dda47e4c53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\ext\sysmail">
+      <UniqueIdentifier>{7d14e888-521d-4fb3-91f1-3cda7c46b2c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\ext\LocalNotification">
+      <UniqueIdentifier>{e0792490-6b56-4375-909b-27726caefbca}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -49,6 +73,21 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\WinRTHelper.h">
       <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\io\RTFileOperation.h">
+      <Filter>Classes\ext\io</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\sysmail\ext_sysmail.h">
+      <Filter>Classes\ext\sysmail</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\sysmail\SysmailWinRT.h">
+      <Filter>Classes\ext\sysmail</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LocalNotification\ext_local_push.h">
+      <Filter>Classes\ext\LocalNotification</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LocalNotification\LocalNotificationWinRT.h">
+      <Filter>Classes\ext\LocalNotification</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

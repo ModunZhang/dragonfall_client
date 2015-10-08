@@ -9,6 +9,7 @@ using namespace Windows::ApplicationModel;
 using namespace cocos2d;
 using namespace concurrency;
 
+//wp8.1不支持 参考 https://social.msdn.microsoft.com/Forums/sqlserver/en-US/ac4f3329-d7ee-455f-80be-0e1685fea971/how-to-copy-text-to-the-clipboard-in-wp81-using-vs2013-can-not-refer-to-the-correct-namespace?forum=wpdevelop
 void CopyText(const char * text)
 {
 	
@@ -17,12 +18,12 @@ void CopyText(const char * text)
 
 void DisableIdleTimer(bool disable)
 {
-	
+	//不支持?
 }
 
 void CloseKeyboard()
 {
-
+	//不提供
 }
 
 std::string GetOSVersion()
@@ -61,18 +62,8 @@ std::string GetAppBundleVersion()
 }
 std::string GetDeviceToken()
 {
-#if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
-	//Windows::ApplicationModel::Email::EmailMessage^ message = ref new Windows::ApplicationModel::Email::EmailMessage();
-	//Platform::String^ p = "test@test.com";
-	//message->Subject = p;
-	//message->Body = p;
-	//Windows::ApplicationModel::Email::EmailRecipient^ recipient = ref new Windows::ApplicationModel::Email::EmailRecipient(p);
-	//message->To->Append(recipient);
-	//create_task(Windows::ApplicationModel::Email::EmailManager::ShowComposeNewEmailAsync(message));
-#endif
 	return "WP8";
 }
-
 
 std::string GetDeviceLanguage()
 {
@@ -81,15 +72,35 @@ std::string GetDeviceLanguage()
 
 int getBatteryLevel()
 {
-	/*return Plus2SharpHelper::NativeDelegate::GetInstance()->GlobalCallback->getBatteryLevel();*/
+#if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
+	return Windows::Phone::Devices::Power::Battery::GetDefault()->RemainingChargePercent;
+#endif
 	return 1;
 }
-
+/// <summary>
+/// Property that returns the connection profile [ ie, availability of Internet ]
+/// Interface type can be [ 1,6,9,23,24,37,71,131,144 ]
+/// 1 - > Some other type of network interface.
+/// 6 - > An Ethernet network interface.
+/// 9 - > A token ring network interface.
+/// 23 -> A PPP network interface.
+/// 24 -> A software loopback network interface.
+/// 37 -> An ATM network interface.
+/// 71 -> An IEEE 802.11 wireless network interface.
+/// 131 -> A tunnel type encapsulation network interface.
+/// 144 -> An IEEE 1394 (Firewire) high performance serial bus network interface.
+/// </summary>
 std::string getInternetConnectionStatus()
 {
-	/*Platform::String^ ps = Plus2SharpHelper::NativeDelegate::GetInstance()->GlobalCallback->getInternetConnectionStatus();
-	return Plus2SharpHelper::PlatformStringToString(ps);*/
-	return "0";
+	auto profile = Windows::Networking::Connectivity::NetworkInformation::GetInternetConnectionProfile();
+	switch (profile->NetworkAdapter->IanaInterfaceType)
+	{
+	case 1:
+		return "unknow";
+	default:
+		return "unknow";
+		break;
+	}
 }
 
 std::string GetOpenUdid()

@@ -51,7 +51,11 @@ extern "C" {
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 #include "common/RTCommonUtils.h"
 #include "crc/crc32.c"
-//#include "ext_sysmail.h"
+#include "io/RTFileOperation.h"
+#include "AppDelegate.h"
+#include "../../external/lua/quick/LuaNodeManager.h"
+#include "sysmail/ext_sysmail.h"
+#include "LocalNotification/ext_local_push.h"
 #endif
 
 
@@ -612,9 +616,9 @@ static int tolua_ext_removeDirectory(lua_State* tolua_S)
 		const char* strFolderPath = ((const char*)tolua_tostring(tolua_S, 1, 0));
 		bool isRemoved = FileOperation::removeDirectory(strFolderPath);
 		tolua_pushboolean(tolua_S, isRemoved);
-#else
-		//TODO:remove dir
-		return 0;
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+		bool isRemoved = RTFileOperation::removeDirectory(tolua_tocppstring(tolua_S, 1, 0));
+		tolua_pushboolean(tolua_S, isRemoved);
 #endif
     }
     return 1;
@@ -710,7 +714,7 @@ static int tolua_ext_restart(lua_State* tolua_S)
     else
 #endif
     {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 		AppDelegateExtern delegateExtern;
 
 		auto scheduler = Director::getInstance()->getScheduler();
@@ -719,7 +723,6 @@ static int tolua_ext_restart(lua_State* tolua_S)
 		scheduler->unscheduleScriptEntry(-1);
 		scheduler->schedule(schedule_selector(AppDelegateExtern::restartGame), &delegateExtern, 0, false, 0, false);
 #endif
-		//TODO:restart game
     }
     return 0;
 #ifndef TOLUA_RELEASE
@@ -924,11 +927,12 @@ static void RegisterExtModules(lua_State* tolua_S)
      tolua_ext_module_store(tolua_S);
 #endif
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
-    tolua_ext_module_localpush(tolua_S); //local push
-    tolua_ext_module_sysmail(tolua_S);
+ 
     tolua_ext_module_market(tolua_S);
 #endif
    //TODO:ext modules
+	tolua_ext_module_sysmail(tolua_S);
+	tolua_ext_module_localpush(tolua_S); //local push
 }
 
 

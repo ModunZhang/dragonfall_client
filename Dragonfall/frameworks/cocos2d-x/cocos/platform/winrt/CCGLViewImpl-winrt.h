@@ -88,7 +88,8 @@ public:
     void QueueEvent(std::shared_ptr<InputEvent>& event);
 
     bool ShowMessageBox(Platform::String^ title, Platform::String^ message);
-
+	//dannyhe
+	void RunOnUIThread(std::function<void ()> method);
 	int Run();
 	void Render();
 

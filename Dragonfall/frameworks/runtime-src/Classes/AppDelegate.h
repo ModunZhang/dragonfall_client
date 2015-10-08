@@ -35,7 +35,7 @@ public:
     */
     virtual void applicationWillEnterForeground();
 };
-#if CC_TARGET_PLATFORM != CC_PLATFORM_WINRT
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
 class AppDelegateExtern : public cocos2d::Ref
 {
 public:
