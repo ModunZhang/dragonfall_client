@@ -50,11 +50,13 @@ OpenGLESPage::OpenGLESPage(OpenGLES* openGLES) :
     m_coreInput(nullptr),
     m_dpi(0.0f),
     m_deviceLost(false),
-    m_orientation(DisplayOrientations::Landscape)
+    m_orientation(DisplayOrientations::Portrait
+	)
 {
     InitializeComponent();
 #if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
 	Windows::Phone::UI::Input::HardwareButtons::BackPressed += ref new Windows::Foundation::EventHandler<Windows::Phone::UI::Input::BackPressedEventArgs^>(this, &OpenGLESPage::HardwareButtons_BackPressed);
+	Windows::UI::ViewManagement::ApplicationView::GetForCurrentView()->SuppressSystemOverlays = true; //dannyhe:full screen if switch auto hide navigation bar "on"
 #endif
     Windows::UI::Core::CoreWindow^ window = Windows::UI::Xaml::Window::Current->CoreWindow;
 
