@@ -58,6 +58,18 @@
     <Filter Include="Classes\ext\LocalNotification">
       <UniqueIdentifier>{e0792490-6b56-4375-909b-27726caefbca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Strings">
+      <UniqueIdentifier>{2dc2d35c-d2bd-4c49-9279-e15a98f2739a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\en-US">
+      <UniqueIdentifier>{f6a7d550-fb0e-4a5a-afb1-a20c963b20dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\zh-Hans-CN">
+      <UniqueIdentifier>{bff6d437-c3a7-4d74-a45b-be9d6e1597a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\zh-Hant-TW">
+      <UniqueIdentifier>{e4fb5a78-791c-4ff3-ad6c-9bdf2e341474}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\Classes\AppDelegate.h">
@@ -94,8 +106,14 @@
     <Page Include="$(MSBuildThisFileDirectory)OpenGLESPage.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <PRIResource Include="$(MSBuildThisFileDirectory)Strings\en-US\Resources.resw" />
-    <PRIResource Include="$(MSBuildThisFileDirectory)Strings\zh-Hans-CN\Resources.resw" />
-    <PRIResource Include="$(MSBuildThisFileDirectory)Strings\zh-Hant-TW\Resources.resw" />
+    <PRIResource Include="$(MSBuildThisFileDirectory)Strings\en-US\Resources.resw">
+      <Filter>Strings\en-US</Filter>
+    </PRIResource>
+    <PRIResource Include="$(MSBuildThisFileDirectory)Strings\zh-Hans-CN\Resources.resw">
+      <Filter>Strings\zh-Hans-CN</Filter>
+    </PRIResource>
+    <PRIResource Include="$(MSBuildThisFileDirectory)Strings\zh-Hant-TW\Resources.resw">
+      <Filter>Strings\zh-Hant-TW</Filter>
+    </PRIResource>
   </ItemGroup>
 </Project>
