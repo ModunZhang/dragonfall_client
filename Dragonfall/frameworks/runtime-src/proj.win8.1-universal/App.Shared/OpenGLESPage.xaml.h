@@ -31,7 +31,10 @@ namespace cocos2d
     public:
         OpenGLESPage();
         virtual ~OpenGLESPage();
-
+		//dannyhe
+#if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
+		void HardwareButtons_BackPressed(Platform::Object^ sender, Windows::Phone::UI::Input::BackPressedEventArgs^ e);
+#endif
     internal:
         OpenGLESPage(OpenGLES* openGLES);
 

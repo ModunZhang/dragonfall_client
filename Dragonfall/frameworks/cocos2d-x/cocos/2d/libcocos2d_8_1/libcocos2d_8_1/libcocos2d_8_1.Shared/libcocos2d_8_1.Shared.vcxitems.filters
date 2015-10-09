@@ -1740,6 +1740,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\CCSpriteTileMap.h">
       <Filter>2d</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\..\external\xxtea\xxtea.h">
+      <Filter>external\xxtea</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\cocos2d.cpp" />
@@ -3306,6 +3309,12 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\CCSpriteTileMap.cpp">
       <Filter>2d</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\..\external\xxtea\xxtea.cpp">
+      <Filter>external\xxtea</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\..\external\xxtea\xxtea_file.cpp">
+      <Filter>external\xxtea</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="2d">
@@ -3556,6 +3565,9 @@
     </Filter>
     <Filter Include="extension\Particle3D\PU">
       <UniqueIdentifier>{ed044d4b-058f-4cee-911e-49fad0a03953}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\xxtea">
+      <UniqueIdentifier>{92a6f0ac-24e4-4cc1-b857-b48eb5b4d5f0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

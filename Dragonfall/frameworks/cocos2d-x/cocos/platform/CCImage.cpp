@@ -485,6 +485,14 @@ Image::~Image()
         CC_SAFE_FREE(_data);
 }
 
+#define USE_XXTEA_IMAGE 1
+#if (USE_XXTEA_IMAGE > 0) && CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+extern Data xxtea_file_get_data(const std::string& filename);
+#define GET_DATA_FROM_IMAGE_FILE(p) xxtea_file_get_data(p)
+#else
+ #define GET_DATA_FROM_IMAGE_FILE(p) FileUtils::getInstance()->getDataFromFile(p)
+#endif
+
 bool Image::initWithImageFile(const std::string& path)
 {
     bool ret = false;
@@ -511,11 +519,11 @@ bool Image::initWithImageFile(const std::string& path)
     SDL_FreeSurface(iSurf);
 #else
     //dannyhe
-    // 
+
 #if CC_TARGET_PLATFORM != CC_PLATFORM_WINRT
     Data data = HelperFunc::getData(_filePath);
 #else
-	Data data = FileUtils::getInstance()->getDataFromFile(_filePath);
+	Data data = GET_DATA_FROM_IMAGE_FILE(_filePath);
 #endif
     if (!data.isNull())
     {
@@ -534,7 +542,7 @@ bool Image::initWithImageFileThreadSafe(const std::string& fullpath)
 #if CC_TARGET_PLATFORM != CC_PLATFORM_WINRT
     Data data = HelperFunc::getData(_filePath);
 #else
-	Data data = FileUtils::getInstance()->getDataFromFile(fullpath);
+	Data data = GET_DATA_FROM_IMAGE_FILE(fullpath);
 #endif
     if (!data.isNull())
     {

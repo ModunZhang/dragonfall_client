@@ -53,7 +53,9 @@ OpenGLESPage::OpenGLESPage(OpenGLES* openGLES) :
     m_orientation(DisplayOrientations::Landscape)
 {
     InitializeComponent();
-
+#if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
+	Windows::Phone::UI::Input::HardwareButtons::BackPressed += ref new Windows::Foundation::EventHandler<Windows::Phone::UI::Input::BackPressedEventArgs^>(this, &OpenGLESPage::HardwareButtons_BackPressed);
+#endif
     Windows::UI::Core::CoreWindow^ window = Windows::UI::Xaml::Window::Current->CoreWindow;
 
     window->VisibilityChanged +=
@@ -311,3 +313,11 @@ void OpenGLESPage::StopRenderLoop()
         m_renderer->Pause();
     }
 }
+
+#if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
+void OpenGLESPage::HardwareButtons_BackPressed(Platform::Object^ sender, Windows::Phone::UI::Input::BackPressedEventArgs^ e)
+{
+	//dannyhe 这里暂时不做任何处理，也就是后退键没有任何功能!
+	e->Handled = true;
+}
+#endif
