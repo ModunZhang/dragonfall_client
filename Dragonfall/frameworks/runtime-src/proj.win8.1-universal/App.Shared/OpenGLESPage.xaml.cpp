@@ -50,7 +50,7 @@ OpenGLESPage::OpenGLESPage(OpenGLES* openGLES) :
     m_coreInput(nullptr),
     m_dpi(0.0f),
     m_deviceLost(false),
-    m_orientation(DisplayOrientations::Portrait
+    m_orientation(DisplayOrientations::Landscape
 	)
 {
     InitializeComponent();
@@ -319,7 +319,22 @@ void OpenGLESPage::StopRenderLoop()
 #if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
 void OpenGLESPage::HardwareButtons_BackPressed(Platform::Object^ sender, Windows::Phone::UI::Input::BackPressedEventArgs^ e)
 {
-	//dannyhe 这里暂时不做任何处理，也就是后退键没有任何功能!
+	using namespace Windows::UI::Popups;
+	auto loader = ref new Windows::ApplicationModel::Resources::ResourceLoader();
+	auto title = loader->GetString("exit_game_title");
+	auto yes_string = loader->GetString("yes");
+	auto no_string = loader->GetString("no");
+	auto msgDlg = ref new MessageDialog("", title);
+
+	msgDlg->Commands->Append(ref new UICommand(yes_string, ref new UICommandInvokedHandler([this](IUICommand^)
+	{
+
+		Windows::UI::Xaml::Application::Current->Exit();
+	})));
+	msgDlg->Commands->Append(ref new UICommand(no_string, ref new UICommandInvokedHandler([this](IUICommand^)
+	{
+	})));
+	msgDlg->ShowAsync();
 	e->Handled = true;
 }
 #endif
