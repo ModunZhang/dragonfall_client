@@ -522,6 +522,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UITextAtlas.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UITextBMFont.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UITextField.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UITextView\UITextView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UITextView\UITextViewImpl-winrt.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UITextView\UITextViewImpl.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UIVBox.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UIWidget.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\CCAction.h" />
@@ -1074,6 +1077,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UITextAtlas.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UITextBMFont.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UITextField.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UITextView\UITextView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UITextView\UITextViewImpl-winrt.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UIVBox.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UIWidget.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\CCAction.cpp" />

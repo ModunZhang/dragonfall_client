@@ -26159,7 +26159,6 @@ int lua_register_cocos2dx_ui_LayoutComponent(lua_State* tolua_S)
     g_typeCast["LayoutComponent"] = "ccui.LayoutComponent";
     return 1;
 }
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_WINRT)
 int lua_cocos2dx_ui_UITextView_registerScriptTextViewHandler(lua_State* tolua_S)
 {
     int argc = 0;
@@ -27807,7 +27806,7 @@ int lua_register_cocos2dx_ui_UITextView(lua_State* tolua_S)
     g_typeCast["UITextView"] = "ccui.UITextView";
     return 1;
 }
-#endif /* (CC_TARGET_PLATFORM != CC_PLATFORM_WINRT) */
+
 TOLUA_API int register_all_cocos2dx_ui(lua_State* tolua_S)
 {
 	tolua_open(tolua_S);
@@ -27844,9 +27843,7 @@ TOLUA_API int register_all_cocos2dx_ui(lua_State* tolua_S)
 	lua_register_cocos2dx_ui_RichText(tolua_S);
 	lua_register_cocos2dx_ui_RichElementImage(tolua_S);
 	lua_register_cocos2dx_ui_RelativeLayoutParameter(tolua_S);
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_WINRT)
     lua_register_cocos2dx_ui_UITextView(tolua_S);
-#endif
 	tolua_endmodule(tolua_S);
 	return 1;
 }

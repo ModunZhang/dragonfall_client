@@ -567,7 +567,8 @@ void Widget::setTouchEnabled(bool enable)
     if (_touchEnabled)
     {
 //dannyhe
-#if CC_ENABLE_SCRIPT_BINDING && CC_TARGET_PLATFORM != CC_PLATFORM_WINRT
+#if CC_ENABLE_SCRIPT_BINDING
+#if CC_TARGET_PLATFORM != CC_PLATFORM_WINRT
          auto mng = LuaNodeManager::getInstance();
          auto lnode = mng->getLuaNodeByNode(this, true);
          if (!lnode) {
@@ -575,7 +576,10 @@ void Widget::setTouchEnabled(bool enable)
          }
         lnode->setIsSendEventToNode(true);
         lnode->setLuaTouchEnabled(true);
- #else
+#else
+		Node::registerQuickTouchEvent();
+#endif //CC_PLATFORM_WINRT
+#else
         _touchListener = EventListenerTouchOneByOne::create();
         CC_SAFE_RETAIN(_touchListener);
         _touchListener->setSwallowTouches(true);
@@ -584,12 +588,13 @@ void Widget::setTouchEnabled(bool enable)
         _touchListener->onTouchEnded = CC_CALLBACK_2(Widget::onTouchEnded, this);
         _touchListener->onTouchCancelled = CC_CALLBACK_2(Widget::onTouchCancelled, this);
         _eventDispatcher->addEventListenerWithSceneGraphPriority(_touchListener, this);
-#endif
+#endif // CC_ENABLE_SCRIPT_BINDING
     }
     else
     {
 //dannyhe
-#if CC_ENABLE_SCRIPT_BINDING && CC_TARGET_PLATFORM != CC_PLATFORM_WINRT
+#if CC_ENABLE_SCRIPT_BINDING
+#if CC_TARGET_PLATFORM != CC_PLATFORM_WINRT
          auto mng = LuaNodeManager::getInstance();
          auto lnode = mng->getLuaNodeByNode(this, true);
          if (!lnode) {
@@ -597,10 +602,13 @@ void Widget::setTouchEnabled(bool enable)
          }
          lnode->setIsSendEventToNode(false);
          lnode->setLuaTouchEnabled(false);
- #else
+#else
+		Node::unregisterQuickTouchEvent();
+#endif //CC_TARGET_PLATFORM != CC_PLATFORM_WINRT
+#else
         _eventDispatcher->removeEventListener(_touchListener);
         CC_SAFE_RELEASE_NULL(_touchListener);
-#endif
+#endif // CC_ENABLE_SCRIPT_BINDING
     }
 }
 

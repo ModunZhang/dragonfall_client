@@ -475,6 +475,10 @@ public:
     virtual void removeScriptHandler(int handler) {};
     
     virtual void removeTouchNodeEvent(Node *node) {}; //dannyhe fix 422
+#if CC_ENABLE_SCRIPT_BINDING && CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+	virtual void registerQuickTouchEvent(Node *node){};
+	virtual void unregisterQuickTouchEvent(Node *node){};
+#endif
     /** 
      * Reallocate script function handler, only LuaEngine class need to implement this function.
      * @see reallocateScriptHandler of LuaEngine.

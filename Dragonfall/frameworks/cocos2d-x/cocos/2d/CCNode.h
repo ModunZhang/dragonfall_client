@@ -133,8 +133,13 @@ public:
     /// @} end of initializers
 
     /**
-     * dannyhe quick Lua evnet dispath callback,fix widget event 
+     * dannyhe quick Lua evnet dispath callback,fix widget event,
+	 * winrt call method to add event to quick event dispather
      */
+#if CC_ENABLE_SCRIPT_BINDING && CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+	virtual void registerQuickTouchEvent();
+	virtual void unregisterQuickTouchEvent();
+#endif
      virtual bool ccTouchBegan(Touch *pTouch, Event *pEvent)
      {
          CCLOG("Node---->ccTouchBegan from luaEventNode\n");

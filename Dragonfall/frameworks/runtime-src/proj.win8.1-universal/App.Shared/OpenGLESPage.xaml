@@ -11,15 +11,15 @@
         <Button x:Name="cocos2d_editbox" Visibility="Collapsed" Height="1">
             <Button.Flyout>
                 <Flyout x:Name="cocos2d_editbox_flyout">
-                    <Grid VerticalAlignment="Top" x:Name="cocos2d_editbox_grid">
+                    <Grid VerticalAlignment="Top" x:Name="cocos2d_editbox_grid" MaxHeight="300">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="120" />
-                            <ColumnDefinition Width="120" />
+                            <!--<ColumnDefinition Width="120" />-->
                         </Grid.ColumnDefinitions>
-
-                        <Button x:Name="cocos2d_editbox_done" Grid.Column="1" VerticalAlignment="Bottom">Done</Button>
-                        <Button x:Name="cocos2d_editbox_cancel" Grid.Column="2" VerticalAlignment="Bottom">Cancel</Button>
+                        <Button x:Name="cocos2d_editbox_done" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Right">Done</Button>
+                        <!--<Button x:Name="cocos2d_editbox_cancel" Grid.Column="2" VerticalAlignment="Bottom">Cancel</Button>-->
+                        <!--注释掉取消按钮-->
                     </Grid>
                 </Flyout>
             </Button.Flyout>
