@@ -1,7 +1,7 @@
 # encoding: utf-8
 # DannyHe
 # This scripts only for windows phone on Win32
-
+#TODO: remove tmp file,dds?
 import functions,sys,os
 import subprocess,shutil
 
@@ -31,13 +31,14 @@ if DEBUG_MODE:
 
 def exportImagesRes(image_dir_path):
 	outdir=os.path.join(RES_DEST_DIR,os.path.basename(image_dir_path)) #xxx/images/
-	functions.Logging.info("-->%s" % image_dir_path)
+	functions.Logging.info("> %s" % image_dir_path)
 	for file in os.listdir(image_dir_path):
 		sourceFile = os.path.join(image_dir_path,  file) 
 		targetFile = os.path.join(outdir,  file)
 		if os.path.isfile(sourceFile):
 			fileExt=sourceFile.split('.')[-1]
 			if (fileExt == 'png' or fileExt == 'jpg') and fileExt != 'tmp':
+				# functions.Logging.info(">> %s" % sourceFile)
 				if NEED_ENCRYPT_RES:
 					args = [RES_COMPILE_TOOL, '-i',sourceFile,'-o',outdir,'-ek',XXTEAKey,'-es',XXTEASign]
 					if QUIET_MODE:
@@ -45,7 +46,7 @@ def exportImagesRes(image_dir_path):
 					p = subprocess.Popen(args)
 					p.wait()
 					if p.returncode != 0:
-						functions.Logging.error("-- RES_COMPILE_TOOL failed!--%s" % sourceFile)
+						functions.die("<RES_COMPILE_TOOL failed>-%s" % sourceFile)
 				else:
 					if DEBUG_MODE:
 						functions.Logging.debug("copy images %s -- %s" %(sourceFile,outdir))
@@ -53,7 +54,7 @@ def exportImagesRes(image_dir_path):
 		elif os.path.isdir(sourceFile):
 			dir_name=os.path.basename(sourceFile)
 			if dir_name == '_Compressed_mac'or dir_name == 'rgba444_single' or dir_name == '_CanCompress':
-				functions.Logging.info("-->%s" % dir_name)
+				functions.Logging.info("> %s" % dir_name)
 				for image_file in os.listdir(sourceFile):
 					image_sourceFile = os.path.join(sourceFile,  image_file) 
 					image_targetFile = os.path.join(outdir,  image_file)
@@ -61,6 +62,7 @@ def exportImagesRes(image_dir_path):
 					if os.path.isfile(image_sourceFile):
 						fileExt=image_sourceFile.split('.')[-1]
 						if fileExt != 'tmp':
+							# functions.Logging.info(">> %s" % image_sourceFile)
 							if NEED_ENCRYPT_RES:
 								args = [RES_COMPILE_TOOL, '-i',image_sourceFile,'-o',image_outdir,'-ek',XXTEAKey,'-es',XXTEASign]
 								if QUIET_MODE:
@@ -68,14 +70,14 @@ def exportImagesRes(image_dir_path):
 								p = subprocess.Popen(args)
 								p.wait()
 								if p.returncode != 0:
-									functions.Logging.error("-- RES_COMPILE_TOOL failed!--%s" % image_sourceFile)
+									functions.die("<RES_COMPILE_TOOL failed>-%s" % image_sourceFile)
 							else:
 								if DEBUG_MODE:
 									functions.Logging.debug("copy images %s -- %s" %(image_sourceFile,image_outdir))
 								shutil.copy(image_sourceFile,image_outdir)
 
 			else:
-				functions.Logging.info("not handle dir:%s" % sourceFile)
+				functions.Logging.info(">>> Not handle: %s" % sourceFile)
 
 #simple copy file not handle
 def exportRes(sourceDir,  targetDir): 
@@ -88,14 +90,13 @@ def exportRes(sourceDir,  targetDir):
         if os.path.isfile(sourceFile): #file in res
         	outdir = os.path.dirname(targetFile)
         	fileExt=sourceFile.split('.')[-1]
-        	functions.Logging.info("-->%s %s" % (fileExt,sourceFile))
+        	functions.Logging.info(">> %s" % sourceFile)
         	if not os.path.exists(outdir):
         		os.makedirs(outdir)
         	if fileExt != 'po':
         		shutil.copy(sourceFile,  outdir)
         elif os.path.isdir(sourceFile):
         	dir_name=os.path.basename(sourceFile)
-        	functions.Logging.info("-->%s" % dir_name)
         	if dir_name == 'images':
         		exportImagesRes(sourceFile)
         	elif dir_name == 'animations':
@@ -106,5 +107,9 @@ def exportRes(sourceDir,  targetDir):
 				exportRes(sourceFile, targetFile)
 
 if __name__=="__main__":
-	functions.Logging.info("-->begin res")
+	functions.Logging.info("> Begin resources")
 	exportRes(RES_SRC_DIR,RES_DEST_DIR)
+	functions.removeTempFiles(RES_SRC_DIR,"tmp")
+	functions.removeTempDir(TEMP_RES_DIR)
+	functions.Logging.info("> End resources")
+	sys.exit(0);

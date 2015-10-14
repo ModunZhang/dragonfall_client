@@ -9,7 +9,7 @@ import subprocess,shutil
 
 Platform="WP"
 NEED_ENCRYPT_SCRIPTS=True
-QUIET_MODE=False # quite mode:no message when compile lua
+QUIET_MODE=True # quite mode:no message when compile lua
 DEBUG_MODE=False # debug this scripts
 
 SCRIPT_COMPILE_TOOL=functions.getScriptsTool()
@@ -60,21 +60,12 @@ def exportScriptsEncrypt():
 	shutil.copy(tempfile,  outdir)
 	functions.Logging.info("-- Copy Success!")
 
-# remove the .bytes files
-def removeTempBytesFile(targetDir):
-
-	 for file in os.listdir(targetDir): 
-		targetFile = os.path.join(targetDir,  file) 
-		if os.path.isfile(targetFile): 
-			if targetFile.split('.')[-1] == 'bytes':
-				os.remove(targetFile)
-		elif os.path.isdir(targetFile):
-			removeTempBytesFile(targetFile)
 
 # main
 if __name__=="__main__":
 	exportScriptsEncrypt();
-	functions.Logging.info("-- remove temp files");
-	removeTempBytesFile(SCRIPTS_SRC_DIR);
-	functions.Logging.info("-- scripts end");
+	functions.Logging.info("-- Remove temp files");
+	functions.removeTempFiles(SCRIPTS_SRC_DIR,"bytes");
+	functions.removeTempDir(TEMP_RES_DIR)
+	functions.Logging.info("-- Compile Lua end!");
 	sys.exit(0);

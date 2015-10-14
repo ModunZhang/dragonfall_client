@@ -6,7 +6,6 @@ import sys
 import urllib
 from tarfile import TarFile
 import shutil
-import win32Color
 import tempfile
 
 _TempDir_ = ""
@@ -18,20 +17,12 @@ class Logging:
     MAGENTA = '\033[35m'
     RESET   = '\033[0m'
 
-    if sys.platform == 'win32':
-        RED     = win32Color.FOREGROUND_RED | win32Color.FOREGROUND_INTENSITY
-        GREEN   = win32Color.FOREGROUND_GREEN | win32Color.FOREGROUND_INTENSITY
-        YELLOW  = win32Color.FOREGROUND_INTENSITY | win32Color.FOREGROUND_INTENSITY 
-        MAGENTA = win32Color.FOREGROUND_INTENSITY | win32Color.FOREGROUND_INTENSITY
-        RESET   = win32Color.FOREGROUND_RED | win32Color.FOREGROUND_GREEN | win32Color.FOREGROUND_BLUE
-
     @staticmethod
     def _print(s, color=None):
         if color and sys.stdout.isatty() and sys.platform != 'win32':
             print color + s + Logging.RESET
         else:
-            clr = win32Color.Color()
-            clr.print_color_with_args(s,color)
+            print s
     @staticmethod
     def debug(s):
         Logging._print(s, Logging.MAGENTA)
@@ -119,3 +110,24 @@ def getExportResourcesDir():
         return result;
     else:
         return result;
+
+def removeTempFiles(targetDir,fileExtensionName):
+     for file in os.listdir(targetDir): 
+        targetFile = os.path.join(targetDir,  file) 
+        if os.path.isfile(targetFile): 
+            if targetFile.split('.')[-1] == fileExtensionName:
+                os.remove(targetFile)
+        elif os.path.isdir(targetFile):
+            removeTempFiles(targetFile,fileExtensionName)
+
+def emptyDir(rootdir):
+    for f in os.listdir(rootdir):
+        filepath = os.path.join( rootdir, f )
+        if os.path.isfile(filepath):
+            os.remove(filepath)
+        elif os.path.isdir(filepath):
+            shutil.rmtree(filepath,True)
+
+def removeTempDir(rootdir):
+    emptyDir(rootdir)
+    os.rmdir(rootdir) 
