@@ -45,7 +45,7 @@ public:
     static void initLuaEngine();
     static void loadConfigFile();
     static bool checkPath();
-    static const char* getAppVersion();
+	static std::string getAppVersion();
     static bool isNotUpdate();
     static void extendApplication();
     static std::string getGameZipcrc32(const char *filePath);

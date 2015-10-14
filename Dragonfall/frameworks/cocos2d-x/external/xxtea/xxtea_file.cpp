@@ -3,7 +3,7 @@
 
 NS_CC_BEGIN
 
-static std::string xxteaKey = "2dxLua";
+static std::string xxteaKey = "Cbcm78HuH60MCfA7";
 static ssize_t xxteaKeyLen = xxteaKey.length();
 static std::string xxteaSign = "XXTEA";
 static ssize_t xxteaSignLen = xxteaSign.length();

@@ -94,7 +94,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 		msg->ShowAsync();
 	});
 #else
-	auto engine = LuaEngine::getInstance();
+	/*auto engine = LuaEngine::getInstance();
 	ScriptEngineManager::getInstance()->setScriptEngine(engine);
 	lua_State* L = engine->getLuaStack()->getLuaState();
 	lua_module_register(L);
@@ -107,7 +107,8 @@ bool AppDelegate::applicationDidFinishLaunching()
 	if (engine->executeScriptFile("scripts/main.lua"))
 	{
 		return false;
-	}
+	}*/
+	AppDelegateExtern::initLuaEngine();
 #endif
 #else
 	auto engine = LuaEngine::getInstance();
@@ -215,7 +216,7 @@ void AppDelegateExtern::initLuaEngine()
         path = FileUtils::getInstance()->fullPathForFilename("scripts/game.zip");
         stack->loadChunksFromZIP(path.c_str());
     }
-    CCLOG("use zip path:%s",path.c_str());
+    log("use zip path:%s",path.c_str());
     stack->executeString("require 'main'");
 }
 
@@ -226,17 +227,17 @@ void AppDelegateExtern::loadConfigFile()
     stack->executeString("require 'config'");
 }
 
-const char* AppDelegateExtern::getAppVersion()
+std::string AppDelegateExtern::getAppVersion()
 {
 #if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
     const char*ipaVersion = GetAppVersion();
     if (ipaVersion != NULL)
     {
-        return ipaVersion;
+        return std::string(ipaVersion);
     }
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 	std::string ipaVersion = GetAppVersion();
-	return ipaVersion.c_str();
+	return ipaVersion;
 #endif
     return "";
 }
@@ -302,7 +303,7 @@ bool AppDelegateExtern::checkPath()
 {
     bool need_Load_zip_from_bundle = false;
     FileUtils* fileUtils = FileUtils::getInstance();
-    const char* appVersion = getAppVersion();
+	std::string appVersion = getAppVersion();
     string writePath = fileUtils->getWritablePath();
     
     string updatePath = writePath + "update/";
