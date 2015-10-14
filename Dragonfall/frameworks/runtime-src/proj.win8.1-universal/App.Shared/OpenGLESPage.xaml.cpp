@@ -329,12 +329,9 @@ void OpenGLESPage::HardwareButtons_BackPressed(Platform::Object^ sender, Windows
 
 	msgDlg->Commands->Append(ref new UICommand(yes_string, ref new UICommandInvokedHandler([this](IUICommand^)
 	{
-
 		Windows::UI::Xaml::Application::Current->Exit();
 	})));
-	msgDlg->Commands->Append(ref new UICommand(no_string, ref new UICommandInvokedHandler([this](IUICommand^)
-	{
-	})));
+	msgDlg->Commands->Append(ref new UICommand(no_string, ref new UICommandInvokedHandler([=](IUICommand^){})));
 	msgDlg->ShowAsync();
 	e->Handled = true;
 }

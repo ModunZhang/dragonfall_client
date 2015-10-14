@@ -35,6 +35,9 @@
     <Filter Include="external\xxtea">
       <UniqueIdentifier>{92d7850c-b2d1-4162-b959-4a7ff5ec2e0a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="external\lua\LuaBitOp">
+      <UniqueIdentifier>{b841e327-2bed-45da-9deb-60e8c78a1cd0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -295,6 +298,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\external\xxtea\xxtea.cpp">
       <Filter>external\xxtea</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\external\lua\LuaBitOp\bit.c">
+      <Filter>external\lua\LuaBitOp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
