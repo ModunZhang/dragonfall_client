@@ -1,13 +1,13 @@
 @echo off
 :begin
-echo ---------------------------------
-echo * Build Game Tools Windows Phone Only
+echo -------------------------------------------
+echo * Build Game Tools Windows Phone Only v0.1
 echo 1. build Lua
 echo 2. build Resources
 echo 3. clean 
 echo 4. clean,build Lua,build Resources
 echo 5. close
-echo ---------------------------------
+echo ------------------------------------------
 set/p option="input option:":
 if "%option%"=="1" goto lua
 if "%option%"=="2" goto res 
@@ -16,52 +16,52 @@ if "%option%"=="4" goto all
 if "%option%"=="5" goto close 
 goto begin
 :clean
-echo ---------------------------------
+echo ------------------------------------------
 echo * Clean Game Data
-echo ---------------------------------
+echo ------------------------------------------
 python cleanGame.py
-echo ---------------------------------
+echo ------------------------------------------
 echo * Finish Build.
 pause
 goto begin
 :lua
-echo ---------------------------------
+echo ------------------------------------------
 echo * Build Lua
-echo ---------------------------------
+echo ------------------------------------------
 python buildScripts.py
-echo ---------------------------------
+echo ------------------------------------------
 echo * Finish Build.
 pause
 goto begin
 :res 
-echo ---------------------------------
+echo ------------------------------------------
 echo * Build Resources
-echo ---------------------------------
+echo ------------------------------------------
 python buildRes.py
-echo ---------------------------------
+echo ------------------------------------------
 echo * Finish Build.
 pause
 goto begin
 :all
-echo ---------------------------------
+echo ------------------------------------------
 echo * Clean Game Data
-echo ---------------------------------
+echo ------------------------------------------
 python cleanGame.py
-echo ---------------------------------
+echo ------------------------------------------
 echo * Build Lua
-echo ---------------------------------
+echo ------------------------------------------
 python buildScripts.py
-echo ---------------------------------
+echo ------------------------------------------
 echo * Build Resources
-echo ---------------------------------
+echo ------------------------------------------
 python buildRes.py
-echo ---------------------------------
+echo ------------------------------------------
 echo * Finish Build.
 pause
 goto begin
 :close
-echo ---------------------------------
+echo ------------------------------------------
 echo * Close Game Tools
-echo ---------------------------------
+echo ------------------------------------------
 pause
 exit
