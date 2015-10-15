@@ -58,7 +58,7 @@ def getProjDir():
 
 def getResourceDir():
     root_dir=getProjDir();
-    return os.path.normpath("%s/dev_wp8/res" % root_dir);
+    return os.path.normpath("%s/samples/res" % root_dir);
 
 def getXXTEAKey():
     return "Cbcm78HuH60MCfA7"
@@ -68,7 +68,7 @@ def getXXTEASign():
 
 def getScriptsDir():
     root_dir=getProjDir(); 
-    return os.path.normpath("%s/dev_wp8/scripts" % root_dir);
+    return os.path.normpath("%s/samples/scripts" % root_dir);
 
 def getExportDir():
     root_dir=getProjDir(); 
@@ -100,7 +100,7 @@ def getTempDir():
 
 def getResourceDir():
     root_dir=getProjDir(); 
-    return formatPath("%s/dev_wp8/res" % root_dir);
+    return formatPath("%s/samples/res" % root_dir);
 
 def getExportResourcesDir():
     root_dir=getExportDir();

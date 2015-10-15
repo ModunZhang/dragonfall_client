@@ -137,7 +137,9 @@ void LuaWebSocket::onError(WebSocket* ws, const WebSocket::ErrorCode& error)
 {
     LuaWebSocket* luaWs = dynamic_cast<LuaWebSocket*>(ws);
     if (NULL != luaWs) {
-        int nHandler = 0;//luaWs->getScriptHandler(LuaWebSocket::kWebSocketScriptHandlerError);
+        //int nHandler = 0;//luaWs->getScriptHandler(LuaWebSocket::kWebSocketScriptHandlerError);
+		//dannyhe 不知道为什么这里没实现 
+		int nHandler = ScriptHandlerMgr::getInstance()->getObjectHandler((void*)this, ScriptHandlerMgr::HandlerType::WEBSOCKET_CLOSE);
         if (0 != nHandler)
         {
             CommonScriptData data(nHandler,"");

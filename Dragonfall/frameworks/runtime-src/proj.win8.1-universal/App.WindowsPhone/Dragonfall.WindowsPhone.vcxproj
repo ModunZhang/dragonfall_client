@@ -134,12 +134,6 @@
     <Image Include="Assets\SplashScreen.scale-240.png" />
   </ItemGroup>
   <ItemGroup>
-    <_CustomResource Include="$(MSBuildThisFileDirectory)..\..\..\..\update_wp8\**\*">
-      <Link>Assets\Resources\%(RecursiveDir)%(FileName)%(Extension)</Link>
-      <DeploymentContent>true</DeploymentContent>
-    </_CustomResource>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\..\cocos2d-x\cocos\2d\libcocos2d_8_1\libcocos2d_8_1\libcocos2d_8_1.WindowsPhone\libcocos2d_8_1.WindowsPhone.vcxproj">
       <Project>{22f3b9df-1209-4574-8331-003966f562bf}</Project>
     </ProjectReference>

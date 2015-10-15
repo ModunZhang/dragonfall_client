@@ -55,6 +55,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <_CustomResource Include="$(MSBuildThisFileDirectory)..\..\..\..\update_wp8\**\*">
+      <Link>Assets\Resources\%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <DeploymentContent>true</DeploymentContent>
+    </_CustomResource>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>

@@ -79,6 +79,30 @@ def exportImagesRes(image_dir_path):
 			else:
 				functions.Logging.info(">>> Not handle: %s" % sourceFile)
 
+def exportAnimationRes(animation_path):
+	outdir=os.path.join(RES_DEST_DIR,"animations")
+	functions.Logging.info("> %s" % (animation_path))
+	for file in os.listdir(animation_path):
+		sourceFile = os.path.join(animation_path,  file) 
+		targetFile = os.path.join(outdir,  file)
+		fileExt=sourceFile.split('.')[-1]
+		if not os.path.exists(outdir):
+			os.makedirs(outdir)
+		if fileExt == 'ExportJson' or fileExt == 'plist':
+			shutil.copy(sourceFile,  outdir)
+		else:
+			#TODO:dds ?
+			if NEED_ENCRYPT_RES:
+				args = [RES_COMPILE_TOOL, '-i',sourceFile,'-o',outdir,'-ek',XXTEAKey,'-es',XXTEASign]
+				if QUIET_MODE:
+					args = [RES_COMPILE_TOOL, '-i',sourceFile,'-o',outdir,'-ek',XXTEAKey,'-es',XXTEASign,'-q']
+				p = subprocess.Popen(args)
+				p.wait()
+				if p.returncode != 0:
+					functions.die("<RES_COMPILE_TOOL failed>-%s" % sourceFile)
+			else:
+				shutil.copy(sourceFile,  outdir)
+
 #simple copy file not handle
 def exportRes(sourceDir,  targetDir): 
     if sourceDir.find(".svn") > 0: 
@@ -90,11 +114,11 @@ def exportRes(sourceDir,  targetDir):
         if os.path.isfile(sourceFile): #file in res
         	outdir = os.path.dirname(targetFile)
         	fileExt=sourceFile.split('.')[-1]
-        	functions.Logging.info(">> %s" % sourceFile)
         	if not os.path.exists(outdir):
         		os.makedirs(outdir)
         	if fileExt != 'po':
         		shutil.copy(sourceFile,  outdir)
+        		functions.Logging.info(">> %s" % sourceFile)
         elif os.path.isdir(sourceFile):
         	dir_name=os.path.basename(sourceFile)
         	if dir_name == 'images':
@@ -102,7 +126,7 @@ def exportRes(sourceDir,  targetDir):
         	elif dir_name == 'animations':
         		functions.Logging.debug("*animations")
         	elif dir_name == 'animations_mac':
-        		functions.Logging.debug("*animations_mac")
+        		exportAnimationRes(sourceFile)
         	else:
 				exportRes(sourceFile, targetFile)
 
