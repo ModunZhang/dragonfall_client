@@ -120,8 +120,12 @@ void Configuration::gatherGPUInfo()
     
     _supportsETC1 = checkForGLExtension("GL_OES_compressed_ETC1_RGB8_texture");
     _valueDict["gl.supports_ETC1"] = Value(_supportsETC1);
-    
-    _supportsS3TC = checkForGLExtension("GL_EXT_texture_compression_s3tc");
+//dannyhe
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+	_supportsS3TC = checkForGLExtension("GL_EXT_texture_compression_s3tc") || checkForGLExtension("GL_EXT_texture_compression_dxt1") || checkForGLExtension("GL_ANGLE_texture_compression_dxt3") || checkForGLExtension("GL_ANGLE_texture_compression_dxt5");
+#else
+    _supportsS3TC = checkForGLExtension("GL_EXT_texture_compression_s3tc")
+#endif
     _valueDict["gl.supports_S3TC"] = Value(_supportsS3TC);
     
     _supportsATITC = checkForGLExtension("GL_AMD_compressed_ATC_texture");

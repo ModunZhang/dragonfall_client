@@ -9,7 +9,7 @@ Platform="WP"
 QUIET_MODE=True # quite mode
 DEBUG_MODE=False # debug this scripts
 
-NEED_ENCRYPT_RES=True
+NEED_ENCRYPT_RES=False
 
 RES_COMPILE_TOOL=functions.getResourceTool()
 RES_SRC_DIR=functions.getResourceDir()
@@ -32,6 +32,8 @@ if DEBUG_MODE:
 def exportImagesRes(image_dir_path):
 	outdir=os.path.join(RES_DEST_DIR,os.path.basename(image_dir_path)) #xxx/images/
 	functions.Logging.info("> %s" % image_dir_path)
+	if not os.path.exists(outdir):
+		os.makedirs(outdir)
 	for file in os.listdir(image_dir_path):
 		sourceFile = os.path.join(image_dir_path,  file) 
 		targetFile = os.path.join(outdir,  file)

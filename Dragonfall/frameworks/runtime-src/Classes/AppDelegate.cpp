@@ -94,20 +94,20 @@ bool AppDelegate::applicationDidFinishLaunching()
 		msg->ShowAsync();
 	});
 #else
-	/*auto engine = LuaEngine::getInstance();
-	ScriptEngineManager::getInstance()->setScriptEngine(engine);
-	lua_State* L = engine->getLuaStack()->getLuaState();
-	lua_module_register(L);
-	tolua_cc_lua_extension(L);
-	register_all_packages();
+	//auto engine = LuaEngine::getInstance();
+	//ScriptEngineManager::getInstance()->setScriptEngine(engine);
+	//lua_State* L = engine->getLuaStack()->getLuaState();
+	//lua_module_register(L);
+	//tolua_cc_lua_extension(L);
+	//register_all_packages();
 
-	LuaStack* stack = engine->getLuaStack();
-	stack->setXXTEAKeyAndSign("2dxLua", strlen("2dxLua"), "XXTEA", strlen("XXTEA"));
+	//LuaStack* stack = engine->getLuaStack();
+	//stack->setXXTEAKeyAndSign("2dxLua", strlen("2dxLua"), "XXTEA", strlen("XXTEA"));
 
-	if (engine->executeScriptFile("scripts/main.lua"))
-	{
-		return false;
-	}*/
+	//if (engine->executeScriptFile("scripts/main.lua"))
+	//{
+	//	return false;
+	//}
 	AppDelegateExtern::initLuaEngine();
 #endif
 #else

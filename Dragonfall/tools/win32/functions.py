@@ -7,6 +7,7 @@ import urllib
 from tarfile import TarFile
 import shutil
 import tempfile
+import platform
 
 _TempDir_ = ""
 ###########################Logging###########################
@@ -58,7 +59,7 @@ def getProjDir():
 
 def getResourceDir():
     root_dir=getProjDir();
-    return os.path.normpath("%s/samples/res" % root_dir);
+    return os.path.normpath("%s/dev/res" % root_dir);
 
 def getXXTEAKey():
     return "Cbcm78HuH60MCfA7"
@@ -68,7 +69,7 @@ def getXXTEASign():
 
 def getScriptsDir():
     root_dir=getProjDir(); 
-    return os.path.normpath("%s/samples/scripts" % root_dir);
+    return os.path.normpath("%s/dev/scripts" % root_dir);
 
 def getExportDir():
     root_dir=getProjDir(); 
@@ -100,7 +101,7 @@ def getTempDir():
 
 def getResourceDir():
     root_dir=getProjDir(); 
-    return formatPath("%s/samples/res" % root_dir);
+    return formatPath("%s/dev/res" % root_dir);
 
 def getExportResourcesDir():
     root_dir=getExportDir();
@@ -131,3 +132,10 @@ def emptyDir(rootdir):
 def removeTempDir(rootdir):
     emptyDir(rootdir)
     os.rmdir(rootdir) 
+# crunch -file ui_pvr_1.png -fileformat dds /DXT1 /rescalemode nearest /mipMode None 
+def getDXTConvertTools():
+    bit = platform.architecture()[0]
+    if bit == '64bit':
+        return "64"
+    elif bit == '32bit':
+        return "32"
