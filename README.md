@@ -26,16 +26,18 @@
 
 * 我们项目没有使用默认的quick target,而是在默认target的基础上新建的target，用于自定义模块化编译的宏，具体的宏定义看android的文档.
 
+######Windpws Phone特别说明
+
 ######Functions[✗ ✓]
-|  Function  | iOS          | Android       | 
-|------------| ------------ | ------------- | 
-|    lua库   | ✓            |✓              | 
-|ETC压缩+alpha支持| ✗        | ✓             | 
-|exportJson带贴图真实名称| ✓  | ✓             | 
-|项目脚本工具  | ✓            | ✓             | 
+|  Function  | iOS          | Android       | Windows Phone |
+|------------| ------------ | ------------- | ------------- |
+|    lua库   | ✓            |✓              | ✓				|
+|ETC压缩+alpha支持| ✗        | ✓             | ✗ 			|
+|exportJson带贴图真实名称| ✓  | ✓             | ✓			|
+|项目脚本工具  | ✓            | ✓             | ✓			|
 
 
 
 
 ---
-Last Modify @ September 24, 2015
+Last Modify @ 10/15/2015
