@@ -1,4 +1,4 @@
-###Cocos2dx lua 项目3.5(quick 3.3 > Cocos2dx lua 3.5)
+###Cocos2dx lua 3.5
 
 ---
 ######总体重要变动
@@ -7,7 +7,7 @@
     2.Lua脚本如果关闭加密，将使用原文打包，方便定位错误位置(正式版本必须加密),原文打包时不会编译Lua文件。如果Lua文件有语法错误，脚本是不会报错的
     3.生成fileList.json的python被重构，方便传入参数。
     4.iOS/Android使用lua库,加密方式同quick 3.3。
-    5.项目不再依赖kod_quick仓库的脚本文件。
+    5.项目不再依赖kod_quick仓库的脚本文件,拷贝到本仓库下面了。
 
 ######底层变动
 
@@ -28,6 +28,12 @@
 
 ######Windpws Phone特别说明
 
+* 暂时只有wp项目打开了websocket的支持。
+* EditBox在官方的基础上修改
+* 脚本通过python+bat的形式提供在win32上的支持
+* Lua加密方式和iOS/Android一样
+* lua extension部分和iOS/Android不一样,主要表现在函数头变化
+
 ######Functions[✗ ✓]
 |  Function  | iOS          | Android       | Windows Phone |
 |------------| ------------ | ------------- | ------------- |
@@ -35,8 +41,6 @@
 |ETC压缩+alpha支持| ✗        | ✓             | ✗ 			|
 |exportJson带贴图真实名称| ✓  | ✓             | ✓			|
 |项目脚本工具  | ✓            | ✓             | ✓			|
-
-
 
 
 ---
