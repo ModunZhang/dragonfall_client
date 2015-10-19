@@ -195,6 +195,10 @@ function Pomelo:_initWebSocket(host, port)
     local onerror = function(event)
         self:emit('io-error',event)
         self:disconnect()
+        if self.initCallback then
+            self.initCallback(false)
+            self.initCallback = nil
+        end
     end
 
     local onclose = function(event)

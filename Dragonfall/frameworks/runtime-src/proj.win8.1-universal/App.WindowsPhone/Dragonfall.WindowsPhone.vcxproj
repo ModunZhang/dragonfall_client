@@ -79,7 +79,7 @@
     <Import Project="..\..\..\cocos2d-x\cocos\2d\winrt_8.1_props\cocos2d_winrt_8.1_app.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros">
-    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxBundlePlatforms>arm</AppxBundlePlatforms>
     <AppxPackageDir>C:\Users\dannyhe\Desktop\local\test\</AppxPackageDir>
     <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
@@ -99,7 +99,7 @@
       <AdditionalOptions>/bigobj /Zm200 %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua;../../Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\extensions\winrt;$(ProjectDir)..\..\..\..\extensions\ext;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua;../../Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SDLCheck>false</SDLCheck>
     </ClCompile>
   </ItemDefinitionGroup>
@@ -117,7 +117,7 @@
       <AdditionalOptions>/bigobj /Zm200 %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua;../../Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\extensions\winrt;$(ProjectDir)..\..\..\..\extensions\ext;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua;../../Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SDLCheck>false</SDLCheck>
     </ClCompile>
   </ItemDefinitionGroup>

@@ -1,6 +1,18 @@
 local NetService = {}
 local cocos_promise = import("..utils.cocos_promise")
 NetService.NET_STATE = {DISCONNECT = -1 , CONNECT = 0}
+--lua pomelo
+local json = json
+if device.platform == 'wp8' then
+    CCPomelo = import("libs.pomelo.CCPomelo")
+    local not_handle = function( ... )
+        return ...
+    end
+    json = {
+        encode = not_handle,
+        decode = not_handle,
+    }
+end
 function NetService:init(  )
     self.m_pomelo = CCPomelo:getInstance()
     self.m_deltatime = 0
