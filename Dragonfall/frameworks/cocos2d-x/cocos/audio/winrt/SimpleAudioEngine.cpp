@@ -20,6 +20,7 @@
 #include "Audio.h"
 #include <map>
 #include "CCFileUtils.h"
+#include "cocos2d.h"
 using namespace std;
 
 namespace CocosDenshion {
@@ -44,6 +45,9 @@ static Audio* sharedAudioController()
         }
         s_audioController->Initialize();
         s_audioController->CreateResources();
+		s_audioController->bgMusicCallBack = [](){
+			cocos2d::Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("APP_BACKGROUND_MUSIC_COMPLETION");
+		};
         s_initialized = true;
     }
 

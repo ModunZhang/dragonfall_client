@@ -14,7 +14,7 @@
 #include <agile.h>
 #include <DirectXMath.h>
 #include <memory>
-
+#include <functional>
 #define XAUDIO2_HELPER_FUNCTIONS 1
 #include <xaudio2.h>
 #include <map>
@@ -58,9 +58,14 @@ public :
 
 struct StreamingVoiceContext : public IXAudio2VoiceCallback
 {
+	Audio* m_audio;
+	STDMETHOD_(void, Init)(Audio* audio){
+		m_audio = audio;
+	};
     STDMETHOD_(void, OnVoiceProcessingPassStart)(UINT32){}
     STDMETHOD_(void, OnVoiceProcessingPassEnd)(){}
-    STDMETHOD_(void, OnStreamEnd)(){}
+	STDMETHOD_(void, OnStreamEnd)();
+	
     STDMETHOD_(void, OnBufferStart)(void*)
     {
         ResetEvent(hBufferEndEvent);
@@ -113,6 +118,7 @@ private:
     unsigned int Hash(const char* key);
 
 public:
+	std::function< void(void)> bgMusicCallBack;
     Audio();
 
     void Initialize();
@@ -161,7 +167,12 @@ public:
     void PreloadSoundEffect(const char* pszFilePath, bool isMusic = false);
     void UnloadSoundEffect(const char* pszFilePath);
     void UnloadSoundEffect(unsigned int sound);
-
+	void OnStreamEnd(){
+		if (bgMusicCallBack != NULL)
+		{
+			bgMusicCallBack();
+		}
+	}
 private:
     void RemoveFromList(unsigned int sound);
 };
