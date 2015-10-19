@@ -161,7 +161,7 @@ typedef struct unz_file_info_s unz_file_info;
         CC_DEPRECATED_ATTRIBUTE static bool ccIsCCZBuffer(const unsigned char *buffer, ssize_t len) { return isCCZBuffer(buffer, len); }
         static bool isCCZBuffer(const unsigned char *buffer, ssize_t len);
         
-#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+#if CC_USE_ETC1_ZLIB
         //dannyhe ETC
         static bool isETCCompressedBuffer(const unsigned char *buffer, ssize_t len);
         static int inflateETCCompressedBuffer(const unsigned char *buffer, ssize_t len, unsigned char **out);

@@ -139,11 +139,11 @@ void AppDelegate::applicationDidEnterBackground()
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
     SimpleAudioEngine::getInstance()->resumeAllEffects();
-    Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("APP_ENTER_BACKGROUND_EVENT");
 #else
     SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
     SimpleAudioEngine::getInstance()->pauseAllEffects();
 #endif
+	Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("APP_ENTER_BACKGROUND_EVENT");
 }
 
 // this function will be called when the app is active again
@@ -154,11 +154,11 @@ void AppDelegate::applicationWillEnterForeground()
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
     SimpleAudioEngine::getInstance()->pauseAllEffects();
-    Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("APP_ENTER_FOREGROUND_EVENT");
 #else
     SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
     SimpleAudioEngine::getInstance()->resumeAllEffects();
 #endif
+	Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("APP_ENTER_FOREGROUND_EVENT");
 }
 
 
