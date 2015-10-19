@@ -174,6 +174,8 @@ void OpenGLESPage::OnSwapChainPanelSizeChanged(Object^ sender, Windows::UI::Xaml
     // the swapchainpanel size
     critical_section::scoped_lock lock(mSwapChainPanelSizeCriticalSection);
     mSwapChainPanelSize = { e->NewSize.Width, e->NewSize.Height };
+	extendedSplashImage->Height = e->NewSize.Height;
+	extendedSplashImage->Width = e->NewSize.Width;
 }
 
 void OpenGLESPage::GetSwapChainPanelSize(GLsizei* width, GLsizei* height)
@@ -327,9 +329,10 @@ void OpenGLESPage::HardwareButtons_BackPressed(Platform::Object^ sender, Windows
 	using namespace Windows::UI::Popups;
 	auto loader = ref new Windows::ApplicationModel::Resources::ResourceLoader();
 	auto title = loader->GetString("exit_game_title");
+	auto content = loader->GetString("exit_game_content");
 	auto yes_string = loader->GetString("yes");
 	auto no_string = loader->GetString("no");
-	auto msgDlg = ref new MessageDialog("", title);
+	auto msgDlg = ref new MessageDialog(content,title);
 
 	msgDlg->Commands->Append(ref new UICommand(yes_string, ref new UICommandInvokedHandler([this](IUICommand^)
 	{

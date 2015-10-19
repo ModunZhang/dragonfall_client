@@ -76,6 +76,5 @@ namespace cocos2d
         float m_dpi;
         bool m_deviceLost;
         Windows::Graphics::Display::DisplayOrientations m_orientation;
-
     };
 }

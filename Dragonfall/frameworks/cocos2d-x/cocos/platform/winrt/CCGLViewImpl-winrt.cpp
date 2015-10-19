@@ -329,6 +329,25 @@ GLViewImpl* GLViewImpl::sharedOpenGLView()
 
 int GLViewImpl::Run() 
 {
+	if (!m_running)
+	{
+		//dannyhe:Hide splash image
+		m_dispatcher.Get()->RunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal, ref new DispatchedHandler([this]()
+		{
+
+			auto item = findXamlElement(m_panel.Get(), "extendedSplashGrid");
+
+			if (item != nullptr)
+			{
+				Controls::Grid^ grid = dynamic_cast<Controls::Grid^>(item);
+				if (grid)
+				{
+					grid->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
+				}
+			}
+		}));
+
+	}
     // XAML version does not have a run loop
 	m_running = true; 
     return 0;

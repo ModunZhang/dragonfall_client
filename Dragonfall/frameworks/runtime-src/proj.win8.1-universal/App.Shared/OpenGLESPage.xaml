@@ -6,8 +6,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-
+    
     <SwapChainPanel x:Name="swapChainPanel">
+        <Grid Background="#FFFFFF" x:Name="extendedSplashGrid">
+            <Canvas>
+                <Image x:Name="extendedSplashImage" Source="Assets/SplashScreen.png"/>
+            </Canvas>
+        </Grid>
         <Button x:Name="cocos2d_editbox" Visibility="Collapsed" Height="1">
             <Button.Flyout>
                 <Flyout x:Name="cocos2d_editbox_flyout">
@@ -25,4 +30,6 @@
             </Button.Flyout>
         </Button>
     </SwapChainPanel>
+    
+    
 </Page>
