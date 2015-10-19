@@ -58,13 +58,11 @@ public :
 
 struct StreamingVoiceContext : public IXAudio2VoiceCallback
 {
-	Audio* m_audio;
-	STDMETHOD_(void, Init)(Audio* audio){
-		m_audio = audio;
-	};
     STDMETHOD_(void, OnVoiceProcessingPassStart)(UINT32){}
     STDMETHOD_(void, OnVoiceProcessingPassEnd)(){}
-	STDMETHOD_(void, OnStreamEnd)();
+	STDMETHOD_(void, OnStreamEnd)(){
+	
+	};
 	
     STDMETHOD_(void, OnBufferStart)(void*)
     {
@@ -81,7 +79,7 @@ struct StreamingVoiceContext : public IXAudio2VoiceCallback
     STDMETHOD_(void, OnVoiceError)(void*, HRESULT){}
 
     HANDLE hBufferEndEvent;
-    StreamingVoiceContext() : hBufferEndEvent(CreateEventEx(NULL, FALSE, FALSE, NULL))
+	StreamingVoiceContext() : hBufferEndEvent(CreateEventExW(NULL, FALSE, FALSE, NULL))
     {
     }
     virtual ~StreamingVoiceContext()
@@ -118,7 +116,6 @@ private:
     unsigned int Hash(const char* key);
 
 public:
-	std::function< void(void)> bgMusicCallBack;
     Audio();
 
     void Initialize();
@@ -167,12 +164,6 @@ public:
     void PreloadSoundEffect(const char* pszFilePath, bool isMusic = false);
     void UnloadSoundEffect(const char* pszFilePath);
     void UnloadSoundEffect(unsigned int sound);
-	void OnStreamEnd(){
-		if (bgMusicCallBack != NULL)
-		{
-			bgMusicCallBack();
-		}
-	}
 private:
     void RemoveFromList(unsigned int sound);
 };

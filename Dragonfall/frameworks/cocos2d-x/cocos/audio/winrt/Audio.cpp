@@ -29,13 +29,6 @@ inline void ThrowIfFailed(HRESULT hr)
     }
 }
 
-void  _stdcall StreamingVoiceContext::OnStreamEnd(){
-	if (m_audio != nullptr)
-	{
-		m_audio->OnStreamEnd();
-	}
-}
-
 void AudioEngineCallbacks::Initialize(Audio *audio)
 {
     m_audio = audio;
@@ -56,7 +49,6 @@ Audio::Audio() :
 	m_soundEffctVolume(1.0f),
 	m_backgroundMusicVolume(1.0f)
 {
-	m_voiceContext.Init(this);
 }
 
 void Audio::Initialize()

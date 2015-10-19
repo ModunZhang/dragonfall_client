@@ -45,9 +45,6 @@ static Audio* sharedAudioController()
         }
         s_audioController->Initialize();
         s_audioController->CreateResources();
-		s_audioController->bgMusicCallBack = [](){
-			cocos2d::Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("APP_BACKGROUND_MUSIC_COMPLETION");
-		};
         s_initialized = true;
     }
 
