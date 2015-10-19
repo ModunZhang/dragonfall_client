@@ -132,10 +132,18 @@ def emptyDir(rootdir):
 def removeTempDir(rootdir):
     emptyDir(rootdir)
     os.rmdir(rootdir) 
-# crunch -file ui_pvr_1.png -fileformat dds /DXT1 /rescalemode nearest /mipMode None 
-def getDXTConvertTools():
+
+# DXT texture compression and real-time transcoding library  
+# https://code.google.com/p/crunch/
+# eg. cocos2dx: crunch -file ui_pvr_1.png -fileformat dds /DXT5A /rescalemode nearest /mipMode None /out .\test\ui_pvr_1.png
+def getDXTConvertTool():
     bit = platform.architecture()[0]
+    root_dir=getProjDir();
     if bit == '64bit':
-        return "64"
+        return formatPath("%s/tools/TextureTools/win32/crunch_x64.exe" % root_dir)
     elif bit == '32bit':
-        return "32"
+        return formatPath("%s/tools/TextureTools/win32/crunch.exe" % root_dir)
+
+def getETCCompressTool():
+    root_dir=getProjDir();
+    return formatPath("%s/tools/TextureTools/win32/CompressETCTexture.exe" % root_dir)

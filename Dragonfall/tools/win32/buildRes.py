@@ -1,23 +1,26 @@
 # encoding: utf-8
 # DannyHe
 # This scripts only for windows phone on Win32
-#TODO: remove tmp file,dds?
 import functions,sys,os
 import subprocess,shutil
 
-Platform="WP"
-QUIET_MODE=True # quite mode
+Platform="WP8"
+
 DEBUG_MODE=False # debug this scripts
+QUIET_MODE=True # quite mode
+DXT_FOMAT='/DXT3' # the format of DXT texture
+ZIP_TEXTURE=True # zip the texture data(cocos2dx must open macro 'CC_USE_ETC1_ZLIB')
+NEED_ENCRYPT_RES=True #encrypt resources(only texture)
+USE_DXT_COMPRESS=True #use DXT format texture
 
-NEED_ENCRYPT_RES=False
-
+DXT_RES_TOOL=functions.getDXTConvertTool()
 RES_COMPILE_TOOL=functions.getResourceTool()
 RES_SRC_DIR=functions.getResourceDir()
 RES_DEST_DIR=functions.getExportResourcesDir()
 XXTEAKey=functions.getXXTEAKey()
 XXTEASign=functions.getXXTEASign()
 TEMP_RES_DIR=functions.getTempDir()
-
+ZIP_TOOL=functions.getETCCompressTool()
 
 if DEBUG_MODE:
 	functions.Logging.debug("------------Debug Start------------")
@@ -28,6 +31,37 @@ if DEBUG_MODE:
 	functions.Logging.debug(XXTEASign)
 	functions.Logging.debug(TEMP_RES_DIR)
 	functions.Logging.debug("------------Debug End------------")
+
+def ZipResources(in_file_path,out_file_path):
+	args = [ZIP_TOOL, 'pack',in_file_path,out_file_path]
+	p = subprocess.Popen(args)
+	p.wait()
+	if p.returncode != 0:
+		functions.die("ZipResources failed: %s" % in_file_path)
+	else:
+		return True
+
+def DXTFormatResources(in_file_path,out_file_path):
+	args = [DXT_RES_TOOL, '-file',in_file_path,'-fileformat','dds',DXT_FOMAT,'/rescalemode','nearest','/mipMode','None','/out',out_file_path]
+	if QUIET_MODE:
+		args = [DXT_RES_TOOL, '-file',in_file_path,'-fileformat','dds',DXT_FOMAT,'/rescalemode','nearest','/mipMode','None','/out',out_file_path,'/quiet']
+	p = subprocess.Popen(args)
+	p.wait()
+	if p.returncode != 0:
+		functions.die("DXTFormatResources failed: %s" % in_file_path)
+	else:
+		return True
+
+def CompileResources(in_file_path,out_dir_path):
+	args = [RES_COMPILE_TOOL, '-i',in_file_path,'-o',out_dir_path,'-ek',XXTEAKey,'-es',XXTEASign]
+	if QUIET_MODE:
+		args = [RES_COMPILE_TOOL, '-i',in_file_path,'-o',out_dir_path,'-ek',XXTEAKey,'-es',XXTEASign,'-q']
+	p = subprocess.Popen(args)
+	p.wait()
+	if p.returncode != 0:
+		functions.die("CompileResources failed: %s" % in_file_path)
+	else:
+		return True
 
 def exportImagesRes(image_dir_path):
 	outdir=os.path.join(RES_DEST_DIR,os.path.basename(image_dir_path)) #xxx/images/
@@ -40,22 +74,16 @@ def exportImagesRes(image_dir_path):
 		if os.path.isfile(sourceFile):
 			fileExt=sourceFile.split('.')[-1]
 			if (fileExt == 'png' or fileExt == 'jpg') and fileExt != 'tmp':
-				# functions.Logging.info(">> %s" % sourceFile)
 				if NEED_ENCRYPT_RES:
-					args = [RES_COMPILE_TOOL, '-i',sourceFile,'-o',outdir,'-ek',XXTEAKey,'-es',XXTEASign]
-					if QUIET_MODE:
-						args = [RES_COMPILE_TOOL, '-i',sourceFile,'-o',outdir,'-ek',XXTEAKey,'-es',XXTEASign,'-q']
-					p = subprocess.Popen(args)
-					p.wait()
-					if p.returncode != 0:
-						functions.die("<RES_COMPILE_TOOL failed>-%s" % sourceFile)
+					CompileResources(sourceFile,outdir)
 				else:
 					if DEBUG_MODE:
 						functions.Logging.debug("copy images %s -- %s" %(sourceFile,outdir))
 					shutil.copy(sourceFile,  outdir)
+
 		elif os.path.isdir(sourceFile):
 			dir_name=os.path.basename(sourceFile)
-			if dir_name == '_Compressed_mac'or dir_name == 'rgba444_single' or dir_name == '_CanCompress':
+			if dir_name == 'rgba444_single':
 				functions.Logging.info("> %s" % dir_name)
 				for image_file in os.listdir(sourceFile):
 					image_sourceFile = os.path.join(sourceFile,  image_file) 
@@ -63,23 +91,50 @@ def exportImagesRes(image_dir_path):
 					image_outdir = os.path.dirname(image_targetFile)
 					if os.path.isfile(image_sourceFile):
 						fileExt=image_sourceFile.split('.')[-1]
-						if fileExt != 'tmp':
-							# functions.Logging.info(">> %s" % image_sourceFile)
+						if fileExt != 'tmp' and fileExt != 'plist':
 							if NEED_ENCRYPT_RES:
-								args = [RES_COMPILE_TOOL, '-i',image_sourceFile,'-o',image_outdir,'-ek',XXTEAKey,'-es',XXTEASign]
-								if QUIET_MODE:
-									args = [RES_COMPILE_TOOL, '-i',image_sourceFile,'-o',image_outdir,'-ek',XXTEAKey,'-es',XXTEASign,'-q']
-								p = subprocess.Popen(args)
-								p.wait()
-								if p.returncode != 0:
-									functions.die("<RES_COMPILE_TOOL failed>-%s" % image_sourceFile)
+								CompileResources(image_sourceFile,image_outdir)
+								if DEBUG_MODE:
+									functions.Logging.debug("copy images %s -- %s" %(image_sourceFile,image_outdir))
+								shutil.copy(image_sourceFile,image_outdir)
+						elif fileExt == 'plist':
+							if DEBUG_MODE:
+								functions.Logging.debug("copy images %s -- %s" %(image_sourceFile,image_outdir))
+							shutil.copy(image_sourceFile,image_outdir)
+
+			elif dir_name == '_CanCompress' or dir_name == '_Compressed_wp':
+
+				functions.Logging.info("> %s" % dir_name)
+				for image_file in os.listdir(sourceFile):
+					image_sourceFile = os.path.join(sourceFile,image_file) 
+					image_targetFile = os.path.join(outdir,  image_file)
+					image_outdir = os.path.dirname(image_targetFile)
+					if os.path.isfile(image_sourceFile):
+						fileExt=image_sourceFile.split('.')[-1]
+						if fileExt != 'tmp' and fileExt != 'plist':
+							if USE_DXT_COMPRESS:
+								temp_file = os.path.join(TEMP_RES_DIR,image_file)
+								temp_final_file = temp_file
+								if ZIP_TEXTURE:
+									temp_file = os.path.join(TEMP_RES_DIR,os.path.splitext(image_file)[0] + '_dds.png')
+								if DXTFormatResources(image_sourceFile,temp_file):
+									if ZIP_TEXTURE and ZipResources(temp_file,temp_final_file):
+										image_sourceFile = temp_final_file
+									else:
+										image_sourceFile = temp_file
+							if NEED_ENCRYPT_RES:
+								CompileResources(image_sourceFile,image_outdir)
 							else:
 								if DEBUG_MODE:
 									functions.Logging.debug("copy images %s -- %s" %(image_sourceFile,image_outdir))
 								shutil.copy(image_sourceFile,image_outdir)
+						elif fileExt == 'plist':
+							if DEBUG_MODE:
+								functions.Logging.debug("copy images %s -- %s" %(image_sourceFile,image_outdir))
+							shutil.copy(image_sourceFile,image_outdir)
 
 			else:
-				functions.Logging.info(">>> Not handle: %s" % sourceFile)
+				functions.Logging.info("Not handle dir: %s" % sourceFile)
 
 def exportAnimationRes(animation_path):
 	outdir=os.path.join(RES_DEST_DIR,"animations")
@@ -93,15 +148,19 @@ def exportAnimationRes(animation_path):
 		if fileExt == 'ExportJson' or fileExt == 'plist':
 			shutil.copy(sourceFile,  outdir)
 		else:
-			#TODO:dds ?
+			if USE_DXT_COMPRESS:
+				temp_file = os.path.join(TEMP_RES_DIR,file)
+				temp_final_file = temp_file
+				if ZIP_TEXTURE:
+					temp_file = os.path.join(TEMP_RES_DIR,os.path.splitext(file)[0] + '_dds.png')
+				#dxt
+				if DXTFormatResources(sourceFile,temp_file):
+					if ZIP_TEXTURE and ZipResources(temp_file,temp_final_file):
+						sourceFile = temp_final_file
+					else:
+						sourceFile = temp_file
 			if NEED_ENCRYPT_RES:
-				args = [RES_COMPILE_TOOL, '-i',sourceFile,'-o',outdir,'-ek',XXTEAKey,'-es',XXTEASign]
-				if QUIET_MODE:
-					args = [RES_COMPILE_TOOL, '-i',sourceFile,'-o',outdir,'-ek',XXTEAKey,'-es',XXTEASign,'-q']
-				p = subprocess.Popen(args)
-				p.wait()
-				if p.returncode != 0:
-					functions.die("<RES_COMPILE_TOOL failed>-%s" % sourceFile)
+				CompileResources(sourceFile,outdir)
 			else:
 				shutil.copy(sourceFile,  outdir)
 

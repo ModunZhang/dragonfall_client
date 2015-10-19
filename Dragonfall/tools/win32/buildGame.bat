@@ -1,3 +1,5 @@
+:: This scripts only for windows phone on Win32
+:: dannyhe
 @echo off
 :begin
 echo -------------------------------------------

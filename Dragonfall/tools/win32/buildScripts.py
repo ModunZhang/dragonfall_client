@@ -7,7 +7,7 @@
 import functions,sys,os
 import subprocess,shutil
 
-Platform="WP"
+Platform="WP8"
 NEED_ENCRYPT_SCRIPTS=True
 QUIET_MODE=True # quite mode:no message when compile lua
 DEBUG_MODE=False # debug this scripts
@@ -51,7 +51,7 @@ def exportScriptsEncrypt():
 		p = subprocess.Popen(args)
 		p.wait()
 		if p.returncode != 0:
-			functions.Logging.error("-- Compile Lua failed!")
+			functions.die("-- Compile Lua failed!")
 		else:
 			functions.Logging.info("-- Compile Lua Success!")
 	else:
