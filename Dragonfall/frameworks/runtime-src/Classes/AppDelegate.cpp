@@ -21,6 +21,11 @@
 #include "io/RTFileOperation.h"
 #include "common/RTCommonUtils.h"
 #include "WinRTHelper.h"
+#if defined(__AdeasygoSDK__)
+#include <ppltasks.h>
+#include <windows.h>
+#include "collection.h"
+#endif
 #endif
 
 using namespace CocosDenshion;
@@ -28,6 +33,12 @@ using namespace CocosDenshion;
 USING_NS_CC;
 using namespace std;
 static  std::vector<std::string> default_file_util_search_pahts;
+#if defined(__AdeasygoSDK__)
+using namespace concurrency;
+using namespace Adeasygo::PaySDKWP81;
+using namespace Windows::Foundation;
+using namespace Windows::Foundation::Collections;
+#endif
 AppDelegate::AppDelegate()
 {
 }
@@ -61,8 +72,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 {
     // set default FPS
     Director::getInstance()->setAnimationInterval(1.0 / 60.0f);
-   
- 
+
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
     AppDelegateExtern::initLuaEngine();
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
@@ -128,6 +138,23 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 #endif
 
+#if defined(__AdeasygoSDK__)
+	cocos2d::WinRTHelper::RunOnUIThread([=](){
+		SDKManager::Init();
+		SDKManager::SetKey("c7867ffb85d75c70", "ea9d6d3a7d050b8b");
+		create_task(SDKManager::GetGoods()).then([=](task<Model::GoodsList^> task){
+			Model::GoodsList^ goodsList = task.get();
+			auto list = goodsList->goods_list;
+			for_each(begin(list),
+				end(list),
+				[&](Model::Goods^ goods) {
+				auto id = goods->id;
+				OutputDebugString(id->Data());
+			});
+
+		});
+	});
+#endif
     return true;
 }
 

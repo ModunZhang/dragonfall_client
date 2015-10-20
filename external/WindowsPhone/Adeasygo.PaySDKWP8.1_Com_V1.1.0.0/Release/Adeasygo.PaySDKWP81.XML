@@ -1,0 +1,471 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+    <assembly>
+        <name>Adeasygo.PaySDKWP81</name>
+    </assembly>
+    <members>
+        <member name="M:Adeasygo.PaySDKWP81.Helper.Settings.LoadSetttingFromStorage``1(System.String,``0)">
+            <summary>
+            更新设置
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="T:Adeasygo.PaySDKWP81.Model.DeviceInfo">
+            <summary>
+            设备信息
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.DeviceInfo.Instance">
+            <summary>
+            获取设备信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.DeviceInfo.IsPhone">
+            <summary>
+            是 phone 则为 True
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.DeviceInfo.Plateform">
+            <summary>
+            平台  操作系统  与UWP看起方便统计
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.DeviceInfo.DeviceManufacturer">
+            <summary>
+            系统制造商
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.DeviceInfo.DeviceTotalMemory">
+            <summary>
+            总内存
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.DeviceInfo.DeviceASHWIDMD5">
+            <summary>
+            MD5 DeviceID
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.DeviceInfo.DeviceName">
+            <summary>
+            手机名称
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.DeviceInfo.AppVersion">
+            <summary>
+            包信息
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.DeviceInfo.NetWortId">
+            <summary>
+            网络适配器ID
+            </summary>
+        </member>
+        <member name="M:Adeasygo.PaySDKWP81.Model.DeviceInfo.GetResolution">
+            <summary>
+            获取分辨率
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.DeviceInfo.DeviceASHWID">
+            <summary>
+            应用程序特定硬件标识符
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.DeviceInfo.IsEmulator">
+            <summary>
+            是否为Emulator
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.DeviceInfo.NetworkType">
+            <summary>
+            获取网络类型
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.DeviceInfo.Lang">
+            <summary>
+            获取用户设置语言首选项
+            </summary>
+        </member>
+        <member name="T:Adeasygo.PaySDKWP81.Model.NetType">
+            <summary>
+            网络类型枚举
+            </summary>
+        </member>
+        <member name="F:Adeasygo.PaySDKWP81.Model.NetType.Unknown">
+            <summary>
+            未知
+            </summary>
+        </member>
+        <member name="F:Adeasygo.PaySDKWP81.Model.NetType.Ethernet">
+            <summary>
+            以太网
+            </summary>
+        </member>
+        <member name="F:Adeasygo.PaySDKWP81.Model.NetType.Mobile_2G">
+            <summary>
+            2G
+            </summary>
+        </member>
+        <member name="F:Adeasygo.PaySDKWP81.Model.NetType.Mobile_3G">
+            <summary>
+            3G
+            </summary>
+        </member>
+        <member name="F:Adeasygo.PaySDKWP81.Model.NetType.WiFi">
+            <summary>
+            WiFi
+            </summary>
+        </member>
+        <member name="T:Adeasygo.PaySDKWP81.Model.PayResultEventArgs">
+            <summary>
+            支付返回参数
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.PayResultEventArgs.IsSuccess">
+            <summary>
+            是否成功
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.PayResultEventArgs.TradeId">
+            <summary>
+            订单ID
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.PayResultEventArgs.GoodsId">
+            <summary>
+            商品ID
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.PayResultEventArgs.Exception">
+            <summary>
+            异常报告，正常情况下为NULL
+            </summary>
+        </member>
+        <member name="M:Adeasygo.PaySDKWP81.Model.PayResultEventArgs.#ctor(System.Boolean,System.String,System.String,System.Exception)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="isSuccess"></param>
+            <param name="tradeId"></param>
+            <param name="goodsId"></param>
+            <param name="exception"></param>
+        </member>
+        <member name="T:Adeasygo.PaySDKWP81.Model.GoodsList">
+            <summary>
+            商品列表
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.GoodsList.code">
+            <summary>
+            返回代码，一般1为成功
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.GoodsList.msg">
+            <summary>
+            返回消息
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.GoodsList.goods_list">
+            <summary>
+            商品列表
+            </summary>
+        </member>
+        <member name="T:Adeasygo.PaySDKWP81.Model.Goods">
+            <summary>
+            商品信息
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.Goods.id">
+            <summary>
+            商品ID
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.Goods.title">
+            <summary>
+            商品名称
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.Goods.content">
+            <summary>
+            商品描述
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.Goods.price">
+            <summary>
+            商品价格
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.Goods.price_usd">
+            <summary>
+            商品价格 美元
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.Goods.logo">
+            <summary>
+            商品logo图片
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.Goods.out_goods_id">
+            <summary>
+            商品自定义ID
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.Goods.add_time_str">
+            <summary>
+            添加时间
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.Goods.sms">
+            <summary>
+            是否支持 fortumo 
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.Goods.field_a">
+            <summary>
+            预留字段a
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.Goods.field_b">
+            <summary>
+            预留字段b
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.Goods.field_c">
+            <summary>
+            预留字段 c
+            </summary>
+        </member>
+        <member name="T:Adeasygo.PaySDKWP81.Model.PageOrientation">
+            <summary>
+            屏幕旋转
+            </summary>
+        </member>
+        <member name="F:Adeasygo.PaySDKWP81.Model.PageOrientation.None">
+            <summary>
+            无旋转
+            </summary>
+        </member>
+        <member name="F:Adeasygo.PaySDKWP81.Model.PageOrientation.LandscapeLeft">
+            <summary>
+            左转横向
+            </summary>
+        </member>
+        <member name="F:Adeasygo.PaySDKWP81.Model.PageOrientation.LandscapeRight">
+            <summary>
+            右转横向
+            </summary>
+        </member>
+        <member name="T:Adeasygo.PaySDKWP81.Model.PaymentType">
+            <summary>
+            支付方式
+            </summary>
+        </member>
+        <member name="F:Adeasygo.PaySDKWP81.Model.PaymentType.Alipay">
+            <summary>
+            支付宝
+            </summary>
+        </member>
+        <member name="F:Adeasygo.PaySDKWP81.Model.PaymentType.Paypal">
+            <summary>
+            Paypal支付
+            </summary>
+        </member>
+        <member name="F:Adeasygo.PaySDKWP81.Model.PaymentType.Market">
+            <summary>
+            微软商店支付
+            http://msdn.microsoft.com/zh-cn/library/windows/apps/jj206949(v=vs.105).aspx
+            </summary>
+        </member>
+        <member name="F:Adeasygo.PaySDKWP81.Model.PaymentType.Paymentwall">
+            <summary>
+             支付强
+            </summary>
+        </member>
+        <member name="F:Adeasygo.PaySDKWP81.Model.PaymentType.Fortumo">
+            <summary>
+            fortumo
+            </summary>
+        </member>
+        <member name="T:Adeasygo.PaySDKWP81.Model.TradeResultList">
+            <summary>
+            订单结果
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.TradeResultList.code">
+            <summary>
+            返回代码，一般1为成功
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.TradeResultList.msg">
+            <summary>
+            返回消息
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.TradeResultList.traderesult">
+            <summary>
+            订单列表
+            </summary>
+        </member>
+        <member name="T:Adeasygo.PaySDKWP81.Model.TradeResult">
+            <summary>
+            订单结果
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.TradeResult.code">
+            <summary>
+            返回代码，一般1为成功
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.TradeResult.msg">
+            <summary>
+            返回消息
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.TradeResult.goods_id">
+            <summary>
+            商品ID
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.TradeResult.trade_no">
+            <summary>
+            淘宝订单号
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.TradeResult.status">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.TradeResult.out_goods_id">
+            <summary>
+            商品自定义ID
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.TradeResult.pay_type">
+            <summary>
+            支付类型
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.Model.TradeResult.custom_param">
+            <summary>
+            自定义参数
+            </summary>
+        </member>
+        <member name="E:Adeasygo.PaySDKWP81.PopupBox.PaymentTypeSelectBox.PaymentTypeSelected">
+            <summary>
+            付款方式选择回调
+            </summary>
+        </member>
+        <member name="E:Adeasygo.PaySDKWP81.PopupBox.PaymentTypeSelectBox.OnBack">
+            <summary>
+            关闭弹框
+            </summary>
+        </member>
+        <member name="E:Adeasygo.PaySDKWP81.PopupBox.WebBrowserBox.OnBack">
+            <summary>
+            关闭弹框
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.SDKManager.AppKey">
+            <summary>
+            获取调用者身份验证AppKey
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.SDKManager.AppId">
+            <summary>
+            获取调用者身份验证AppId
+            </summary>
+        </member>
+        <member name="M:Adeasygo.PaySDKWP81.SDKManager.SetKey(System.String,System.String)">
+            <summary>
+            设置调用者身份验证AppId和AppKey
+            </summary>
+            <param name="appkey"></param>
+            <param name="appid"></param>
+        </member>
+        <member name="M:Adeasygo.PaySDKWP81.SDKManager.Init">
+            <summary>
+            初始化SDK
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.SDKManager.Orientation">
+            <summary>
+            获取当前旋转方向
+            </summary>
+        </member>
+        <member name="M:Adeasygo.PaySDKWP81.SDKManager.SetOrientation(Adeasygo.PaySDKWP81.Model.PageOrientation)">
+            <summary>
+            设置当前旋转方向
+            </summary>
+            <param name="orientation"></param>
+        </member>
+        <member name="E:Adeasygo.PaySDKWP81.SDKManager.PayDone">
+            <summary>
+            支付结束
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.SDKManager.Version">
+            <summary>
+            获取SDK版本信息
+            </summary>
+        </member>
+        <member name="F:Adeasygo.PaySDKWP81.SDKManager.OsVersion">
+            <summary>
+            获取当前系统操作系统版本号
+            </summary>
+        </member>
+        <member name="P:Adeasygo.PaySDKWP81.SDKManager.DeviceUniqueId">
+            <summary>
+            URlEncode编码后的 DeviceUniqueId
+            </summary>
+        </member>
+        <member name="M:Adeasygo.PaySDKWP81.SDKManager.ClosePayBox">
+            <summary>
+            关闭支付弹出框
+            </summary>
+        </member>
+        <member name="M:Adeasygo.PaySDKWP81.SDKManager.GetGoods">
+            <summary>
+            获取商品列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Adeasygo.PaySDKWP81.SDKManager.GetUnSyncTrade">
+            <summary>
+            获取未跟服务器同步的订单
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Adeasygo.PaySDKWP81.SDKManager.GetPayType(System.String)">
+            <summary>
+            获取支付类型
+            </summary>
+            <param name="GoodsId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Adeasygo.PaySDKWP81.SDKManager.Pay(System.String,System.String,System.String,System.String)">
+            <summary>
+            以默认方式支付
+            </summary>
+            <param name="goodsId"></param>
+            <param name="param"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Adeasygo.PaySDKWP81.SDKManager.Pay(System.String,System.Collections.Generic.IEnumerable{Adeasygo.PaySDKWP81.Model.Item},System.String,System.String,System.String)" -->
+        <member name="M:Adeasygo.PaySDKWP81.SDKManager.Pay(System.String,Adeasygo.PaySDKWP81.Model.Item,System.String)">
+            <summary>
+            以指定方式支付
+            </summary>
+            <param name="goodsId"></param>
+            <param name="paymentType"></param>
+            <param name="param">自定义标记参数</param>
+        </member>
+        <member name="E:Adeasygo.PaySDKWP81.SDKManager.ToMarketPurchase">
+            <summary>
+            用户发起了微软支付请求
+            </summary>
+        </member>
+    </members>
+</doc>
