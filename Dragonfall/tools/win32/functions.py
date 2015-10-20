@@ -57,15 +57,15 @@ def getProjDir():
     current = os.getcwd();
     return os.path.normpath("%s/../.." % current);
 
-def getResourceDir():
-    root_dir=getProjDir();
-    return os.path.normpath("%s/dev/res" % root_dir);
-
 def getXXTEAKey():
     return "Cbcm78HuH60MCfA7"
 
 def getXXTEASign():
     return "XXTEA"
+
+def getResourceDir():
+    root_dir=getProjDir();
+    return os.path.normpath("%s/dev/res" % root_dir);
 
 def getScriptsDir():
     root_dir=getProjDir(); 
@@ -98,10 +98,6 @@ def getTempDir():
     if _TempDir_ == "":
         _TempDir_ = tempfile.mkdtemp()
     return _TempDir_ 
-
-def getResourceDir():
-    root_dir=getProjDir(); 
-    return formatPath("%s/dev/res" % root_dir);
 
 def getExportResourcesDir():
     root_dir=getExportDir();

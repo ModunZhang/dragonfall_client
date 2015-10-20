@@ -20,7 +20,6 @@
 #include "Audio.h"
 #include <map>
 #include "CCFileUtils.h"
-#include "cocos2d.h"
 using namespace std;
 
 namespace CocosDenshion {

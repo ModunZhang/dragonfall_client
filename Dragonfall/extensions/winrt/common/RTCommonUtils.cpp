@@ -42,7 +42,8 @@ std::string GetDeviceModel()
 //log
 void WriteLog_(const char *str)
 {
-	
+	std::string cppstr = std::string(str);
+	OutputDebugString(cocos2d::WinRTHelper::PlatformStringFromString(str)->Data());
 }
 //wp上我们只取前三位作为版本号
 std::string GetAppVersion()
