@@ -17,9 +17,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\common\RTCommonUtils.cpp">
       <Filter>Classes\ext\common</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\WinRTHelper.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\io\RTFileOperation.cpp">
       <Filter>Classes\ext\io</Filter>
     </ClCompile>
@@ -34,6 +31,15 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LocalNotification\LocalNotificationWinRT.cpp">
       <Filter>Classes\ext\LocalNotification</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\WinRTHelper.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\AdeasygoSDK\AdeasygoHelper.cpp">
+      <Filter>Classes\ext\AdeasygoSDK</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\AdeasygoSDK\to_lua_adeasygo_helper.cpp">
+      <Filter>Classes\ext\AdeasygoSDK</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +76,9 @@
     <Filter Include="Strings\zh-Hant-TW">
       <UniqueIdentifier>{e4fb5a78-791c-4ff3-ad6c-9bdf2e341474}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\ext\AdeasygoSDK">
+      <UniqueIdentifier>{84ea0c55-17b3-4846-b7a0-998dad81d9f0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\Classes\AppDelegate.h">
@@ -82,9 +91,6 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\common\RTCommonUtils.h">
       <Filter>Classes\ext\common</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\WinRTHelper.h">
-      <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\io\RTFileOperation.h">
       <Filter>Classes\ext\io</Filter>
@@ -100,6 +106,15 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LocalNotification\LocalNotificationWinRT.h">
       <Filter>Classes\ext\LocalNotification</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\WinRTHelper.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\AdeasygoSDK\AdeasygoHelper.h">
+      <Filter>Classes\ext\AdeasygoSDK</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\AdeasygoSDK\to_lua_adeasygo_helper.h">
+      <Filter>Classes\ext\AdeasygoSDK</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

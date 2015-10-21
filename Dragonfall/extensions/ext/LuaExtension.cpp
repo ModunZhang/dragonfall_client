@@ -56,6 +56,9 @@ extern "C" {
 #include "../../external/lua/quick/LuaNodeManager.h"
 #include "sysmail/ext_sysmail.h"
 #include "LocalNotification/ext_local_push.h"
+#if defined(__AdeasygoSDK__)
+#include "AdeasygoSDK/to_lua_adeasygo_helper.h"
+#endif
 #endif
 
 
@@ -923,12 +926,16 @@ static void RegisterExtModules(lua_State* tolua_S)
 {
 #if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
     tolua_ext_module_gamecenter(tolua_S);
+	tolua_ext_module_market(tolua_S);
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
      tolua_ext_module_store(tolua_S);
+	 tolua_ext_module_market(tolua_S);
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+	
+#if defined(__AdeasygoSDK__)
+	tolua_ext_module_adeasygo(tolua_S);
 #endif
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
- 
-    tolua_ext_module_market(tolua_S);
+
 #endif
    //TODO:ext modules
 	tolua_ext_module_sysmail(tolua_S);

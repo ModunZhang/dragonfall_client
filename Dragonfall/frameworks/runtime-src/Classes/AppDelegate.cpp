@@ -22,9 +22,7 @@
 #include "common/RTCommonUtils.h"
 #include "WinRTHelper.h"
 #if defined(__AdeasygoSDK__)
-#include <ppltasks.h>
-#include <windows.h>
-#include "collection.h"
+#include "AdeasygoSDK/AdeasygoHelper.h"
 #endif
 #endif
 
@@ -33,12 +31,6 @@ using namespace CocosDenshion;
 USING_NS_CC;
 using namespace std;
 static  std::vector<std::string> default_file_util_search_pahts;
-#if defined(__AdeasygoSDK__)
-using namespace concurrency;
-using namespace Adeasygo::PaySDKWP81;
-using namespace Windows::Foundation;
-using namespace Windows::Foundation::Collections;
-#endif
 AppDelegate::AppDelegate()
 {
 }
@@ -78,32 +70,6 @@ bool AppDelegate::applicationDidFinishLaunching()
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     AndroidCheckFistInstall();
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT) 
-#if 0
-	FileUtils* fileUtils = FileUtils::getInstance();
-	std::string appVersion = GetAppVersion();
-	string writePath = fileUtils->getWritablePath();
-
-	string updatePath = writePath + "update/";
-	string appPath = updatePath + appVersion + "/";
-
-	RTFileOperation::createDirectory(updatePath);
-	RTFileOperation::createDirectory(appPath);
-	std::string luafile = fileUtils->fullPathForFilename("scripts/main.lua");
-
-	CCLog("1---->%d", fileUtils->isFileExist(luafile));
-	CCLog("2----1>%d", fileUtils->isFileExist(appPath + "main.lua"));
-	RTFileOperation::copyFile(luafile,appPath+"main.lua");
-	CCLog("2----2>%d", fileUtils->isFileExist(appPath+"main.lua"));
-
-	cocos2d::WinRTHelper::RunOnUIThread([=]()
-	{
-		// Show the message dialog
-		auto msg = ref new Windows::UI::Popups::MessageDialog(L"RunOnUIThread", L"Ok!");
-		// Set the command to be invoked when a user presses 'ESC'
-		msg->CancelCommandIndex = 1;
-		msg->ShowAsync();
-	});
-#else
 	//auto engine = LuaEngine::getInstance();
 	//ScriptEngineManager::getInstance()->setScriptEngine(engine);
 	//lua_State* L = engine->getLuaStack()->getLuaState();
@@ -119,7 +85,6 @@ bool AppDelegate::applicationDidFinishLaunching()
 	//	return false;
 	//}
 	AppDelegateExtern::initLuaEngine();
-#endif
 #else
 	auto engine = LuaEngine::getInstance();
 	ScriptEngineManager::getInstance()->setScriptEngine(engine);
@@ -139,21 +104,8 @@ bool AppDelegate::applicationDidFinishLaunching()
 #endif
 
 #if defined(__AdeasygoSDK__)
-	cocos2d::WinRTHelper::RunOnUIThread([=](){
-		SDKManager::Init();
-		SDKManager::SetKey("c7867ffb85d75c70", "ea9d6d3a7d050b8b");
-		create_task(SDKManager::GetGoods()).then([=](task<Model::GoodsList^> task){
-			Model::GoodsList^ goodsList = task.get();
-			auto list = goodsList->goods_list;
-			for_each(begin(list),
-				end(list),
-				[&](Model::Goods^ goods) {
-				auto id = goods->id;
-				OutputDebugString(id->Data());
-			});
-
-		});
-	});
+	//初始化sdk
+	cocos2d::AdeasygoHelper::Instance->Init();
 #endif
     return true;
 }
@@ -220,7 +172,6 @@ void AppDelegateExtern::initLuaEngine()
     // register lua module
     lua_State* L = engine->getLuaStack()->getLuaState();
     lua_module_register(L);
-    
     register_all_packages();
     
     LuaStack* stack = engine->getLuaStack();
