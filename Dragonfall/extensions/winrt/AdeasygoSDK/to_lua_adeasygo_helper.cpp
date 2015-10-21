@@ -80,7 +80,12 @@ static int tolua_adeasygo_updatetransactionstates(lua_State *tolua_S)
 	return 0;
 }
 
-
+static int tolua_adeasygo_init(lua_State *tolua_S)
+{
+	//init sdk asysc
+	cocos2d::AdeasygoHelper::Instance->Init();
+	return 0;
+}
 
 void tolua_ext_module_adeasygo(lua_State* tolua_S)
 {
@@ -89,7 +94,8 @@ void tolua_ext_module_adeasygo(lua_State* tolua_S)
 	tolua_function(tolua_S, "registerPayDoneEvent", tolua_adeasygo_register_global_paydone_func);
 	tolua_function(tolua_S, "unregisterPayDoneEvent", tolua_adeasygo_register_global_paydone_func);
 	tolua_function(tolua_S, "getUid", tolua_adeasygo_device_unique_id);
-	tolua_function(tolua_S, "pay", tolua_adeasygo_pay);
+	tolua_function(tolua_S, "buy", tolua_adeasygo_pay);
 	tolua_function(tolua_S, "updateTransactionStates", tolua_adeasygo_updatetransactionstates);
+	tolua_function(tolua_S, "init", tolua_adeasygo_init);
 	tolua_endmodule(tolua_S);
 }

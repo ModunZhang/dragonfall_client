@@ -40,7 +40,7 @@ end
 -- cb(success,data)
 function CCPomelo:addListener(event,cb)
 	self._pomelo:on(event,function( args )
-		dump(args,"addListener------->")
+		cb(true,args)
 	end)
 end
 

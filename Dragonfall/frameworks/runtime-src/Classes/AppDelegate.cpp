@@ -21,9 +21,6 @@
 #include "io/RTFileOperation.h"
 #include "common/RTCommonUtils.h"
 #include "WinRTHelper.h"
-#if defined(__AdeasygoSDK__)
-#include "AdeasygoSDK/AdeasygoHelper.h"
-#endif
 #endif
 
 using namespace CocosDenshion;
@@ -101,11 +98,6 @@ bool AppDelegate::applicationDidFinishLaunching()
 	    return false;
 	}
 
-#endif
-
-#if defined(__AdeasygoSDK__)
-	//初始化sdk
-	cocos2d::AdeasygoHelper::Instance->Init();
 #endif
     return true;
 }
