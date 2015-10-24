@@ -14,3 +14,6 @@
 	Visual Studio Professional 2013  KEY（密钥）： XDM3T-W3T3V-MGJWK-8BFVD-GVPKY
 
 	Team Foundation Server 2013 KEY（密钥）：MHG9J-HHHX9-WWPQP-D8T7H-7KCQG
+
+## 需要注意的地方
+1. 所有的WinRT cpp类的根命名空间必须是`cocos2d`

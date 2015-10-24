@@ -110,10 +110,11 @@ void AppDelegate::applicationDidEnterBackground()
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
     SimpleAudioEngine::getInstance()->resumeAllEffects();
-#else
+#elif (CC_TARGET_PLATFORM != CC_PLATFORM_WINRT)
     SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
     SimpleAudioEngine::getInstance()->pauseAllEffects();
 #endif
+
 	Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("APP_ENTER_BACKGROUND_EVENT");
 }
 
@@ -125,10 +126,11 @@ void AppDelegate::applicationWillEnterForeground()
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
     SimpleAudioEngine::getInstance()->pauseAllEffects();
-#else
+#elif (CC_TARGET_PLATFORM != CC_PLATFORM_WINRT)
     SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
     SimpleAudioEngine::getInstance()->resumeAllEffects();
 #endif
+
 	Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("APP_ENTER_FOREGROUND_EVENT");
 }
 

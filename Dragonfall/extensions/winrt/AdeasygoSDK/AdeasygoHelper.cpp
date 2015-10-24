@@ -55,6 +55,7 @@ namespace cocos2d
 
 	void AdeasygoHelper::updateTransactionStates()
 	{
+		if (!m_goods_inited)return;
 		//call on ui thread?
 		RunOnUIThread([=](){
 			create_task(Adeasygo::PaySDKWP81::SDKManager::GetUnSyncTrade()).then([this](task<Model::TradeResultList^> task){

@@ -355,7 +355,9 @@ function MyApp:onEnterBackground()
 end
 
 function MyApp:onBackgroundMusicCompletion()
-    self:GetAudioManager():OnBackgroundMusicCompletion()
+    if device.platform ~= 'wp8' then
+        self:GetAudioManager():OnBackgroundMusicCompletion()
+    end
 end
 
 function MyApp:onEnterForeground()
@@ -707,11 +709,11 @@ end
 my_print = function(...)
     LuaUtils:outputTable({...})
 end
+-- call from cpp
+function __G_APP_BACKGROUND_MUSIC_COMPLETION()
+    if device.platform == 'wp8' then
+        app:GetAudioManager():OnBackgroundMusicCompletion()
+    end
+end
 
 return MyApp
-
-
-
-
-
-

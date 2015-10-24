@@ -14,7 +14,7 @@
 #include <agile.h>
 #include <DirectXMath.h>
 #include <memory>
-#include <functional>
+
 #define XAUDIO2_HELPER_FUNCTIONS 1
 #include <xaudio2.h>
 #include <map>
@@ -60,10 +60,7 @@ struct StreamingVoiceContext : public IXAudio2VoiceCallback
 {
     STDMETHOD_(void, OnVoiceProcessingPassStart)(UINT32){}
     STDMETHOD_(void, OnVoiceProcessingPassEnd)(){}
-	STDMETHOD_(void, OnStreamEnd)(){
-	
-	};
-	
+    STDMETHOD_(void, OnStreamEnd)(){}
     STDMETHOD_(void, OnBufferStart)(void*)
     {
         ResetEvent(hBufferEndEvent);
@@ -79,7 +76,7 @@ struct StreamingVoiceContext : public IXAudio2VoiceCallback
     STDMETHOD_(void, OnVoiceError)(void*, HRESULT){}
 
     HANDLE hBufferEndEvent;
-	StreamingVoiceContext() : hBufferEndEvent(CreateEventExW(NULL, FALSE, FALSE, NULL))
+    StreamingVoiceContext() : hBufferEndEvent(CreateEventEx(NULL, FALSE, FALSE, NULL))
     {
     }
     virtual ~StreamingVoiceContext()
@@ -164,6 +161,7 @@ public:
     void PreloadSoundEffect(const char* pszFilePath, bool isMusic = false);
     void UnloadSoundEffect(const char* pszFilePath);
     void UnloadSoundEffect(unsigned int sound);
+
 private:
     void RemoveFromList(unsigned int sound);
 };

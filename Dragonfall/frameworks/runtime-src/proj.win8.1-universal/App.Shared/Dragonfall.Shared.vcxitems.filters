@@ -41,6 +41,12 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\AdeasygoSDK\to_lua_adeasygo_helper.cpp">
       <Filter>Classes\ext\AdeasygoSDK</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\audio\SimpleAudio.cpp">
+      <Filter>Classes\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\audio\to_lua_simpleaudio.cpp">
+      <Filter>Classes\audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="$(MSBuildThisFileDirectory)App.xaml" />
@@ -79,6 +85,9 @@
     <Filter Include="Classes\ext\AdeasygoSDK">
       <UniqueIdentifier>{84ea0c55-17b3-4846-b7a0-998dad81d9f0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\audio">
+      <UniqueIdentifier>{cba15fc4-5af4-4b2c-8469-0680d94d17b5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\Classes\AppDelegate.h">
@@ -115,6 +124,12 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\AdeasygoSDK\to_lua_adeasygo_helper.h">
       <Filter>Classes\ext\AdeasygoSDK</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\audio\SimpleAudio.h">
+      <Filter>Classes\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\audio\to_lua_simpleaudio.h">
+      <Filter>Classes\audio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

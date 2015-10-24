@@ -42,8 +42,6 @@ void  _stdcall AudioEngineCallbacks::OnCriticalError(HRESULT Error)
     m_audio->SetEngineExperiencedCriticalError();
 };
 
-
-
 Audio::Audio() :
     m_backgroundID(0),
 	m_soundEffctVolume(1.0f),
@@ -523,20 +521,9 @@ void Audio::PreloadSoundEffect(const char* pszFilePath, bool isMusic)
     }
 
     int sound = Hash(pszFilePath);
-	
+
 	MediaStreamer mediaStreamer;
-	std::string path(pszFilePath);
-	// no MP3 support for CC_PLATFORM_WP8
-	std::string::size_type pos = path.find(".mp3");
-	if (pos != path.npos)
-	{
-		mediaStreamer.InitializeMp3(CCUtf8ToUnicode(pszFilePath).c_str());
-	}
-	else
-	{
-		mediaStreamer.Initialize(CCUtf8ToUnicode(pszFilePath).c_str());
-	}
-	//mediaStreamer.Initialize(CCUtf8ToUnicode(pszFilePath).c_str());
+	mediaStreamer.Initialize(CCUtf8ToUnicode(pszFilePath).c_str());
 	m_soundEffects[sound].m_soundID = sound;	
 	
 	uint32 bufferLength = mediaStreamer.GetMaxStreamLengthInBytes();

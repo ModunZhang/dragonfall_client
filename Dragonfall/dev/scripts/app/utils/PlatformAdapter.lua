@@ -82,6 +82,8 @@ end
 function PlatformAdapter:wp8()
     device.getOpenUDID = ext.getOpenUDID
    
+    audio = require("app.utils.audio-WP")
+
     DEBUG_GET_ANIMATION_PATH = function(filePath)
         filePath = string.gsub(filePath,".pvr.ccz",".png")
         return filePath

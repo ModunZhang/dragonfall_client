@@ -23,6 +23,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\sysmail\SysmailWinRT.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\AdeasygoSDK\AdeasygoHelper.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\AdeasygoSDK\to_lua_adeasygo_helper.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\audio\SimpleAudio.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\audio\to_lua_simpleaudio.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\common\RTCommonUtils.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\io\RTFileOperation.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\WinRTHelper.cpp" />
@@ -42,6 +44,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\sysmail\SysmailWinRT.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\AdeasygoSDK\AdeasygoHelper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\AdeasygoSDK\to_lua_adeasygo_helper.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\audio\SimpleAudio.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\audio\to_lua_simpleaudio.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\common\RTCommonUtils.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\io\RTFileOperation.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\WinRTHelper.h" />
