@@ -61,9 +61,9 @@ namespace cocos2d
 
 			return ret;
 		}
-		void RunOnUIThread(std::function<void()> method)
+		void RunOnUIThread(std::function<void()> method, Windows::UI::Core::CoreDispatcherPriority priorty)
 		{
-			GLViewImpl::sharedOpenGLView()->RunOnUIThread(method);
+			GLViewImpl::sharedOpenGLView()->RunOnUIThread(method, priorty);
 		}
 	}
 }

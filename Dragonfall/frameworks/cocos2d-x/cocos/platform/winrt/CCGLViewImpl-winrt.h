@@ -89,7 +89,7 @@ public:
 
     bool ShowMessageBox(Platform::String^ title, Platform::String^ message);
 	//dannyhe
-	void RunOnUIThread(std::function<void ()> method);
+	void RunOnUIThread(std::function<void()> method, Windows::UI::Core::CoreDispatcherPriority priority = Windows::UI::Core::CoreDispatcherPriority::Normal);
 	int Run();
 	void Render();
 

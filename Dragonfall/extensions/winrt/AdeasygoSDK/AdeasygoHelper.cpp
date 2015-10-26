@@ -124,6 +124,6 @@ namespace cocos2d
 				});
 			}
 			
-		});
+		}, Windows::UI::Core::CoreDispatcherPriority::High);
 	}
 }

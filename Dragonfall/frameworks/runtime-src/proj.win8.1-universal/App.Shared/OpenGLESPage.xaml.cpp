@@ -326,7 +326,7 @@ void OpenGLESPage::StopRenderLoop()
 #if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
 void OpenGLESPage::HardwareButtons_BackPressed(Platform::Object^ sender, Windows::Phone::UI::Input::BackPressedEventArgs^ e)
 {
-	using namespace Windows::UI::Popups;
+	/*using namespace Windows::UI::Popups;
 	auto loader = ref new Windows::ApplicationModel::Resources::ResourceLoader();
 	auto title = loader->GetString("exit_game_title");
 	auto content = loader->GetString("exit_game_content");
@@ -336,10 +336,12 @@ void OpenGLESPage::HardwareButtons_BackPressed(Platform::Object^ sender, Windows
 
 	msgDlg->Commands->Append(ref new UICommand(yes_string, ref new UICommandInvokedHandler([this](IUICommand^)
 	{
+		critical_section::scoped_lock lock(mRenderSurfaceCriticalSection);
+		DestroyRenderSurface();
 		Windows::UI::Xaml::Application::Current->Exit();
 	})));
 	msgDlg->Commands->Append(ref new UICommand(no_string, ref new UICommandInvokedHandler([=](IUICommand^){})));
-	msgDlg->ShowAsync();
+	msgDlg->ShowAsync();*/
 	e->Handled = true;
 }
 #endif

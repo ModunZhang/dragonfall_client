@@ -162,13 +162,14 @@ bool GLViewImpl::ShowMessageBox(Platform::String^ title, Platform::String^ messa
     return false;
 }
 //dannyhe
-void GLViewImpl::RunOnUIThread(std::function<void()> method)
+void GLViewImpl::RunOnUIThread(std::function<void()> method, Windows::UI::Core::CoreDispatcherPriority priority)
 {
 	if (m_dispatcher.Get())
 	{
-		m_dispatcher.Get()->RunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal, ref new Windows::UI::Core::DispatchedHandler(method));
+		m_dispatcher.Get()->RunAsync(priority, ref new Windows::UI::Core::DispatchedHandler(method));
 	}
 }
+
 
 void GLViewImpl::setIMEKeyboardState(bool bOpen, std::string str)
 {

@@ -57,9 +57,7 @@ extern "C" {
 #include "sysmail/ext_sysmail.h"
 #include "LocalNotification/ext_local_push.h"
 #include "audio/to_lua_simpleaudio.h"
-#if defined(__AdeasygoSDK__)
 #include "AdeasygoSDK/to_lua_adeasygo_helper.h"
-#endif
 #endif
 
 
@@ -933,10 +931,7 @@ static void RegisterExtModules(lua_State* tolua_S)
 	 tolua_ext_module_market(tolua_S);
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 	tolua_ext_module_audio(tolua_S);
-#if defined(__AdeasygoSDK__)
 	tolua_ext_module_adeasygo(tolua_S);
-#endif
-
 #endif
    //TODO:ext modules
 	tolua_ext_module_sysmail(tolua_S);
