@@ -8,7 +8,7 @@ using namespace Windows::Foundation;
 using namespace Windows::ApplicationModel;
 using namespace cocos2d;
 using namespace concurrency;
-
+static int isAppHoc = -1;
 //wp8.1不支持 参考 https://social.msdn.microsoft.com/Forums/sqlserver/en-US/ac4f3329-d7ee-455f-80be-0e1685fea971/how-to-copy-text-to-the-clipboard-in-wp81-using-vs2013-can-not-refer-to-the-correct-namespace?forum=wpdevelop
 void CopyText(const char * text)
 {
@@ -123,6 +123,17 @@ void ClearOpenUdidData()
 }
 const bool isAppAdHocMode()
 {
-	return false;
+	//在ui线程读取一次
+	if (isAppHoc > 0)
+	{
+		return isAppHoc == 1;
+	}
+	bool flag = false;
+	create_task(cocos2d::WinRTHelper::RunOnUIThread([=, &flag](){
+		Platform::Object^ val = Windows::UI::Xaml::Application::Current->Resources->Lookup(L"AppHoc");
+		flag = val->Equals(Platform::Boolean(true));
+	}, Windows::UI::Core::CoreDispatcherPriority::High)).wait();
+	isAppHoc = flag ? 1 : 0;
+	return flag;
 }
 #endif

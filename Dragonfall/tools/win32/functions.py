@@ -4,10 +4,12 @@
 import os
 import sys
 import urllib
-from tarfile import TarFile
 import shutil
 import tempfile
 import platform
+import subprocess
+import  xml.dom.minidom
+from tarfile import TarFile
 
 _TempDir_ = ""
 ###########################Logging###########################
@@ -131,7 +133,9 @@ def removeTempDir(rootdir):
 
 # DXT texture compression and real-time transcoding library  
 # https://code.google.com/p/crunch/
-# eg. cocos2dx: crunch -file ui_pvr_1.png -fileformat dds /DXT5A /rescalemode nearest /mipMode None /out .\test\ui_pvr_1.png
+# cocos2dx eg.
+# crunch -file ui_pvr_1.png -fileformat dds /DXT5A /rescalemode nearest /mipMode None /out .\test\ui_pvr_1.png
+
 def getDXTConvertTool():
     bit = platform.architecture()[0]
     root_dir=getProjDir();
@@ -143,3 +147,50 @@ def getDXTConvertTool():
 def getETCCompressTool():
     root_dir=getProjDir();
     return formatPath("%s/tools/TextureTools/win32/CompressETCTexture.exe" % root_dir)
+
+# App Version data
+def AppXmlPath():
+    root_dir=getProjDir();
+    return formatPath("%s/frameworks/runtime-src/proj.win8.1-universal/App.Shared/App.xaml" % root_dir)
+
+def PackageXmlPath():
+    root_dir=getProjDir();
+    return formatPath("%s/frameworks/runtime-src/proj.win8.1-universal/App.WindowsPhone/Package.appxmanifest" % root_dir)
+
+def getAllMetaDataElements(root):
+    applications = root.getElementsByTagName("Application.Resources")
+    if applications[0].nodeName == 'Application.Resources':
+        return applications[0].getElementsByTagName("x:String")
+
+def getAppMinVersion():
+    xmlPath = AppXmlPath();
+    dom = xml.dom.minidom.parse(xmlPath)
+    root = dom.documentElement
+    metaDatas = getAllMetaDataElements(root)
+    for meta in metaDatas:
+        if meta.getAttribute("x:Key") == "AppMinVersion":
+            return meta.firstChild.data
+
+def getAppVersion():
+    xmlPath = PackageXmlPath();
+    dom = xml.dom.minidom.parse(xmlPath)
+    root = dom.documentElement
+    applications = root.getElementsByTagName("Identity")
+    if len(applications) > 0 and applications[0].nodeName == 'Identity':
+        version = applications[0].getAttribute("Version")
+        lastIndex = version.rfind(".")
+        return version[:lastIndex]
+    else:
+        sys.exit(-1)
+
+def getUpdatePythonMainScriptPath():
+    root_dir=getProjDir();
+    return formatPath("%s/tools/buildUpdate/buildUpdate.py" % root_dir)
+
+#App version data end
+
+def getAppBuildTag():
+    args=['git','rev-list','HEAD','--count']
+    process = subprocess.Popen(args,stdout=subprocess.PIPE)
+    output = process.communicate()[0].rstrip()
+    return output

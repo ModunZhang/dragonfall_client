@@ -162,12 +162,13 @@ bool GLViewImpl::ShowMessageBox(Platform::String^ title, Platform::String^ messa
     return false;
 }
 //dannyhe
-void GLViewImpl::RunOnUIThread(std::function<void()> method, Windows::UI::Core::CoreDispatcherPriority priority)
+Windows::Foundation::IAsyncAction^ GLViewImpl::RunOnUIThread(std::function<void()> method, Windows::UI::Core::CoreDispatcherPriority priority)
 {
 	if (m_dispatcher.Get())
 	{
-		m_dispatcher.Get()->RunAsync(priority, ref new Windows::UI::Core::DispatchedHandler(method));
+		return m_dispatcher.Get()->RunAsync(priority, ref new Windows::UI::Core::DispatchedHandler(method));
 	}
+	return nullptr;
 }
 
 
