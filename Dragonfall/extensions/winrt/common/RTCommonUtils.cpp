@@ -123,10 +123,6 @@ void ClearOpenUdidData()
 }
 const bool isAppAdHocMode()
 {
-	/*cocos2d::WinRTHelper::RunOnUIThread([=](){
-		Platform::Object^ val = Windows::UI::Xaml::Application::Current->Resources->Lookup(L"AppHoc");
-		val->Equals(Platform::Boolean(true));
-	});*/
-	return true;
+	return false;
 }
 #endif
