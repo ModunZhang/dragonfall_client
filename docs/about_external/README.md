@@ -35,12 +35,12 @@
 举例如何修改及编译项目,这里以'crc32'为例。首先安装cmake,打开终端并定位到`crc32`文件夹
 
 1. mac
-	> 执行命令 cmake -GXcode
+
+> 执行命令 cmake -GXcode
+
 2. win32
-	> 使用cmake的gui工具生成项目即可
 
-
-
+> 使用cmake的gui工具生成项目即可
 
 -----
 dannyhe 10/26/2015
