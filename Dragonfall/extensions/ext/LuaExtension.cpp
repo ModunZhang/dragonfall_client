@@ -22,7 +22,6 @@ extern "C" {
 #include "CCLuaStack.h"
 #include "CCLuaEngine.h"
 
-
 #define LOG_BUFFER_SIZE 1024 * 10 * 2
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 #include "../../external/lua/quick/LuaNodeManager.h"
@@ -462,7 +461,6 @@ TOLUA_API int tolua_cc_pomelo_open(lua_State* tolua_S)
     tolua_function(tolua_S, "cleanup", tolua_CCPomelo_cleanup);
     tolua_endmodule(tolua_S);
     tolua_endmodule(tolua_S);
-    
     return 1;
 }
 
@@ -962,7 +960,6 @@ static void ResgisterGlobalExtFunctions(lua_State* tolua_S)
 #endif
 }
 
-
 static void RegisterExtModules(lua_State* tolua_S)
 {
 #if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
@@ -975,7 +972,6 @@ static void RegisterExtModules(lua_State* tolua_S)
 	tolua_ext_module_audio(tolua_S);
 	tolua_ext_module_adeasygo(tolua_S);
 #endif
-   //TODO:ext modules
 	tolua_ext_module_sysmail(tolua_S);
 	tolua_ext_module_localpush(tolua_S); //local push
 }
@@ -994,16 +990,10 @@ TOLUA_API int tolua_cc_lua_extension(lua_State* tolua_S)
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
     lua_register_cocos2dx_TransitionCustom(tolua_S);
 #endif
-	//TODO: TransitionCustom
     tolua_endmodule(tolua_S);
     tolua_endmodule(tolua_S);
     return 1;
 }
-
-
-
-
-
 
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
 ///////////////////////////////////////
@@ -1157,8 +1147,5 @@ int lua_register_cocos2dx_TransitionCustom(lua_State* tolua_S)
     g_typeCast["TransitionCustom"] = "cc.TransitionCustom";
     return 1;
 }
-
-
-
 NS_CC_END
 #endif /*  CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS */
