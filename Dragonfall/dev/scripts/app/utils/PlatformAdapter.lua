@@ -99,6 +99,13 @@ function PlatformAdapter:wp8()
             end
         })
     end
+    -- some functions
+    device.openURL = ext.openURL
+
+    -- device.showAlert(title, message, buttonLabels, listener)
+    device.showAlert = function( title, message, buttonLabels, listener )
+        ext.showAlert(title or "",message or "",buttonLabels[1] or "",listener)
+    end
 end
 
 function PlatformAdapter:mac()

@@ -8,7 +8,37 @@ using namespace Windows::Foundation;
 using namespace Windows::ApplicationModel;
 using namespace cocos2d;
 using namespace concurrency;
+using namespace Windows::UI::Popups;
 static int isAppHoc = -1;
+
+void showAlert(std::string title, std::string content, std::string okString, std::function<void(void)> callbackFunc)
+{
+	auto pTitle = WinRTHelper::PlatformStringFromString(title);
+	auto pContent = WinRTHelper::PlatformStringFromString(content);
+	auto pOkString = WinRTHelper::PlatformStringFromString(okString);
+	WinRTHelper::RunOnUIThread([=](){
+		auto msgDlg = ref new MessageDialog(pContent, pTitle);
+		
+		msgDlg->Commands->Append(ref new UICommand(pOkString, ref new UICommandInvokedHandler([=](IUICommand^)
+		{
+			if (callbackFunc)
+			{
+				callbackFunc();
+			}
+		})));
+		msgDlg->ShowAsync();
+	});
+}
+
+void openUrl(std::string url)
+{
+	auto pURL = WinRTHelper::PlatformStringFromString(url);
+	auto uri = ref new Uri(pURL);
+	WinRTHelper::RunOnUIThread([uri](){
+		Windows::System::Launcher::LaunchUriAsync(uri);
+	});
+}
+
 //wp8.1不支持 参考 https://social.msdn.microsoft.com/Forums/sqlserver/en-US/ac4f3329-d7ee-455f-80be-0e1685fea971/how-to-copy-text-to-the-clipboard-in-wp81-using-vs2013-can-not-refer-to-the-correct-namespace?forum=wpdevelop
 void CopyText(const char * text)
 {

@@ -1,6 +1,7 @@
 #ifndef __kod_commonutils__RTCommonUtils
 #define __kod_commonutils__RTCommonUtils
 #if defined(WINRT)
+#include <functional>
 //copy text to Pasteboard
 void CopyText(const char * text);
 void DisableIdleTimer(bool disable=false);
@@ -18,5 +19,7 @@ std::string GetDeviceLanguage();
 int getBatteryLevel();
 std::string getInternetConnectionStatus();
 const bool isAppAdHocMode();
-#endif
-#endif
+void openUrl(std::string url);
+void showAlert(std::string title, std::string content,std::string okString,std::function<void(void)> callbackFunc);
+#endif /* WINRT */
+#endif /* __kod_commonutils__RTCommonUtils */

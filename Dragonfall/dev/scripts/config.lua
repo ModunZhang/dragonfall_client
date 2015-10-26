@@ -1,7 +1,7 @@
 -- 0 - disable debug info, 1 - less debug info, 2 - verbose debug info
 DEBUG = 0
-DEBUG_FPS = true
-DEBUG_MEM = true
+DEBUG_FPS = false
+DEBUG_MEM = false
 
 -- design resolution
 CONFIG_SCREEN_WIDTH = 640
@@ -41,7 +41,8 @@ CONFIG_REMOTE_SERVER = {
 -- app store url
 CONFIG_APP_URL = {
     ios = "https://itunes.apple.com/us/app/dragonfall-the-1st-moba-slg/id993631614?l=zh&ls=1&mt=8",
-    android = "https://batcat.sinaapp.com/ad_hoc/build-index.html"
+    android = "https://batcat.sinaapp.com/ad_hoc/build-index.html",
+    wp8 = "https://batcat.sinaapp.com/ad_hoc/build-index.html",
 }
 CONFIG_IS_LOCAL = false
 -- 是否是测试版本 后面会删除这个变量 从plist/meta-data里面获取值，CONFIG_IS_DEBUG为true时三方sdk不会记录购买和事件信息，传到网关获取服务器信息

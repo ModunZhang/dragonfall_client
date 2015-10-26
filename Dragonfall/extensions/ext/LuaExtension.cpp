@@ -894,6 +894,44 @@ static int tolua_ext_is_app_hoc(lua_State* tolua_S)
     return 1;
 }
 
+#if  CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+static int tolua_ext_open_url(lua_State* tolua_S)
+{
+	std::string url = tolua_tocppstring(tolua_S, 1, 0);
+	openUrl(url);
+	return 0;
+}
+
+static int tolua_ext_show_alert(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+	tolua_Error tolua_err;
+	if (!toluafix_isfunction(tolua_S, 4, "LUA_FUNCTION", 0, &tolua_err) ||
+		!tolua_isstring(tolua_S, 1, 0, &tolua_err) ||
+		!tolua_isstring(tolua_S, 2, 0, &tolua_err) ||
+		!tolua_isstring(tolua_S, 3, 0, &tolua_err))
+		goto tolua_lerror;
+	else
+#endif
+	{
+		cocos2d::LUA_FUNCTION handlerId = toluafix_ref_function(tolua_S, 4, 0);
+		std::string title = tolua_tocppstring(tolua_S, 1, 0);
+		std::string content = tolua_tocppstring(tolua_S, 2, 0);
+		std::string okString = tolua_tocppstring(tolua_S, 3, 0);
+		showAlert(title, content, okString, [=](){
+			auto stack = cocos2d::LuaEngine::getInstance()->getLuaStack();
+			stack->executeFunctionByHandler(handlerId,0);
+		});
+		return 0;
+	}
+#ifndef TOLUA_RELEASE
+tolua_lerror :
+	tolua_error(tolua_S, "#ferror in function 'tolua_ext_show_alert'.", &tolua_err);
+	return 0;
+#endif
+}
+#endif
+
 static void ResgisterGlobalExtFunctions(lua_State* tolua_S)
 {
     tolua_function(tolua_S, "now", tolua_ext_now);
@@ -918,6 +956,10 @@ static void ResgisterGlobalExtFunctions(lua_State* tolua_S)
     tolua_function(tolua_S, "clearOpenUdid",tolua_ext_clearOpenUdid);
     tolua_function(tolua_S, "getDeviceLanguage",tolua_ext_get_language_code);
     tolua_function(tolua_S, "isAppAdHoc",tolua_ext_is_app_hoc);
+#if  CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+	tolua_function(tolua_S, "openURL", tolua_ext_open_url);
+	tolua_function(tolua_S, "showAlert", tolua_ext_show_alert);
+#endif
 }
 
 
