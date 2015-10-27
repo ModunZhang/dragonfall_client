@@ -115,7 +115,7 @@ if __name__=="__main__":
 			elif opt in ('-m',"--minVersion"):
 				app_min_version = arg 
 			elif opt in ('-t',"--appTag"):
-				app_build_tag = arg
+				app_build_tag = int(arg)
 	except getopt.GetoptError:
 		sys.exit(1)
 
