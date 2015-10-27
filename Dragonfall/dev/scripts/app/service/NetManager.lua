@@ -2000,16 +2000,21 @@ function NetManager:downloadFile(fileInfo, cb, progressCb)
         end
     end
 
-    self.m_netService:get(downloadUrl, nil, function(success, statusCode, msg)
+    self.m_netService:get(downloadUrl, nil, function(success, statusCode, msg,request)
         if success and statusCode == 200 then
-            local file = io.open(filePath, "w")
-            if not file then
-                cb(false)
-                return
-            end
-            file:write(msg)
-            file:close()
-            local fileLength = string.len(msg)
+            -- dannyhe : 下面的代码在一些情况下可能会出现保存文件失败的情况,使用新的函数保存文件!  2015/10/27
+            -- local file = io.open(filePath, "w")
+            -- if not file then
+            --     cb(false)
+            --     return
+            -- end
+            -- file:write(msg)
+            -- file:close()
+            -- local fileLength = string.len(msg)
+            -- progressCb(fileLength, fileLength)
+            -- cb(true)
+            
+            local fileLength = request:saveResponseData(filePath)
             progressCb(fileLength, fileLength)
             cb(true)
         else

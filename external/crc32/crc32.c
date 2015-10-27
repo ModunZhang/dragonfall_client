@@ -72,7 +72,7 @@ int main( int argc, const char *argv[] )
            err = Crc32_ComputeFile( file, &crc32 );
            if (err == -1) goto ERR_EXIT;
 		       //dannyhe
-		       printf("%08lX",crc32);
+		       printf("%08lx",crc32);
            //printf("crc32 = 0x%08lX for \"%s\"\n", crc32, filename );
            err = fclose( file );
            file = NULL;
