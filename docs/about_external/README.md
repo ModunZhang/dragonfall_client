@@ -1,7 +1,10 @@
-#关于项目的external文件夹
-> 我将一些自定义的工具以及一些各个平台下不需要做修改的公共项目上传到这个位置
+#external说明
 
-##文件夹简单说明
+## 我们项目的external
+
+> 我将一些自定义的工具,以及一些各个平台下不需要做修改的公共项目上传到这个位置`$ProjectDir/external`,我们自定义的工具全部使用`cmake`生成项目文件。
+
+###文件夹说明
 
 * Android
 
@@ -28,19 +31,33 @@
 > 存放WindowsPhone上使用的一些第三方库或sdk
 
 
-## 关于CMake
+### 关于CMake
 
 > 上面的项目,只要是我们项目自定义的。均已写了cmake的生成文件
 
 举例如何修改及编译项目,这里以'crc32'为例。首先安装cmake,打开终端并定位到`crc32`文件夹
 
-1. mac
+* mac
 
 > 执行命令 cmake -GXcode
 
-2. win32
+* win32
 
 > 使用cmake的gui工具生成项目即可
 
+## cocos2dx的external
+
+> 2dx的自身使用很多第三方库，位置`$ProjectDir/Dragonfall/frameworks/cocos2d-x/external`
+
+### 如何查看版本
+
+> 查看文件夹下的`version.json`,里面有对应库的版本信息
+
+### 如何更新第三方库
+
+* 如果是跟随2dx更新,直接下载最新的二进制文件即可[cocos2d-x-3rd-party-libs-bin](https://github.com/cocos2d/cocos2d-x-3rd-party-libs-bin)
+* 如果需要自己更新某个库，使用2dx的第三方库项目编译即可[cocos2d-x-3rd-party-libs-src](https://github.com/cocos2d/cocos2d-x-3rd-party-libs-src)
+
+
 -----
-dannyhe 10/26/2015
+dannyhe @ October 27, 2015
