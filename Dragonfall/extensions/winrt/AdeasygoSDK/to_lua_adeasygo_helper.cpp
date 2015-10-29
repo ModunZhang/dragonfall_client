@@ -8,7 +8,7 @@
 #include "cocos2d.h"
 #include "LuaBasicConversions.h"
 
-#define __AdeasygoSDK__ 0
+#define __AdeasygoSDK__ 1
 // extern method
 void OnPayDone(int handleId, cocos2d::ValueVector valVector)
 {
@@ -90,7 +90,7 @@ static int tolua_adeasygo_device_unique_id(lua_State *tolua_S)
 static int tolua_adeasygo_updatetransactionstates(lua_State *tolua_S)
 {
 #if __AdeasygoSDK__
-	/*cocos2d::AdeasygoHelper::Instance->updateTransactionStates();*/
+	cocos2d::AdeasygoHelper::Instance->updateTransactionStates();
 #endif
 	return 0;
 }
