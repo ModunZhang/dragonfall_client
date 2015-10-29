@@ -201,17 +201,8 @@ void AppDelegateExtern::loadConfigFile()
 
 std::string AppDelegateExtern::getAppVersion()
 {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-    const char*ipaVersion = GetAppVersion();
-    if (ipaVersion != NULL)
-    {
-        return std::string(ipaVersion);
-    }
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 	std::string ipaVersion = GetAppVersion();
 	return ipaVersion;
-#endif
-    return "";
 }
 
 

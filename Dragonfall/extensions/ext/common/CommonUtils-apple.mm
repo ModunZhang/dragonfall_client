@@ -1,5 +1,6 @@
-#import <UIKit/UIKit.h>
 #include "CommonUtils.h"
+#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC
+#import <UIKit/UIKit.h>
 #include <sys/utsname.h>
 #import "AppController.h"
 #import <CoreFoundation/CoreFoundation.h>
@@ -8,18 +9,21 @@
 #import <CommonCrypto/CommonDigest.h> // Need to import for CC_MD5 access
 #include "cocos/quick_libs/src/extra/platform/ios_mac/ReachabilityIOSMac.h"
 
-extern "C" void CopyText(const char * text)
+#define kKeychainBatcatStudioIdentifier          @"kKeychainBatcatStudioIdentifier"
+#define kKeychainBatcatStudioKeyChainService     @"com.batcatstudio.keychain"
+
+void CopyText(std::string text)
 {
-    [UIPasteboard generalPasteboard].string = [NSString stringWithUTF8String:text];
+    [UIPasteboard generalPasteboard].string = [NSString stringWithUTF8String:text.c_str()];
 }
 
 
-extern "C" void DisableIdleTimer(bool disable)
+void DisableIdleTimer(bool disable)
 {
     [UIApplication sharedApplication].idleTimerDisabled = disable;
 }
 
-extern "C" void CloseKeyboard()
+void CloseKeyboard()
 {
     if ([[[[UIApplication sharedApplication]keyWindow]rootViewController].view respondsToSelector:@selector(handleTouchesAfterKeyboardShow)])
     {
@@ -29,9 +33,9 @@ extern "C" void CloseKeyboard()
     }
 }
 
-extern "C" const char*GetOSVersion()
+std::string GetOSVersion()
 {
-    return [[NSString stringWithFormat:@"iOS %@",[UIDevice currentDevice].systemVersion] UTF8String];
+    return std::string([[NSString stringWithFormat:@"iOS %@",[UIDevice currentDevice].systemVersion] UTF8String]);
 }
 /***
  　  iphone 5,1 　　iphone5(移动,联通)
@@ -63,83 +67,85 @@ extern "C" const char*GetOSVersion()
  　　ipod 2,1	　　　 ipod touch 2
  　　ipod 1,1	　　　 ipod touch
  ***/
-extern "C" const char* GetDeviceModel()
+std::string GetDeviceModel()
 {
     struct utsname systemInfo;
     uname(&systemInfo);
-    return [[NSString stringWithCString:systemInfo.machine
-                               encoding:NSUTF8StringEncoding]UTF8String];
+    return std::string([[NSString stringWithCString:systemInfo.machine
+                               encoding:NSUTF8StringEncoding]UTF8String]);
 }
 //log
-extern "C" void WriteLog_(const char *str)
+void WriteLog_(std::string str)
 {
-    NSLog(@"%@",[NSString stringWithUTF8String:str]);
+    NSLog(@"%@",[NSString stringWithUTF8String:str.c_str()]);
 }
 
-extern "C" const char* GetAppVersion()
+std::string GetAppVersion()
 {
-    return [[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]UTF8String];
+    return std::string([[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]UTF8String]);
 }
-extern "C" const char* GetAppBundleVersion()
+std::string GetAppBundleVersion()
 {
-    return [[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]UTF8String];;
+    return std::string([[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]UTF8String]);
 }
-extern "C" const char* GetDeviceToken()
+std::string GetDeviceToken()
 {
     AppController * appController = (AppController *)[[UIApplication sharedApplication]delegate];
-    return [[appController remoteDeviceToken] UTF8String];
+    return std::string([[appController remoteDeviceToken] UTF8String]);
 }
 
 
-extern "C" const char* GetDeviceLanguage()
+std::string GetDeviceLanguage()
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSArray *languages = [defaults objectForKey:@"AppleLanguages"];
     NSString *currentLanguage = [languages objectAtIndex:0];
-    return [currentLanguage UTF8String];
+    return std::string([currentLanguage UTF8String]);
 }
 
-extern "C" long long getOSTime()
+long long GetOSTime()
 {
     double currentTime = CFAbsoluteTimeGetCurrent() + kCFAbsoluteTimeIntervalSince1970;
     return (long long)(currentTime * 1000);
 }
-extern "C" float getBatteryLevel()
+float GetBatteryLevel()
 {
     [[UIDevice currentDevice] setBatteryMonitoringEnabled:YES];  
     return [[UIDevice currentDevice] batteryLevel];  
 }
 
-extern "C" const char* getInternetConnectionStatus()
+std::string GetInternetConnectionStatus()
 {
     
     NetworkStatus status = [[ReachabilityIOSMac reachabilityForInternetConnection] currentReachabilityStatus];
     
     if (status == NotReachable)
     {
-        return [@"NotReachable" UTF8String];
+        return std::string("NotReachable");
     }
     if (status == ReachableViaWiFi)
     {
-        return [@"ReachableViaWiFi" UTF8String];
+        return std::string("ReachableViaWiFi");
     }
     CTTelephonyNetworkInfo *networkInfo = [[[CTTelephonyNetworkInfo alloc] init]autorelease];
     if([networkInfo respondsToSelector:@selector(currentRadioAccessTechnology)])
     {
-        return [networkInfo.currentRadioAccessTechnology UTF8String];
+        return std::string([networkInfo.currentRadioAccessTechnology UTF8String]);
     }
     else
     {
-        return [@"CTRadioAccessTechnologyCDMA1x" UTF8String];
+        return std::string("CTRadioAccessTechnologyCDMA1x");
     }
-    return [@"NotReachable" UTF8String];
+    return std::string("NotReachable");
 }
+
 static NSString * shared_openUDID = NULL;
-extern "C" const char* GetOpenUdid()
+
+std::string GetOpenUdid()
 {
     if(shared_openUDID!=NULL)
     {
-        return [shared_openUDID UTF8String];
+        return std::string([shared_openUDID UTF8String]);
     }
     NSError *error = nil;
     NSString *_openUDID = [UICKeyChainStore stringForKey:kKeychainBatcatStudioIdentifier service:kKeychainBatcatStudioKeyChainService error:&error];
@@ -173,10 +179,10 @@ extern "C" const char* GetOpenUdid()
     }
     NSLog(@"GetOpenUdid:%@",_openUDID);
     shared_openUDID = [[NSString alloc]initWithString:_openUDID];
-    return [shared_openUDID UTF8String];
+    return std::string([shared_openUDID UTF8String]);
 }
 
-extern "C" void registereForRemoteNotifications()
+void RegistereForRemoteNotifications()
 {
     UIApplication *application = [UIApplication sharedApplication];
     if ([application respondsToSelector:@selector(isRegisteredForRemoteNotifications)]) {
@@ -192,7 +198,7 @@ extern "C" void registereForRemoteNotifications()
 
 }
 
-extern "C" void ClearOpenUdidData()
+void ClearOpenUdidData()
 {
 #ifdef DEBUG
     UICKeyChainStore *store = [UICKeyChainStore keyChainStoreWithService:kKeychainBatcatStudioKeyChainService];
@@ -200,8 +206,9 @@ extern "C" void ClearOpenUdidData()
 #endif
 
 }
-extern "C" const bool isAppAdHocMode()
+const bool IsAppAdHocMode()
 {
     bool isDebug = [[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppHoc"] boolValue];
     return isDebug;
 }
+#endif

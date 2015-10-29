@@ -124,7 +124,7 @@ void Configuration::gatherGPUInfo()
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 	_supportsS3TC = checkForGLExtension("GL_EXT_texture_compression_s3tc") || checkForGLExtension("GL_EXT_texture_compression_dxt1") || checkForGLExtension("GL_ANGLE_texture_compression_dxt3") || checkForGLExtension("GL_ANGLE_texture_compression_dxt5");
 #else
-    _supportsS3TC = checkForGLExtension("GL_EXT_texture_compression_s3tc")
+    _supportsS3TC = checkForGLExtension("GL_EXT_texture_compression_s3tc");
 #endif
     _valueDict["gl.supports_S3TC"] = Value(_supportsS3TC);
     

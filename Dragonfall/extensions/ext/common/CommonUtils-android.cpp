@@ -1,4 +1,5 @@
-#include "jni_CommonUtils.h"
+#include "CommonUtils.h"
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 #if (!defined NDEBUG)
 #define LOG_TAG ("jni_CommonUtils.cpp")
 #define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__))
@@ -13,18 +14,18 @@
 
 static char* m_UDID = NULL;
 
-void CopyText(const char * text)
+void CopyText(std::string text)
 {
     cocos2d::JniMethodInfo t;
     if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "copyText", "(Ljava/lang/String;)V"))
     {
-        jstring jtext = t.env->NewStringUTF(text);
+        jstring jtext = t.env->NewStringUTF(text.c_str());
         t.env->CallStaticVoidMethod(t.classID,t.methodID,jtext);
         t.env->DeleteLocalRef(jtext);
         t.env->DeleteLocalRef(t.classID);
     }
 }
-const char* GetAppVersion()
+std::string GetAppVersion()
 {
     //获取大版本号
     char* appVersion = NULL;
@@ -41,7 +42,7 @@ const char* GetAppVersion()
          t.env->DeleteLocalRef(jResult);
          t.env->DeleteLocalRef(t.classID);
     }
-    return appVersion;
+    return std::string(appVersion);
 }
 
 void DisableIdleTimer(bool disable)
@@ -59,11 +60,11 @@ void DisableIdleTimer(bool disable)
 //CloseKeyboard
 void CloseKeyboard(){}
 //游戏启动就会请求GCM
-void registereForRemoteNotifications(){}
+void RegistereForRemoteNotifications(){}
 //debug方法
 void ClearOpenUdidData(){}
 
-const char* GetOSVersion()
+std::string GetOSVersion()
 {   
     char* osVersion = NULL;
     cocos2d::JniMethodInfo t;
@@ -79,9 +80,9 @@ const char* GetOSVersion()
          t.env->DeleteLocalRef(jResult);
          t.env->DeleteLocalRef(t.classID);
     }
-    return osVersion;
+    return std::string(osVersion);
 }
-const char* GetDeviceModel()
+std::string GetDeviceModel()
 {
     char* deviceModel = NULL;
     cocos2d::JniMethodInfo t;
@@ -97,14 +98,14 @@ const char* GetDeviceModel()
          t.env->DeleteLocalRef(jResult);
          t.env->DeleteLocalRef(t.classID);
     }
-    return deviceModel;
+    return std::string(deviceModel);
 }
-void WriteLog_(const char *str)
+void WriteLog_(std::string str)
 {
     //just print
-    ((void)__android_log_print(ANDROID_LOG_DEBUG,"LuaDebug", "%s",str));
+    ((void)__android_log_print(ANDROID_LOG_DEBUG,"LuaDebug", "%s",str.c_str()));
 }
-const char* GetAppBundleVersion()
+std::string GetAppBundleVersion()
 {
     char* appBundleVersion = NULL;
     cocos2d::JniMethodInfo t;
@@ -119,9 +120,9 @@ const char* GetAppBundleVersion()
         t.env->DeleteLocalRef(jResult);
         t.env->DeleteLocalRef(t.classID);
     }
-    return appBundleVersion;
+    return std::string(appBundleVersion);
 }
-const char* GetDeviceToken()
+std::string GetDeviceToken()
 {   
     char* deviceToken = NULL;
     cocos2d::JniMethodInfo t;
@@ -135,11 +136,11 @@ const char* GetDeviceToken()
         t.env->ReleaseStringUTFChars(jResult, resultC);
         t.env->DeleteLocalRef(jResult);
         t.env->DeleteLocalRef(t.classID);
-        return deviceToken;
+        return std::string(deviceToken);
     }
     return "";
 }
-const char* GetOpenUdid()
+std::string GetOpenUdid()
 {
     if (m_UDID == NULL)
     {
@@ -157,9 +158,9 @@ const char* GetOpenUdid()
          t.env->DeleteLocalRef(t.classID);
         }
     }
-    return m_UDID;
+    return std::string(m_UDID);
 }
-const char* GetDeviceLanguage()
+std::string GetDeviceLanguage()
 {
     char* languageCode = NULL;
     cocos2d::JniMethodInfo t;
@@ -175,7 +176,7 @@ const char* GetDeviceLanguage()
          t.env->DeleteLocalRef(jResult);
          t.env->DeleteLocalRef(t.classID);
     }
-    return languageCode;
+    return std::string(languageCode);
 }
 void AndroidCheckFistInstall()
 {
@@ -186,7 +187,7 @@ void AndroidCheckFistInstall()
         t.env->DeleteLocalRef(t.classID);
     }
 }
-float getBatteryLevel()
+float GetBatteryLevel()
 {
     cocos2d::JniMethodInfo t;
     if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "batteryLevel", "()F")) 
@@ -197,7 +198,7 @@ float getBatteryLevel()
     }
     return -1;
 }
-const char* getInternetConnectionStatus()
+std::string GetInternetConnectionStatus()
 {
     cocos2d::JniMethodInfo t;
     std::string ret("NotReachable");
@@ -209,9 +210,9 @@ const char* getInternetConnectionStatus()
         ret = cocos2d::JniHelper::jstring2string(jResult);
         t.env->DeleteLocalRef(jResult);
     }
-    return ret.c_str();
+    return ret;
 }
-const bool isAppAdHocMode()
+const bool IsAppAdHocMode()
 {
     cocos2d::JniMethodInfo t;
     bool ret = false;
@@ -222,3 +223,4 @@ const bool isAppAdHocMode()
     }
     return ret;
 }
+#endif

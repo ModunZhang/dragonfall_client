@@ -40,13 +40,13 @@ extern "C" {
 #include "CCPomelo.h"
 #include "AppDelegate.h"
 #include "crc/crc32.c"
-#include "io/FileOperation.h"
+#include "FileOperation.h"
 #include "LocalNotification/ext_local_push.h"
 #include "MarketSDKTool.h"
 #include "ext_sysmail.h"
-#include "common/CommonUtils.h"
-#include "GameCenter/GameCenter.h"
-#define KODLOG(format, ...)      CCLOG(format, ##__VA_ARGS__);Kodlog__(format, ##__VA_ARGS__);
+#include "CommonUtils.h"
+#include "GameCenter.h"
+#define KODLOG(format, ...) CCLOG(format, ##__VA_ARGS__);Kodlog__(format, ##__VA_ARGS__);
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 #include "common/RTCommonUtils.h"
 #include "crc/crc32.c"
@@ -488,7 +488,7 @@ static int tolua_ext_now(lua_State* tolua_S){
         gettimeofday(&tv,NULL);
         now = (long long)tv.tv_sec * 1000 + tv.tv_usec / 1000;
 #else
-        now = getOSTime();
+        now = GetOSTime();
 #endif
         tolua_pushnumber(tolua_S, now);
     }
@@ -512,7 +512,7 @@ static int tolua_ext_getBatteryLevel(lua_State* tolua_S){
 #endif
     {
         
-        float batteryLeve = getBatteryLevel();
+        float batteryLeve = GetBatteryLevel();
         tolua_pushnumber(tolua_S, batteryLeve);
     }
     return 1;
@@ -533,13 +533,8 @@ static int tolua_ext_getInternetConnectionStatus(lua_State* tolua_S){
     else
 #endif
     {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
-		const char* internetConnectionStatus = getInternetConnectionStatus();
-		tolua_pushstring(tolua_S, internetConnectionStatus);
-#elif  CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
-		std::string internetConnectionStatus = getInternetConnectionStatus();
+		std::string internetConnectionStatus = GetInternetConnectionStatus();
 		tolua_pushcppstring(tolua_S, internetConnectionStatus);
-#endif
     }
     return 1;
 #ifndef TOLUA_RELEASE
@@ -661,11 +656,7 @@ tolua_lerror:
 
 static int tolua_ext_getOpenUdid(lua_State* tolua_S)
 {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
-	tolua_pushstring(tolua_S, GetOpenUdid());
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 	tolua_pushcppstring(tolua_S, GetOpenUdid());
-#endif
     return 1;
 }
 
@@ -677,7 +668,7 @@ static int tolua_ext_clearOpenUdid(lua_State* tolua_S)
 
 static int tolua_ext_registereForRemoteNotifications(lua_State* tolua_S)
 {
-    registereForRemoteNotifications();
+    RegistereForRemoteNotifications();
     return 0;
 }
 
@@ -791,25 +782,15 @@ static int tolua_ext_close_keyboard(lua_State* tolua_S)
 
 static int tolua_ext_get_os_version(lua_State* tolua_S)
 {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-	const char * version = GetOSVersion();
-	lua_pushstring(tolua_S, version);
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 	std::string ret = GetOSVersion();
 	tolua_pushcppstring(tolua_S, ret);
-#endif
     return 1;
 }
 
 static int tolua_ext_get_device_model(lua_State* tolua_S)
 {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-	const char * model = GetDeviceModel();
-	lua_pushstring(tolua_S, model);
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 	std::string model = GetDeviceModel();
 	tolua_pushcppstring(tolua_S, model);
-#endif 
     return 1;
 }
 
@@ -838,56 +819,36 @@ tolua_lerror:
 
 static int tolua_ext_get_app_version(lua_State* tolua_S)
 {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-	const char * app_ver = GetAppVersion();
-	lua_pushstring(tolua_S, app_ver);
-#elif  CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 	std::string  app_ver = GetAppVersion();
 	tolua_pushcppstring(tolua_S, app_ver);
-#endif
     return 1;
 
 }
 
 static int tolua_ext_get_app_build_version(lua_State* tolua_S)
 {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-	const char * build_ver = GetAppBundleVersion();
-	lua_pushstring(tolua_S, build_ver);
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 	std::string build_ver = GetAppBundleVersion();
 	tolua_pushcppstring(tolua_S, build_ver);
-#endif
     return 1;
 }
 
 static int tolua_ext_get_device_token(lua_State* tolua_S)
 {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-	const char * token = GetDeviceToken();
-	lua_pushstring(tolua_S, token);
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 	std::string  token = GetDeviceToken();
 	tolua_pushcppstring(tolua_S, token);
-#endif
     return 1;
 }
 
 static int tolua_ext_get_language_code(lua_State* tolua_S)
 {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-	const char * token = GetDeviceLanguage();
-	lua_pushstring(tolua_S, token);
-#elif  CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 	std::string token = GetDeviceLanguage();
 	tolua_pushcppstring(tolua_S, token);
-#endif
     return 1;
 }
 
 static int tolua_ext_is_app_hoc(lua_State* tolua_S)
 {
-    bool ret = isAppAdHocMode();
+    bool ret = IsAppAdHocMode();
     lua_pushboolean(tolua_S, ret);
     return 1;
 }
@@ -987,165 +948,7 @@ TOLUA_API int tolua_cc_lua_extension(lua_State* tolua_S)
     tolua_beginmodule(tolua_S,"ext");
     ResgisterGlobalExtFunctions(tolua_S);
     RegisterExtModules(tolua_S);
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
-    lua_register_cocos2dx_TransitionCustom(tolua_S);
-#endif
     tolua_endmodule(tolua_S);
     tolua_endmodule(tolua_S);
     return 1;
 }
-
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
-///////////////////////////////////////
-#include "cocos2d.h"
-#include "tolua_fix.h"
-#include "LuaBasicConversions.h"
-NS_CC_BEGIN
-
-
-TransitionCustom::TransitionCustom()
-{
-}
-TransitionCustom::~TransitionCustom()
-{
-}
-
-TransitionCustom* TransitionCustom::create(float duration,Scene* scene)
-{
-    TransitionCustom* newScene = new TransitionCustom();
-    if(newScene && newScene->initWithDuration(duration, scene))
-    {
-        newScene->autorelease();
-        return newScene;
-    }
-    CC_SAFE_DELETE(newScene);
-    return nullptr;
-}
-void TransitionCustom::hideOutEnterShow()
-{
-    _inScene->onEnter();
-    _inScene->setVisible(true);
-    _outScene->setVisible(false);
-}
-void TransitionCustom::onEnter()
-{
-    Scene::onEnter();
-    
-    // disable events while transitions
-    _eventDispatcher->setEnabled(false);
-    
-    // outScene should not receive the onEnter callback
-    // only the onExitTransitionDidStart
-    _outScene->onExitTransitionDidStart();
-}
-
-void TransitionCustom::onExit()
-{
-    TransitionScene::onExit();
-}
-
-
-
-
-int lua_cocos2dx_TransitionCustom_create(lua_State* tolua_S)
-{
-    int argc = 0;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-#endif
-
-#if COCOS2D_DEBUG >= 1
-    if (!tolua_isusertable(tolua_S,1,"cc.TransitionCustom",0,&tolua_err)) goto tolua_lerror;
-#endif
-
-    argc = lua_gettop(tolua_S)-1;
-    if (argc == 2)
-    {
-        double arg0;
-        cocos2d::Scene* arg1;
-        ok &= luaval_to_number(tolua_S, 2,&arg0);
-        ok &= luaval_to_object<cocos2d::Scene>(tolua_S, 3, "cc.Scene",&arg1);
-        cocos2d::TransitionCustom* ret = cocos2d::TransitionCustom::create(arg0, arg1);
-        object_to_luaval<cocos2d::TransitionCustom>(tolua_S, "cc.TransitionCustom",(cocos2d::TransitionCustom*)ret);
-        return 1;
-    }
-    CCLOG("%s has wrong number of arguments: %d, was expecting %d\n ", "create",argc, 2);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-    tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_TransitionCustom_create'.",&tolua_err);
-#endif
-    return 0;
-}
-
-
-int lua_cocos2dx_TransitionCustom_hideOutEnterShow(lua_State* tolua_S)
-{
-    int argc = 0;
-    cocos2d::TransitionCustom* cobj = nullptr;
-    bool ok  = true;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-#endif
-
-
-#if COCOS2D_DEBUG >= 1
-    if (!tolua_isusertype(tolua_S,1,"cc.TransitionCustom",0,&tolua_err)) goto tolua_lerror;
-#endif
-
-    cobj = (cocos2d::TransitionCustom*)tolua_tousertype(tolua_S,1,0);
-
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_TransitionCustom_hideOutEnterShow'", nullptr);
-        return 0;
-    }
-#endif
-
-    argc = lua_gettop(tolua_S)-1;
-    if (argc == 0) 
-    {
-        if(!ok)
-        {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_TransitionCustom_hideOutEnterShow'", nullptr);
-            return 0;
-        }
-        cobj->hideOutEnterShow();
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.TransitionCustom:hideOutShowIn",argc, 0);
-    return 0;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_TransitionCustom_hideOutEnterShow'.",&tolua_err);
-#endif
-
-    return 0;
-}
-
-static int lua_cocos2dx_TransitionCustom_finalize(lua_State* tolua_S)
-{
-    printf("luabindings: finalizing LUA object (TransitionCustom)");
-    return 0;
-}
-
-int lua_register_cocos2dx_TransitionCustom(lua_State* tolua_S)
-{
-    tolua_usertype(tolua_S,"cc.TransitionCustom");
-    tolua_cclass(tolua_S,"TransitionCustom","cc.TransitionCustom","cc.TransitionScene",nullptr);
-
-    tolua_beginmodule(tolua_S,"TransitionCustom");
-        tolua_function(tolua_S,"create", lua_cocos2dx_TransitionCustom_create);
-        tolua_function(tolua_S,"hideOutEnterShow",lua_cocos2dx_TransitionCustom_hideOutEnterShow);
-    tolua_endmodule(tolua_S);
-    std::string typeName = typeid(cocos2d::TransitionCustom).name();
-    g_luaType[typeName] = "cc.TransitionCustom";
-    g_typeCast["TransitionCustom"] = "cc.TransitionCustom";
-    return 1;
-}
-NS_CC_END
-#endif /*  CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS */

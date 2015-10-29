@@ -1,7 +1,7 @@
-#include "common/RTCommonUtils.h"
+#include "CommonUtils.h"
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 #include "WinRTHelper.h"
 #include <ppltasks.h>
-#if defined(WINRT)
 
 using namespace Platform;
 using namespace Windows::Foundation;
@@ -11,7 +11,7 @@ using namespace concurrency;
 using namespace Windows::UI::Popups;
 static int isAppHoc = -1;
 
-void showAlert(std::string title, std::string content, std::string okString, std::function<void(void)> callbackFunc)
+void ShowAlert(std::string title, std::string content, std::string okString, std::function<void(void)> callbackFunc)
 {
 	auto pTitle = WinRTHelper::PlatformStringFromString(title);
 	auto pContent = WinRTHelper::PlatformStringFromString(content);
@@ -30,7 +30,7 @@ void showAlert(std::string title, std::string content, std::string okString, std
 	});
 }
 
-void openUrl(std::string url)
+void OpenUrl(std::string url)
 {
 	auto pURL = WinRTHelper::PlatformStringFromString(url);
 	auto uri = ref new Uri(pURL);
@@ -39,7 +39,7 @@ void openUrl(std::string url)
 	});
 }
 
-//wp8.1不支持 参考 https://social.msdn.microsoft.com/Forums/sqlserver/en-US/ac4f3329-d7ee-455f-80be-0e1685fea971/how-to-copy-text-to-the-clipboard-in-wp81-using-vs2013-can-not-refer-to-the-correct-namespace?forum=wpdevelop
+//wp8.1 not support: https://social.msdn.microsoft.com/Forums/sqlserver/en-US/ac4f3329-d7ee-455f-80be-0e1685fea971/how-to-copy-text-to-the-clipboard-in-wp81-using-vs2013-can-not-refer-to-the-correct-namespace?forum=wpdevelop
 void CopyText(const char * text)
 {
 	
@@ -48,12 +48,12 @@ void CopyText(const char * text)
 
 void DisableIdleTimer(bool disable)
 {
-	//不支持?
+	//not support
 }
 
 void CloseKeyboard()
 {
-	//不提供
+	//not support
 }
 
 std::string GetOSVersion()
@@ -70,12 +70,11 @@ std::string GetDeviceModel()
 	return cocos2d::WinRTHelper::PlatformStringToString(output);
 }
 //log
-void WriteLog_(const char *str)
+void WriteLog_(std::string cppstr)
 {
-	std::string cppstr = std::string(str);
-	OutputDebugString(cocos2d::WinRTHelper::PlatformStringFromString(str)->Data());
+	OutputDebugString(cocos2d::WinRTHelper::PlatformStringFromString(cppstr)->Data());
 }
-//wp上我们只取前三位作为版本号
+
 std::string GetAppVersion()
 {
 	Windows::ApplicationModel::Package^ package = Windows::ApplicationModel::Package::Current;
@@ -86,7 +85,7 @@ std::string GetAppVersion()
 		version.Build.ToString();
 	return cocos2d::WinRTHelper::PlatformStringToString(output);
 }
-//暂时使用version
+
 std::string GetAppBundleVersion()
 {
 	return GetAppVersion();
@@ -101,12 +100,13 @@ std::string GetDeviceLanguage()
 	return "Not support in WinRT use device.language get value";
 }
 
-int getBatteryLevel()
+int GetBatteryLevel()
 {
 #if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
 	return Windows::Phone::Devices::Power::Battery::GetDefault()->RemainingChargePercent;
-#endif
+#else
 	return 1;
+#endif
 }
 /// <summary>
 /// Property that returns the connection profile [ ie, availability of Internet ]
@@ -121,7 +121,7 @@ int getBatteryLevel()
 /// 131 -> A tunnel type encapsulation network interface.
 /// 144 -> An IEEE 1394 (Firewire) high performance serial bus network interface.
 /// </summary>
-std::string getInternetConnectionStatus()
+std::string GetInternetConnectionStatus()
 {
 	auto profile = Windows::Networking::Connectivity::NetworkInformation::GetInternetConnectionProfile();
 	switch (profile->NetworkAdapter->IanaInterfaceType)
@@ -144,16 +144,15 @@ std::string GetOpenUdid()
 	return cocos2d::WinRTHelper::PlatformStringToString(hashedString);
 }
 
-void registereForRemoteNotifications()
+void RegistereForRemoteNotifications()
 {
 }
 
 void ClearOpenUdidData()
 {
 }
-const bool isAppAdHocMode()
+const bool IsAppAdHocMode()
 {
-	//在ui线程读取一次
 	if (isAppHoc > 0)
 	{
 		return isAppHoc == 1;
