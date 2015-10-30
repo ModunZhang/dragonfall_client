@@ -4,7 +4,7 @@
 #include "platform/android/jni/JniHelper.h"
 #include <jni.h>
 #include <android/log.h>
-extern void OnSendMailEnd(int function_id,const char *event);
+extern void OnSendMailEnd(int function_id,std::string event);
 
 
 #define LOG_TAG ("Sysmail.cpp")

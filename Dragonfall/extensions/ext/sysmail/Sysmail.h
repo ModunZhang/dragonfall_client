@@ -8,7 +8,11 @@
 
 #ifndef kod_Sysmail_h
 #define kod_Sysmail_h
+#include <string>
+#include <stdlib.h>
 
 bool CanSenMail();
-bool SendMail(const char* to,const char* subject,const char* body,int lua_function_ref);
+
+bool SendMail(std::string to,std::string subject,std::string body,int lua_function_ref);
+
 #endif

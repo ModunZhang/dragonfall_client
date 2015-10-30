@@ -28,11 +28,10 @@ extern "C" {
 #include "CCPomelo.h"
 #include "AppDelegate.h"
 #include "crc/crc32.c"
-#include "io/FileOperation.h"
-#include "LocalNotification/ext_local_push.h"
+#include "FileOperation.h"
+#include "tolua_local_push.h"
 #include "MarketSDKTool.h"
 #include "ext_sysmail.h"
-#include "jni/jni_CommonUtils.h"
 #include "jni/jni_StoreKit.h"
 #define KODLOG(format, ...) CCLOG(format, ##__VA_ARGS__);
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_IOS
@@ -41,9 +40,9 @@ extern "C" {
 #include "AppDelegate.h"
 #include "crc/crc32.c"
 #include "FileOperation.h"
-#include "LocalNotification/ext_local_push.h"
+#include "tolua_local_push.h"
 #include "MarketSDKTool.h"
-#include "ext_sysmail.h"
+#include "tolua_sysmail.h"
 #include "CommonUtils.h"
 #include "GameCenter.h"
 #define KODLOG(format, ...) CCLOG(format, ##__VA_ARGS__);Kodlog__(format, ##__VA_ARGS__);

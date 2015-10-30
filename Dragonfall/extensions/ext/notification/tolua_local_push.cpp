@@ -1,4 +1,6 @@
-#include "ext_local_push.h"
+#include "tolua_local_push.h"
+#include <stdlib.h>
+#include <string>
 #if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 #include "LocalNotification.h"
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
@@ -24,31 +26,17 @@ static int tolua_localpush_addNotification(lua_State* tolua_S)
     else
 #endif
     {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-        const char* type = tolua_tostring(tolua_S, 1, 0);
+        std::string type = tolua_tocppstring(tolua_S, 1, 0);
         long finishTime  = tolua_tonumber(tolua_S, 2,0);
-        const char* body = tolua_tostring(tolua_S, 3, 0);
-        const char* identity = "";
+        std::string body = tolua_tocppstring(tolua_S, 3, 0);
+        std::string identity = "";
         if (lua_gettop(tolua_S) > 3)
         {
-            identity = tolua_tostring(tolua_S, 4, 0);
+            identity = tolua_tocppstring(tolua_S, 4, 0);
         }
-        bool r = addNotification(type, finishTime, body,identity);
-        tolua_pushboolean(tolua_S,r);
+        bool ret = addNotification(type, finishTime, body,identity);
+        tolua_pushboolean(tolua_S,ret);
         return 1;
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
-		std::string type = tolua_tocppstring(tolua_S, 1, 0);
-		long finishTime = tolua_tonumber(tolua_S, 2, 0);
-		std::string body = tolua_tocppstring(tolua_S, 3, 0);
-		std::string identity = "";
-		if (lua_gettop(tolua_S) > 3)
-		{
-			identity = tolua_tocppstring(tolua_S, 4, 0);
-		}
-		bool r = addNotification(type, finishTime, body, identity);
-		tolua_pushboolean(tolua_S, r);
-		return 1;
-#endif
     }
 #ifndef TOLUA_RELEASE
 tolua_lerror:
@@ -92,17 +80,10 @@ static int tolua_localpush_cancelNotificationWithIdentity(lua_State *tolua_S)
     else
 #endif
     {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-        const char* identity = tolua_tostring(tolua_S, 1, 0);
-        bool r = cancelNotificationWithIdentity(identity);
-        tolua_pushboolean(tolua_S, r);
+        std::string identity = tolua_tocppstring(tolua_S, 1, 0);
+        bool ret = cancelNotificationWithIdentity(identity);
+        tolua_pushboolean(tolua_S, ret);
         return 1;
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
-		std::string identity = tolua_tostring(tolua_S, 1, 0);
-		bool r = cancelNotificationWithIdentity(identity);
-		tolua_pushboolean(tolua_S, r);
-		return 1;
-#endif
     }
 #ifndef TOLUA_RELEASE
 tolua_lerror:

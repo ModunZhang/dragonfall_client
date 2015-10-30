@@ -6,7 +6,7 @@ using namespace Platform;
 using namespace Windows::Foundation;
 using namespace Windows::ApplicationModel;
 using namespace cocos2d;
-extern void OnSendMailEnd(int function_id, const char *event);
+extern void OnSendMailEnd(int function_id, std::string event);
 
 bool CanSenMail()
 {

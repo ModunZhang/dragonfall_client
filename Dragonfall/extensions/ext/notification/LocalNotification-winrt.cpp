@@ -1,4 +1,4 @@
-#include "LocalNotificationWinRT.h"
+#include "LocalNotification.h"
 #if defined(WINRT)
 #include <string>
 #include "collection.h"

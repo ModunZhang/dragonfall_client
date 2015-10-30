@@ -12,6 +12,7 @@
 @interface sysmail : NSObject <MFMailComposeViewControllerDelegate>
 @property(assign,nonatomic)int lua_function_ref;
 @property(retain,nonatomic)MFMailComposeViewController *mailCompose;
+
 -(BOOL)sendMail:(NSString *)to
         subject:(NSString*)subject
            body:(NSString*)body;
@@ -61,7 +62,7 @@
     return YES;
 }
 
-extern void OnSendMailEnd(int function_id,const char *event);
+extern void OnSendMailEnd(int function_id,std::string event);
 
 -(void)mailComposeController:(MFMailComposeViewController *)controller
          didFinishWithResult:(MFMailComposeResult)result
@@ -94,20 +95,20 @@ extern void OnSendMailEnd(int function_id,const char *event);
 
 static sysmail* g_instance_mail = NULL;
 
-bool SendMail(const char* to,const char* subject,const char* body,int lua_function_ref)
+bool SendMail(std::string to,std::string subject,std::string body,int lua_function_ref)
 {
     if (g_instance_mail == NULL) {
         g_instance_mail = [[sysmail alloc]initWithLuaFunctionRef:lua_function_ref];
-        return [g_instance_mail sendMail:[NSString stringWithUTF8String:to]
-                                 subject:[NSString stringWithUTF8String:subject]
-                                    body:[NSString stringWithUTF8String:body]];
+        return [g_instance_mail sendMail:[NSString stringWithUTF8String:to.c_str()]
+                                 subject:[NSString stringWithUTF8String:subject.c_str()]
+                                    body:[NSString stringWithUTF8String:body.c_str()]];
     }
     else
     {
         g_instance_mail.lua_function_ref = lua_function_ref;
-        return [g_instance_mail sendMail:[NSString stringWithUTF8String:to]
-                                 subject:[NSString stringWithUTF8String:subject]
-                                    body:[NSString stringWithUTF8String:body]];
+        return [g_instance_mail sendMail:[NSString stringWithUTF8String:to.c_str()]
+                                 subject:[NSString stringWithUTF8String:subject.c_str()]
+                                    body:[NSString stringWithUTF8String:body.c_str()]];
     }
 }
 

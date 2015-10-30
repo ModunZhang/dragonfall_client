@@ -67,7 +67,7 @@ void cancelAll()
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
 }
 
-void switchNotification(const char *type, bool enable)
+void switchNotification(std::string type, bool enable)
 {
     std::map<std::string, bool>::iterator it = m_localNotificationState.find(type);
     if (it != m_localNotificationState.end())
@@ -78,7 +78,7 @@ void switchNotification(const char *type, bool enable)
     m_localNotificationState.insert(std::pair<std::string, bool>(type, enable));
 }
 
-bool addNotification(const char *type, long finishTime, const char *body, const char* identity)
+bool addNotification(std::string type, long finishTime,std::string body, std::string identity)
 {
     std::map<std::string, bool>::const_iterator it = m_localNotificationState.find(type);
     if (it != m_localNotificationState.end())
@@ -91,23 +91,23 @@ bool addNotification(const char *type, long finishTime, const char *body, const 
     UILocalNotification *localNotification = [[UILocalNotification alloc] init];
     localNotification.fireDate = [[[NSDate alloc] initWithTimeIntervalSince1970:finishTime] autorelease];
     localNotification.timeZone = [NSTimeZone defaultTimeZone];
-    localNotification.userInfo = [NSDictionary dictionaryWithObjectsAndKeys: [NSString stringWithUTF8String:identity], @"identity",nil];
-    localNotification.alertBody = [NSString stringWithCString:body encoding:NSUTF8StringEncoding];
+    localNotification.userInfo = [NSDictionary dictionaryWithObjectsAndKeys: [NSString stringWithUTF8String:identity.c_str()], @"identity",nil];
+    localNotification.alertBody = [NSString stringWithCString:body.c_str() encoding:NSUTF8StringEncoding];
     localNotification.applicationIconBadgeNumber = 1;
     // localNotification.soundName = UILocalNotificationDefaultSoundName;
-    _addLocalDic([NSString stringWithUTF8String:identity],localNotification);
+    _addLocalDic([NSString stringWithUTF8String:identity.c_str()],localNotification);
     [localNotification release];
     return true;
 }
 
-bool cancelNotificationWithIdentity(const char* identity)
+bool cancelNotificationWithIdentity(std::string identity)
 {
-    if (_cancelNotificationWithIdentity([NSString stringWithUTF8String:identity]))
+    if (_cancelNotificationWithIdentity([NSString stringWithUTF8String:identity.c_str()]))
     {
         return true;
     }
     NSArray *notifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
-    NSString *identity_ns = [NSString stringWithUTF8String:identity];
+    NSString *identity_ns = [NSString stringWithUTF8String:identity.c_str()];
     for (UILocalNotification *notification in notifications)
     {
         

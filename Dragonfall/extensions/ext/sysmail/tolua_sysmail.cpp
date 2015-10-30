@@ -6,24 +6,20 @@
 //
 //
 
-#include "ext_sysmail.h"
+#include "tolua_sysmail.h"
 #include "cocos2d.h"
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 #include "Sysmail.h"
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
-#include "SysmailWinRT.h"
-#endif
 #include "CCLuaValue.h"
 #include "CCLuaStack.h"
 #include "CCLuaEngine.h"
 #include "tolua_fix.h"
 
-void OnSendMailEnd(int function_id,const char *event)
+void OnSendMailEnd(int function_id,std::string event)
 {
      auto stack = cocos2d::LuaEngine::getInstance()->getLuaStack();
-    if (strlen(event) > 0)
+    if (event.length() > 0)
     {
-        stack->pushString(event);
+        stack->pushString(event.c_str());
     }
     else
     {
@@ -45,11 +41,7 @@ static int tolua_sysmail_sendmail(lua_State *tolua_S)
 #endif
     {
         cocos2d::LUA_FUNCTION func = toluafix_ref_function(tolua_S, 4, 0);
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-        bool success = SendMail(tolua_tostring(tolua_S, 1, 0), tolua_tostring(tolua_S, 2, 0), tolua_tostring(tolua_S, 3, 0), func);
-#elif  CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 		bool success = SendMail(tolua_tocppstring(tolua_S, 1, 0), tolua_tocppstring(tolua_S, 2, 0), tolua_tocppstring(tolua_S, 3, 0), func);
-#endif
 		lua_pushboolean(tolua_S, success ? (1) : (0));
         return 1;
     }
