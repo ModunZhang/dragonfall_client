@@ -68,6 +68,16 @@ GLViewImpl* GLViewImpl::create(const std::string& viewName)
     return nullptr;
 }
 
+GLViewImpl* GLViewImpl::createWithRect(const std::string& viewName, cocos2d::Rect /*rect*/, float /*frameZoomFactor*/)
+{
+	CCLOG("Not support rect on windows phone");
+	return GLViewImpl::create(viewName);
+}
+
+GLViewImpl* GLViewImpl::createWithFullScreen(const std::string& viewName)
+{
+	return GLViewImpl::create(viewName);
+}
 
 GLViewImpl::GLViewImpl()
 	: _frameZoomFactor(1.0f)
@@ -151,6 +161,16 @@ bool GLViewImpl::ShowMessageBox(Platform::String^ title, Platform::String^ messa
     }
     return false;
 }
+//dannyhe
+Windows::Foundation::IAsyncAction^ GLViewImpl::RunOnUIThread(std::function<void()> method, Windows::UI::Core::CoreDispatcherPriority priority)
+{
+	if (m_dispatcher.Get())
+	{
+		return m_dispatcher.Get()->RunAsync(priority, ref new Windows::UI::Core::DispatchedHandler(method));
+	}
+	return nullptr;
+}
+
 
 void GLViewImpl::setIMEKeyboardState(bool bOpen, std::string str)
 {
@@ -311,6 +331,25 @@ GLViewImpl* GLViewImpl::sharedOpenGLView()
 
 int GLViewImpl::Run() 
 {
+	if (!m_running)
+	{
+		//dannyhe:Hide splash image
+		m_dispatcher.Get()->RunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal, ref new DispatchedHandler([this]()
+		{
+
+			auto item = findXamlElement(m_panel.Get(), "extendedSplashGrid");
+
+			if (item != nullptr)
+			{
+				Controls::Grid^ grid = dynamic_cast<Controls::Grid^>(item);
+				if (grid)
+				{
+					grid->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
+				}
+			}
+		}));
+
+	}
     // XAML version does not have a run loop
 	m_running = true; 
     return 0;

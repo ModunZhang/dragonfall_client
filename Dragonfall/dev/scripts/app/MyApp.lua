@@ -36,6 +36,8 @@ if device.platform == 'ios' then
     Store = import(".utils.Store")
 elseif device.platform == 'android' then
     Store = import(".utils.Store-Android")
+elseif device.platform == 'wp8' then
+    Store = import(".utils.Store-WP")
 end
 local GameDefautlt = import("app.utils.GameDefautlt")
 local AudioManager = import("app.utils.AudioManager")
@@ -353,7 +355,9 @@ function MyApp:onEnterBackground()
 end
 
 function MyApp:onBackgroundMusicCompletion()
-    self:GetAudioManager():OnBackgroundMusicCompletion()
+    if device.platform ~= 'wp8' then
+        self:GetAudioManager():OnBackgroundMusicCompletion()
+    end
 end
 
 function MyApp:onEnterForeground()
@@ -547,7 +551,23 @@ function MyApp:getStore()
             Store.init(handler(self, self.verifyGooglePlayPurchase),handler(self, self.transitionFailedInGooglePlay))
         end
         return Store
+    elseif device.platform == 'wp8' then
+        if not cc.storeProvider then
+            Store.init(handler(self, self.verifyAdeasygoPurchase),nil)
+        end
+        return Store
     end
+end
+
+-- windows phone
+--------------------
+--[[  
+    just for Adeasygo sdk
+    unSyncTradeList = {{orderId = "...",transactionIdentifier = "com.dragonfall.80000dragoncoins"},{orderId = "...",transactionIdentifier = "com.dragonfall.80000dragoncoins"}
+]]--
+function MyApp:verifyAdeasygoPurchase(unSyncTradeList)
+    --TODO:send data to server
+    dump(unSyncTradeList,"unSyncTradeList:")
 end
 
 -- android
@@ -689,11 +709,11 @@ end
 my_print = function(...)
     LuaUtils:outputTable({...})
 end
+-- call from cpp
+function __G_APP_BACKGROUND_MUSIC_COMPLETION()
+    if device.platform == 'wp8' then
+        app:GetAudioManager():OnBackgroundMusicCompletion()
+    end
+end
 
 return MyApp
-
-
-
-
-
-

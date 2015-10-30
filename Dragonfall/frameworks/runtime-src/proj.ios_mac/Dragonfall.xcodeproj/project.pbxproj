@@ -9,16 +9,9 @@
 /* Begin PBXBuildFile section */
 		1AF4C403178663F200122817 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AF4C402178663F200122817 /* libz.dylib */; };
 		3EEEDB61197107C0006A9FF8 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EEEDB60197107C0006A9FF8 /* MediaPlayer.framework */; };
-		3F0840B31B9BDFC400A52544 /* CommonUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3F08401A1B9BDFC300A52544 /* CommonUtils.mm */; };
 		3F0840B41B9BDFC400A52544 /* crc32.c in Sources */ = {isa = PBXBuildFile; fileRef = 3F08401C1B9BDFC300A52544 /* crc32.c */; };
-		3F0840B51B9BDFC400A52544 /* GameCenter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3F08401F1B9BDFC300A52544 /* GameCenter.mm */; };
 		3F0840B61B9BDFC400A52544 /* FileOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3F0840211B9BDFC300A52544 /* FileOperation.cpp */; };
-		3F0840BA1B9BDFC400A52544 /* ext_local_push.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3F08402B1B9BDFC300A52544 /* ext_local_push.cpp */; };
-		3F0840BC1B9BDFC400A52544 /* LocalNotification.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3F08402F1B9BDFC300A52544 /* LocalNotification.mm */; };
 		3F0840BD1B9BDFC400A52544 /* LuaExtension.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3F0840301B9BDFC300A52544 /* LuaExtension.cpp */; };
-		3F0840BE1B9BDFC400A52544 /* ext_sysmail.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3F0840331B9BDFC300A52544 /* ext_sysmail.cpp */; };
-		3F0840C01B9BDFC400A52544 /* Sysmail.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3F0840371B9BDFC300A52544 /* Sysmail.mm */; };
-		3F0840C11B9BDFC400A52544 /* UICKeyChainStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F08403A1B9BDFC300A52544 /* UICKeyChainStore.m */; };
 		3F0840C21B9BDFC400A52544 /* CCPomelo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3F08403D1B9BDFC300A52544 /* CCPomelo.cpp */; };
 		3F0840D71B9BDFC400A52544 /* MarketSDKTool-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3F08407C1B9BDFC300A52544 /* MarketSDKTool-ios.mm */; };
 		3F0840F81B9BE31800A52544 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F0840F71B9BE31800A52544 /* CoreTelephony.framework */; };
@@ -27,6 +20,13 @@
 		3F0841031B9BE6ED00A52544 /* res in Resources */ = {isa = PBXBuildFile; fileRef = 3F0841011B9BE6ED00A52544 /* res */; };
 		3F0841041B9BE6ED00A52544 /* scripts in Resources */ = {isa = PBXBuildFile; fileRef = 3F0841021B9BE6ED00A52544 /* scripts */; };
 		3F4DC4941BE3016000628E80 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FDC6A051BB12D5300F29DE2 /* Images.xcassets */; };
+		3F4DC4E31BE3496000628E80 /* CommonUtils-apple.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DC4DF1BE3496000628E80 /* CommonUtils-apple.mm */; };
+		3F4DC4ED1BE3497700628E80 /* LocalNotification-apple.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DC4E71BE3497700628E80 /* LocalNotification-apple.mm */; };
+		3F4DC4EF1BE3497700628E80 /* tolua_local_push.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DC4EA1BE3497700628E80 /* tolua_local_push.cpp */; };
+		3F4DC4F81BE3499100628E80 /* Sysmail-apple.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DC4F21BE3499100628E80 /* Sysmail-apple.mm */; };
+		3F4DC4FA1BE3499100628E80 /* tolua_sysmail.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DC4F51BE3499100628E80 /* tolua_sysmail.cpp */; };
+		3F4DC4FE1BE349B000628E80 /* GameCenter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DC4FD1BE349B000628E80 /* GameCenter.mm */; };
+		3F4DC5021BE349CE00628E80 /* UICKeyChainStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DC5011BE349CE00628E80 /* UICKeyChainStore.m */; };
 		3FA641D61BB1305F002107DC /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FA641D51BB1305F002107DC /* Info.plist */; };
 		3FA641DB1BB13186002107DC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3FA641DD1BB13186002107DC /* InfoPlist.strings */; };
 		3FABD26E1B9C3BF300C71BEB /* Droid Sans Fallback.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3FABD26D1B9C3BF300C71BEB /* Droid Sans Fallback.ttf */; };
@@ -155,25 +155,11 @@
 		1AF4C402178663F200122817 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		3EB51526195187AF006966AA /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		3EEEDB60197107C0006A9FF8 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/MediaPlayer.framework; sourceTree = DEVELOPER_DIR; };
-		3F0840191B9BDFC300A52544 /* CommonUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonUtils.h; sourceTree = "<group>"; };
-		3F08401A1B9BDFC300A52544 /* CommonUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CommonUtils.mm; sourceTree = "<group>"; };
 		3F08401C1B9BDFC300A52544 /* crc32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = crc32.c; sourceTree = "<group>"; };
-		3F08401E1B9BDFC300A52544 /* GameCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameCenter.h; sourceTree = "<group>"; };
-		3F08401F1B9BDFC300A52544 /* GameCenter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GameCenter.mm; sourceTree = "<group>"; };
 		3F0840211B9BDFC300A52544 /* FileOperation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileOperation.cpp; sourceTree = "<group>"; };
 		3F0840221B9BDFC300A52544 /* FileOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileOperation.h; sourceTree = "<group>"; };
-		3F08402B1B9BDFC300A52544 /* ext_local_push.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ext_local_push.cpp; sourceTree = "<group>"; };
-		3F08402C1B9BDFC300A52544 /* ext_local_push.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ext_local_push.h; sourceTree = "<group>"; };
-		3F08402E1B9BDFC300A52544 /* LocalNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalNotification.h; sourceTree = "<group>"; };
-		3F08402F1B9BDFC300A52544 /* LocalNotification.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LocalNotification.mm; sourceTree = "<group>"; };
 		3F0840301B9BDFC300A52544 /* LuaExtension.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LuaExtension.cpp; sourceTree = "<group>"; };
 		3F0840311B9BDFC300A52544 /* LuaExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LuaExtension.h; sourceTree = "<group>"; };
-		3F0840331B9BDFC300A52544 /* ext_sysmail.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ext_sysmail.cpp; sourceTree = "<group>"; };
-		3F0840341B9BDFC300A52544 /* ext_sysmail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ext_sysmail.h; sourceTree = "<group>"; };
-		3F0840361B9BDFC300A52544 /* Sysmail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sysmail.h; sourceTree = "<group>"; };
-		3F0840371B9BDFC300A52544 /* Sysmail.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Sysmail.mm; sourceTree = "<group>"; };
-		3F0840391B9BDFC300A52544 /* UICKeyChainStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICKeyChainStore.h; sourceTree = "<group>"; };
-		3F08403A1B9BDFC300A52544 /* UICKeyChainStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICKeyChainStore.m; sourceTree = "<group>"; };
 		3F08403D1B9BDFC300A52544 /* CCPomelo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCPomelo.cpp; sourceTree = "<group>"; };
 		3F08403E1B9BDFC300A52544 /* CCPomelo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPomelo.h; sourceTree = "<group>"; };
 		3F0840451B9BDFC300A52544 /* hashtable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hashtable.h; sourceTree = "<group>"; };
@@ -220,6 +206,20 @@
 		3F0840FB1B9BE33200A52544 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.4.sdk/System/Library/Frameworks/MessageUI.framework; sourceTree = DEVELOPER_DIR; };
 		3F0841011B9BE6ED00A52544 /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; name = res; path = ../../../update/res; sourceTree = "<group>"; };
 		3F0841021B9BE6ED00A52544 /* scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = scripts; path = ../../../update/scripts; sourceTree = "<group>"; };
+		3F4DC4DF1BE3496000628E80 /* CommonUtils-apple.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "CommonUtils-apple.mm"; sourceTree = "<group>"; };
+		3F4DC4E11BE3496000628E80 /* CommonUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonUtils.h; sourceTree = "<group>"; };
+		3F4DC4E71BE3497700628E80 /* LocalNotification-apple.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LocalNotification-apple.mm"; sourceTree = "<group>"; };
+		3F4DC4E91BE3497700628E80 /* LocalNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalNotification.h; sourceTree = "<group>"; };
+		3F4DC4EA1BE3497700628E80 /* tolua_local_push.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tolua_local_push.cpp; sourceTree = "<group>"; };
+		3F4DC4EB1BE3497700628E80 /* tolua_local_push.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tolua_local_push.h; sourceTree = "<group>"; };
+		3F4DC4F21BE3499100628E80 /* Sysmail-apple.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "Sysmail-apple.mm"; sourceTree = "<group>"; };
+		3F4DC4F41BE3499100628E80 /* Sysmail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sysmail.h; sourceTree = "<group>"; };
+		3F4DC4F51BE3499100628E80 /* tolua_sysmail.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tolua_sysmail.cpp; sourceTree = "<group>"; };
+		3F4DC4F61BE3499100628E80 /* tolua_sysmail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tolua_sysmail.h; sourceTree = "<group>"; };
+		3F4DC4FC1BE349B000628E80 /* GameCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameCenter.h; sourceTree = "<group>"; };
+		3F4DC4FD1BE349B000628E80 /* GameCenter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GameCenter.mm; sourceTree = "<group>"; };
+		3F4DC5001BE349CE00628E80 /* UICKeyChainStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICKeyChainStore.h; sourceTree = "<group>"; };
+		3F4DC5011BE349CE00628E80 /* UICKeyChainStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICKeyChainStore.m; sourceTree = "<group>"; };
 		3FA641D51BB1305F002107DC /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3FA641DC1BB13186002107DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3FA641DE1BB13187002107DC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -318,27 +318,16 @@
 		3F0840171B9BDFC300A52544 /* ext */ = {
 			isa = PBXGroup;
 			children = (
-				3F0840181B9BDFC300A52544 /* common */,
+				3F4DC4F01BE3499100628E80 /* sysmail */,
+				3F4DC4E51BE3497700628E80 /* notification */,
+				3F4DC4DD1BE3496000628E80 /* common */,
 				3F08401B1B9BDFC300A52544 /* crc */,
-				3F08401D1B9BDFC300A52544 /* GameCenter */,
 				3F0840201B9BDFC300A52544 /* io */,
-				3F08402A1B9BDFC300A52544 /* LocalNotification */,
 				3F0840301B9BDFC300A52544 /* LuaExtension.cpp */,
 				3F0840311B9BDFC300A52544 /* LuaExtension.h */,
-				3F0840321B9BDFC300A52544 /* sysmail */,
-				3F0840381B9BDFC300A52544 /* UICKeyChainStore */,
 			);
 			name = ext;
 			path = ../../../extensions/ext;
-			sourceTree = "<group>";
-		};
-		3F0840181B9BDFC300A52544 /* common */ = {
-			isa = PBXGroup;
-			children = (
-				3F0840191B9BDFC300A52544 /* CommonUtils.h */,
-				3F08401A1B9BDFC300A52544 /* CommonUtils.mm */,
-			);
-			path = common;
 			sourceTree = "<group>";
 		};
 		3F08401B1B9BDFC300A52544 /* crc */ = {
@@ -349,15 +338,6 @@
 			path = crc;
 			sourceTree = "<group>";
 		};
-		3F08401D1B9BDFC300A52544 /* GameCenter */ = {
-			isa = PBXGroup;
-			children = (
-				3F08401E1B9BDFC300A52544 /* GameCenter.h */,
-				3F08401F1B9BDFC300A52544 /* GameCenter.mm */,
-			);
-			path = GameCenter;
-			sourceTree = "<group>";
-		};
 		3F0840201B9BDFC300A52544 /* io */ = {
 			isa = PBXGroup;
 			children = (
@@ -365,37 +345,6 @@
 				3F0840221B9BDFC300A52544 /* FileOperation.h */,
 			);
 			path = io;
-			sourceTree = "<group>";
-		};
-		3F08402A1B9BDFC300A52544 /* LocalNotification */ = {
-			isa = PBXGroup;
-			children = (
-				3F08402B1B9BDFC300A52544 /* ext_local_push.cpp */,
-				3F08402C1B9BDFC300A52544 /* ext_local_push.h */,
-				3F08402E1B9BDFC300A52544 /* LocalNotification.h */,
-				3F08402F1B9BDFC300A52544 /* LocalNotification.mm */,
-			);
-			path = LocalNotification;
-			sourceTree = "<group>";
-		};
-		3F0840321B9BDFC300A52544 /* sysmail */ = {
-			isa = PBXGroup;
-			children = (
-				3F0840331B9BDFC300A52544 /* ext_sysmail.cpp */,
-				3F0840341B9BDFC300A52544 /* ext_sysmail.h */,
-				3F0840361B9BDFC300A52544 /* Sysmail.h */,
-				3F0840371B9BDFC300A52544 /* Sysmail.mm */,
-			);
-			path = sysmail;
-			sourceTree = "<group>";
-		};
-		3F0840381B9BDFC300A52544 /* UICKeyChainStore */ = {
-			isa = PBXGroup;
-			children = (
-				3F0840391B9BDFC300A52544 /* UICKeyChainStore.h */,
-				3F08403A1B9BDFC300A52544 /* UICKeyChainStore.m */,
-			);
-			path = UICKeyChainStore;
 			sourceTree = "<group>";
 		};
 		3F08403B1B9BDFC300A52544 /* sdk */ = {
@@ -567,6 +516,57 @@
 			path = TalkingData;
 			sourceTree = "<group>";
 		};
+		3F4DC4DD1BE3496000628E80 /* common */ = {
+			isa = PBXGroup;
+			children = (
+				3F4DC4DF1BE3496000628E80 /* CommonUtils-apple.mm */,
+				3F4DC4E11BE3496000628E80 /* CommonUtils.h */,
+			);
+			path = common;
+			sourceTree = "<group>";
+		};
+		3F4DC4E51BE3497700628E80 /* notification */ = {
+			isa = PBXGroup;
+			children = (
+				3F4DC4E71BE3497700628E80 /* LocalNotification-apple.mm */,
+				3F4DC4E91BE3497700628E80 /* LocalNotification.h */,
+				3F4DC4EA1BE3497700628E80 /* tolua_local_push.cpp */,
+				3F4DC4EB1BE3497700628E80 /* tolua_local_push.h */,
+			);
+			path = notification;
+			sourceTree = "<group>";
+		};
+		3F4DC4F01BE3499100628E80 /* sysmail */ = {
+			isa = PBXGroup;
+			children = (
+				3F4DC4F21BE3499100628E80 /* Sysmail-apple.mm */,
+				3F4DC4F41BE3499100628E80 /* Sysmail.h */,
+				3F4DC4F51BE3499100628E80 /* tolua_sysmail.cpp */,
+				3F4DC4F61BE3499100628E80 /* tolua_sysmail.h */,
+			);
+			path = sysmail;
+			sourceTree = "<group>";
+		};
+		3F4DC4FB1BE349B000628E80 /* GameCenter */ = {
+			isa = PBXGroup;
+			children = (
+				3F4DC4FC1BE349B000628E80 /* GameCenter.h */,
+				3F4DC4FD1BE349B000628E80 /* GameCenter.mm */,
+			);
+			name = GameCenter;
+			path = ../../../extensions/ext/platform/apple/GameCenter;
+			sourceTree = "<group>";
+		};
+		3F4DC4FF1BE349CE00628E80 /* UICKeyChainStore */ = {
+			isa = PBXGroup;
+			children = (
+				3F4DC5001BE349CE00628E80 /* UICKeyChainStore.h */,
+				3F4DC5011BE349CE00628E80 /* UICKeyChainStore.m */,
+			);
+			name = UICKeyChainStore;
+			path = ../../../extensions/ext/platform/apple/UICKeyChainStore;
+			sourceTree = "<group>";
+		};
 		5023810617EBBCAC00990C9B /* ios */ = {
 			isa = PBXGroup;
 			children = (
@@ -698,6 +698,8 @@
 		F293BB7C15EB830F00256477 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				3F4DC4FF1BE349CE00628E80 /* UICKeyChainStore */,
+				3F4DC4FB1BE349B000628E80 /* GameCenter */,
 				3F0840171B9BDFC300A52544 /* ext */,
 				3F08403B1B9BDFC300A52544 /* sdk */,
 				9FC7603E1A67791200D1E6E7 /* ide-support */,
@@ -942,21 +944,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F4DC4FE1BE349B000628E80 /* GameCenter.mm in Sources */,
 				3F0840BD1B9BDFC400A52544 /* LuaExtension.cpp in Sources */,
-				3F0840BC1B9BDFC400A52544 /* LocalNotification.mm in Sources */,
-				3F0840B51B9BDFC400A52544 /* GameCenter.mm in Sources */,
-				3F0840C11B9BDFC400A52544 /* UICKeyChainStore.m in Sources */,
-				3F0840BE1B9BDFC400A52544 /* ext_sysmail.cpp in Sources */,
+				3F4DC4F81BE3499100628E80 /* Sysmail-apple.mm in Sources */,
 				9FC760451A677A4A00D1E6E7 /* SimpleConfigParser.cpp in Sources */,
-				3F0840C01B9BDFC400A52544 /* Sysmail.mm in Sources */,
 				5023812517EBBCAC00990C9B /* RootViewController.mm in Sources */,
 				F293BB9C15EB831F00256477 /* AppDelegate.cpp in Sources */,
+				3F4DC4ED1BE3497700628E80 /* LocalNotification-apple.mm in Sources */,
+				3F4DC4FA1BE3499100628E80 /* tolua_sysmail.cpp in Sources */,
 				5023812417EBBCAC00990C9B /* main.m in Sources */,
+				3F4DC5021BE349CE00628E80 /* UICKeyChainStore.m in Sources */,
 				3F0840C21B9BDFC400A52544 /* CCPomelo.cpp in Sources */,
 				3F0840D71B9BDFC400A52544 /* MarketSDKTool-ios.mm in Sources */,
-				3F0840B31B9BDFC400A52544 /* CommonUtils.mm in Sources */,
 				3F0840B61B9BDFC400A52544 /* FileOperation.cpp in Sources */,
-				3F0840BA1B9BDFC400A52544 /* ext_local_push.cpp in Sources */,
+				3F4DC4E31BE3496000628E80 /* CommonUtils-apple.mm in Sources */,
+				3F4DC4EF1BE3497700628E80 /* tolua_local_push.cpp in Sources */,
 				3F0840B41B9BDFC400A52544 /* crc32.c in Sources */,
 				5023811817EBBCAC00990C9B /* AppController.mm in Sources */,
 			);

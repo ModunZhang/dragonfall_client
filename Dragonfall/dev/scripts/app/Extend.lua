@@ -1,7 +1,13 @@
 require("cocos.cocos2d.Cocos2dConstants")
 print("加载玩家自定义函数!")
 NOT_HANDLE = function(...) print("net message not handel, please check !") end
-local texture_data_file = device.platform == 'ios' and ".texture_data_iOS" or ".texture_data"
+local texture_data_file = ".texture_data"
+if device.platform == 'ios' then
+    texture_data_file = ".texture_data_iOS" 
+elseif device.platform == 'wp8' then
+    texture_data_file = ".texture_data_wp" 
+end
+
 plist_texture_data     = import(texture_data_file)
 local sharedSpriteFrameCache = cc.SpriteFrameCache:getInstance()
 local rgba4444 = import(".rgba4444")

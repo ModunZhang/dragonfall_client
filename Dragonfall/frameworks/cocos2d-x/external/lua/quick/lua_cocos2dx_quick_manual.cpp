@@ -292,7 +292,32 @@ int removeLuaTouchNode(Node *node)
         lnode->detachNode();  //this LuaEventNode will be removed in TouchTargetNode
         mng->removeLuaNode(lnode);
         return 0;
-    }
+}
+
+#if CC_ENABLE_SCRIPT_BINDING && CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+
+void registerQuickTouch(Node *node)
+{
+	auto mng = LuaNodeManager::getInstance();
+	auto lnode = mng->getLuaNodeByNode(node, true);
+	if (!lnode) {
+		return;
+	}
+	lnode->setIsSendEventToNode(true);
+	lnode->setLuaTouchEnabled(true);
+}
+void unregisterQuickTouch(Node *node)
+{
+	auto mng = LuaNodeManager::getInstance();
+	auto lnode = mng->getLuaNodeByNode(node, true);
+	if (!lnode) {
+		return;
+	}
+	lnode->setIsSendEventToNode(false);
+	lnode->setLuaTouchEnabled(false);
+}
+
+#endif
 
 static int tolua_Cocos2d_Node_removeTouchEvent(lua_State* tolua_S)
 {

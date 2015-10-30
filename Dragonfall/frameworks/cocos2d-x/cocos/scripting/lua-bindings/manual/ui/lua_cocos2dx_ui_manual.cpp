@@ -963,7 +963,6 @@ int register_all_cocos2dx_ui_manual(lua_State* L)
     extendLayoutParameter(L);
     extendEditBox(L);
     extendUITextView(L);
-
     return 0;
 }
 

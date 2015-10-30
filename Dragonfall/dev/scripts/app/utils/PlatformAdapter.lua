@@ -79,6 +79,35 @@ function PlatformAdapter:ios()
 end
 
 
+function PlatformAdapter:wp8()
+    device.getOpenUDID = ext.getOpenUDID
+   
+    audio = require("app.utils.audio-WP")
+
+    DEBUG_GET_ANIMATION_PATH = function(filePath)
+        filePath = string.gsub(filePath,".pvr.ccz",".png")
+        return filePath
+    end
+
+    if true then -- 暂时未实现
+        ext.market_sdk = {}
+        setmetatable(ext.market_sdk,{
+            __index= function(t,key)
+                return function ( ... )
+                    print("\nfunction: ext.market_sdk." .. key .. "\n","args: ",...)
+                end
+            end
+        })
+    end
+    -- some functions
+    device.openURL = ext.openURL
+
+    -- device.showAlert(title, message, buttonLabels, listener)
+    device.showAlert = function( title, message, buttonLabels, listener )
+        ext.showAlert(title or "",message or "",buttonLabels[1] or "",listener)
+    end
+end
+
 function PlatformAdapter:mac()
     ccui.UITextView = {}
     setmetatable(ccui.UITextView,{

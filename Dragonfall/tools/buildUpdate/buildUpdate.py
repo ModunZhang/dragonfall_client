@@ -7,29 +7,57 @@ import sys,getopt
 # global m_currentDir
 # global app_version
 def getFileTag( fullPath ):
-	bashCommand = "git log -1 --pretty=format:%h -- path " + fullPath
-	process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
-	output = process.communicate()[0].rstrip()
-	return output
+	if sys.platform != 'win32':
+		bashCommand = "git log -1 --pretty=format:%h -- path " + fullPath
+		process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+		output = process.communicate()[0].rstrip()
+		return output
+	else:
+		args = ['git', 'log','-1','--pretty=format:%h','--','path',os.path.normpath(fullPath)]
+		process = subprocess.Popen(args,stdout=subprocess.PIPE)
+		output = process.communicate()[0].rstrip()
+		return output
 
 def getFileGitPath( fullPath ):
-	bashCommand = "git ls-tree --name-only --full-name HEAD " + fullPath
-	process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
-	output = process.communicate()[0].rstrip()
-	output = output[7:]
-	if not output.strip():
-		print "获取文件错误-->" + fullPath
-		sys.exit(1)
-	return output
+	if sys.platform != 'win32':
+		bashCommand = "git ls-tree --name-only --full-name HEAD " + fullPath
+		process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+		output = process.communicate()[0].rstrip()
+		output = output[7:]
+		if not output.strip():
+			print bashCommand
+			print "get path failed:" + fullPath
+			sys.exit(1)
+		return output
+	else:
+		args = ['git', 'ls-tree','--name-only','--full-name','HEAD',os.path.normpath(fullPath)]
+		process = subprocess.Popen(args,stdout=subprocess.PIPE)
+		process.wait()
+		output = process.communicate()[0].rstrip()
+		if not output.strip():
+			print bashCommand
+			print "get path failed:" + fullPath
+			sys.exit(1)
+		index = output.find("update_wp8")
+		if index > 0:
+			output = output[index + 11:]
+		return output
 
 def getFileSize( fullPath ):
 	return os.path.getsize(fullPath)
 
 def getFileCrc32( fullPath ):
-	bashCommand = m_currentDir + "/crc32 " + fullPath
-	process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
-	output = process.communicate()[0].rstrip()
-	return output
+	if sys.platform != 'win32':
+		bashCommand = m_currentDir + "/crc32 " + fullPath
+		process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+		output = process.communicate()[0].rstrip()
+		return output
+	else:
+		args = [os.path.normpath(m_currentDir + "/crc32.exe"),os.path.normpath(fullPath)]
+		process = subprocess.Popen(args,stdout=subprocess.PIPE)
+		output = process.communicate()[0].rstrip()
+		return output
+	
 
 def browseFolder( fullPath, fileList ):
 	for root, dirs, files in os.walk(fullPath):
@@ -87,7 +115,7 @@ if __name__=="__main__":
 			elif opt in ('-m',"--minVersion"):
 				app_min_version = arg 
 			elif opt in ('-t',"--appTag"):
-				app_build_tag = arg
+				app_build_tag = int(arg)
 	except getopt.GetoptError:
 		sys.exit(1)
 

@@ -1,23 +1,60 @@
 #ifndef __kod_commonutils__
 #define __kod_commonutils__
-#define kKeychainBatcatStudioIdentifier          @"kKeychainBatcatStudioIdentifier"
-#define kKeychainBatcatStudioKeyChainService             @"com.batcatstudio.keychain"
+#include "cocos2d.h"
+#include <stdlib.h>
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#include "platform/android/jni/JniHelper.h"
+#include <jni.h>
+#include <android/log.h>
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+#include <functional>
+#endif
+
 //copy text to Pasteboard
-extern "C" void CopyText(const char * text);
-extern "C" void DisableIdleTimer(bool disable=false);
-extern "C" void CloseKeyboard();
-extern "C" const char* GetOSVersion();
-extern "C" const char* GetDeviceModel();
-extern "C" void WriteLog_(const char *str);
-extern "C" const char* GetAppVersion();
-extern "C" const char* GetAppBundleVersion();
-extern "C" const char* GetDeviceToken();
-extern "C" long long getOSTime();
-extern "C" const char* GetOpenUdid();
-extern "C" void registereForRemoteNotifications();
-extern "C" void ClearOpenUdidData(); // 注意！这个方法绝对不能在发布环境里调用
-extern "C" const char* GetDeviceLanguage();
-extern "C" float getBatteryLevel();
-extern "C" const char* getInternetConnectionStatus();
-extern "C" const bool isAppAdHocMode();
+void CopyText(std::string text);
+
+void DisableIdleTimer(bool disable=false);
+
+void CloseKeyboard();
+
+std::string GetOSVersion();
+
+std::string GetDeviceModel();
+
+void WriteLog_(std::string str);
+
+std::string GetAppVersion();
+
+std::string GetAppBundleVersion();
+
+std::string GetDeviceToken();
+
+long long GetOSTime();
+
+std::string GetOpenUdid();
+
+void RegistereForRemoteNotifications();
+
+void ClearOpenUdidData(); // 注意！这个方法绝对不能在发布环境里调用
+                          // 
+std::string GetDeviceLanguage();
+
+float GetBatteryLevel();
+
+std::string GetInternetConnectionStatus();
+
+const bool IsAppAdHocMode();
+
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+
+void OpenUrl(std::string url);
+
+void ShowAlert(std::string title, std::string content,std::string okString,std::function<void(void)> callbackFunc);
+
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+
+void AndroidCheckFistInstall();
+
+#endif
+
 #endif

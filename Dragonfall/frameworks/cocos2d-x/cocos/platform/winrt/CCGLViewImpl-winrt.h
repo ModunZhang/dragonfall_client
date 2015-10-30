@@ -47,7 +47,8 @@ class CC_DLL GLViewImpl : public GLView
 {
 public:
     static GLViewImpl* create(const std::string& viewName);
-
+	static GLViewImpl* createWithRect(const std::string& viewName, cocos2d::Rect rect, float frameZoomFactor = 1.0f);
+	static GLViewImpl* createWithFullScreen(const std::string& viewName);
     /* override functions */
     virtual bool isOpenGLReady();
     virtual void end();
@@ -87,7 +88,8 @@ public:
     void QueueEvent(std::shared_ptr<InputEvent>& event);
 
     bool ShowMessageBox(Platform::String^ title, Platform::String^ message);
-
+	//dannyhe
+	Windows::Foundation::IAsyncAction^ RunOnUIThread(std::function<void()> method, Windows::UI::Core::CoreDispatcherPriority priority = Windows::UI::Core::CoreDispatcherPriority::Normal);
 	int Run();
 	void Render();
 

@@ -22,7 +22,7 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_WIN32 || CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_WIN32 || CC_TARGET_PLATFORM == CC_PLATFORM_MAC  || CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
 #include "Lua_web_socket.h"
 #include <map>
 #include <string>
@@ -32,7 +32,12 @@
 #include "CCLuaValue.h"
 #include "CCLuaEngine.h"
 #include "LuaScriptHandlerMgr.h"
-
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+extern "C"
+{
+#include "LuaBitOp/bit.c"
+}
+#endif
 using namespace cocos2d;
 
 static int SendBinaryMessageToLua(int nHandler,const unsigned char* pTable,int nLength)
@@ -132,7 +137,9 @@ void LuaWebSocket::onError(WebSocket* ws, const WebSocket::ErrorCode& error)
 {
     LuaWebSocket* luaWs = dynamic_cast<LuaWebSocket*>(ws);
     if (NULL != luaWs) {
-        int nHandler = 0;//luaWs->getScriptHandler(LuaWebSocket::kWebSocketScriptHandlerError);
+        //int nHandler = 0;//luaWs->getScriptHandler(LuaWebSocket::kWebSocketScriptHandlerError);
+		//dannyhe 不知道为什么这里没实现 
+		int nHandler = ScriptHandlerMgr::getInstance()->getObjectHandler((void*)this, ScriptHandlerMgr::HandlerType::WEBSOCKET_ERROR);
         if (0 != nHandler)
         {
             CommonScriptData data(nHandler,"");
@@ -447,7 +454,9 @@ TOLUA_API int register_web_socket_manual(lua_State* tolua_S)
 {
     if (nullptr == tolua_S)
         return 0 ;
-    
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+	luaopen_bit(tolua_S);
+#endif
     lua_pushstring(tolua_S,"cc.WebSocket");
     lua_rawget(tolua_S,LUA_REGISTRYINDEX);
     if (lua_istable(tolua_S,-1))

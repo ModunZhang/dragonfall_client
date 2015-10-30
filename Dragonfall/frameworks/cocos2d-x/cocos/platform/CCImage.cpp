@@ -32,8 +32,9 @@ THE SOFTWARE.
 #include "base/CCData.h"
 #include "base/ccConfig.h" // CC_USE_JPEG, CC_USE_TIFF, CC_USE_WEBP
 //dannyhe
+#if CC_TARGET_PLATFORM != CC_PLATFORM_WINRT
 #include "../quick_libs/src/extra/apptools/HelperFunc.h"
-
+#endif
 extern "C"
 {
     // To resolve link error when building 32bits with Xcode 6.
@@ -464,8 +465,10 @@ Image::Image()
 , _numberOfMipmaps(0)
 #if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
 , _hasPremultipliedAlpha(true) //dannyhe iOS true
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID 
 , _hasPremultipliedAlpha(false) // dannyhe Android false
+#else
+, _hasPremultipliedAlpha(false)
 #endif
 {
 
@@ -481,6 +484,14 @@ Image::~Image()
     else
         CC_SAFE_FREE(_data);
 }
+
+#define USE_XXTEA_IMAGE 1
+#if (USE_XXTEA_IMAGE > 0) && CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+extern Data xxtea_file_get_data(const std::string& filename);
+#define GET_DATA_FROM_IMAGE_FILE(p) xxtea_file_get_data(p)
+#else
+ #define GET_DATA_FROM_IMAGE_FILE(p) FileUtils::getInstance()->getDataFromFile(p)
+#endif
 
 bool Image::initWithImageFile(const std::string& path)
 {
@@ -508,8 +519,12 @@ bool Image::initWithImageFile(const std::string& path)
     SDL_FreeSurface(iSurf);
 #else
     //dannyhe
-    // Data data = FileUtils::getInstance()->getDataFromFile(_filePath);
+
+#if CC_TARGET_PLATFORM != CC_PLATFORM_WINRT
     Data data = HelperFunc::getData(_filePath);
+#else
+	Data data = GET_DATA_FROM_IMAGE_FILE(_filePath);
+#endif
     if (!data.isNull())
     {
         ret = initWithImageData(data.getBytes(), data.getSize());
@@ -524,8 +539,11 @@ bool Image::initWithImageFileThreadSafe(const std::string& fullpath)
     bool ret = false;
     _filePath = fullpath;
     //dannyhe
-    // Data data = FileUtils::getInstance()->getDataFromFile(fullpath);
+#if CC_TARGET_PLATFORM != CC_PLATFORM_WINRT
     Data data = HelperFunc::getData(_filePath);
+#else
+	Data data = GET_DATA_FROM_IMAGE_FILE(fullpath);
+#endif
     if (!data.isNull())
     {
         ret = initWithImageData(data.getBytes(), data.getSize());

@@ -2285,4 +2285,17 @@ __NodeRGBA::__NodeRGBA()
     CCLOG("NodeRGBA deprecated.");
 }
 
+//dannyhe
+
+#if CC_ENABLE_SCRIPT_BINDING && CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+void Node::registerQuickTouchEvent()
+{
+	ScriptEngineManager::getInstance()->getScriptEngine()->registerQuickTouchEvent(this);
+}
+void Node::unregisterQuickTouchEvent()
+{
+	ScriptEngineManager::getInstance()->getScriptEngine()->unregisterQuickTouchEvent(this);
+}
+#endif
+
 NS_CC_END

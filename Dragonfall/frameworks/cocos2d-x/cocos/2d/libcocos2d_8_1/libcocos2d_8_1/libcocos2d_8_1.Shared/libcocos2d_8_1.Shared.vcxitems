@@ -201,6 +201,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\..\external\unzip\ioapi_mem.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\..\external\unzip\unzip.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\..\external\xxhash\xxhash.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\..\external\xxtea\xxtea.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\3d\CCAABB.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\3d\CCAnimate3D.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\3d\CCAnimation3D.h" />
@@ -521,6 +522,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UITextAtlas.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UITextBMFont.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UITextField.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UITextView\UITextView.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UITextView\UITextViewImpl-winrt.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UITextView\UITextViewImpl.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UIVBox.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UIWidget.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\CCAction.h" />
@@ -582,6 +586,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\CCSpriteBatchNode.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\CCSpriteFrame.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\CCSpriteFrameCache.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\CCSpriteTileMap.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\CCTextFieldTTF.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\CCTileMapAtlas.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\CCTMXLayer.h" />
@@ -786,6 +791,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\..\external\xxhash\xxhash.c">
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\..\external\xxtea\xxtea.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\..\external\xxtea\xxtea_file.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\3d\CCAABB.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\3d\CCAnimate3D.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\3d\CCAnimation3D.cpp" />
@@ -1070,6 +1077,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UITextAtlas.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UITextBMFont.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UITextField.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UITextView\UITextView.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UITextView\UITextViewImpl-winrt.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UIVBox.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UIWidget.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\CCAction.cpp" />
@@ -1131,6 +1140,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\CCSpriteBatchNode.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\CCSpriteFrame.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\CCSpriteFrameCache.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\CCSpriteTileMap.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\CCTextFieldTTF.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\CCTileMapAtlas.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\CCTMXLayer.cpp" />

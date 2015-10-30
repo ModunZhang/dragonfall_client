@@ -33,6 +33,10 @@
 #include "lua_cocos2dx_coco_studio_manual.hpp"
 #include "lua_cocos2dx_ui_manual.hpp"
 extern int removeLuaTouchNode(Node *node); //dannyhe fix #422
+#if CC_ENABLE_SCRIPT_BINDING && CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+extern void registerQuickTouch(Node *node);
+extern void unregisterQuickTouch(Node *node);
+#endif
 NS_CC_BEGIN
 
 LuaEngine* LuaEngine::_defaultEngine = nullptr;
@@ -80,11 +84,22 @@ void LuaEngine::removeScriptHandler(int nHandler)
 {
     _stack->removeScriptHandler(nHandler);
 }
-
+//dannyhe
 void LuaEngine::removeTouchNodeEvent(Node *node)
 {
     removeLuaTouchNode(node);
 }
+
+#if CC_ENABLE_SCRIPT_BINDING && CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+void LuaEngine::registerQuickTouchEvent(Node *node)
+{
+	registerQuickTouch(node);
+}
+void LuaEngine::unregisterQuickTouchEvent(Node *node)
+{
+	unregisterQuickTouch(node);
+}
+#endif
 
 int LuaEngine::executeString(const char *codes)
 {

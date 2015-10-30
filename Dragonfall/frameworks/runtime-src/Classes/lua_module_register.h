@@ -19,7 +19,7 @@ int lua_module_register(lua_State* L)
 #if CC_USE_NETWORK_SOKET
     register_network_module(L);
 #endif
-#if CC_USE_CCBUILDER
+#if CC_USE_CCBUILDER && CC_TARGET_PLATFORM != CC_PLATFORM_WINRT
     register_cocosbuilder_module(L);
 #endif
     register_cocostudio_module(L);

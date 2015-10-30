@@ -26159,7 +26159,6 @@ int lua_register_cocos2dx_ui_LayoutComponent(lua_State* tolua_S)
     g_typeCast["LayoutComponent"] = "ccui.LayoutComponent";
     return 1;
 }
-
 int lua_cocos2dx_ui_UITextView_registerScriptTextViewHandler(lua_State* tolua_S)
 {
     int argc = 0;

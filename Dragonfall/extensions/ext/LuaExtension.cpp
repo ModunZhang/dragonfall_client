@@ -9,6 +9,7 @@
 #include "LuaExtension.h"
 #include <iostream>
 #include <stdio.h>
+#include <string>
 extern "C" {
     #include "tolua++.h"
 }
@@ -21,25 +22,39 @@ extern "C" {
 #include "CCLuaValue.h"
 #include "CCLuaStack.h"
 #include "CCLuaEngine.h"
-#include "../../external/lua/quick/LuaNodeManager.h"
-#include "CCPomelo.h"
-#include "AppDelegate.h"
-#include "crc/crc32.c"
-#include "io/FileOperation.h"
-#include "LocalNotification/ext_local_push.h"
-#include "MarketSDKTool.h"
-#include "ext_sysmail.h"
 
 #define LOG_BUFFER_SIZE 1024 * 10 * 2
+
+//extension header
+#include "CommonUtils.h"
+#include "crc/crc32.c"
+#include "FileOperation.h"
+#include "AppDelegate.h"
+#include "tolua_sysmail.h"
+#include "tolua_local_push.h"
+//quick lua node
+#include "../../external/lua/quick/LuaNodeManager.h"
+
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-#include "jni/jni_CommonUtils.h"
-#include "jni/jni_StoreKit.h"
+
+#include "CCPomelo.h"
+#include "MarketSDKTool.h"
+#include "jni_StoreKit.h"
 #define KODLOG(format, ...) CCLOG(format, ##__VA_ARGS__);
+
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_IOS
-#include "common/CommonUtils.h"
-#include "GameCenter/GameCenter.h"
-#define KODLOG(format, ...)      CCLOG(format, ##__VA_ARGS__);Kodlog__(format, ##__VA_ARGS__);
-#endif
+
+#include "CCPomelo.h"
+#include "MarketSDKTool.h"
+#include "GameCenter.h"
+#define KODLOG(format, ...) CCLOG(format, ##__VA_ARGS__);Kodlog__(format, ##__VA_ARGS__);
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+
+#include "audio/to_lua_simpleaudio.h"
+#include "AdeasygoSDK/to_lua_adeasygo_helper.h"
+#define KODLOG(format, ...) CCLOG(format, ##__VA_ARGS__);
+
+#endif /* CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID */
 
 
 
@@ -70,8 +85,10 @@ static int tolua_CCPomelo_getInstance(lua_State* tolua_S)
     else
 #endif
     {
-        CCPomelo* tolua_ret = (CCPomelo*)  CCPomelo::getInstance();
-        tolua_pushusertype(tolua_S,(void*)tolua_ret,"CCPomelo");
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+		CCPomelo* tolua_ret = (CCPomelo*)CCPomelo::getInstance();
+		tolua_pushusertype(tolua_S, (void*)tolua_ret, "CCPomelo");
+#endif
     }
     return 1;
 #ifndef TOLUA_RELEASE
@@ -91,7 +108,9 @@ static int tolua_CCPomelo_destroyInstance(lua_State* tolua_S)
     else
 #endif
     {
-        CCPomelo::destroyInstance();
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+		CCPomelo::destroyInstance();
+#endif
     }
     return 0;
 #ifndef TOLUA_RELEASE
@@ -114,23 +133,26 @@ static int tolua_CCPomelo_connect(lua_State* tolua_S)
     else
 #endif
     {
-        CCPomelo* pomelo = static_cast<CCPomelo*>(tolua_tousertype(tolua_S,1,0));
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+		CCPomelo* pomelo = static_cast<CCPomelo*>(tolua_tousertype(tolua_S, 1, 0));
+
 #ifndef TOLUA_RELEASE
-        if (nullptr == pomelo)
-        {
-            tolua_error(tolua_S,"invalid 'CCPomelo' in function 'tolua_CCPomelo_connect'\n", NULL);
-            return 0;
-        }
+		if (nullptr == pomelo)
+		{
+			tolua_error(tolua_S, "invalid 'CCPomelo' in function 'tolua_CCPomelo_connect'\n", NULL);
+			return 0;
+		}
 #endif
-        const char* addr = tolua_tostring(tolua_S, 2, 0);
-        int port = tolua_tonumber(tolua_S, 3, 0);
-        LUA_FUNCTION func = toluafix_ref_function(tolua_S, 4, 0);
-        KODLOG("trying connect %s:%d", addr, port);
-        int status = pomelo->connect(addr, port);
-        KODLOG("connect status:%d", status);
-        auto stack = LuaEngine::getInstance()->getLuaStack();
-        stack->pushBoolean(status == 0);
-        stack->executeFunctionByHandler(func, 1);
+		const char* addr = tolua_tostring(tolua_S, 2, 0);
+		int port = tolua_tonumber(tolua_S, 3, 0);
+		LUA_FUNCTION func = toluafix_ref_function(tolua_S, 4, 0);
+		KODLOG("trying connect %s:%d", addr, port);
+		int status = pomelo->connect(addr, port);
+		KODLOG("connect status:%d", status);
+		auto stack = LuaEngine::getInstance()->getLuaStack();
+		stack->pushBoolean(status == 0);
+		stack->executeFunctionByHandler(func, 1);
+#endif
     }
     return 0;
 #ifndef TOLUA_RELEASE
@@ -153,24 +175,26 @@ static int tolua_CCPomelo_asyncConnect(lua_State* tolua_S)
     else
 #endif
     {
-        CCPomelo* pomelo = static_cast<CCPomelo*>(tolua_tousertype(tolua_S,1,0));
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+		CCPomelo* pomelo = static_cast<CCPomelo*>(tolua_tousertype(tolua_S, 1, 0));
 #ifndef TOLUA_RELEASE
-        if (nullptr == pomelo)
-        {
-            tolua_error(tolua_S,"invalid 'CCPomelo' in function 'tolua_CCPomelo_connect'\n", NULL);
-            return 0;
-        }
+		if (nullptr == pomelo)
+		{
+			tolua_error(tolua_S, "invalid 'CCPomelo' in function 'tolua_CCPomelo_connect'\n", NULL);
+			return 0;
+		}
 #endif
-        const char* addr = tolua_tostring(tolua_S, 2, 0);
-        int port = tolua_tonumber(tolua_S, 3, 0);
-        LUA_FUNCTION func = toluafix_ref_function(tolua_S, 4, 0);
-        KODLOG("trying connect %s:%d", addr, port);
-        pomelo->asyncConnect(addr, port, [=](const CCPomeloReponse& resp){
-            KODLOG("connect status:%d", resp.status);
-            auto stack = LuaEngine::getInstance()->getLuaStack();
-            stack->pushBoolean(resp.status == 0);
-            stack->executeFunctionByHandler(func, 1);
-        });
+		const char* addr = tolua_tostring(tolua_S, 2, 0);
+		int port = tolua_tonumber(tolua_S, 3, 0);
+		LUA_FUNCTION func = toluafix_ref_function(tolua_S, 4, 0);
+		KODLOG("trying connect %s:%d", addr, port);
+		pomelo->asyncConnect(addr, port, [=](const CCPomeloReponse& resp){
+			KODLOG("connect status:%d", resp.status);
+			auto stack = LuaEngine::getInstance()->getLuaStack();
+			stack->pushBoolean(resp.status == 0);
+			stack->executeFunctionByHandler(func, 1);
+		});
+#endif
         
     }
     return 0;
@@ -191,16 +215,18 @@ static int tolua_CCPomelo_stop(lua_State* tolua_S)
     else
 #endif
     {
-        CCPomelo* pomelo = static_cast<CCPomelo*>(tolua_tousertype(tolua_S,1,0));
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+		CCPomelo* pomelo = static_cast<CCPomelo*>(tolua_tousertype(tolua_S, 1, 0));
 #ifndef TOLUA_RELEASE
-        if (nullptr == pomelo)
-        {
-            tolua_error(tolua_S,"invalid 'CCPomelo' in function 'tolua_CCPomelo_stop'\n", NULL);
-            return 0;
-        }
+		if (nullptr == pomelo)
+		{
+			tolua_error(tolua_S, "invalid 'CCPomelo' in function 'tolua_CCPomelo_stop'\n", NULL);
+			return 0;
+		}
 #endif
-        KODLOG("disconnect from server");
-        pomelo->stop();
+		KODLOG("disconnect from server");
+		pomelo->stop();
+#endif
     }
     return 0;
 #ifndef TOLUA_RELEASE
@@ -223,30 +249,32 @@ static int tolua_CCPomelo_request(lua_State* tolua_S)
     else
 #endif
     {
-        CCPomelo* pomelo = static_cast<CCPomelo*>(tolua_tousertype(tolua_S,1,0));
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+		CCPomelo* pomelo = static_cast<CCPomelo*>(tolua_tousertype(tolua_S, 1, 0));
 #ifndef TOLUA_RELEASE
-        if (nullptr == pomelo)
-        {
-            tolua_error(tolua_S,"invalid 'CCPomelo' in function 'tolua_CCPomelo_request'\n", NULL);
-            return 0;
-        }
+		if (nullptr == pomelo)
+		{
+			tolua_error(tolua_S, "invalid 'CCPomelo' in function 'tolua_CCPomelo_request'\n", NULL);
+			return 0;
+		}
 #endif
-        const char* route = tolua_tostring(tolua_S, 2, 0);
-        const char* msg = tolua_tostring(tolua_S, 3, 0);
-        json_error_t err;
-        json_t* msgj = json_loads(msg, JSON_COMPACT, &err);
-        LUA_FUNCTION func = toluafix_ref_function(tolua_S, 4, 0);
-        KODLOG("request route:%s", route);
-        KODLOG("request message:%s", msg);
-        pomelo->request(route, msgj, [=](const CCPomeloReponse& resp){
-            char* msg = json_dumps(resp.docs, JSON_COMPACT);
-            KODLOG("response status:%d", resp.status);
-            KODLOG("response data:%s", msg);
-            auto stack = LuaEngine::getInstance()->getLuaStack();
-            stack->pushBoolean(resp.status == 0);
-            stack->pushString(msg);
-            stack->executeFunctionByHandler(func, 2);
-        });
+		const char* route = tolua_tostring(tolua_S, 2, 0);
+		const char* msg = tolua_tostring(tolua_S, 3, 0);
+		json_error_t err;
+		json_t* msgj = json_loads(msg, JSON_COMPACT, &err);
+		LUA_FUNCTION func = toluafix_ref_function(tolua_S, 4, 0);
+		KODLOG("request route:%s", route);
+		KODLOG("request message:%s", msg);
+		pomelo->request(route, msgj, [=](const CCPomeloReponse& resp){
+			char* msg = json_dumps(resp.docs, JSON_COMPACT);
+			KODLOG("response status:%d", resp.status);
+			KODLOG("response data:%s", msg);
+			auto stack = LuaEngine::getInstance()->getLuaStack();
+			stack->pushBoolean(resp.status == 0);
+			stack->pushString(msg);
+			stack->executeFunctionByHandler(func, 2);
+		});
+#endif
     }
     return 0;
 #ifndef TOLUA_RELEASE
@@ -269,28 +297,30 @@ static int tolua_CCPomelo_notify(lua_State* tolua_S)
     else
 #endif
     {
-        CCPomelo* pomelo = static_cast<CCPomelo*>(tolua_tousertype(tolua_S,1,0));
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+		CCPomelo* pomelo = static_cast<CCPomelo*>(tolua_tousertype(tolua_S, 1, 0));
 #ifndef TOLUA_RELEASE
-        if (nullptr == pomelo)
-        {
-            tolua_error(tolua_S,"invalid 'CCPomelo' in function 'tolua_CCPomelo_notify'\n", NULL);
-            return 0;
-        }
+		if (nullptr == pomelo)
+		{
+			tolua_error(tolua_S, "invalid 'CCPomelo' in function 'tolua_CCPomelo_notify'\n", NULL);
+			return 0;
+		}
 #endif
-        const char* route = tolua_tostring(tolua_S, 2, 0);
-        const char* msg = tolua_tostring(tolua_S, 3, 0);
-        json_error_t err;
-        json_t* msgj = json_loads(msg, JSON_COMPACT, &err);
-        LUA_FUNCTION func = toluafix_ref_function(tolua_S, 4, 0);
-        KODLOG("notify route:%s", route);
-        KODLOG("notify message:%s", msg);
-        pomelo->notify(route, msgj, [=](const CCPomeloReponse& resp){
-            KODLOG("notify status:%d", resp.status);
-            auto stack = LuaEngine::getInstance()->getLuaStack();
-            
-            stack->pushBoolean(resp.status == 0);
-            stack->executeFunctionByHandler(func, 1);
-        });
+		const char* route = tolua_tostring(tolua_S, 2, 0);
+		const char* msg = tolua_tostring(tolua_S, 3, 0);
+		json_error_t err;
+		json_t* msgj = json_loads(msg, JSON_COMPACT, &err);
+		LUA_FUNCTION func = toluafix_ref_function(tolua_S, 4, 0);
+		KODLOG("notify route:%s", route);
+		KODLOG("notify message:%s", msg);
+		pomelo->notify(route, msgj, [=](const CCPomeloReponse& resp){
+			KODLOG("notify status:%d", resp.status);
+			auto stack = LuaEngine::getInstance()->getLuaStack();
+
+			stack->pushBoolean(resp.status == 0);
+			stack->executeFunctionByHandler(func, 1);
+		});
+#endif
     }
     return 0;
 #ifndef TOLUA_RELEASE
@@ -312,26 +342,28 @@ static int tolua_CCPomelo_addListener(lua_State* tolua_S)
     else
 #endif
     {
-        CCPomelo* pomelo = static_cast<CCPomelo*>(tolua_tousertype(tolua_S,1,0));
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+		CCPomelo* pomelo = static_cast<CCPomelo*>(tolua_tousertype(tolua_S, 1, 0));
 #ifndef TOLUA_RELEASE
-        if (nullptr == pomelo)
-        {
-            tolua_error(tolua_S,"invalid 'CCPomelo' in function 'tolua_CCPomelo_addListener'\n", NULL);
-            return 0;
-        }
+		if (nullptr == pomelo)
+		{
+			tolua_error(tolua_S, "invalid 'CCPomelo' in function 'tolua_CCPomelo_addListener'\n", NULL);
+			return 0;
+		}
 #endif
-        const char* event = tolua_tostring(tolua_S, 2, 0);
-        LUA_FUNCTION func = toluafix_ref_function(tolua_S, 3, 0);
-        KODLOG("add event listener:%s", event);
-        pomelo->addListener(event, [=](const CCPomeloReponse& resp){
-            char* msg = json_dumps(resp.docs, JSON_COMPACT);
-            KODLOG("event status:%d", resp.status);
-            KODLOG("event data:%s", msg);
-            auto stack = LuaEngine::getInstance()->getLuaStack();
-            stack->pushBoolean(resp.status == 0);
-            stack->pushString(msg);
-            stack->executeFunctionByHandler(func, 2);
-        });
+		const char* event = tolua_tostring(tolua_S, 2, 0);
+		LUA_FUNCTION func = toluafix_ref_function(tolua_S, 3, 0);
+		KODLOG("add event listener:%s", event);
+		pomelo->addListener(event, [=](const CCPomeloReponse& resp){
+			char* msg = json_dumps(resp.docs, JSON_COMPACT);
+			KODLOG("event status:%d", resp.status);
+			KODLOG("event data:%s", msg);
+			auto stack = LuaEngine::getInstance()->getLuaStack();
+			stack->pushBoolean(resp.status == 0);
+			stack->pushString(msg);
+			stack->executeFunctionByHandler(func, 2);
+		});
+#endif
     }
     return 0;
 #ifndef TOLUA_RELEASE
@@ -352,17 +384,19 @@ static int tolua_CCPomelo_removeListener(lua_State* tolua_S)
     else
 #endif
     {
-        CCPomelo* pomelo = static_cast<CCPomelo*>(tolua_tousertype(tolua_S,1,0));
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+		CCPomelo* pomelo = static_cast<CCPomelo*>(tolua_tousertype(tolua_S, 1, 0));
 #ifndef TOLUA_RELEASE
-        if (nullptr == pomelo)
-        {
-            tolua_error(tolua_S,"invalid 'CCPomelo' in function 'tolua_CCPomelo_removeListener'\n", NULL);
-            return 0;
-        }
+		if (nullptr == pomelo)
+		{
+			tolua_error(tolua_S, "invalid 'CCPomelo' in function 'tolua_CCPomelo_removeListener'\n", NULL);
+			return 0;
+		}
 #endif
-        const char* event = tolua_tostring(tolua_S, 2, 0);
-        KODLOG("remove event listener:%s", event);
-        pomelo->removeListener(event);
+		const char* event = tolua_tostring(tolua_S, 2, 0);
+		KODLOG("remove event listener:%s", event);
+		pomelo->removeListener(event);
+#endif
     }
     return 0;
 #ifndef TOLUA_RELEASE
@@ -382,16 +416,18 @@ static int tolua_CCPomelo_cleanup(lua_State* tolua_S)
     else
 #endif
     {
-        CCPomelo* pomelo = static_cast<CCPomelo*>(tolua_tousertype(tolua_S,1,0));
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+		CCPomelo* pomelo = static_cast<CCPomelo*>(tolua_tousertype(tolua_S, 1, 0));
 #ifndef TOLUA_RELEASE
-        if (nullptr == pomelo)
-        {
-            tolua_error(tolua_S,"invalid 'CCPomelo' in function 'tolua_CCPomelo_cleanup'\n", NULL);
-            return 0;
-        }
+		if (nullptr == pomelo)
+		{
+			tolua_error(tolua_S, "invalid 'CCPomelo' in function 'tolua_CCPomelo_cleanup'\n", NULL);
+			return 0;
+		}
 #endif
-        KODLOG("pomelo cleanup");
-        pomelo->cleanup();
+		KODLOG("pomelo cleanup");
+		pomelo->cleanup();
+#endif
     }
     return 0;
 #ifndef TOLUA_RELEASE
@@ -422,7 +458,6 @@ TOLUA_API int tolua_cc_pomelo_open(lua_State* tolua_S)
     tolua_function(tolua_S, "cleanup", tolua_CCPomelo_cleanup);
     tolua_endmodule(tolua_S);
     tolua_endmodule(tolua_S);
-    
     return 1;
 }
 
@@ -445,12 +480,12 @@ static int tolua_ext_now(lua_State* tolua_S){
     {
         
         long long now;
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID ||  CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
         struct timeval tv;
         gettimeofday(&tv,NULL);
         now = (long long)tv.tv_sec * 1000 + tv.tv_usec / 1000;
 #else
-        now = getOSTime();
+        now = GetOSTime();
 #endif
         tolua_pushnumber(tolua_S, now);
     }
@@ -474,7 +509,7 @@ static int tolua_ext_getBatteryLevel(lua_State* tolua_S){
 #endif
     {
         
-        float batteryLeve = getBatteryLevel();
+        float batteryLeve = GetBatteryLevel();
         tolua_pushnumber(tolua_S, batteryLeve);
     }
     return 1;
@@ -495,9 +530,8 @@ static int tolua_ext_getInternetConnectionStatus(lua_State* tolua_S){
     else
 #endif
     {
-        
-        const char* internetConnectionStatus = getInternetConnectionStatus();
-        tolua_pushstring(tolua_S, internetConnectionStatus);
+		std::string internetConnectionStatus = GetInternetConnectionStatus();
+		tolua_pushcppstring(tolua_S, internetConnectionStatus);
     }
     return 1;
 #ifndef TOLUA_RELEASE
@@ -541,9 +575,14 @@ static int tolua_ext_createDirectory(lua_State* tolua_S)
     else
 #endif
     {
-        const char* strFolderPath = ((const char*)  tolua_tostring(tolua_S,1,0));
-        bool isCreated = FileOperation::createDirectory(strFolderPath);
-        tolua_pushboolean(tolua_S,isCreated);
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+		const char* strFolderPath = ((const char*)tolua_tostring(tolua_S, 1, 0));
+		bool isCreated = FileOperation::createDirectory(strFolderPath);
+		tolua_pushboolean(tolua_S, isCreated);
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+		bool isCreated =  FileUtils::getInstance()->createDirectory(tolua_tocppstring(tolua_S, 1, 0));
+		tolua_pushboolean(tolua_S, isCreated);
+#endif
     }
     return 1;
 #ifndef TOLUA_RELEASE
@@ -565,9 +604,8 @@ static int tolua_ext_removeDirectory(lua_State* tolua_S)
     else
 #endif
     {
-        const char* strFolderPath = ((const char*)  tolua_tostring(tolua_S,1,0));
-        bool isRemoved = FileOperation::removeDirectory(strFolderPath);
-        tolua_pushboolean(tolua_S,isRemoved);
+		bool isRemoved = FileOperation::removeDirectory(tolua_tocppstring(tolua_S, 1, 0));
+		tolua_pushboolean(tolua_S, isRemoved);
     }
     return 1;
 #ifndef TOLUA_RELEASE
@@ -609,7 +647,7 @@ tolua_lerror:
 
 static int tolua_ext_getOpenUdid(lua_State* tolua_S)
 {
-    tolua_pushstring(tolua_S, GetOpenUdid());
+	tolua_pushcppstring(tolua_S, GetOpenUdid());
     return 1;
 }
 
@@ -621,7 +659,7 @@ static int tolua_ext_clearOpenUdid(lua_State* tolua_S)
 
 static int tolua_ext_registereForRemoteNotifications(lua_State* tolua_S)
 {
-    registereForRemoteNotifications();
+    RegistereForRemoteNotifications();
     return 0;
 }
 
@@ -658,13 +696,15 @@ static int tolua_ext_restart(lua_State* tolua_S)
     else
 #endif
     {
-        AppDelegateExtern delegateExtern;
-        
-        auto scheduler = Director::getInstance()->getScheduler();
-        //下面两个方法均有被修改 dannyhe
-        LuaNodeManager::getInstance()->removeAllNodeAndEvents();
-        scheduler->unscheduleScriptEntry(-1);
-        scheduler->schedule(schedule_selector(AppDelegateExtern::restartGame), &delegateExtern, 0, false, 0, false);
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+		AppDelegateExtern delegateExtern;
+
+		auto scheduler = Director::getInstance()->getScheduler();
+		//下面两个方法均有被修改 dannyhe
+		LuaNodeManager::getInstance()->removeAllNodeAndEvents();
+		scheduler->unscheduleScriptEntry(-1);
+		scheduler->schedule(schedule_selector(AppDelegateExtern::restartGame), &delegateExtern, 0, false, 0, false);
+#endif
     }
     return 0;
 #ifndef TOLUA_RELEASE
@@ -733,15 +773,15 @@ static int tolua_ext_close_keyboard(lua_State* tolua_S)
 
 static int tolua_ext_get_os_version(lua_State* tolua_S)
 {
-   const char * version =  GetOSVersion();
-   lua_pushstring(tolua_S, version);
+	std::string ret = GetOSVersion();
+	tolua_pushcppstring(tolua_S, ret);
     return 1;
 }
 
 static int tolua_ext_get_device_model(lua_State* tolua_S)
 {
-    const char * model =  GetDeviceModel();
-    lua_pushstring(tolua_S, model);
+	std::string model = GetDeviceModel();
+	tolua_pushcppstring(tolua_S, model);
     return 1;
 }
 
@@ -770,39 +810,77 @@ tolua_lerror:
 
 static int tolua_ext_get_app_version(lua_State* tolua_S)
 {
-    const char * app_ver =  GetAppVersion();
-    lua_pushstring(tolua_S, app_ver);
+	std::string  app_ver = GetAppVersion();
+	tolua_pushcppstring(tolua_S, app_ver);
     return 1;
 
 }
 
 static int tolua_ext_get_app_build_version(lua_State* tolua_S)
 {
-    const char * build_ver =  GetAppBundleVersion();
-    lua_pushstring(tolua_S, build_ver);
+	std::string build_ver = GetAppBundleVersion();
+	tolua_pushcppstring(tolua_S, build_ver);
     return 1;
 }
 
 static int tolua_ext_get_device_token(lua_State* tolua_S)
 {
-    const char * token =  GetDeviceToken();
-    lua_pushstring(tolua_S, token);
+	std::string  token = GetDeviceToken();
+	tolua_pushcppstring(tolua_S, token);
     return 1;
 }
 
 static int tolua_ext_get_language_code(lua_State* tolua_S)
 {
-    const char * token =  GetDeviceLanguage();
-    lua_pushstring(tolua_S, token);
+	std::string token = GetDeviceLanguage();
+	tolua_pushcppstring(tolua_S, token);
     return 1;
 }
 
 static int tolua_ext_is_app_hoc(lua_State* tolua_S)
 {
-    bool ret = isAppAdHocMode();
+    bool ret = IsAppAdHocMode();
     lua_pushboolean(tolua_S, ret);
     return 1;
 }
+
+#if  CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+static int tolua_ext_open_url(lua_State* tolua_S)
+{
+	std::string url = tolua_tocppstring(tolua_S, 1, 0);
+	OpenUrl(url);
+	return 0;
+}
+
+static int tolua_ext_show_alert(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+	tolua_Error tolua_err;
+	if (!toluafix_isfunction(tolua_S, 4, "LUA_FUNCTION", 0, &tolua_err) ||
+		!tolua_isstring(tolua_S, 1, 0, &tolua_err) ||
+		!tolua_isstring(tolua_S, 2, 0, &tolua_err) ||
+		!tolua_isstring(tolua_S, 3, 0, &tolua_err))
+		goto tolua_lerror;
+	else
+#endif
+	{
+		cocos2d::LUA_FUNCTION handlerId = toluafix_ref_function(tolua_S, 4, 0);
+		std::string title = tolua_tocppstring(tolua_S, 1, 0);
+		std::string content = tolua_tocppstring(tolua_S, 2, 0);
+		std::string okString = tolua_tocppstring(tolua_S, 3, 0);
+		ShowAlert(title, content, okString, [=](){
+			auto stack = cocos2d::LuaEngine::getInstance()->getLuaStack();
+			stack->executeFunctionByHandler(handlerId,0);
+		});
+		return 0;
+	}
+#ifndef TOLUA_RELEASE
+tolua_lerror :
+	tolua_error(tolua_S, "#ferror in function 'tolua_ext_show_alert'.", &tolua_err);
+	return 0;
+#endif
+}
+#endif
 
 static void ResgisterGlobalExtFunctions(lua_State* tolua_S)
 {
@@ -828,20 +906,26 @@ static void ResgisterGlobalExtFunctions(lua_State* tolua_S)
     tolua_function(tolua_S, "clearOpenUdid",tolua_ext_clearOpenUdid);
     tolua_function(tolua_S, "getDeviceLanguage",tolua_ext_get_language_code);
     tolua_function(tolua_S, "isAppAdHoc",tolua_ext_is_app_hoc);
+#if  CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+	tolua_function(tolua_S, "openURL", tolua_ext_open_url);
+	tolua_function(tolua_S, "showAlert", tolua_ext_show_alert);
+#endif
 }
-
 
 static void RegisterExtModules(lua_State* tolua_S)
 {
 #if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
     tolua_ext_module_gamecenter(tolua_S);
+	tolua_ext_module_market(tolua_S);
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
      tolua_ext_module_store(tolua_S);
+	 tolua_ext_module_market(tolua_S);
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+	tolua_ext_module_audio(tolua_S);
+	tolua_ext_module_adeasygo(tolua_S);
 #endif
-    tolua_ext_module_localpush(tolua_S); //local push
-    tolua_ext_module_sysmail(tolua_S);
-    tolua_ext_module_market(tolua_S);
-   
+	tolua_ext_module_sysmail(tolua_S);
+	tolua_ext_module_localpush(tolua_S); //local push
 }
 
 
@@ -855,170 +939,7 @@ TOLUA_API int tolua_cc_lua_extension(lua_State* tolua_S)
     tolua_beginmodule(tolua_S,"ext");
     ResgisterGlobalExtFunctions(tolua_S);
     RegisterExtModules(tolua_S);
-    lua_register_cocos2dx_TransitionCustom(tolua_S);
     tolua_endmodule(tolua_S);
     tolua_endmodule(tolua_S);
     return 1;
 }
-
-
-
-
-
-
-
-///////////////////////////////////////
-#include "cocos2d.h"
-#include "tolua_fix.h"
-#include "LuaBasicConversions.h"
-NS_CC_BEGIN
-
-
-TransitionCustom::TransitionCustom()
-{
-}
-TransitionCustom::~TransitionCustom()
-{
-}
-
-TransitionCustom* TransitionCustom::create(float duration,Scene* scene)
-{
-    TransitionCustom* newScene = new TransitionCustom();
-    if(newScene && newScene->initWithDuration(duration, scene))
-    {
-        newScene->autorelease();
-        return newScene;
-    }
-    CC_SAFE_DELETE(newScene);
-    return nullptr;
-}
-void TransitionCustom::hideOutEnterShow()
-{
-    _inScene->onEnter();
-    _inScene->setVisible(true);
-    _outScene->setVisible(false);
-}
-void TransitionCustom::onEnter()
-{
-    Scene::onEnter();
-    
-    // disable events while transitions
-    _eventDispatcher->setEnabled(false);
-    
-    // outScene should not receive the onEnter callback
-    // only the onExitTransitionDidStart
-    _outScene->onExitTransitionDidStart();
-}
-
-void TransitionCustom::onExit()
-{
-    TransitionScene::onExit();
-}
-
-
-
-
-int lua_cocos2dx_TransitionCustom_create(lua_State* tolua_S)
-{
-    int argc = 0;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-#endif
-
-#if COCOS2D_DEBUG >= 1
-    if (!tolua_isusertable(tolua_S,1,"cc.TransitionCustom",0,&tolua_err)) goto tolua_lerror;
-#endif
-
-    argc = lua_gettop(tolua_S)-1;
-    if (argc == 2)
-    {
-        double arg0;
-        cocos2d::Scene* arg1;
-        ok &= luaval_to_number(tolua_S, 2,&arg0);
-        ok &= luaval_to_object<cocos2d::Scene>(tolua_S, 3, "cc.Scene",&arg1);
-        cocos2d::TransitionCustom* ret = cocos2d::TransitionCustom::create(arg0, arg1);
-        object_to_luaval<cocos2d::TransitionCustom>(tolua_S, "cc.TransitionCustom",(cocos2d::TransitionCustom*)ret);
-        return 1;
-    }
-    CCLOG("%s has wrong number of arguments: %d, was expecting %d\n ", "create",argc, 2);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-    tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_TransitionCustom_create'.",&tolua_err);
-#endif
-    return 0;
-}
-
-
-int lua_cocos2dx_TransitionCustom_hideOutEnterShow(lua_State* tolua_S)
-{
-    int argc = 0;
-    cocos2d::TransitionCustom* cobj = nullptr;
-    bool ok  = true;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-#endif
-
-
-#if COCOS2D_DEBUG >= 1
-    if (!tolua_isusertype(tolua_S,1,"cc.TransitionCustom",0,&tolua_err)) goto tolua_lerror;
-#endif
-
-    cobj = (cocos2d::TransitionCustom*)tolua_tousertype(tolua_S,1,0);
-
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_TransitionCustom_hideOutEnterShow'", nullptr);
-        return 0;
-    }
-#endif
-
-    argc = lua_gettop(tolua_S)-1;
-    if (argc == 0) 
-    {
-        if(!ok)
-        {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_TransitionCustom_hideOutEnterShow'", nullptr);
-            return 0;
-        }
-        cobj->hideOutEnterShow();
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.TransitionCustom:hideOutShowIn",argc, 0);
-    return 0;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_TransitionCustom_hideOutEnterShow'.",&tolua_err);
-#endif
-
-    return 0;
-}
-
-static int lua_cocos2dx_TransitionCustom_finalize(lua_State* tolua_S)
-{
-    printf("luabindings: finalizing LUA object (TransitionCustom)");
-    return 0;
-}
-
-int lua_register_cocos2dx_TransitionCustom(lua_State* tolua_S)
-{
-    tolua_usertype(tolua_S,"cc.TransitionCustom");
-    tolua_cclass(tolua_S,"TransitionCustom","cc.TransitionCustom","cc.TransitionScene",nullptr);
-
-    tolua_beginmodule(tolua_S,"TransitionCustom");
-        tolua_function(tolua_S,"create", lua_cocos2dx_TransitionCustom_create);
-        tolua_function(tolua_S,"hideOutEnterShow",lua_cocos2dx_TransitionCustom_hideOutEnterShow);
-    tolua_endmodule(tolua_S);
-    std::string typeName = typeid(cocos2d::TransitionCustom).name();
-    g_luaType[typeName] = "cc.TransitionCustom";
-    g_typeCast["TransitionCustom"] = "cc.TransitionCustom";
-    return 1;
-}
-
-
-
-NS_CC_END
