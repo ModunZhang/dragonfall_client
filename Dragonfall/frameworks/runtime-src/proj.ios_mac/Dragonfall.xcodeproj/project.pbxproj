@@ -26,6 +26,7 @@
 		3F0840FC1B9BE33200A52544 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F0840FB1B9BE33200A52544 /* MessageUI.framework */; };
 		3F0841031B9BE6ED00A52544 /* res in Resources */ = {isa = PBXBuildFile; fileRef = 3F0841011B9BE6ED00A52544 /* res */; };
 		3F0841041B9BE6ED00A52544 /* scripts in Resources */ = {isa = PBXBuildFile; fileRef = 3F0841021B9BE6ED00A52544 /* scripts */; };
+		3F4DC4941BE3016000628E80 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FDC6A051BB12D5300F29DE2 /* Images.xcassets */; };
 		3FA641D61BB1305F002107DC /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FA641D51BB1305F002107DC /* Info.plist */; };
 		3FA641DB1BB13186002107DC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3FA641DD1BB13186002107DC /* InfoPlist.strings */; };
 		3FABD26E1B9C3BF300C71BEB /* Droid Sans Fallback.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3FABD26D1B9C3BF300C71BEB /* Droid Sans Fallback.ttf */; };
@@ -33,7 +34,6 @@
 		3FDC687E1BB0F03300F29DE2 /* libcocos2d.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FDC687B1BB0EFF400F29DE2 /* libcocos2d.a */; };
 		3FDC69481BB0F08600F29DE2 /* libluacocos2d.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FDC69451BB0F07000F29DE2 /* libluacocos2d.a */; };
 		3FDC69F51BB0F0C700F29DE2 /* libquick_libs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FDC69F41BB0F0C000F29DE2 /* libquick_libs.a */; };
-		3FDC6A061BB12D5300F29DE2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FDC6A051BB12D5300F29DE2 /* Images.xcassets */; };
 		5023811817EBBCAC00990C9B /* AppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5023810817EBBCAC00990C9B /* AppController.mm */; };
 		5023812417EBBCAC00990C9B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5023811417EBBCAC00990C9B /* main.m */; };
 		5023812517EBBCAC00990C9B /* RootViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5023811717EBBCAC00990C9B /* RootViewController.mm */; };
@@ -909,9 +909,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3FDC6A061BB12D5300F29DE2 /* Images.xcassets in Resources */,
 				3FA641D61BB1305F002107DC /* Info.plist in Resources */,
 				3F0841041B9BE6ED00A52544 /* scripts in Resources */,
+				3F4DC4941BE3016000628E80 /* Images.xcassets in Resources */,
 				3FABD26E1B9C3BF300C71BEB /* Droid Sans Fallback.ttf in Resources */,
 				C05D1C121923449100B808A4 /* config.json in Resources */,
 				3F0841031B9BE6ED00A52544 /* res in Resources */,
