@@ -14,38 +14,41 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LuaExtension.cpp">
       <Filter>Classes\ext</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\common\RTCommonUtils.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\common\CommonUtils-winrt.cpp">
       <Filter>Classes\ext\common</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\io\RTFileOperation.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\sysmail\Sysmail-winrt.cpp">
+      <Filter>Classes\ext\sysmail</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\sysmail\tolua_sysmail.cpp">
+      <Filter>Classes\ext\sysmail</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\io\FileOperation.cpp">
       <Filter>Classes\ext\io</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\sysmail\ext_sysmail.cpp">
-      <Filter>Classes\ext\sysmail</Filter>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\crc\crc32.c">
+      <Filter>Classes\ext\crc</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\sysmail\SysmailWinRT.cpp">
-      <Filter>Classes\ext\sysmail</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LocalNotification\ext_local_push.cpp">
-      <Filter>Classes\ext\LocalNotification</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LocalNotification\LocalNotificationWinRT.cpp">
-      <Filter>Classes\ext\LocalNotification</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\WinRTHelper.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\platform\winrt\WinRTHelper.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\AdeasygoSDK\AdeasygoHelper.cpp">
-      <Filter>Classes\ext\AdeasygoSDK</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\AdeasygoSDK\to_lua_adeasygo_helper.cpp">
-      <Filter>Classes\ext\AdeasygoSDK</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\audio\SimpleAudio.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\platform\winrt\audio\SimpleAudio.cpp">
       <Filter>Classes\audio</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\audio\to_lua_simpleaudio.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\platform\winrt\audio\to_lua_simpleaudio.cpp">
       <Filter>Classes\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\platform\winrt\AdeasygoSDK\AdeasygoHelper.cpp">
+      <Filter>Classes\AdeasygoSDK</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\platform\winrt\AdeasygoSDK\to_lua_adeasygo_helper.cpp">
+      <Filter>Classes\AdeasygoSDK</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\notification\LocalNotification-winrt.cpp">
+      <Filter>Classes\ext\notification</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\notification\tolua_local_push.cpp">
+      <Filter>Classes\ext\notification</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -58,17 +61,11 @@
     <Filter Include="Classes\ext">
       <UniqueIdentifier>{32c73696-0c4b-4140-81a9-44c03c25bbd9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Classes\ext\common">
-      <UniqueIdentifier>{e9fa4130-a85c-4ad8-9fc0-f4178f2d42d0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Classes\ext\io">
       <UniqueIdentifier>{247fd30c-47a0-487f-b35b-a4dda47e4c53}</UniqueIdentifier>
     </Filter>
     <Filter Include="Classes\ext\sysmail">
       <UniqueIdentifier>{7d14e888-521d-4fb3-91f1-3cda7c46b2c0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Classes\ext\LocalNotification">
-      <UniqueIdentifier>{e0792490-6b56-4375-909b-27726caefbca}</UniqueIdentifier>
     </Filter>
     <Filter Include="Strings">
       <UniqueIdentifier>{2dc2d35c-d2bd-4c49-9279-e15a98f2739a}</UniqueIdentifier>
@@ -82,11 +79,20 @@
     <Filter Include="Strings\zh-Hant-TW">
       <UniqueIdentifier>{e4fb5a78-791c-4ff3-ad6c-9bdf2e341474}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Classes\ext\AdeasygoSDK">
-      <UniqueIdentifier>{84ea0c55-17b3-4846-b7a0-998dad81d9f0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Classes\audio">
       <UniqueIdentifier>{cba15fc4-5af4-4b2c-8469-0680d94d17b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\ext\common">
+      <UniqueIdentifier>{55e389ca-4734-4c23-903f-90b425f0416a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\ext\crc">
+      <UniqueIdentifier>{2cd71f2f-d7c8-4f4d-8fcb-5ec24fa399cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\AdeasygoSDK">
+      <UniqueIdentifier>{abf01ac0-3533-4299-a373-55378ca8837d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\ext\notification">
+      <UniqueIdentifier>{47857130-543e-4b5d-8db9-377dad534d95}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -98,38 +104,38 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LuaExtension.h">
       <Filter>Classes\ext</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\common\RTCommonUtils.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\common\CommonUtils.h">
       <Filter>Classes\ext\common</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\io\RTFileOperation.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\sysmail\Sysmail.h">
+      <Filter>Classes\ext\sysmail</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\sysmail\tolua_sysmail.h">
+      <Filter>Classes\ext\sysmail</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\io\FileOperation.h">
       <Filter>Classes\ext\io</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\sysmail\ext_sysmail.h">
-      <Filter>Classes\ext\sysmail</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\sysmail\SysmailWinRT.h">
-      <Filter>Classes\ext\sysmail</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LocalNotification\ext_local_push.h">
-      <Filter>Classes\ext\LocalNotification</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LocalNotification\LocalNotificationWinRT.h">
-      <Filter>Classes\ext\LocalNotification</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\WinRTHelper.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\platform\winrt\WinRTHelper.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\AdeasygoSDK\AdeasygoHelper.h">
-      <Filter>Classes\ext\AdeasygoSDK</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\AdeasygoSDK\to_lua_adeasygo_helper.h">
-      <Filter>Classes\ext\AdeasygoSDK</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\audio\SimpleAudio.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\platform\winrt\audio\SimpleAudio.h">
       <Filter>Classes\audio</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\audio\to_lua_simpleaudio.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\platform\winrt\audio\to_lua_simpleaudio.h">
       <Filter>Classes\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\platform\winrt\AdeasygoSDK\AdeasygoHelper.h">
+      <Filter>Classes\AdeasygoSDK</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\platform\winrt\AdeasygoSDK\to_lua_adeasygo_helper.h">
+      <Filter>Classes\AdeasygoSDK</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\notification\LocalNotification.h">
+      <Filter>Classes\ext\notification</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\notification\tolua_local_push.h">
+      <Filter>Classes\ext\notification</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -16,18 +16,24 @@
     <ApplicationDefinition Include="$(MSBuildThisFileDirectory)App.xaml">
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LocalNotification\ext_local_push.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LocalNotification\LocalNotificationWinRT.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\common\CommonUtils-winrt.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\crc\crc32.c">
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\io\FileOperation.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LuaExtension.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\sysmail\ext_sysmail.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\sysmail\SysmailWinRT.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\AdeasygoSDK\AdeasygoHelper.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\AdeasygoSDK\to_lua_adeasygo_helper.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\audio\SimpleAudio.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\audio\to_lua_simpleaudio.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\common\RTCommonUtils.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\io\RTFileOperation.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\WinRTHelper.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\notification\LocalNotification-winrt.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\notification\tolua_local_push.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\platform\winrt\AdeasygoSDK\AdeasygoHelper.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\platform\winrt\AdeasygoSDK\to_lua_adeasygo_helper.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\platform\winrt\audio\SimpleAudio.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\platform\winrt\audio\to_lua_simpleaudio.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\platform\winrt\WinRTHelper.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\sysmail\Sysmail-winrt.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\sysmail\tolua_sysmail.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\Classes\AppDelegate.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)App.xaml.cpp">
       <DependentUpon>$(MSBuildThisFileDirectory)App.xaml</DependentUpon>
@@ -37,18 +43,18 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)OpenGLESPage.xaml.cpp">
       <DependentUpon>$(MSBuildThisFileDirectory)OpenGLESPage.xaml</DependentUpon>
     </ClCompile>
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LocalNotification\ext_local_push.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LocalNotification\LocalNotificationWinRT.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\common\CommonUtils.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\io\FileOperation.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LuaExtension.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\sysmail\ext_sysmail.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\sysmail\SysmailWinRT.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\AdeasygoSDK\AdeasygoHelper.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\AdeasygoSDK\to_lua_adeasygo_helper.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\audio\SimpleAudio.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\audio\to_lua_simpleaudio.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\common\RTCommonUtils.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\io\RTFileOperation.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\winrt\WinRTHelper.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\notification\LocalNotification.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\notification\tolua_local_push.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\platform\winrt\AdeasygoSDK\AdeasygoHelper.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\platform\winrt\AdeasygoSDK\to_lua_adeasygo_helper.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\platform\winrt\audio\SimpleAudio.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\platform\winrt\audio\to_lua_simpleaudio.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\platform\winrt\WinRTHelper.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\sysmail\Sysmail.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\sysmail\tolua_sysmail.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\Classes\AppDelegate.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)App.xaml.h">
       <DependentUpon>$(MSBuildThisFileDirectory)App.xaml</DependentUpon>

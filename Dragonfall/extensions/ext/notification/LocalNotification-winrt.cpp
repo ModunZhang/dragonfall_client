@@ -1,5 +1,6 @@
 #include "LocalNotification.h"
-#if defined(WINRT)
+
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 #include <string>
 #include "collection.h"
 #include "WinRTHelper.h"
@@ -59,5 +60,5 @@ bool cancelNotificationWithIdentity(std::string identity)
 	}
 	return false;
 }
+#endif // CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 
-#endif

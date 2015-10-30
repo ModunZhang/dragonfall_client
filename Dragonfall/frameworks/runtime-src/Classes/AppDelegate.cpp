@@ -7,20 +7,18 @@
 //json
 #include "../cocos2d-x/external/json/document.h"
 #include "../cocos2d-x/external/json/rapidjson.h"
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+
+//extension header
 #include "CommonUtils.h"
 #include "FileOperation.h"
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+#include "WinRTHelper.h"
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-#include "CommonUtils.h"
-#include "FileOperation.h"
 #define LOG_TAG ("AppDelegate.cpp")
 #define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__))
 #define LOGD(...) ((void)__android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__))
 #define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__))
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
-#include "io/RTFileOperation.h"
-#include "common/RTCommonUtils.h"
-#include "WinRTHelper.h"
 #endif
 
 using namespace CocosDenshion;
@@ -62,27 +60,12 @@ bool AppDelegate::applicationDidFinishLaunching()
     // set default FPS
     Director::getInstance()->setAnimationInterval(1.0 / 60.0f);
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
     AppDelegateExtern::initLuaEngine();
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     AndroidCheckFistInstall();
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT) 
-	//auto engine = LuaEngine::getInstance();
-	//ScriptEngineManager::getInstance()->setScriptEngine(engine);
-	//lua_State* L = engine->getLuaStack()->getLuaState();
-	//lua_module_register(L);
-	//tolua_cc_lua_extension(L);
-	//register_all_packages();
-
-	//LuaStack* stack = engine->getLuaStack();
-	//stack->setXXTEAKeyAndSign("2dxLua", strlen("2dxLua"), "XXTEA", strlen("XXTEA"));
-
-	//if (engine->executeScriptFile("scripts/main.lua"))
-	//{
-	//	return false;
-	//}
-	AppDelegateExtern::initLuaEngine();
 #else
+	//normal execute lua file
 	auto engine = LuaEngine::getInstance();
 	ScriptEngineManager::getInstance()->setScriptEngine(engine);
 	lua_State* L = engine->getLuaStack()->getLuaState();
@@ -114,7 +97,6 @@ void AppDelegate::applicationDidEnterBackground()
     SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
     SimpleAudioEngine::getInstance()->pauseAllEffects();
 #endif
-
 	Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("APP_ENTER_BACKGROUND_EVENT");
 }
 
@@ -274,44 +256,23 @@ bool AppDelegateExtern::checkPath()
     
     if(!fileUtils->isDirectoryExist(appPath)){
         if(fileUtils->isDirectoryExist(updatePath)){
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-            FileOperation::removeDirectory(updatePath.c_str());
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
-			RTFileOperation::removeDirectory(updatePath);
-#endif
+			FileOperation::removeDirectory(updatePath);
         }
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-        FileOperation::createDirectory(updatePath.c_str());
-        FileOperation::createDirectory(appPath.c_str());
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
-		RTFileOperation::createDirectory(updatePath);
-		RTFileOperation::createDirectory(appPath);
-#endif
+		FileOperation::createDirectory(updatePath);
+		FileOperation::createDirectory(appPath);
     }
     string resPath = appPath + "res/";
     string scriptsPath = appPath + "scripts/";
     if (!fileUtils->isDirectoryExist(resPath)) {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-        FileOperation::createDirectory(resPath.c_str());
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
-		RTFileOperation::createDirectory(resPath);
-#endif
+		FileOperation::createDirectory(resPath);
     }
     if (!fileUtils->isDirectoryExist(scriptsPath)) {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-        FileOperation::createDirectory(scriptsPath.c_str());
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
-		RTFileOperation::createDirectory(scriptsPath);
-#endif
+		FileOperation::createDirectory(scriptsPath);
     }
     string from = FileUtils::getInstance()->fullPathForFilename("res/fileList.json");
     string to = appPath + "res/fileList.json";
     if (!FileUtils::getInstance()->isFileExist(to)) {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-        FileOperation::copyFile(from.c_str(), to.c_str());
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
-		RTFileOperation::copyFile(from, to);
-#endif
+		FileOperation::copyFile(from, to);
     }
     
     string doucument_zip_path = scriptsPath + "game.zip";
@@ -320,11 +281,7 @@ bool AppDelegateExtern::checkPath()
         need_Load_zip_from_bundle = true;
         //还原版本信息重新执行自动更新
         if (FileUtils::getInstance()->isFileExist(from)) {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-            FileOperation::copyFile(from.c_str(), to.c_str());
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
-			RTFileOperation::copyFile(from, to);
-#endif
+			FileOperation::copyFile(from, to);
         }
     }
     else
@@ -340,11 +297,7 @@ bool AppDelegateExtern::checkPath()
             need_Load_zip_from_bundle = true;
             //还原版本信息重新执行自动更新
             if (FileUtils::getInstance()->isFileExist(from)) {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-                FileOperation::copyFile(from.c_str(), to.c_str());
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
-				RTFileOperation::copyFile(from, to);
-#endif
+				FileOperation::copyFile(from, to);
             }
         }
         else

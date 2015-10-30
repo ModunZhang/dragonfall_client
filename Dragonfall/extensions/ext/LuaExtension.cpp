@@ -9,6 +9,7 @@
 #include "LuaExtension.h"
 #include <iostream>
 #include <stdio.h>
+#include <string>
 extern "C" {
     #include "tolua++.h"
 }
@@ -23,41 +24,37 @@ extern "C" {
 #include "CCLuaEngine.h"
 
 #define LOG_BUFFER_SIZE 1024 * 10 * 2
+
+//extension header
+#include "CommonUtils.h"
+#include "crc/crc32.c"
+#include "FileOperation.h"
+#include "AppDelegate.h"
+#include "tolua_sysmail.h"
+#include "tolua_local_push.h"
+//quick lua node
+#include "../../external/lua/quick/LuaNodeManager.h"
+
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-#include "../../external/lua/quick/LuaNodeManager.h"
+
 #include "CCPomelo.h"
-#include "AppDelegate.h"
-#include "crc/crc32.c"
-#include "FileOperation.h"
-#include "tolua_local_push.h"
 #include "MarketSDKTool.h"
-#include "tolua_sysmail.h"
 #include "jni_StoreKit.h"
-#include "CommonUtils.h"
 #define KODLOG(format, ...) CCLOG(format, ##__VA_ARGS__);
+
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_IOS
-#include "../../external/lua/quick/LuaNodeManager.h"
+
 #include "CCPomelo.h"
-#include "AppDelegate.h"
-#include "crc/crc32.c"
-#include "FileOperation.h"
-#include "tolua_local_push.h"
 #include "MarketSDKTool.h"
-#include "tolua_sysmail.h"
-#include "CommonUtils.h"
 #include "GameCenter.h"
 #define KODLOG(format, ...) CCLOG(format, ##__VA_ARGS__);Kodlog__(format, ##__VA_ARGS__);
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
-#include "common/RTCommonUtils.h"
-#include "crc/crc32.c"
-#include "io/RTFileOperation.h"
-#include "AppDelegate.h"
-#include "../../external/lua/quick/LuaNodeManager.h"
-#include "sysmail/ext_sysmail.h"
-#include "LocalNotification/ext_local_push.h"
+
 #include "audio/to_lua_simpleaudio.h"
 #include "AdeasygoSDK/to_lua_adeasygo_helper.h"
-#endif
+#define KODLOG(format, ...) CCLOG(format, ##__VA_ARGS__);
+
+#endif /* CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID */
 
 
 
@@ -607,14 +604,8 @@ static int tolua_ext_removeDirectory(lua_State* tolua_S)
     else
 #endif
     {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
-		const char* strFolderPath = ((const char*)tolua_tostring(tolua_S, 1, 0));
-		bool isRemoved = FileOperation::removeDirectory(strFolderPath);
+		bool isRemoved = FileOperation::removeDirectory(tolua_tocppstring(tolua_S, 1, 0));
 		tolua_pushboolean(tolua_S, isRemoved);
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
-		bool isRemoved = RTFileOperation::removeDirectory(tolua_tocppstring(tolua_S, 1, 0));
-		tolua_pushboolean(tolua_S, isRemoved);
-#endif
     }
     return 1;
 #ifndef TOLUA_RELEASE
@@ -857,7 +848,7 @@ static int tolua_ext_is_app_hoc(lua_State* tolua_S)
 static int tolua_ext_open_url(lua_State* tolua_S)
 {
 	std::string url = tolua_tocppstring(tolua_S, 1, 0);
-	openUrl(url);
+	OpenUrl(url);
 	return 0;
 }
 
@@ -877,7 +868,7 @@ static int tolua_ext_show_alert(lua_State* tolua_S)
 		std::string title = tolua_tocppstring(tolua_S, 1, 0);
 		std::string content = tolua_tocppstring(tolua_S, 2, 0);
 		std::string okString = tolua_tocppstring(tolua_S, 3, 0);
-		showAlert(title, content, okString, [=](){
+		ShowAlert(title, content, okString, [=](){
 			auto stack = cocos2d::LuaEngine::getInstance()->getLuaStack();
 			stack->executeFunctionByHandler(handlerId,0);
 		});

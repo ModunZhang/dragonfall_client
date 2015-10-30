@@ -40,7 +40,7 @@ void OpenUrl(std::string url)
 }
 
 //wp8.1 not support: https://social.msdn.microsoft.com/Forums/sqlserver/en-US/ac4f3329-d7ee-455f-80be-0e1685fea971/how-to-copy-text-to-the-clipboard-in-wp81-using-vs2013-can-not-refer-to-the-correct-namespace?forum=wpdevelop
-void CopyText(const char * text)
+void CopyText(std::string text)
 {
 	
 }
@@ -100,7 +100,7 @@ std::string GetDeviceLanguage()
 	return "Not support in WinRT use device.language get value";
 }
 
-int GetBatteryLevel()
+float GetBatteryLevel()
 {
 #if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
 	return Windows::Phone::Devices::Power::Battery::GetDefault()->RemainingChargePercent;

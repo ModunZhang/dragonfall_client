@@ -1,4 +1,5 @@
 #include "SimpleAudio.h"
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 #include "WinRTHelper.h"
 #include "cocos2d.h"
 #include <ppltasks.h>
@@ -259,7 +260,7 @@ namespace AudioExtension
 				backgroundMedia->Play();
 			}));
 		}
-		
+
 	}
 
 	bool SimpleAudio::isMusicPlaying()
@@ -267,7 +268,7 @@ namespace AudioExtension
 		bool flag = false;
 		if (backgroundMedia)
 		{
-			create_task(m_dispatcher.Get()->RunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal, ref new DispatchedHandler([this,&flag](){
+			create_task(m_dispatcher.Get()->RunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal, ref new DispatchedHandler([this, &flag](){
 				flag = backgroundMedia->CurrentState == Media::MediaElementState::Playing;
 			}))).wait();
 		}
@@ -275,3 +276,4 @@ namespace AudioExtension
 	}
 }
 NS_CC_END
+#endif // CC_TARGET_PLATFORM == CC_PLATFORM_WINRT

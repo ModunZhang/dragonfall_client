@@ -1,4 +1,4 @@
-#include "SysmailWinRT.h"
+#include "Sysmail.h"
 #include "cocos2d.h"
 #include "WinRTHelper.h"
 

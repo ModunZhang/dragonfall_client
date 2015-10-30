@@ -5,8 +5,13 @@
 
 #define EXT_MODULE_NAME "audio"
 
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT 
+
 void tolua_ext_module_audio(lua_State* tolua_S);
 
 void OnExtAudioPlayDone();
+
+#endif // CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+
 
 #endif /* defined(__tolua_ext_module_audio__) */

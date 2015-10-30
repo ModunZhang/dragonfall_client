@@ -7,6 +7,7 @@
 #ifndef __SimpleAudio_H__
 #define __SimpleAudio_H__
 #include "platform/CCPlatformConfig.h"
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 #include <collection.h>
 
 using namespace Platform::Collections;
@@ -73,4 +74,6 @@ namespace AudioExtension
 
 }
 NS_CC_END
+#endif // CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+
 #endif

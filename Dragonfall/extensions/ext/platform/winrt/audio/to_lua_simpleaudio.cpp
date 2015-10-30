@@ -1,4 +1,5 @@
 #include "to_lua_simpleaudio.h"
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 #include "CCLuaValue.h"
 #include "CCLuaStack.h"
 #include "CCLuaEngine.h"
@@ -7,8 +8,10 @@
 #include "cocos2d.h"
 #include "SimpleAudio.h"
 #include "LuaBasicConversions.h"
-#define USE_EXT_AUDIO 1
+#define USE_EXT_AUDIO 1 //switch use extension audio function
+
 using namespace cocos2d;
+
 void OnExtAudioPlayDone()
 {
 	auto stack = cocos2d::LuaEngine::getInstance()->getLuaStack();
@@ -179,3 +182,4 @@ void tolua_ext_module_audio(lua_State* tolua_S)
 	tolua_function(tolua_S, "isMusicPlaying", tolua_simpleaudio_isMusicPlaying);
 	tolua_endmodule(tolua_S);
 }
+#endif // CC_TARGET_PLATFORM == CC_PLATFORM_WINRT

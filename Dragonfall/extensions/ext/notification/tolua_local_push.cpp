@@ -1,11 +1,9 @@
 #include "tolua_local_push.h"
 #include <stdlib.h>
 #include <string>
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+
 #include "LocalNotification.h"
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
-#include "LocalNotificationWinRT.h"
-#endif
+
 static int tolua_localpush_cancelAll(lua_State* tolua_S)
 {
     cancelAll();
