@@ -20,19 +20,19 @@ void cancelAll()
     }
 }
 
-void switchNotification(const char *type, bool enable)
+void switchNotification(std::string type, bool enable)
 {
 
 }
-bool addNotification(const char *type, long finishTime, const char *body, const char* identity)
+bool addNotification(std::string type, long finishTime, std::string body, std::string identity)
 {
 	cocos2d::JniMethodInfo t;
 	jboolean jresult = false;
    	if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "addLocalPush", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;J)Z"))
     {
-        jstring jtype = t.env->NewStringUTF(type);
-        jstring jbody = t.env->NewStringUTF(body);
-        jstring jidentity = t.env->NewStringUTF(identity);
+        jstring jtype = t.env->NewStringUTF(type.c_str());
+        jstring jbody = t.env->NewStringUTF(body.c_str());
+        jstring jidentity = t.env->NewStringUTF(identity.c_str());
         jlong fireTime = (jlong) finishTime * 1000;
         jresult = t.env->CallStaticBooleanMethod(t.classID, t.methodID,jtype,jbody,jidentity,fireTime);
         t.env->DeleteLocalRef(jidentity);
@@ -42,13 +42,13 @@ bool addNotification(const char *type, long finishTime, const char *body, const 
     }
 	return jresult;
 }
-bool cancelNotificationWithIdentity(const char* identity)
+bool cancelNotificationWithIdentity(std::string identity)
 {
 	cocos2d::JniMethodInfo t;
 	jboolean jresult = false;
    	if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "cancelNotificationWithIdentity", "(Ljava/lang/String;)Z"))
      {
-     	jstring jsidentity = t.env->NewStringUTF(identity);
+     	jstring jsidentity = t.env->NewStringUTF(identity.c_str());
         jresult = t.env->CallStaticBooleanMethod(t.classID, t.methodID,jsidentity);
         t.env->DeleteLocalRef(jsidentity);
         t.env->DeleteLocalRef(t.classID);

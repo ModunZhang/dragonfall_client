@@ -10,16 +10,18 @@ LOCAL_SRC_FILES := \
 ../../Classes/AppDelegate.cpp \
 ../../Classes/ide-support/SimpleConfigParser.cpp \
 hellolua/main.cpp \
+../../../../extensions/ext/common/CommonUtils-android.cpp \
 ../../../../extensions/ext/LuaExtension.cpp \
 ../../../../extensions/ext/crc/crc32.c \
-../../../../extensions/ext/sysmail/ext_sysmail.cpp \
-../../../../extensions/ext/sysmail/Sysmail.cpp \
-../../../../extensions/ext/LocalNotification/ext_local_push.cpp \
-../../../../extensions/ext/LocalNotification/LocalNotification.cpp \
+../../../../extensions/ext/sysmail/Sysmail-android.cpp \
+../../../../extensions/ext/sysmail/tolua_sysmail.cpp \
+../../../../extensions/ext/notification/tolua_local_push.cpp \
+../../../../extensions/ext/io/FileOperation.cpp \
+../../../../extensions/ext/notification/LocalNotification-android.cpp \
 ../../../../extensions/sdk/libpomelo/CCPomelo.cpp \
 ../../../../extensions/sdk/MarketSDKTool-android.cpp \
 
-MY_FILES_PATH  :=  $(LOCAL_PATH)/../../../../extensions/ext/jni
+MY_FILES_PATH  :=  $(LOCAL_PATH)/../../../../extensions/ext/platform/android
 
 MY_FILES_SUFFIX := %.cpp 
 
@@ -38,10 +40,12 @@ $(LOCAL_PATH)/../../../cocos2d-x/external \
 $(LOCAL_PATH)/../../../cocos2d-x/tools/simulator/libsimulator/lib \
 $(LOCAL_PATH)/../../../../extensions/ext \
 $(LOCAL_PATH)/../../../../extensions/sdk \
-$(LOCAL_PATH)/../../../../extensions/ext/jni \
+$(LOCAL_PATH)/../../../../extensions/ext/platform/android \
 $(LOCAL_PATH)/../../../../extensions/sdk/libpomelo \
+$(LOCAL_PATH)/../../../../extensions/ext/common \
+$(LOCAL_PATH)/../../../../extensions/ext/io \
 $(LOCAL_PATH)/../../../../extensions/ext/sysmail \
-$(LOCAL_PATH)/../../../../extensions/ext/LocalNotification \
+$(LOCAL_PATH)/../../../../extensions/ext/notification \
 
 # _COCOS_HEADER_ANDROID_BEGIN
 # _COCOS_HEADER_ANDROID_END

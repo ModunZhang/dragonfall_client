@@ -15,7 +15,7 @@
 #define LOGD(...) ((void)__android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__))
 #define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__))
 #define CLASS_NAME "com/batcatstudio/dragonfall/io/JniFileOperation"
-#elif 
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 #include "pch.h"
 #include <ppltasks.h>
 #include <stdio.h>

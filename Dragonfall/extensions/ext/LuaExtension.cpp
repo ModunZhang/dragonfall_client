@@ -31,8 +31,9 @@ extern "C" {
 #include "FileOperation.h"
 #include "tolua_local_push.h"
 #include "MarketSDKTool.h"
-#include "ext_sysmail.h"
-#include "jni/jni_StoreKit.h"
+#include "tolua_sysmail.h"
+#include "jni_StoreKit.h"
+#include "CommonUtils.h"
 #define KODLOG(format, ...) CCLOG(format, ##__VA_ARGS__);
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_IOS
 #include "../../external/lua/quick/LuaNodeManager.h"

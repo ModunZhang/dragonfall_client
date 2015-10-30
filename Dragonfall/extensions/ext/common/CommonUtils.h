@@ -46,8 +46,15 @@ std::string GetInternetConnectionStatus();
 const bool IsAppAdHocMode();
 
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+
 void OpenUrl(std::string url);
+
 void ShowAlert(std::string title, std::string content,std::string okString,std::function<void(void)> callbackFunc);
+
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+
+void AndroidCheckFistInstall();
+
 #endif
 
 #endif

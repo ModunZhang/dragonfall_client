@@ -11,8 +11,8 @@
 #include "CommonUtils.h"
 #include "FileOperation.h"
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-#include "jni/jni_CommonUtils.h"
-#include "jni/jni_FileOperation.h"
+#include "CommonUtils.h"
+#include "FileOperation.h"
 #define LOG_TAG ("AppDelegate.cpp")
 #define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__))
 #define LOGD(...) ((void)__android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__))

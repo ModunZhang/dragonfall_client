@@ -24,15 +24,15 @@ bool CanSenMail()
     }
 	return jresult;
 }
-bool SendMail(const char* to,const char* subject,const char* body,int lua_function_ref)
+bool SendMail(std::string to,std::string subject,std::string body,int lua_function_ref)
 {
 	cocos2d::JniMethodInfo t;
 	jboolean jresult = false;
    	if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "sendMail", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Z"))
      {
-         jstring jto = t.env->NewStringUTF(to);
-         jstring jsubject = t.env->NewStringUTF(subject);
-         jstring jbody = t.env->NewStringUTF(body);
+         jstring jto = t.env->NewStringUTF(to.c_str());
+         jstring jsubject = t.env->NewStringUTF(subject.c_str());
+         jstring jbody = t.env->NewStringUTF(body.c_str());
          jresult = t.env->CallStaticBooleanMethod(t.classID, t.methodID,jto,jsubject,jbody);
          t.env->DeleteLocalRef(jto);
          t.env->DeleteLocalRef(jsubject);
