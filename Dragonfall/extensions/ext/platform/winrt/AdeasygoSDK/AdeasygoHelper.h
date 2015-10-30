@@ -11,6 +11,7 @@ namespace cocos2d
 		cocos2d::ValueMap m_goods_map;
 		
 		bool m_goods_inited;
+		bool m_isVisible;
 
 	public:
 		static property AdeasygoHelper^ Instance
@@ -31,7 +32,17 @@ namespace cocos2d
 		}
 
 		property int handleId;
-
+		property bool IsVisible
+		{
+			bool get()
+			{
+				return m_isVisible;
+			}
+			void set(bool isVisible)
+			{
+				m_isVisible = isVisible;
+			}
+		}
 
 		//method
 

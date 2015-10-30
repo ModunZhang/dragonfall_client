@@ -18,7 +18,7 @@
 
 #include "App.xaml.h"
 #include "OpenGLESPage.xaml.h"
-
+#include "AdeasygoSDK/AdeasygoHelper.h"
 using namespace cocos2d;
 using namespace Platform;
 using namespace Concurrency;
@@ -328,22 +328,26 @@ void OpenGLESPage::StopRenderLoop()
 #if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
 void OpenGLESPage::HardwareButtons_BackPressed(Platform::Object^ sender, Windows::Phone::UI::Input::BackPressedEventArgs^ e)
 {
-	using namespace Windows::UI::Popups;
-	auto loader = ref new Windows::ApplicationModel::Resources::ResourceLoader();
-	auto title = loader->GetString("exit_game_title");
-	auto content = loader->GetString("exit_game_content");
-	auto yes_string = loader->GetString("yes");
-	auto no_string = loader->GetString("no");
-	auto msgDlg = ref new MessageDialog(content,title);
-
-	msgDlg->Commands->Append(ref new UICommand(yes_string, ref new UICommandInvokedHandler([this](IUICommand^)
+	if(!cocos2d::AdeasygoHelper::Instance->IsVisible)
 	{
-		critical_section::scoped_lock lock(mRenderSurfaceCriticalSection);
-		DestroyRenderSurface();
-		Windows::UI::Xaml::Application::Current->Exit();
-	})));
-	msgDlg->Commands->Append(ref new UICommand(no_string, ref new UICommandInvokedHandler([=](IUICommand^){})));
-	msgDlg->ShowAsync();
+		using namespace Windows::UI::Popups;
+		auto loader = ref new Windows::ApplicationModel::Resources::ResourceLoader();
+		auto title = loader->GetString("exit_game_title");
+		auto content = loader->GetString("exit_game_content");
+		auto yes_string = loader->GetString("yes");
+		auto no_string = loader->GetString("no");
+		auto msgDlg = ref new MessageDialog(content,title);
+
+		msgDlg->Commands->Append(ref new UICommand(yes_string, ref new UICommandInvokedHandler([this](IUICommand^)
+		{
+			critical_section::scoped_lock lock(mRenderSurfaceCriticalSection);
+			DestroyRenderSurface();
+			Windows::UI::Xaml::Application::Current->Exit();
+		})));
+		msgDlg->Commands->Append(ref new UICommand(no_string, ref new UICommandInvokedHandler([=](IUICommand^){})));
+		msgDlg->ShowAsync();
+	}
+	cocos2d::AdeasygoHelper::Instance->IsVisible = false;
 	e->Handled = true;
 }
 #endif

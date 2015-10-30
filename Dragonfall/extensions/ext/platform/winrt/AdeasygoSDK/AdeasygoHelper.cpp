@@ -23,12 +23,14 @@ namespace cocos2d
 	{
 		handleId = 0;
 		m_goods_inited = false;
+		m_isVisible = false;
 		m_goods_map.clear();
 	}
 
 	void AdeasygoHelper::PayDone(Platform::Object^ sender, Adeasygo::PaySDKWP81::Model::PayDoneEventArgs ^ args)
 	{
 		SDKManager::ClosePayBox();
+		m_isVisible = false;
 		create_task(Adeasygo::PaySDKWP81::SDKManager::GetUnSyncTrade()).then([this](task<Model::TradeResultList^> task){
 			Model::TradeResultList^ tradeResultList = task.get();
 			auto list = tradeResultList->traderesult;
@@ -85,6 +87,7 @@ namespace cocos2d
 
 	void AdeasygoHelper::MsPurchas(Platform::Object^ sender, Adeasygo::PaySDKWP81::Model::MsPayEventArgs ^ args)
 	{
+		m_isVisible = false;
 		Windows::UI::Popups::MessageDialog("MsPurchas:" + args->GoodsID).ShowAsync();
 	}
 
@@ -94,9 +97,9 @@ namespace cocos2d
 		if (m_goods_inited)
 		{
 			auto sdkId = m_goods_map[cpp_productId].asString();
-			RunOnUIThread([=](){
+			RunOnUIThread([this, sdkId](){
 				SDKManager::Pay(PlatformStringFromString(sdkId), "", "", "");
-				
+				m_isVisible = true;
 			});
 		}
 	}
