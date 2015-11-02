@@ -325,10 +325,22 @@ void OpenGLESPage::StopRenderLoop()
     }
 }
 
+void OpenGLESPage::TerminateApp()
+{
+	if (mOpenGLES)
+	{
+		mOpenGLES->DestroySurface(mRenderSurface);
+		mOpenGLES->Cleanup(); // change Cleanup to public
+	}
+	Windows::UI::Xaml::Application::Current->Exit();
+}
+
 #if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
 void OpenGLESPage::HardwareButtons_BackPressed(Platform::Object^ sender, Windows::Phone::UI::Input::BackPressedEventArgs^ e)
 {
-	if(!cocos2d::AdeasygoHelper::Instance->IsVisible)
+#if defined(__AdeasygoSDK__)
+	if (!cocos2d::AdeasygoHelper::Instance->IsVisible)
+#endif // defined(__AdeasygoSDK__)
 	{
 		using namespace Windows::UI::Popups;
 		auto loader = ref new Windows::ApplicationModel::Resources::ResourceLoader();
@@ -336,18 +348,18 @@ void OpenGLESPage::HardwareButtons_BackPressed(Platform::Object^ sender, Windows
 		auto content = loader->GetString("exit_game_content");
 		auto yes_string = loader->GetString("yes");
 		auto no_string = loader->GetString("no");
-		auto msgDlg = ref new MessageDialog(content,title);
+		auto msgDlg = ref new MessageDialog(content, title);
 
 		msgDlg->Commands->Append(ref new UICommand(yes_string, ref new UICommandInvokedHandler([this](IUICommand^)
 		{
-			critical_section::scoped_lock lock(mRenderSurfaceCriticalSection);
-			DestroyRenderSurface();
-			Windows::UI::Xaml::Application::Current->Exit();
+			TerminateApp();
 		})));
 		msgDlg->Commands->Append(ref new UICommand(no_string, ref new UICommandInvokedHandler([=](IUICommand^){})));
 		msgDlg->ShowAsync();
 	}
+#if defined(__AdeasygoSDK__)
 	cocos2d::AdeasygoHelper::Instance->IsVisible = false;
+#endif // defined(__AdeasygoSDK__)
 	e->Handled = true;
 }
 #endif

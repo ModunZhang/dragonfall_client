@@ -39,10 +39,9 @@ public:
     void MakeCurrent(const EGLSurface surface);
     EGLBoolean SwapBuffers(const EGLSurface surface);
     void Reset();
-
+	void Cleanup(); //dannyhe
 private:
     void Initialize();
-    void Cleanup();
 
 private:
     EGLDisplay mEglDisplay;
