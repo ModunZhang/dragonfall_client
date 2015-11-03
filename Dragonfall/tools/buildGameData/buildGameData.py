@@ -4,7 +4,6 @@ import xlrd
 import string
 import os
 #dannyhe
-import sys
 sys.path.append("../batcat")
 from basic import *
 #end

@@ -80,10 +80,20 @@ def executeCommand(command = "",quiet = True):
     args = command.split(" ")
     if not quiet:
         Logging.info(command)
-    process = subprocess.Popen(args)
+    process = subprocess.Popen(args,stdout=subprocess.PIPE)
     process.wait()
     if process.returncode != 0:
         die(args)
+    else:
+        return process.returncode,process.communicate()
+
+def executeListCommand(arglist = [],quiet = True):
+    if not quiet:
+        Logging.info(arglist)
+    process = subprocess.Popen(arglist,stdout=subprocess.PIPE)
+    process.wait()
+    if process.returncode != 0:
+        die(arglist)
     else:
         return process.returncode,process.communicate()
 

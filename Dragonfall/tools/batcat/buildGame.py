@@ -52,6 +52,8 @@ if __name__=="__main__":
 	command = "python scripts.py %s %s %s" % (Platform,NEED_ENCRYPT_SCRIPTS,CONFIGURATION)
 	executeCommand(command)
 
+	if Platform == 'WP' and not isWindows():
+		die("仅支持windows下进行windows phone平台的资源生成!")
 	Logging.info("> 开始处理资源")
 	Logging.debug("------------------------------------")
 	command = getResCommand(Platform)

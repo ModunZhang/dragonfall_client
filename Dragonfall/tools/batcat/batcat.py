@@ -182,3 +182,45 @@ def getConvertTool():
 		return "convert"
 	else:
 		return formatPath("%s/tools/TextureTools/convert" % root_dir)
+
+def getWin32SedPath():
+	if not isWindows():
+		die("该版本Sed只能在windows下使用")
+	root_dir=getProjDir()
+	return formatPath("%s/tools/win32/sed/sed.exe" % root_dir)
+
+def getProjConfigPath(platform):
+	platformProjectRoot = getPlatformProjectRoot(platform)
+	if platform == 'iOS':
+		return formatPath("%s/ios/Info.plist" % platformProjectRoot)
+	elif platform == 'Android':
+		return formatPath("%s/AndroidManifest.xml" % platformProjectRoot)
+	elif platform == 'WP':
+		return formatPath("%s/App.WindowsPhone/Package.appxmanifest" % platformProjectRoot)
+
+def getWPAppXmlPath():
+	platformProjectRoot = getPlatformProjectRoot("WP")
+	return formatPath("%s/App.Shared/App.xaml" % platformProjectRoot)
+
+def getPlatformProjectRoot(platform):
+	root_dir=getProjDir()
+	if platform == 'iOS':
+		return formatPath("%s/frameworks/runtime-src/proj.ios_mac" % root_dir)
+	elif platform == 'Android':
+		return formatPath("%s/frameworks/runtime-src/proj.android" % root_dir)
+	elif platform == 'WP':
+		return formatPath("%s/frameworks/runtime-src/proj.win8.1-universal" % root_dir)
+
+def getAppVersion(platform):
+	command = "python readProject.py -p %s -v" % platform
+	code,ret = executeCommand(command)
+	return ret[0].rstrip()
+
+def getAppMinVersion(platform):
+	command = "python readProject.py -p %s -m" % platform
+	code,ret = executeCommand(command)
+	return ret[0].rstrip()
+	
+def getUpdatePythonMainScriptPath():
+    root_dir=getProjDir();
+    return formatPath("%s/tools/buildUpdate/buildUpdate.py" % root_dir)

@@ -8,16 +8,16 @@ import sys,shutil
 #global 占位变量
 Platform = ""
 NEED_ENCRYPT_SCRIPTS = ""
-SCRIPT_COMPILE_TOOL = ""
-SCRIPTS_SRC_DIR = ""
+SCRIPT_COMPILE_TOOL = getScriptsTool()
+SCRIPTS_SRC_DIR = getScriptsDir()
 SCRIPTS_DEST_DIR = ""
-XXTEAKey = ""
-XXTEASign = ""
-TEMP_RES_DIR = ""
-ProjDir = ""
+XXTEAKey = getXXTEAKey()
+XXTEASign = getXXTEASign()
+TEMP_RES_DIR = getTempDir()
+ProjDir = getProjDir()
 DEBUG_BUILD_USE_LUA_FILE = True #不加密的情况下不编译lua为字节码
 QUIET_MODE=True # 安静模式
-VERSION_FILE=""
+VERSION_FILE = formatPath("%s/dev/scripts/debug_version.lua" % ProjDir)
 CONFIGURATION = ""
 
 def preBuild():
@@ -30,32 +30,15 @@ def preBuild():
 
 def getAllArgs():
 	
-	global Platform,NEED_ENCRYPT_SCRIPTS,SCRIPT_COMPILE_TOOL,SCRIPTS_SRC_DIR,CONFIGURATION
+	global Platform,NEED_ENCRYPT_SCRIPTS,CONFIGURATION,SCRIPTS_DEST_DIR
 	
-	global SCRIPTS_DEST_DIR,XXTEAKey,XXTEASign,TEMP_RES_DIR,ProjDir,VERSION_FILE
-
 	Platform = getPlatform(Platform)
 
 	NEED_ENCRYPT_SCRIPTS = getNeedEncryptScripts(NEED_ENCRYPT_SCRIPTS)
 
 	CONFIGURATION = getConfiguration(CONFIGURATION)
 	
-	SCRIPT_COMPILE_TOOL = getScriptsTool()
-	
-	SCRIPTS_SRC_DIR = getScriptsDir()
-	
 	SCRIPTS_DEST_DIR = getExportScriptsDir(Platform)
-
-	XXTEAKey = getXXTEAKey()
-
-	XXTEASign = getXXTEASign()
-
-	TEMP_RES_DIR = getTempDir()
-
-	ProjDir = getProjDir()
-
-	VERSION_FILE = formatPath("%s/dev/scripts/debug_version.lua" % ProjDir)
-
 
 def gitDebugVersion():
 	version = getAppBuildTag()

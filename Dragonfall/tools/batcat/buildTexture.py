@@ -19,3 +19,24 @@ def getNativePlatform(args = ""):
 	return result
 
 Platform = ""
+
+if __name__=="__main__":
+	if len(sys.argv) > 1:
+		Platform = sys.argv[1]
+	Platform = getPlatform(Platform)
+	ProjDir = getProjDir()
+	TPS_FILES_DIR = formatPath("%s/PackImages/TexturePackerProj/player" % ProjDir)
+	if Platform == 'iOS' or Platform == 'Android':
+		TPS_FILES_DIR = formatPath("%s/PackImages/TexturePackerProj/iOS" % ProjDir)
+	elif Platform == 'WP':
+		TPS_FILES_DIR = formatPath("%s/PackImages/TexturePackerProj/wp" % ProjDir)
+
+	Logging.warning("开始导出贴图 %s" % Platform)
+
+	for file in os.listdir(TPS_FILES_DIR):
+		tps = os.path.join(TPS_FILES_DIR,  file) 
+		if tps.split('.')[-1] == 'tps':
+			command = "TexturePacker %s" % tps
+			executeCommand(command,False)
+
+	Logging.warning("导出贴图完成 %s" % Platform)
