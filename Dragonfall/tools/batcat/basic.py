@@ -83,7 +83,7 @@ def executeCommand(command = "",quiet = True):
     process = subprocess.Popen(args)
     process.wait()
     if process.returncode != 0:
-        die(command)
+        die(args)
     else:
         return process.returncode,process.communicate()
 

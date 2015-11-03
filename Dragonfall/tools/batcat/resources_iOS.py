@@ -54,7 +54,7 @@ def exportImagesRes(image_dir_path):
 		if os.path.isfile(sourceFile):
 			#拷贝[加密images下的jpg/png图片]
 			fileExt=sourceFile.split('.')[-1]
-			if (fileExt == 'png' or fileExt == 'jpg') and fileExt != 'tmp':
+			if (fileExt == 'png' or fileExt == 'jpg') and fileExt != 'tmp' and fileExt != 'DS_Store':
 				if not fileNewer(sourceFile,targetFile):
 					Logging.info("忽略 %s" % sourceFile)
 					continue
@@ -77,7 +77,7 @@ def exportImagesRes(image_dir_path):
 							continue 
 						Logging.debug("处理 %s" % image_sourceFile)
 						fileExt = image_sourceFile.split('.')[-1]
-						if fileExt != 'tmp' and fileExt != 'plist':
+						if fileExt != 'tmp' and fileExt != 'plist' and fileExt != 'DS_Store':
 							if NEED_ENCRYPT_RES:
 								CompileResources(image_sourceFile,image_outdir)
 							else:
@@ -90,11 +90,14 @@ def exportImagesRes(image_dir_path):
 					image_sourceFile = os.path.join(sourceFile,  image_file) 
 					image_targetFile = os.path.join(outdir,  image_file)
 					image_outdir = os.path.dirname(image_targetFile)
+					fileExt = image_sourceFile.split('.')[-1]
+					if fileExt == 'DS_Store':continue
 					if not fileNewer(image_sourceFile,image_targetFile):
 						Logging.info("忽略 %s" % image_sourceFile)
 						continue
 					#是否考虑 pvr ccz + premultiply-alpha?
-					command = 'TexturePacker --format cocos2d --no-trim --disable-rotation --texture-format png --opt RGBA4444 --png-opt-level 7  --allow-free-size --padding 0 %s --sheet %s --data %s/tmp.plist' % (image_sourceFile,temp_file,TEMP_RES_DIR)
+					command = 'TexturePacker --format cocos2d --no-trim --disable-rotation --texture-format png --opt RGBA4444 --png-opt-level 7 --allow-free-size --padding 0 %s --sheet %s --data %s/tmp.plist' % (image_sourceFile,temp_file,TEMP_RES_DIR)
+					Logging.info(command)
 					executeCommand(command,QUIET_MODE)
 					if NEED_ENCRYPT_RES:
 						CompileResources(temp_file,image_outdir)
@@ -107,6 +110,8 @@ def exportImagesRes(image_dir_path):
 					image_sourceFile = os.path.join(sourceFile,  image_file) 
 					image_targetFile = os.path.join(outdir,  image_file)
 					image_outdir = os.path.dirname(image_targetFile)
+					fileExt = image_sourceFile.split('.')[-1]
+					if fileExt == 'DS_Store':continue
 					if not fileNewer(image_sourceFile,image_targetFile):
 						Logging.info("忽略 %s" % image_sourceFile)
 						continue
@@ -154,7 +159,7 @@ def exportRes(sourceDir,  targetDir):
         if os.path.isfile(sourceFile): #file in res
         	outdir = os.path.dirname(targetFile)
         	fileExt=sourceFile.split('.')[-1]
-        	if fileExt != 'po' and fileExt != 'ttf': #iOS不拷贝字体文件
+        	if fileExt != 'po' and fileExt != 'ttf' and fileExt != 'DS_Store': #iOS不拷贝字体文件
         		if not fileNewer(sourceFile,targetFile):
         			Logging.info("忽略 %s" % sourceFile)
         			continue
