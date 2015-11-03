@@ -6,7 +6,6 @@ import os
 #dannyhe
 import sys
 sys.path.append("../batcat")
-from batcat import *
 from basic import *
 #end
 global g_exportDir

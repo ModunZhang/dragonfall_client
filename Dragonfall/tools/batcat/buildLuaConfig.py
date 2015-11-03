@@ -12,5 +12,5 @@ formatPathCreateIf(ClientDir)
 command = 'python %s/tools/buildGameData/buildGameData.py %s %s client' % (ProjDir,GameDataDir,ClientDir)
 
 Logging.info("开始导出lua配置文件")
-executeCommand(command,False)
+executeCommand(command,True)
 Logging.info("导出lua配置文件结束")
