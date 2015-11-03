@@ -3,7 +3,12 @@ import  xdrlib ,sys
 import xlrd
 import string
 import os
-
+#dannyhe
+import sys
+sys.path.append("../batcat")
+from batcat import *
+from basic import *
+#end
 global g_exportDir
 global g_fileNamePrefix
 global g_currentFileNamePrefix
@@ -14,7 +19,7 @@ def open_excel(file):
 		data = xlrd.open_workbook(file)
 		return data
 	except Exception,e:
-		print str(e)
+		Logging.error(str(e))
 
 def nakeName(name):
 	details = name.split('_')
@@ -32,22 +37,22 @@ def getExportName(fileName):
 	return name
 
 def exportLuaFiles(files):
-	file = open(g_exportDir + "/" + g_fileNamePrefix + '.lua', "w")
+	file = open(formatPath(g_exportDir + "/" + g_fileNamePrefix + '.lua'), "w")
 	file.write("%s = {}\n" % (g_fileNamePrefix))
 	for fileName in files:
-		print("正在导出文件 %s" % (fileName) )
+		Logging.info("正在导出文件 %s" % (fileName) )
 		global g_currentFileNamePrefix
 		g_currentFileNamePrefix = getExportName(fileName)
 		exportAsLua(fileName, file)
 	file.close()
 
 def exportJsFiles(files):
-	file = open(g_exportDir + "/" + g_fileNamePrefix + '.js', "w")
+	file = open(formatPath(g_exportDir + "/" + g_fileNamePrefix + '.js'), "w")
 	file.write("\"use strict\"\n\n")
 	file.write("var %s = {}\n" % (g_fileNamePrefix))
 	file.write("module.exports = %s" % (g_fileNamePrefix))
 	for fileName in files:
-		print("正在导出文件 %s" % (fileName) )
+		Logging.info("正在导出文件 %s" % (fileName) )
 		global g_currentFileNamePrefix
 		g_currentFileNamePrefix = getExportName(fileName)
 		exportAsJs(fileName, file)
@@ -95,7 +100,7 @@ def exportSheetAsLua(sheet):
 	if ((0 == rowNum) or (0 == colNum)):
 		return
 	sheetName = sheetName
-	file = open(g_exportDir + "/" + g_currentFileNamePrefix + "_" + sheetName + '.lua', "w")
+	file = open(formatPath(g_exportDir + "/" + g_currentFileNamePrefix + "_" + sheetName + '.lua'), "w")
 	file.write('local %s = %s.%s.%s\n\n' % (sheetName, g_fileNamePrefix, g_currentFileNamePrefix, sheetName))
 	#export title
 	row = sheet.row_values(0)
@@ -163,7 +168,7 @@ def exportSheetAsJs(sheet):
 		return
 
 
-	file = open(g_exportDir + "/" + g_currentFileNamePrefix + "_" + sheetName + '.js', "w")
+	file = open(formatPath(g_exportDir + "/" + g_currentFileNamePrefix + "_" + sheetName + '.js'), "w")
 	file.write("\"use strict\"\n\n")
 	file.write("var %s = %s\n" % (sheetName, valueType))
 	file.write("module.exports = %s\n\n" % (sheetName))
@@ -211,14 +216,14 @@ def exportSheetAsJs(sheet):
 
 if __name__=="__main__":
 	if len(sys.argv) != 4:
-		print("expect 3 params as gamedata dir, export dir and export filetype!")
+		Logging.error("expect 3 params as gamedata dir, export dir and export filetype!")
 	else:
 		gameDataDir = sys.argv[1]
 		g_exportDir = sys.argv[2]
 		exportType = sys.argv[3]
 		excelFiles = []
 		if exportType == "server":
-			print("开始导出服务器端配置数据....")
+			Logging.info("开始导出服务器端配置数据....")
 			for root, dirs, files in os.walk(gameDataDir + "/server"):
 				for fileName in files:
 					if fileName.endswith((".xlsx", ".xls")) and not "~$" in fileName:
@@ -228,9 +233,9 @@ if __name__=="__main__":
 					if fileName.endswith((".xlsx", ".xls")) and not "~$" in fileName:
 						excelFiles.append(os.path.join(root, fileName))
 			exportJsFiles(excelFiles)
-			print("导出服务器端配置数据完成....")
+			Logging.info("导出服务器端配置数据完成....")
 		elif exportType == "client":
-			print("开始导出客户端端配置数据....")
+			Logging.info("开始导出客户端端配置数据....")
 			for root, dirs, files in os.walk(gameDataDir + "/client"):
 				for fileName in files:
 					if fileName.endswith((".xlsx", ".xls")) and not "~$" in fileName:
@@ -240,4 +245,4 @@ if __name__=="__main__":
 					if fileName.endswith((".xlsx", ".xls")) and not "~$" in fileName:
 						excelFiles.append(os.path.join(root, fileName))
 			exportLuaFiles(excelFiles)
-			print("导出客户端端配置数据完成....")
+			Logging.info("导出客户端端配置数据完成....")
