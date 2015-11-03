@@ -19,7 +19,7 @@ def open_excel(file):
 		data = xlrd.open_workbook(file)
 		return data
 	except Exception,e:
-		Logging.error(str(e))
+		die(str(e))
 
 def nakeName(name):
 	details = name.split('_')
@@ -31,9 +31,9 @@ def nakeName(name):
 		return details[0]
 
 def getExportName(fileName):
-	details = fileName.split('/')
-	details = details[-1].split('.')
-	name = details[0]
+	#fix path bug in windows
+	details = os.path.basename(fileName)
+	name = os.path.splitext(details)[0]
 	return name
 
 def exportLuaFiles(files):
