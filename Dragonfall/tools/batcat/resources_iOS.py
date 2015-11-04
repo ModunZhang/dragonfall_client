@@ -50,7 +50,7 @@ def exportImagesRes(image_dir_path):
         if os.path.isfile(sourceFile):
             # 拷贝[加密images下的jpg/png图片]
             fileExt = sourceFile.split('.')[-1]
-            if (fileExt == 'png' or fileExt == 'jpg') and fileExt != 'tmp' and fileExt != 'DS_Store':
+            if (fileExt in ('png', 'jpg')) and (fileExt not in ('tmp', 'DS_Store', 'ini')):
                 if not fileNewer(sourceFile, targetFile):
                     Logging.info("忽略 %s" % sourceFile)
                     continue
@@ -66,29 +66,27 @@ def exportImagesRes(image_dir_path):
                 for image_file in os.listdir(sourceFile):
                     image_sourceFile = os.path.join(sourceFile,  image_file)
                     image_targetFile = os.path.join(outdir,  image_file)
-                    image_outdir = os.path.dirname(image_targetFile)
                     if os.path.isfile(image_sourceFile):
                         if not fileNewer(image_sourceFile, image_targetFile):
                             Logging.info("忽略 %s" % image_sourceFile)
                             continue
                         Logging.debug("处理 %s" % image_sourceFile)
                         fileExt = image_sourceFile.split('.')[-1]
-                        if fileExt != 'tmp' and fileExt != 'plist' and fileExt != 'DS_Store':
+                        if fileExt not in ('tmp', 'plist', 'DS_Store'):
                             if NEED_ENCRYPT_RES:
                                 CompileResources(
-                                    image_sourceFile, image_outdir)
+                                    image_sourceFile, outdir)
                             else:
-                                shutil.copy(image_sourceFile, image_outdir)
+                                shutil.copy(image_sourceFile, outdir)
                         elif fileExt == 'plist':
-                            shutil.copy(image_sourceFile, image_outdir)
+                            shutil.copy(image_sourceFile, outdir)
             elif "rgba444_single" == dir_name:  # rgba444_single文件夹
                 for image_file in os.listdir(sourceFile):
                     temp_file = os.path.join(TEMP_RES_DIR, image_file)
                     image_sourceFile = os.path.join(sourceFile,  image_file)
                     image_targetFile = os.path.join(outdir,  image_file)
-                    image_outdir = os.path.dirname(image_targetFile)
                     fileExt = image_sourceFile.split('.')[-1]
-                    if fileExt == 'DS_Store':
+                    if fileExt in ('DS_Store', 'tmp', 'ini'):
                         continue
                     if not fileNewer(image_sourceFile, image_targetFile):
                         Logging.info("忽略 %s" % image_sourceFile)
@@ -96,21 +94,19 @@ def exportImagesRes(image_dir_path):
                     # 是否考虑 pvr ccz + premultiply-alpha?
                     command = 'TexturePacker --format cocos2d --no-trim --disable-rotation --texture-format png --opt RGBA4444 --png-opt-level 7 --allow-free-size --padding 0 %s --sheet %s --data %s/tmp.plist' % (
                         image_sourceFile, temp_file, TEMP_RES_DIR)
-                    Logging.info(command)
                     executeCommand(command, QUIET_MODE)
                     if NEED_ENCRYPT_RES:
-                        CompileResources(temp_file, image_outdir)
+                        CompileResources(temp_file, outdir)
                     else:
-                        shutil.copy(image_sourceFile, image_outdir)
+                        shutil.copy(image_sourceFile, outdir)
             elif "_CanCompress" == dir_name:  # _CanCompress文件夹
                 for image_file in os.listdir(sourceFile):
                     fileName = image_file.split('.')[0]
                     temp_file = os.path.join(TEMP_RES_DIR, fileName + ".pvr")
                     image_sourceFile = os.path.join(sourceFile,  image_file)
                     image_targetFile = os.path.join(outdir,  image_file)
-                    image_outdir = os.path.dirname(image_targetFile)
                     fileExt = image_sourceFile.split('.')[-1]
-                    if fileExt == 'DS_Store':
+                    if fileExt in ('DS_Store', 'tmp', 'ini'):
                         continue
                     if not fileNewer(image_sourceFile, image_targetFile):
                         Logging.info("忽略 %s" % image_sourceFile)
@@ -123,9 +119,9 @@ def exportImagesRes(image_dir_path):
                         TEMP_RES_DIR, fileName + "_PVR_PNG.png")
                     shutil.copy(temp_file, finallyTemp)
                     if NEED_ENCRYPT_RES:
-                        CompileResources(finallyTemp, image_outdir)
-                        shutil.move(os.path.join(
-                            image_outdir, fileName + "_PVR_PNG.png"), image_targetFile)
+                        CompileResources(finallyTemp, outdir)
+                        shutil.move(
+                            os.path.join(outdir, fileName + "_PVR_PNG.png"), image_targetFile)
                     else:
                         shutil.copy(finallyTemp, image_targetFile)
             else:
@@ -164,7 +160,8 @@ def exportRes(sourceDir,  targetDir):
         if os.path.isfile(sourceFile):  # file in res
             outdir = os.path.dirname(targetFile)
             fileExt = sourceFile.split('.')[-1]
-            if fileExt != 'po' and fileExt != 'ttf' and fileExt != 'DS_Store':  # iOS不拷贝字体文件
+            # iOS不拷贝字体文件
+            if fileExt not in ('po', 'ttf', 'DS_Store', 'ini'):
                 if not fileNewer(sourceFile, targetFile):
                     Logging.info("忽略 %s" % sourceFile)
                     continue
