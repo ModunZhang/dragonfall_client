@@ -103,6 +103,15 @@ def executeCommand(command="", quiet=True):
         return process.returncode, process.communicate()
 
 
+def executeCommandGetRet(command="", quiet=True):
+    args = command.split(" ")
+    if not quiet:
+        Logging.warning(command)
+    process = subprocess.Popen(args,stdout = subprocess.PIPE, stdin = subprocess.PIPE)
+    ret = process.communicate()[0]
+    process.wait()
+    return process.returncode, ret
+
 def executeListCommand(arglist=[], quiet=True):
     if not quiet:
         Logging.warning(arglist)

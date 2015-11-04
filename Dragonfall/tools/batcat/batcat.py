@@ -259,14 +259,14 @@ def getPlatformProjectRoot(platform):
 
 def getAppVersion(platform):
     command = "python readProject.py -p %s -v" % platform
-    code, ret = executeCommand(command)
-    return ret[0].rstrip()
+    code, ret = executeCommandGetRet(command)
+    return ret.rstrip()
 
 
 def getAppMinVersion(platform):
     command = "python readProject.py -p %s -m" % platform
-    code, ret = executeCommand(command)
-    return ret[0].rstrip()
+    code, ret = executeCommandGetRet(command)
+    return ret.rstrip()
 
 
 def getUpdatePythonMainScriptPath():
