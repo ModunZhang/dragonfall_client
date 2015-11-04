@@ -163,7 +163,7 @@ def createZipFileWithDirPath(dirpath="", outFilePath="archive.zip", excludeExt=(
     getZipFileList(fileList, dirpath, dirpath, excludeExt)
     count = len(fileList)
     if count > 0:
-        Logging.info("创建zip文件:%s 拥有 %d 个文件" % (outFilePath, count))
+        Logging.info("- 创建zip文件:%s 包含%d个文件" % (outFilePath, count))
         zipOut = zipfile.ZipFile(formatPath(
             outFilePath), 'w', zipfile.ZIP_DEFLATED)
         for fileEntity in fileList:
@@ -181,6 +181,7 @@ def getZipFileList(fileList, path, basePath, excludeExt=()):
         sourceFile = os.path.join(currentPath,  file)
         if os.path.isfile(sourceFile):
             if sourceFile.split('.')[-1] in excludeExt:
+                Logging.debug(sourceFile.split('.')[-1])
                 continue
             if sourceFile.startswith(basePath):
                 fileList.append((sourceFile, sourceFile[len(basePath):]))
