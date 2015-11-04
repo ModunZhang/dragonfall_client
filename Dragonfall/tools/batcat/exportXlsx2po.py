@@ -8,24 +8,24 @@ PROJ_DIR = getProjDir()
 I18N_DIR = formatPath("%s/dev/res/i18n" % PROJ_DIR)
 EXCEL_FILE = ""
 PO_LANGUAGES = []
-SedCommand = "sed"
+SedCommand = "sed" #mac下默认
 
 
-def sedPofile(file_path):
+def sedPofile(file_path,language_code):
     args = """3a\\
 \"Project-Id-Version: dragonfall\\\\n"\\
 \"Language-Team: \\\\n"\\
-\"Language: ${language_code}\\\\n\"\\
+\"Language: %s\\\\n\"\\
 \"X-Poedit-SourceCharset: UTF-8\\\\n\"\\
 \"X-Poedit-KeywordsList: _\\\\n\"\\
 \"X-Poedit-Basepath: ../../scripts/app/\\\\n\"\\
 \"X-Poedit-SearchPath-0: .\\\\n\"
-			"""
+			""" % language_code
     command = ""
     if isWindows():
         command = [SedCommand, "-i", "-u", args, file_path]
     else:
-        command = [SedCommand, "-i", args, file_path]
+        command = [SedCommand,"-i","", args, file_path]
     executeListCommand(command, False)
 
 if __name__ == "__main__":
@@ -33,7 +33,6 @@ if __name__ == "__main__":
         EXCEL_FILE = formatPath(sys.argv[1])
     else:
         EXCEL_FILE = formatPath("%s/i18n.xlsx" % os.getcwd())
-    global SedCommand
     if isWindows():
         SedCommand = getWin32SedPath()
     for file in os.listdir(I18N_DIR):
@@ -48,4 +47,4 @@ if __name__ == "__main__":
         command = "xls-to-po %s %s %s" % (language_code,
                                           EXCEL_FILE, export_path)
         executeCommand(command, False)
-        sedPofile(export_path)
+        sedPofile(export_path,language_code)
