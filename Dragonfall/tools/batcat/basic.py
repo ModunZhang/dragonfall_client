@@ -188,3 +188,34 @@ def getZipFileList(fileList, path, basePath, excludeExt=()):
                 fileList.append((sourceFile, sourceFile))
         elif os.path.isdir(sourceFile):
             getZipFileList(fileList, sourceFile, basePath, excludeExt)
+
+def find_environment_variable(var, quiet=True):
+    ret = None
+    if not quiet:
+        Logging.info("查找脚本环境变量:%s" % var)
+    try:
+        ret = os.environ[var]
+    except Exception:
+        if isWindows():
+            import _winreg
+            try:
+                env = None
+                env = _winreg.OpenKeyEx(_winreg.HKEY_CURRENT_USER,
+                                        'Environment',
+                                        0,
+                                        _winreg.KEY_READ)
+
+                ret = _winreg.QueryValueEx(env, var)[0]
+                _winreg.CloseKey(env)
+            except Exception:
+                if env:
+                    _winreg.CloseKey(env)
+                ret = None
+
+    if ret is None:
+        die("->%s 未设置\n" % var)
+    else:
+        if not quiet:
+            Logging.info("查找 %s 变量成功 : %s\n" % (var, ret))
+
+    return ret

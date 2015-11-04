@@ -272,34 +272,3 @@ def getAppMinVersion(platform):
 def getUpdatePythonMainScriptPath():
     root_dir = getProjDir()
     return formatPath("%s/tools/buildUpdate/buildUpdate.py" % root_dir)
-
-
-def find_environment_variable(var, quiet=True):
-    ret = None
-    if not quiet:
-        Logging.info("检查环境变量:%s" % var)
-    try:
-        ret = os.environ[var]
-    except Exception:
-        if isWindows():
-            import _winreg
-            try:
-                env = None
-                env = _winreg.OpenKeyEx(_winreg.HKEY_CURRENT_USER,
-                                        'Environment',
-                                        0,
-                                        _winreg.KEY_READ)
-
-                ret = _winreg.QueryValueEx(env, var)[0]
-                _winreg.CloseKey(env)
-            except Exception:
-                if env:
-                    _winreg.CloseKey(env)
-                ret = None
-
-    if ret is None:
-        die("    ->%s not found\n" % var)
-    else:
-        Logging.warning("->%s is found : %s\n" % (var, ret))
-
-    return ret
