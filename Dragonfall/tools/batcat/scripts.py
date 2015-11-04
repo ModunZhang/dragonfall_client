@@ -73,7 +73,7 @@ def exportScriptsEncrypt():
     else:
         if DEBUG_BUILD_USE_LUA_FILE:
             Logging.info("不编译lua为字节码")
-            if not createZipFileWithDirPath(SCRIPTS_SRC_DIR, tempfile, ("DS_Store", "bytes", "tmp","ini")):
+            if not createZipFileWithDirPath(SCRIPTS_SRC_DIR, tempfile, getTempFileExtensions()):
                 die("压缩lua文件错误")
         else:
             comand = "%s -i %s -o %s -ex lua" % (

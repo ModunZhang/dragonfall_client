@@ -50,7 +50,7 @@ def exportImagesRes(image_dir_path):
         if os.path.isfile(sourceFile):
             # 拷贝[加密images下的jpg/png图片]
             fileExt = sourceFile.split('.')[-1]
-            if (fileExt in ('png', 'jpg')) and (fileExt not in ('tmp', 'DS_Store', 'ini')):
+            if fileExt in ('png', 'jpg'):
                 if not fileNewer(sourceFile, targetFile):
                     Logging.info("忽略 %s" % sourceFile)
                     continue
@@ -72,7 +72,7 @@ def exportImagesRes(image_dir_path):
                             continue
                         Logging.debug("处理 %s" % image_sourceFile)
                         fileExt = image_sourceFile.split('.')[-1]
-                        if fileExt not in ('tmp', 'plist', 'DS_Store'):
+                        if fileExt not in getTempFileExtensions():
                             if NEED_ENCRYPT_RES:
                                 CompileResources(
                                     image_sourceFile, outdir)
@@ -86,7 +86,7 @@ def exportImagesRes(image_dir_path):
                     image_sourceFile = os.path.join(sourceFile,  image_file)
                     image_targetFile = os.path.join(outdir,  image_file)
                     fileExt = image_sourceFile.split('.')[-1]
-                    if fileExt in ('DS_Store', 'tmp', 'ini'):
+                    if fileExt in getTempFileExtensions():
                         continue
                     if not fileNewer(image_sourceFile, image_targetFile):
                         Logging.info("忽略 %s" % image_sourceFile)
@@ -106,7 +106,7 @@ def exportImagesRes(image_dir_path):
                     image_sourceFile = os.path.join(sourceFile,  image_file)
                     image_targetFile = os.path.join(outdir,  image_file)
                     fileExt = image_sourceFile.split('.')[-1]
-                    if fileExt in ('DS_Store', 'tmp', 'ini'):
+                    if fileExt in getTempFileExtensions():
                         continue
                     if not fileNewer(image_sourceFile, image_targetFile):
                         Logging.info("忽略 %s" % image_sourceFile)
@@ -143,7 +143,7 @@ def exportAnimationRes(animation_path):
                 shutil.copy(sourceFile,  outdir)
             else:
                 Logging.info("忽略 %s" % sourceFile)
-        else:
+        elif fileExt not in getTempFileExtensions():
             if NEED_ENCRYPT_RES:
                 CompileResources(sourceFile, outdir)
             else:
@@ -161,7 +161,7 @@ def exportRes(sourceDir,  targetDir):
             outdir = os.path.dirname(targetFile)
             fileExt = sourceFile.split('.')[-1]
             # iOS不拷贝字体文件
-            if fileExt not in ('po', 'ttf', 'DS_Store', 'ini'):
+            if fileExt not in ('po', 'ttf') and fileExt not in getTempFileExtensions():
                 if not fileNewer(sourceFile, targetFile):
                     Logging.info("忽略 %s" % sourceFile)
                     continue

@@ -66,7 +66,7 @@ def exportImagesRes(image_dir_path):
         targetFile = os.path.join(outdir,  file)
         if os.path.isfile(sourceFile):
             fileExt = sourceFile.split('.')[-1]
-            if (fileExt in ('png','jpg')) and fileExt != 'tmp':
+            if fileExt in ('png','jpg'):
                 if NEED_ENCRYPT_RES:
                     CompileResources(sourceFile, outdir)
                 else:
@@ -81,7 +81,7 @@ def exportImagesRes(image_dir_path):
                     current_sourceFile = os.path.join(sourceFile,  image_file)
                     if os.path.isfile(current_sourceFile):
                         fileExt = current_sourceFile.split('.')[-1]
-                        if fileExt != 'tmp' and fileExt != 'plist':
+                        if fileExt not in getTempFileExtensions() and fileExt != 'plist':
                             if NEED_ENCRYPT_RES:
                                 CompileResources(
                                     current_sourceFile, outdir)
@@ -97,7 +97,7 @@ def exportImagesRes(image_dir_path):
                     current_sourceFile = os.path.join(sourceFile, image_file)
                     if os.path.isfile(current_sourceFile):
                         fileExt = current_sourceFile.split('.')[-1]
-                        if fileExt != 'tmp' and fileExt != 'plist':
+                        if fileExt not in getTempFileExtensions() and fileExt != 'plist':
                             if USE_DXT_COMPRESS:
                                 temp_file = os.path.join(
                                     TEMP_RES_DIR, image_file)
@@ -134,7 +134,7 @@ def exportAnimationRes(animation_path):
             os.makedirs(outdir)
         if fileExt == 'ExportJson' or fileExt == 'plist':
             shutil.copy(sourceFile,  outdir)
-        else:
+        elif fileExt not in getTempFileExtensions():
             if USE_DXT_COMPRESS:
                 temp_file = os.path.join(TEMP_RES_DIR, file)
                 temp_final_file = temp_file
@@ -166,7 +166,7 @@ def exportRes(sourceDir,  targetDir):
             fileExt = sourceFile.split('.')[-1]
             if not os.path.exists(outdir):
                 os.makedirs(outdir)
-            if fileExt not in ('po','ini','DS_Store','tmp'):
+            if fileExt not in ('po') and fileExt not in getTempFileExtensions():
                 shutil.copy(sourceFile,  outdir)
                 Logging.debug("拷贝 %s" % sourceFile)
         elif os.path.isdir(sourceFile):

@@ -25,20 +25,21 @@ QUIET_MODE = False
 ALPHA_USE_ETC = True  # alpha纹理使用etc格式压缩
 COMPRESS_ETC_FILE = True  # etc格式纹理通过自定义压缩工具再压缩
 
+Logging.DEBUG_MODE = True
 
 def getAllArgs():
 
     global NEED_ENCRYPT_RES
 
     NEED_ENCRYPT_RES = getNeedEncryptResources(NEED_ENCRYPT_RES)
-    Logging.info("------------Debug Config------------")
-    Logging.info(Platform)
-    Logging.info(NEED_ENCRYPT_RES)
-    Logging.info(RES_DEST_DIR)
-    Logging.info(RES_COMPILE_TOOL)
-    Logging.info(RES_SRC_DIR)
-    Logging.info(ETCPackTool)
-    Logging.info("------------End Config------------")
+    Logging.debug("------------Debug Config------------")
+    Logging.debug(Platform)
+    Logging.debug(NEED_ENCRYPT_RES)
+    Logging.debug(RES_DEST_DIR)
+    Logging.debug(RES_COMPILE_TOOL)
+    Logging.debug(RES_SRC_DIR)
+    Logging.debug(ETCPackTool)
+    Logging.debug("------------End Config------------")
 
 
 def CompileResources(in_file_path, out_dir_path):
@@ -83,7 +84,7 @@ def exportImagesRes(image_dir_path):
         if os.path.isfile(sourceFile):
             # 拷贝[加密images下的jpg/png图片]
             fileExt = sourceFile.split('.')[-1]
-            if (fileExt == 'png' or fileExt == 'jpg') and fileExt != 'tmp' and fileExt != 'DS_Store':
+            if fileExt in ('png','jpg'):
                 if not fileNewer(sourceFile, targetFile):
                     Logging.info("忽略 %s" % sourceFile)
                     continue
@@ -109,7 +110,7 @@ def exportImagesRes(image_dir_path):
                     fileExt = fileInfo[-1]
                     if fileExt == 'plist':
                         shutil.copy(image_sourceFile, outdir)
-                    elif fileExt != 'tmp' and fileExt != 'DS_Store':
+                    elif fileExt not in getTempFileExtensions():
                         tempfileName = fileInfo[0]
                         tempRGBfile = os.path.join(
                             TEMP_RES_DIR, tempfileName + '.png')
@@ -155,7 +156,7 @@ def exportImagesRes(image_dir_path):
                     Logging.debug("处理 %s" % image_sourceFile)
                     fileInfo = image_file.split('.')
                     fileExt = fileInfo[-1]
-                    if fileExt == 'DS_Store':
+                    if fileExt in getTempFileExtensions():
                         continue
                     tempfileName = fileInfo[0]
                     tempRGBfile = os.path.join(
@@ -197,7 +198,7 @@ def exportImagesRes(image_dir_path):
                     image_targetFile = os.path.join(outdir,  image_file)
                     image_outdir = os.path.dirname(image_targetFile)
                     fileExt = image_sourceFile.split('.')[-1]
-                    if fileExt == 'DS_Store':
+                    if fileExt in getTempFileExtensions():
                         continue
                     if not fileNewer(image_sourceFile, image_targetFile):
                         Logging.info("忽略 %s" % image_sourceFile)
@@ -205,7 +206,6 @@ def exportImagesRes(image_dir_path):
                     # 是否考虑 pvr ccz + premultiply-alpha?
                     command = 'TexturePacker --format cocos2d --no-trim --disable-rotation --texture-format png --opt RGBA4444 --png-opt-level 7 --allow-free-size --padding 0 %s --sheet %s --data %s/tmp.plist' % (
                         image_sourceFile, temp_file, TEMP_RES_DIR)
-                    # Logging.info(command)
                     executeCommand(command, QUIET_MODE)
                     if NEED_ENCRYPT_RES:
                         CompileResources(temp_file, image_outdir)
@@ -225,7 +225,7 @@ def exportRes(sourceDir,  targetDir):
         if os.path.isfile(sourceFile):  # file in res
             outdir = os.path.dirname(targetFile)
             fileExt = sourceFile.split('.')[-1]
-            if fileExt != 'po' and fileExt != 'DS_Store':  # iOS不拷贝字体文件
+            if fileExt not in ('po','ttf') and fileExt not in getTempFileExtensions(): 
                 if not fileNewer(sourceFile, targetFile):
                     Logging.info("忽略 %s" % sourceFile)
                     continue
@@ -233,6 +233,9 @@ def exportRes(sourceDir,  targetDir):
                     os.makedirs(outdir)
                 shutil.copy(sourceFile,  outdir)
                 Logging.debug("拷贝 %s" % sourceFile)
+            elif fileExt == 'ttf': #android 拷贝字体文件到res下
+                Logging.debug("拷贝 %s" % file)
+                shutil.copy(sourceFile,  RES_DEST_DIR)
         elif os.path.isdir(sourceFile):
             dir_name = os.path.basename(sourceFile)
             if dir_name == 'images':

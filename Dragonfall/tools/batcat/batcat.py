@@ -272,3 +272,6 @@ def getAppMinVersion(platform):
 def getUpdatePythonMainScriptPath():
     root_dir = getProjDir()
     return formatPath("%s/tools/buildUpdate/buildUpdate.py" % root_dir)
+
+def getTempFileExtensions():
+    return ("DS_Store", "bytes", "tmp","ini")
