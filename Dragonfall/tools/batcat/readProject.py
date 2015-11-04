@@ -6,11 +6,13 @@ import sys
 import getopt
 from basic import *
 from batcat import *
+from biplist import *
 
 platform = ""
 isReadVersion = False
 isReadMinVersion = False
 
+Logging.DEBUG_MODE = True
 
 def usage():
     print("usage:")
@@ -27,7 +29,7 @@ def initData():
     if platform == 'WP':
         pass
     if platform == 'iOS':
-        pass
+        initiOSData()
 
 
 def getAppVersion():
@@ -36,7 +38,7 @@ def getAppVersion():
     if platform == 'WP':
         return getWPAppVersion()
     if platform == 'iOS':
-        pass
+        return getiOSAppVersion()
 
 
 def getAppMinVersion():
@@ -45,7 +47,7 @@ def getAppMinVersion():
     if platform == 'WP':
         return getWPAppMinVersion()
     if platform == 'iOS':
-        pass
+        return getiOSAppMinVersion()
 
 # Android
 
@@ -117,7 +119,16 @@ def getWPAppMinVersion():
         if meta.getAttribute("x:Key") == "AppMinVersion":
             return meta.firstChild.data
 # iOS
+def initiOSData():
+    m_file_path = getProjConfigPath('iOS')
+    global root
+    root = readPlist(m_file_path)
 
+def getiOSAppVersion():
+    return root['CFBundleShortVersionString']
+
+def getiOSAppMinVersion():
+    return root['AppMinVersion']
 if __name__ == "__main__":
     try:
         opts, args = getopt.getopt(sys.argv[1:], 'p:vm')
