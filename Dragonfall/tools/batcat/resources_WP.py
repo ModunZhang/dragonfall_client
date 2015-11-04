@@ -7,11 +7,10 @@ import os
 import sys
 
 Platform = "WP"
-DXT_FOMAT = "/DXT3"  # the format of DXT texture
-# zip the texture data(cocos2dx must open macro 'CC_USE_ETC1_ZLIB')
-ZIP_TEXTURE = True
+DXT_FOMAT = "/DXT3"  # 定义dds纹理的格式
+ZIP_TEXTURE = True #是否使用工具第二次压缩纹理 游戏逻辑部分必须开启宏CC_USE_ETC1_ZLIB
 USE_DXT_COMPRESS = True  # use DXT format texture
-NEED_ENCRYPT_RES = ""  # encrypt resources(only texture)
+NEED_ENCRYPT_RES = ""  # 纹理是否进行加密
 RES_COMPILE_TOOL = getResourceTool()
 RES_SRC_DIR = getResourceDir()
 XXTEAKey = getXXTEAKey()
@@ -21,8 +20,9 @@ ZIP_TEXTURE_TOOL = getETCCompressTool()
 RES_DEST_DIR = getExportResourcesDir(Platform)
 DXT_COMPRESS_TOOL = getDXTConvertTool(Platform)
 
-QUIET_MODE = True  # quite mode
+QUIET_MODE = True  # 安静模式:命令行工具是否打印输出
 
+Logging.DEBUG_MODE = True  # 控制debug日志是否输出
 
 def getAllArgs():
 
@@ -30,16 +30,13 @@ def getAllArgs():
 
     NEED_ENCRYPT_RES = getNeedEncryptResources(NEED_ENCRYPT_RES)
 
-    if not QUIET_MODE:
-        print Platform, NEED_ENCRYPT_RES, RES_DEST_DIR
-
-
-def ZipResources(in_file_path, out_file_path):
+#自定义工具压缩纹理数据
+def PackImage(in_file_path, out_file_path):
     comand = "%s pack %s %s" % (ZIP_TEXTURE_TOOL, in_file_path, out_file_path)
     code, ret = executeCommand(comand, QUIET_MODE)
     return code == 0
 
-
+#dds纹理压缩
 def DXTFormatResources(in_file_path, out_file_path):
     comand = "%s -file %s -fileformat dds %s /rescalemode nearest /mipMode None /out %s" % (
         DXT_COMPRESS_TOOL, in_file_path, DXT_FOMAT, out_file_path)
@@ -48,7 +45,7 @@ def DXTFormatResources(in_file_path, out_file_path):
     code, ret = executeCommand(comand, QUIET_MODE)
     return code == 0
 
-
+#加密文件
 def CompileResources(in_file_path, out_dir_path):
     comand = "%s -i %s -o %s -ek %s -es %s" % (
         RES_COMPILE_TOOL, in_file_path, out_dir_path, XXTEAKey, XXTEASign)
@@ -61,7 +58,7 @@ def CompileResources(in_file_path, out_dir_path):
 def exportImagesRes(image_dir_path):
     outdir = os.path.join(RES_DEST_DIR, os.path.basename(
         image_dir_path))  # xxx/images/
-    Logging.info("> %s" % image_dir_path)
+    Logging.info("图片文件夹:%s" % image_dir_path)
     if not os.path.exists(outdir):
         os.makedirs(outdir)
     for file in os.listdir(image_dir_path):
@@ -69,7 +66,7 @@ def exportImagesRes(image_dir_path):
         targetFile = os.path.join(outdir,  file)
         if os.path.isfile(sourceFile):
             fileExt = sourceFile.split('.')[-1]
-            if (fileExt == 'png' or fileExt == 'jpg') and fileExt != 'tmp':
+            if (fileExt in ('png','jpg')) and fileExt != 'tmp':
                 if NEED_ENCRYPT_RES:
                     CompileResources(sourceFile, outdir)
                 else:
@@ -80,31 +77,26 @@ def exportImagesRes(image_dir_path):
             dir_name = os.path.basename(sourceFile)
             Logging.warning("文件件 %s" % dir_name)
             if dir_name == 'rgba444_single':
-
                 for image_file in os.listdir(sourceFile):
-                    image_sourceFile = os.path.join(sourceFile,  image_file)
-                    image_targetFile = os.path.join(outdir,  image_file)
-                    image_outdir = os.path.dirname(image_targetFile)
-                    if os.path.isfile(image_sourceFile):
-                        fileExt = image_sourceFile.split('.')[-1]
+                    current_sourceFile = os.path.join(sourceFile,  image_file)
+                    if os.path.isfile(current_sourceFile):
+                        fileExt = current_sourceFile.split('.')[-1]
                         if fileExt != 'tmp' and fileExt != 'plist':
                             if NEED_ENCRYPT_RES:
                                 CompileResources(
-                                    image_sourceFile, image_outdir)
-                                Logging.debug("拷贝 %s" % image_sourceFile)
+                                    current_sourceFile, outdir)
+                                Logging.debug("拷贝 %s" % current_sourceFile)
                             else:
-                                shutil.copy(image_sourceFile, image_outdir)
+                                shutil.copy(current_sourceFile, outdir)
                         elif fileExt == 'plist':
-                            Logging.debug("拷贝 %s" % image_sourceFile)
-                            shutil.copy(image_sourceFile, image_outdir)
+                            Logging.debug("拷贝 %s" % current_sourceFile)
+                            shutil.copy(current_sourceFile, outdir)
 
             elif dir_name == '_CanCompress' or dir_name == '_Compressed_wp':
                 for image_file in os.listdir(sourceFile):
-                    image_sourceFile = os.path.join(sourceFile, image_file)
-                    image_targetFile = os.path.join(outdir,  image_file)
-                    image_outdir = os.path.dirname(image_targetFile)
-                    if os.path.isfile(image_sourceFile):
-                        fileExt = image_sourceFile.split('.')[-1]
+                    current_sourceFile = os.path.join(sourceFile, image_file)
+                    if os.path.isfile(current_sourceFile):
+                        fileExt = current_sourceFile.split('.')[-1]
                         if fileExt != 'tmp' and fileExt != 'plist':
                             if USE_DXT_COMPRESS:
                                 temp_file = os.path.join(
@@ -113,22 +105,22 @@ def exportImagesRes(image_dir_path):
                                 if ZIP_TEXTURE:
                                     temp_file = os.path.join(
                                         TEMP_RES_DIR, os.path.splitext(image_file)[0] + '_dds.png')
-                                if DXTFormatResources(image_sourceFile, temp_file):
-                                    if ZIP_TEXTURE and ZipResources(temp_file, temp_final_file):
-                                        image_sourceFile = temp_final_file
+                                if DXTFormatResources(current_sourceFile, temp_file):
+                                    if ZIP_TEXTURE and PackImage(temp_file, temp_final_file):
+                                        current_sourceFile = temp_final_file
                                     else:
-                                        image_sourceFile = temp_file
+                                        current_sourceFile = temp_file
                             if NEED_ENCRYPT_RES:
                                 CompileResources(
-                                    image_sourceFile, image_outdir)
+                                    current_sourceFile, outdir)
                             else:
-                                Logging.debug("拷贝 %s" % image_sourceFile)
-                                shutil.copy(image_sourceFile, image_outdir)
+                                Logging.debug("拷贝 %s" % current_sourceFile)
+                                shutil.copy(current_sourceFile, outdir)
                         elif fileExt == 'plist':
-                            Logging.debug("拷贝 %s" % image_sourceFile)
-                            shutil.copy(image_sourceFile, image_outdir)
+                            Logging.debug("拷贝 %s" % current_sourceFile)
+                            shutil.copy(current_sourceFile, outdir)
             else:
-                Logging.info("Not handle dir: %s" % sourceFile)
+                Logging.info("未处理:%s" % sourceFile)
 
 
 def exportAnimationRes(animation_path):
@@ -151,7 +143,7 @@ def exportAnimationRes(animation_path):
                         TEMP_RES_DIR, os.path.splitext(file)[0] + '_dds.png')
                 # dxt
                 if DXTFormatResources(sourceFile, temp_file):
-                    if ZIP_TEXTURE and ZipResources(temp_file, temp_final_file):
+                    if ZIP_TEXTURE and PackImage(temp_file, temp_final_file):
                         sourceFile = temp_final_file
                     else:
                         sourceFile = temp_file
@@ -163,7 +155,7 @@ def exportAnimationRes(animation_path):
 
 def exportRes(sourceDir,  targetDir):
     if sourceDir.find(".git") > 0:
-        Logging.warning("发现了git文件不处理")
+        Logging.warning("git文件不处理")
         return
     for file in os.listdir(sourceDir):
         sourceFile = os.path.join(sourceDir,  file)
@@ -174,7 +166,7 @@ def exportRes(sourceDir,  targetDir):
             fileExt = sourceFile.split('.')[-1]
             if not os.path.exists(outdir):
                 os.makedirs(outdir)
-            if fileExt != 'po' and fileExt != 'ini':
+            if fileExt not in ('po','ini','DS_Store','tmp'):
                 shutil.copy(sourceFile,  outdir)
                 Logging.debug("拷贝 %s" % sourceFile)
         elif os.path.isdir(sourceFile):
@@ -182,7 +174,7 @@ def exportRes(sourceDir,  targetDir):
             if dir_name == 'images':
                 exportImagesRes(sourceFile)
             elif dir_name == 'animations':
-                Logging.warning("不处理animations文件夹")
+                Logging.warning("未处理animations文件夹")
             elif dir_name == 'animations_mac':
                 exportAnimationRes(sourceFile)
             else:

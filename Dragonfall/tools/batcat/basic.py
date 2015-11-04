@@ -30,7 +30,7 @@ class Logging:
         if Logging.DEBUG_MODE:
             localtime = time.strftime(
                 "%a %H:%M:%S", time.localtime(time.time()))
-            Logging._print("[DEBUG]%s %s " % (localtime, s), Fore.GREEN)
+            Logging._print("[DEBUG]%s %s " % (localtime, s), Fore.RESET)
 
     @staticmethod
     def info(s):
@@ -94,8 +94,8 @@ def touch(path):
 def executeCommand(command="", quiet=True):
     args = command.split(" ")
     if not quiet:
-        Logging.info(command)
-    process = subprocess.Popen(args, stdout=subprocess.PIPE)
+        Logging.warning(command)
+    process = subprocess.Popen(args)
     process.wait()
     if process.returncode != 0:
         die(args)
@@ -105,8 +105,8 @@ def executeCommand(command="", quiet=True):
 
 def executeListCommand(arglist=[], quiet=True):
     if not quiet:
-        Logging.info(arglist)
-    process = subprocess.Popen(arglist, stdout=subprocess.PIPE)
+        Logging.warning(arglist)
+    process = subprocess.Popen(arglist)
     process.wait()
     if process.returncode != 0:
         die(arglist)

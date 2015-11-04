@@ -21,6 +21,7 @@ QUIET_MODE = True  # 安静模式
 VERSION_FILE = formatPath("%s/dev/scripts/debug_version.lua" % ProjDir)
 CONFIGURATION = ""
 
+Logging.DEBUG_MODE = True #debug日志的输出
 
 def preBuild():
     command = "python build_format_map.py -r rgba4444.lua"
@@ -46,9 +47,9 @@ def getAllArgs():
 
 def gitDebugVersion():
     version = getAppBuildTag()
-    Logging.info("------------------------------------")
-    Logging.info("> Debug Version:%s" % str(version))
-    Logging.info("------------------------------------")
+    Logging.debug("------------------------------------")
+    Logging.debug("> Debug Version:%s" % str(version))
+    Logging.debug("------------------------------------")
 
     versionFile = open(VERSION_FILE, 'w')
     versionData = "local __debugVer = %s\n" % str(version)
@@ -63,7 +64,7 @@ def exportScriptsEncrypt():
     outfile = formatPath("%s/game.zip" % outdir)
     tempfile = formatPath("%s/game.zip" % TEMP_RES_DIR)
     if NEED_ENCRYPT_SCRIPTS:
-        Logging.info("开始lua编译")
+        Logging.warning("开始lua编译")
         comand = "%s -i %s -o %s -e xxtea_zip -ex lua -ek %s -es %s" % (
             SCRIPT_COMPILE_TOOL, SCRIPTS_SRC_DIR, tempfile, XXTEAKey, XXTEASign)
         if QUIET_MODE:
@@ -72,7 +73,7 @@ def exportScriptsEncrypt():
     else:
         if DEBUG_BUILD_USE_LUA_FILE:
             Logging.info("不编译lua为字节码")
-            if not createZipFileWithDirPath(SCRIPTS_SRC_DIR, tempfile, ("DS_Store", "bytes", "tmp")):
+            if not createZipFileWithDirPath(SCRIPTS_SRC_DIR, tempfile, ("DS_Store", "bytes", "tmp","ini")):
                 die("压缩lua文件错误")
         else:
             comand = "%s -i %s -o %s -ex lua" % (
@@ -90,7 +91,7 @@ def exportScriptsEncrypt():
     Logging.info("清理临时文件")
     removeTempFiles(SCRIPTS_SRC_DIR, "bytes")
     removeTempDir(TEMP_RES_DIR)
-    Logging.info("lua编译完成")
+    Logging.warning("lua编译完成")
 
 # main
 if __name__ == "__main__":
