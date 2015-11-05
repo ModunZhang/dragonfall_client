@@ -18,7 +18,7 @@ void ShowAlert(std::string title, std::string content, std::string okString, std
 	auto pOkString = WinRTHelper::PlatformStringFromString(okString);
 	WinRTHelper::RunOnUIThread([=](){
 		auto msgDlg = ref new MessageDialog(pContent, pTitle);
-		
+
 		msgDlg->Commands->Append(ref new UICommand(pOkString, ref new UICommandInvokedHandler([=](IUICommand^)
 		{
 			if (callbackFunc)
@@ -42,7 +42,7 @@ void OpenUrl(std::string url)
 //wp8.1 not support: https://social.msdn.microsoft.com/Forums/sqlserver/en-US/ac4f3329-d7ee-455f-80be-0e1685fea971/how-to-copy-text-to-the-clipboard-in-wp81-using-vs2013-can-not-refer-to-the-correct-namespace?forum=wpdevelop
 void CopyText(std::string text)
 {
-	
+
 }
 
 
@@ -92,7 +92,12 @@ std::string GetAppBundleVersion()
 }
 std::string GetDeviceToken()
 {
-	return "WP8";
+	if (Windows::Storage::ApplicationData::Current->LocalSettings->Values->HasKey("push_url"))
+	{
+		Platform::String^ oldUrl = static_cast<Platform::String^>(Windows::Storage::ApplicationData::Current->LocalSettings->Values->Lookup("push_url"));
+		return WinRTHelper::PlatformStringToString(oldUrl);
+	}
+	return "";
 }
 
 std::string GetDeviceLanguage()
@@ -146,6 +151,25 @@ std::string GetOpenUdid()
 
 void RegistereForRemoteNotifications()
 {
+	create_task(Windows::Networking::PushNotifications::PushNotificationChannelManager::CreatePushNotificationChannelForApplicationAsync())
+		.then([=](task<Windows::Networking::PushNotifications::PushNotificationChannel^> task)
+	{
+
+		Windows::Networking::PushNotifications::PushNotificationChannel^ channel = task.get();
+		Platform::String^ url = channel->Uri;
+		if (!Windows::Storage::ApplicationData::Current->LocalSettings->Values->HasKey("push_url"))
+		{
+			Windows::Storage::ApplicationData::Current->LocalSettings->Values->Insert("push_url", url);
+		}
+		else
+		{
+			Platform::String^ oldUrl = static_cast<Platform::String^>(Windows::Storage::ApplicationData::Current->LocalSettings->Values->Lookup("push_url"));
+			if (oldUrl != url)
+			{
+				Windows::Storage::ApplicationData::Current->LocalSettings->Values->Insert("push_url", url);
+			}
+		}
+	});
 }
 
 void ClearOpenUdidData()
