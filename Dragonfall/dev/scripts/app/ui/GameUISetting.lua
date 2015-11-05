@@ -111,7 +111,7 @@ function GameUISetting:OnButtonClicked(button)
 		UIKit:newGameUI("GameUISettingLanguage"):AddToCurrentScene(true)
 	elseif tag == 4 then
 		if CONFIG_IS_NOT_UPDATE then
-			UIKit:newGameUI('GameUIShop', City):AddToCurrentScene(true)
+			-- UIKit:newGameUI('GameUIShop', City):AddToCurrentScene(true)
 		else
 			UIKit:newGameUI("GameUITips"):AddToCurrentScene(true)
 		end

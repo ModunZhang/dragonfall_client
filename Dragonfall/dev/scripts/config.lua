@@ -54,7 +54,7 @@ GLOBAL_FTE = false
 GLOBAL_FTE_DEBUG = false
 
 -- 是否关闭自动更新,不设置表示打开自动更新
-CONFIG_IS_NOT_UPDATE = false
+CONFIG_IS_NOT_UPDATE = true
 
 CONFIG_SCREEN_AUTOSCALE_CALLBACK = function(w, h, deviceModel)
     if w/h > 640/960 then
