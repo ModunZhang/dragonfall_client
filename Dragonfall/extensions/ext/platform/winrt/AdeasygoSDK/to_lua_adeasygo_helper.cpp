@@ -133,6 +133,15 @@ static int tolua_adeasygo_canMakePurchases(lua_State *tolua_S)
 	return 1;
 }
 
+static int tolua_adeasygo_validateMSReceipts(lua_State *tolua_S)
+{
+#if defined(__AdeasygoSDK__)
+	cocos2d::AdeasygoHelper::Instance->MSValidateReceipts();
+#endif
+	return 0;
+}
+
+
 void tolua_ext_module_adeasygo(lua_State* tolua_S)
 {
 	tolua_module(tolua_S, EXT_MODULE_NAME, 0);
@@ -145,5 +154,6 @@ void tolua_ext_module_adeasygo(lua_State* tolua_S)
 	tolua_function(tolua_S, "init", tolua_adeasygo_init);
 	tolua_function(tolua_S, "consumePurchase", tolua_adeasygo_consumePurchase);
 	tolua_function(tolua_S, "canMakePurchases", tolua_adeasygo_canMakePurchases);
+	tolua_function(tolua_S, "validateMSReceipts", tolua_adeasygo_validateMSReceipts);
 	tolua_endmodule(tolua_S);
 }

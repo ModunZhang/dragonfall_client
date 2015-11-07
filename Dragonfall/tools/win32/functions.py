@@ -67,11 +67,11 @@ def getXXTEASign():
 
 def getResourceDir():
     root_dir=getProjDir();
-    return os.path.normpath("%s/dev/res" % root_dir);
+    return os.path.normpath("%s/samples/res" % root_dir);
 
 def getScriptsDir():
     root_dir=getProjDir(); 
-    return os.path.normpath("%s/dev/scripts" % root_dir);
+    return os.path.normpath("%s/samples/scripts" % root_dir);
 
 def getExportDir():
     root_dir=getProjDir(); 

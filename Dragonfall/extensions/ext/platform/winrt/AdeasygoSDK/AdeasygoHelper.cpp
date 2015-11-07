@@ -18,7 +18,7 @@ using namespace Windows::ApplicationModel::Store;
 #define AdeasygoAppKey "c7867ffb85d75c70"
 #define AdeasygoAppId "ea9d6d3a7d050b8b"
 extern void OnPayDone(int handleId, cocos2d::ValueVector valVector);
-
+#define _DEBUG_Microsoft //测试微软支付
 namespace cocos2d
 {
 	AdeasygoHelper::AdeasygoHelper()
@@ -27,14 +27,17 @@ namespace cocos2d
 		m_goods_inited = false;
 		m_isVisible = false;
 		m_goods_map.clear();
-		vecMSUnfulfilledConsumables.clear();
+		m_vec_NeedValidateReceipt.clear();
 	}
 
 	void AdeasygoHelper::PayDone(Platform::Object^ sender, Adeasygo::PaySDKWP81::Model::PayDoneEventArgs ^ args)
 	{
 		SDKManager::ClosePayBox();
 		m_isVisible = false;
-		updateTransactionStates(); //完成后更新订单信息
+		create_task(Adeasygo::PaySDKWP81::SDKManager::GetUnSyncTrade()).then([this](task<Model::TradeResultList^> task){
+			Model::TradeResultList^ tradeResultList = task.get();
+			CallLuaCallbakAdeasygo(tradeResultList);
+		});
 	}
 	
 	void AdeasygoHelper::MsPurchas(Platform::Object^ sender, Adeasygo::PaySDKWP81::Model::MsPayEventArgs ^ args)
@@ -42,27 +45,29 @@ namespace cocos2d
 		m_isVisible = false;
 #if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
 		Platform::String^ productId = findProductIdWithAdeasygoGoodsId(args->GoodsID);
-		OutputDebugString(("购买:" + productId)->Data());
 		if (!productId->IsEmpty())
 		{
-#ifdef _DEBUG
+#ifdef _DEBUG_Microsoft
 			productId = "com.dragonfall.test";
-#endif // _DEBUG
+#endif // _DEBUG_Microsoft
+			OutputDebugString(("购买:" + productId)->Data());
 			MSRequestProductPurchase(productId);
 		}
-		
-
 #endif
 	}
 
 	void AdeasygoHelper::updateTransactionStates()
 	{
-		if (!m_goods_inited)return;
+#if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
+		MSGetUnfulfilledConsumables();
+#endif
 		RunOnUIThread([=](){
+			if (!m_goods_inited)return;
 			create_task(Adeasygo::PaySDKWP81::SDKManager::GetUnSyncTrade()).then([this](Model::TradeResultList^ tradeResultList)
 			{
 				CallLuaCallbakAdeasygo(tradeResultList);
 			});
+
 		});
 	}
 
@@ -144,9 +149,9 @@ namespace cocos2d
 		return ret;
 	}
 
-	/************************************************************************/
-	/* 微软支付相关方法														*/
-	/************************************************************************/
+/************************************************************************/
+/* 微软支付相关方法														*/
+/************************************************************************/
 
 #if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
 
@@ -185,21 +190,23 @@ namespace cocos2d
 		RunOnUIThread([=](void){
 			create_task(CurrentApp::RequestProductPurchaseAsync(productId)).then([=](PurchaseResults^ results)
 			{
-				if (results->Status == ProductPurchaseStatus::Succeeded || results->Status == ProductPurchaseStatus::NotFulfilled)
+				if (results->Status == ProductPurchaseStatus::Succeeded)
 				{
-					if (results->Status == ProductPurchaseStatus::Succeeded)
-					{
-						OutputDebugString(L"完成购买---\n");
-					}
-					else
-					{
-						OutputDebugString(L"未验证订单---\n");
-					}
+					OutputDebugString(L"\n完成购买---\n");
+					cocos2d::ValueMap tempMap;
+					tempMap["transactionIdentifier"] = PlatformStringToString(results->ReceiptXml);
+					tempMap["productIdentifier"] = PlatformStringToString(productId);
+					tempMap["orderType"] = "Microsoft";
+					m_vec_NeedValidateReceipt.push_back(cocos2d::Value(tempMap));
+				}
+				else if (results->Status == ProductPurchaseStatus::NotFulfilled)
+				{
+					OutputDebugString(L"\n未验证订单---\n");
 					CallLuaCallbakMicrosoft(productId, results->ReceiptXml);
 				}
 				else if (results->Status == ProductPurchaseStatus::NotPurchased)
 				{
-					OutputDebugString(L"未购买---\n");
+					OutputDebugString(L"\n未购买---\n");
 				}
 			});
 		});
@@ -234,7 +241,15 @@ namespace cocos2d
 		create_task(request).then([=](Windows::Foundation::Collections::IVectorView<UnfulfilledConsumable^>^ unfulfilledConsumables)
 		{
 			CallLuaCallbakMicrosoft(unfulfilledConsumables);
-		});
+		}).wait();
+	}
+	void AdeasygoHelper::MSValidateReceipts()
+	{
+		if (m_vec_NeedValidateReceipt.size() > 0)
+		{
+			CallLuaCallback(m_vec_NeedValidateReceipt);
+			m_vec_NeedValidateReceipt.clear();//调用lua后无论成功失败清空列表
+		}
 	}
 #endif /* WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP) */
 }

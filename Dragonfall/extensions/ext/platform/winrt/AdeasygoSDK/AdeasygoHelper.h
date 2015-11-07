@@ -25,6 +25,8 @@ namespace cocos2d
 		//通过sdk的goodsId查找商品id
 		Platform::String^ findProductIdWithAdeasygoGoodsId(Platform::String^ goodsId);
 
+		cocos2d::ValueVector m_vec_NeedValidateReceipt;
+
 #if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
 		//调用lua回调的微软接口
 		void CallLuaCallbakMicrosoft(Platform::String^ productId, Platform::String^ transactionIdentifier);
@@ -40,7 +42,6 @@ namespace cocos2d
 		void MSGetUnfulfilledConsumables();
 #endif
 	public:
-		cocos2d::ValueVector vecMSUnfulfilledConsumables;
 		static property AdeasygoHelper^ Instance
 		{
 			AdeasygoHelper^ get()
@@ -92,6 +93,8 @@ namespace cocos2d
 #if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
 		//确认微软购买商品
 		void MSReportProductFulfillment(Platform::String^ productId);
+		//对微软的收据进行验证 确保该方法要在和服务器通信正常的时候调用
+		void MSValidateReceipts();
 #endif
 	};
 }
