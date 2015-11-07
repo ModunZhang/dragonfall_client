@@ -30,8 +30,6 @@ static int tolua_adeasygo_pay(lua_State *tolua_S)
 	{
 #if defined(__AdeasygoSDK__)
 		std::string product_id = tolua_tocppstring(tolua_S, 1, 0);
-		cocos2d::LUA_FUNCTION func = toluafix_ref_function(tolua_S, 2, 0);
-		cocos2d::AdeasygoHelper::Instance->handleId = func;
 		cocos2d::AdeasygoHelper::Instance->Pay(cocos2d::WinRTHelper::PlatformStringFromString(product_id));
 #endif
 		return 0;
@@ -103,6 +101,38 @@ static int tolua_adeasygo_init(lua_State *tolua_S)
 	return 0;
 }
 
+static int tolua_adeasygo_consumePurchase(lua_State *tolua_S)
+{
+#ifndef TOLUA_RELEASE
+	tolua_Error tolua_err;
+	if (!tolua_isstring(tolua_S, 1, 0, &tolua_err))
+		goto tolua_lerror;
+	else
+#endif
+	{
+#if defined(__AdeasygoSDK__)
+		std::string product_id = tolua_tocppstring(tolua_S, 1, 0);
+		cocos2d::AdeasygoHelper::Instance->MSReportProductFulfillment(cocos2d::WinRTHelper::PlatformStringFromString(product_id));
+#endif
+		return 0;
+	}
+#ifndef TOLUA_RELEASE
+tolua_lerror :
+	tolua_error(tolua_S, "#ferror in function 'tolua_adeasygo_consumePurchase'.", &tolua_err);
+	return 0;
+#endif
+}
+
+static int tolua_adeasygo_canMakePurchases(lua_State *tolua_S)
+{
+#if defined(__AdeasygoSDK__)
+	tolua_pushboolean(tolua_S,true);
+#else
+	tolua_pushboolean(tolua_S,false);
+#endif
+	return 1;
+}
+
 void tolua_ext_module_adeasygo(lua_State* tolua_S)
 {
 	tolua_module(tolua_S, EXT_MODULE_NAME, 0);
@@ -113,5 +143,7 @@ void tolua_ext_module_adeasygo(lua_State* tolua_S)
 	tolua_function(tolua_S, "buy", tolua_adeasygo_pay);
 	tolua_function(tolua_S, "updateTransactionStates", tolua_adeasygo_updatetransactionstates);
 	tolua_function(tolua_S, "init", tolua_adeasygo_init);
+	tolua_function(tolua_S, "consumePurchase", tolua_adeasygo_consumePurchase);
+	tolua_function(tolua_S, "canMakePurchases", tolua_adeasygo_canMakePurchases);
 	tolua_endmodule(tolua_S);
 }
