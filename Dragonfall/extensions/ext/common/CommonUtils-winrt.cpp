@@ -152,10 +152,8 @@ std::string GetOpenUdid()
 void RegistereForRemoteNotifications()
 {
 	create_task(Windows::Networking::PushNotifications::PushNotificationChannelManager::CreatePushNotificationChannelForApplicationAsync())
-		.then([=](task<Windows::Networking::PushNotifications::PushNotificationChannel^> task)
+		.then([=](Windows::Networking::PushNotifications::PushNotificationChannel^ channel)
 	{
-
-		Windows::Networking::PushNotifications::PushNotificationChannel^ channel = task.get();
 		Platform::String^ url = channel->Uri;
 		if (!Windows::Storage::ApplicationData::Current->LocalSettings->Values->HasKey("push_url"))
 		{
