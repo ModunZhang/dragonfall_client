@@ -28,6 +28,7 @@ function Store.init(verifyFunction,failedFunction)
     end
 
     cc.storeProvider = ext.adeasygo
+    ext.adeasygo.registerPayDoneEvent(verifyFunction)
     ext.adeasygo.init()
     return true
 end
@@ -54,7 +55,8 @@ function Store.setReceiptVerifyServerUrl(url)
 end
 
 function Store.canMakePurchases()
-    return checkCCStore()
+    if not checkCCStore() then return false end
+    return cc.storeProvider.canMakePurchases()
 end
 
 
@@ -105,7 +107,7 @@ function Store.finishTransaction(transaction)
         printError("Store.finishTransaction() - store not init")
         return false
     end
-    cc.storeProvider.consumePurchase(transaction.transactionIdentifier)
+    cc.storeProvider.consumePurchase(transaction.productIdentifier)
 end
 --[[
     新加 客户端不请求商品信息的情况下 直接通过商品id进行内购
@@ -160,6 +162,15 @@ end
 function Store.getStoreSupport()
     printError("Store.getStoreSupport - Not support on WP")
     return true
+end
+
+--[[ 
+    新加 验证微软收据
+]] --
+
+function Store.validateMSReceipts()
+    if not checkCCStore() then return false end
+    cc.storeProvider.validateMSReceipts()
 end
 
 

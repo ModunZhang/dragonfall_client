@@ -309,6 +309,9 @@ function MyApp:retryLoginGame()
         end):done(function()
             print("MyApp:debug--->fetchChats")
             app:GetChatManager():FetchChatWhenReLogined()
+            if device.platform == 'wp8' then
+                app:getStore():validateMSReceipts()
+            end
         end):always(function()
             print("MyApp:debug--->7")
             UIKit:NoWaitForNet()
@@ -561,13 +564,17 @@ end
 
 -- windows phone
 --------------------
---[[  
-    just for Adeasygo sdk
-    unSyncTradeList = {{orderId = "...",transactionIdentifier = "com.dragonfall.80000dragoncoins"},{orderId = "...",transactionIdentifier = "com.dragonfall.80000dragoncoins"}
-]]--
 function MyApp:verifyAdeasygoPurchase(unSyncTradeList)
     --TODO:send data to server
     dump(unSyncTradeList,"unSyncTradeList:")
+    for __,trade in ipairs(unSyncTradeList) do
+        if trade.orderType == 'Microsoft' then
+            self:getStore().finishTransaction(trade)
+             ext.showAlert("cool","buy success","ok",function ( ... )
+                 -- body
+             end)
+        end
+    end
 end
 
 -- android

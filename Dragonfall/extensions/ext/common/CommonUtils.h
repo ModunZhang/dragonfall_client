@@ -36,7 +36,7 @@ std::string GetOpenUdid();
 void RegistereForRemoteNotifications();
 
 void ClearOpenUdidData(); // 注意！这个方法绝对不能在发布环境里调用
-                          // 
+
 std::string GetDeviceLanguage();
 
 float GetBatteryLevel();
