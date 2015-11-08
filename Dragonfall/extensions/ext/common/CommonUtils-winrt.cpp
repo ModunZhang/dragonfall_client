@@ -42,13 +42,21 @@ void OpenUrl(std::string url)
 //wp8.1 not support: https://social.msdn.microsoft.com/Forums/sqlserver/en-US/ac4f3329-d7ee-455f-80be-0e1685fea971/how-to-copy-text-to-the-clipboard-in-wp81-using-vs2013-can-not-refer-to-the-correct-namespace?forum=wpdevelop
 void CopyText(std::string text)
 {
-
+	
 }
-
 
 void DisableIdleTimer(bool disable)
 {
-	//not support
+	WinRTHelper::RunOnUIThread([disable](){
+		if (disable)
+		{
+			WinRTHelper::Device::Instance->DisplayRequestActive();
+		}
+		else
+		{
+			WinRTHelper::Device::Instance->DisplayRequestRelease();
+		}
+	});
 }
 
 void CloseKeyboard()

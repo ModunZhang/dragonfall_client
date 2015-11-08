@@ -9,5 +9,39 @@ namespace cocos2d
 		std::string CC_DLL CCUnicodeToUtf8(const wchar_t* pwszStr);
 		Windows::Foundation::IAsyncAction^ RunOnUIThread(std::function<void()> method, 
 			Windows::UI::Core::CoreDispatcherPriority priorty = Windows::UI::Core::CoreDispatcherPriority::Normal);
+
+		//提供对设备的操作
+		public ref class Device sealed
+		{
+		private:
+			Device(){};
+			Windows::System::Display::DisplayRequest^ m_display_request;
+		public:
+			void DisplayRequestActive()
+			{
+				if (nullptr == m_display_request)
+				{
+					m_display_request = ref new Windows::System::Display::DisplayRequest();
+				}
+				m_display_request->RequestActive();
+			}
+
+			void DisplayRequestRelease()
+			{
+				if (nullptr != m_display_request)
+				{
+					m_display_request->RequestRelease();
+				}
+			}
+			static property Device^ Instance
+			{
+				Device^ get()
+				{
+					static Device^ instance = ref new Device();
+					return instance;
+				}
+			}
+		};
+
 	}
 }

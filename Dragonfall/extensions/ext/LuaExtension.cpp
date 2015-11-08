@@ -673,10 +673,8 @@ static int tolua_ext_disableIdleTimer(lua_State* tolua_S)
     else
 #endif
     {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
         bool disable = tolua_toboolean(tolua_S, 1, 0);
         DisableIdleTimer(disable);
-#endif
     }
     return 0;
 #ifndef TOLUA_RELEASE

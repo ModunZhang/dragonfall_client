@@ -32,8 +32,6 @@ namespace cocos2d
 		void CallLuaCallbakMicrosoft(Platform::String^ productId, Platform::String^ transactionIdentifier);
 
 		void CallLuaCallbakMicrosoft(Windows::Foundation::Collections::IVectorView<Windows::ApplicationModel::Store::UnfulfilledConsumable^>^ unfulfilledConsumables);
-		//获取商品列表
-		void MSLoadListingInformationByProductIds(Platform::Collections::Vector<Platform::String^>^ productIds);
 		//购买商品
 		void MSRequestProductPurchase(Platform::String^ productId);
 		//获取收据
@@ -91,6 +89,8 @@ namespace cocos2d
 		void MsPurchas(Platform::Object^ sender, Adeasygo::PaySDKWP81::Model::MsPayEventArgs^ args);
 
 #if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
+		//获取微软商品列表
+		Windows::Foundation::Collections::IMap<Platform::String^, Windows::Foundation::Collections::IVector<Platform::String^>^>^ MSLoadListingInformationByProductIds(Windows::Foundation::Collections::IVector<Platform::String^>^ productIds);
 		//确认微软购买商品
 		void MSReportProductFulfillment(Platform::String^ productId);
 		//对微软的收据进行验证 确保该方法要在和服务器通信正常的时候调用

@@ -2,10 +2,8 @@
 #include "AdeasygoHelper.h"
 #include <ppltasks.h>
 #include <windows.h>
-#include <collection.h>
 #include "WinRTHelper.h"
-#include <windows.h>
-
+#include <collection.h>
 using namespace concurrency;
 using namespace Adeasygo::PaySDKWP81;
 using namespace Windows::Foundation;
@@ -181,10 +179,26 @@ namespace cocos2d
 		if (vector.size()>0)CallLuaCallback(vector);
 	}
 
-	void AdeasygoHelper::MSLoadListingInformationByProductIds(Platform::Collections::Vector<Platform::String^>^ productIds)
+	Windows::Foundation::Collections::IMap<Platform::String^, Windows::Foundation::Collections::IVector<Platform::String^>^>^ AdeasygoHelper::MSLoadListingInformationByProductIds(Windows::Foundation::Collections::IVector<Platform::String^>^ productIds)
 	{
-		//TODO:获取微软的商品列表
+		Platform::Collections::Map<Platform::String^, Windows::Foundation::Collections::IVector<Platform::String^>^>^ ret = ref new Platform::Collections::Map<Platform::String^, Windows::Foundation::Collections::IVector<Platform::String^>^>();
+		auto request = CurrentApp::LoadListingInformationByProductIdsAsync(productIds);
+		create_task(request).then([&ret](ListingInformation^ listingInformation)
+		{
+			auto productListings = listingInformation->ProductListings;
+			for (auto itr : productListings)
+			{
+				auto productListing = itr->Value;
+				Platform::Collections::Vector<Platform::String^>^ vec = ref new Platform::Collections::Vector<Platform::String^>();
+				vec->Append(productListing->Name);
+				vec->Append(productListing->FormattedPrice);
+				vec->Append(productListing->Description);
+				ret->Insert(productListing->ProductId, vec);
+			}
+		}).wait();
+		return ret;
 	}
+
 	void AdeasygoHelper::MSRequestProductPurchase(Platform::String^ productId)
 	{
 		RunOnUIThread([=](void){

@@ -7,7 +7,8 @@
 #include "WinRTHelper.h"
 #include "cocos2d.h"
 #include "LuaBasicConversions.h"
-
+#include <collection.h>
+#include <windows.h>
 // extern method
 void OnPayDone(int handleId, cocos2d::ValueVector valVector)
 {
@@ -141,6 +142,44 @@ static int tolua_adeasygo_validateMSReceipts(lua_State *tolua_S)
 	return 0;
 }
 
+static void tolua_push_ListingInformation_to_lua(lua_State *tolua_S,
+	Windows::Foundation::Collections::IMap<Platform::String^, Windows::Foundation::Collections::IVector<Platform::String^>^>^ cxMap)
+{
+	cocos2d::ValueVector cc_map_vec;
+
+	for (auto itMap : cxMap)
+	{
+		auto cxVec = itMap->Value;
+		cocos2d::ValueMap productMap;
+		productMap["productId"] = WinRTHelper::PlatformStringToString(itMap->Key);
+		productMap["name"] = WinRTHelper::PlatformStringToString(cxVec->GetAt(0));
+		productMap["formattedPrice"] = WinRTHelper::PlatformStringToString(cxVec->GetAt(1));
+		productMap["description"] = WinRTHelper::PlatformStringToString(cxVec->GetAt(2));
+		cc_map_vec.push_back(cocos2d::Value(productMap));
+	}
+	ccvaluevector_to_luaval(tolua_S, cc_map_vec);
+}
+
+static int tolua_adeasygo_MSLoadListingInformationByProductIds(lua_State *tolua_S)
+{
+#if defined(__AdeasygoSDK__)
+	cocos2d::ValueVector productIds;
+	luaval_to_ccvaluevector(tolua_S, 1, &productIds, "tolua_adeasygo_MSLoadListingInformationByProductIds");
+	if (productIds.size() > 0)
+	{
+		Platform::Collections::Vector<Platform::String^>^ cxproductIds = ref new Platform::Collections::Vector<Platform::String^>();
+		for (auto it = productIds.begin(); it != productIds.end(); it++)
+		{
+			auto productId = (*it).asString();
+			cxproductIds->Append(WinRTHelper::PlatformStringFromString(productId));
+		}
+		auto ret = cocos2d::AdeasygoHelper::Instance->MSLoadListingInformationByProductIds(cxproductIds);
+		tolua_push_ListingInformation_to_lua(tolua_S, ret);
+		return 1;
+	}
+#endif
+	return 0;
+}
 
 void tolua_ext_module_adeasygo(lua_State* tolua_S)
 {
@@ -155,5 +194,7 @@ void tolua_ext_module_adeasygo(lua_State* tolua_S)
 	tolua_function(tolua_S, "consumePurchase", tolua_adeasygo_consumePurchase);
 	tolua_function(tolua_S, "canMakePurchases", tolua_adeasygo_canMakePurchases);
 	tolua_function(tolua_S, "validateMSReceipts", tolua_adeasygo_validateMSReceipts);
+	tolua_function(tolua_S, "loadMicrosoftListingInformationByProductIds", tolua_adeasygo_MSLoadListingInformationByProductIds);
+	
 	tolua_endmodule(tolua_S);
 }
