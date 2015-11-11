@@ -174,16 +174,16 @@ Android 官方文档：http://developer.android.com/tools/device.html
     
     
    ~~~
-   sh buildGame.sh Android false false
-   sh create_android_zip.sh
+   python buildGame.py Android False False Debug
+   python create_android_zip.py
    ~~~
    
    * 如果是发布模式(release)
    
    
    ~~~
-   sh buildGame.sh Android true true
-   sh create_android_zip.sh
+   python buildGame.py Android True True Release
+   python create_android_zip.py
    ~~~
    
 4. 在终端中进入项目的Android目录`Dragonfall/frameworks/runtime-src/proj.android`,然后执行以下命令
@@ -240,5 +240,5 @@ CC_USE_ETC1_ZLIB | 打开贴图文件的zlib压缩检查功能,用来压缩etc1�
 
 ---
 
-Last Modify By Danny He@ September 24, 2015
+By DannyHe 11/11/2015
    

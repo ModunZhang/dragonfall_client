@@ -16,4 +16,5 @@
 	Team Foundation Server 2013 KEY（密钥）：MHG9J-HHHX9-WWPQP-D8T7H-7KCQG
 
 ## 需要注意的地方
-1. 所有的WinRT cpp类的根命名空间必须是`cocos2d`
+
+* 所有的WinRT cpp类的根命名空间必须是`cocos2d`
