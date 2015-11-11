@@ -48,7 +48,7 @@ namespace cocos2d
 #ifdef _DEBUG_Microsoft
 			productId = "com.dragonfall.test";
 #endif // _DEBUG_Microsoft
-			OutputDebugString(("购买:" + productId)->Data());
+			CCLOG("购买%s", PlatformStringToString(productId).c_str());
 			MSRequestProductPurchase(productId);
 		}
 #endif
@@ -98,6 +98,8 @@ namespace cocos2d
 						[&](Model::Goods^ goods) {
 						auto sdk_id = goods->id;
 						auto product_id = goods->out_goods_id;
+						CCLOG("product_id:%s", PlatformStringToString(product_id).c_str());
+						CCLOG("price:%s", PlatformStringToString(goods->price).c_str());
 						m_goods_map[PlatformStringToString(product_id)] = cocos2d::Value(PlatformStringToString(sdk_id));
 					});
 					m_goods_inited = true;
@@ -105,6 +107,15 @@ namespace cocos2d
 			}
 			
 		}, Windows::UI::Core::CoreDispatcherPriority::High);
+	}
+
+	Platform::String^ AdeasygoHelper::DeviceUniqueId()
+	{
+		Platform::String^ DeviceUniqueId = "";
+		create_task(cocos2d::WinRTHelper::RunOnUIThread([=, &DeviceUniqueId](){
+			DeviceUniqueId = Adeasygo::PaySDKWP81::SDKManager::DeviceUniqueId;
+		}, Windows::UI::Core::CoreDispatcherPriority::High)).wait();
+		return DeviceUniqueId;
 	}
 
 	void AdeasygoHelper::CallLuaCallback(cocos2d::ValueVector valueVec)
@@ -206,7 +217,7 @@ namespace cocos2d
 			{
 				if (results->Status == ProductPurchaseStatus::Succeeded)
 				{
-					OutputDebugString(L"\n完成购买---\n");
+					CCLOG("完成购买---");
 					cocos2d::ValueMap tempMap;
 					tempMap["transactionIdentifier"] = PlatformStringToString(results->ReceiptXml);
 					tempMap["productIdentifier"] = PlatformStringToString(productId);
@@ -215,12 +226,12 @@ namespace cocos2d
 				}
 				else if (results->Status == ProductPurchaseStatus::NotFulfilled)
 				{
-					OutputDebugString(L"\n未验证订单---\n");
+					CCLOG("未验证订单---");
 					CallLuaCallbakMicrosoft(productId, results->ReceiptXml);
 				}
 				else if (results->Status == ProductPurchaseStatus::NotPurchased)
 				{
-					OutputDebugString(L"\n未购买---\n");
+					CCLOG("未购买---");
 				}
 			});
 		});

@@ -170,7 +170,6 @@ void AppDelegateExtern::initLuaEngine()
         path = FileUtils::getInstance()->fullPathForFilename("scripts/game.zip");
         stack->loadChunksFromZIP(path.c_str());
     }
-    log("use zip path:%s",path.c_str());
     stack->executeString("require 'main'");
 }
 
@@ -349,8 +348,9 @@ bool AppDelegateExtern::checkPath()
     return need_Load_zip_from_bundle;
 }
 #endif
-/**************************Android************************************/
-//dannyhe
+/************************************************************************/
+/* Android                                                              */
+/************************************************************************/
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 extern "C"
 {
@@ -377,7 +377,7 @@ extern "C"
             Director::getInstance()->getEventDispatcher()->dispatchCustomEvent(eventName);
         }
     }
-    //
+    //音乐结束回调
     void Java_org_cocos2dx_lib_Cocos2dxMusic_onBackgroundMusicCompletion(JNIEnv *env, jobject thisz)
     {
         Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("APP_BACKGROUND_MUSIC_COMPLETION");

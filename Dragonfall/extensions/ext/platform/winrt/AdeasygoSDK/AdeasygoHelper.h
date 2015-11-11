@@ -49,14 +49,7 @@ namespace cocos2d
 			}
 		}
 		//sdk生成的唯一标识码
-		static property Platform::String^ DeviceUniqueId
-		{
-			Platform::String^ get()
-			{
-				return Adeasygo::PaySDKWP81::SDKManager::DeviceUniqueId;
-			}
-		}
-
+		Platform::String^ DeviceUniqueId();
 		//lua回调函数的id
 		property int handleId;
 		

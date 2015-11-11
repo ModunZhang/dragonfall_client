@@ -77,7 +77,7 @@ static int tolua_adeasygo_unregister_global_paydone_func(lua_State *tolua_S)
 static int tolua_adeasygo_device_unique_id(lua_State *tolua_S)
 {
 #if defined(__AdeasygoSDK__)
-	lua_pushstring(tolua_S,WinRTHelper::PlatformStringToString(cocos2d::AdeasygoHelper::DeviceUniqueId).c_str());
+	lua_pushstring(tolua_S,WinRTHelper::PlatformStringToString(cocos2d::AdeasygoHelper::Instance->DeviceUniqueId()).c_str());
 #else
 	lua_pushnil(tolua_S);
 #endif
