@@ -156,16 +156,16 @@ public class DataHelper {
 	}
 	
 	/**
-	 * 解压assets的zip压缩文件到指定目录
+	 * unzip the zip file of assets to Folder
 	 * 
 	 * @param context
-	 *            上下文对象
+	 *            
 	 * @param assetName
-	 *            压缩文件名
+	 *            
 	 * @param outputDirectory
-	 *            输出目录
+	 *            
 	 * @param isReWrite
-	 *            是否覆盖
+	 *            
 	 * @throws IOException
 	 */
 	public static void unzipAssetFile(Context context, String assetName, String outputDirectory, boolean isReWrite) throws IOException {
@@ -187,17 +187,17 @@ public class DataHelper {
 		int lastSetPercent = 0;
 		float totalWriteCount = 0;
 		while ((zipEntry = zipInputStream.getNextEntry()) != null) {
-			// 目录
+			// Folder
 			if (zipEntry.isDirectory()) {
 				file = new File(outputDirectory + File.separator + zipEntry.getName());
-				// 文件需要覆盖或者是文件不存在
+				// file is not exist or need rewrite
 				if (isReWrite || !file.exists()) {
 					file.mkdir();
 				}
 			} else {
-				// 如果是文件
+				// file
 				file = new File(outputDirectory + File.separator + zipEntry.getName());
-				// 文件需要覆盖或者文件不存在，则解压文件
+				// file is not exist or need rewrite
 				if (isReWrite || !file.exists()) {
 					file.createNewFile();
 					OutputStream outputStream = new FileOutputStream(file);
@@ -259,8 +259,8 @@ public class DataHelper {
 			long bCount = sf.getBlockCount();
 			long availBlocks = sf.getAvailableBlocks();
 
-			sdCardInfo[0] = bSize * bCount;// 总大小
-			sdCardInfo[1] = bSize * availBlocks;// 可用大小
+			sdCardInfo[0] = bSize * bCount; //total size 
+			sdCardInfo[1] = bSize * availBlocks;// available size
 			if(DEBUG){
 				DebugUtil.LogVerbose(TAG, String.format("ExternalStorage total_size: %d format: %s, availabe_size: %d format: %s",
 							sdCardInfo[0], formatSize(sdCardInfo[0]), sdCardInfo[1], formatSize(sdCardInfo[1])));
@@ -279,8 +279,8 @@ public class DataHelper {
 			long bCount = sf.getBlockCount();
 			long availBlocks = sf.getAvailableBlocks();
 
-			internalInfo[0] = bSize * bCount;// 总大小
-			internalInfo[1] = bSize * availBlocks;// 可用大小
+			internalInfo[0] = bSize * bCount;//total size 
+			internalInfo[1] = bSize * availBlocks;// available size
 			if(DEBUG){
 				DebugUtil.LogVerbose(TAG, String.format("internalInfo total_size: %d format: %s, availabe_size: %d format: %s",
 							internalInfo[0], formatSize(internalInfo[0]), internalInfo[1], formatSize(internalInfo[1])));
