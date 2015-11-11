@@ -23,6 +23,7 @@ Dragonfall/update_wp8
 #########################VS2013#########################
 Dragonfall/samples
 *.pyc
+Dragonfall/tools/win32/sed/sed* #windows 下sed临时文件忽略
 
 Dragonfall/frameworks/cocos2d-x/cocos/2d/libcocos2d_8_1/libcocos2d_8_1/libcocos2d_8_1.Windows/Debug
 Dragonfall/frameworks/cocos2d-x/cocos/2d/libcocos2d_8_1/libcocos2d_8_1/libcocos2d_8_1.WindowsPhone/Debug
