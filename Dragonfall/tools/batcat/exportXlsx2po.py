@@ -23,7 +23,7 @@ def sedPofile(file_path,language_code):
 			""" % language_code
     command = ""
     if isWindows():
-        command = [SedCommand, "-i", "-u", args, file_path]
+        command = [SedCommand, "-i", args, file_path]
     else:
         command = [SedCommand,"-i","", args, file_path]
     executeListCommand(command, False)

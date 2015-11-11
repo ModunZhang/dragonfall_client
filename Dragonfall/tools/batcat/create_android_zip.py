@@ -41,7 +41,7 @@ def sedJavaFile(fileSize):
 	args = "s/public static final long ZIP_RESOURCE_SIZE = \(.*\)/public static final long ZIP_RESOURCE_SIZE = %d;/g" % fileSize
 	command = ""
 	if isWindows():
-		command = [SedCommand, "-i", "-u", args, JAVA_INFOMATION_FILE]
+		command = [SedCommand, "-i", args, JAVA_INFOMATION_FILE]
 	else:
 		command = [SedCommand,"-i","", args, JAVA_INFOMATION_FILE]
 	executeListCommand(command, not Logging.DEBUG_MODE)
