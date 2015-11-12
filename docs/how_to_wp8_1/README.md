@@ -18,3 +18,4 @@
 ## 需要注意的地方
 
 * 所有的WinRT cpp类的根命名空间必须是`cocos2d`
+* 提供了vs2013的插件`vs_assist_x_vs2013.rar`

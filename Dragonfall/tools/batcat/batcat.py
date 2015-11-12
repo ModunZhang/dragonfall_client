@@ -65,13 +65,23 @@ def getNeedEncryptResources(args=""):
                 result = EncryptTypes[index]
     return result == 'True'
 
+def gitBranchNameOfUpdateGit(platform,configuration):
+    platform = getPlatform(platform)
+    configuration = getConfiguration(configuration)
+    brach_name = ""
+    if configuration == 'Debug':
+        brach_name = "develop"
+    elif configuration == 'Release':
+        brach_name = "release"
+    elif configuration == 'Hotfix':
+        brach_name = "hotfix"
+    return "%s_%s" % (platform,brach_name)
 
 def checkPlatform(platform):
     if not platform in PLATFORMS:
         die("platform:%s is not support!" % platform)
 
 # 获取项目模式:debug release hotfix
-
 
 def getConfiguration(args=""):
     result = args
