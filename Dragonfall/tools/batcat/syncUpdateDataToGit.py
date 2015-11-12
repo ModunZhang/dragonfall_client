@@ -26,8 +26,8 @@ def pullAutoUpdateRepositoty():
 	executeCommand(command,not Logging.DEBUG_MODE)
 	command = "git checkout %s" % BRANCH_NAME
 	executeCommand(command,not Logging.DEBUG_MODE)
-	# command = "git pull"
-	# executeCommand(command,not Logging.DEBUG_MODE)
+	command = "git pull"
+	executeCommand(command,not Logging.DEBUG_MODE)
 	os.chdir(CURRENT_DIR)
 
 
@@ -43,12 +43,12 @@ def rsyncAllFiles():
 
 def pushAutoUpdateDataToGit():
 	os.chdir(PATH_OF_GIT_AUTOUPDATE)
-	# command = "git add --all"
-	# executeCommand(command,not Logging.DEBUG_MODE)
-	# command = 'git commit -m "发布新的自动更新"'
-	# executeCommand(command,not Logging.DEBUG_MODE)
-	# command = "git push origin %s" % BRANCH_NAME
-	# executeCommand(command,not Logging.DEBUG_MODE)
+	command = "git add --all"
+	executeCommand(command,not Logging.DEBUG_MODE)
+	command = 'git commit -m "发布新的自动更新"'
+	executeCommand(command,not Logging.DEBUG_MODE)
+	command = "git push origin %s" % BRANCH_NAME
+	executeCommand(command,not Logging.DEBUG_MODE)
 	os.chdir(CURRENT_DIR)
 
 # main
