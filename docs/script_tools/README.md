@@ -15,12 +15,13 @@
 
 * git 的命令行运行环境(terminal/cmd),并确认有可以操作远程仓库的权限(git pull/push etc...)
 
-	Windows上的git必须安装cygwin环境(Git自带,安装时选中),使用ssh进行权限认证,这样cmd和其他git图形化软件都可以同时操作该仓库。
+	Windows上的git必须安装`cygwin`环境(Git自带,安装时选中),使用ssh进行权限认证,这样cmd和其他git图形化软件都可以同时操作该仓库。
 	图形界面软件用的一些设置软件路径(ssh)在tools/win32/cwRsync下,必须要将tools/win32/cwRsync加入到环境变量Path
 
 * 环境变量`GIT_REPOSITOTY_AUTO_UPDATE`,指向我们自动更新仓库的本地绝对路径,具体地址:[https://github.com/ModunZhang/kod_update_server](https://github.com/ModunZhang/kod_update_server "https://github.com/ModunZhang/kod_update_server")
 
-> Windows上必须多添加一个系统变量`GIT_REPOSITOTY_AUTO_UPDATE_CYGWIN`,值必须为`cygwin`风格的路径字符串。指向自动更新仓库的本地绝对路径,如`GIT_REPOSITOTY_AUTO_UPDATE_CYGWIN = /cygdrive/d/Project/kod_update_server`
+ 
+	Windows上必须多添加一个系统变量`GIT_REPOSITOTY_AUTO_UPDATE_CYGWIN`,值必须为`cygwin`风格的路径字符串。指向自动更新仓库的本地绝对路径,如`GIT_REPOSITOTY_AUTO_UPDATE_CYGWIN = /cygdrive/d/Project/kod_update_server`
 	
 
 
@@ -32,7 +33,7 @@
 
 * 安装**TexturePacker cmd命令行可执行环境**
 
-> 为了方便在Windows上打开终端的路径,提供了一个注册表文件`DosHere.reg`,导入系统注册表后可以通过文件的右键菜单进入dos
+**为了方便在Windows上打开终端的路径,提供了一个注册表文件`DosHere.reg`,导入系统注册表后可以通过文件的右键菜单进入dos**
 
 ####Mac
 * 安装**TexturePacker bash命令行可执行环境**
@@ -87,7 +88,7 @@
 * Windows 上可以用360进行垃圾清理
 * mac 上需要手动清理,需要管理员权限
 
-##特别说明
+##重要说明
 `WindowsPhone`的资源处理只能在Windows环境进行!
 
 ----
