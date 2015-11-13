@@ -52,6 +52,7 @@ extern "C" {
 
 #include "audio/to_lua_simpleaudio.h"
 #include "AdeasygoSDK/to_lua_adeasygo_helper.h"
+#include "tolua_fb_sdk.h"
 #define KODLOG(format, ...) CCLOG(format, ##__VA_ARGS__);
 
 #endif /* CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID */
@@ -921,6 +922,7 @@ static void RegisterExtModules(lua_State* tolua_S)
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 	tolua_ext_module_audio(tolua_S);
 	tolua_ext_module_adeasygo(tolua_S);
+	tolua_ext_module_facebook(tolua_S);
 #endif
 	tolua_ext_module_sysmail(tolua_S);
 	tolua_ext_module_localpush(tolua_S); //local push

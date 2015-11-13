@@ -50,6 +50,12 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\notification\tolua_local_push.cpp">
       <Filter>Classes\ext\notification</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\sdk\Facebook\FacebookSDK-winrt.cpp">
+      <Filter>Classes\Facebook</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\sdk\Facebook\tolua_fb_sdk.cpp">
+      <Filter>Classes\Facebook</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="$(MSBuildThisFileDirectory)App.xaml" />
@@ -94,6 +100,9 @@
     <Filter Include="Classes\ext\notification">
       <UniqueIdentifier>{47857130-543e-4b5d-8db9-377dad534d95}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\Facebook">
+      <UniqueIdentifier>{a6a6efc9-bb67-463a-a7c6-23d43e1f29cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\Classes\AppDelegate.h">
@@ -136,6 +145,12 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\notification\tolua_local_push.h">
       <Filter>Classes\ext\notification</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\sdk\Facebook\FacebookSDK.h">
+      <Filter>Classes\Facebook</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\sdk\Facebook\tolua_fb_sdk.h">
+      <Filter>Classes\Facebook</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -8,7 +8,6 @@
 #ifndef DRAGONFALL_SDK_FACEBOOK_H_
 #define DRAGONFALL_SDK_FACEBOOK_H_
 #include "cocos2d.h"
-#include "FacebookSimple.h"
 class FacebookSDK
 {
 public:

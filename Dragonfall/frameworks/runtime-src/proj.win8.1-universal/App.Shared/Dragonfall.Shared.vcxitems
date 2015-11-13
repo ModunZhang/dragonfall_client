@@ -34,6 +34,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\platform\winrt\WinRTHelper.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\sysmail\Sysmail-winrt.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\sysmail\tolua_sysmail.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\sdk\Facebook\FacebookSDK-winrt.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\sdk\Facebook\tolua_fb_sdk.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\Classes\AppDelegate.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)App.xaml.cpp">
       <DependentUpon>$(MSBuildThisFileDirectory)App.xaml</DependentUpon>
@@ -55,6 +57,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\platform\winrt\WinRTHelper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\sysmail\Sysmail.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\sysmail\tolua_sysmail.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\sdk\Facebook\FacebookSDK.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\sdk\Facebook\tolua_fb_sdk.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\Classes\AppDelegate.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)App.xaml.h">
       <DependentUpon>$(MSBuildThisFileDirectory)App.xaml</DependentUpon>

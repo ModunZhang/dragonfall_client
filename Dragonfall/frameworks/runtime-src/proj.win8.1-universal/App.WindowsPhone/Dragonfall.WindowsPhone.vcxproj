@@ -90,9 +90,9 @@
       <AdditionalOptions>/bigobj /Zm200 %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\extensions\ext\platform\winrt;$(ProjectDir)..\..\..\..\extensions\ext\common;$(ProjectDir)..\..\..\..\extensions\ext\notification;$(ProjectDir)..\..\..\..\extensions\ext\sysmail;$(ProjectDir)..\..\..\..\extensions\ext\io;$(ProjectDir)..\..\..\..\extensions\ext;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua;../../Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\extensions\sdk\Facebook;$(ProjectDir)..\..\..\..\extensions\ext\platform\winrt;$(ProjectDir)..\..\..\..\extensions\ext\common;$(ProjectDir)..\..\..\..\extensions\ext\notification;$(ProjectDir)..\..\..\..\extensions\ext\sysmail;$(ProjectDir)..\..\..\..\extensions\ext\io;$(ProjectDir)..\..\..\..\extensions\ext;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua;../../Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>__AdeasygoSDK__;COCOS2D_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>COCOS2D_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
@@ -100,7 +100,7 @@
       <AdditionalOptions>/bigobj /Zm200 %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\extensions\ext\platform\winrt;$(ProjectDir)..\..\..\..\extensions\ext\common;$(ProjectDir)..\..\..\..\extensions\ext\notification;$(ProjectDir)..\..\..\..\extensions\ext\sysmail;$(ProjectDir)..\..\..\..\extensions\ext\io;$(ProjectDir)..\..\..\..\extensions\ext;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua;../../Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\extensions\sdk\Facebook;$(ProjectDir)..\..\..\..\extensions\ext\platform\winrt;$(ProjectDir)..\..\..\..\extensions\ext\common;$(ProjectDir)..\..\..\..\extensions\ext\notification;$(ProjectDir)..\..\..\..\extensions\ext\sysmail;$(ProjectDir)..\..\..\..\extensions\ext\io;$(ProjectDir)..\..\..\..\extensions\ext;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua;../../Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>__AdeasygoSDK__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -110,9 +110,9 @@
       <AdditionalOptions>/bigobj /Zm200 %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\extensions\ext\platform\winrt;$(ProjectDir)..\..\..\..\extensions\ext\common;$(ProjectDir)..\..\..\..\extensions\ext\notification;$(ProjectDir)..\..\..\..\extensions\ext\sysmail;$(ProjectDir)..\..\..\..\extensions\ext\io;$(ProjectDir)..\..\..\..\extensions\ext;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua;../../Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\extensions\sdk\Facebook;$(ProjectDir)..\..\..\..\extensions\ext\platform\winrt;$(ProjectDir)..\..\..\..\extensions\ext\common;$(ProjectDir)..\..\..\..\extensions\ext\notification;$(ProjectDir)..\..\..\..\extensions\ext\sysmail;$(ProjectDir)..\..\..\..\extensions\ext\io;$(ProjectDir)..\..\..\..\extensions\ext;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua;../../Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>__AdeasygoSDK__;COCOS2D_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>COCOS2D_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -120,7 +120,7 @@
       <AdditionalOptions>/bigobj /Zm200 %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\extensions\ext\platform\winrt;$(ProjectDir)..\..\..\..\extensions\ext\common;$(ProjectDir)..\..\..\..\extensions\ext\notification;$(ProjectDir)..\..\..\..\extensions\ext\sysmail;$(ProjectDir)..\..\..\..\extensions\ext\io;$(ProjectDir)..\..\..\..\extensions\ext;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua;../../Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\extensions\sdk\Facebook;$(ProjectDir)..\..\..\..\extensions\ext\platform\winrt;$(ProjectDir)..\..\..\..\extensions\ext\common;$(ProjectDir)..\..\..\..\extensions\ext\notification;$(ProjectDir)..\..\..\..\extensions\ext\sysmail;$(ProjectDir)..\..\..\..\extensions\ext\io;$(ProjectDir)..\..\..\..\extensions\ext;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua;../../Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>__AdeasygoSDK__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -138,6 +138,9 @@
     <Image Include="Assets\SplashScreen.scale-240.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\external\WindowsPhone\FBWinSDK\FBWinSDK\FBWinSDK.WindowsPhone\FBWinSDK.WindowsPhone.vcxproj">
+      <Project>{f833b1e6-2866-4a47-89e2-c474983fe70f}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\cocos2d-x\cocos\2d\libcocos2d_8_1\libcocos2d_8_1\libcocos2d_8_1.WindowsPhone\libcocos2d_8_1.WindowsPhone.vcxproj">
       <Project>{22f3b9df-1209-4574-8331-003966f562bf}</Project>
     </ProjectReference>
