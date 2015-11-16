@@ -11,9 +11,9 @@ using namespace concurrency;
 using namespace Windows::Security::Authentication::Web;
 using namespace Facebook;
 using namespace cocos2d;
+using namespace cocos2d::WinRTHelper;
 
 static FacebookSDK *s_FacebookSDK = NULL; // pointer to singleton
-
 
 void FacebookSDK::Initialize(std::string appId /* = "" */)
 {
@@ -44,6 +44,11 @@ void FacebookSDK::Login()
 {
 	WinRTHelper::RunOnUIThread([=](){
 		FBSession^ sess = FBSession::ActiveSession;
+		if (m_isLogining || sess->LoggedIn)
+		{
+			return;
+		}
+		m_isLogining = true;
 		Platform::Collections::Vector<Platform::String^>^ permissionList = ref new Platform::Collections::Vector<Platform::String^>();
 		permissionList->Append(L"public_profile");
 		permissionList->Append(L"email");
@@ -51,30 +56,47 @@ void FacebookSDK::Login()
 		FBPermissions^ permissions = ref new FBPermissions(permissionList->GetView());
 
 		// Login to Facebook
-		create_task(sess->LoginAsync(permissions, SessionLoginBehavior::ForcingWebView)).then([=](FBResult^ result)
+		create_task(sess->LoginAsync(permissions, SessionLoginBehavior::ForcingWebView)).then([=](task<FBResult^> task)
 		{
-			if (result->Succeeded)
+			try
 			{
-				FBSession^ sess_ = FBSession::ActiveSession;
-				if (sess_->LoggedIn)
+				FBResult^ result = task.get();
+				if (result->Succeeded)
 				{
-					auto user = sess_ ->User;
-					if (user)
+					FBSession^ sess_ = FBSession::ActiveSession;
+					if (sess_->LoggedIn)
 					{
-						Platform::String^ userId = L"Id : " + user->Id;
-						Platform::String^ username = L"Name : " + user->Name;
-						Platform::String^ locale = L"Locale : " + user->Locale;
-						OutputDebugString(username->Data());
-						OutputDebugString(L"\n");
+						auto user = sess_->User;
+						if (user)
+						{
+							//TODO:user email
+							CCLOG("Login succeeded");
+							cocos2d::ValueMap tempMap;
+							tempMap["userid"] = PlatformStringToString(user->Id);
+							tempMap["username"] = PlatformStringToString(user->Name);
+							tempMap["event"] = "login_success";
+							CallLuaCallback(tempMap);
+						}
 					}
 				}
-				// Login succeeded
-				OutputDebugString(L"Login succeeded");
+				else
+				{
+					// Login failed
+					CCLOG("Login failed");
+					cocos2d::ValueMap tempMap;
+					tempMap["event"] = "login_failed";
+					CallLuaCallback(tempMap);
+				}
+				m_isLogining = false;
 			}
-			else
+			catch (Platform::COMException^ e)
 			{
-				// Login failed
-				OutputDebugString(L"Login failed");
+				//Login Exception
+				CCLOG("Login Exception");
+				cocos2d::ValueMap tempMap;
+				tempMap["event"] = "login_exception";
+				CallLuaCallback(tempMap);
+				m_isLogining = false;
 			}
 		});
 	});

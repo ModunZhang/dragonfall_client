@@ -13,6 +13,15 @@
 #include "CCLuaEngine.h"
 #include "tolua_fix.h"
 #include "FacebookSDK.h"
+#include "LuaBasicConversions.h"
+
+void FacebookCallback(int handleId, cocos2d::ValueMap valMap)
+{
+	auto stack = cocos2d::LuaEngine::getInstance()->getLuaStack();
+	ccvaluemap_to_luaval(stack->getLuaState(),valMap);
+	stack->executeFunctionByHandler(handleId, 1);
+}
+
 static int tolua_fb_initialize(lua_State *tolua_S)
 {
 
@@ -23,8 +32,23 @@ static int tolua_fb_initialize(lua_State *tolua_S)
 
 static int tolua_fb_login(lua_State *tolua_S)
 {
-	FacebookSDK::GetInstance()->Login();
+#ifndef TOLUA_RELEASE
+	tolua_Error tolua_err;
+	if (!toluafix_isfunction(tolua_S, 1, "LUA_FUNCTION", 0, &tolua_err))
+		goto tolua_lerror;
+	else
+#endif
+	{
+		cocos2d::LUA_FUNCTION func = toluafix_ref_function(tolua_S, 1, 0);
+		FacebookSDK::GetInstance()->RegisterLuaCllback(func);
+		FacebookSDK::GetInstance()->Login();
+		return 0;
+	}
+#ifndef TOLUA_RELEASE
+tolua_lerror :
+	tolua_error(tolua_S, "#ferror in function 'tolua_fb_login'.", &tolua_err);
 	return 0;
+#endif
 }
 
 void tolua_ext_module_facebook(lua_State* tolua_S)

@@ -68,7 +68,7 @@
 8. exportPO2Xlsx.py **将项目的本地化po文件导出为excel文件**
 	
 	> 参数:1.将要导出的excel文件的路径(xlsx后缀名)
-9. exportXlsx2po.py **将脚本10导出的excel导回项目中**
+9. exportXlsx2po.py **将导出的本地化excel文件导回项目中**
 	
 	> 参数:1.将要导入的excel文件路径(xlsx后缀名)
 10. export_plist_texture_data.py **将合成的大图信息导出到项目中**

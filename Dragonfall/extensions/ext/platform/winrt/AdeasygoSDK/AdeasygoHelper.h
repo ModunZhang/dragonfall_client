@@ -19,15 +19,26 @@ namespace cocos2d
 
 		//调用lua callback
 		void CallLuaCallback(cocos2d::ValueVector valueVec);
-		
+
+		//调用lua回调的sdk接口
 		void CallLuaCallbakAdeasygo(Adeasygo::PaySDKWP81::Model::TradeResultList^ tradeResultList);
+
+		//调用lua回调的异常接口
+		void CallLuaCallbackException(std::string eventName);
 
 		//通过sdk的goodsId查找商品id
 		Platform::String^ findProductIdWithAdeasygoGoodsId(Platform::String^ goodsId);
 
+		//需要验证的微软收据
 		cocos2d::ValueVector m_vec_NeedValidateReceipt;
 
+		//获取sdk的商品列表
+		Windows::Foundation::IAsyncOperation<Platform::Boolean>^ GetAdeasygoGoodsIf();
+
+		Concurrency::critical_section m_criticalSection;
+
 #if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
+
 		//调用lua回调的微软接口
 		void CallLuaCallbakMicrosoft(Platform::String^ productId, Platform::String^ transactionIdentifier);
 
@@ -40,6 +51,7 @@ namespace cocos2d
 		void MSGetUnfulfilledConsumables();
 #endif
 	public:
+
 		static property AdeasygoHelper^ Instance
 		{
 			AdeasygoHelper^ get()
@@ -50,9 +62,10 @@ namespace cocos2d
 		}
 		//sdk生成的唯一标识码
 		Platform::String^ DeviceUniqueId();
-		//lua回调函数的id
+		//lua回调函数的id（无异常时）
 		property int handleId;
-		
+		//异常发生时回调lua
+		property int errorHandleId;
 		//sdk的购买界面是否为显示状态
 		property bool IsVisible
 		{

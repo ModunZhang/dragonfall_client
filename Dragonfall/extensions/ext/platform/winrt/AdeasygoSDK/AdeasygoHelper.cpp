@@ -16,6 +16,7 @@ using namespace Windows::ApplicationModel::Store;
 #define AdeasygoAppKey "c7867ffb85d75c70"
 #define AdeasygoAppId "ea9d6d3a7d050b8b"
 extern void OnPayDone(int handleId, cocos2d::ValueVector valVector);
+extern void OnPayException(int handleId, std::string eventName);
 #define _DEBUG_Microsoft //≤‚ ‘Œ¢»Ì÷ß∏∂
 namespace cocos2d
 {
@@ -33,8 +34,15 @@ namespace cocos2d
 		SDKManager::ClosePayBox();
 		m_isVisible = false;
 		create_task(Adeasygo::PaySDKWP81::SDKManager::GetUnSyncTrade()).then([this](task<Model::TradeResultList^> task){
-			Model::TradeResultList^ tradeResultList = task.get();
-			CallLuaCallbakAdeasygo(tradeResultList);
+			try
+			{
+				Model::TradeResultList^ tradeResultList = task.get();
+				CallLuaCallbakAdeasygo(tradeResultList);
+			}
+			catch (Platform::COMException^ e)
+			{
+				CallLuaCallbackException("UnSyncTrade");
+			}
 		});
 	}
 	
@@ -61,9 +69,17 @@ namespace cocos2d
 #endif
 		RunOnUIThread([=](){
 			if (!m_goods_inited)return;
-			create_task(Adeasygo::PaySDKWP81::SDKManager::GetUnSyncTrade()).then([this](Model::TradeResultList^ tradeResultList)
+			create_task(Adeasygo::PaySDKWP81::SDKManager::GetUnSyncTrade()).then([this](task<Model::TradeResultList^> task)
 			{
-				CallLuaCallbakAdeasygo(tradeResultList);
+				try
+				{
+					auto tradeResultList = task.get();
+					CallLuaCallbakAdeasygo(tradeResultList);
+				}
+				catch (Platform::COMException^ e)
+				{
+					CallLuaCallbackException("UnSyncTrade");
+				}
 			});
 
 		});
@@ -71,14 +87,73 @@ namespace cocos2d
 
 	void AdeasygoHelper::Pay(Platform::String^ productId)
 	{
-		auto cpp_productId = PlatformStringToString(productId);
-		if (m_goods_inited)
-		{
-			auto sdkId = m_goods_map[cpp_productId].asString();
-			RunOnUIThread([this, sdkId](){
-				SDKManager::Pay(PlatformStringFromString(sdkId), "", "", "");
-				m_isVisible = true;
+		if (m_isVisible)return;
+		RunOnUIThread([this, productId](){
+			create_task(GetAdeasygoGoodsIf()).then([=](task<Platform::Boolean> task)
+			{
+				try
+				{
+					Platform::Boolean success = task.get();
+					if (success)
+					{
+						auto cpp_productId = PlatformStringToString(productId);
+						auto sdkId = m_goods_map[cpp_productId].asString();
+						SDKManager::Pay(PlatformStringFromString(sdkId), "", "", "");
+						m_isVisible = true;
+					}
+				}
+				catch (Platform::Exception^ e)
+				{
+					m_isVisible = false;
+					CallLuaCallbackException("Pay");
+				}
 			});
+		});
+	}
+
+	IAsyncOperation<Platform::Boolean>^ AdeasygoHelper::GetAdeasygoGoodsIf()
+	{
+		critical_section::scoped_lock lock(m_criticalSection);
+		return create_async([=]()
+		{
+			if (m_goods_inited)
+			{
+				return create_task([=]() -> bool{
+					return true;
+				});
+			}
+			else
+			{
+				return create_task(SDKManager::GetGoods(), task_continuation_context::use_current()).then([this](task<Model::GoodsList^> task) ->bool{
+					try
+					{
+						auto goodsList = task.get();
+						auto list = goodsList->goods_list;
+						for_each(begin(list),
+							end(list),
+							[&](Model::Goods^ goods) {
+							auto sdk_id = goods->id;
+							auto product_id = goods->out_goods_id;
+							CCLOG("product_id:%s", PlatformStringToString(product_id).c_str());
+							CCLOG("price:%s", PlatformStringToString(goods->price).c_str());
+							m_goods_map[PlatformStringToString(product_id)] = cocos2d::Value(PlatformStringToString(sdk_id));
+						});
+						m_goods_inited = true;
+					}
+					catch (Platform::COMException^ e)
+					{
+						m_goods_inited = false;
+					}
+					return m_goods_inited;
+				});
+			}
+		});
+	}
+	void AdeasygoHelper::CallLuaCallbackException(std::string eventName)
+	{
+		if (errorHandleId > 0)
+		{
+			OnPayException(handleId, eventName);
 		}
 	}
 
@@ -89,22 +164,7 @@ namespace cocos2d
 			SDKManager::PayDone += ref new Windows::Foundation::EventHandler<Adeasygo::PaySDKWP81::Model::PayDoneEventArgs ^>(this, &cocos2d::AdeasygoHelper::PayDone);
 			SDKManager::SetKey(AdeasygoAppKey, AdeasygoAppId);
 			SDKManager::Init();
-			if (!m_goods_inited)
-			{
-				create_task(SDKManager::GetGoods()).then([this](Model::GoodsList^ goodsList){
-					auto list = goodsList->goods_list;
-					for_each(begin(list),
-						end(list),
-						[&](Model::Goods^ goods) {
-						auto sdk_id = goods->id;
-						auto product_id = goods->out_goods_id;
-						CCLOG("product_id:%s", PlatformStringToString(product_id).c_str());
-						CCLOG("price:%s", PlatformStringToString(goods->price).c_str());
-						m_goods_map[PlatformStringToString(product_id)] = cocos2d::Value(PlatformStringToString(sdk_id));
-					});
-					m_goods_inited = true;
-				});
-			}
+			create_task(GetAdeasygoGoodsIf());
 			
 		}, Windows::UI::Core::CoreDispatcherPriority::High);
 	}
@@ -194,17 +254,25 @@ namespace cocos2d
 	{
 		Platform::Collections::Map<Platform::String^, Windows::Foundation::Collections::IVector<Platform::String^>^>^ ret = ref new Platform::Collections::Map<Platform::String^, Windows::Foundation::Collections::IVector<Platform::String^>^>();
 		auto request = CurrentApp::LoadListingInformationByProductIdsAsync(productIds);
-		create_task(request).then([&ret](ListingInformation^ listingInformation)
+		create_task(request).then([&ret,this](task<ListingInformation^> task)
 		{
-			auto productListings = listingInformation->ProductListings;
-			for (auto itr : productListings)
+			try
 			{
-				auto productListing = itr->Value;
-				Platform::Collections::Vector<Platform::String^>^ vec = ref new Platform::Collections::Vector<Platform::String^>();
-				vec->Append(productListing->Name);
-				vec->Append(productListing->FormattedPrice);
-				vec->Append(productListing->Description);
-				ret->Insert(productListing->ProductId, vec);
+				auto listingInformation = task.get();
+				auto productListings = listingInformation->ProductListings;
+				for (auto itr : productListings)
+				{
+					auto productListing = itr->Value;
+					Platform::Collections::Vector<Platform::String^>^ vec = ref new Platform::Collections::Vector<Platform::String^>();
+					vec->Append(productListing->Name);
+					vec->Append(productListing->FormattedPrice);
+					vec->Append(productListing->Description);
+					ret->Insert(productListing->ProductId, vec);
+				}
+			}
+			catch (Platform::COMException^ e)
+			{
+				CallLuaCallbackException("ListingInformation");
 			}
 		}).wait();
 		return ret;
@@ -213,25 +281,33 @@ namespace cocos2d
 	void AdeasygoHelper::MSRequestProductPurchase(Platform::String^ productId)
 	{
 		RunOnUIThread([=](void){
-			create_task(CurrentApp::RequestProductPurchaseAsync(productId)).then([=](PurchaseResults^ results)
+			create_task(CurrentApp::RequestProductPurchaseAsync(productId)).then([=](task<PurchaseResults^> task)
 			{
-				if (results->Status == ProductPurchaseStatus::Succeeded)
+				try
 				{
-					CCLOG("ÕÍ≥…π∫¬Ú---");
-					cocos2d::ValueMap tempMap;
-					tempMap["transactionIdentifier"] = PlatformStringToString(results->ReceiptXml);
-					tempMap["productIdentifier"] = PlatformStringToString(productId);
-					tempMap["orderType"] = "Microsoft";
-					m_vec_NeedValidateReceipt.push_back(cocos2d::Value(tempMap));
+					auto results = task.get();
+					if (results->Status == ProductPurchaseStatus::Succeeded)
+					{
+						CCLOG("ÕÍ≥…π∫¬Ú---");
+						cocos2d::ValueMap tempMap;
+						tempMap["transactionIdentifier"] = PlatformStringToString(results->ReceiptXml);
+						tempMap["productIdentifier"] = PlatformStringToString(productId);
+						tempMap["orderType"] = "Microsoft";
+						m_vec_NeedValidateReceipt.push_back(cocos2d::Value(tempMap));
+					}
+					else if (results->Status == ProductPurchaseStatus::NotFulfilled)
+					{
+						CCLOG("Œ¥—È÷§∂©µ•---");
+						CallLuaCallbakMicrosoft(productId, results->ReceiptXml);
+					}
+					else if (results->Status == ProductPurchaseStatus::NotPurchased)
+					{
+						CCLOG("Œ¥π∫¬Ú---");
+					}
 				}
-				else if (results->Status == ProductPurchaseStatus::NotFulfilled)
+				catch (Platform::COMException^ e)
 				{
-					CCLOG("Œ¥—È÷§∂©µ•---");
-					CallLuaCallbakMicrosoft(productId, results->ReceiptXml);
-				}
-				else if (results->Status == ProductPurchaseStatus::NotPurchased)
-				{
-					CCLOG("Œ¥π∫¬Ú---");
+					CallLuaCallbackException("MSPay");
 				}
 			});
 		});
@@ -254,8 +330,17 @@ namespace cocos2d
 	{
 		Platform::String^ ret = "";
 		auto request = CurrentApp::GetProductReceiptAsync(productId);
-		create_task(request).then([&ret](Platform::String^ receiptXml){
-			ret = receiptXml;
+		create_task(request).then([&ret,this](task<Platform::String^> task)
+		{
+			try
+			{
+				auto receiptXml = task.get();
+				ret = receiptXml;
+			}
+			catch (Platform::COMException^ e)
+			{
+				CallLuaCallbackException("MSReceipt");
+			}
 		}).wait();
 		return ret;
 	}
@@ -263,9 +348,18 @@ namespace cocos2d
 	void AdeasygoHelper::MSGetUnfulfilledConsumables()
 	{
 		auto request = CurrentApp::GetUnfulfilledConsumablesAsync();
-		create_task(request).then([=](Windows::Foundation::Collections::IVectorView<UnfulfilledConsumable^>^ unfulfilledConsumables)
+		create_task(request).then([=](task<Windows::Foundation::Collections::IVectorView<UnfulfilledConsumable^>^> task)
 		{
-			CallLuaCallbakMicrosoft(unfulfilledConsumables);
+			try
+			{
+				auto unfulfilledConsumables = task.get();
+				CallLuaCallbakMicrosoft(unfulfilledConsumables);
+			}
+			catch (Platform::COMException^ e)
+			{
+				CallLuaCallbackException("Receipt");
+			}
+			
 		}).wait();
 	}
 	void AdeasygoHelper::MSValidateReceipts()

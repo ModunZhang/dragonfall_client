@@ -19,6 +19,12 @@ void OnPayDone(int handleId, cocos2d::ValueVector valVector)
 #endif
 }
 
+void OnPayException(int handleId, std::string eventName)
+{
+	auto stack = cocos2d::LuaEngine::getInstance()->getLuaStack();
+	tolua_pushcppstring(stack->getLuaState(), eventName);
+	stack->executeFunctionByHandler(handleId, 1);
+}
 //lua part
 static int tolua_adeasygo_pay(lua_State *tolua_S)
 {
@@ -66,10 +72,42 @@ tolua_lerror :
 	return 0;
 }
 
+
 static int tolua_adeasygo_unregister_global_paydone_func(lua_State *tolua_S)
 {
 #if defined(__AdeasygoSDK__)
 	cocos2d::AdeasygoHelper::Instance->handleId = 0;
+#endif
+	return 0;
+}
+
+static int tolua_adeasygo_register_global_exception_func(lua_State *tolua_S)
+{
+#ifndef TOLUA_RELEASE
+	tolua_Error tolua_err;
+	if (!toluafix_isfunction(tolua_S, 1, "LUA_FUNCTION", 0, &tolua_err))
+		goto tolua_lerror;
+	else
+#endif
+	{
+#if defined(__AdeasygoSDK__)
+		cocos2d::LUA_FUNCTION func = toluafix_ref_function(tolua_S, 1, 0);
+		cocos2d::AdeasygoHelper::Instance->errorHandleId = func;
+#endif
+		return 0;
+	}
+#ifndef TOLUA_RELEASE
+tolua_lerror :
+	tolua_error(tolua_S, "#ferror in function 'tolua_adeasygo_register_global_exception_func'.", &tolua_err);
+	return 0;
+#endif
+	return 0;
+}
+
+static int tolua_adeasygo_unregister_global_exception_func(lua_State *tolua_S)
+{
+#if defined(__AdeasygoSDK__)
+	cocos2d::AdeasygoHelper::Instance->errorHandleId = 0;
 #endif
 	return 0;
 }
@@ -186,7 +224,9 @@ void tolua_ext_module_adeasygo(lua_State* tolua_S)
 	tolua_module(tolua_S, EXT_MODULE_NAME, 0);
 	tolua_beginmodule(tolua_S, EXT_MODULE_NAME);
 	tolua_function(tolua_S, "registerPayDoneEvent", tolua_adeasygo_register_global_paydone_func);
-	tolua_function(tolua_S, "unregisterPayDoneEvent", tolua_adeasygo_register_global_paydone_func);
+	tolua_function(tolua_S, "unRegisterPayDoneEvent", tolua_adeasygo_register_global_paydone_func);
+	tolua_function(tolua_S, "registerExceptionEvent", tolua_adeasygo_register_global_exception_func);
+	tolua_function(tolua_S, "unRegisterExceptionEvent", tolua_adeasygo_unregister_global_exception_func);
 	tolua_function(tolua_S, "getUid", tolua_adeasygo_device_unique_id);
 	tolua_function(tolua_S, "buy", tolua_adeasygo_pay);
 	tolua_function(tolua_S, "updateTransactionStates", tolua_adeasygo_updatetransactionstates);

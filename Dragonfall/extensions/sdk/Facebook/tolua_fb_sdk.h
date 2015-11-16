@@ -13,4 +13,6 @@
 #define EXT_MODULE_NAME_FACEBOOK "facebook"
 
 void tolua_ext_module_facebook(lua_State* tolua_S);
+
+void FacebookCallback(int handleId, cocos2d::ValueMap valMap);
 #endif

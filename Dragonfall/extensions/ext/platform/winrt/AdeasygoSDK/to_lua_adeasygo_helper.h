@@ -9,4 +9,6 @@ void tolua_ext_module_adeasygo(lua_State* tolua_S);
 
 void OnPayDone(int handleId,cocos2d::ValueVector valVector);
 
+void OnPayException(int handleId, std::string eventName);
+
 #endif /* defined(__tolua_ext_module_adeasygo__) */
