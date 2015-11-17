@@ -9,6 +9,7 @@
 #define DRAGONFALL_SDK_FACEBOOK_H_
 #include "cocos2d.h"
 extern void FacebookCallback(int handleId, cocos2d::ValueMap valMap);
+
 class FacebookSDK
 {
 public:
@@ -18,13 +19,22 @@ public:
 	void Initialize(std::string appId = "");
 
 	void Login();
-
+    
 	void RegisterLuaCllback(int luaHandId){ if (luaHandId > 0)m_handId = luaHandId; };
 
 	void UnRegisterLuaCallback(){ m_handId = -1; };
 
 	~FacebookSDK();
+    
+    void CallLuaCallback(cocos2d::ValueMap valMap)
+    {
+        if (m_handId > 0)
+        {
+            FacebookCallback(m_handId, valMap);
+        }
+    };
 
+    bool IsAuthenticated();
 private:
 
 	int m_handId;
@@ -33,13 +43,6 @@ private:
 
 	FacebookSDK(){ m_handId = -1; m_isLogining = false; };
 
-	void CallLuaCallback(cocos2d::ValueMap valMap)
-	{
-		if (m_handId > 0)
-		{
-			FacebookCallback(m_handId, valMap);
-		}
 	};
-};
 
 #endif //DRAGONFALL_SDK_FACEBOOK_H_
