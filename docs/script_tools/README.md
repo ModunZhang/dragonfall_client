@@ -10,7 +10,7 @@
 	pip install biplist
 	pip install poxls
 
-###平台部分
+###平台部分 
 ####所有系统
 
 * git 的命令行运行环境(terminal/cmd),并确认有可以操作远程仓库的权限(git pull/push etc...)
