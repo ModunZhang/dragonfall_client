@@ -214,7 +214,11 @@ LanguageType Application::getCurrentLanguage()
 
 Application::Platform  Application::getTargetPlatform()
 {
-    return Platform::OS_WP8;
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+    return Platform::OS_WINRT;
+#elif  CC_TARGET_PLATFORM == CC_PLATFORM_WP8
+	return Platform::OS_WP8;
+#endif
 }
 
 bool Application::openURL(const std::string &url)

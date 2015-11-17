@@ -3,7 +3,7 @@ local cocos_promise = import("..utils.cocos_promise")
 NetService.NET_STATE = {DISCONNECT = -1 , CONNECT = 0}
 --lua pomelo
 local json = json
-if device.platform == 'wp8' then
+if device.platform == 'winrt' then
     CCPomelo = import("libs.pomelo.CCPomelo")
     local not_handle = function( ... )
         return ...

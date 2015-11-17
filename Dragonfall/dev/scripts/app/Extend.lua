@@ -4,7 +4,7 @@ NOT_HANDLE = function(...) print("net message not handel, please check !") end
 local texture_data_file = ".texture_data"
 if device.platform == 'ios' then
     texture_data_file = ".texture_data_iOS" 
-elseif device.platform == 'wp8' then
+elseif device.platform == 'winrt' then
     texture_data_file = ".texture_data_wp" 
 end
 

@@ -125,7 +125,7 @@ function UIKit:newWidgetUI(gameUIName,... )
     return instance
 end
 function UIKit:getFontFilePath()
-    if device.platform == 'wp8' then
+    if device.platform == 'winrt' then
         return "fonts/Droid Sans Fallback.ttf"
     else
         return "Droid Sans Fallback.ttf"
@@ -135,7 +135,7 @@ end
 function UIKit:getEditBoxFont()
     if device.platform == 'android' then -- Android特殊处理,使用字体文件名作为参数,Java已修改。
         return self:getFontFilePath()
-    elseif device.platform == 'wp8' then
+    elseif device.platform == 'winrt' then
         return "Droid Sans Fallback.ttf"
     else
         return "DroidSansFallback"
