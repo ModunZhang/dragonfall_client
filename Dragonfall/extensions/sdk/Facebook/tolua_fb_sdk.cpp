@@ -30,6 +30,12 @@ static int tolua_fb_initialize(lua_State *tolua_S)
 	return 0;
 }
 
+static int tolua_fb_isAuthenticated(lua_State *tolua_S)
+{
+	tolua_pushboolean(tolua_S, FacebookSDK::GetInstance()->IsAuthenticated());
+	return 1;
+}
+
 static int tolua_fb_login(lua_State *tolua_S)
 {
 #ifndef TOLUA_RELEASE
@@ -57,5 +63,6 @@ void tolua_ext_module_facebook(lua_State* tolua_S)
 	tolua_beginmodule(tolua_S, EXT_MODULE_NAME_FACEBOOK);
 	tolua_function(tolua_S, "initialize", tolua_fb_initialize);
 	tolua_function(tolua_S, "login", tolua_fb_login);
+	tolua_function(tolua_S, "isAuthenticated", tolua_fb_isAuthenticated);
 	tolua_endmodule(tolua_S);
 }

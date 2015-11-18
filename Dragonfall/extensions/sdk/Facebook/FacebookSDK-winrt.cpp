@@ -47,6 +47,7 @@ bool FacebookSDK::IsAuthenticated()
 
 void FacebookSDK::Login()
 {
+	clearFacebookCookies();//clear cookies!
 	WinRTHelper::RunOnUIThread([=](){
 		FBSession^ sess = FBSession::ActiveSession;
 		if (m_isLogining || sess->LoggedIn)
@@ -80,6 +81,7 @@ void FacebookSDK::Login()
 							tempMap["event"] = "login_success";
 							CallLuaCallback(tempMap);
 							saveUserProfile(user);
+							sess_->LogoutAsync();
 						}
 					}
 				}
@@ -110,6 +112,18 @@ void FacebookSDK::saveUserProfile(Facebook::Graph::FBUser^ user)
 	if (nullptr == user)return;
 	Windows::Storage::ApplicationData::Current->LocalSettings->Values->Insert("FBUser_Id", user->Id);
 	Windows::Storage::ApplicationData::Current->LocalSettings->Values->Insert("FBUser_Name", user->Name);
+}
+
+void FacebookSDK::clearFacebookCookies()
+{
+	//just for SessionLoginBehavior::ForcingWebView
+	Windows::Web::Http::Filters::HttpBaseProtocolFilter^ fileter = ref new Windows::Web::Http::Filters::HttpBaseProtocolFilter();
+	auto cookieManager = fileter->CookieManager;
+	auto myCookieJar = cookieManager->GetCookies(ref new Uri("https://facebook.com"));
+	for (auto iter : myCookieJar)
+	{
+		cookieManager->DeleteCookie(iter);
+	}
 }
 
 #endif // CC_TARGET_PLATFORM == CC_PLATFORM_WINRT

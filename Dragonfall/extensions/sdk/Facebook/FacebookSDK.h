@@ -45,6 +45,7 @@ private:
 
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT 
 	void saveUserProfile(Facebook::Graph::FBUser^ user);
+	void clearFacebookCookies();
 #endif
 };
 #endif //DRAGONFALL_SDK_FACEBOOK_H_
