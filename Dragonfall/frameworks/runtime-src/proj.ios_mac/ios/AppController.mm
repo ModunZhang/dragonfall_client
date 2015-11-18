@@ -32,6 +32,10 @@
 #import "platform/ios/CCEAGLView-ios.h"
 #include "MarketSDKTool.h" // dannyhe
 
+#if CC_USE_FACEBOOK
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#endif
+
 @implementation AppController
 @synthesize remoteDeviceToken;//dannyhe
 
@@ -48,6 +52,10 @@ static AppDelegate s_sharedApplication;
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0]; //dannyhe 清空红圈
 #ifdef DEBUG
     [self redirectConsoleLogToDocumentFolder]; //dannyhe
+#endif
+#if CC_USE_FACEBOOK
+    [[FBSDKApplicationDelegate sharedInstance] application:application
+                             didFinishLaunchingWithOptions:launchOptions];
 #endif
     cocos2d::Application *app = cocos2d::Application::getInstance();
     app->initGLContextAttrs();
@@ -111,6 +119,9 @@ static AppDelegate s_sharedApplication;
     /*
      Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      */
+#if CC_USE_FACEBOOK
+    [FBSDKAppEvents activateApp];
+#endif
     cocos2d::Director::getInstance()->resume();
 }
 
@@ -165,7 +176,7 @@ static AppDelegate s_sharedApplication;
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
     [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     NSString *time = [formatter stringFromDate:[NSDate date]];
-    NSLog("-------------- Start Game [%@] --------------",time);
+    NSLog(@"-------------- Start Game [%@] --------------",time);
     [formatter release];
 }
 #endif
@@ -183,5 +194,20 @@ static AppDelegate s_sharedApplication;
 -(void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
     NSLog(@"didFailToRegisterForRemoteNotificationsWithError-->%@",[error localizedDescription]);
 }
+
+#pragma mark -
+#pragma mark FaceBook
+#if CC_USE_FACEBOOK
+//dannyhe 这个方法在iOS4.2以后已经被废弃,但Facebook的sdk只提供了此方法。
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation {
+    return [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                          openURL:url
+                                                sourceApplication:sourceApplication
+                                                       annotation:annotation];
+}
+#endif
 @end
 
