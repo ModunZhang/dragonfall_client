@@ -1,6 +1,7 @@
 local Enum = import("..utils.Enum")
 local property = import("..utils.property")
 local allianceRight = GameDatas.ClientInitGame.allianceRight
+local right = GameDatas.AllianceInitData.right
 local memberMeta = {}
 memberMeta.__index = memberMeta
 
@@ -120,7 +121,7 @@ function memberMeta:GetCollectExpsByType(collectType)
     return exp,self:get_collect_config(collectType).expTo
 end
 function memberMeta:GetCollectEffectByType(collectType)
-    return self:get_collect_config(collectType).percentPerHour + City:FindTechByName("colonization"):GetBuffEffectVal()
+    return self:get_collect_config(collectType).percentPerHour
 end
 function memberMeta:GetWoodCollectLevelUpExp()
     return self:GetCollectLevelUpExpByType(COLLECT_TYPE.WOOD)
@@ -241,6 +242,9 @@ function memberMeta:CanBuyAdvancedItemsFromAllianceShop()
 end
 function memberMeta:CanActivateAllianceRevenge()
     return allianceRight[self:Title()].CanActivateAllianceRevenge
+end
+function memberMeta:CanMoveAlliance()
+    return right[self:Title()].moveAlliance
 end
 
 return memberMeta

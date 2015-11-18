@@ -14,15 +14,13 @@ end
 function GameUISetting:onEnter()
 	GameUISetting.super.onEnter(self)
 	self:BuildUI()
-	app.timer:AddListener(self)
-end
 
-function GameUISetting:OnTimer(current_time)
-	if self.timer_label then
-		self.timer_label:setString(_("世界时间:") ..  os.date('!%Y-%m-%d %H:%M:%S', app.timer:GetServerTime()))
-	end
+	scheduleAt(self, function()
+		if self.timer_label then
+			self.timer_label:setString(_("世界时间:") ..  os.date('!%Y-%m-%d %H:%M:%S', app.timer:GetServerTime()))
+		end
+	end)
 end
-
 function GameUISetting:BuildUI()
 	local header_bg = UIKit:CreateBoxPanelWithBorder({height = 58}):align(display.TOP_CENTER, window.cx, window.top_bottom):addTo(self:GetView())
 	self.timer_label = UIKit:ttfLabel({
@@ -111,7 +109,7 @@ function GameUISetting:OnButtonClicked(button)
 		UIKit:newGameUI("GameUISettingLanguage"):AddToCurrentScene(true)
 	elseif tag == 4 then
 		if CONFIG_IS_NOT_UPDATE then
-			-- UIKit:newGameUI('GameUIShop', City):AddToCurrentScene(true)
+			UIKit:newGameUI('GameUIShop', City):AddToCurrentScene(true)
 		else
 			UIKit:newGameUI("GameUITips"):AddToCurrentScene(true)
 		end
@@ -152,9 +150,5 @@ function GameUISetting:OnButtonClicked(button)
 	end
 end
 
-function GameUISetting:onCleanup()
-	app.timer:RemoveListener(self)
-	GameUISetting.super.onCleanup(self)
-end
 
 return GameUISetting

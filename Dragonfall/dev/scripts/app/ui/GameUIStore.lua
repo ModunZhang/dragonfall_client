@@ -163,23 +163,8 @@ function GameUIStore:GetItemBuyButton(data)
 end
 
 function GameUIStore:OnBuyButtonClicked(productId)
-	if not self:CheckIAPSupport() then return end
 	device.showActivityIndicator()
 	app:getStore().purchaseWithProductId(productId,1)
-end
-
-function GameUIStore:CheckIAPSupport()
-	if not app:getStore().canMakePurchases() then
-		if device.platform == 'ios' then
-			UIKit:showMessageDialog(nil,_("我们检测到你的设备不能在App Store进行购买!"),function()end)
-		elseif device.platform == 'android' then
-			UIKit:showMessageDialog(nil,_("我们检测到你的设备未安装Google商店,请安装Google商店组件!"),function()
-				app:getStore().getStoreSupport()
-			end)
-		end
-		return false
-	end
-	return true
 end
 
 function GameUIStore:GetItemMoreButton(data)
@@ -229,7 +214,7 @@ function GameUIStore:CreateShopButton(on_clicked)
     light_gem():addTo(gem_icon, 1022):pos(62/2, 61/2)
 
     local gem_label = UIKit:ttfLabel({
-        text = ""..string.formatnumberthousands(City:GetUser():GetGemResource():GetValue()),
+        text = ""..string.formatnumberthousands(City:GetUser():GetGemValue()),
         size = 20,
         color = 0xffd200,
         shadow = true

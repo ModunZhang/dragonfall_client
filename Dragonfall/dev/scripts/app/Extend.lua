@@ -1,6 +1,7 @@
 require("cocos.cocos2d.Cocos2dConstants")
 print("加载玩家自定义函数!")
 NOT_HANDLE = function(...) print("net message not handel, please check !") end
+
 local texture_data_file = ".texture_data"
 if device.platform == 'ios' then
     texture_data_file = ".texture_data_iOS" 
@@ -13,6 +14,10 @@ local sharedSpriteFrameCache = cc.SpriteFrameCache:getInstance()
 local rgba4444 = import(".rgba4444")
 local jpg_rgb888 = import(".jpg_rgb888")
 local animation = import(".animation")
+
+math.round = function(n)
+    return math.ceil(n - 0.5)
+end
 
 local pairs = pairs
 local ipairs = ipairs
@@ -73,6 +78,60 @@ function Sprite:setTexture(arg)
     else
         old_setTexture(self,arg)
     end
+end
+
+BUFF_META = {}
+function BUFF_META.__add(a, b)
+    local t1, t2
+    if getmetatable(a) == BUFF_META then
+        t1, t2 = a, b
+    elseif getmetatable(b) == BUFF_META then
+        t1, t2 = b, a
+    else
+        assert(false)
+    end
+    local t = {}
+    if type(t2) == "table" then
+        for k,v in pairs(t1) do
+            t[k] = v
+        end
+        for k,v in pairs(t2) do
+            t[k] = v + (t[k] or 0)
+        end
+    elseif type(t2) == "number" then
+        for k,v in pairs(t1) do
+            t[k] = v + t2
+        end
+    end
+    return setmetatable(t, BUFF_META)
+end
+function BUFF_META.__sub(a, b)
+    local t = {}
+    for k,v in pairs(a) do
+        t[k] = v - (b[k] or 0)
+    end
+    return setmetatable(t, BUFF_META)
+end
+function BUFF_META.__mul(a, b)
+    local t1, t2
+    if getmetatable(a) == BUFF_META then
+        t1, t2 = a, b
+    elseif getmetatable(b) == BUFF_META then
+        t1, t2 = b, a
+    else
+        assert(false)
+    end
+    local t = {}
+    if type(t2) == "table" then
+        for k,v in pairs(t1) do
+            t[k] = v * (t2[k] or 1)
+        end
+    elseif type(t2) == "number" then
+        for k,v in pairs(t1) do
+            t[k] = v * t2
+        end
+    end
+    return setmetatable(t, BUFF_META)
 end
 
 local c3b_m_ = {
@@ -285,7 +344,7 @@ function display.newTTFLabel(params)
         "[framework.display] newTTFLabel() invalid params.size")
     local label
     if cc.FileUtils:getInstance():isFileExist(font) then
-        if true then
+        if device.platform == 'mac' then
             label = cc.Label:createWithTTF(text, font, size, dimensions, textAlign, textValign)
         else
             label = cc.Label:createWithTTF(text, font, size, dimensions, textAlign, textValign,0)
@@ -347,6 +406,14 @@ function display.newScene(name)
         end
     end
     return scene
+end
+local Node = cc.Node
+function Node:scheduleAt(callback, interval)
+    callback()
+    return self:schedule(callback, interval or 1)
+end
+function scheduleAt(self, func, interval)
+    return display.newNode():addTo(self):scheduleAt(func, interval)
 end
 
 display.__newLayer = display.newLayer

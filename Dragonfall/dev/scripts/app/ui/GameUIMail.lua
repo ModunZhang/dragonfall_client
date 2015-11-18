@@ -7,7 +7,6 @@ local WidgetPushButton = import("..widget.WidgetPushButton")
 local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local WidgetAllianceHelper = import("..widget.WidgetAllianceHelper")
 local StarBar = import(".StarBar")
-local Flag = import("..entity.Flag")
 local WidgetRoundTabButtons = import("..widget.WidgetRoundTabButtons")
 local WidgetPopDialog = import("..widget.WidgetPopDialog")
 local UILib = import(".UILib")
@@ -1501,22 +1500,22 @@ function GameUIMail:ShowRewardMailDetails(mail)
         }))
             :addTo(body):align(display.CENTER, size.width - 92, 42)
         get_btn:onButtonClicked(function(event)
-                if event.name == "CLICKED_EVENT" then
-                    GameGlobalUI:DisableTips()
-                    NetManager:getMailRewardsPromise(mail.id):done(function ()
-                        GameGlobalUI:EnableTips()
-                        GameGlobalUI:showTips(_("提示"),_("领取成功"))
-                        UIKit:ttfLabel({
-                            text = _("已领取"),
-                            size = 22,
-                            color = 0x403c2f,
-                        }):addTo(body):align(display.CENTER, size.width - 92, 42)
-                        get_btn:hide()
-                    end):always(function ()
-                        GameGlobalUI:EnableTips()
-                    end)
-                end
-            end)
+            if event.name == "CLICKED_EVENT" then
+                GameGlobalUI:DisableTips()
+                NetManager:getMailRewardsPromise(mail.id):done(function ()
+                    GameGlobalUI:EnableTips()
+                    GameGlobalUI:showTips(_("提示"),_("领取成功"))
+                    UIKit:ttfLabel({
+                        text = _("已领取"),
+                        size = 22,
+                        color = 0x403c2f,
+                    }):addTo(body):align(display.CENTER, size.width - 92, 42)
+                    get_btn:hide()
+                end):always(function ()
+                    GameGlobalUI:EnableTips()
+                end)
+            end
+        end)
     end
     -- 收藏按钮
     local saved_button = cc.ui.UICheckBoxButton.new({
@@ -1617,7 +1616,9 @@ function GameUIMail:CreateReportContent()
                     parent:SelectAllMailsOrReports(false)
                     if not report:IsRead() then
                         parent:ReadMailOrReports({report:Id()}, function ()
-                            parent.manager:DecreaseUnReadReportsNum(1)
+                            if parent.manager then
+                                parent.manager:DecreaseUnReadReportsNum(1)
+                            end
                         end)
                     end
                     if report:Type() == "strikeCity" or report:Type()== "cityBeStriked"
@@ -1631,6 +1632,13 @@ function GameUIMail:CreateReportContent()
                         UIKit:newGameUI("GameUIMonsterReport", report,true):AddToCurrentScene(true)
                     elseif report:Type() == "attackShrine" then
                         UIKit:newGameUI("GameUIShrineReportInMail", report,true):AddToCurrentScene(true)
+                    end
+                    if report:Type() ~= "collectResource" then
+                        if report:GetReportResult() then
+                            app:GetAudioManager():PlayeEffectSoundWithKey("BATTLE_VICTORY")
+                        else
+                            app:GetAudioManager():PlayeEffectSoundWithKey("BATTLE_DEFEATED")
+                        end
                     end
                 end
             end):addTo(self):pos(item_width/2, item_height/2)
@@ -1721,8 +1729,13 @@ function GameUIMail:CreateReportContent()
                 }):align(display.LEFT_CENTER, report_content_bg:getContentSize().width/2-10, 25)
                 :addTo(report_content_bg)
         elseif isFromMe == "attackShrine" then
-            display.newScale9Sprite("alliance_shrine.png"):addTo(report_content_bg)
-                :align(display.CENTER_TOP,160, 80):scale(0.6)
+            -- display.newScale9Sprite("alliance_watchTower.png"):addTo(report_content_bg)
+            --     :align(display.CENTER_TOP,160, 80):scale(0.6)
+            display.newSprite("alliance_shrine_1.png"):addTo(report_content_bg)
+                :align(display.CENTER_TOP,160, 90):scale(0.6)
+            display.newSprite("alliance_shrine_2.png"):addTo(report_content_bg)
+                :align(display.CENTER_TOP,160, 90):scale(0.6)
+
             -- 圣地关卡名字
             local attackTarget = report:GetAttackTarget()
             UIKit:ttfLabel(
@@ -1745,8 +1758,8 @@ function GameUIMail:CreateReportContent()
             local enemy_flag_data = report:GetEnemyPlayerData().alliance.flag
 
             local a_helper = WidgetAllianceHelper.new()
-            local my_flag = a_helper:CreateFlagContentSprite(Flag:DecodeFromJson(my_flag_data))
-            local enemy_flag = a_helper:CreateFlagContentSprite(Flag:DecodeFromJson(enemy_flag_data))
+            local my_flag = a_helper:CreateFlagContentSprite(my_flag_data)
+            local enemy_flag = a_helper:CreateFlagContentSprite(enemy_flag_data)
             my_flag:scale(0.55)
             enemy_flag:scale(0.55)
             my_flag:align(display.CENTER, isFromMe and 48 or 278, 8)
@@ -1954,7 +1967,13 @@ function GameUIMail:CreateSavedReportContent()
                     elseif report:Type() == "attackShrine" then
                         UIKit:newGameUI("GameUIShrineReportInMail", report):AddToCurrentScene(true)
                     end
-
+                    if report:Type() ~= "collectResource" then
+                        if report:GetReportResult() then
+                            app:GetAudioManager():PlayeEffectSoundWithKey("BATTLE_VICTORY")
+                        else
+                            app:GetAudioManager():PlayeEffectSoundWithKey("BATTLE_DEFEATED")
+                        end
+                    end
                 end
             end):addTo(self):pos(item_width/2, item_height/2)
 
@@ -2020,9 +2039,9 @@ function GameUIMail:CreateSavedReportContent()
             local soldier_ui_config = UILib.black_soldier_image[soldier_type][tonumber(soldier_star)]
 
             display.newSprite(UILib.black_soldier_color_bg_images[soldier_type]):addTo(report_content_bg)
-                :align(display.CENTER_TOP,120, 86):scale(80/128)
+                :align(display.CENTER_TOP,180, 86):scale(80/128)
 
-            local soldier_head_icon = display.newSprite(soldier_ui_config):align(display.CENTER_TOP,120, 86):addTo(report_content_bg)
+            local soldier_head_icon = display.newSprite(soldier_ui_config):align(display.CENTER_TOP,180, 86):addTo(report_content_bg)
             soldier_head_icon:scale(80/soldier_head_icon:getContentSize().height)
             display.newSprite("box_soldier_128x128.png")
                 :align(display.CENTER, soldier_head_icon:getContentSize().width/2, soldier_head_icon:getContentSize().height-64)
@@ -2033,17 +2052,17 @@ function GameUIMail:CreateSavedReportContent()
                     text = _("黑龙军团"),
                     size = 18,
                     color = 0x615b44
-                }):align(display.LEFT_CENTER, report_content_bg:getContentSize().width/2-70, 70)
+                }):align(display.LEFT_CENTER, report_content_bg:getContentSize().width/2-10, 70)
                 :addTo(report_content_bg)
             UIKit:ttfLabel(
                 {
                     text = Localize.soldier_name[soldier_type] .. " " ..string.format(_("等级%s"),monster_level),
                     size = 20,
                     color = 0x403c2f
-                }):align(display.LEFT_CENTER, report_content_bg:getContentSize().width/2-70, 25)
+                }):align(display.LEFT_CENTER, report_content_bg:getContentSize().width/2-10, 25)
                 :addTo(report_content_bg)
         elseif isFromMe == "attackShrine" then
-            display.newScale9Sprite("alliance_shrine.png"):addTo(report_content_bg)
+            display.newScale9Sprite("alliance_watchTower.png"):addTo(report_content_bg)
                 :align(display.CENTER_TOP,160, 80):scale(0.6)
             -- 圣地关卡名字
             local attackTarget = report:GetAttackTarget()
@@ -2067,8 +2086,8 @@ function GameUIMail:CreateSavedReportContent()
             local enemy_flag_data = report:GetEnemyPlayerData().alliance.flag
 
             local a_helper = WidgetAllianceHelper.new()
-            local my_flag = a_helper:CreateFlagContentSprite(Flag:DecodeFromJson(my_flag_data))
-            local enemy_flag = a_helper:CreateFlagContentSprite(Flag:DecodeFromJson(enemy_flag_data))
+            local my_flag = a_helper:CreateFlagContentSprite(my_flag_data)
+            local enemy_flag = a_helper:CreateFlagContentSprite(enemy_flag_data)
             my_flag:scale(0.55)
             enemy_flag:scale(0.55)
             my_flag:align(display.CENTER, isFromMe and 48 or 278, 8)
@@ -2519,6 +2538,8 @@ function GameUIMail:GetEnemyAllianceTag(report)
 end
 
 return GameUIMail
+
+
 
 
 
