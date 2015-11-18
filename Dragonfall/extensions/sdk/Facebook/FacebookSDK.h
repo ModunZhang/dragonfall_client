@@ -43,6 +43,8 @@ private:
 
 	FacebookSDK(){ m_handId = -1; m_isLogining = false; };
 
-	};
-
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT 
+	void saveUserProfile(Facebook::Graph::FBUser^ user);
+#endif
+};
 #endif //DRAGONFALL_SDK_FACEBOOK_H_

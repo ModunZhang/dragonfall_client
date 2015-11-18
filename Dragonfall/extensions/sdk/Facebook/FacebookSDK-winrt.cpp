@@ -40,6 +40,11 @@ FacebookSDK* FacebookSDK::GetInstance()
 	return s_FacebookSDK;
 }
 
+bool FacebookSDK::IsAuthenticated()
+{
+	return Windows::Storage::ApplicationData::Current->LocalSettings->Values->HasKey("FBUser_Id");
+}
+
 void FacebookSDK::Login()
 {
 	WinRTHelper::RunOnUIThread([=](){
@@ -51,8 +56,6 @@ void FacebookSDK::Login()
 		m_isLogining = true;
 		Platform::Collections::Vector<Platform::String^>^ permissionList = ref new Platform::Collections::Vector<Platform::String^>();
 		permissionList->Append(L"public_profile");
-		permissionList->Append(L"email");
-		permissionList->Append(L"user_likes");
 		FBPermissions^ permissions = ref new FBPermissions(permissionList->GetView());
 
 		// Login to Facebook
@@ -76,6 +79,7 @@ void FacebookSDK::Login()
 							tempMap["username"] = PlatformStringToString(user->Name);
 							tempMap["event"] = "login_success";
 							CallLuaCallback(tempMap);
+							saveUserProfile(user);
 						}
 					}
 				}
@@ -101,4 +105,11 @@ void FacebookSDK::Login()
 		});
 	});
 }
+void FacebookSDK::saveUserProfile(Facebook::Graph::FBUser^ user)
+{
+	if (nullptr == user)return;
+	Windows::Storage::ApplicationData::Current->LocalSettings->Values->Insert("FBUser_Id", user->Id);
+	Windows::Storage::ApplicationData::Current->LocalSettings->Values->Insert("FBUser_Name", user->Name);
+}
+
 #endif // CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
