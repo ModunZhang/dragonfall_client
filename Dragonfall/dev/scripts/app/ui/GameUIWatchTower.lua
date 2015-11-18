@@ -634,7 +634,7 @@ function GameUIWatchTower:OnRetreatButtonClicked(entity,cb)
         end)
     elseif entity.eventType == "villageEvents" then
         UIKit:showMessageDialog(_("提示"),_("确定撤军?"),function()
-            NetManager:getRetreatFromVillagePromise(entity.villageData.id,entity.id)
+            NetManager:getRetreatFromVillagePromise(entity.id)
                 :done(function()
                     cb(true)
                 end):fail(function()
