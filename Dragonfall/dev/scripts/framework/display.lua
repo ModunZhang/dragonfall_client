@@ -61,8 +61,8 @@ display 模块封装了绝大部分与显示有关的功能，并负责根据 co
 
 颜色：
 
--   display.COLOR_WHITE 白色, cc.c3b(255, 255, 255)
--   display.COLOR_BLACK 黑色, cc.c3b(0, 0, 0)
+-   display.COLOR_WHITE 白色, cc.c4b(255, 255, 255, 255)
+-   display.COLOR_BLACK 黑色, cc.c4b(0, 0, 0, 0)
 
 ]]
 local display = {}
@@ -1299,6 +1299,8 @@ function display.newTTFLabel(params)
     local textValign = params.valign or cc.VERTICAL_TEXT_ALIGNMENT_TOP
     local x, y       = params.x, params.y
     local dimensions = params.dimensions or cc.size(0, 0)
+
+    color.a = color.a or 255
 
     assert(type(size) == "number",
            "[framework.display] newTTFLabel() invalid params.size")

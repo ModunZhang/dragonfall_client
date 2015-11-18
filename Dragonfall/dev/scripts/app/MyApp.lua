@@ -38,7 +38,14 @@ require("app.utils.UIKit")
 require("app.utils.window")
 require("app.service.NetManager")
 require("app.service.DataManager")
-local Store = import(".utils.Store")
+local Store
+if device.platform == 'ios' then
+    Store = import(".utils.Store")
+elseif device.platform == 'android' then
+    Store = import(".utils.Store-Android")
+elseif device.platform == 'wp8' then
+    Store = import(".utils.Store-WP")
+end
 local GameDefautlt = import("app.utils.GameDefautlt")
 local AudioManager = import("app.utils.AudioManager")
 local LocalPushManager = import("app.utils.LocalPushManager")
@@ -141,7 +148,6 @@ end
 local is_debug_cloud = true
 
 local enter_next_scene = function(new_scene_name, ...)
-    print("enter_next_scene=",new_scene_name,...)
     if is_debug_cloud then
         enter_scene_transition(new_scene_name, ...)
     else
@@ -312,6 +318,9 @@ function MyApp:retryLoginGame()
         end):done(function()
             print("MyApp:debug--->fetchChats")
             app:GetChatManager():FetchChatWhenReLogined()
+            if device.platform == 'wp8' then
+                app:getStore():validateMSReceipts()
+            end
         end):always(function()
             print("MyApp:debug--->7")
             UIKit:NoWaitForNet()
@@ -358,7 +367,9 @@ function MyApp:onEnterBackground()
 end
 
 function MyApp:onBackgroundMusicCompletion()
-    self:GetAudioManager():OnBackgroundMusicCompletion()
+    if device.platform ~= 'wp8' then
+        self:GetAudioManager():OnBackgroundMusicCompletion()
+    end
 end
 
 function MyApp:onEnterForeground()
@@ -469,9 +480,6 @@ end
 function MyApp:EnterPVEFteScene(level)
     enter_next_scene("PVESceneNewFte", User, level)
 end
-function MyApp:EnterWorldScene()
-    enter_next_scene("WorldScene")
-end
 
 function MyApp:pushScene(sceneName, args, transitionType, time, more)
     local scenePackageName = "app.scenes." .. sceneName
@@ -549,12 +557,72 @@ end
 -- Store
 ------------------------------------------------------------------------------------------------------------------
 function MyApp:getStore()
-    if not cc.storeProvider then
-        Store.init(handler(self, self.transactionObserver))
+    if device.platform == 'ios' then
+        if not cc.storeProvider then
+            Store.init(handler(self, self.transactionObserver))
+        end
+        return Store
+    elseif device.platform == 'android' then
+        if not cc.storeProvider then
+            Store.init(handler(self, self.verifyGooglePlayPurchase),handler(self, self.transitionFailedInGooglePlay))
+        end
+        return Store
+    elseif device.platform == 'wp8' then
+        if not cc.storeProvider then
+            Store.init(handler(self, self.verifyAdeasygoPurchase),nil)
+        end
+        return Store
     end
-    return Store
 end
 
+-- windows phone
+--------------------
+function MyApp:verifyAdeasygoPurchase(unSyncTradeList)
+    --TODO:send data to server
+    dump(unSyncTradeList,"unSyncTradeList:")
+    for __,trade in ipairs(unSyncTradeList) do
+        if trade.orderType == 'Microsoft' then
+            self:getStore().finishTransaction(trade)
+             ext.showAlert("cool","buy success","ok",function ( ... )
+                 -- body
+             end)
+        end
+    end
+end
+
+-- android
+--------------------
+function MyApp:verifyGooglePlayPurchase(orderId,purchaseData,signature)
+    print("verifyGooglePlayPurchase---->",orderId,purchaseData,signature)
+    local transaction = Store.getTransactionDataWithPurchaseData(purchaseData)
+    local info = DataUtils:getIapInfo(transaction.productIdentifier)
+    ext.market_sdk.onPlayerChargeRequst(transaction.transactionIdentifier,transaction.productIdentifier,info.price,info.gem,"USD")
+    device.hideActivityIndicator()
+    if true then --TODO: verify v3 in server 
+        local openRewardIf = function()
+            local GameUIActivityRewardNew_instance = UIKit:GetUIInstance("GameUIActivityRewardNew")
+            if User and not GameUIActivityRewardNew_instance then
+                local countInfo = User:GetCountInfo()
+                if countInfo.iapCount > 0 and not countInfo.isFirstIAPRewardsGeted then
+                    UIKit:newGameUI("GameUIActivityRewardNew",4):AddToCurrentScene(true) -- 如果首充 弹出奖励界面
+                end
+            end
+        end
+        UIKit:showMessageDialog(_("恭喜"), 
+            string.format("您已获得%s,到物品里面查看",
+            UIKit:getIapPackageName(transaction.productIdentifier)),
+            openRewardIf)
+        Store.finishTransaction(transaction)
+        ext.market_sdk.onPlayerChargeSuccess(transaction.transactionIdentifier)
+    end
+
+end
+function MyApp:transitionFailedInGooglePlay()
+    print("transitionFailedInGooglePlay---->")
+    device.hideActivityIndicator()
+end
+-- iOS
+--------------------
 function MyApp:transactionObserver(event)
     local transaction = event.transaction
     local transaction_state = transaction.state
@@ -661,11 +729,11 @@ end
 my_print = function(...)
     LuaUtils:outputTable({...})
 end
+-- call from cpp
+function __G_APP_BACKGROUND_MUSIC_COMPLETION()
+    if device.platform == 'wp8' then
+        app:GetAudioManager():OnBackgroundMusicCompletion()
+    end
+end
 
 return MyApp
-
-
-
-
-
-

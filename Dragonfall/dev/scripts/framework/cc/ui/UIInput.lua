@@ -246,6 +246,8 @@ function UIInput.newTextField_(params)
     end
     if params.size then
         editbox:setTextAreaSize(params.size)
+        editbox:setTouchSize(params.size)
+        editbox:setTouchAreaEnabled(true)
     end
     if params.text then
         if editbox.setString then

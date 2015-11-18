@@ -174,7 +174,12 @@ if DEBUG_MEM then
     ]]
     local function showMemoryUsage()
         printInfo(string.format("LUA VM MEMORY USED: %0.2f KB", collectgarbage("count")))
-        printInfo(sharedTextureCache:getCachedTextureInfo())
+        -- dannyhe 兼容所有平台的日志输出
+        local msg = sharedTextureCache:getCachedTextureInfo()
+        local t_msg = string.split(msg, "\n")
+        for __,v in ipairs(t_msg) do
+            printInfo(v)
+        end
         printInfo("---------------------------------------------------")
     end
     sharedDirector:getScheduler():scheduleScriptFunc(showMemoryUsage, DEBUG_MEM_INTERVAL or 10.0, false)
