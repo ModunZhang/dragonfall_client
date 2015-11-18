@@ -79,7 +79,7 @@ function PlatformAdapter:ios()
 end
 
 
-function PlatformAdapter:wp8()
+function PlatformAdapter:winrt()
     device.getOpenUDID = ext.getOpenUDID
    
     audio = require("app.utils.audio-WP")

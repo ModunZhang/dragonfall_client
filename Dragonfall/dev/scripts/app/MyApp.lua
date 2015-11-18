@@ -36,7 +36,7 @@ if device.platform == 'ios' then
     Store = import(".utils.Store")
 elseif device.platform == 'android' then
     Store = import(".utils.Store-Android")
-elseif device.platform == 'wp8' then
+elseif device.platform == 'winrt' then
     Store = import(".utils.Store-WP")
 end
 local GameDefautlt = import("app.utils.GameDefautlt")
@@ -309,7 +309,7 @@ function MyApp:retryLoginGame()
         end):done(function()
             print("MyApp:debug--->fetchChats")
             app:GetChatManager():FetchChatWhenReLogined()
-            if device.platform == 'wp8' then
+            if device.platform == 'winrt' then
                 app:getStore():validateMSReceipts()
             end
         end):always(function()
@@ -358,7 +358,7 @@ function MyApp:onEnterBackground()
 end
 
 function MyApp:onBackgroundMusicCompletion()
-    if device.platform ~= 'wp8' then
+    if device.platform ~= 'winrt' then
         self:GetAudioManager():OnBackgroundMusicCompletion()
     end
 end
@@ -554,7 +554,7 @@ function MyApp:getStore()
             Store.init(handler(self, self.verifyGooglePlayPurchase),handler(self, self.transitionFailedInGooglePlay))
         end
         return Store
-    elseif device.platform == 'wp8' then
+    elseif device.platform == 'winrt' then
         if not cc.storeProvider then
             Store.init(handler(self, self.verifyAdeasygoPurchase),nil)
         end
@@ -718,7 +718,7 @@ my_print = function(...)
 end
 -- call from cpp
 function __G_APP_BACKGROUND_MUSIC_COMPLETION()
-    if device.platform == 'wp8' then
+    if device.platform == 'winrt' then
         app:GetAudioManager():OnBackgroundMusicCompletion()
     end
 end
