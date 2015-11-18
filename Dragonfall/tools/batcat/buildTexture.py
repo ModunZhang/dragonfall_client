@@ -29,7 +29,7 @@ if __name__ == "__main__":
     ProjDir = getProjDir()
     TPS_FILES_DIR = formatPath(
         "%s/PackImages/TexturePackerProj/player" % ProjDir)
-    if Platform == 'iOS' or Platform == 'Android':
+    if Platform == 'iOS':
         TPS_FILES_DIR = formatPath(
             "%s/PackImages/TexturePackerProj/iOS" % ProjDir)
     elif Platform == 'WP':

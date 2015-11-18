@@ -347,7 +347,7 @@ function display.newTTFLabel(params)
         if device.platform == 'mac' then
             label = cc.Label:createWithTTF(text, font, size, dimensions, textAlign, textValign)
         else
-            label = cc.Label:createWithTTF(text, font, size, dimensions, textAlign, textValign,0)
+            label = cc.Label:createWithTTF(text, font, size, dimensions, textAlign, textValign)
         end
     else
         label = cc.Label:createWithSystemFont(text, font, size, dimensions, textAlign, textValign)
