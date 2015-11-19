@@ -78,7 +78,7 @@ namespace AudioExtension
 		Uri^ url = ref new Uri(WinRTHelper::PlatformStringFromString(fullPath));
 
 		// must create XAML element on main UI thread?
-		m_dispatcher.Get()->RunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal, ref new DispatchedHandler([this, url]()
+		m_dispatcher.Get()->RunAsync(Windows::UI::Core::CoreDispatcherPriority::High, ref new DispatchedHandler([this, url]()
 		{
 			critical_section::scoped_lock lock(m_criticalSection);
 			auto item = findXamlElement(m_panel.Get(), "BackgroundMediaElement");
@@ -112,7 +112,7 @@ namespace AudioExtension
 		if (m_isLoop)
 		{
 			if (backgroundMedia == nullptr) return;
-			m_dispatcher.Get()->RunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal, ref new DispatchedHandler([this](){
+			m_dispatcher.Get()->RunAsync(Windows::UI::Core::CoreDispatcherPriority::High, ref new DispatchedHandler([this](){
 				backgroundMedia->Volume = m_volume;
 				backgroundMedia->Play();
 			}));
@@ -125,7 +125,7 @@ namespace AudioExtension
 	//TODO::maybe,do not need remve xaml element?
 	void SimpleAudio::stopBackGroundMusic()
 	{
-		m_dispatcher.Get()->RunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal, ref new DispatchedHandler([this]()
+		m_dispatcher.Get()->RunAsync(Windows::UI::Core::CoreDispatcherPriority::High, ref new DispatchedHandler([this]()
 		{
 			critical_section::scoped_lock lock(m_criticalSection);
 			auto item = findXamlElement(m_panel.Get(), "BackgroundMediaElement");
@@ -152,7 +152,7 @@ namespace AudioExtension
 	{
 
 		m_volume = val;
-		m_dispatcher.Get()->RunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal, ref new DispatchedHandler([this]()
+		m_dispatcher.Get()->RunAsync(Windows::UI::Core::CoreDispatcherPriority::High, ref new DispatchedHandler([this]()
 		{
 			critical_section::scoped_lock lock(m_criticalSection);
 			auto item = findXamlElement(m_panel.Get(), "BackgroundMediaElement");
@@ -176,12 +176,12 @@ namespace AudioExtension
 		Uri^ url = ref new Uri(WinRTHelper::PlatformStringFromString(fullPath));
 
 		// must create XAML element on main UI thread?
-		m_dispatcher.Get()->RunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal, ref new DispatchedHandler([this, url]()
+		m_dispatcher.Get()->RunAsync(Windows::UI::Core::CoreDispatcherPriority::High, ref new DispatchedHandler([this, url]()
 		{
-			critical_section::scoped_lock lock(m_criticalSection);
+			//critical_section::scoped_lock lock(m_criticalSection);
 
 			MediaElement^ media = ref new MediaElement();
-			media->AudioCategory = Windows::UI::Xaml::Media::AudioCategory::GameMedia;
+			media->AudioCategory = Windows::UI::Xaml::Media::AudioCategory::GameEffects;
 			media->Source = url;
 			media->Name = this->Index;
 			Windows::Foundation::EventRegistrationToken token = media->MediaEnded += ref new Windows::UI::Xaml::RoutedEventHandler(this, &AudioExtension::SimpleAudio::OnEffectMediaEnded);
@@ -204,7 +204,7 @@ namespace AudioExtension
 		{
 			m_effect_token_keys->RemoveAt(indexOfKey);
 		}
-		m_dispatcher.Get()->RunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal, ref new DispatchedHandler([this, media](){
+		m_dispatcher.Get()->RunAsync(Windows::UI::Core::CoreDispatcherPriority::High, ref new DispatchedHandler([this, media](){
 			critical_section::scoped_lock lock(m_criticalSection);
 			unsigned  int indexOfMedia = 0;
 			if (m_panel->Children->IndexOf(media, &indexOfMedia))
@@ -216,7 +216,7 @@ namespace AudioExtension
 
 	void SimpleAudio::stopAllEffects()
 	{
-		m_dispatcher.Get()->RunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal, ref new DispatchedHandler([this](){
+		m_dispatcher.Get()->RunAsync(Windows::UI::Core::CoreDispatcherPriority::High, ref new DispatchedHandler([this](){
 			critical_section::scoped_lock lock(m_criticalSection);
 			for (auto key : m_effect_token_keys)
 			{
@@ -244,7 +244,7 @@ namespace AudioExtension
 	{
 		if (backgroundMedia && backgroundMedia->CurrentState == Media::MediaElementState::Playing)
 		{
-			m_dispatcher.Get()->RunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal, ref new DispatchedHandler([this](){
+			m_dispatcher.Get()->RunAsync(Windows::UI::Core::CoreDispatcherPriority::High, ref new DispatchedHandler([this](){
 				critical_section::scoped_lock lock(m_criticalSection);
 				backgroundMedia->Pause();
 			}));
@@ -255,7 +255,7 @@ namespace AudioExtension
 	{
 		if (backgroundMedia && backgroundMedia->CurrentState == Media::MediaElementState::Paused)
 		{
-			m_dispatcher.Get()->RunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal, ref new DispatchedHandler([this](){
+			m_dispatcher.Get()->RunAsync(Windows::UI::Core::CoreDispatcherPriority::High, ref new DispatchedHandler([this](){
 				critical_section::scoped_lock lock(m_criticalSection);
 				backgroundMedia->Play();
 			}));
@@ -268,7 +268,7 @@ namespace AudioExtension
 		bool flag = false;
 		if (backgroundMedia)
 		{
-			create_task(m_dispatcher.Get()->RunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal, ref new DispatchedHandler([this, &flag](){
+			create_task(m_dispatcher.Get()->RunAsync(Windows::UI::Core::CoreDispatcherPriority::High, ref new DispatchedHandler([this, &flag](){
 				flag = backgroundMedia->CurrentState == Media::MediaElementState::Playing;
 			}))).wait();
 		}

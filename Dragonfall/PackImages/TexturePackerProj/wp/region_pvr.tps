@@ -38,7 +38,7 @@
         <key>dataFormat</key>
         <string>cocos2d</string>
         <key>textureFileName</key>
-        <filename>../../../dev/res/images/_Compressed_wp/region_pvr.png</filename>
+        <filename>../../../dev/res/images/_Compressed_wp/region_pvr{n}.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>ditherType</key>
@@ -131,7 +131,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../../../dev/res/images/_Compressed_wp/region_pvr.plist</filename>
+                <filename>../../../dev/res/images/_Compressed_wp/region_pvr{n}.plist</filename>
             </struct>
             <key>java</key>
             <struct type="DataFile">
@@ -140,7 +140,7 @@
             </struct>
         </map>
         <key>multiPack</key>
-        <false/>
+        <true/>
         <key>forceIdenticalLayout</key>
         <false/>
         <key>outputFormat</key>

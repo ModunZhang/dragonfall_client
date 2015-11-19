@@ -104,7 +104,7 @@ static void __CallLuaCallback(const char *gcName,const char *gcId)
    
     if ([self isAuthenticated])
     {
-        __CallLuaCallback([self.localPlayer.alias UTF8String],[self.localPlayer.playerID UTF8String]);
+        __CallLuaCallback([self.localPlayer.displayName UTF8String],[self.localPlayer.playerID UTF8String]);
         return;
     };
     if (forceLogin)
@@ -144,7 +144,7 @@ static void __CallLuaCallback(const char *gcName,const char *gcId)
 {
     if(self.localPlayer.authenticated) // Authentication Successful
     {
-        __CallLuaCallback([self.localPlayer.alias UTF8String],[self.localPlayer.playerID UTF8String]);
+        __CallLuaCallback([self.localPlayer.displayName UTF8String],[self.localPlayer.playerID UTF8String]);
     }
     else
     {
@@ -207,7 +207,7 @@ static int tolua_GameCenter_getPlayerNameAndId(lua_State *tolua_S)
 {
     if([shareIntance isAuthenticated])
     {
-        lua_pushstring(tolua_S, [[[shareIntance localPlayer]alias]UTF8String]);
+        lua_pushstring(tolua_S, [[[shareIntance localPlayer]displayName]UTF8String]);
         lua_pushstring(tolua_S, [[[shareIntance localPlayer]playerID]UTF8String]);
     }
     else

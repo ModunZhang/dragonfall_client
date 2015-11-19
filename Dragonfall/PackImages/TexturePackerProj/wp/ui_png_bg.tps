@@ -38,7 +38,7 @@
         <key>dataFormat</key>
         <string>cocos2d</string>
         <key>textureFileName</key>
-        <filename>../../../dev/res/images/_Compressed_wp/ui_png_bg.png</filename>
+        <filename>../../../dev/res/images/_Compressed_wp/ui_png_bg{n}.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>ditherType</key>
@@ -94,7 +94,7 @@
             <key>sizeConstraints</key>
             <enum type="AlgorithmSettings::SizeConstraints">POT</enum>
             <key>forceSquared</key>
-            <false/>
+            <true/>
             <key>forceWordAligned</key>
             <false/>
             <key>maxRects</key>
@@ -131,7 +131,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../../../dev/res/images/_Compressed_wp/ui_png_bg.plist</filename>
+                <filename>../../../dev/res/images/_Compressed_wp/ui_png_bg{n}.plist</filename>
             </struct>
             <key>java</key>
             <struct type="DataFile">
@@ -140,7 +140,7 @@
             </struct>
         </map>
         <key>multiPack</key>
-        <false/>
+        <true/>
         <key>forceIdenticalLayout</key>
         <false/>
         <key>outputFormat</key>
