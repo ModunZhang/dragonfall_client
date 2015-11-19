@@ -51,7 +51,7 @@ static void __CallLuaCallback(const char *gcName,const char *gcId)
 }
 @property (nonatomic, readonly) GKLocalPlayer* localPlayer;
 + (BOOL)isGameCenterAPIAvailable;
-- (void)authenticate:(BOOL) forceLogin;
+- (void)authenticate:(BOOL) forceLogin shouldShowLogin:(BOOL) showLogin;
 - (void)showAchivevementController;
 @end
 @implementation KodGameCenter
@@ -99,12 +99,12 @@ static void __CallLuaCallback(const char *gcName,const char *gcId)
     return gcClass && osVersionSupported;
 }
 
-- (void)authenticate:(BOOL) forceLogin
+- (void)authenticate:(BOOL) forceLogin shouldShowLogin:(BOOL)showLogin
 {
    
     if ([self isAuthenticated])
     {
-        __CallLuaCallback([self.localPlayer.displayName UTF8String],[self.localPlayer.playerID UTF8String]);
+        __CallLuaCallback([self.localPlayer.alias UTF8String],[self.localPlayer.playerID UTF8String]);
         return;
     };
     if (forceLogin)
@@ -131,7 +131,10 @@ static void __CallLuaCallback(const char *gcName,const char *gcId)
         [self.localPlayer setAuthenticateHandler:(^(UIViewController* viewcontroller, NSError *error) {
             if (!error && viewcontroller)
             {
-                [[[[UIApplication sharedApplication]keyWindow] rootViewController]presentViewController:viewcontroller animated:YES completion:nil];
+                if(showLogin)
+                {
+                    [[[[UIApplication sharedApplication]keyWindow] rootViewController]presentViewController:viewcontroller animated:YES completion:nil];
+                }
             }
             else
             {
@@ -144,7 +147,7 @@ static void __CallLuaCallback(const char *gcName,const char *gcId)
 {
     if(self.localPlayer.authenticated) // Authentication Successful
     {
-        __CallLuaCallback([self.localPlayer.displayName UTF8String],[self.localPlayer.playerID UTF8String]);
+        __CallLuaCallback([self.localPlayer.alias UTF8String],[self.localPlayer.playerID UTF8String]);
     }
     else
     {
@@ -183,13 +186,33 @@ static int tolua_GameCenter_authenticate(lua_State *tolua_S)
 {
 #ifndef TOLUA_RELEASE
     tolua_Error tolua_err;
-    if (!tolua_isboolean(tolua_S, 1, 0, &tolua_err))
-        goto tolua_lerror;
-    else
 #endif
+    int nargs = lua_gettop(tolua_S);
+    BOOL forceLogin = NO;
+    BOOL shouldShowLogin = NO;
+    if(nargs > 1)
     {
-        [shareIntance authenticate:tolua_toboolean(tolua_S, 1, 0)?YES:NO];
+#ifndef TOLUA_RELEASE
+        if (!tolua_isboolean(tolua_S, 1, 0, &tolua_err) ||
+            !tolua_isboolean(tolua_S, 2, 0, &tolua_err))
+        {
+            goto tolua_lerror;
+        }
+#endif
+        forceLogin = tolua_toboolean(tolua_S, 1, 0)?YES:NO;
+        shouldShowLogin = tolua_toboolean(tolua_S, 2, 0)?YES:NO;
     }
+    else if(nargs > 0)
+    {
+#ifndef TOLUA_RELEASE
+        if (!tolua_isboolean(tolua_S, 1, 0, &tolua_err))
+        {
+            goto tolua_lerror;
+        }
+#endif
+        forceLogin = tolua_toboolean(tolua_S, 1, 0)?YES:NO;
+    }
+    [shareIntance authenticate:forceLogin shouldShowLogin:shouldShowLogin];
     return 0;
 #ifndef TOLUA_RELEASE
 tolua_lerror:
@@ -207,7 +230,7 @@ static int tolua_GameCenter_getPlayerNameAndId(lua_State *tolua_S)
 {
     if([shareIntance isAuthenticated])
     {
-        lua_pushstring(tolua_S, [[[shareIntance localPlayer]displayName]UTF8String]);
+        lua_pushstring(tolua_S, [[[shareIntance localPlayer]alias]UTF8String]);
         lua_pushstring(tolua_S, [[[shareIntance localPlayer]playerID]UTF8String]);
     }
     else
