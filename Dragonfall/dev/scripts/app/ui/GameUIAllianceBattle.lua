@@ -1259,12 +1259,18 @@ end
 function GameUIAllianceBattle:CreateHistoryContent()
     local w,h = 568,338 + 5 * 46
     local content = WidgetUIBackGround.new({height=h,width=w},WidgetUIBackGround.STYLE_TYPE.STYLE_2)
-    -- 战斗发生时间
     UIKit:ttfLabel({
         text = _("立即定位到敌方联盟"),
         size = 20,
         color = 0x615b44,
-    }):align(display.LEFT_CENTER,20, 40)
+    }):align(display.LEFT_CENTER,20, 50)
+        :addTo(content)
+    -- 战斗发生时间
+    local fight_time = UIKit:ttfLabel({
+        text = "",
+        size = 20,
+        color = 0x615b44,
+    }):align(display.LEFT_CENTER,20, 20)
         :addTo(content)
 
     local fight_bg = display.newSprite("report_back_ground.png")
@@ -1387,7 +1393,7 @@ function GameUIAllianceBattle:CreateHistoryContent()
 
         enemy_alliance_name:setString(enemyAlliance.name)
         enemy_alliance_tag:setString("["..enemyAlliance.tag.."]")
-
+        fight_time:setString(GameUtils:formatTimeStyle2(report.fightTime))
         if self.self_flag then
             self.self_flag:SetFlag(ourAlliance.flag)
         else
