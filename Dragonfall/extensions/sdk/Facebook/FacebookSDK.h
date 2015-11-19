@@ -35,6 +35,11 @@ public:
     };
 
     bool IsAuthenticated();
+    
+    std::string GetFBUserName();
+    
+    std::string GetFBUserId();
+    
 private:
 
 	int m_handId;

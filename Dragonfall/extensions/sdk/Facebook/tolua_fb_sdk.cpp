@@ -57,6 +57,15 @@ tolua_lerror :
 #endif
 }
 
+static int tolua_fb_getUserNameAndId(lua_State *tolua_S)
+{
+    std::string name = FacebookSDK::GetInstance()->GetFBUserName();
+    std::string id = FacebookSDK::GetInstance()->GetFBUserId();
+    tolua_pushcppstring(tolua_S,name);
+    tolua_pushcppstring(tolua_S,id);
+    return 2;
+}
+
 void tolua_ext_module_facebook(lua_State* tolua_S)
 {
 	tolua_module(tolua_S, EXT_MODULE_NAME_FACEBOOK, 0);
@@ -64,5 +73,6 @@ void tolua_ext_module_facebook(lua_State* tolua_S)
 	tolua_function(tolua_S, "initialize", tolua_fb_initialize);
 	tolua_function(tolua_S, "login", tolua_fb_login);
 	tolua_function(tolua_S, "isAuthenticated", tolua_fb_isAuthenticated);
+    tolua_function(tolua_S, "getPlayerNameAndId", tolua_fb_getUserNameAndId);
 	tolua_endmodule(tolua_S);
 }

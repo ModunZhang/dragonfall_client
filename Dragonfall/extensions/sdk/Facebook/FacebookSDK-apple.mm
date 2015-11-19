@@ -37,6 +37,27 @@ bool FacebookSDK::IsAuthenticated()
     FBSDKProfile* profile = [FBSDKProfile currentProfile];
     return profile != nil;
 }
+
+std::string FacebookSDK::GetFBUserName()
+{
+    FBSDKProfile* profile = [FBSDKProfile currentProfile];
+    if(nil != profile)
+    {
+        return std::string([[profile name]UTF8String]);
+    }
+    return std::string("");
+}
+
+std::string FacebookSDK::GetFBUserId()
+{
+    FBSDKProfile* profile = [FBSDKProfile currentProfile];
+    if(nil != profile)
+    {
+        return std::string([[profile userID]UTF8String]);
+    }
+    return std::string("");
+}
+
 /**
  *  登录facebook,每次调用都会弹出登录框,并请求新的的FBSDKAccessToken
  */
