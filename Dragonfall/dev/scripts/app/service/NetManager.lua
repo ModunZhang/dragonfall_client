@@ -1913,8 +1913,8 @@ function NetManager:getDailyTaskRewards(taskType)
 end
 
 -- 设置玩家Apple Push Notification Id
-function NetManager:getSetApnIdPromise(apnId)
-    return get_none_blocking_request_promise("logic.playerHandler.setPushId",{apnId=apnId},
+function NetManager:getSetApnIdPromise(pushId)
+    return get_none_blocking_request_promise("logic.playerHandler.setPushId",{pushId=pushId},
         "设置玩家Apple Push失败"):done(get_player_response_msg)
 end
 
