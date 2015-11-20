@@ -1306,6 +1306,9 @@
 		3F4A20461B9E858F00B4BE92 /* UIEditBoxImpl-mac.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3F4A202C1B9E858F00B4BE92 /* UIEditBoxImpl-mac.mm */; };
 		3F4A20511B9E858F00B4BE92 /* UIEditBoxImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 3F4A20321B9E858F00B4BE92 /* UIEditBoxImpl.h */; };
 		3F4A20521B9E858F00B4BE92 /* UIEditBoxImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 3F4A20321B9E858F00B4BE92 /* UIEditBoxImpl.h */; };
+		3F8635661BFED19E00C7EA18 /* WebSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AAF5368180E3374000584C8 /* WebSocket.cpp */; };
+		3F8635671BFED1E200C7EA18 /* WebSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AAF5369180E3374000584C8 /* WebSocket.h */; };
+		3F8635691BFED1ED00C7EA18 /* libwebsockets.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AAF5387180E35AC000584C8 /* libwebsockets.a */; };
 		3F8700941B9F072200DDD4B3 /* UITextView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3F8700921B9F072200DDD4B3 /* UITextView.cpp */; };
 		3F8700951B9F072200DDD4B3 /* UITextView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3F8700921B9F072200DDD4B3 /* UITextView.cpp */; };
 		3F8700961B9F072200DDD4B3 /* UITextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 3F8700931B9F072200DDD4B3 /* UITextView.h */; };
@@ -4808,6 +4811,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3FDC65C01BB0EFC700F29DE2 /* libcurl.a in Frameworks */,
+				3F8635691BFED1ED00C7EA18 /* libwebsockets.a in Frameworks */,
 				3FDC65C11BB0EFC700F29DE2 /* libssl.a in Frameworks */,
 				3FDC65C21BB0EFC700F29DE2 /* Foundation.framework in Frameworks */,
 				3FDC65C31BB0EFC700F29DE2 /* libpng.a in Frameworks */,
@@ -8365,6 +8369,7 @@
 				3FDC67E71BB0EFC700F29DE2 /* CCGLProgram.h in Headers */,
 				3FDC67E81BB0EFC700F29DE2 /* CSLoader.h in Headers */,
 				3FDC67E91BB0EFC700F29DE2 /* CCApplicationProtocol.h in Headers */,
+				3F8635671BFED1E200C7EA18 /* WebSocket.h in Headers */,
 				3FDC67EA1BB0EFC700F29DE2 /* CCFontCharMap.h in Headers */,
 				3FDC67EC1BB0EFC700F29DE2 /* CCAllocatorStrategyPool.h in Headers */,
 				3FDC67ED1BB0EFC700F29DE2 /* CCTimeLine.h in Headers */,
@@ -10094,6 +10099,7 @@
 				3FDC65191BB0EFC700F29DE2 /* CCThread-apple.mm in Sources */,
 				3FDC651A1BB0EFC700F29DE2 /* CCUserDefault-android.cpp in Sources */,
 				3FDC651B1BB0EFC700F29DE2 /* UIShaders.cpp in Sources */,
+				3F8635661BFED19E00C7EA18 /* WebSocket.cpp in Sources */,
 				3FDC651C1BB0EFC700F29DE2 /* tinyxml2.cpp in Sources */,
 				3FDC651D1BB0EFC700F29DE2 /* CCTexture2D.cpp in Sources */,
 				3FDC651F1BB0EFC700F29DE2 /* UILayout.cpp in Sources */,
@@ -10974,7 +10980,7 @@
 					"CC_USE_CCBUILDER=0",
 					"CC_USE_3D=0",
 					"CC_USE_PHYSICS=0",
-					"CC_USE_NETWORK_SOKET=0",
+					"CC_USE_NETWORK_SOKET=1",
 					"CC_USE_SPINE=0",
 					"USE_ETC1_TEXTURE_WITH_ALPHA_DATA=0",
 					"CC_USE_ETC1_ZLIB=0",
@@ -11015,7 +11021,7 @@
 					"CC_USE_CCBUILDER=0",
 					"CC_USE_3D=0",
 					"CC_USE_PHYSICS=0",
-					"CC_USE_NETWORK_SOKET=0",
+					"CC_USE_NETWORK_SOKET=1",
 					"CC_USE_SPINE=0",
 					"USE_ETC1_TEXTURE_WITH_ALPHA_DATA=0",
 					"CC_USE_ETC1_ZLIB=0",

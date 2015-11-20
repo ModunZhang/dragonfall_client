@@ -32,7 +32,7 @@
 #include "CCLuaValue.h"
 #include "CCLuaEngine.h"
 #include "LuaScriptHandlerMgr.h"
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT || CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 extern "C"
 {
 #include "LuaBitOp/bit.c"
@@ -454,7 +454,7 @@ TOLUA_API int register_web_socket_manual(lua_State* tolua_S)
 {
     if (nullptr == tolua_S)
         return 0 ;
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT || CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 	luaopen_bit(tolua_S);
 #endif
     lua_pushstring(tolua_S,"cc.WebSocket");
