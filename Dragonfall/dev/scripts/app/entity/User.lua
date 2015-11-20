@@ -387,7 +387,12 @@ end
 
 --[[gcId]]
 function User:IsBindGameCenter()
-    return self.gcId ~= "" and self.gcId ~= json.null
+    local gc = self.gc
+    return gc and gc.type == "gamecenter" and gc.gcId ~= "" and gc.gcId ~= json.null
+end
+function User:IsBindFacebook()
+    local gc = self.gc
+    return gc and gc.type == "facebook" and gc.gcId ~= "" and gc.gcId ~= json.null
 end
 --[[end]]
 

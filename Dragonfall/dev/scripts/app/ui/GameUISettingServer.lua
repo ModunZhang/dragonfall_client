@@ -274,13 +274,16 @@ end
 function GameUISettingServer:RefreshServerInfo()
     local btn_status = self.server_code ~= self.current_code
     self.select_button:setButtonEnabled(btn_status)
-    if btn_status then
-        self.select_button:getChildByTag(1):clearFilter()
-    else
-        self.select_button:getChildByTag(1):setFilter(filter.newFilter("GRAY", {0.2, 0.3, 0.5, 0.1}))
+    if self.select_button:getChildByTag(1) then
+        if btn_status then
+            self.select_button:getChildByTag(1):clearFilter()
+        else
+            self.select_button:getChildByTag(1):setFilter(filter.newFilter("GRAY", {0.2, 0.3, 0.5, 0.1}))
+        end
     end
 end
 
 return GameUISettingServer
+
 
 

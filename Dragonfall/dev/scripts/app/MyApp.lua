@@ -99,7 +99,7 @@ local speed = 2
 local MAX_ZORDER = 999999999
 function enter_scene(scene)
     local color_layer = cc.LayerColor:create(cc.c4b(255,255,255,255))
-    :addTo(scene,MAX_ZORDER,CLOUD_TAG)
+        :addTo(scene,MAX_ZORDER,CLOUD_TAG)
     local onEnterTransitionFinish__ = scene.onEnterTransitionFinish
     if onEnterTransitionFinish__ then
         scene.onEnterTransitionFinish = function(self)
@@ -192,7 +192,6 @@ function MyApp:restart(needDisconnect)
         NetManager:disconnect()
     end
     --关闭所有状态
-    self:EndCheckGameCenterIf()
     self.timer:Stop()
     self:GetAudioManager():StopAll()
     self:GetChatManager():Reset()
@@ -346,7 +345,7 @@ function MyApp:retryConnectServer(need_disconnect)
             return
         end
     end
-    NetManager.m_logicServer.host = nil 
+    NetManager.m_logicServer.host = nil
     NetManager.m_logicServer.port = nil
     self:retryConnectGateServer()
 end
@@ -385,9 +384,9 @@ function MyApp:onEnterForeground()
         end
     end
     if scene and scene.__cname == "MainScene" then
-        if (self:GetGameDefautlt():IsPassedSplash() 
-        or scene.ui.passed_splash)
-        and not scene.ui.enter_next_scene then
+        if (self:GetGameDefautlt():IsPassedSplash()
+            or scene.ui.passed_splash)
+            and not scene.ui.enter_next_scene then
             return scene.ui:loginAction()
         else
             return
@@ -583,9 +582,9 @@ function MyApp:verifyAdeasygoPurchase(unSyncTradeList)
     for __,trade in ipairs(unSyncTradeList) do
         if trade.orderType == 'Microsoft' then
             self:getStore().finishTransaction(trade)
-             ext.showAlert("cool","buy success","ok",function ( ... )
-                 -- body
-             end)
+            ext.showAlert("cool","buy success","ok",function ( ... )
+                -- body
+                end)
         end
     end
 end
@@ -598,7 +597,7 @@ function MyApp:verifyGooglePlayPurchase(orderId,purchaseData,signature)
     local info = DataUtils:getIapInfo(transaction.productIdentifier)
     ext.market_sdk.onPlayerChargeRequst(transaction.transactionIdentifier,transaction.productIdentifier,info.price,info.gem,"USD")
     device.hideActivityIndicator()
-    if true then --TODO: verify v3 in server 
+    if true then --TODO: verify v3 in server
         local openRewardIf = function()
             local GameUIActivityRewardNew_instance = UIKit:GetUIInstance("GameUIActivityRewardNew")
             if User and not GameUIActivityRewardNew_instance then
@@ -608,9 +607,9 @@ function MyApp:verifyGooglePlayPurchase(orderId,purchaseData,signature)
                 end
             end
         end
-        UIKit:showMessageDialog(_("恭喜"), 
+        UIKit:showMessageDialog(_("恭喜"),
             string.format("您已获得%s,到物品里面查看",
-            UIKit:getIapPackageName(transaction.productIdentifier)),
+                UIKit:getIapPackageName(transaction.productIdentifier)),
             openRewardIf)
         Store.finishTransaction(transaction)
         ext.market_sdk.onPlayerChargeSuccess(transaction.transactionIdentifier)
@@ -646,9 +645,9 @@ function MyApp:transactionObserver(event)
                         end
                     end
                 end
-                UIKit:showMessageDialog(_("恭喜"), 
+                UIKit:showMessageDialog(_("恭喜"),
                     string.format("您已获得%s,到物品里面查看",
-                    UIKit:getIapPackageName(transaction.productIdentifier)),
+                        UIKit:getIapPackageName(transaction.productIdentifier)),
                     openRewardIf)
                 Store.finishTransaction(transaction)
                 ext.market_sdk.onPlayerChargeSuccess(transaction.transactionIdentifier)
@@ -674,55 +673,24 @@ function MyApp:transactionObserver(event)
 end
 -- GameCenter
 ------------------------------------------------------------------------------------------------------------------
-function MyApp:StarCheckGameCenterIf()
-    if not self.___handle___ then
-        self.___handle___ = scheduler.scheduleGlobal(handler(self, self.__checkGameCenter),5)
-    end
-end
-function MyApp:EndCheckGameCenterIf()
-    if self.___handle___ then
-        scheduler.unscheduleGlobal(self.___handle___)
-    end
-    self.___handle___ = nil
-end
-
-function MyApp:__checkGameCenter()
-    if not NetManager:IsLogin() then return end
-    if ext.gamecenter.isAuthenticated() then
-        local __,gcId = ext.gamecenter.getPlayerNameAndId()
-        if string.len(gcId) > 0 and NetManager:isConnected() and User and not User:IsBindGameCenter() then
-            NetManager:getGcBindStatusPromise(gcId):done(function(response)
-                if not response.msg.isBind then
-                    NetManager:getBindGcIdPromise(gcId):done(function()
-                        app:EndCheckGameCenterIf()
-                    end)
-                else
-                    app:EndCheckGameCenterIf()
-                end
-                ext.gamecenter.gc_bind = response.msg.isBind
-            end)
-        end
-    end
-end
-
 -- 如果登陆成功 函数将会被回调
 function __G__GAME_CENTER_CALLBACK(gc_name,gc_id)
-    app:StarCheckGameCenterIf()
-    --如果玩家当前未绑定gc并且当前的gc未绑定任何账号 执行自动绑定
-    if gc_name and gc_id and NetManager:isConnected() and NetManager:IsLogin() then
-        NetManager:getGcBindStatusPromise(gc_id):done(function(response)
-            if User and not User:IsBindGameCenter() then
-                if not response.msg.isBind then
-                    NetManager:getBindGcIdPromise(gc_id):done(function()
-                        app:EndCheckGameCenterIf()
-                    end)
-                else
-                    app:EndCheckGameCenterIf()
-                end
-            end
-            ext.gamecenter.gc_bind = response.msg.isBind
-        end)
-    end
+-- app:StarCheckGameCenterIf()
+-- --如果玩家当前未绑定gc并且当前的gc未绑定任何账号 执行自动绑定
+-- if gc_name and gc_id and NetManager:isConnected() and NetManager:IsLogin() then
+--     NetManager:getGcBindStatusPromise(gc_id):done(function(response)
+--         if User and not User:IsBindGameCenter() then
+--             if not response.msg.isBind then
+--                 NetManager:getBindGcIdPromise(gc_id):done(function()
+--                     app:EndCheckGameCenterIf()
+--                 end)
+--             else
+--                 app:EndCheckGameCenterIf()
+--             end
+--         end
+--         ext.gamecenter.gc_bind = response.msg.isBind
+--     end)
+-- end
 end
 
 
@@ -737,3 +705,4 @@ function __G_APP_BACKGROUND_MUSIC_COMPLETION()
 end
 
 return MyApp
+

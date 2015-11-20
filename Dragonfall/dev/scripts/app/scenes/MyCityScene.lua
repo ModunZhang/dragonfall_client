@@ -245,6 +245,10 @@ function MyCityScene:onEnterTransitionFinish()
             end)
          --]]
     end
+    -- facebook
+    if ext.facebook then
+        ext.facebook.initialize()
+    end
     app:GetChatManager():FetMessageFirstStartGame()
     if Alliance_Manager:HasBeenJoinedAlliance() then
         return
