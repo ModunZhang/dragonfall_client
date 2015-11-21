@@ -25,7 +25,7 @@ Platform = ""
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         Platform = sys.argv[1]
-    Platform = getPlatform(Platform)
+    Platform = getNativePlatform(Platform)
     ProjDir = getProjDir()
     TPS_FILES_DIR = formatPath(
         "%s/PackImages/TexturePackerProj/player" % ProjDir)
