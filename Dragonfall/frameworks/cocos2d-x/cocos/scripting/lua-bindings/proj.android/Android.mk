@@ -126,6 +126,11 @@ LOCAL_SRC_FILES += ../../../../external/lua/quick/lua_cocos2dx_quick_manual.cpp 
                    ../../../../external/lua/quick/LuaTouchEventManager.cpp \
                    ../../../../external/lua/quick/LuaTouchTargetNode.cpp
 
+#websocket extension by dannyhe
+ifeq ($(CC_USE_NETWORK_SOKET),1)
+LOCAL_SRC_FILES += ../../../../external/lua/LuaBitOp/bit.c
+endif
+
 #extension
 LOCAL_SRC_FILES += ../manual/extension/lua_cocos2dx_extension_manual.cpp \
                    ../auto/lua_cocos2dx_extension_auto.cpp \
