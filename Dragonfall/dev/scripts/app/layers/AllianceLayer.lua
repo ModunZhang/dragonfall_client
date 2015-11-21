@@ -37,7 +37,7 @@ local function getZorderByXY(x, y)
     return x + ALLIANCE_WIDTH * y
 end
 function AllianceLayer:ctor(scene)
-    AllianceLayer.super.ctor(self, scene, 0.4, 1.2)
+    AllianceLayer.super.ctor(self, scene, 0.6, 1.2)
 end
 function AllianceLayer:onEnter()
     self:InitAllianceMap()
@@ -1306,11 +1306,11 @@ function AllianceLayer:LoadMiddleTerrain(map, terrain)
     if #array > 0 then
         local sx,sy,ex,ey = self.inner_alliance_logic_map:GetRegion()
         local span = 0
-        for i = 1, 60 do
+        for i = 1, 100 do
             local x = random(sx + span, ex - span)
             local y = random(sy + span, ey - span)
             display.newSprite(array[random(#array)])
-            :addTo(map, 1000):pos(x, y)
+            :addTo(map, 1000):pos(x, y):scale(random(0.5,1.0))
         end
     end
 end
