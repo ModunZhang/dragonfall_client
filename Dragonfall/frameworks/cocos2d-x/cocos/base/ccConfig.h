@@ -330,50 +330,51 @@ THE SOFTWARE.
 #endif
 
 //dannyhe
-/**
- * 下面的这些宏只是为了显示的表明支持了这些宏,定义在这里.实质定义生效是在xcode的target编译设置里面，Android是在mk文件里,Windows RT 将使用
- */
+/************************************************************************/
+/* 自定义的宏                                                           */
+/************************************************************************/
 #ifndef CC_USE_CCBUILDER
-#define CC_USE_CCBUILDER 1
+# define CC_USE_CCBUILDER 1
 #endif
 
 #ifndef CC_USE_3D
-#define CC_USE_3D 1
+# define CC_USE_3D 1
 #endif
 
 #ifndef CC_USE_SQLITE
-#define CC_USE_SQLITE 1
+# define CC_USE_SQLITE 1
 #endif
 
 #ifndef CC_USE_NETWORK_SOKET
-#define CC_USE_NETWORK_SOKET 1
+# define CC_USE_NETWORK_SOKET 1
 #endif
-
 
 #ifndef CC_USE_SPINE
 #define CC_USE_SPINE 1
 #endif
 
 #ifndef COCOSTUDIO_JSON_USE_CONFIG_PNG_FILE
-#define COCOSTUDIO_JSON_USE_CONFIG_PNG_FILE 1
+# define COCOSTUDIO_JSON_USE_CONFIG_PNG_FILE 1
 #endif
 
 #ifndef USE_ETC1_TEXTURE_WITH_ALPHA_DATA
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-#define USE_ETC1_TEXTURE_WITH_ALPHA_DATA 1
+# define USE_ETC1_TEXTURE_WITH_ALPHA_DATA 1
 #else
-#define USE_ETC1_TEXTURE_WITH_ALPHA_DATA 0
-#endif
+# define USE_ETC1_TEXTURE_WITH_ALPHA_DATA 0
+#endif //CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 #endif
 
 #ifndef CC_USE_ETC1_ZLIB
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
-#define CC_USE_ETC1_ZLIB 1
+#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+# define CC_USE_ETC1_ZLIB 0
 #else
-#define CC_USE_ETC1_ZLIB 0
-#endif
+# define CC_USE_ETC1_ZLIB 1
+#endif // CC_TARGET_PLATFORM == CC_PLATFORM_IOS
 #endif
 
-
+#ifndef CC_USE_POMELO_C_LIB
+#define CC_USE_POMELO_C_LIB 0
+#endif
 
 #endif // __CCCONFIG_H__
