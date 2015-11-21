@@ -243,6 +243,8 @@ void Director::setDefaultValues(void)
     Image::setPVRImagesHavePremultipliedAlpha(pvr_alpha_premultipled);
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
     Image::setPVRImagesHavePremultipliedAlpha(false); //dannyhe Android false
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT 
+	Image::setPVRImagesHavePremultipliedAlpha(false); //dannyhe windows phone false
 #endif
 }
 
