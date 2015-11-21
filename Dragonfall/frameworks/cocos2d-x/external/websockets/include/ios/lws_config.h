@@ -21,7 +21,7 @@
 #define LWS_BUILD_HASH "c517f04"
 
 /* Build with OpenSSL support */
-#define LWS_OPENSSL_SUPPORT
+/* #undef LWS_OPENSSL_SUPPORT */
 
 /* The client should load and trust CA root certs it finds in the OS */
 #define LWS_SSL_CLIENT_USE_OS_CA_CERTS
