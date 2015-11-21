@@ -91,5 +91,8 @@
 ##重要说明
 `WindowsPhone`的资源处理只能在Windows环境进行!
 
+##已知问题
+* `create_android_zip.py`对android的资源压缩会导致java不能进行解压，mac下脚本暂时使用系统命令打包,windows下还未支持
+
 ----
 By Dannyhe 11/11/2015
