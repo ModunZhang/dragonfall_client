@@ -18,8 +18,11 @@ hellolua/main.cpp \
 ../../../../extensions/ext/notification/tolua_local_push.cpp \
 ../../../../extensions/ext/io/FileOperation.cpp \
 ../../../../extensions/ext/notification/LocalNotification-android.cpp \
-../../../../extensions/sdk/libpomelo/CCPomelo.cpp \
-../../../../extensions/sdk/MarketSDKTool-android.cpp \
+../../../../extensions/sdk/MarketSDKTool-android.cpp
+
+ifeq ($(CC_USE_POMELO_C_LIB),1)
+LOCAL_SRC_FILES += ../../../../extensions/sdk/libpomelo/CCPomelo.cpp
+endif
 
 MY_FILES_PATH  :=  $(LOCAL_PATH)/../../../../extensions/ext/platform/android
 
@@ -41,20 +44,27 @@ $(LOCAL_PATH)/../../../cocos2d-x/tools/simulator/libsimulator/lib \
 $(LOCAL_PATH)/../../../../extensions/ext \
 $(LOCAL_PATH)/../../../../extensions/sdk \
 $(LOCAL_PATH)/../../../../extensions/ext/platform/android \
-$(LOCAL_PATH)/../../../../extensions/sdk/libpomelo \
 $(LOCAL_PATH)/../../../../extensions/ext/common \
 $(LOCAL_PATH)/../../../../extensions/ext/io \
 $(LOCAL_PATH)/../../../../extensions/ext/sysmail \
-$(LOCAL_PATH)/../../../../extensions/ext/notification \
+$(LOCAL_PATH)/../../../../extensions/ext/notification
+
+ifeq ($(CC_USE_POMELO_C_LIB),1)
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/../../../../extensions/sdk/libpomelo
+endif
 
 # _COCOS_HEADER_ANDROID_BEGIN
 # _COCOS_HEADER_ANDROID_END
 
 LOCAL_STATIC_LIBRARIES := cocos2d_lua_static
+
 ifeq ($(CC_USE_SIMULATOR),1)
 LOCAL_STATIC_LIBRARIES += cocos2d_simulator_static
 endif
+
+ifeq ($(CC_USE_POMELO_C_LIB),1)
 LOCAL_STATIC_LIBRARIES += pomelo_static
+endif
 
 # _COCOS_LIB_ANDROID_BEGIN
 LOCAL_STATIC_LIBRARIES += quick_libs_static
@@ -62,7 +72,10 @@ LOCAL_STATIC_LIBRARIES += quick_libs_static
 
 include $(BUILD_SHARED_LIBRARY)
 
+ifeq ($(CC_USE_POMELO_C_LIB),1)
 $(call import-module,libpomelo)
+endif
+
 $(call import-module,scripting/lua-bindings/proj.android)
 ifeq ($(CC_USE_SIMULATOR),1)
 $(call import-module,tools/simulator/libsimulator/proj.android)

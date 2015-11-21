@@ -6,7 +6,10 @@ import shutil
 import os
 from os.path import join, getsize
 
-Logging.DEBUG_MODE = False
+
+Logging.DEBUG_MODE = True
+
+CURRENT_DIR = os.getcwd()
 
 Platform = "Android"
 
@@ -73,7 +76,7 @@ if __name__ == "__main__":
     Logging.debug(ANDROID_RES_DIR)
     Logging.debug(JAVA_INFOMATION_FILE)
 
-    if isWindows():SedCommand = getWin32SedPath()
+    if isWindows():die("已知问题:Windows下python打包的资源不能被java解压！")
 
     Logging.warning("- 开始资源打包")
     Logging.info("- 拷贝项目配置文件")
@@ -85,8 +88,13 @@ if __name__ == "__main__":
     Logging.info("- 计算资源大小")
     filesize = getdirsize(TEMP_RES_DIR,getTempFileExtensions())
     Logging.info("- 打包资源文件夹:batcatstudio")
-    if not createZipFileWithDirPath(TEMP_RES_DIR,TARGET_ZIP_FILE,getTempFileExtensions()):
-    	die("资源打包发生了错误!")
+    # if not createZipFileWithDirPath(TEMP_RES_DIR,TARGET_ZIP_FILE,getTempFileExtensions()):
+    # 	die("资源打包发生了错误!")
+    os.chdir(TEMP_RES_DIR)
+    command = 'zip -r dragonfall.zip batcatstudio -x *.DS_Store *.bytes *.tmp -7 -TX -q'
+    executeCommand(command,Logging.DEBUG_MODE)
+    shutil.move("dragonfall.zip",TARGET_ZIP_FILE)
+    os.chdir(CURRENT_DIR)
     Logging.info("- 解压后大小: %d bytes" % filesize)
     Logging.info("- 生成解压数据信息到Java")
     sedJavaFile(filesize)

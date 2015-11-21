@@ -41,13 +41,17 @@ extern "C" {
 
 //MARK:Android
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#if CC_USE_POMELO_C_LIB
 #include "CCPomelo.h"
+#endif
 #include "MarketSDKTool.h"
 #include "jni_StoreKit.h"
 #define KODLOG(format, ...) CCLOG(format, ##__VA_ARGS__);
 //MARK:iOS
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+#if CC_USE_POMELO_C_LIB
 #include "CCPomelo.h"
+#endif
 #include "MarketSDKTool.h"
 #include "GameCenter.h"
 #define KODLOG(format, ...) CCLOG(format, ##__VA_ARGS__);Kodlog__(format, ##__VA_ARGS__);
@@ -60,7 +64,7 @@ extern "C" {
 #endif /* CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID */
 
 
-
+#if CC_USE_POMELO_C_LIB
 static void tolua_reg_pomelo_type(lua_State* tolua_S)
 {
     tolua_usertype(tolua_S, "CCPomelo");
@@ -440,9 +444,11 @@ tolua_lerror:
 #endif
 }
 
+#endif /* CC_USE_POMELO_C_LIB */
 
 TOLUA_API int tolua_cc_pomelo_open(lua_State* tolua_S)
 {
+#if CC_USE_POMELO_C_LIB
     tolua_open(tolua_S);
     tolua_reg_pomelo_type(tolua_S);
     tolua_module(tolua_S,NULL,0);
@@ -462,7 +468,11 @@ TOLUA_API int tolua_cc_pomelo_open(lua_State* tolua_S)
     tolua_endmodule(tolua_S);
     tolua_endmodule(tolua_S);
     return 1;
+#else
+    return 0;
+#endif
 }
+
 
 
 
@@ -470,6 +480,7 @@ static void tolua_reg_ext_type(lua_State* tolua_S)
 {
     tolua_usertype(tolua_S, "ext");
 }
+
 
 static int tolua_ext_now(lua_State* tolua_S){
 #ifndef TOLUA_RELEASE
