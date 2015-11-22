@@ -18,7 +18,7 @@
 #define LWS_LIBRARY_VERSION "1.5"
 
 /* The current git commit hash that we're building from */
-#define LWS_BUILD_HASH "e786b94"
+#define LWS_BUILD_HASH "3154d61"
 
 /* Build with OpenSSL support */
 /* #undef LWS_OPENSSL_SUPPORT */
