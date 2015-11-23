@@ -544,11 +544,13 @@ end
 
 function MyApp:sendApnIdIf()
     local token = ext.getDeviceToken() or ""
-    if string.len(token) > 0 then
-        token = string.sub(token,2,string.len(token)-1)
-        token = string.gsub(token," ","")
+    if device.platform == 'ios' then
+        if string.len(token) > 0 then
+            token = string.sub(token,2,string.len(token)-1)
+            token = string.gsub(token," ","")
+        end
     end
-    if token ~= User.apnId and string.len(token) > 0 then
+    if token ~= User.pushId and string.len(token) > 0 then
         NetManager:getSetApnIdPromise(token)
     end
 end
