@@ -1,6 +1,5 @@
-#include "rc4.h"
 #include "openssl/dh.h"
-
+#include "openssl/rc4.h"
 #include <lua.h>
 #include <lauxlib.h>
 #include <time.h>
@@ -275,23 +274,22 @@ lcomputesecret(lua_State *L) {
 
 static int
 lrc4(lua_State *L) {
-
-	size_t key_buff_len = 0;
-	const char *key_buff = (const char *)luaL_checklstring(L, 1, &key_buff_len);
+	size_t key_buf_len = 0;
+	const unsigned char *key_buf = (const unsigned char *)luaL_checklstring(L, 1, &key_buf_len);
 
 	size_t datalen = 0;
-	const unsigned char *data = (const unsigned char *)luaL_checklstring(L, 2, &datalen);
+	const unsigned char *in = (const unsigned char *)luaL_checklstring(L, 2, &datalen);
 
 	unsigned char * out = (unsigned char *)malloc(datalen);
-	memmove(out, data, sizeof(out));
+	memmove(out, in, sizeof(out));
 
-	unsigned char *md = (unsigned char *)md5(key_buff, key_buff_len);
+	unsigned char *md = (unsigned char *)md5(key_buf, key_buf_len);
 
-	rc4_key_t rc4_key;
-	rc4_set_key(md, 16, &rc4_key);
-	rc4_crypt(out, datalen, &rc4_key);
+	RC4_KEY rc4_key;
+	RC4_set_key(&rc4_key, 16, md);
+	RC4(&rc4_key, datalen, in, out);
 
-	lua_pushlstring(L, (const char*)out, datalen);
+	lua_pushlstring(L, out, datalen);
 	free(out);
 	return 1;
 }
