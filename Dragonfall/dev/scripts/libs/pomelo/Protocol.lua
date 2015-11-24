@@ -6,6 +6,15 @@ end
 -- str = json string
 Protocol.strencode = function(str)
     if not str then return  end
+
+    do 
+        local array = {}
+        for i = 1, #str do
+            array[i] = string.byte(str, i) -- 更快一些
+        end
+        return array
+    end
+
     do return {string.byte(str, 1, #str)} end
 
     local byteArray = {}
