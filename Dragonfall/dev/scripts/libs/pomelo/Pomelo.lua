@@ -36,11 +36,13 @@ function Pomelo:ctor()
     self.gapThreshold = 1       -- heartbeat gap threashold
     self.heartbeatId = nil
     self.heartbeatTimeoutId = nil
-
+    
+    dhcrypt.createdh()
     self.handshakeBuffer = {
         sys = {
             type = LUA_CLIENT_TYPE,
             version = LUA_CLIENT_VERSION,
+            clientKey = dhcrypt.base64encode(dhcrypt.getpublickey()),
         -- TODO 添加RSA加密选项,生成加密的key在本地
         },
         user = {}
@@ -460,9 +462,18 @@ function Pomelo:_handshake(data)
     end
 
     self:_handshakeInit(data)
-
-    local obj = Package.encode(Package.TYPE_HANDSHAKE_ACK)
-    self:_send(obj)
+    if true then
+        self.secret = dhcrypt.base64encode(dhcrypt.computesecret(dhcrypt.base64decode(data.sys.serverKey)))
+        local rc4 = dhcrypt.base64encode(dhcrypt.rc4(self.secret, data.sys.challenge))
+        -- print("   secret:", dhcrypt.base64encode(self.secret))
+        -- print("challenge:", data.sys.challenge)
+        -- print("      rc4:", rc4)
+        local obj = Package.encode(Package.TYPE_HANDSHAKE_ACK, Protocol.strencode(json.encode({challenge = rc4})));
+        self:_send(obj)
+    else
+        local obj = Package.encode(Package.TYPE_HANDSHAKE_ACK)
+        self:_send(obj)
+    end
 
     if self.initCallback then
         self:initCallback(self.socket)
@@ -473,6 +484,10 @@ end
 
 
 function Pomelo:_onData(data)
+    if true then
+        data = dhcrypt.rc4(self.secret, data)
+    end
+
     local msg = Message.decode(data)
     if msg.id > 0 then
         msg.route = self.routeMap[msg.id]
