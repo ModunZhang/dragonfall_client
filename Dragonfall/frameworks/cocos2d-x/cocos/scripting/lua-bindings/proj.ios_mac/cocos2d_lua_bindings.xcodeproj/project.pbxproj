@@ -507,6 +507,9 @@
 		566F016019B5EB0F00FCA620 /* CustomGUIReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 566F015D19B5EB0F00FCA620 /* CustomGUIReader.cpp */; };
 		566F016119B5EB0F00FCA620 /* CustomGUIReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 566F015E19B5EB0F00FCA620 /* CustomGUIReader.h */; };
 		566F016219B5EB0F00FCA620 /* CustomGUIReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 566F015E19B5EB0F00FCA620 /* CustomGUIReader.h */; };
+		DBD2BE051C041DA400E87E36 /* rc4.c in Sources */ = {isa = PBXBuildFile; fileRef = DBD2BE001C041DA400E87E36 /* rc4.c */; };
+		DBD2BE061C041DA400E87E36 /* rc4.c in Sources */ = {isa = PBXBuildFile; fileRef = DBD2BE001C041DA400E87E36 /* rc4.c */; };
+		DBD2BE071C041DA400E87E36 /* rc4.c in Sources */ = {isa = PBXBuildFile; fileRef = DBD2BE001C041DA400E87E36 /* rc4.c */; };
 		F4FE0D5719ECD00100B8B12B /* luasocket_scripts.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FE0D5519ECD00100B8B12B /* luasocket_scripts.c */; };
 		F4FE0D5819ECD00100B8B12B /* luasocket_scripts.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FE0D5519ECD00100B8B12B /* luasocket_scripts.c */; };
 		F4FE0D5919ECD00100B8B12B /* luasocket_scripts.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FE0D5619ECD00100B8B12B /* luasocket_scripts.h */; };
@@ -722,6 +725,7 @@
 		3FDC69421BB0F05A00F29DE2 /* libluacocos2d.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libluacocos2d.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		566F015D19B5EB0F00FCA620 /* CustomGUIReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CustomGUIReader.cpp; sourceTree = "<group>"; };
 		566F015E19B5EB0F00FCA620 /* CustomGUIReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomGUIReader.h; sourceTree = "<group>"; };
+		DBD2BE001C041DA400E87E36 /* rc4.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rc4.c; sourceTree = "<group>"; };
 		F4FE0D5519ECD00100B8B12B /* luasocket_scripts.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = luasocket_scripts.c; sourceTree = "<group>"; };
 		F4FE0D5619ECD00100B8B12B /* luasocket_scripts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = luasocket_scripts.h; sourceTree = "<group>"; };
 		F4FE0D5C19ECD02400B8B12B /* lua_cocos2dx_quick_manual.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lua_cocos2dx_quick_manual.cpp; sourceTree = "<group>"; };
@@ -979,6 +983,7 @@
 		1ABCA1E218CD8F230087CE3A /* external */ = {
 			isa = PBXGroup;
 			children = (
+				DBD2BDFE1C041DA400E87E36 /* LuaCrypt */,
 				3F86356C1BFED36900C7EA18 /* LuaBitOp */,
 				3F0841051B9BE8B900A52544 /* lua */,
 				1ABCA20E18CD8F7D0087CE3A /* luasocket */,
@@ -1122,6 +1127,15 @@
 			);
 			name = LuaBitOp;
 			path = ../../../../external/lua/LuaBitOp;
+			sourceTree = "<group>";
+		};
+		DBD2BDFE1C041DA400E87E36 /* LuaCrypt */ = {
+			isa = PBXGroup;
+			children = (
+				DBD2BE001C041DA400E87E36 /* rc4.c */,
+			);
+			name = LuaCrypt;
+			path = ../../../../external/lua/LuaCrypt;
 			sourceTree = "<group>";
 		};
 		F4FE0D5B19ECD02400B8B12B /* quick */ = {
@@ -1539,6 +1553,7 @@
 				15415AB119A71A53004F1E71 /* inet.c in Sources */,
 				3F08415A1B9BE8B900A52544 /* llex.c in Sources */,
 				15C1C2E119874B8800A46ACC /* Cocos2dxLuaLoader.cpp in Sources */,
+				DBD2BE051C041DA400E87E36 /* rc4.c in Sources */,
 				3F8635831BFED36900C7EA18 /* bit.c in Sources */,
 				3F08417B1B9BE8B900A52544 /* lzio.c in Sources */,
 				15C1C2DB19874B3D00A46ACC /* xxtea.cpp in Sources */,
@@ -1669,6 +1684,7 @@
 				3F08417F1B9BE8D400A52544 /* lapi.c in Sources */,
 				F4FE0D7719ECD02400B8B12B /* LuaTouchTargetNode.cpp in Sources */,
 				155C7E0B19A71C8D00F08B25 /* lua_cocos2dx_network_manual.cpp in Sources */,
+				DBD2BE061C041DA400E87E36 /* rc4.c in Sources */,
 				3F0841AF1B9BE8F800A52544 /* lundump.c in Sources */,
 				3F0841A71B9BE8F800A52544 /* ltablib.c in Sources */,
 				3F0841A01B9BE8F800A52544 /* lstate.c in Sources */,
@@ -1772,6 +1788,7 @@
 				3FDC68D01BB0F05A00F29DE2 /* lua_cocos2dx_coco_studio_manual.cpp in Sources */,
 				3FDC68D11BB0F05A00F29DE2 /* lua_cocos2dx_ui_manual.cpp in Sources */,
 				3FDC68D21BB0F05A00F29DE2 /* LuaEventNode.cpp in Sources */,
+				DBD2BE071C041DA400E87E36 /* rc4.c in Sources */,
 				3FDC68D31BB0F05A00F29DE2 /* LuaTouchEventManager.cpp in Sources */,
 				3FDC68D41BB0F05A00F29DE2 /* ldblib.c in Sources */,
 				3FDC68D61BB0F05A00F29DE2 /* ldebug.c in Sources */,
@@ -1996,7 +2013,7 @@
 				PRODUCT_NAME = libluacocos2d;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../../../platform/ios";
+				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../../../platform/ios $(SRCROOT)/../../../../external/openssl/include";
 			};
 			name = Debug;
 		};
@@ -2028,7 +2045,7 @@
 				PRODUCT_NAME = libluacocos2d;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../../../platform/ios";
+				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../../../platform/ios $(SRCROOT)/../../../../external/openssl/include";
 			};
 			name = Release;
 		};

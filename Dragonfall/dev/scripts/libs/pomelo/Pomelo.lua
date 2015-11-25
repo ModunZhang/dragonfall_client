@@ -36,12 +36,11 @@ function Pomelo:ctor()
     self.gapThreshold = 1       -- heartbeat gap threashold
     self.heartbeatId = nil
     self.heartbeatTimeoutId = nil
-
+    
     self.handshakeBuffer = {
         sys = {
             type = LUA_CLIENT_TYPE,
             version = LUA_CLIENT_VERSION,
-        -- TODO 添加RSA加密选项,生成加密的key在本地
         },
         user = {}
     }
@@ -69,6 +68,9 @@ function Pomelo:init(params, cb)
     self.handshakeBuffer.user = params.user
     self.handshakeCallback = params.handshakeCallback
 
+    dhcrypt.createdh()
+    self.handshakeBuffer.sys.clientKey = dhcrypt.base64encode(dhcrypt.getpublickey())
+    self.secret = nil
 
     if connectType == Pomelo.CONNECT_TYPE.WEBSOCKET then
         self:_initWebSocket(host, port, cb)
@@ -369,8 +371,10 @@ function Pomelo:_sendMessage(reqId,route,msg)
     end
 
     msg = Message.encode(reqId,_type,compressRoute,route,msg)
+    if self.secret then
+        msg = Protocol.strencode(dhcrypt.rc4(self.secret, Protocol.strdecode(msg)))
+    end
     local packet = Package.encode(Package.TYPE_DATA, msg)
-
     self:_send(packet)
 end
 
@@ -460,9 +464,16 @@ function Pomelo:_handshake(data)
     end
 
     self:_handshakeInit(data)
-
-    local obj = Package.encode(Package.TYPE_HANDSHAKE_ACK)
-    self:_send(obj)
+    if data.sys.serverKey then
+        self.secret = dhcrypt.base64encode(dhcrypt.computesecret(dhcrypt.base64decode(data.sys.serverKey)))
+        local rc4 = dhcrypt.base64encode(dhcrypt.rc4(self.secret, data.sys.challenge))
+        local obj = Package.encode(Package.TYPE_HANDSHAKE_ACK, Protocol.strencode(json.encode({challenge = rc4})));
+        self:_send(obj)
+    else
+        self.secret = nil
+        local obj = Package.encode(Package.TYPE_HANDSHAKE_ACK)
+        self:_send(obj)
+    end
 
     if self.initCallback then
         self:initCallback(self.socket)
@@ -473,6 +484,10 @@ end
 
 
 function Pomelo:_onData(data)
+    if self.secret then
+        data = Protocol.strencode(dhcrypt.rc4(self.secret, Protocol.strdecode(data)))
+    end
+
     local msg = Message.decode(data)
     if msg.id > 0 then
         msg.route = self.routeMap[msg.id]

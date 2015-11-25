@@ -38,6 +38,9 @@
     <Filter Include="external\lua\LuaBitOp">
       <UniqueIdentifier>{b841e327-2bed-45da-9deb-60e8c78a1cd0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="external\lua\LuaCrypt">
+      <UniqueIdentifier>{e5caeeea-1d97-413a-ad4f-2dba7754dbbd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -301,6 +304,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\external\lua\LuaBitOp\bit.c">
       <Filter>external\lua\LuaBitOp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\external\lua\LuaCrypt\lua_dhcrypt.c">
+      <Filter>external\lua\LuaCrypt</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
