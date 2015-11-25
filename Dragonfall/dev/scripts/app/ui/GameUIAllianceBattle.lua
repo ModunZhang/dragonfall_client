@@ -380,8 +380,8 @@ function GameUIAllianceBattle:InitBattleStatistics()
             other_period_label:setString(Localize.period_type[basicInfo.status])
         end)
         local war_award_info = {
-            {_("联盟战荣耀值基础奖励"),"honour_128x128.png",GameDatas.AllianceInitData.fightRewards[User.serverLevel].honour},
-            {_("联盟战期间最高击杀者"),"gem_icon_62x61.png",GameDatas.AllianceInitData.fightRewards[User.serverLevel].gem},
+            {_("联盟战荣耀值基础奖励"),"honour_128x128.png",GameDatas.AllianceInitData.intInit.allianceFightRewardHonour.value},
+            {_("联盟战期间最高击杀者"),"gem_icon_62x61.png",GameDatas.AllianceInitData.intInit.allianceFightRewardGem.value},
             {_("可召集其他联盟前来助阵")},
             {_("将敌方所有玩家城墙摧毁可强制敌方联盟搬迁")},
         }
