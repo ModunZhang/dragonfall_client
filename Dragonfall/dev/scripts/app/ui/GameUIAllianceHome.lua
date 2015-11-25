@@ -175,19 +175,17 @@ function GameUIAllianceHome:Schedule()
         self:UpdateMyCityArrows(self.alliance)
         self:UpdateEnemyArrow()
     end, 0.01)
-    -- display.newNode():addTo(self):schedule(function()
-    --     if alliance:IsDefault() then return end
-    --     local lx,ly,view = self.multialliancelayer:GetAllianceCoordWithPoint(display.cx, display.cy)
-    --     local layer = view:GetLayer()
-    --     -- local x,y = alliance:FindMapObjectById(myself:MapId()):GetMidLogicPosition()
-    --     -- self:UpdateMyAllianceBuildingArrows(screen_rect, alliance, layer)
-    --     if not Alliance_Manager:GetMyAlliance():IsDefault() then
-    --         self:UpdateFriendArrows(screen_rect, Alliance_Manager:GetMyAlliance(), layer, lx, ly, myself)
-    --     end
-    --     if Alliance_Manager:HaveEnemyAlliance() then
-    --         self:UpdateEnemyArrows(screen_rect, Alliance_Manager:GetEnemyAlliance(), layer, lx, ly)
-    --     end
-    -- end, 0.05)
+    display.newNode():addTo(self):schedule(function()
+        if self.alliance:IsDefault() then return end
+        local mapIndex = self.alliance:GetEnemyAllianceMapIndex()
+        if not mapIndex then
+            for i,v in ipairs(self.enemy_arrows) do
+                v:hide()
+            end
+            return
+        end
+        self:UpdateEnemyCityArrows()
+    end, 0.05)
 end
 
 function GameUIAllianceHome:InitArrow()
@@ -201,9 +199,14 @@ function GameUIAllianceHome:InitArrow()
     -- -- friends
     -- self.friends_arrows = {}
     -- self.friends_arrow_index = 1
-    -- -- enemys
-    -- self.enemy_arrows = {}
-    -- self.enemy_arrow_index = 1
+    -- enemys
+    self.enemy_arrows = {}
+    for i = 1, 5 do
+        self.enemy_arrows[i] =
+            display.newSprite("arrow_red-hd.png")
+                :addTo(self, 10):align(display.TOP_CENTER):hide()
+    end
+    self.enemy_arrow_index = 1
 
     self.arrow_enemy = UIKit:CreateArrow({
         circle = "arrow_circle_enemy.png",
@@ -854,22 +857,78 @@ function GameUIAllianceHome:UpdateFriendArrows(screen_rect, alliance, layer, log
         self.friends_arrow_index = 1
     end
 end
-function GameUIAllianceHome:UpdateEnemyArrows(screen_rect, alliance, layer, logic_x, logic_y)
-    local count = self:UpdateAllianceArrow(screen_rect, alliance, layer, logic_x, logic_y, self.enemy_arrow_index, function(index)
-        if not self.enemy_arrows[index] then
-            self.enemy_arrows[index] = display.newSprite("arrow_red-hd.png")
-                :addTo(self, -2):align(display.TOP_CENTER):hide()
+function GameUIAllianceHome:UpdateEnemyCityArrows()
+    local mapIndex = self.alliance:GetEnemyAllianceMapIndex()
+    if not mapIndex then return end
+    local alliance = Alliance_Manager:GetAllianceByCache(mapIndex)
+    if not alliance then return end
+
+    local screen_rect = self:GetScreenRect()
+    local sceneLayer = display.getRunningScene():GetSceneLayer()
+    local count = 1
+    Alliance.IteratorCities(alliance, function(_, v)
+        if count > MAX_ARROW_COUNT then return true end
+        local arrow = self.enemy_arrows[count]
+        if count == self.enemy_arrow_index then
+            local x,y = DataUtils:GetAbsolutePosition(mapIndex, v.location.x, v.location.y)
+            local map_point = sceneLayer:ConvertLogicPositionToMapPosition(x,y)
+            local world_point = sceneLayer:convertToWorldSpace(map_point)
+            if not rectContainsPoint(screen_rect, world_point) then
+                local p,degree = self:GetIntersectPoint(screen_rect, MID_POINT, world_point)
+                if p and degree then
+                    degree = degree + 180
+                    arrow:pos(p.x, p.y):rotation(degree)
+                    if pGetLength(pSub(world_point, p)) < 1400 then
+                        arrow:show()
+                    end
+                end
+            else
+                arrow:hide()
+            end
         end
-        return self.enemy_arrows[index]
+        count = count + 1
     end)
-    local enemy_arrows = self.enemy_arrows
-    for i = count, #enemy_arrows do
-        enemy_arrows[i]:hide()
-    end
+
     self.enemy_arrow_index = self.enemy_arrow_index + 1
-    if self.enemy_arrow_index > min(count, MAX_ARROW_COUNT) then
+    if self.enemy_arrow_index > MAX_ARROW_COUNT then
         self.enemy_arrow_index = 1
     end
+
+    -- local screen_rect = self:GetScreenRect()
+    -- local x,y = DataUtils:GetAbsolutePosition(mapIndex, 16, 16)
+    -- local sceneLayer = display.getRunningScene():GetSceneLayer()
+    -- local map_point = sceneLayer:ConvertLogicPositionToMapPosition(x,y)
+    -- local world_point = sceneLayer:convertToWorldSpace(map_point)
+    -- if not rectContainsPoint(screen_rect, world_point) then
+    --     local p,degree = self:GetIntersectPoint(screen_rect, MID_POINT, world_point)
+    --     if p and degree then
+    --         degree = degree + 180
+    --         self.arrow_enemy:show():pos(p.x, p.y):rotation(degree)
+    --         self.arrow_enemy.btn:rotation(-degree)
+    --         self.arrow_enemy.icon:rotation(-degree)
+    --         if pGetLength(pSub(world_point, p)) < 1400 then
+    --             self.arrow_enemy:hide()
+    --         end
+    --     end
+    -- else
+    --     self.arrow_enemy:hide()
+    -- end
+
+    -- local count = self:UpdateAllianceArrow(screen_rect, alliance, layer, logic_x, logic_y, self.enemy_arrow_index, function(index)
+    --     if not self.enemy_arrows[index] then
+    --         self.enemy_arrows[index] = display.newSprite("arrow_red-hd.png")
+    --             :addTo(self, -2):align(display.TOP_CENTER):hide()
+    --     end
+    --     return self.enemy_arrows[index]
+    -- end)
+    -- local enemy_arrows = self.enemy_arrows
+    -- for i = count, #enemy_arrows do
+    --     enemy_arrows[i]:hide()
+    -- end
+    -- self.enemy_arrow_index = self.enemy_arrow_index + 1
+    -- if self.enemy_arrow_index > min(count, MAX_ARROW_COUNT) then
+    --     self.enemy_arrow_index = 1
+    -- end
 end
 --
 function GameUIAllianceHome:UpdateAllianceArrow(screen_rect, alliance, layer, logic_x, logic_y, cur_index, func, except_map_id)
