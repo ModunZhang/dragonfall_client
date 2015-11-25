@@ -57,6 +57,7 @@ if __name__ == "__main__":
         for fileName in files:
             if fileName.endswith((".plist")) and not "~$" in fileName:
                 plistFiles.append(os.path.join(root, fileName))
+    plistFiles.sort()
     file = open(m_out_path, "w")
     file.write("local texture_data = {}\n")
     for plistFile in plistFiles:
@@ -64,6 +65,7 @@ if __name__ == "__main__":
         texture_name = getFileTextureName(dic)
         Logging.info("--处理%s" % (texture_name))
         pngs = dic.frames.keys()
+        pngs.sort()
         for png in pngs:
             file.write("texture_data[\"%s\"] = \"%s\"\n" % (png, texture_name))
     file.write("return texture_data\n")

@@ -34,27 +34,34 @@ FacebookSDK* FacebookSDK::GetInstance()
  */
 bool FacebookSDK::IsAuthenticated()
 {
+#if CC_USE_FACEBOOK
     FBSDKProfile* profile = [FBSDKProfile currentProfile];
     return profile != nil;
+#endif  
+    return false;
 }
 
 std::string FacebookSDK::GetFBUserName()
 {
+#if CC_USE_FACEBOOK
     FBSDKProfile* profile = [FBSDKProfile currentProfile];
     if(nil != profile)
     {
         return std::string([[profile name]UTF8String]);
     }
+#endif
     return std::string("");
 }
 
 std::string FacebookSDK::GetFBUserId()
 {
+#if CC_USE_FACEBOOK
     FBSDKProfile* profile = [FBSDKProfile currentProfile];
     if(nil != profile)
     {
         return std::string([[profile userID]UTF8String]);
     }
+#endif
     return std::string("");
 }
 

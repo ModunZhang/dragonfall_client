@@ -32,15 +32,17 @@ function PlatformAdapter:android()
         return filePath
     end
 
-    local print__ = print
-    print = function ( ... )
-        print__(...)
-        local t = {}
-        for i,v in ipairs({...}) do
-            if not v then v = "nil" end
-            table.insert(t,tostring(v))
+    if CONFIG_LOG_DEBUG_FILE then
+        local print__ = print
+        print = function ( ... )
+            print__(...)
+            local t = {}
+            for i,v in ipairs({...}) do
+                if not v then v = "nil" end
+                table.insert(t,tostring(v))
+            end
+            ext.__logFile(table.concat(t,"\t") .. "\n")
         end
-        ext.__logFile(table.concat(t,"\t") .. "\n")
     end
 
     local fileutils = cc.FileUtils:getInstance()
@@ -105,6 +107,19 @@ function PlatformAdapter:winrt()
     -- device.showAlert(title, message, buttonLabels, listener)
     device.showAlert = function( title, message, buttonLabels, listener )
         ext.showAlert(title or "",message or "",buttonLabels[1] or "",listener)
+    end
+
+    if CONFIG_LOG_DEBUG_FILE then
+        local print__ = print
+        print = function ( ... )
+            print__(...)
+            local t = {}
+            for i,v in ipairs({...}) do
+                if not v then v = "nil" end
+                table.insert(t,tostring(v))
+            end
+            ext.__logFile(table.concat(t,"\t") .. "\n")
+        end
     end
 end
 
@@ -256,10 +271,12 @@ function PlatformAdapter:common()
         local printError__ = printError
         printError = function(...)
             printError__(...)
-            local errDesc =   debug.traceback("", 2)
-            device.showAlert("☠Quick Framework错误☠",errDesc,"复制！",function()
-                ext.copyText(errDesc)
-            end)
+            if device.platform ~= 'winrt' then
+                local errDesc =   debug.traceback("", 2)
+                device.showAlert("☠Quick Framework错误☠",errDesc,"复制！",function()
+                    ext.copyText(errDesc)
+                end)
+            end
         end
     end
     self:gameCenter()

@@ -12,12 +12,11 @@ using namespace std;
 using namespace cocos2d;
 using namespace cocos2d::WinRTHelper;
 using namespace Windows::ApplicationModel::Store;
-
+#define _DEBUG_Microsoft 1
 #define AdeasygoAppKey "c7867ffb85d75c70"
 #define AdeasygoAppId "ea9d6d3a7d050b8b"
 extern void OnPayDone(int handleId, cocos2d::ValueVector valVector);
 extern void OnPayException(int handleId, std::string eventName);
-#define _DEBUG_Microsoft //²âÊÔÎ¢ÈíÖ§¸¶
 namespace cocos2d
 {
 	AdeasygoHelper::AdeasygoHelper()
@@ -53,9 +52,6 @@ namespace cocos2d
 		Platform::String^ productId = findProductIdWithAdeasygoGoodsId(args->GoodsID);
 		if (!productId->IsEmpty())
 		{
-#ifdef _DEBUG_Microsoft
-			productId = "com.dragonfall.test";
-#endif // _DEBUG_Microsoft
 			CCLOG("¹ºÂò%s", PlatformStringToString(productId).c_str());
 			MSRequestProductPurchase(productId);
 		}
@@ -87,6 +83,10 @@ namespace cocos2d
 
 	void AdeasygoHelper::Pay(Platform::String^ productId)
 	{
+#if _DEBUG_Microsoft && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
+		MSRequestProductPurchase(productId);
+		return;
+#endif // _DEBUG_Microsoft
 		if (m_isVisible)return;
 		RunOnUIThread([this, productId](){
 			create_task(GetAdeasygoGoodsIf()).then([=](task<Platform::Boolean> task)
@@ -97,6 +97,11 @@ namespace cocos2d
 					if (success)
 					{
 						auto cpp_productId = PlatformStringToString(productId);
+						if (m_goods_map.find(cpp_productId) == m_goods_map.end())
+						{
+							CCLOGWARN("Not found productId in SDK:%s", cpp_productId.c_str());
+							return;
+						}
 						auto sdkId = m_goods_map[cpp_productId].asString();
 						SDKManager::Pay(PlatformStringFromString(sdkId), "", "", "");
 						m_isVisible = true;
@@ -288,7 +293,7 @@ namespace cocos2d
 					auto results = task.get();
 					if (results->Status == ProductPurchaseStatus::Succeeded)
 					{
-						CCLOG("Íê³É¹ºÂò---");
+						CCLOGWARN("Íê³É¹ºÂò---");
 						cocos2d::ValueMap tempMap;
 						tempMap["transactionIdentifier"] = PlatformStringToString(results->ReceiptXml);
 						tempMap["productIdentifier"] = PlatformStringToString(productId);
@@ -297,12 +302,12 @@ namespace cocos2d
 					}
 					else if (results->Status == ProductPurchaseStatus::NotFulfilled)
 					{
-						CCLOG("Î´ÑéÖ¤¶©µ¥---");
+						CCLOGWARN("Î´ÑéÖ¤¶©µ¥---");
 						CallLuaCallbakMicrosoft(productId, results->ReceiptXml);
 					}
 					else if (results->Status == ProductPurchaseStatus::NotPurchased)
 					{
-						CCLOG("Î´¹ºÂò---");
+						CCLOGWARN("Î´¹ºÂò---");
 					}
 				}
 				catch (Platform::COMException^ e)

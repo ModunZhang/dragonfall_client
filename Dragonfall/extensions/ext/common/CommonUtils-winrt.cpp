@@ -160,20 +160,28 @@ std::string GetOpenUdid()
 void RegistereForRemoteNotifications()
 {
 	create_task(Windows::Networking::PushNotifications::PushNotificationChannelManager::CreatePushNotificationChannelForApplicationAsync())
-		.then([=](Windows::Networking::PushNotifications::PushNotificationChannel^ channel)
+		.then([=](task<Windows::Networking::PushNotifications::PushNotificationChannel^> task)
 	{
-		Platform::String^ url = channel->Uri;
-		if (!Windows::Storage::ApplicationData::Current->LocalSettings->Values->HasKey("push_url"))
+		try
 		{
-			Windows::Storage::ApplicationData::Current->LocalSettings->Values->Insert("push_url", url);
-		}
-		else
-		{
-			Platform::String^ oldUrl = static_cast<Platform::String^>(Windows::Storage::ApplicationData::Current->LocalSettings->Values->Lookup("push_url"));
-			if (oldUrl != url)
+			auto channel = task.get();
+			Platform::String^ url = channel->Uri;
+			if (!Windows::Storage::ApplicationData::Current->LocalSettings->Values->HasKey("push_url"))
 			{
 				Windows::Storage::ApplicationData::Current->LocalSettings->Values->Insert("push_url", url);
 			}
+			else
+			{
+				Platform::String^ oldUrl = static_cast<Platform::String^>(Windows::Storage::ApplicationData::Current->LocalSettings->Values->Lookup("push_url"));
+				if (oldUrl != url)
+				{
+					Windows::Storage::ApplicationData::Current->LocalSettings->Values->Insert("push_url", url);
+				}
+			}
+		}
+		catch (Platform::COMException^ e)
+		{
+			
 		}
 	});
 }

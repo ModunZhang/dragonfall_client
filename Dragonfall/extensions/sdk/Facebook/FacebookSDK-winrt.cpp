@@ -45,6 +45,26 @@ bool FacebookSDK::IsAuthenticated()
 	return Windows::Storage::ApplicationData::Current->LocalSettings->Values->HasKey("FBUser_Id");
 }
 
+std::string FacebookSDK::GetFBUserName()
+{
+	if (IsAuthenticated())
+	{
+		Platform::String^ userName = static_cast<Platform::String^>(Windows::Storage::ApplicationData::Current->LocalSettings->Values->Lookup("FBUser_Name"));
+		return PlatformStringToString(userName);
+	}
+	return "";
+}
+
+std::string FacebookSDK::GetFBUserId()
+{
+	if (IsAuthenticated())
+	{
+		Platform::String^ userId = static_cast<Platform::String^>(Windows::Storage::ApplicationData::Current->LocalSettings->Values->Lookup("FBUser_Id"));
+		return PlatformStringToString(userId);
+	}
+	return "";
+}
+
 void FacebookSDK::Login()
 {
 	clearFacebookCookies();//clear cookies!
@@ -73,7 +93,6 @@ void FacebookSDK::Login()
 						auto user = sess_->User;
 						if (user)
 						{
-							//TODO:user email
 							CCLOG("Login succeeded");
 							cocos2d::ValueMap tempMap;
 							tempMap["userid"] = PlatformStringToString(user->Id);

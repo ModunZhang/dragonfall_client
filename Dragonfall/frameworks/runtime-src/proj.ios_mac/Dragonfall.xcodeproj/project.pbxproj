@@ -20,8 +20,6 @@
 		3F0841041B9BE6ED00A52544 /* scripts in Resources */ = {isa = PBXBuildFile; fileRef = 3F0841021B9BE6ED00A52544 /* scripts */; };
 		3F2DC6F21BFAD06600D562F9 /* FacebookSDK-apple.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3F2DC6EB1BFAD06600D562F9 /* FacebookSDK-apple.mm */; };
 		3F2DC6F51BFAD06600D562F9 /* tolua_fb_sdk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3F2DC6F01BFAD06600D562F9 /* tolua_fb_sdk.cpp */; };
-		3F2DC7051BFAD67400D562F9 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F2DC7031BFAD67400D562F9 /* FBSDKCoreKit.framework */; };
-		3F2DC7061BFAD67400D562F9 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F2DC7041BFAD67400D562F9 /* FBSDKLoginKit.framework */; };
 		3F4DC4941BE3016000628E80 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FDC6A051BB12D5300F29DE2 /* Images.xcassets */; };
 		3F4DC4E31BE3496000628E80 /* CommonUtils-apple.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DC4DF1BE3496000628E80 /* CommonUtils-apple.mm */; };
 		3F4DC4ED1BE3497700628E80 /* LocalNotification-apple.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DC4E71BE3497700628E80 /* LocalNotification-apple.mm */; };
@@ -256,11 +254,9 @@
 				3FDC69481BB0F08600F29DE2 /* libluacocos2d.a in Frameworks */,
 				3FDC687E1BB0F03300F29DE2 /* libcocos2d.a in Frameworks */,
 				3FABD29B1B9C72F300C71BEB /* StoreKit.framework in Frameworks */,
-				3F2DC7051BFAD67400D562F9 /* FBSDKCoreKit.framework in Frameworks */,
 				3F0840FC1B9BE33200A52544 /* MessageUI.framework in Frameworks */,
 				3F0840FA1B9BE31F00A52544 /* GameKit.framework in Frameworks */,
 				3F0840F81B9BE31800A52544 /* CoreTelephony.framework in Frameworks */,
-				3F2DC7061BFAD67400D562F9 /* FBSDKLoginKit.framework in Frameworks */,
 				5200BECA1A53D9A500AC45E4 /* Security.framework in Frameworks */,
 				DABC99511A8214A100BF5CC4 /* SystemConfiguration.framework in Frameworks */,
 				3EEEDB61197107C0006A9FF8 /* MediaPlayer.framework in Frameworks */,
@@ -915,7 +911,7 @@
 					"CC_USE_PHYSICS=0",
 					"CC_USE_NETWORK_SOKET=1",
 					"CC_USE_SPINE=0",
-					"CC_USE_FACEBOOK=1",
+					"CC_USE_FACEBOOK=0",
 					"CC_USE_POMELO_C_LIB=0",
 				);
 				HEADER_SEARCH_PATHS = (
@@ -974,7 +970,7 @@
 					"CC_USE_PHYSICS=0",
 					"CC_USE_NETWORK_SOKET=1",
 					"CC_USE_SPINE=0",
-					"CC_USE_FACEBOOK=1",
+					"CC_USE_FACEBOOK=0",
 					"CC_USE_POMELO_C_LIB=0",
 				);
 				HEADER_SEARCH_PATHS = (

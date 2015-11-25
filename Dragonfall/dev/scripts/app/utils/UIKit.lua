@@ -145,6 +145,7 @@ end
 
 local color_map = {}
 function UIKit:hex2rgba(hexNum)
+    hexNum = tonumber(hexNum)
     if not color_map[hexNum] then
         local a = bit:_rshift(hexNum,24)
         if a < 0 then

@@ -14,10 +14,12 @@ function __G__TRACKBACK__(errorMessage)
         print("LUA ERROR: " .. tostring(errorMessage) .. "\n")
         print(debug.traceback("", 2))
         print("----------------------------------------")
-        local errDesc = tostring(errorMessage) .. "\n" .. debug.traceback("", 2)
-        device.showAlert("☠错误☠",errDesc,"复制！",function()
-            ext.copyText(errDesc)
-        end)
+        if device.platform ~= 'winrt' then
+            local errDesc = tostring(errorMessage) .. "\n" .. debug.traceback("", 2)
+            device.showAlert("☠错误☠",errDesc,"复制！",function()
+                ext.copyText(errDesc)
+            end)
+        end
     else
         if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEvent then
             local errDesc = string.format("[%s] %s\n%s", os.date("%Y-%m-%d %H:%M:%S",math.floor(ext.now()/1000)), tostring(errorMessage), debug.traceback("", 2))
