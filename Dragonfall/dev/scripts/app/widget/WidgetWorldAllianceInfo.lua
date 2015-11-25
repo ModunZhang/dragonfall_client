@@ -282,6 +282,10 @@ function WidgetWorldAllianceInfo:LoadInfo(alliance_data)
                 UIKit:showMessageDialog(_("提示"),_("联盟正在战争准备期或战争期"))
                 return
             end
+            if not Alliance_Manager:GetMyAlliance():GetMemeberById(User:Id()):IsTitleEqualOrGreaterThan("general") then
+                UIKit:showMessageDialog(_("提示"),_("联盟操作权限不足"))
+                return
+            end
             UIKit:showMessageDialog(_("主人"),_("确定开启联盟会战吗?")):CreateOKButton(
                 {
                     listener = function ()
@@ -427,6 +431,7 @@ function WidgetWorldAllianceInfo:LoadMoveAlliance()
     end
 end
 return WidgetWorldAllianceInfo
+
 
 
 

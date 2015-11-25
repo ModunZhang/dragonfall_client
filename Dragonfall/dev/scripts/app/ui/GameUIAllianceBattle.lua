@@ -423,6 +423,10 @@ function GameUIAllianceBattle:InitBattleStatistics()
                 }))
                 :onButtonClicked(function(event)
                     if event.name == "CLICKED_EVENT" then
+                        if not alliance:GetMemeberById(User:Id()):IsTitleEqualOrGreaterThan("general") then
+                            UIKit:showMessageDialog(_("提示"),_("联盟操作权限不足"))
+                            return
+                        end
                         if alliance.basicInfo.status=="fight" or alliance.basicInfo.status=="prepare" then
                             UIKit:showMessageDialog(_("提示"),_("联盟正在战争准备期或战争期"))
                             return
