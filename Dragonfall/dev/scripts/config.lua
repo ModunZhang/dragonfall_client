@@ -42,7 +42,13 @@ CONFIG_REMOTE_SERVER = {
 CONFIG_APP_URL = {
     ios = "https://itunes.apple.com/us/app/dragonfall-the-1st-moba-slg/id993631614?l=zh&ls=1&mt=8",
     android = "https://batcat.sinaapp.com/ad_hoc/build-index.html",
-    winrt = "https://batcat.sinaapp.com/ad_hoc/build-index.html",
+    winrt = "ms-windows-store:navigate?appid=aa155f39-6b85-4c52-a388-4eacd55bbcb5",
+}
+-- 评价app的商店地址
+CONFIG_APP_REVIEW = {
+    ios = "https://itunes.apple.com/us/app/dragonfall-the-1st-moba-slg/id993631614?l=zh&ls=1&mt=8",
+    android = "https://batcat.sinaapp.com/ad_hoc/build-index.html",
+    winrt = "ms-windows-store:reviewapp?appid=aa155f39-6b85-4c52-a388-4eacd55bbcb5 ",
 }
 CONFIG_IS_LOCAL = false
 -- 是否是测试版本 后面会删除这个变量 从plist/meta-data里面获取值，CONFIG_IS_DEBUG为true时三方sdk不会记录购买和事件信息，传到网关获取服务器信息
