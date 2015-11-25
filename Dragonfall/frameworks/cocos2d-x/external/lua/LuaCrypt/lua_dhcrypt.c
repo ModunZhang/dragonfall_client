@@ -283,13 +283,13 @@ lrc4(lua_State *L) {
 	unsigned char * out = (unsigned char *)malloc(datalen);
 	memmove(out, in, sizeof(out));
 
-	unsigned char *md = (unsigned char *)md5(key_buf, key_buf_len);
+	unsigned char *md = (unsigned char *)md5((char *)key_buf, key_buf_len);
 
 	RC4_KEY rc4_key;
 	RC4_set_key(&rc4_key, 16, md);
 	RC4(&rc4_key, datalen, in, out);
 
-	lua_pushlstring(L, out, datalen);
+	lua_pushlstring(L,(char *)out, datalen);
 	free(out);
 	return 1;
 }
@@ -340,7 +340,7 @@ lb64encode(lua_State *L) {
 	return 1;
 }
 
-static inline int
+static int
 b64index(uint8_t c) {
 	static const int decoding[] = {62,-1,-1,-1,63,52,53,54,55,56,57,58,59,60,61,-1,-1,-1,-2,-1,-1,-1,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,-1,-1,-1,-1,-1,-1,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51};
 	int decoding_size = sizeof(decoding)/sizeof(decoding[0]);
