@@ -4,6 +4,8 @@
 #include "cocos2d.h"
 #include "lua_module_register.h"
 #include "LuaExtension.h"
+#include "2d/CCFontFNT.h"
+#include "2d/CCFontAtlasCache.h"
 //json
 #include "../cocos2d-x/external/json/document.h"
 #include "../cocos2d-x/external/json/rapidjson.h"
@@ -133,13 +135,22 @@ void AppDelegateExtern::extendApplication()
     tolua_cc_lua_extension(tolua_S);
 }
 
+void AppDelegateExtern::purgeAllCachedData()
+{
+	FontFNT::purgeCachedData();
+	FontAtlasCache::purgeCachedData();
+	SpriteFrameCache::getInstance()->removeSpriteFrames();
+	TextureCache::getInstance()->removeAllTextures();
+	FileUtils::getInstance()->purgeCachedEntries();
+	//maybe we need free audio resources
+}
 
 void AppDelegateExtern::initLuaEngine()
 {
     Director::getInstance()->stopAnimation();
     Director::getInstance()->pause();
     FileUtils::getInstance()->setSearchPaths(default_file_util_search_pahts); //还原搜索路径
-    
+	purgeAllCachedData();
     ScriptEngineManager::getInstance()->removeScriptEngine();
     auto engine = LuaEngine::getInstance();
     ScriptEngineManager::getInstance()->setScriptEngine(engine);
@@ -315,7 +326,6 @@ bool AppDelegateExtern::checkPath()
     }
     else
     {
-        
         paths.insert(paths.begin(), "res/images/");
         paths.insert(paths.begin(), "res/");
         paths.insert(paths.begin(), (resPath + "images/").c_str());
