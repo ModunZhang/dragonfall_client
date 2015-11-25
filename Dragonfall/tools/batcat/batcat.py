@@ -285,3 +285,9 @@ def getUpdatePythonMainScriptPath():
 
 def getTempFileExtensions():
     return ("DS_Store", "bytes", "tmp","ini")
+
+def getWin32ZipCommandTool():
+    if not isWindows():
+        die("该版本Zip只能在windows下使用")
+    root_dir = getProjDir()
+    return formatPath("%s/tools/win32/zip/zip.exe" % root_dir)
