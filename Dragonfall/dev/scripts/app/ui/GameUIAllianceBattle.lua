@@ -11,8 +11,6 @@ local UIListView = import(".UIListView")
 local WidgetAllianceHelper = import("..widget.WidgetAllianceHelper")
 local Localize = import("..utils.Localize")
 local aliance_buff = GameDatas.AllianceMap.buff
--- local fire_wall = import("..particles.fire_wall")
-local revenge_limit = GameDatas.AllianceInitData.intInit.allianceRevengeMaxMinutes.value
 
 local GameUIAllianceBattle = UIKit:createUIClass('GameUIAllianceBattle', "GameUIWithCommonHeader")
 
@@ -613,7 +611,7 @@ function GameUIAllianceBattle:InitBattleStatistics()
             :addTo(honour_bg,2)
             :scale(50/128)
         UIKit:ttfLabel({
-            text = "+"..string.formatnumberthousands(GameDatas.AllianceInitData.fightRewards[User.serverLevel].honour),
+            text = "+"..string.formatnumberthousands(GameDatas.AllianceInitData.intInit.allianceFightRewardHonour.value),
             size = 22,
             color = 0x90e300,
         }):addTo(honour_bg,2)
@@ -626,7 +624,7 @@ function GameUIAllianceBattle:InitBattleStatistics()
             :addTo(gem_bg,2)
             :scale(0.7)
         UIKit:ttfLabel({
-            text = "+"..string.formatnumberthousands(GameDatas.AllianceInitData.fightRewards[User.serverLevel].gem),
+            text = "+"..string.formatnumberthousands(GameDatas.AllianceInitData.intInit.allianceFightRewardGem.value),
             size = 22,
             color = 0x90e300,
         }):addTo(gem_bg,2)
