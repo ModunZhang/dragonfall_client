@@ -149,8 +149,8 @@ void AppDelegateExtern::initLuaEngine()
 {
     Director::getInstance()->stopAnimation();
     Director::getInstance()->pause();
-    FileUtils::getInstance()->setSearchPaths(default_file_util_search_pahts); //还原搜索路径
 	purgeAllCachedData();
+    FileUtils::getInstance()->setSearchPaths(default_file_util_search_pahts); //还原搜索路径
     ScriptEngineManager::getInstance()->removeScriptEngine();
     auto engine = LuaEngine::getInstance();
     ScriptEngineManager::getInstance()->setScriptEngine(engine);

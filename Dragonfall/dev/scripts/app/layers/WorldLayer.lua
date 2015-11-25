@@ -357,7 +357,12 @@ function WorldLayer:CreateAllianceSprite(index, alliance)
     node.alliance = alliance
     
     local sprite = display.newSprite(string.format("world_alliance_%s.png", alliance.terrain))
-    :addTo(node, 0, 1):scale(0.8)
+    :addTo(node, 0, 1)
+    if device.platform ~= 'winrt' then
+        sprite:scale(0.8)
+    else
+        sprite:scale(1.2)
+    end
     if index ~= Alliance_Manager:GetMyAlliance().mapIndex then
         math.randomseed(index)
         sprite:pos(30 - math.random(30), 30 - math.random(30))
