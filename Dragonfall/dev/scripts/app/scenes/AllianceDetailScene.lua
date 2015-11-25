@@ -354,6 +354,7 @@ function AllianceDetailScene:onEnter()
     -- end)
 end
 function AllianceDetailScene:onExit()
+    self.fetchtimer:stopAllActions()
     if self.current_allinace_index 
    and not Alliance_Manager:GetMyAlliance():IsDefault() then
         NetManager:getLeaveMapIndexPromise(self.current_allinace_index)
