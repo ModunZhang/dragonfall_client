@@ -1120,7 +1120,7 @@ function NetManager:getFetchMailsPromise(fromIndex)
 end
 -- 阅读邮件
 function NetManager:getReadMailsPromise(mailIds)
-    return get_none_blocking_request_promise("logic.playerHandler.readMails", {
+    return get_blocking_request_promise("logic.playerHandler.readMails", {
         mailIds = mailIds
     }, "阅读邮件失败!"):done(get_response_mail_msg)
 end
@@ -1180,7 +1180,7 @@ function NetManager:getSendAllianceMailPromise(title, content)
 end
 -- 阅读战报
 function NetManager:getReadReportsPromise(reportIds)
-    return get_none_blocking_request_promise("logic.playerHandler.readReports", {
+    return get_blocking_request_promise("logic.playerHandler.readReports", {
         reportIds = reportIds
     }, "阅读战报失败!"):done(get_response_report_msg)
 end
