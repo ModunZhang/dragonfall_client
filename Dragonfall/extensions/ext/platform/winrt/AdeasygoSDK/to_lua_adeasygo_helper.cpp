@@ -144,14 +144,18 @@ static int tolua_adeasygo_consumePurchase(lua_State *tolua_S)
 {
 #ifndef TOLUA_RELEASE
 	tolua_Error tolua_err;
-	if (!tolua_isstring(tolua_S, 1, 0, &tolua_err))
+	if (!tolua_isstring(tolua_S, 1, 0, &tolua_err) ||
+		!tolua_isstring(tolua_S, 2, 0, &tolua_err)
+		)
 		goto tolua_lerror;
 	else
 #endif
 	{
 #if defined(__AdeasygoSDK__)
 		std::string product_id = tolua_tocppstring(tolua_S, 1, 0);
-		cocos2d::AdeasygoHelper::Instance->MSReportProductFulfillment(cocos2d::WinRTHelper::PlatformStringFromString(product_id));
+		std::string trs_id = tolua_tocppstring(tolua_S, 2, 0);
+		cocos2d::AdeasygoHelper::Instance->MSReportProductFulfillment(cocos2d::WinRTHelper::PlatformStringFromString(product_id),
+			cocos2d::WinRTHelper::PlatformStringFromString(trs_id));
 #endif
 		return 0;
 	}

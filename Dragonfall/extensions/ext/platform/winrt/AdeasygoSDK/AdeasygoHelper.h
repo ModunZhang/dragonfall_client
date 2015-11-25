@@ -98,7 +98,7 @@ namespace cocos2d
 		//获取微软商品列表
 		Windows::Foundation::Collections::IMap<Platform::String^, Windows::Foundation::Collections::IVector<Platform::String^>^>^ MSLoadListingInformationByProductIds(Windows::Foundation::Collections::IVector<Platform::String^>^ productIds);
 		//确认微软购买商品
-		void MSReportProductFulfillment(Platform::String^ productId);
+		void MSReportProductFulfillment(Platform::String^ productId, Platform::String^ transactionId);
 		//对微软的收据进行验证 确保该方法要在和服务器通信正常的时候调用
 		void MSValidateReceipts();
 #endif

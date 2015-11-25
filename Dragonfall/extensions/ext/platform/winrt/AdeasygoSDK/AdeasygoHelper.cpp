@@ -12,7 +12,7 @@ using namespace std;
 using namespace cocos2d;
 using namespace cocos2d::WinRTHelper;
 using namespace Windows::ApplicationModel::Store;
-#define _DEBUG_Microsoft 1
+#define _Microsoft_Store_Immediately 0 //调用购买后直接执行微软商店的购买而不经过sdk的回调进行微软商店购买
 #define AdeasygoAppKey "c7867ffb85d75c70"
 #define AdeasygoAppId "ea9d6d3a7d050b8b"
 extern void OnPayDone(int handleId, cocos2d::ValueVector valVector);
@@ -83,10 +83,10 @@ namespace cocos2d
 
 	void AdeasygoHelper::Pay(Platform::String^ productId)
 	{
-#if _DEBUG_Microsoft && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
+#if _Microsoft_Store_Immediately && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
 		MSRequestProductPurchase(productId);
 		return;
-#endif // _DEBUG_Microsoft
+#endif // _Microsoft_Store_Immediately
 		if (m_isVisible)return;
 		RunOnUIThread([this, productId](){
 			create_task(GetAdeasygoGoodsIf()).then([=](task<Platform::Boolean> task)
@@ -293,7 +293,7 @@ namespace cocos2d
 					auto results = task.get();
 					if (results->Status == ProductPurchaseStatus::Succeeded)
 					{
-						CCLOGWARN("完成购买---");
+						CCLOGWARN("---finish buy---");
 						cocos2d::ValueMap tempMap;
 						tempMap["transactionIdentifier"] = PlatformStringToString(results->ReceiptXml);
 						tempMap["productIdentifier"] = PlatformStringToString(productId);
@@ -302,12 +302,12 @@ namespace cocos2d
 					}
 					else if (results->Status == ProductPurchaseStatus::NotFulfilled)
 					{
-						CCLOGWARN("未验证订单---");
+						CCLOGWARN("---have NotFulfilled---");
 						CallLuaCallbakMicrosoft(productId, results->ReceiptXml);
 					}
 					else if (results->Status == ProductPurchaseStatus::NotPurchased)
 					{
-						CCLOGWARN("未购买---");
+						CCLOGWARN("---not buy---");
 					}
 				}
 				catch (Platform::COMException^ e)
@@ -317,7 +317,7 @@ namespace cocos2d
 			});
 		});
 	}
-	void AdeasygoHelper::MSReportProductFulfillment(Platform::String^ productId)
+	void AdeasygoHelper::MSReportProductFulfillment(Platform::String^ productId, Platform::String^ transactionId)
 	{
 		auto licenses = CurrentApp::LicenseInformation->ProductLicenses;
 		if (licenses->HasKey(productId))
@@ -326,7 +326,30 @@ namespace cocos2d
 			//暂时只支持消耗品
 			if (currentLicense->IsActive && currentLicense->IsConsumable)
 			{
-				CurrentApp::ReportProductFulfillment(productId);
+				Platform::String^ format_guid = "{" + transactionId + "}";
+				GUID guid;
+				HRESULT hr = IIDFromString(format_guid->Data(), &guid);
+				if (SUCCEEDED(hr)) {
+					Platform::Guid guid_transactionId(guid);
+					auto fuillAsync = CurrentApp::ReportConsumableFulfillmentAsync(productId, guid_transactionId);
+					create_task(fuillAsync).then([=](task<Windows::ApplicationModel::Store::FulfillmentResult> task)
+					{
+						try
+						{
+							auto result = task.get();
+							if (result == FulfillmentResult::ServerError)
+							{
+								CallLuaCallbackException("MSReportProductFulfillment_ServerError");
+							}
+						}
+						catch (Platform::COMException^ e)
+						{
+							CallLuaCallbackException("MSReportProductFulfillment");
+						}
+					});
+					
+					
+				}
 			}
 		}
 	}
