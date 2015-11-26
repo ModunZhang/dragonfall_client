@@ -119,7 +119,11 @@ namespace AudioExtension
 		}
 		else
 		{
-			OnExtAudioPlayDone();
+			WinRTHelper::QueueEvent([=]()
+			{
+				OnExtAudioPlayDone();
+			});
+			
 		}
 	}
 	//TODO::maybe,do not need remve xaml element?

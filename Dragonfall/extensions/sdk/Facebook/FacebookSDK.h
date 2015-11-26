@@ -25,7 +25,9 @@ public:
 	void UnRegisterLuaCallback(){ m_handId = -1; };
 
 	~FacebookSDK();
-    
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT 
+	void CallLuaCallback(cocos2d::ValueMap valMap);
+#else
     void CallLuaCallback(cocos2d::ValueMap valMap)
     {
         if (m_handId > 0)
@@ -33,7 +35,7 @@ public:
             FacebookCallback(m_handId, valMap);
         }
     };
-
+#endif
     bool IsAuthenticated();
     
     std::string GetFBUserName();

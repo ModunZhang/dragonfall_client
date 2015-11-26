@@ -120,6 +120,9 @@ function enter_scene(scene)
         onComplete = function()
             scene:removeChildByTag(CLOUD_TAG)
             app:lockInput(false)
+            if device.platform == 'winrt' then
+                app:getStore():updateTransactionStates()
+            end
         end
     })
 end
@@ -317,9 +320,6 @@ function MyApp:retryLoginGame()
         end):done(function()
             print("MyApp:debug--->fetchChats")
             app:GetChatManager():FetchChatWhenReLogined()
-            if device.platform == 'winrt' then
-                app:getStore():validateMSReceipts()
-            end
         end):always(function()
             print("MyApp:debug--->7")
             UIKit:NoWaitForNet()
@@ -570,7 +570,7 @@ function MyApp:getStore()
         return Store
     elseif device.platform == 'winrt' then
         if not cc.storeProvider then
-            Store.init(handler(self, self.verifyAdeasygoPurchase),nil)
+            Store.init(handler(self, self.verifyWindwosPhonePurchase),nil)
         end
         return Store
     end
@@ -578,15 +578,69 @@ end
 
 -- windows phone
 --------------------
-function MyApp:verifyAdeasygoPurchase(unSyncTradeList)
-    --TODO:send data to server
+function MyApp:verifyAdeasygoPurchase(transaction)
+    if transaction.orderType ~= 'Adeasygo' or not transaction.transactionIdentifier then return end
+    NetManager:getVerifyAdeasygoIAPPromise(transaction.transactionIdentifier):next(function( response )
+        dump(response,"response-----")
+        local msg = response.msg
+        if msg.productId then
+            local openRewardIf = function()
+                local GameUIActivityRewardNew_instance = UIKit:GetUIInstance("GameUIActivityRewardNew")
+                if User and not GameUIActivityRewardNew_instance then
+                    local countInfo = User.countInfo
+                    if countInfo.iapCount > 0 and not countInfo.isFirstIAPRewardsGeted then
+                        UIKit:newGameUI("GameUIActivityRewardNew",4):AddToCurrentScene(true) -- 如果首充 弹出奖励界面
+                    end
+                end
+            end
+            UIKit:showMessageDialog(_("恭喜"),
+                string.format("您已获得%s,到物品里面查看",
+                    UIKit:getIapPackageName(transaction.productIdentifier)),
+                openRewardIf)
+        end
+    end)
+end
+
+function MyApp:verifyMicrosoftPurchase(transaction)
+    if transaction.orderType ~= 'Microsoft' or not transaction.transactionIdentifier then return end
+    NetManager:getVerifyMicrosoftIAPPromise(transaction.transactionIdentifier):next(function( response )
+        dump(response,"response-----")
+        local msg = response.msg
+        if msg.transactionId then
+            Store.finishTransaction(transaction)
+            local openRewardIf = function()
+                local GameUIActivityRewardNew_instance = UIKit:GetUIInstance("GameUIActivityRewardNew")
+                if User and not GameUIActivityRewardNew_instance then
+                    local countInfo = User.countInfo
+                    if countInfo.iapCount > 0 and not countInfo.isFirstIAPRewardsGeted then
+                        UIKit:newGameUI("GameUIActivityRewardNew",4):AddToCurrentScene(true) -- 如果首充 弹出奖励界面
+                    end
+                end
+            end
+            UIKit:showMessageDialog(_("恭喜"),
+                string.format("您已获得%s,到物品里面查看",
+                    UIKit:getIapPackageName(transaction.productIdentifier)),
+                openRewardIf)
+        end
+    end):catch(function(err)
+        local msg,code_type = err:reason()
+        local code = msg.code
+        if code_type ~= "syntaxError" then
+            local code_key = UIKit:getErrorCodeKey(code)
+            if code_key == 'duplicateIAPTransactionId' or code_key == 'iapProductNotExist' or code_key == 'iapValidateFaild' then
+                Store.finishTransaction(transaction)
+            end
+        end
+    end)
+end
+
+function MyApp:verifyWindwosPhonePurchase(unSyncTradeList)
     dump(unSyncTradeList,"unSyncTradeList:")
-    for __,trade in ipairs(unSyncTradeList) do
-        if trade.orderType == 'Microsoft' then
-            self:getStore().finishTransaction(trade)
-            ext.showAlert("cool","buy success","ok",function ( ... )
-                -- body
-                end)
+    for __,transaction in ipairs(unSyncTradeList) do
+        if transaction.orderType == 'Microsoft' then
+            self:verifyMicrosoftPurchase(transaction)
+        elseif transaction.orderType == 'Adeasygo' then
+            self:verifyAdeasygoPurchase(transaction)
         end
     end
 end
@@ -638,6 +692,8 @@ function MyApp:transactionObserver(event)
             device.hideActivityIndicator()
             local msg = response.msg
             if msg.transactionId then
+                Store.finishTransaction(transaction)
+                ext.market_sdk.onPlayerChargeSuccess(transaction.transactionIdentifier)
                 local openRewardIf = function()
                     local GameUIActivityRewardNew_instance = UIKit:GetUIInstance("GameUIActivityRewardNew")
                     if User and not GameUIActivityRewardNew_instance then
@@ -651,8 +707,6 @@ function MyApp:transactionObserver(event)
                     string.format("您已获得%s,到物品里面查看",
                         UIKit:getIapPackageName(transaction.productIdentifier)),
                     openRewardIf)
-                Store.finishTransaction(transaction)
-                ext.market_sdk.onPlayerChargeSuccess(transaction.transactionIdentifier)
             end
         end):catch(function(err)
             device.hideActivityIndicator()

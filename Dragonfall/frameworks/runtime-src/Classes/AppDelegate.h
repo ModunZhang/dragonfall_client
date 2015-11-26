@@ -49,6 +49,7 @@ public:
     static bool isNotUpdate();
     static void extendApplication();
     static std::string getGameZipcrc32(const char *filePath);
+	static void purgeAllCachedData();
 };
 #endif
 

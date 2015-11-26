@@ -135,7 +135,7 @@ function Pomelo:disconnect()
         self:_clearTimeout(self.heartbeatTimeoutId)
         self.heartbeatTimeoutId = nil
     end
-
+    self.data = nil
     self:removeAllListener()
 end
 

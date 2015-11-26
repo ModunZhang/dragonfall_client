@@ -29,9 +29,6 @@ namespace cocos2d
 		//通过sdk的goodsId查找商品id
 		Platform::String^ findProductIdWithAdeasygoGoodsId(Platform::String^ goodsId);
 
-		//需要验证的微软收据
-		cocos2d::ValueVector m_vec_NeedValidateReceipt;
-
 		//获取sdk的商品列表
 		Windows::Foundation::IAsyncOperation<Platform::Boolean>^ GetAdeasygoGoodsIf();
 
@@ -40,7 +37,7 @@ namespace cocos2d
 #if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
 
 		//调用lua回调的微软接口
-		void CallLuaCallbakMicrosoft(Platform::String^ productId, Platform::String^ transactionIdentifier);
+		void CallLuaCallbakMicrosoft(Platform::String^ productId, Platform::String^ transactionIdentifier, Platform::String^ transactionId);
 
 		void CallLuaCallbakMicrosoft(Windows::Foundation::Collections::IVectorView<Windows::ApplicationModel::Store::UnfulfilledConsumable^>^ unfulfilledConsumables);
 		//购买商品
@@ -98,9 +95,7 @@ namespace cocos2d
 		//获取微软商品列表
 		Windows::Foundation::Collections::IMap<Platform::String^, Windows::Foundation::Collections::IVector<Platform::String^>^>^ MSLoadListingInformationByProductIds(Windows::Foundation::Collections::IVector<Platform::String^>^ productIds);
 		//确认微软购买商品
-		void MSReportProductFulfillment(Platform::String^ productId);
-		//对微软的收据进行验证 确保该方法要在和服务器通信正常的时候调用
-		void MSValidateReceipts();
+		void MSReportProductFulfillment(Platform::String^ productId, Platform::String^ transactionId);
 #endif
 	};
 }

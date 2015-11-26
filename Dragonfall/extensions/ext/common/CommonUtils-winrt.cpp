@@ -17,16 +17,16 @@ void ShowAlert(std::string title, std::string content, std::string okString, std
 	auto pContent = WinRTHelper::PlatformStringFromString(content);
 	auto pOkString = WinRTHelper::PlatformStringFromString(okString);
 	WinRTHelper::RunOnUIThread([=](){
-		auto msgDlg = ref new MessageDialog(pContent, pTitle);
-
-		msgDlg->Commands->Append(ref new UICommand(pOkString, ref new UICommandInvokedHandler([=](IUICommand^)
+		auto dialog = ref new MessageDialog(pContent, pTitle);
+		dialog->CancelCommandIndex = 0;
+		dialog->Commands->Append(ref new UICommand(pOkString, ref new UICommandInvokedHandler([=](IUICommand^ command)
 		{
 			if (callbackFunc)
 			{
-				callbackFunc();
+				WinRTHelper::QueueEvent(callbackFunc);
 			}
 		})));
-		msgDlg->ShowAsync();
+		dialog->ShowAsync();
 	});
 }
 

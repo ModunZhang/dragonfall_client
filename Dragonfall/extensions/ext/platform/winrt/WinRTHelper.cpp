@@ -5,9 +5,20 @@ namespace cocos2d
 {
 	namespace WinRTHelper
 	{
+		void QueueEvent(const std::function<void()>& func)
+		{
+			std::shared_ptr<cocos2d::InputEvent> e(new CustomInputEvent(func));
+			cocos2d::GLViewImpl::sharedOpenGLView()->QueueEvent(e);
+		}
 		std::string PlatformStringToString(Platform::String^ s) {
 			std::wstring t = std::wstring(s->Data());
 			return std::string(t.begin(), t.end());
+		}
+
+		std::string PlatformStringToUtf8String(Platform::String^ s)
+		{
+			std::wstring t = std::wstring(s->Data()); 
+			return CCUnicodeToUtf8(t.c_str());
 		}
 
 		Platform::String^ PlatformStringFromString(const std::string& s)
