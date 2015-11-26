@@ -81,7 +81,7 @@
   <PropertyGroup Label="UserMacros">
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxBundlePlatforms>arm</AppxBundlePlatforms>
-    <AppxPackageDir>C:\Users\dannyhe\Desktop\local\test\</AppxPackageDir>
+    <AppxPackageDir>C:\Users\dannyhe\Desktop\test\</AppxPackageDir>
     <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
     <AppxBundle>Auto</AppxBundle>
   </PropertyGroup>
@@ -102,7 +102,7 @@
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\extensions\sdk\Facebook;$(ProjectDir)..\..\..\..\extensions\ext\platform\winrt;$(ProjectDir)..\..\..\..\extensions\ext\common;$(ProjectDir)..\..\..\..\extensions\ext\notification;$(ProjectDir)..\..\..\..\extensions\ext\sysmail;$(ProjectDir)..\..\..\..\extensions\ext\io;$(ProjectDir)..\..\..\..\extensions\ext;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua;../../Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>__AdeasygoSDK__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__AdeasygoSDK__;CC_USE_FACEBOOK=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -122,7 +122,7 @@
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\extensions\sdk\Facebook;$(ProjectDir)..\..\..\..\extensions\ext\platform\winrt;$(ProjectDir)..\..\..\..\extensions\ext\common;$(ProjectDir)..\..\..\..\extensions\ext\notification;$(ProjectDir)..\..\..\..\extensions\ext\sysmail;$(ProjectDir)..\..\..\..\extensions\ext\io;$(ProjectDir)..\..\..\..\extensions\ext;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua;../../Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>__AdeasygoSDK__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__AdeasygoSDK__;CC_USE_FACEBOOK=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>

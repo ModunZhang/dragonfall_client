@@ -23,7 +23,7 @@ void ShowAlert(std::string title, std::string content, std::string okString, std
 		{
 			if (callbackFunc)
 			{
-				callbackFunc();
+				WinRTHelper::QueueEvent(callbackFunc);
 			}
 		})));
 		dialog->ShowAsync();

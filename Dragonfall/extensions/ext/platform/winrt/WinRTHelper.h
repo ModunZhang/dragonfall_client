@@ -3,6 +3,8 @@ namespace cocos2d
 {
 	namespace WinRTHelper
 	{
+		void QueueEvent(const std::function<void()>& func);
+		std::string PlatformStringToUtf8String(Platform::String^ s);
 		std::string PlatformStringToString(Platform::String^ s);
 		Platform::String^ PlatformStringFromString(const std::string& s);
 		std::wstring CC_DLL CCUtf8ToUnicode(const char * pszUtf8Str, unsigned len = -1);

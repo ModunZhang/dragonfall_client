@@ -145,4 +145,15 @@ void FacebookSDK::clearFacebookCookies()
 	}
 }
 
+void FacebookSDK::CallLuaCallback(cocos2d::ValueMap valMap)
+{
+	if (m_handId > 0)
+	{
+		WinRTHelper::QueueEvent([=]()
+		{
+			FacebookCallback(m_handId, valMap);
+		});
+	}
+}
+
 #endif // CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
