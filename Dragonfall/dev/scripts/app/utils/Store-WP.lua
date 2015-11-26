@@ -107,7 +107,7 @@ function Store.finishTransaction(transaction)
         printError("Store.finishTransaction() - store not init")
         return false
     end
-    cc.storeProvider.consumePurchase(transaction.productIdentifier,transaction.transactionIdentifier)
+    cc.storeProvider.consumePurchase(transaction.productIdentifier,transaction.transactionId)
 end
 --[[
     新加 客户端不请求商品信息的情况下 直接通过商品id进行内购

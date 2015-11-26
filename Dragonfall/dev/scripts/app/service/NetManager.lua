@@ -1832,9 +1832,29 @@ function NetManager:getBuyAllianceItemPromise(itemName,count)
 end
 --玩家内购
 function NetManager:getVerifyIAPPromise(transactionId,receiptData)
-    return get_none_blocking_request_promise("logic.playerHandler.addPlayerBillingData",
+    return get_none_blocking_request_promise("logic.playerHandler.addIosPlayerBillingData",
         {
             receiptData=receiptData
+        }
+        ,"玩家内购失败", true):next(get_player_response_msg)
+end
+-- WindowsPhone内购
+function NetManager:getVerifyAdeasygoIAPPromise(transactionIdentifier)
+   if not self.__AdeasygoUID  then
+        self.__AdeasygoUID = ext.adeasygo.getUid()
+   end
+   local uid = self.__AdeasygoUID
+   return get_none_blocking_request_promise("logic.playerHandler.addWpAdeasygoPlayerBillingData",
+        {
+            transactionId=transactionIdentifier,
+            uid = uid,
+        }
+        ,"玩家内购失败", true):next(get_player_response_msg)
+end
+function NetManager:getVerifyMicrosoftIAPPromise( transactionIdentifier )
+    return get_none_blocking_request_promise("logic.playerHandler.addWpOfficialPlayerBillingData",
+        {
+            receiptData=transactionIdentifier,
         }
         ,"玩家内购失败", true):next(get_player_response_msg)
 end
