@@ -55,4 +55,17 @@ internal:
     void Initialize(_In_ const WCHAR* url); 
     void ReadAll(uint8* buffer, uint32 maxBufferSize, uint32* bufferLength); 
     void Restart();
+	//dannyhe
+	void InitializeMp3(_In_ const WCHAR* mp3FilePath);
+	void GetLengthOfId3v2Tag(_In_ const unsigned char * buff, _Outptr_ int * pLength);
+	inline void ThrowIfFailed(bool succeded)
+	{
+		if (!succeded)
+		{
+			throw Platform::FailureException::CreateException(E_FAIL, "Unexpected error happened!");
+		}
+	}
+
+	#define LO_BYTE(x)  (x & 0x00ff)
+	#define HI_BYTE(x)  ((x >> 8) & 0x00ff)
 };
