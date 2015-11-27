@@ -32,7 +32,7 @@ namespace AudioExtension
 		void OnMediaEnded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void OnEffectMediaEnded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		float m_volume;
-		unsigned __index;
+		unsigned int __index;
 		Platform::Collections::Map <Platform::String^, Windows::Foundation::EventRegistrationToken>^ m_effect_token_map;
 		Platform::Collections::Vector<Platform::String^>^ m_effect_token_keys;
 	public:
