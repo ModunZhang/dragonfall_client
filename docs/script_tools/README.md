@@ -16,7 +16,8 @@
 * git 的命令行运行环境(terminal/cmd),并确认有可以操作远程仓库的权限(git pull/push etc...)
 
 	Windows上的git必须安装`cygwin`环境(Git自带,安装时选中),使用ssh进行权限认证,这样cmd和其他git图形化软件都可以同时操作该仓库。
-	图形界面软件用的一些设置软件路径(ssh)在tools/win32/cwRsync下,必须要将tools/win32/cwRsync加入到环境变量Path
+	图形界面软件用的一些设置软件路径(ssh)在tools/win32/cwRsync下,必须要将tools/win32/cwRsync加入到环境变量Path。
+	配置生成ssh的key的时候使用bash的环境执行相关命令
 
 * 环境变量`GIT_REPOSITOTY_AUTO_UPDATE`,指向我们自动更新仓库的本地绝对路径,具体地址:[https://github.com/ModunZhang/kod_update_server](https://github.com/ModunZhang/kod_update_server "https://github.com/ModunZhang/kod_update_server")
 
@@ -87,6 +88,21 @@
 
 * Windows 上可以用360进行垃圾清理
 * mac 上需要手动清理,需要管理员权限
+
+##如何使用ssh操作git仓库
+`mac`下使用终端环境,`windows`下使用`git bash`环境进行ssh的生成
+
+1.将项目目录`tools/win32/cwRsync`添加到环境变量
+
+2.生成密钥
+	
+	ssh-keygen -t rsa -C "your_email@youremail.com"
+
+3.将`ssh`目录下的`id_rsa.pub`添加到github
+
+4.如果你项目之前是使用https的方式clone的。可以执行命令切换仓库地址
+
+	git remote set-url origin git@github.com:xxxx.git 
 
 ##重要说明
 `WindowsPhone`的资源处理只能在Windows环境进行!
