@@ -37,6 +37,10 @@ bool addNotification(std::string type, long finishTime, std::string body, std::s
 	Windows::Globalization::Calendar^ c = ref new Windows::Globalization::Calendar;
 	Windows::Foundation::DateTime dt = c->GetDateTime();
 	int diff = (finishTime + 11644473600) - dt.UniversalTime / 10000000;
+	if (diff < 0)
+	{
+		return false; //如果推送时间已经小于当前时间 忽略
+	}
 	c->AddSeconds(diff);
 	Windows::Foundation::DateTime dueTime = c->GetDateTime();
 	ScheduledToastNotification^ scheduledToast = ref new ScheduledToastNotification(toastXml, dueTime);

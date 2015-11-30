@@ -172,8 +172,8 @@ void tolua_ext_module_audio(lua_State* tolua_S)
 	tolua_function(tolua_S, "playMusic", tolua_simpleaudio_playBackGroundMusic);
 	tolua_function(tolua_S, "stopMusic", tolua_simpleaudio_stopBackGroundMusic);
 	tolua_function(tolua_S, "setMusicVolume", tolua_simpleaudio_setmusicVolume);
-	tolua_function(tolua_S, "playEffect", tolua_simpleaudio_playEffect);
-	tolua_function(tolua_S, "stopAllEffects", tolua_simpleaudio_stopAllEffects);
+	tolua_function(tolua_S, "playSound", tolua_simpleaudio_playEffect);
+	tolua_function(tolua_S, "stopAllSounds", tolua_simpleaudio_stopAllEffects);
 	tolua_function(tolua_S, "pauseMusic", tolua_simpleaudio_pauseBackgroundMusic);
 	tolua_function(tolua_S, "resumeMusic", tolua_simpleaudio_resumeBackgroundMusic);
 	tolua_function(tolua_S, "pauseAllSounds", tolua_simpleaudio_pauseAllEffects);
