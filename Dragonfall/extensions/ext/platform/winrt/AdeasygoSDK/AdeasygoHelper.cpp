@@ -351,10 +351,10 @@ namespace cocos2d
 								CCLOGWARN("------FulfillmentResult::PurchasePending------");
 								break;
 							case Windows::ApplicationModel::Store::FulfillmentResult::PurchaseReverted:
-								CCLOGWARN(L"------FulfillmentResult::PurchaseReverted------");
+								CCLOGWARN("------FulfillmentResult::PurchaseReverted------");
 								break;
 							case Windows::ApplicationModel::Store::FulfillmentResult::ServerError:
-								CCLOGWARN(L"------FulfillmentResult::ServerError------");
+								CCLOGWARN("------FulfillmentResult::ServerError------");
 								break;
 							default:
 								break;
