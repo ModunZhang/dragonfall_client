@@ -98,7 +98,7 @@
 	
 	ssh-keygen -t rsa -C "your_email@youremail.com"
 
-3.将`ssh`目录下的`id_rsa.pub`添加到github
+3.将`ssh`目录下的`id_rsa.pub`里的公钥添加到github
 
 4.如果你项目之前是使用https的方式clone的。可以执行命令切换仓库地址
 
