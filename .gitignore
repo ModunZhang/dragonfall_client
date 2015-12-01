@@ -22,7 +22,14 @@ Dragonfall/update_wp8
 
 #########################VS2013#########################
 Dragonfall/samples
+Dragonfall/tools/samples_scripts
 *.pyc
+*.obj
+*.sdf
+*.user
+*.suo
+*.opensdf
+
 Dragonfall/tmp
 Dragonfall/frameworks/cocos2d-x/cocos/2d/libcocos2d_8_1/libcocos2d_8_1/libcocos2d_8_1.Windows/Debug
 Dragonfall/frameworks/cocos2d-x/cocos/2d/libcocos2d_8_1/libcocos2d_8_1/libcocos2d_8_1.WindowsPhone/Debug
@@ -64,11 +71,3 @@ external/WindowsPhone/FBWinSDK/FBWinSDK/FBWinSDK.Windows/Debug
 external/WindowsPhone/FBWinSDK/FBWinSDK/FBWinSDK.WindowsPhone/Debug
 external/WindowsPhone/FBWinSDK/FBWinSDK/FBWinSDK.WindowsPhone/Release
 external/WindowsPhone/FBWinSDK/FBWinSDK/FBWinSDK.Windows/Release
-
-
-
-*.obj
-*.sdf
-*.user
-*.suo
-*.opensdf
