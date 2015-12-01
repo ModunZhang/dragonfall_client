@@ -104,6 +104,28 @@
 
 	git remote set-url origin git@github.com:xxxx.git 
 
+##如何设置windows版本的bash环境,比如加入git的别名
+1.以管理员身份打开sublime
+
+2.打开git安装下的`etc/profile`
+
+3.在文件末尾加入以下配置
+
+	#alias for dragonfall
+	GetLogByCommitCount(){
+  		totalLine=`git rev-list HEAD | wc -l | tr -d "  " | awk '{print $0}'`
+  		inputLine=$1
+  		realLine=$((totalLine-inputLine+1))
+  		git rev-list HEAD | awk -v lineNumber=$realLine 'NR==lineNumber{system("git show -s "$0)}'
+	}
+	alias gitl=GetLogByCommitCount
+	alias gitv='git rev-list HEAD --count'	
+
+4.打开`git bash`测试
+
+	gitv
+	gitl 1
+
 ##重要说明
 `WindowsPhone`的资源处理只能在Windows环境进行!
 
