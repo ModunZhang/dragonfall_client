@@ -501,6 +501,13 @@ void UIEditBoxImplWinrt::setText( const char* pText )
             //! std::string strWithEllipsis = getStringWithEllipsisJni(strToShow.c_str(), m_EditSize.width, m_EditSize.height-12);
             //! m_pLabel->setString(strWithEllipsis.c_str());
             m_pLabel->setString(strToShow.c_str());
+			// Clip the text width to fit to the text box dannyhe fix height
+			float fMaxWidth = _editBox->getContentSize().width - 5.0 * 2;
+			Size labelSize = m_pLabel->getContentSize();
+			if (labelSize.width > fMaxWidth) {
+				m_pLabel->setDimensions(fMaxWidth,labelSize.height);
+			}
+			//end
         }
         else
         {

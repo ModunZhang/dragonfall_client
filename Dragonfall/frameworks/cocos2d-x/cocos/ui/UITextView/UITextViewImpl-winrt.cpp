@@ -443,10 +443,13 @@ namespace ui {
 				{
 					strToShow = m_strText;
 				}
-
-				//! std::string strWithEllipsis = getStringWithEllipsisJni(strToShow.c_str(), m_EditSize.width, m_EditSize.height-12);
-				//! m_pLabel->setString(strWithEllipsis.c_str());
 				m_pLabel->setString(strToShow.c_str());
+				// Clip the text width to fit to the text view 
+				m_pLabel->setEllipsisEabled(true);
+				Size contentSize = _textView->getContentSize();
+				float fMaxWidth = contentSize.width - 5.0 * 2;
+				float fMaxHeight = contentSize.height - 5.0;
+				m_pLabel->setDimensions(fMaxWidth, fMaxHeight);
 			}
 			else
 			{
