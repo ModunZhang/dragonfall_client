@@ -111,6 +111,7 @@ function GameUISettingServer:FetchServers()
     NetManager:getServersPromise():done(function(response)
         if response.msg.code == 200 then
             local servers = response.msg.servers
+            dump(servers,"servers")
             self.data = servers
             self:RefreshList()
             self:RefreshServerInfo()
@@ -146,23 +147,12 @@ end
 
 function GameUISettingServer:SortServerData()
     table.sort( self.data, function(a,b)
-        if self:IsServerLevelGreateThanOther(a,b) then
-            return true
-        else
-            return a.id < b.id
-        end
+        return a.openAt > b.openAt
     end )
 end
 
-function GameUISettingServer:IsServerLevelGreateThanOther(server1,server2)
-    local level_1 = string.sub(server1.id,-1,-1)
-    local level_2 = string.sub(server2.id,-1,-1)
-    return tonumber(level_1) > tonumber(level_2)
-end
-
 function GameUISettingServer:GetServerLocalizeName(server)
-    local server_level = string.sub(server.id,-1,-1)
-    return string.format(_("World %s"),server_level)
+    return server.name
 end
 
 
@@ -230,10 +220,11 @@ end
 
 function GameUISettingServer:FillDataItem(content,data)
     content.title_label:setString(self:GetServerLocalizeName(data))
-    content.is_new_server_label:setString(data.isNew == "true" and "[NEW!]" or "")
+    local isNew = (app.timer:GetServerTime() * 1000 - 7 * 24 * 60 * 60 * 1000) <= data.openAt
+    content.is_new_server_label:setString(isNew and "[NEW!]" or "")
     content.topAllianceCountry:setTexture(data.serverInfo.alliance and data.serverInfo.alliance ~= json.null and UILib.alliance_language_frame[data.serverInfo.alliance.country] or "icon_unknow_country.png")
     content.top_alliance_label:setString(data.serverInfo.alliance and data.serverInfo.alliance ~= json.null and data.serverInfo.alliance.name or _("无"))
-    local str,color = self:GetStateLableInfoByUserCount(data.serverInfo.loginedCount or 0)
+    local str,color = self:GetStateLableInfoByUserCount(data.serverInfo.totalCount or 0)
     content.state_label:setString(str)
     content.state_label:setColor(color)
     if data.id == self.server_code then
