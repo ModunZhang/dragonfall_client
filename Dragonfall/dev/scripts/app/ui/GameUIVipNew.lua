@@ -376,7 +376,7 @@ function GameUIVipNew:CreateVipEff()
     }
     pv:onTouch(function (event)
         if event.name == "pageChange" then
-            bottom_vip_level_node:InitLevelNode(event.pageIdx)
+            bottom_vip_level_node:InitLevelNode(event.pageIdx >= self.current_vip_level and (event.pageIdx + 1) or event.pageIdx)
         end
     end):addTo(vip_layer)
     pv:setTouchSwallowEnabled(false)
@@ -403,7 +403,6 @@ function GameUIVipNew:CreateVipEff()
     pv_node:setNodeEventEnabled(true)
     pv_node:setTouchSwallowEnabled(false)
     pv_node:pos(window.right - 50 - bg_width + 10 , window.bottom_top + 44 )
-    pv:gotoPage(self.right_level)
 
     pv_node:addNodeEventListener(cc.NODE_TOUCH_EVENT, function (event)
         if event.name == 'moved' then
