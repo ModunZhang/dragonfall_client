@@ -53,10 +53,23 @@ void ClippingRectangleNode::onBeforeVisitScissor()
         
         const Point pos = convertToWorldSpace(Point(_clippingRegion.origin.x, _clippingRegion.origin.y));
         GLView* glView = Director::getInstance()->getOpenGLView();
-        glView->setScissorInPoints(pos.x * scaleX,
-                                   pos.y * scaleY,
-                                   _clippingRegion.size.width * scaleX,
-                                   _clippingRegion.size.height * scaleY);
+        #if (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+            Rect _visibleRect = glView->getVisibleRect();
+            int x = pos.x * scaleX;
+            if ((pos.x * scaleX + _clippingRegion.size.width * scaleX) < 0)
+            {
+                x = -_clippingRegion.size.width * scaleX;
+            }
+            glView->setScissorInPoints(x,
+                                    MIN(pos.y * scaleY,_visibleRect.origin.y + _visibleRect.size.height),
+                                    _clippingRegion.size.width * scaleX,
+                                    _clippingRegion.size.height * scaleY);
+        #else
+            glView->setScissorInPoints(pos.x * scaleX,
+                                    pos.y * scaleY,
+                                    _clippingRegion.size.width * scaleX,
+                                    _clippingRegion.size.height * scaleY);
+        #endif
     }
 }
 
