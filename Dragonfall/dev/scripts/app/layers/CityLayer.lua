@@ -566,7 +566,10 @@ function CityLayer:CheckUpgradeCondition()
         level_bg:pos(x + ox, y + oy):setVisible(level > 0)
         level_bg.can_level_up:setVisible(canUpgrade)
         level_bg.can_not_level_up:setVisible(not canUpgrade)
-        -- level_bg.text_field:setString(level)
+        if level_bg.level ~= level then
+            level_bg.text_field:removeFromParent()
+            level_bg.text_field = self:CreateNumber(level):addTo(level_bg):pos(3, -3)
+        end
     end
 end
 function CityLayer:CreateLevelArrowBy(building_sprite)
@@ -582,18 +585,29 @@ function CityLayer:DeleteLevelArrowBy(building_sprite)
 end
 function CityLayer:CreateLevelNode(building_sprite)
     local entity = building_sprite:GetEntity()
+    local building = entity:GetRealEntity()
+    local level = building:GetLevel()
     local x, y = self:GetLogicMap():ConvertToMapPosition(entity:GetLogicPosition())
     local ox, oy = building_sprite:GetSpriteTopPosition()
     level_bg = display.newNode():addTo(self.level_node):pos(x + ox, y + oy)
     level_bg:setCascadeOpacityEnabled(true)
     level_bg.can_level_up = display.newSprite("can_level_up.png"):addTo(level_bg):show()
-    level_bg.can_not_level_up = display.newSprite("can_not_level_up.png"):addTo(level_bg):pos(0,-10)
-    -- level_bg.text_field = UIKit:ttfLabel({
-    --     size = 16,
-    --     color = 0xfff1cc,
-    -- }):addTo(level_bg):align(display.CENTER, 10, 18)
-    -- level_bg.text_field:setSkewY(-30)
+    level_bg.can_not_level_up = display.newSprite("can_not_level_up.png"):addTo(level_bg):pos(0,-5)
+    level_bg.text_field = self:CreateNumber(level):addTo(level_bg):pos(3, -3)
+    level_bg.level = level
     return level_bg
+end
+function CityLayer:CreateNumber(number)
+    local node = display.newNode()
+    local str = tostring(number)
+    local len = #str
+    local w = len * 8
+    for i = 1, len do
+        display.newSprite(string.format("level_%d.png", string.sub(str,i,i)))
+        :addTo(node):pos(-w/2 + ((i-1)*8), 0)
+    end
+    node:setSkewY(-30)
+    return node
 end
 ---
 function CityLayer:EnterEditMode()
