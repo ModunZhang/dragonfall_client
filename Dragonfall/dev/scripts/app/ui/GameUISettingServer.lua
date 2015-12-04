@@ -9,6 +9,7 @@ local WidgetPushButton = import("..widget.WidgetPushButton")
 local UIListView = import(".UIListView")
 local User = User
 local config_fightRewards = GameDatas.AllianceInitData.fightRewards
+local intInit = GameDatas.PlayerInitData.intInit
 local Localize = import("..utils.Localize")
 local UILib = import(".UILib")
 
@@ -41,7 +42,7 @@ function GameUISettingServer:BuildUI()
         color = 0xffedae
     }):addTo(titleBar):align(display.CENTER,300,28)
 
-    local couldChangeFree = City:GetFirstBuildingByType("keep"):GetLevel() < 10
+    local couldChangeFree = City:GetFirstBuildingByType("keep"):GetLevel() <= intInit.switchServerFreeKeepLevel.value
     local btn_images = couldChangeFree and {normal = 'yellow_btn_up_186x66.png',pressed = 'yellow_btn_down_186x66.png',disabled = "grey_btn_186x66.png"}
         or {normal = 'green_btn_up_148x76.png',pressed = 'green_btn_down_148x76.png',disabled = "grey_btn_148x78.png"}
 
@@ -56,6 +57,25 @@ function GameUISettingServer:BuildUI()
                 UIKit:showMessageDialog(_("错误"),_("你已加入联盟不能切换服务器，退出联盟后重试。"))
                 return
             end
+            if User:GetGemValue() < intInit.switchServerGemUsed.value then
+                UIKit:showMessageDialog(_("提示"),_("金龙币不足")):CreateOKButton(
+                    {
+                        listener = function ()
+                            UIKit:newGameUI("GameUIStore"):AddToCurrentScene(true)
+                        end,
+                        btn_name= _("前往商店")
+                    })
+                return
+            end
+            if (self.server.openAt - intInit.switchServerLimitDays.value * 24 * 60 * 60 * 1000) > User.countInfo.registerTime  then
+                UIKit:showMessageDialog(_("错误"),_("不能迁移到选定的服务器"))
+                return
+            end
+            if User:GetMyDeals() and #User:GetMyDeals() > 0 then
+                UIKit:showMessageDialog(_("错误"),_("您有商品正在出售,不能切换服务器"))
+                return
+            end
+            
             if self.server_code ~= User.serverId then
                 NetManager:getSwitchServer(self.server_code)
             end
@@ -67,7 +87,7 @@ function GameUISettingServer:BuildUI()
         -- gem icon
         local gem_icon = display.newSprite("gem_icon_62x61.png"):addTo(num_bg):align(display.CENTER, 20, num_bg:getContentSize().height/2):scale(0.6)
         local price = UIKit:ttfLabel({
-            text = string.formatnumberthousands(5000),
+            text = string.formatnumberthousands(intInit.switchServerGemUsed.value),
             size = 18,
             color = 0xffd200,
         }):align(display.LEFT_CENTER, 50 , num_bg:getContentSize().height/2)
@@ -247,6 +267,7 @@ function GameUISettingServer:listviewListener(event)
     if "clicked" == event.name then
         local server = self.data[event.itemPos]
         if not server then return end
+        self.server = server
         self.server_code = server.id
         self:RefreshCurrentPageList()
         self:RefreshServerInfo()
@@ -276,6 +297,7 @@ function GameUISettingServer:RefreshServerInfo()
 end
 
 return GameUISettingServer
+
 
 
 
