@@ -120,9 +120,7 @@ function enter_scene(scene)
         onComplete = function()
             scene:removeChildByTag(CLOUD_TAG)
             app:lockInput(false)
-            if device.platform == 'winrt' then
-                app:getStore():updateTransactionStates()
-            end
+            app:getStore():updateTransactionStates() -- 更新内购订单状态
         end
     })
 end

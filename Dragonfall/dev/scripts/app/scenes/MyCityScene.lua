@@ -225,22 +225,27 @@ function MyCityScene:onEnterTransitionFinish()
     app:sendPlayerLanguageCodeIf()
     app:sendApnIdIf()
     if self.isFromLogin then
+
         local isFinished_fte = DataManager:getUserData().countInfo.isFTEFinished
         local not_buy_any_gems = DataManager:getUserData().countInfo.iapCount == 0
         if isFinished_fte and not_buy_any_gems then
             UIKit:newGameUI("GameUIActivityRewardNew",GameUIActivityRewardNew.REWARD_TYPE.FIRST_IN_PURGURE):AddToScene(self, true)
         end
-        if device.platform ~= 'mac' then
-            app:getStore():updateTransactionStates()
+        --开启屏幕锁定定时器(前面已经关闭)
+        if ext.disableIdleTimer then
+            ext.disableIdleTimer(false)
         end
+        -- gamecenter 初始化
+        if ext.gamecenter.isGameCenterEnabled() and not ext.gamecenter.isAuthenticated() then
+            ext.gamecenter.authenticate(false)
+        end
+        -- facebook 初始化
+        if ext.facebook then
+            ext.facebook.initialize()
+        end
+
     end
-    if ext.gamecenter.isGameCenterEnabled() and not ext.gamecenter.isAuthenticated() then
-        ext.gamecenter.authenticate(false)
-    end
-    -- facebook
-    if ext.facebook then
-        ext.facebook.initialize()
-    end
+
     app:GetChatManager():FetMessageFirstStartGame()
     if Alliance_Manager:HasBeenJoinedAlliance() then
         return
@@ -248,10 +253,6 @@ function MyCityScene:onEnterTransitionFinish()
     self:FteEditName(function()
         self:FteAlliance()
     end)
-    --开启屏幕锁定定时器
-    if ext.disableIdleTimer then
-        ext.disableIdleTimer(false)
-    end
 end
 function MyCityScene:FteEditName(func)
     if DataManager:getUserData().countInfo.isFTEFinished then
