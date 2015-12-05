@@ -20,7 +20,7 @@ void CloseKeyboard();
 std::string GetOSVersion();
 
 std::string GetDeviceModel();
-
+//print log in release
 void WriteLog_(std::string str);
 
 std::string GetAppVersion();
@@ -35,7 +35,7 @@ std::string GetOpenUdid();
 
 void RegistereForRemoteNotifications();
 
-void ClearOpenUdidData(); // 注意！这个方法绝对不能在发布环境里调用
+void ClearOpenUdidData();
 
 std::string GetDeviceLanguage();
 
@@ -44,6 +44,11 @@ float GetBatteryLevel();
 std::string GetInternetConnectionStatus();
 
 const bool IsAppAdHocMode();
+
+//memory about
+bool isLowMemoryDevice();
+
+long getAppMemoryUsage();
 
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 

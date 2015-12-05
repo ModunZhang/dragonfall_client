@@ -211,4 +211,14 @@ const bool IsAppAdHocMode()
     bool isDebug = [[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppHoc"] boolValue];
     return isDebug;
 }
+
+bool isLowMemoryDevice()
+{
+    return false;
+}
+
+long getAppMemoryUsage()
+{
+    return 0;
+}
 #endif

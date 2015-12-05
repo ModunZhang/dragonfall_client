@@ -27,8 +27,6 @@
 * 我们项目没有使用默认的quick target,而是在默认target的基础上新建的target。用于自定义模块化编译的宏。具体的宏定义和功能看android的文档.
 
 ######Windpws Phone特别说明
-
-* 暂时只有wp项目打开了lua websocket的支持,并添加了用于位操作的库
 * EditBox在官方的基础上修改
 
 ######状态

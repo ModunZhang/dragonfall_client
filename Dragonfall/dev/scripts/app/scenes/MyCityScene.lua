@@ -421,7 +421,7 @@ local ui_map = setmetatable({
     miner          = {"GameUIResource"            ,},
     wall           = {"GameUIWall"                ,       "upgrade",          },
     tower          = {"GameUITower"               ,},
-    watchTower     = {"GameUIWatchTower"               ,  "march"             },
+    watchTower     = {"GameUIWatchTower"          ,         "march",          },
     airship        = {},
     FairGround     = {},
     square         = {},
@@ -473,41 +473,4 @@ function MyCityScene:OpenUI(building, default_tab, need_tips, build_name)
 end
 
 return MyCityScene
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
