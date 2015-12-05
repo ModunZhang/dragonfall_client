@@ -158,7 +158,7 @@ namespace cocos2d
 		{
 			WinRTHelper::QueueEvent([=]()
 			{
-				OnPayException(handleId, eventName);
+				OnPayException(errorHandleId, eventName);
 			});
 		}
 	}
