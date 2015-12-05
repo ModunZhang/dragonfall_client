@@ -715,6 +715,20 @@ end
 -- 获取服务器列表
 function NetManager:getLogicServerInfoPromise()
     local device_id = device.getOpenUDID()
+    local platform = ''
+    if device.platform == "windows" then
+        platform = 'wp'
+    elseif device.platform == "mac" then
+        platform = 'ios'
+    elseif device.platform == "android" then
+        platform = 'android'
+    elseif device.platform == "ios" then
+        platform = 'ios'
+    elseif device.platform == "winrt" then
+        platform = 'wp'
+    elseif device.platform == "wp8" then
+        platform = 'wp'
+    end
     local device_tag = app.client_tag
     if not device_tag then -- fix tag nil
         device_tag = self:tryGetAppTag()
@@ -724,7 +738,7 @@ function NetManager:getLogicServerInfoPromise()
             end)
         end
     end
-    return get_none_blocking_request_promise("gate.gateHandler.queryEntry", {deviceId = device_id,tag = device_tag}, "获取逻辑服务器失败",true)
+    return get_none_blocking_request_promise("gate.gateHandler.queryEntry", {platform = platform,deviceId = device_id,tag = device_tag}, "获取逻辑服务器失败",true)
         :done(function(result)
             self:CleanAllEventListeners()
             self.m_netService:disconnect()
