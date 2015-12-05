@@ -856,8 +856,6 @@ static int tolua_ext_is_app_hoc(lua_State* tolua_S)
     return 1;
 }
 
-#if  CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
-
 static int tolua_ext_isLowMemoryDevice(lua_State* tolua_S)
 {
 	bool ret = isLowMemoryDevice();
@@ -872,7 +870,7 @@ static int tolua_ext_getAppMemoryUsage(lua_State* tolua_S)
 	return 1;
 }
 
-
+#if  CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 static int tolua_ext_open_url(lua_State* tolua_S)
 {
 	std::string url = tolua_tocppstring(tolua_S, 1, 0);
@@ -934,12 +932,11 @@ static void ResgisterGlobalExtFunctions(lua_State* tolua_S)
     tolua_function(tolua_S, "clearOpenUdid",tolua_ext_clearOpenUdid);
     tolua_function(tolua_S, "getDeviceLanguage",tolua_ext_get_language_code);
     tolua_function(tolua_S, "isAppAdHoc",tolua_ext_is_app_hoc);
+	tolua_function(tolua_S, "isLowMemoryDevice", tolua_ext_isLowMemoryDevice);
+	tolua_function(tolua_S, "getAppMemoryUsage", tolua_ext_getAppMemoryUsage);
 #if  CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 	tolua_function(tolua_S, "openURL", tolua_ext_open_url);
 	tolua_function(tolua_S, "showAlert", tolua_ext_show_alert);
-	tolua_function(tolua_S, "isLowMemoryDevice", tolua_ext_isLowMemoryDevice);
-	tolua_function(tolua_S, "getAppMemoryUsage", tolua_ext_getAppMemoryUsage);
-	
 #endif
 }
 

@@ -223,4 +223,13 @@ const bool IsAppAdHocMode()
     }
     return ret;
 }
+bool isLowMemoryDevice()
+{
+    return false;
+}
+
+long getAppMemoryUsage()
+{
+    return 0;
+}
 #endif

@@ -45,16 +45,16 @@ std::string GetInternetConnectionStatus();
 
 const bool IsAppAdHocMode();
 
+//memory about
+bool isLowMemoryDevice();
+
+long getAppMemoryUsage();
+
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 
 void OpenUrl(std::string url);
 
 void ShowAlert(std::string title, std::string content,std::string okString,std::function<void(void)> callbackFunc);
-
-//memory about
-bool isLowMemoryDevice();
-
-long getAppMemoryUsage();
 
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 
