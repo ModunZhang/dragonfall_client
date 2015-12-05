@@ -20,7 +20,7 @@ void CloseKeyboard();
 std::string GetOSVersion();
 
 std::string GetDeviceModel();
-
+//print log in release
 void WriteLog_(std::string str);
 
 std::string GetAppVersion();
@@ -35,7 +35,7 @@ std::string GetOpenUdid();
 
 void RegistereForRemoteNotifications();
 
-void ClearOpenUdidData(); // 注意！这个方法绝对不能在发布环境里调用
+void ClearOpenUdidData();
 
 std::string GetDeviceLanguage();
 
@@ -50,6 +50,11 @@ const bool IsAppAdHocMode();
 void OpenUrl(std::string url);
 
 void ShowAlert(std::string title, std::string content,std::string okString,std::function<void(void)> callbackFunc);
+
+//memory about
+bool isLowMemoryDevice();
+
+long getAppMemoryUsage();
 
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 

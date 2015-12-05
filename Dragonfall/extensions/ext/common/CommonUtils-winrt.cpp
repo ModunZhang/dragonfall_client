@@ -204,3 +204,24 @@ const bool IsAppAdHocMode()
 	return flag;
 }
 #endif
+
+bool isLowMemoryDevice()
+{
+#if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
+	unsigned long  long usage = Windows::System::MemoryManager::AppMemoryUsageLimit;
+	auto ret = (usage / 1024) / 1024;
+	return ret <= 185;
+#else
+	return false;
+#endif
+}
+
+long getAppMemoryUsage()
+{
+#if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
+	long usage = Windows::System::MemoryManager::AppMemoryUsage / (1024 * 1024);
+	return usage;
+#else
+	return 0;
+#endif
+}
