@@ -16,8 +16,9 @@ namespace cocos2d
 		public ref class Device sealed
 		{
 		private:
-			Device(){};
+			Device(){ m_requestActivd = false; };
 			Windows::System::Display::DisplayRequest^ m_display_request;
+			bool m_requestActivd;
 		public:
 			void DisplayRequestActive()
 			{
@@ -26,13 +27,19 @@ namespace cocos2d
 					m_display_request = ref new Windows::System::Display::DisplayRequest();
 				}
 				m_display_request->RequestActive();
+				m_requestActivd = true;
 			}
 
 			void DisplayRequestRelease()
 			{
+				if (!m_requestActivd)
+				{
+					return;
+				}
 				if (nullptr != m_display_request)
 				{
 					m_display_request->RequestRelease();
+					m_requestActivd = false;
 				}
 			}
 			static property Device^ Instance
