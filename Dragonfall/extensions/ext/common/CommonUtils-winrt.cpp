@@ -213,7 +213,7 @@ bool isLowMemoryDevice()
 {
 #if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
 	unsigned long  long usage = Windows::System::MemoryManager::AppMemoryUsageLimit;
-	auto ret = (usage / 1024) / 1024;
+	auto ret = usage / (1024 * 1024);
 	return ret <= 185;
 #else
 	return false;
