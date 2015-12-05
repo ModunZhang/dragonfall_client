@@ -562,7 +562,7 @@ function GameUIActivityRewardNew:ui_FIRST_IN_PURGURE()
     local countInfo = User.countInfo
     local rewards = self:GetFirstPurgureRewards()
     local x,y = 20,500
-    self.purgure_get_button = WidgetPushButton.new({normal = 'store_buy_button_n_332x76.png',pressed = 'store_buy_button_l_332x76.png',scale9 = true})
+    self.purgure_get_button = WidgetPushButton.new({normal = 'store_buy_button_n_332x76.png',pressed = 'store_buy_button_l_332x76.png'},{scale9 = true})
         :setButtonLabel("normal", UIKit:commonButtonLable({
             text = _("领取")
         }))
