@@ -181,7 +181,11 @@ void RegistereForRemoteNotifications()
 		}
 		catch (Platform::COMException^ e)
 		{
-			
+			//如果获取失败 清空本地缓存的push标识码
+			if (!Windows::Storage::ApplicationData::Current->LocalSettings->Values->HasKey("push_url"))
+			{
+				Windows::Storage::ApplicationData::Current->LocalSettings->Values->Remove("push_url");
+			}
 		}
 	});
 }
