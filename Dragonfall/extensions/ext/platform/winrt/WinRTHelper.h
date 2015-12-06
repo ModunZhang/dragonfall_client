@@ -22,6 +22,10 @@ namespace cocos2d
 		public:
 			void DisplayRequestActive()
 			{
+				if (m_requestActivd)
+				{
+					return;
+				}
 				if (nullptr == m_display_request)
 				{
 					m_display_request = ref new Windows::System::Display::DisplayRequest();
