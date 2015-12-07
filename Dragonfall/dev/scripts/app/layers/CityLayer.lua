@@ -395,8 +395,7 @@ function CityLayer:ReloadSceneBackground()
     local right_1 = string.format("right_background_1_%s.%s", terrain, suffix)
     local right_2 = string.format("right_background_2_%s.%s", terrain, suffix)
     local left1 = display.newSprite(left_1):addTo(self.background):align(display.LEFT_BOTTOM)
-    local square = display.newSprite(left_2, nil, nil, {class=cc.FilteredSpriteWithOne}):addTo(self.background)
-        :align(display.LEFT_BOTTOM, 0, left1:getContentSize().height)
+    local square = display.newSprite(left_2):addTo(self.background):align(display.LEFT_BOTTOM, 0, left1:getContentSize().height)
     local right1 = display.newSprite(right_1):addTo(self.background):align(display.LEFT_BOTTOM, square:getContentSize().width, 0)
     local right2 = display.newSprite(right_2):addTo(self.background):align(display.LEFT_BOTTOM, square:getContentSize().width, right1:getContentSize().height)
 
@@ -410,42 +409,23 @@ function CityLayer:ReloadSceneBackground()
             end,
         }
     end
-    function square:BeginFlash(time)
-        local start = 0
-        self:setFilter(filter.newFilter("CUSTOM", json.encode({
-            frag = "shaders/flashAt.fs",
-            shaderName = "flashAt",
-            startTime = start,
-            curTime = start,
-            lastTime = time,
-            rect = {0.815,0.543,0.21,0.26},
-            srm = {1.0, 1.54, -45, 0.4},
-        })))
-        self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
-            start = start + dt
-            if start > time then
-                self:ResetFlashStatus()
-            else
-                self:getFilter():getGLProgramState():setUniformFloat("curTime", start)
-            end
-        end)
-        self:scheduleUpdate()
-    end
     function square:Flash(time)
-        self:ResetFlashStatus()
-        self:BeginFlash(time)
-    end
-    function square:ResetFlashStatus()
-        self:unscheduleUpdate()
-        self:removeNodeEventListenersByEvent(cc.NODE_ENTER_FRAME_EVENT)
-        self:clearFilter()
+        local sprite = display.newSprite("click_empty.png"):pos(1050, 440)
+        sprite:setScaleX(1.8)
+        sprite:setScaleY(1.3)
+        sprite:rotation(-30)
+        sprite:setSkewX(-23)
+        :addTo(self):opacity(0):runAction(transition.sequence({
+            cc.FadeIn:create(time/2),
+            cc.FadeOut:create(time/2),
+            cc.RemoveSelf:create(),
+        }))
     end
     self.square = square
 end
 function CityLayer:InitWithCity(city)
     city:AddListenOnType(self, city.LISTEN_TYPE.UNLOCK_TILE)
     city:AddListenOnType(self, city.LISTEN_TYPE.LOCK_TILE)
-    -- city:AddListenOnType(self, city.LISTEN_TYPE.UNLOCK_ROUND)
     city:AddListenOnType(self, city.LISTEN_TYPE.OCCUPY_RUINS)
     city:AddListenOnType(self, city.LISTEN_TYPE.CREATE_DECORATOR)
     city:AddListenOnType(self, city.LISTEN_TYPE.DESTROY_DECORATOR)
