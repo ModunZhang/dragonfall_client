@@ -120,7 +120,9 @@ function enter_scene(scene)
         onComplete = function()
             scene:removeChildByTag(CLOUD_TAG)
             app:lockInput(false)
-            app:getStore():updateTransactionStates() -- 更新内购订单状态
+            if app:getStore() then
+                app:getStore():updateTransactionStates() -- 更新内购订单状态
+            end
         end
     })
 end
