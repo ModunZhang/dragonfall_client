@@ -1,7 +1,7 @@
 -- 0 - disable debug info, 1 - less debug info, 2 - verbose debug info
 DEBUG = 0
 DEBUG_FPS = false
-DEBUG_MEM = true
+DEBUG_MEM = false
 
 -- design resolution
 CONFIG_SCREEN_WIDTH = 640
@@ -55,7 +55,7 @@ CONFIG_IS_LOCAL = false
 -- 是否是测试版本 后面会删除这个变量 从plist/meta-data里面获取值，CONFIG_IS_DEBUG为true时三方sdk不会记录购买和事件信息，传到网关获取服务器信息
 CONFIG_IS_DEBUG = true 
 -- 是否记录日志文件 如果关闭lua错误将被发送到三方sdk
-CONFIG_LOG_DEBUG_FILE = true 
+CONFIG_LOG_DEBUG_FILE = false 
 
 GLOBAL_FTE = true
 GLOBAL_FTE_DEBUG = false

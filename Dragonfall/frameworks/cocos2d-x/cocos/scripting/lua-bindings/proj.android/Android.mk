@@ -15,6 +15,7 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../.. \
                     $(LOCAL_PATH)/../manual/platform/android \
                     $(LOCAL_PATH)/../manual/platform/android/jni
 
+
 LOCAL_EXPORT_LDLIBS := -lGLESv2 \
                        -llog \
                        -lz \
@@ -129,6 +130,7 @@ LOCAL_SRC_FILES += ../../../../external/lua/quick/lua_cocos2dx_quick_manual.cpp 
 #websocket extension by dannyhe
 ifeq ($(CC_USE_NETWORK_SOKET),1)
 LOCAL_SRC_FILES += ../../../../external/lua/LuaBitOp/bit.c
+LOCAL_SRC_FILES += ../../../../external/lua/LuaCrypt/lua_dhcrypt.c
 endif
 
 #extension
@@ -161,7 +163,8 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../../../external/lua/tolua \
                     $(LOCAL_PATH)/../../../../external/xxtea \
                     $(LOCAL_PATH)/../../../.. \
                     $(LOCAL_PATH)/../../../../external/lua \
-                    $(LOCAL_PATH)/../../../../external/lua/quick
+                    $(LOCAL_PATH)/../../../../external/lua/quick \
+                    $(LOCAL_PATH)/../../../../external/openssl/include/android
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/../../../../external/lua/tolua \
                            $(LOCAL_PATH)/../../../../external/lua/luajit/include \
