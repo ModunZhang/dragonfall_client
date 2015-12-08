@@ -370,7 +370,7 @@ function GameUILoginBeta:loadLocalResources()
     for i,v in ipairs(self.local_resources) do
         self:__loadToTextureCache(v,i == count)
     end
-
+    app:GetAudioManager():PreLoadAudios()
 end
 
 function GameUILoginBeta:__loadToTextureCache(config,shouldLogin)
