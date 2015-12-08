@@ -105,6 +105,15 @@ SpriteFrameCacheHelper::SpriteFrameCacheHelper()
 
 SpriteFrameCacheHelper::~SpriteFrameCacheHelper()
 {
+    //dannyhe #14113 Memory leak from CCSpriteFrameCacheHelper.cpp
+    auto i = _usingSpriteFrames.begin();
+    while (i != _usingSpriteFrames.end())
+    {
+         // removeSpriteFrameFromFile will make iterator i invalid
+         // so we increment the value of i first
+         auto j = i++;
+        removeSpriteFrameFromFile(j->first);
+    }
 }
 
 }

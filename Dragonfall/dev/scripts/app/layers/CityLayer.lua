@@ -389,15 +389,20 @@ function CityLayer:ReloadSceneBackground()
     end
     self.background = display.newNode():addTo(self, SCENE_ZORDER.SCENE_BACKGROUND)
     local suffix = ext.isLowMemoryDevice() and "png" or "jpg"
+    local s = suffix == "png" and (1316 / 1024) or 1
     local terrain = self:Terrain()
     local left_1 = string.format("left_background_1_%s.%s", terrain, suffix)
     local left_2 = string.format("left_background_2_%s.%s", terrain, suffix)
     local right_1 = string.format("right_background_1_%s.%s", terrain, suffix)
     local right_2 = string.format("right_background_2_%s.%s", terrain, suffix)
-    local left1 = display.newSprite(left_1):addTo(self.background):align(display.LEFT_BOTTOM)
-    local square = display.newSprite(left_2):addTo(self.background):align(display.LEFT_BOTTOM, 0, left1:getContentSize().height)
-    local right1 = display.newSprite(right_1):addTo(self.background):align(display.LEFT_BOTTOM, square:getContentSize().width, 0)
-    local right2 = display.newSprite(right_2):addTo(self.background):align(display.LEFT_BOTTOM, square:getContentSize().width, right1:getContentSize().height)
+    local left1 = display.newSprite(left_1):addTo(self.background):scale(s):align(display.LEFT_BOTTOM)
+    local square = display.newSprite(left_2):addTo(self.background):scale(s):align(display.LEFT_BOTTOM, 0, left1:getContentSize().height * s)
+    local right1 = display.newSprite(right_1):addTo(self.background):scale(s):align(display.LEFT_BOTTOM, square:getContentSize().width * s, 0)
+    local right2 = display.newSprite(right_2):addTo(self.background):scale(s):align(display.LEFT_BOTTOM, square:getContentSize().width * s, right1:getContentSize().height * s)
+    setAliasTexParametersForKey(plist_texture_data[left_1])
+    setAliasTexParametersForKey(plist_texture_data[left_2])
+    setAliasTexParametersForKey(plist_texture_data[right_1])
+    setAliasTexParametersForKey(plist_texture_data[right_2])
 
     function square:GetEntity()
         return {
@@ -409,13 +414,15 @@ function CityLayer:ReloadSceneBackground()
             end,
         }
     end
+    local background = self.background
     function square:Flash(time)
-        local sprite = display.newSprite("click_empty.png"):pos(1050, 440)
+        local sprite = display.newSprite("click_empty.png")
+        :addTo(background):pos(1050, 440 + 1224):opacity(0)
         sprite:setScaleX(1.8)
         sprite:setScaleY(1.3)
         sprite:rotation(-30)
         sprite:setSkewX(-23)
-        :addTo(self):opacity(0):runAction(transition.sequence({
+        sprite:runAction(transition.sequence({
             cc.FadeIn:create(time/2),
             cc.FadeOut:create(time/2),
             cc.RemoveSelf:create(),
@@ -790,15 +797,15 @@ function CityLayer:IteratorHelpedTroops(func)
     table.foreach(self.helpedByTroops, func)
 end
 function CityLayer:UpdateCitizen(city)
-    local count = 0
-    city:IteratorTilesByFunc(function(x, y, tile)
-        if tile:IsConnected() then
-            count = count + 2
-        end
-    end)
-    for i = #self.citizens + 1, count do
-        table.insert(self.citizens, self:CreateCitizen(city, 0, 0):addTo(self:GetCityNode()))
-    end
+    -- local count = 0
+    -- city:IteratorTilesByFunc(function(x, y, tile)
+    --     if tile:IsConnected() then
+    --         count = count + 2
+    --     end
+    -- end)
+    -- for i = #self.citizens + 1, count do
+    --     table.insert(self.citizens, self:CreateCitizen(city, 0, 0):addTo(self:GetCityNode()))
+    -- end
 end
 -- promise
 function CityLayer:FindBuildingBy(x, y)
