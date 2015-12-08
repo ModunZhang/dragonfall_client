@@ -41,6 +41,19 @@ end
 
 local pairs = pairs
 local ipairs = ipairs
+-- 
+local cache = cc.Director:getInstance():getTextureCache()
+function removeImageByKey(key)
+    key = plist_texture_data[key] or key
+    cache:removeTextureForKey(key)
+end
+function setAliasTexParametersForKey(key)
+    key = plist_texture_data[key] or key
+    local tex = cache:getTextureForKey(key)
+    if tex then
+        tex:setAliasTexParameters()
+    end
+end
 -- -- 设置图片格式
 for k,v in pairs(rgba4444) do
     display.setTexturePixelFormat(k, v)
