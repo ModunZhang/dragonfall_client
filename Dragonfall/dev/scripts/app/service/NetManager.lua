@@ -721,7 +721,7 @@ function NetManager:getLogicServerInfoPromise()
     elseif device.platform == "mac" then
         platform = 'ios'
     elseif device.platform == "android" then
-        platform = 'android'
+        platform = 'ios'
     elseif device.platform == "ios" then
         platform = 'ios'
     elseif device.platform == "winrt" then
