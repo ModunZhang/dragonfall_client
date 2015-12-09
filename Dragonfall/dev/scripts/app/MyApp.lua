@@ -199,7 +199,7 @@ function MyApp:restart(needDisconnect)
     self:GetAudioManager():StopAll()
     self:GetChatManager():Reset()
     device.hideActivityIndicator()
-    if device.platform == 'mac' then
+    if device.platform == 'mac' or device.platform == 'windows' then
         PlayerProtocol:getInstance():relaunch()
     else
         ext.restart()
