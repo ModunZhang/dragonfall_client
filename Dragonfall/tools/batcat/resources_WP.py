@@ -8,7 +8,7 @@ import sys
 
 Platform = "WP"
 DXT_FOMAT = "/DXT3"  # 定义dds纹理的格式
-ZIP_TEXTURE = False #是否使用工具第二次压缩纹理 游戏逻辑部分必须开启宏CC_USE_ETC1_ZLIB
+ZIP_TEXTURE = True #是否使用工具第二次压缩纹理 游戏逻辑部分必须开启宏CC_USE_ETC1_ZLIB
 USE_DXT_COMPRESS = True  # use DXT format texture
 NEED_ENCRYPT_RES = ""  # 纹理是否进行加密
 RES_COMPILE_TOOL = getResourceTool()
@@ -54,6 +54,8 @@ def CompileResources(in_file_path, out_dir_path):
     code, ret = executeCommand(comand, QUIET_MODE)
     return code == 0
 
+def GetExincludeFiles():
+    return ['jpg_png1.png']
 
 def exportImagesRes(image_dir_path):
     outdir = os.path.join(RES_DEST_DIR, os.path.basename(
@@ -106,8 +108,11 @@ def exportImagesRes(image_dir_path):
                                     temp_file = os.path.join(
                                         TEMP_RES_DIR, os.path.splitext(image_file)[0] + '_dds.png')
                                 if DXTFormatResources(current_sourceFile, temp_file):
-                                    if ZIP_TEXTURE and PackImage(temp_file, temp_final_file):
-                                        current_sourceFile = temp_final_file
+                                    if ZIP_TEXTURE and image_file not in GetExincludeFiles():
+                                        if PackImage(temp_file, temp_final_file):
+                                            current_sourceFile = temp_final_file
+                                        else:
+                                            Logging.error("压缩失败")
                                     else:
                                         current_sourceFile = temp_file
                             if NEED_ENCRYPT_RES:
