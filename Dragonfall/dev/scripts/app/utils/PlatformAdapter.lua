@@ -260,6 +260,51 @@ function PlatformAdapter:mac()
     end
 end
 
+function PlatformAdapter:windows()
+    ccui.UITextView = {}
+    setmetatable(ccui.UITextView,{
+        __index= function( ... )
+            assert(false,"\n--- ccui.UITextView not support for Player!\n")
+        end
+    })
+    --search path
+    --player 特殊处理
+    local fileutils = cc.FileUtils:getInstance()
+    fileutils:addSearchPath("dev/res/")
+    fileutils:addSearchPath("dev/res/fonts/")
+    fileutils:addSearchPath("dev/res/images/")
+    fileutils:addSearchPath("dev/res/fonts/")
+    fileutils:addSearchPath("dev/res/images/rgba444_single/")
+    fileutils:addSearchPath("dev/res/images/_Compressed_mac/")
+    fileutils:addSearchPath("dev/res/images/_CanCompress/")
+    ext.getDeviceToken = function ()end
+    ext.market_sdk = {}
+    setmetatable(ext.market_sdk,{
+        __index= function(t,key)
+            return function ( ... )
+                print("\nfunction: ext.market_sdk." .. key .. "\n","args: ",...)
+            end
+        end
+    })
+    ext.getAppVersion = function()
+        return "Debug Version"
+    end
+    ext.getDeviceLanguage = function()
+        return "zh-Hans"
+    end
+    ext.getInternetConnectionStatus = function()
+        return nil
+    end
+    ext.getBatteryLevel = function()
+        return 1
+    end
+
+    DEBUG_GET_ANIMATION_PATH = function(filePath)
+        filePath = string.gsub(filePath,".pvr.ccz",".png")
+        filePath = string.gsub(filePath,"animations/","animations_mac/")
+        return filePath
+    end
+end
 
 function PlatformAdapter:common()
     --打开文件搜索路径日志

@@ -277,7 +277,7 @@ function GameUILoginBeta:createVerLabel()
 end
 
 function GameUILoginBeta:showVersion()
-    if CONFIG_IS_NOT_UPDATE or device.platform == 'mac' then
+    if CONFIG_IS_NOT_UPDATE or device.platform == 'mac' or device.platform == 'windows' then
         local __debugVer = require("debug_version")
         self.verLabel:setString("测试"..string.format(_("版本%s(%s)"), ext.getAppVersion(), __debugVer))
         -- app.client_tag = __debugVer
@@ -330,7 +330,7 @@ function GameUILoginBeta:GetServerInfo(callback)
     end)
 end
 function GameUILoginBeta:LoadServerInfo()
-    if CONFIG_IS_NOT_UPDATE or device.platform == 'mac' then
+    if CONFIG_IS_NOT_UPDATE or device.platform == 'mac' or device.platform == 'windows' then
         if not app.client_tag then
             NetManager:getUpdateFileList(function(success, msg)
                 if not success then
