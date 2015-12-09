@@ -388,7 +388,7 @@ function CityLayer:ReloadSceneBackground()
         self.background:removeFromParent()
     end
     self.background = display.newNode():addTo(self, SCENE_ZORDER.SCENE_BACKGROUND)
-    local suffix = ext.isLowMemoryDevice() and "png" or "jpg"
+    local suffix = device.platform == "winrt" and "png" or "jpg"
     local s = suffix == "png" and (1316 / 1024) or 1
     local terrain = self:Terrain()
     local left_1 = string.format("left_background_1_%s.%s", terrain, suffix)
@@ -399,10 +399,10 @@ function CityLayer:ReloadSceneBackground()
     local square = display.newSprite(left_2):addTo(self.background):scale(s):align(display.LEFT_BOTTOM, 0, left1:getContentSize().height * s)
     local right1 = display.newSprite(right_1):addTo(self.background):scale(s):align(display.LEFT_BOTTOM, square:getContentSize().width * s, 0)
     local right2 = display.newSprite(right_2):addTo(self.background):scale(s):align(display.LEFT_BOTTOM, square:getContentSize().width * s, right1:getContentSize().height * s)
-    setAliasTexParametersForKey(plist_texture_data[left_1])
-    setAliasTexParametersForKey(plist_texture_data[left_2])
-    setAliasTexParametersForKey(plist_texture_data[right_1])
-    setAliasTexParametersForKey(plist_texture_data[right_2])
+    setAliasTexParametersForKey(left_1)
+    setAliasTexParametersForKey(left_2)
+    setAliasTexParametersForKey(right_1)
+    setAliasTexParametersForKey(right_2)
 
     function square:GetEntity()
         return {
@@ -802,15 +802,16 @@ function CityLayer:IteratorHelpedTroops(func)
     table.foreach(self.helpedByTroops, func)
 end
 function CityLayer:UpdateCitizen(city)
-    -- local count = 0
-    -- city:IteratorTilesByFunc(function(x, y, tile)
-    --     if tile:IsConnected() then
-    --         count = count + 2
-    --     end
-    -- end)
-    -- for i = #self.citizens + 1, count do
-    --     table.insert(self.citizens, self:CreateCitizen(city, 0, 0):addTo(self:GetCityNode()))
-    -- end
+    local count = 0
+    city:IteratorTilesByFunc(function(x, y, tile)
+        if tile:IsConnected() then
+            count = count + 2
+        end
+    end)
+    count = device.platform == "winrt" and count * 0.2 or count
+    for i = #self.citizens + 1, count do
+        table.insert(self.citizens, self:CreateCitizen(city, 0, 0):addTo(self:GetCityNode()))
+    end
 end
 -- promise
 function CityLayer:FindBuildingBy(x, y)
