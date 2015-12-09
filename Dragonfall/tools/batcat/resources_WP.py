@@ -8,7 +8,7 @@ import sys
 
 Platform = "WP"
 DXT_FOMAT = "/DXT3"  # 定义dds纹理的格式
-ZIP_TEXTURE = True #是否使用工具第二次压缩纹理 游戏逻辑部分必须开启宏CC_USE_ETC1_ZLIB
+ZIP_TEXTURE = False #是否使用工具第二次压缩纹理 游戏逻辑部分必须开启宏CC_USE_ETC1_ZLIB
 USE_DXT_COMPRESS = True  # use DXT format texture
 NEED_ENCRYPT_RES = ""  # 纹理是否进行加密
 RES_COMPILE_TOOL = getResourceTool()

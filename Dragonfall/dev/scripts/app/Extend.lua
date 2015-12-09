@@ -15,12 +15,45 @@ local rgba4444 = import(".rgba4444")
 local jpg_rgb888 = import(".jpg_rgb888")
 local animation = import(".animation")
 
+local auto_cleanup = {
+    ["jpg_png0.png"] = 1,
+    ["jpg_png1.png"] = 1,
+    ["jpg_png2.png"] = 1,
+    ["jpg_png3.png"] = 1,
+    ["jpg_png4.png"] = 1,
+    ["jpg_png5.png"] = 1,
+    ["jpg_png6.png"] = 1,
+    ["jpg_png7.png"] = 1,
+    ["jpg_png8.png"] = 1,
+    ["jpg_png9.png"] = 1,
+    ["jpg_png10.png"] = 1,
+    ["jpg_png11.png"] = 1,
+    ["jpg_png12.png"] = 1,
+    ["start_game_292x28.png"] = 1,
+}
+for k,v in pairs(jpg_rgb888) do
+    auto_cleanup[k] = true
+end
+
 math.round = function(n)
     return math.ceil(n - 0.5)
 end
 
 local pairs = pairs
 local ipairs = ipairs
+-- 
+local cache = cc.Director:getInstance():getTextureCache()
+function removeImageByKey(key)
+    key = plist_texture_data[key] or key
+    cache:removeTextureForKey(key)
+end
+function setAliasTexParametersForKey(key)
+    key = plist_texture_data[key] or key
+    local tex = cache:getTextureForKey(key)
+    if tex then
+        tex:setAliasTexParameters()
+    end
+end
 -- -- 设置图片格式
 for k,v in pairs(rgba4444) do
     display.setTexturePixelFormat(k, v)
@@ -380,7 +413,7 @@ local newScene = display.newScene
 function display.newScene(name)
     local WAI_TAG = 1234
     local scene = newScene(name)
-    for k,_ in pairs(jpg_rgb888) do
+    for k,_ in pairs(auto_cleanup) do
         scene:markAutoCleanupImage(k)
     end
     function scene:WaitForNet(delay)

@@ -161,6 +161,9 @@ function PlatformAdapter:mac()
     ext.getBatteryLevel = function()
         return 1
     end
+    ext.isLowMemoryDevice = function()
+        return false
+    end
 
     DEBUG_GET_ANIMATION_PATH = function(filePath)
         filePath = string.gsub(filePath,".pvr.ccz",".png")

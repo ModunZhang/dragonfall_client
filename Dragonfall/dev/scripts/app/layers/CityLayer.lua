@@ -388,17 +388,21 @@ function CityLayer:ReloadSceneBackground()
         self.background:removeFromParent()
     end
     self.background = display.newNode():addTo(self, SCENE_ZORDER.SCENE_BACKGROUND)
+    local suffix = device.platform == "winrt" and "png" or "jpg"
+    local s = suffix == "png" and (1316 / 1024) or 1
     local terrain = self:Terrain()
-    local left_1 = string.format("left_background_1_%s.jpg", terrain)
-    local left_2 = string.format("left_background_2_%s.jpg", terrain)
-    local right_1 = string.format("right_background_1_%s.jpg", terrain)
-    local right_2 = string.format("right_background_2_%s.jpg", terrain)
-    local left1 = display.newSprite(left_1):addTo(self.background):align(display.LEFT_BOTTOM)
-    -- local left2 = display.newSprite(left_2):addTo(self.background):align(display.LEFT_BOTTOM, 0, left1:getContentSize().height)
-    local square = display.newSprite(left_2, nil, nil, {class=cc.FilteredSpriteWithOne}):addTo(self.background)
-        :align(display.LEFT_BOTTOM, 0, left1:getContentSize().height)
-    local right1 = display.newSprite(right_1):addTo(self.background):align(display.LEFT_BOTTOM, square:getContentSize().width, 0)
-    local right2 = display.newSprite(right_2):addTo(self.background):align(display.LEFT_BOTTOM, square:getContentSize().width, right1:getContentSize().height)
+    local left_1 = string.format("left_background_1_%s.%s", terrain, suffix)
+    local left_2 = string.format("left_background_2_%s.%s", terrain, suffix)
+    local right_1 = string.format("right_background_1_%s.%s", terrain, suffix)
+    local right_2 = string.format("right_background_2_%s.%s", terrain, suffix)
+    local left1 = display.newSprite(left_1):addTo(self.background):scale(s):align(display.LEFT_BOTTOM)
+    local square = display.newSprite(left_2):addTo(self.background):scale(s):align(display.LEFT_BOTTOM, 0, left1:getContentSize().height * s)
+    local right1 = display.newSprite(right_1):addTo(self.background):scale(s):align(display.LEFT_BOTTOM, square:getContentSize().width * s, 0)
+    local right2 = display.newSprite(right_2):addTo(self.background):scale(s):align(display.LEFT_BOTTOM, square:getContentSize().width * s, right1:getContentSize().height * s)
+    setAliasTexParametersForKey(left_1)
+    setAliasTexParametersForKey(left_2)
+    setAliasTexParametersForKey(right_1)
+    setAliasTexParametersForKey(right_2)
 
     function square:GetEntity()
         return {
@@ -410,42 +414,30 @@ function CityLayer:ReloadSceneBackground()
             end,
         }
     end
-    function square:BeginFlash(time)
-        local start = 0
-        self:setFilter(filter.newFilter("CUSTOM", json.encode({
-            frag = "shaders/flashAt.fs",
-            shaderName = "flashAt",
-            startTime = start,
-            curTime = start,
-            lastTime = time,
-            rect = {0.815,0.543,0.21,0.26},
-            srm = {1.0, 1.54, -45, 0.4},
-        })))
-        self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
-            start = start + dt
-            if start > time then
-                self:ResetFlashStatus()
-            else
-                self:getFilter():getGLProgramState():setUniformFloat("curTime", start)
-            end
-        end)
-        self:scheduleUpdate()
-    end
+    local background = self.background
     function square:Flash(time)
-        self:ResetFlashStatus()
-        self:BeginFlash(time)
-    end
-    function square:ResetFlashStatus()
-        self:unscheduleUpdate()
-        self:removeNodeEventListenersByEvent(cc.NODE_ENTER_FRAME_EVENT)
-        self:clearFilter()
+        -- local sprite = display.newSprite("click_empty.png")
+        -- :addTo(background):opacity(0)
+        -- if device.platform == "ios" then
+        --     sprite:pos(1050, 440 + 1224)
+        -- else
+        --     sprite:pos(1050 + 150, 440 + 1224 - 150)
+        -- end
+        -- sprite:setScaleX(1.8)
+        -- sprite:setScaleY(1.3)
+        -- sprite:rotation(-30)
+        -- sprite:setSkewX(-23)
+        -- sprite:runAction(transition.sequence({
+        --     cc.FadeIn:create(time/2),
+        --     cc.FadeOut:create(time/2),
+        --     cc.RemoveSelf:create(),
+        -- }))
     end
     self.square = square
 end
 function CityLayer:InitWithCity(city)
     city:AddListenOnType(self, city.LISTEN_TYPE.UNLOCK_TILE)
     city:AddListenOnType(self, city.LISTEN_TYPE.LOCK_TILE)
-    -- city:AddListenOnType(self, city.LISTEN_TYPE.UNLOCK_ROUND)
     city:AddListenOnType(self, city.LISTEN_TYPE.OCCUPY_RUINS)
     city:AddListenOnType(self, city.LISTEN_TYPE.CREATE_DECORATOR)
     city:AddListenOnType(self, city.LISTEN_TYPE.DESTROY_DECORATOR)
@@ -816,6 +808,7 @@ function CityLayer:UpdateCitizen(city)
             count = count + 2
         end
     end)
+    count = device.platform == "winrt" and count * 0.2 or count
     for i = #self.citizens + 1, count do
         table.insert(self.citizens, self:CreateCitizen(city, 0, 0):addTo(self:GetCityNode()))
     end
