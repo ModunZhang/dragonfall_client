@@ -8,7 +8,7 @@ import sys
 
 Platform = "WP"
 DXT_FOMAT = "/DXT3"  # 定义dds纹理的格式
-ZIP_TEXTURE = False #是否使用工具第二次压缩纹理 游戏逻辑部分必须开启宏CC_USE_ETC1_ZLIB
+ZIP_TEXTURE = True #是否使用工具第二次压缩纹理 游戏逻辑部分必须开启宏CC_USE_ETC1_ZLIB
 USE_DXT_COMPRESS = True  # use DXT format texture
 NEED_ENCRYPT_RES = ""  # 纹理是否进行加密
 RES_COMPILE_TOOL = getResourceTool()
@@ -95,7 +95,7 @@ def exportImagesRes(image_dir_path):
             elif dir_name == '_CanCompress' or dir_name == '_Compressed_wp':
                 for image_file in os.listdir(sourceFile):
                     current_sourceFile = os.path.join(sourceFile, image_file)
-                    if os.path.isfile(current_sourceFile):
+                    if os.path.isfile(current_sourceFile) and  image_file != "jpg_png1.png":
                         fileExt = current_sourceFile.split('.')[-1]
                         if fileExt not in getTempFileExtensions() and fileExt != 'plist':
                             if USE_DXT_COMPRESS:
