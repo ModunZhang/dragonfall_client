@@ -296,7 +296,7 @@ end
 
 function GameUtils:getPlatformForServer()
     local platform = device.platform
-    if platform == 'winrt' or platform == 'wp8' then
+    if platform == 'winrt' or platform == 'wp8' or platform == 'windows' then
         platform = 'wp'
     end
     if platform == 'android' then

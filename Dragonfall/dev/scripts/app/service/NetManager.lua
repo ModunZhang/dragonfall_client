@@ -716,17 +716,17 @@ end
 function NetManager:getLogicServerInfoPromise()
     local device_id = device.getOpenUDID()
     local platform = ''
-    if device.platform == "windows" then
+    if device.platform == 'windows' then
         platform = 'wp'
-    elseif device.platform == "mac" then
+    elseif device.platform == 'mac' then
         platform = 'ios'
     elseif device.platform == "android" then
         platform = 'ios'
     elseif device.platform == "ios" then
         platform = 'ios'
-    elseif device.platform == "winrt" then
+    elseif device.platform == 'winrt' then
         platform = 'wp'
-    elseif device.platform == "wp8" then
+    elseif device.platform == 'wp8' then
         platform = 'wp'
     end
     local device_tag = app.client_tag

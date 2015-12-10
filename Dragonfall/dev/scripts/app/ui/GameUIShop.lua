@@ -60,7 +60,7 @@ function GameUIShop:onEnter()
             if device.platform == 'ios' then
                 ext.clearOpenUdid()
                 app:restart()
-            elseif device.platform == 'mac' then
+            elseif device.platform == 'mac' or device.platform == 'windows' then
                  device.showAlert("提示","改代码!",{_("确定")})
             end
         end)
