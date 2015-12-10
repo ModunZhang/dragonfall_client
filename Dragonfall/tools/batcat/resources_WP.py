@@ -97,7 +97,7 @@ def exportImagesRes(image_dir_path):
             elif dir_name == '_CanCompress' or dir_name == '_Compressed_wp':
                 for image_file in os.listdir(sourceFile):
                     current_sourceFile = os.path.join(sourceFile, image_file)
-                    if os.path.isfile(current_sourceFile):
+                    if os.path.isfile(current_sourceFile) and  image_file != "jpg_png1.png":
                         fileExt = current_sourceFile.split('.')[-1]
                         if fileExt not in getTempFileExtensions() and fileExt != 'plist':
                             if USE_DXT_COMPRESS:
