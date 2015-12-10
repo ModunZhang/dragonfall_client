@@ -104,7 +104,7 @@ def exportImagesRes(image_dir_path):
                                 temp_file = os.path.join(
                                     TEMP_RES_DIR, image_file)
                                 temp_final_file = temp_file
-                                if ZIP_TEXTURE:
+                                if ZIP_TEXTURE and image_file not in GetExincludeFiles():
                                     temp_file = os.path.join(
                                         TEMP_RES_DIR, os.path.splitext(image_file)[0] + '_dds.png')
                                 if DXTFormatResources(current_sourceFile, temp_file):
