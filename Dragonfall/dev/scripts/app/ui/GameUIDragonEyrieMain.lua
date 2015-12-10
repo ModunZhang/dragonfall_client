@@ -53,7 +53,7 @@ function GameUIDragonEyrieMain:OnDragonHatched(dragon)
     local eyrie = self.draongContentNode:GetItemByIndex(localIndex)
     eyrie.dragon_image:hide()
     eyrie.armature:show()
-    eyrie.armature:PlayAnimation("idle")
+    eyrie.armature:Resume()
     self:RefreshUI()
 end
 
@@ -586,16 +586,16 @@ function GameUIDragonEyrieMain:CreateDragonScrollNode()
     for i,v in ipairs(contenNode:GetItems()) do
         local dragon = self.dragon_manager:GetDragonByIndex(i)
         local dragon_image = display.newSprite(string.format("%s_egg_176x192.png",dragon:Type()))
-            :align(display.CENTER, 290,355)
+            :align(display.CENTER, 300,355)
             :addTo(v)
         v.dragon_image = dragon_image
         dragon_image.resolution = {dragon_image:getContentSize().width,dragon_image:getContentSize().height}
         local dragon_armature = DragonSprite.new(display.getRunningScene():GetSceneLayer(),dragon:Type())
             :addTo(v)
-            :pos(240,440)
+            :pos(300,350)
             :hide():scale(0.9)
         v.armature = dragon_armature
-        dragon_armature:GetSprite():getAnimation():stop()
+        v.armature:Pause()
         if dragon:Ishated() then
             v.armature:show()
             v.dragon_image:hide()
@@ -614,7 +614,7 @@ function GameUIDragonEyrieMain:OnEnterIndexEvent(index)
         end
         eyrie.dragon_image:hide()
         eyrie.armature:show()
-        eyrie.armature:PlayAnimation("idle")
+        eyrie.armature:Resume()
     end
 end
 
@@ -632,7 +632,7 @@ function GameUIDragonEyrieMain:OnLeaveIndexEvent(index)
     if self.draongContentNode then
         local eyrie = self.draongContentNode:GetItemByIndex(index)
         if not self:GetCurrentDragon():Ishated() then return end
-        eyrie.armature:GetSprite():getAnimation():stop()
+        eyrie.armature:Pause()
         -- eyrie.armature:hide()
         -- eyrie.dragon_image:show()
     end
