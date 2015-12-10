@@ -1283,14 +1283,14 @@ local soldier_animap = {
     heihua_nuche_3 = {cc.p(0.5, 0.45), true, 0.7},
 }
 local dragon_fly_45_ani = {
-    red_long = {cc.p(0.52, 0.47), false, 1},
-    blue_long = {cc.p(0.52, 0.47), false, 1},
-    green_long = {cc.p(0.52, 0.47), false, 1},
+    red_long_fly = {cc.p(0.65, 0.4), false, 1},
+    blue_long_fly = {cc.p(0.65, 0.4), false, 1},
+    green_long_fly = {cc.p(0.65, 0.4), false, 1},
 }
 local dragon_fly_neg_45_ani = {
-    red_long = {cc.p(0.53, 0.49), false, 1},
-    blue_long = {cc.p(0.53, 0.49), false, 1},
-    green_long = {cc.p(0.53, 0.49), false, 1},
+    red_long_fly = {cc.p(0.65, 0.45), false, 1},
+    blue_long_fly = {cc.p(0.65, 0.45), false, 1},
+    green_long_fly = {cc.p(0.65, 0.45), false, 1},
 }
 local soldier_move_45_ani = {
     -- 普通兵种
@@ -1432,10 +1432,15 @@ local dragon_dir_map = {
     {"flying_45", 1}, -- x+,y-
     {"flying_45", 1}, -- y-
 }
+local dragon_ani_map = {
+    redDragon   = "red_long_fly",
+    blueDragon  = "blue_long_fly",
+    greenDragon = "green_long_fly",
+}
 function UIKit:CreateDragonByDegree(degree, s, dragonType)
     local node = display.newNode():scale(s or 1)
     local ani_name, scalex = unpack(dragon_dir_map[GetDirIndexByDegree(degree)])
-    local dragon_ani = UILib.dragon_animations[dragonType or "redDragon"][1]
+    local dragon_ani = dragon_ani_map[dragonType or "redDragon"]
     if ani_name == "flying_45" then
         UIKit:CreateDragonFly45Ani(dragon_ani):addTo(node):setScaleX(scalex)
     elseif ani_name == "flying_-45" then
