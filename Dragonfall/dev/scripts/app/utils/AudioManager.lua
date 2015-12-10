@@ -105,17 +105,11 @@ function AudioManager:ctor(game_default)
 	self.game_default = game_default
 	self.is_bg_auido_on = self:GetGameDefault():getBasicInfoValueForKey(BACKGROUND_MUSIC_KEY,true)
 	self.is_effect_audio_on = self:GetGameDefault():getBasicInfoValueForKey(EFFECT_MUSIC_KEY,true)
-	self:PreLoadAudio()
 	self:SetEffectsVolume(0.4)
 end
 
 function AudioManager:GetGameDefault()
 	return self.game_default
-end
-
---预加载音乐到内存(android)
-function AudioManager:PreLoadAudio()
-
 end
 
 function AudioManager:PlayBgMusicWithFileKey(file_key,isLoop)
@@ -374,6 +368,14 @@ function AudioManager:PlayGameMusicOnSceneEnter(scene_name,loop)
 	end
 end
 
+function AudioManager:PreLoadAudios()
+	if device.platform ~= 'android' then return end
+	for __,v in pairs(building_sfx_map) do
+		for __,filename in ipairs(v) do
+			audio.preloadSound("audios/" .. filename)
+		end
+	end
+end
 
 function AudioManager:OnBackgroundMusicCompletion()
 	if self.last_music_loop then return end -- 如果上次是循环的背景音乐 忽略

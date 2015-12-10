@@ -32,12 +32,10 @@
 #include "CCLuaValue.h"
 #include "CCLuaEngine.h"
 #include "LuaScriptHandlerMgr.h"
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 extern "C"
 {
 #include "LuaBitOp/bit.c"
 }
-#endif
 #include "LuaCrypt/lua_dhcrypt.c"
 using namespace cocos2d;
 
@@ -455,9 +453,7 @@ TOLUA_API int register_web_socket_manual(lua_State* tolua_S)
 {
     if (nullptr == tolua_S)
         return 0 ;
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
     luaopen_bit(tolua_S);
-#endif
 	luaopen_dhcrypt(tolua_S);
     
     lua_pushstring(tolua_S,"cc.WebSocket");

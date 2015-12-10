@@ -299,6 +299,9 @@ function GameUtils:getPlatformForServer()
     if platform == 'winrt' or platform == 'wp8' or platform == 'windows' then
         platform = 'wp'
     end
+    if platform == 'android' then
+        platform = 'ios'
+    end
     return platform
 end
 
