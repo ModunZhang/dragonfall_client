@@ -767,26 +767,26 @@ function CityLayer:RefreshSoldiers()
     end
     local soldiers = {}
     for i, v in ipairs({
-        {x = 6, y = 18, soldier_type = "skeletonWarrior", scale = 1},
-        {x = 4, y = 18, soldier_type = "skeletonArcher", scale = 1},
-        {x = 8, y = 18, soldier_type = "deathKnight", scale = 1},
-        {x = 2, y = 18, soldier_type = "meatWagon", scale = 1},
+        {x = 6, y = 18, soldier_type = "skeletonWarrior"},
+        {x = 4, y = 18, soldier_type = "skeletonArcher"},
+        {x = 8, y = 18, soldier_type = "deathKnight"},
+        {x = 2, y = 18, soldier_type = "meatWagon"},
 
-        {x = 8, y = 15.5, soldier_type = "lancer", scale = 1},
-        {x = 6, y = 15.5, soldier_type = "swordsman", scale = 1},
-        {x = 4, y = 15.5, soldier_type = "ranger", scale = 1},
-        {x = 2, y = 15.5, soldier_type = "catapult", scale = 0.8},
+        {x = 8, y = 15.5, soldier_type = "lancer"},
+        {x = 6, y = 15.5, soldier_type = "swordsman"},
+        {x = 4, y = 15.5, soldier_type = "ranger"},
+        {x = 2, y = 15.5, soldier_type = "catapult"},
 
-        {x = 8, y = 13, soldier_type = "horseArcher", scale = 1},
-        {x = 6, y = 13, soldier_type = "sentinel", scale = 1},
-        {x = 4, y = 13, soldier_type = "crossbowman", scale = 1},
-        {x = 2, y = 13, soldier_type = "ballista", scale = 0.8},
+        {x = 8, y = 13, soldier_type = "horseArcher"},
+        {x = 6, y = 13, soldier_type = "sentinel"},
+        {x = 4, y = 13, soldier_type = "crossbowman"},
+        {x = 2, y = 13, soldier_type = "ballista"},
     }) do
         local star = User:SoldierStarByName(v.soldier_type)
         assert(star < 4)
         local soldier = self:CreateSoldier(v.soldier_type, star, v.x, v.y):addTo(self:GetCityNode())
         local x, y = soldier:getPosition()
-        soldier:pos(x, y + 25):scale(v.scale)
+        soldier:pos(x, y + 25)
         table.insert(soldiers, soldier)
     end
     self.soldiers = soldiers
