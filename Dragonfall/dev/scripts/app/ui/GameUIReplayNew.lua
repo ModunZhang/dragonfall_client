@@ -1,4 +1,3 @@
-local UILib = import("..ui.UILib")
 local Localize = import("..utils.Localize")
 local window = import("..utils.window")
 local promise = import("..utils.promise")
@@ -6,7 +5,6 @@ local cocos_promise = import("..utils.cocos_promise")
 local BattleObject = import(".BattleObject")
 local Wall = import(".Wall")
 local Corps = import(".Corps")
-local UILib = import(".UILib")
 local WidgetSoldier = import("..widget.WidgetSoldier")
 local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local UIListView = import("..ui.UIListView")
@@ -214,13 +212,7 @@ local function NewWall(replay_ui)
 end
 
 
-local dragon_ani_map = {
-    redDragon   = {   "red_long",  90, 0, 0.6, 60},
-    blueDragon  = {  "blue_long", 100, 0, 0.6, 60},
-    greenDragon = { "green_long", 100, 0, 0.6, 60},
-    blackDragon = {    "heilong", 100,60, 0.8, 50},
-}
-local function newDragon(replay_ui, dragon_type, level)
+local function newDragon(replay_ui, dragon_type, level, is_left)
     local dragon_type = dragon_type or "redDragon"
     local node = display.newNode()
 
@@ -262,22 +254,18 @@ local function newDragon(replay_ui, dragon_type, level)
         shadow = true,
     }):align(display.CENTER, 65, -55):addTo(node,1):hide()
 
-    local ani_name, left_x, right_x, scale, Y = unpack(dragon_ani_map[dragon_type])
-    local dragon = ccs.Armature:create(ani_name):scale(0.6)
-        :addTo(node):align(display.CENTER, left_x, Y)
-    dragon:getAnimation():play("idle", -1, -1)
-    dragon:setScale(scale, scale)
-    function node:TurnLeft()
-        self.name:pos(15, 180)
-        self.level:pos(150, 180)
-        self.hp:pos(45, 147)
-        self.progress:setScaleX(-1)
-        self.progress:pos(170, 147)
-        self.result:setPositionX(-35)
-        self.buff:setPositionX(35)
-        dragon:setPositionX(right_x)
-        dragon:setScale(- scale, scale)
-        return self
+
+    UIKit:CreateDragonBreahAni(dragon_type, is_left)
+    :addTo(node):align(display.CENTER, is_left and 0 or 90, 0):scale(0.6)
+
+    if is_left then
+        node.name:pos(15, 180)
+        node.level:pos(150, 180)
+        node.hp:pos(45, 147)
+        node.progress:setScaleX(-1)
+        node.progress:pos(170, 147)
+        node.result:setPositionX(-35)
+        node.buff:setPositionX(35)
     end
     function node:SetHp(cur, total)
         self.hp:show():setString(string.format("%d/%d", math.floor(cur), math.floor(total)))
@@ -330,7 +318,7 @@ local function newDragonBattle(replay_ui, dragonAttack, dragonAttackLevel, drago
     left_bone:changeDisplayWithIndex(0, true)
 
     local right_bone = dragon_battle:getBone("Layer5")
-    local right_dragon = newDragon(replay_ui, dragonDefence.type, dragonDefenceLevel):TurnLeft():addTo(right_bone):pos(238, -82)
+    local right_dragon = newDragon(replay_ui, dragonDefence.type, dragonDefenceLevel, true):addTo(right_bone):pos(238, -82)
     right_bone:addDisplay(right_dragon, 0)
     right_bone:changeDisplayWithIndex(0, true)
     function dragon_battle:GetAttackDragon()
@@ -843,10 +831,6 @@ function GameUIReplayNew:ctor(report, callback, skipcallback)
 
     local manager = ccs.ArmatureDataManager:getInstance()
     manager:addArmatureFileInfo(DEBUG_GET_ANIMATION_PATH("animations/paizi.ExportJson"))
-    UILib.loadPveAnimation()
-    UILib.loadDragonAnimation()
-    UILib.loadSolidersAnimation()
-    UILib.loadUIAnimation()
     self.timer_node = display.newNode():addTo(self)
     self.round = 1
 end

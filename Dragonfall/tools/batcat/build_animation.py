@@ -27,7 +27,7 @@ if __name__=="__main__":
 			destfile = arg
 
 	D = {}
-	for root, dirs, files in os.walk('../../dev/res/animations/'):
+	for root, dirs, files in os.walk('../../dev/res/animations_mac/'):
 		for fileName in files:
 			sufix = os.path.splitext(fileName)[1][1:]
 			if sufix == "ExportJson":
