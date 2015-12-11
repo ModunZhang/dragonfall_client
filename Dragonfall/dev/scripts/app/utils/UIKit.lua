@@ -1293,86 +1293,64 @@ local dragon_fly_neg_45_ani = {
     green_long_fly = {cc.p(0.65, 0.45), false, 1},
 }
 local soldier_move_45_ani = {
-    -- 普通兵种
-    --
-    bubing_1 = {cc.p(0.54, 0.38), false, 1},
-    bubing_2 = {cc.p(0.57, 0.48), false, 1},
-    bubing_3 = {cc.p(0.54, 0.54), false, 1},
-    --
-    gongjianshou_1 = {cc.p(0.5, 0.31), false, 1},
-    gongjianshou_2 = {cc.p(0.5, 0.35), false, 1},
-    gongjianshou_3 = {cc.p(0.49, 0.35), false, 1},
-    --
-    qibing_1 = {cc.p(0.48, 0.45), false, 1},
-    qibing_2 = {cc.p(0.48, 0.45), false, 1},
-    qibing_3 = {cc.p(0.48, 0.48), false, 1},
-    --
-    toushiche = {cc.p(0.39, 0.4), false, 1},
-    toushiche_2 = {cc.p(0.39, 0.44), false, 1},
-    toushiche_3 = {cc.p(0.37, 0.44), false, 1},
-    --
-    shaobing_1 = {cc.p(0.47, 0.47), false, 1},
-    shaobing_2 = {cc.p(0.47, 0.47), false, 1},
-    shaobing_3 = {cc.p(0.5, 0.46), false, 1},
-    --
-    nugongshou_1 = {cc.p(0.47, 0.4), false, 1},
-    nugongshou_2 = {cc.p(0.47, 0.38), false, 1},
-    nugongshou_3 = {cc.p(0.32, 0.4), false, 1},
-    --
-    youqibing_1 = {cc.p(0.48, 0.38), false, 1},
-    youqibing_2 = {cc.p(0.48, 0.38), false, 1},
-    youqibing_3 = {cc.p(0.48, 0.38), false, 1},
-    --
-    nuche_1 = {cc.p(0.5, 0.45), false, 1},
-    nuche_2 = {cc.p(0.5, 0.45), false, 1},
-    nuche_3 = {cc.p(0.49, 0.45), false, 1},
-
-    -- 特殊兵种
-    kulouyongshi = {cc.p(0.47, 0.45), false, 1},
-    kulousheshou = {cc.p(0.24, 0.46), false, 1},
-    siwangqishi = {cc.p(0.5, 0.45), false, 1},
-    jiaorouche = {cc.p(0.338, 0.48), false, 1},
+    bubing_1_45 = {cc.p(0.4, 0.38), false, 1},
+    bubing_2_45 = {cc.p(0.39, 0.38), false, 1},
+    bubing_3_45 = {cc.p(0.4, 0.45), false, 1},
+    gongjianshou_1_45 = {cc.p(0.5, 0.25), false, 1},
+    gongjianshou_2_45 = {cc.p(0.5, 0.35), false, 1},
+    gongjianshou_3_45 = {cc.p(0.49, 0.35), false, 1},
+    qibing_1_45 = {cc.p(0.48, 0.45), false, 1},
+    qibing_2_45 = {cc.p(0.48, 0.45), false, 1},
+    qibing_3_45 = {cc.p(0.48, 0.48), false, 1},
+    toushiche_45 = {cc.p(0.39, 0.4), false, 1},
+    toushiche_2_45 = {cc.p(0.39, 0.44), false, 1},
+    toushiche_3_45 = {cc.p(0.37, 0.44), false, 1},
+    shaobing_1_45 = {cc.p(0.47, 0.47), false, 1},
+    shaobing_2_45 = {cc.p(0.47, 0.47), false, 1},
+    shaobing_3_45 = {cc.p(0.5, 0.46), false, 1},
+    nugongshou_1_45 = {cc.p(0.47, 0.4), false, 1},
+    nugongshou_2_45 = {cc.p(0.47, 0.38), false, 1},
+    nugongshou_3_45 = {cc.p(0.32, 0.4), false, 1},
+    youqibing_1_45 = {cc.p(0.48, 0.38), false, 1},
+    youqibing_2_45 = {cc.p(0.48, 0.38), false, 1},
+    youqibing_3_45 = {cc.p(0.48, 0.38), false, 1},
+    nuche_1_45 = {cc.p(0.5, 0.45), false, 1},
+    nuche_2_45 = {cc.p(0.5, 0.45), false, 1},
+    nuche_3_45 = {cc.p(0.49, 0.45), false, 1},
+    kulouyongshi_45 = {cc.p(0.47, 0.45), false, 1},
+    kulousheshou_45 = {cc.p(0.24, 0.46), false, 1},
+    siwangqishi_45 = {cc.p(0.5, 0.45), false, 1},
+    jiaorouche_45 = {cc.p(0.338, 0.48), false, 1},
 }
 local soldier_move_neg_45_ani = {
-    -- 普通兵种
-    --
-    bubing_1 = {cc.p(0.51, 0.31), false, 1},
-    bubing_2 = {cc.p(0.57, 0.4), false, 1},
-    bubing_3 = {cc.p(0.52, 0.4), false, 1},
-    --
-    gongjianshou_1 = {cc.p(0.51, 0.37), false, 1},
-    gongjianshou_2 = {cc.p(0.52, 0.37), false, 1},
-    gongjianshou_3 = {cc.p(0.52, 0.38), false, 1},
-    --
-    qibing_1 = {cc.p(0.4, 0.36), false, 1},
-    qibing_2 = {cc.p(0.4, 0.36), false, 1},
-    qibing_3 = {cc.p(0.4, 0.38), false, 1},
-    --
-    toushiche = {cc.p(0.39, 0.43), false, 1},
-    toushiche_2 = {cc.p(0.39, 0.45), false, 1},
-    toushiche_3 = {cc.p(0.37, 0.44), false, 1},
-    --
-    shaobing_1 = {cc.p(0.45, 0.3), false, 1},
-    shaobing_2 = {cc.p(0.45, 0.3), false, 1},
-    shaobing_3 = {cc.p(0.47, 0.33), false, 1},
-    --
-    nugongshou_1 = {cc.p(0.46, 0.4), false, 1},
-    nugongshou_2 = {cc.p(0.46, 0.38), false, 1},
-    nugongshou_3 = {cc.p(0.3, 0.4), false, 1},
-    --
-    youqibing_1 = {cc.p(0.48, 0.38), false, 1},
-    youqibing_2 = {cc.p(0.48, 0.38), false, 1},
-    youqibing_3 = {cc.p(0.48, 0.38), false, 1},
-    --
-    nuche_1 = {cc.p(0.5, 0.45), false, 1},
-    nuche_2 = {cc.p(0.5, 0.45), false, 1},
-    nuche_3 = {cc.p(0.49, 0.45), false, 1},
-
-    -- 特殊兵种
-    kulouyongshi = {cc.p(0.46, 0.44), false, 1},
-    kulousheshou = {cc.p(0.26, 0.46), false, 1},
-    siwangqishi = {cc.p(0.4, 0.38), false, 1},
-    jiaorouche = {cc.p(0.345, 0.48), false, 1},
+    bubing_1_45 = {cc.p(0.4, 0.28), false, 1},
+    bubing_2_45 = {cc.p(0.57, 0.4), false, 1},
+    bubing_3_45 = {cc.p(0.52, 0.4), false, 1},
+    gongjianshou_1_45 = {cc.p(0.51, 0.37), false, 1},
+    gongjianshou_2_45 = {cc.p(0.52, 0.37), false, 1},
+    gongjianshou_3_45 = {cc.p(0.52, 0.38), false, 1},
+    qibing_1_45 = {cc.p(0.4, 0.36), false, 1},
+    qibing_2_45 = {cc.p(0.4, 0.36), false, 1},
+    qibing_3_45 = {cc.p(0.4, 0.38), false, 1},
+    toushiche_45 = {cc.p(0.39, 0.43), false, 1},
+    toushiche_2_45 = {cc.p(0.39, 0.45), false, 1},
+    toushiche_3_45 = {cc.p(0.37, 0.44), false, 1},
+    shaobing_1_45 = {cc.p(0.45, 0.3), false, 1},
+    shaobing_2_45 = {cc.p(0.45, 0.3), false, 1},
+    shaobing_3_45 = {cc.p(0.47, 0.33), false, 1},
+    nugongshou_1_45 = {cc.p(0.46, 0.4), false, 1},
+    nugongshou_2_45 = {cc.p(0.46, 0.38), false, 1},
+    nugongshou_3_45 = {cc.p(0.3, 0.4), false, 1},
+    youqibing_1_45 = {cc.p(0.48, 0.38), false, 1},
+    youqibing_2_45 = {cc.p(0.48, 0.38), false, 1},
+    youqibing_3_45 = {cc.p(0.48, 0.38), false, 1},
+    nuche_1_45 = {cc.p(0.5, 0.45), false, 1},
+    nuche_2_45 = {cc.p(0.5, 0.45), false, 1},
+    nuche_3_45 = {cc.p(0.49, 0.45), false, 1},
+    kulouyongshi_45 = {cc.p(0.46, 0.44), false, 1},
+    kulousheshou_45 = {cc.p(0.26, 0.46), false, 1},
+    siwangqishi_45 = {cc.p(0.4, 0.38), false, 1},
+    jiaorouche_45 = {cc.p(0.345, 0.48), false, 1},
 }
 
 local function createAniWithConfig(ani, config, default_animation)
@@ -1386,6 +1364,91 @@ local function createAniWithConfig(ani, config, default_animation)
         display.newSprite("tmp_soldier_shadow.png")
             :addTo(sprite):setAnchorPoint(cc.p(0.25,0.45))
     end
+    return sprite
+end
+
+local soldier_ani_idle_map = {
+     ["swordsman"] = {
+        {"bubing_1_45", cc.p(0.5, 0.3)},
+        {"bubing_2_45", cc.p(0.5, 0.3)},
+        {"bubing_3_45", cc.p(0.5, 0.3)},
+    },
+    ["ranger"] = {
+        count = 4,
+        {"gongjianshou_1_45", cc.p(0.5, 0.3)},
+        {"gongjianshou_2_45", cc.p(0.5, 0.3)},
+        {"gongjianshou_3_45", cc.p(0.5, 0.3)},
+    },
+    ["lancer"] = {
+        count = 2,
+        {"qibing_1_45", cc.p(0.5, 0.48)},
+        {"qibing_2_45", cc.p(0.5, 0.48)},
+        {"qibing_3_45", cc.p(0.5, 0.48)},
+    },
+    ["catapult"] = {
+        count = 1,
+        {  "toushiche_45", cc.p(0.5, 0.3)},
+        {"toushiche_2_45", cc.p(0.5, 0.3)},
+        {"toushiche_3_45", cc.p(0.5, 0.3)},
+    },
+
+    ["sentinel"] = {
+        count = 4,
+        {"shaobing_1_45", cc.p(0.5, 0.23)},
+        {"shaobing_2_45", cc.p(0.5, 0.23)},
+        {"shaobing_3_45", cc.p(0.5, 0.23)},
+    },
+    ["crossbowman"] = {
+        count = 4,
+        {"nugongshou_1_45", cc.p(0.5, 0.25)},
+        {"nugongshou_2_45", cc.p(0.5, 0.25)},
+        {"nugongshou_3_45", cc.p(0.5, 0.25)},
+    },
+    ["horseArcher"] = {
+        count = 2,
+        {"youqibing_1_45", cc.p(0.5, 0.3)},
+        {"youqibing_2_45", cc.p(0.5, 0.3)},
+        {"youqibing_3_45", cc.p(0.5, 0.3)},
+    },
+    ["ballista"] = {
+        count = 1,
+        {"nuche_1_45", cc.p(0.5, 0.4)},
+        {"nuche_2_45", cc.p(0.5, 0.4)},
+        {"nuche_3_45", cc.p(0.5, 0.4)},
+    },
+    ----
+    ["skeletonWarrior"] = {
+        count = 4,
+        {"kulouyongshi_45", cc.p(0.5, 0.35)},
+        {"kulouyongshi_45", cc.p(0.5, 0.35)},
+        {"kulouyongshi_45", cc.p(0.5, 0.35)},
+    },
+    ["skeletonArcher"] = {
+        count = 4,
+        {"kulousheshou_45", cc.p(0.5, 0.35)},
+        {"kulousheshou_45", cc.p(0.5, 0.35)},
+        {"kulousheshou_45", cc.p(0.5, 0.35)},
+    },
+    ["deathKnight"] = {
+        count = 2,
+        {"siwangqishi_45", cc.p(0.5, 0.42)},
+        {"siwangqishi_45", cc.p(0.5, 0.42)},
+        {"siwangqishi_45", cc.p(0.5, 0.42)},
+    },
+    ["meatWagon"] = {
+        count = 1,
+        {"jiaorouche_45", cc.p(0.5, 0.35)},
+        {"jiaorouche_45", cc.p(0.5, 0.35)},
+        {"jiaorouche_45", cc.p(0.5, 0.35)},
+    },
+}
+
+function UIKit:CreateSoldierIdle45Ani(soldier_name, soldier_star)
+    local ani, ap, s = unpack(soldier_ani_idle_map[soldier_name][soldier_star])
+    local sprite = ccs.Armature:create(ani)
+    sprite:setAnchorPoint(ap)
+    sprite:getAnimation():play("idle_45")
+    sprite:setScaleX(s or 1)
     return sprite
 end
 function UIKit:CreateIdle45Ani(ani)

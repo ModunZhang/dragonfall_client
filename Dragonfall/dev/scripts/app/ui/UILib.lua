@@ -853,22 +853,7 @@ local function unLoadPveAnimation()
     end
 end
 
-local function loadDragonAnimation()
-    local manager = ccs.ArmatureDataManager:getInstance()
-    for _, anis in pairs(DRAGON_ANIMATIONS_FILES) do
-        for _, v in pairs(anis) do
-            manager:addArmatureFileInfo(DEBUG_GET_ANIMATION_PATH(v))
-        end
-    end
-end
-local function unLoadDragonAnimation()
-    local manager = ccs.ArmatureDataManager:getInstance()
-    for _, anis in pairs(DRAGON_ANIMATIONS_FILES) do
-        for _, v in pairs(anis) do
-            manager:removeArmatureFileInfo(DEBUG_GET_ANIMATION_PATH(v))
-        end
-    end
-end
+
 
 
 
@@ -1130,7 +1115,6 @@ return {
     dragon_head  = DRAGON_HEAD,
     small_dragon_head  = SMALL_DRAGON_HEAD,
     dragon_animations = DRAGON_ANIMATIONS,
-    dragon_animations_files = DRAGON_ANIMATIONS_FILES,
     decorator_image = DECORATOR_IMAGE,
     materials = MATERIALS,
     dragon_material_pic_map = DRAGON_MATERIAL_PIC_MAP,
@@ -1149,8 +1133,6 @@ return {
     unLoadSolidersAnimation = unLoadSolidersAnimation,
     loadPveAnimation = loadPveAnimation,
     unLoadPveAnimation = unLoadPveAnimation,
-    loadDragonAnimation = loadDragonAnimation,
-    unLoadDragonAnimation = unLoadDragonAnimation,
     iap_package_image = IAP_PACKAGE_IMAGE,
     produc_tiontechs_image = PRODUC_TIONTECHS_IMAGE,
     getDragonEquipmentImage = GET_DRAGON_EQUIPMENT_IMAGE,
