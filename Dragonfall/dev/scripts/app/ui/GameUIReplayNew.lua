@@ -825,12 +825,10 @@ function GameUIReplayNew:ctor(report, callback, skipcallback)
     self.callback = callback
     self.skipcallback = skipcallback
 
-    for _,v in ipairs(self:GetPreloadImages()) do
-        display.addSpriteFrames(DEBUG_GET_ANIMATION_PATH(v.list),DEBUG_GET_ANIMATION_PATH(v.image))
-    end
+    -- for _,v in ipairs(self:GetPreloadImages()) do
+    --     display.addSpriteFrames(DEBUG_GET_ANIMATION_PATH(v.list),DEBUG_GET_ANIMATION_PATH(v.image))
+    -- end
 
-    local manager = ccs.ArmatureDataManager:getInstance()
-    manager:addArmatureFileInfo(DEBUG_GET_ANIMATION_PATH("animations/paizi.ExportJson"))
     self.timer_node = display.newNode():addTo(self)
     self.round = 1
 end

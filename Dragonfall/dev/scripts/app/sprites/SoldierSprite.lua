@@ -5,94 +5,18 @@ local normal = GameDatas.Soldiers.normal
 local special = GameDatas.Soldiers.special
 
 local soldier_config = {
-    ----
-    ["swordsman"] = {
-        count = 4, 
-        scale = 1,
-        {"bubing_1", -10, 45, 0.8},
-        {"bubing_2", -20, 40, 0.8},
-        {"bubing_3", -15, 35, 0.8},
-    },
-    ["ranger"] = {
-        count = 4,
-        scale = 1,
-        {"gongjianshou_1", 0, 45, 0.8},
-        {"gongjianshou_2", 0, 45, 0.8},
-        {"gongjianshou_3", 0, 45, 0.8},
-    },
-    ["lancer"] = {
-        count = 2,
-        scale = 1,
-        {"qibing_1", -10, 50, 0.8},
-        {"qibing_2", -10, 50, 0.8},
-        {"qibing_3", -10, 50, 0.8},
-    },
-    ["catapult"] = {
-        count = 1,
-        scale = 1,
-        {  "toushiche", 60, 25, 1},
-        {"toushiche_2", 60, 25, 1},
-        {"toushiche_3", 60, 25, 1},
-    },
-
-    -----
-    ["sentinel"] = {
-        count = 4,
-        scale = 1,
-        {"shaobing_1", 0, 55, 0.8},
-        {"shaobing_2", 0, 55, 0.8},
-        {"shaobing_3", 0, 55, 0.8},
-    },
-    ["crossbowman"] = {
-        count = 4,
-        scale = 1,
-        {"nugongshou_1", 0, 45, 0.8},
-        {"nugongshou_2", 0, 50, 0.8},
-        {"nugongshou_3", 15, 45, 0.8},
-    },
-    ["horseArcher"] = {
-        count = 2,
-        scale = 1,
-        {"youqibing_1", -15, 55, 0.8},
-        {"youqibing_2", -15, 55, 0.8},
-        {"youqibing_3", -15, 55, 0.8},
-    },
-    ["ballista"] = {
-        count = 1,
-        scale = 1,
-        {"nuche_1", 0, 30, 1},
-        {"nuche_2", 0, 30, 1},
-        {"nuche_3", 0, 30, 1},
-    },
-    ----
-    ["skeletonWarrior"] = {
-        count = 4,
-        scale = 0.6,
-        {"kulouyongshi", 0, 40, 0.8},
-        {"kulouyongshi", 0, 40, 0.8},
-        {"kulouyongshi", 0, 40, 0.8},
-    },
-    ["skeletonArcher"] = {
-        count = 4,
-        scale = 0.6,
-        {"kulousheshou", 25, 40, 0.8},
-        {"kulousheshou", 25, 40, 0.8},
-        {"kulousheshou", 25, 40, 0.8},
-    },
-    ["deathKnight"] = {
-        count = 2,
-        scale = 0.6,
-        {"siwangqishi", -10, 50, 0.8},
-        {"siwangqishi", -10, 50, 0.8},
-        {"siwangqishi", -10, 50, 0.8},
-    },
-    ["meatWagon"] = {
-        count = 1,
-        scale = 0.6,
-        {"jiaorouche", 60, 20, 0.8},
-        {"jiaorouche", 60, 20, 0.8},
-        {"jiaorouche", 60, 20, 0.8},
-    },
+    ["swordsman"] = {count = 4, scale = 1},
+    ["ranger"] = {count = 4, scale = 1},
+    ["lancer"] = {count = 2, scale = 1},
+    ["catapult"] = {count = 1, scale = 1},
+    ["sentinel"] = {count = 4, scale = 1},
+    ["crossbowman"] = {count = 4, scale = 1},
+    ["horseArcher"] = {count = 2, scale = 1},
+    ["ballista"] = {count = 1, scale = 1},
+    ["skeletonWarrior"] = {count = 4, scale = 0.6},
+    ["skeletonArcher"] = {count = 4, scale = 0.6},
+    ["deathKnight"] = {count = 2, scale = 0.6},
+    ["meatWagon"] = {count = 1, scale = 0.6},
 }
 local position_map = {
     [1] = {

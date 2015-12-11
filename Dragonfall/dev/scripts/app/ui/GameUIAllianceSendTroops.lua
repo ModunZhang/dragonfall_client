@@ -87,12 +87,6 @@ function GameUIAllianceSendTroops:ctor(march_callback,params)
     self.targetAlliance = params.targetAlliance
     self.terrain = User.basicInfo.terrain
     GameUIAllianceSendTroops.super.ctor(self,City,_("准备进攻"))
-    local manager = ccs.ArmatureDataManager:getInstance()
-    for _, anis in pairs(UILib.soldier_animation_files) do
-        for _, v in pairs(anis) do
-            manager:addArmatureFileInfo(v)
-        end
-    end
     self.alliance = Alliance_Manager:GetMyAlliance()
     self.dragon_manager = City:GetFirstBuildingByType("dragonEyrie"):GetDragonManager()
     self.soldiers_table = {}

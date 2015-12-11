@@ -171,8 +171,6 @@ function MyApp:ctor()
     self:InitGameBase()
     NetManager:init()
     self.timer = Timer.new()
-    local manager = ccs.ArmatureDataManager:getInstance()
-    manager:addArmatureFileInfo(DEBUG_GET_ANIMATION_PATH("animations/Cloud_Animation.ExportJson"))
 
     -- 当前音乐播放完成回调(只播放一次的音乐)
     local eventDispatcher = cc.Director:getInstance():getEventDispatcher()
