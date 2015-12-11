@@ -124,7 +124,7 @@ function SoldierSprite:ctor(city_layer, soldier_type, soldier_star, x, y)
     SoldierSprite.super.ctor(self, city_layer, nil, city_layer:GetLogicMap():ConvertToMapPosition(x, y))
 
 
-    self:CreateBase()
+    -- self:CreateBase()
     -- ui.newTTFLabel({text = soldier_type, size = 20, x = 0, y = 100}):addTo(self, 10)
 end
 function SoldierSprite:CreateSprite()
