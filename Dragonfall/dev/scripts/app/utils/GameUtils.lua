@@ -1,6 +1,4 @@
-GameUtils = {
-
-    }
+GameUtils = {}
 local string = string
 local pow = math.pow
 local ceil = math.ceil
@@ -483,10 +481,11 @@ function GameUtils:LoadImagesWithFormat(func, format)
     cc.Texture2D:setDefaultAlphaPixelFormat(cc.TEXTURE2D_PIXEL_FORMAT_RGBA8888)
 end
 
--- game language 
 ------------------------------------------------------------------
--- define all game language code 
+-- game language 
 --[[ 
+    define all language codes in game
+    codes:
         "en",
         "cn",
         "fr",
@@ -545,11 +544,10 @@ function GameUtils:GetGameLanguage()
 end
 
 function GameUtils:getSupportMailFormat(category,logMsg)
-
     local UTCTime    = "UTC Time:" .. os.date('!%Y-%m-%d %H:%M:%S', app.timer:GetServerTime())
     local GameName   = "Game:" .. "Dragonfall"
     local Version    = "Version:" .. ext.getAppVersion()
-    local UserID   = "User ID:" .. DataManager:getUserData()._id
+    local UserID     = "User ID:" .. DataManager:getUserData()._id
     local Username   = "User name:" .. DataManager:getUserData().basicInfo.name
     local Server     = "Server:" .. "World"
     local OpenUDID   = "Open UDID:" .. device.getOpenUDID()
@@ -567,7 +565,6 @@ function GameUtils:getSupportMailFormat(category,logMsg)
 end
 
 function GameUtils:SetGameLanguage(lang)
-    print("SetGameLanguage----->",lang)
     cc.UserDefault:getInstance():setStringForKey("GAME_LANGUAGE", lang)
     cc.UserDefault:getInstance():flush()
     self.gameLanguage_ = lang
@@ -581,8 +578,7 @@ function GameUtils:InitGamei18N()
     end
 
     local i18NFileName = GameUtils:GetPoFileNameWithCode(game_language)
-    local currentLanFile = string.format("i18n/%s.mo", i18NFileName)
-    local currentLanFilePath = cc.FileUtils:getInstance():fullPathForFilename(currentLanFile)
+    local currentLanFilePath = cc.FileUtils:getInstance():fullPathForFilename(string.format("i18n/%s.mo", i18NFileName))
     if cc.FileUtils:getInstance():isFileExist(currentLanFilePath) then
         _ = require("app.utils.Gettext").gettextFromFile(currentLanFilePath)
         cc.UserDefault:getInstance():setStringForKey("GAME_LANGUAGE", game_language)
@@ -590,6 +586,6 @@ function GameUtils:InitGamei18N()
         printLog("i18N","po file load success : %s",currentLanFilePath)
     end
 end
--- call init game language after require
+-- init the i18n file after requeired this file
 GameUtils:InitGamei18N()
 return GameUtils
