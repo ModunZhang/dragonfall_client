@@ -124,7 +124,11 @@ end
 
 function MyApp:run()
     cc.Director:getInstance():setProjection(0)
-    self:enterScene('LogoScene')
+    if device.platform == 'windows' or device.platform == 'winrt' then
+        self:enterScene('MainScene')
+    else
+        self:enterScene('LogoScene')
+    end
 end
 
 function MyApp:showDebugInfo()
