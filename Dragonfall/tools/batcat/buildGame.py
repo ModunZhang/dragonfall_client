@@ -50,6 +50,9 @@ if __name__ == "__main__":
     getAllArgs()
     Logging.info("> 开始处理脚本")
     Logging.debug("------------------------------------")
+    #clean
+    command = "python cleanGame.py %s" % Platform
+    executeCommand(command,False)
     # scripts
     command = "python scripts.py %s %s %s" % (
         Platform, NEED_ENCRYPT_SCRIPTS, CONFIGURATION)

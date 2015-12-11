@@ -37,12 +37,13 @@ NOMEDIA_FILE_PATH = formatPath("%s/batcatstudio/.nomedia" % TEMP_RES_DIR)
 JAVA_INFOMATION_FILE = formatPath(
     "%s/src/com/batcatstudio/dragonfall/data/DataHelper.java" % ANDROID_PROJECT_ROOT)
 
-SedCommand = getWin32SedPath()
-Win32ZipCommand = getWin32ZipCommandTool()
+SedCommand = "sed"  # mac下默认
+Win32ZipCommand = ""
+if isWindows():
+    SedCommand = getWin32SedPath()
+    Win32ZipCommand = getWin32ZipCommandTool()
 
 def sedJavaFile(fileSize):
-    if not isWindows():
-        SedCommand = "sed"  # mac下默认
 	args = "s/public static final long ZIP_RESOURCE_SIZE = \(.*\)/public static final long ZIP_RESOURCE_SIZE = %d;/g" % fileSize
 	command = ""
 	if isWindows():

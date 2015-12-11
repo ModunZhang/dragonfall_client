@@ -386,6 +386,8 @@ function GameUIPveAttack:Attack()
                     City:SetBeginnersTaskFlag(task:Index())
                 end
             end
+            local be_star = self.user:GetPveSectionStarByName(self.pve_name)
+
             NetManager:getAttackPveSectionPromise(self.pve_name, dragonType, soldiers):done(function()
                 display.getRunningScene():GetSceneLayer():RefreshPve()
             end):done(function(response)
@@ -451,7 +453,7 @@ function GameUIPveAttack:Attack()
                             userdefault:flush()
 
                             UIKit:newGameUI("GameUIPveReward", level, function()
-                                if param.star > 0 then
+                                if param.star > 0 and be_star <= 0 then
                                     display.getRunningScene():GetSceneLayer():MoveAirship(true)
                                 end
                             end):AddToCurrentScene(true)
@@ -461,7 +463,7 @@ function GameUIPveAttack:Attack()
                         stage,key = stages[string.format("%d_%d", level, index)], DataManager:getUserData()._id.."_pve_stage_"..string.format("%d_%d", level, index)
                     end
                     --
-                    if param.star > 0 then
+                    if param.star > 0 and be_star <= 0 then
                         display.getRunningScene():GetSceneLayer():MoveAirship(true)
                     end
                 end

@@ -120,7 +120,7 @@ function enter_scene(scene)
         onComplete = function()
             scene:removeChildByTag(CLOUD_TAG)
             app:lockInput(false)
-            if device.platform ~= "mac" then
+            if app:getStore() then
                 app:getStore():updateTransactionStates() -- 更新内购订单状态
             end
         end
@@ -199,7 +199,7 @@ function MyApp:restart(needDisconnect)
     self:GetAudioManager():StopAll()
     self:GetChatManager():Reset()
     device.hideActivityIndicator()
-    if device.platform == 'mac' then
+    if device.platform == 'mac' or device.platform == 'windows' then
         PlayerProtocol:getInstance():relaunch()
     else
         ext.restart()

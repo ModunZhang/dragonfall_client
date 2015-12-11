@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="com.batcatstudio.dragonfall"
       android:versionCode="1"
-      android:versionName="1.0"
+      android:versionName="1.1.2"
       android:installLocation="auto">
 
     <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="11"/>
@@ -48,7 +48,7 @@
         <!-- end for GCM -->
         <!-- start App META-DATA -->
         <meta-data android:name="AppHoc" android:value="true"/>
-        <meta-data android:name="AppMinVersion" android:value="1.0"/>
+        <meta-data android:name="AppMinVersion" android:value="1.1.2"/>
         <!-- end App META-DATA -->
     </application>
 
