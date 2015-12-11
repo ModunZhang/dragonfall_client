@@ -1236,10 +1236,10 @@ local terrain_map = {
         "unlock_tile_surface_6_grassLand.png",
     },
     desert = {
-        "005.png",
-        "006.png",
-        "007.png",
-        "008.png",
+        "unlock_tile_surface_1_desert.png",
+        "unlock_tile_surface_2_desert.png",
+        "unlock_tile_surface_3_desert.png",
+        "unlock_tile_surface_4_desert.png",
     },
     iceField = {
         "unlock_tile_surface_4_iceField.png",

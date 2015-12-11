@@ -97,6 +97,7 @@ function Sprite:setTexture(arg)
     if type(arg) == 'string' then
         local found_data_in_plist = plist_texture_data[arg]
         if found_data_in_plist then
+            print(arg, found_data_in_plist)
             local frame = sharedSpriteFrameCache:getSpriteFrame(arg)
             if not frame then
                 local plistName = string.sub(found_data_in_plist,1,string.find(found_data_in_plist,"%.") - 1)
@@ -468,6 +469,7 @@ function display.newSprite(...)
     local found_data_in_plist = plist_texture_data[name]
     if found_data_in_plist then
         local frame = sharedSpriteFrameCache:getSpriteFrame(name)
+        print(name, found_data_in_plist)
         if not frame then
             local plistName = string.sub(found_data_in_plist,1,string.find(found_data_in_plist,"%.") - 1)
             plistName = string.format("%s.plist",plistName)
