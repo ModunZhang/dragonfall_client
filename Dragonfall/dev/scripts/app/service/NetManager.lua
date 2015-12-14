@@ -1596,8 +1596,8 @@ function NetManager:getSetDefenceDragonPromise(dragonType)
         "设置驻防使用的龙失败!"):done(get_player_response_msg)
 end
 --取消龙驻防
-function NetManager:getCancelDefenceDragonPromise()
-    return get_none_blocking_request_promise("logic.playerHandler.cancelDefenceDragon",
+function NetManager:getCancelDefenceTroopPromise()
+    return get_none_blocking_request_promise("logic.playerHandler.cancelDefenceTroop",
         nil,
         "取消龙驻防失败!"):done(get_player_response_msg)
 end

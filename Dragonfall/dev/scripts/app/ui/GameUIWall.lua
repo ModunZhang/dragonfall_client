@@ -352,7 +352,7 @@ function GameUIWall:OnDragonSelected(dragon)
         end)
     else
         if self:GetDragon() then
-            NetManager:getCancelDefenceDragonPromise():done(function()
+            NetManager:getCancelDefenceTroopPromise():done(function()
                 self:RefreshUIAfterSelectDragon()
             end)
         else

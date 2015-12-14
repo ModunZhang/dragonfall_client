@@ -252,9 +252,8 @@ function GameUIAllianceSendTroops:OnMoveInStage()
                     end
                     return
                 end
-                print("self.alliance:IsReachEventLimit()=",self.alliance:IsReachEventLimit(),User.basicInfo.marchQueue)
                 if self.dragon:IsDefenced() then
-                    NetManager:getCancelDefenceDragonPromise():done(function()
+                    NetManager:getCancelDefenceTroopPromise():done(function()
                         self:CallFuncMarch_Callback(dragonType,soldiers)
                     end)
                 else
