@@ -339,14 +339,14 @@ function GameUIBarracks:OnUserDataChanged_soldierEvents(userData, deltaData)
     end
 end
 function GameUIBarracks:RefershUnlockInfo()
-    local unlock_soldiers = self.barracks:GetUnlockSoldiers()
     local level = self.barracks:GetLevel()
     for k,v in pairs(self.soldier_map) do
-        if unlock_soldiers[k] then
-            local is_unlock = unlock_soldiers[k] <= level
+        local needBarracksLevel = User:GetSoldierConfig(k).needBarracksLevel
+        if needBarracksLevel then
+            local is_unlock = needBarracksLevel <= level
             v:Enable(is_unlock)
             if not is_unlock then
-                v:SetCondition(string.format(_("兵营%d级解锁"), unlock_soldiers[k]))
+                v:SetCondition(string.format(_("兵营%d级解锁"), needBarracksLevel))
             end
         end
     end

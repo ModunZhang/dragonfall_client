@@ -392,7 +392,7 @@ function GameUIDragonEyrieMain:CreateDragonContentNodeIf()
                     end
                 else
                     if dragon:IsDefenced() then
-                        NetManager:getCancelDefenceDragonPromise():done(function()
+                        NetManager:getCancelDefenceTroopPromise():done(function()
                             GameGlobalUI:showTips(_("提示"),_("取消龙驻防成功"))
                         end)
                     else

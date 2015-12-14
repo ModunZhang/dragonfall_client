@@ -101,7 +101,7 @@ function GameUIAllianceSendTroops:GetMarchTime(soldier_show_table)
     local time = DataUtils:getPlayerSoldiersMarchTime(soldier_show_table,self:GetMyAlliance(),fromLocation,target_alliance,self.toLocation)
     local buffTime = DataUtils:getPlayerMarchTimeBuffTime(time)
     return time,buffTime
-    -- return 0,0
+        -- return 0,0
 end
 
 function GameUIAllianceSendTroops:RefreshMarchTimeAndBuff(soldier_show_table)
@@ -220,15 +220,15 @@ function GameUIAllianceSendTroops:OnMoveInStage()
                     return
                 elseif self.dragon:IsDead() then
                     UIKit:showMessageDialog(_("提示"),_("选择的龙已经死亡")):CreateCancelButton(
-                            {
-                                listener = function ()
-                                    UIKit:newGameUI("GameUIDragonEyrieMain", City, City:GetFirstBuildingByType("dragonEyrie"), "dragon", false, self.dragon:Type()):AddToCurrentScene(true)
-                                    self:LeftButtonClicked()
-                                end,
-                                btn_name= _("复活"),
-                                btn_images = {normal = "blue_btn_up_148x58.png",pressed = "blue_btn_down_148x58.png"}
-                            }
-                        )
+                        {
+                            listener = function ()
+                                UIKit:newGameUI("GameUIDragonEyrieMain", City, City:GetFirstBuildingByType("dragonEyrie"), "dragon", false, self.dragon:Type()):AddToCurrentScene(true)
+                                self:LeftButtonClicked()
+                            end,
+                            btn_name= _("复活"),
+                            btn_images = {normal = "blue_btn_up_148x58.png",pressed = "blue_btn_down_148x58.png"}
+                        }
+                    )
                     return
                 elseif self.show:IsExceed() then
                     UIKit:showMessageDialog(_("提示"),_("派出的部队超过了所选龙的带兵上限"))
@@ -252,9 +252,8 @@ function GameUIAllianceSendTroops:OnMoveInStage()
                     end
                     return
                 end
-                print("self.alliance:IsReachEventLimit()=",self.alliance:IsReachEventLimit(),User.basicInfo.marchQueue)
                 if self.dragon:IsDefenced() then
-                    NetManager:getCancelDefenceDragonPromise():done(function()
+                    NetManager:getCancelDefenceTroopPromise():done(function()
                         self:CallFuncMarch_Callback(dragonType,soldiers)
                     end)
                 else
@@ -483,11 +482,11 @@ function GameUIAllianceSendTroops:SelectSoldiers()
         -- 士兵头像
         local soldier_ui_config = UILib.soldier_image[name]
         WidgetPushButton.new({normal = UILib.soldier_color_bg_images[name],pressed = UILib.soldier_color_bg_images[name]})
-        :onButtonClicked(function(event)
-            if event.name == "CLICKED_EVENT" then
-                UIKit:newWidgetUI("WidgetSoldierDetails", name, star):AddToCurrentScene()
-            end
-        end):addTo(content)
+            :onButtonClicked(function(event)
+                if event.name == "CLICKED_EVENT" then
+                    UIKit:newWidgetUI("WidgetSoldierDetails", name, star):AddToCurrentScene()
+                end
+            end):addTo(content)
             :align(display.CENTER,60,64):scale(104/128)
 
         -- display.newSprite(UILib.soldier_color_bg_images[name]):addTo(content)
@@ -554,10 +553,10 @@ function GameUIAllianceSendTroops:SelectSoldiers()
         "skeletonArcher",
         "deathKnight",
         "meatWagon",
-        -- "priest",
-        -- "demonHunter",
-        -- "paladin",
-        -- "steamTank",
+    -- "priest",
+    -- "demonHunter",
+    -- "paladin",
+    -- "steamTank",
     }
     local map_s = User.soldiers
     for _,name in pairs(soldier_map) do
@@ -833,6 +832,7 @@ function GameUIAllianceSendTroops:onExit()
 end
 
 return GameUIAllianceSendTroops
+
 
 
 

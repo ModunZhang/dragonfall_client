@@ -216,7 +216,7 @@ function GameUIStrikePlayer:CheckDragonIsFree()
 	    return false
 	end
 	if dragon:IsDefenced() then
-		 NetManager:getCancelDefenceDragonPromise():done(function()
+		 NetManager:getCancelDefenceTroopPromise():done(function()
 		 	self:SendDataToServer()
 		 end)
 		 return
