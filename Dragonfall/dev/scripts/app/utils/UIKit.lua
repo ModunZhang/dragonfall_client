@@ -1432,7 +1432,7 @@ function UIKit:CreateMoveSoldiers(degree, soldier, s)
         create_function = UIKit.CreateSoldierMoveNeg45Ani
     end
     local node = display.newNode():scale(s or 1)
-    for _,v in ipairs(location_map[config.count]) do
+    for _,v in ipairs(location_map[count]) do
         create_function(UIKit, soldier_ani_name):addTo(node)
             :pos(unpack(v)):setScaleX(scalex)
     end
