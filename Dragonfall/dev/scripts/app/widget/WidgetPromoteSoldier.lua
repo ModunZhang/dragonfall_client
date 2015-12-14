@@ -234,13 +234,13 @@ function WidgetPromoteSoldier:UpgradeRequirement()
 end
 function WidgetPromoteSoldier:GetSoldierMapToBuilding()
     local soldier_type = self.soldier_type
-    if soldier_type == "sentinel" or soldier_type =="swordsman" then
+    if string.find(soldier_type , "sentinel") or string.find(soldier_type ,"swordsman") then
         return "trainingGround"
-    elseif soldier_type == "horseArcher" or soldier_type =="lancer" then
+    elseif string.find(soldier_type ,"horseArcher") or string.find(soldier_type , "lancer") then
         return "stable"
-    elseif soldier_type == "ranger" or soldier_type =="crossbowman" then
+    elseif string.find(soldier_type , "ranger") or string.find(soldier_type ,"crossbowman") then
         return "hunterHall"
-    elseif soldier_type == "ballista" or soldier_type =="catapult" then
+    elseif string.find(soldier_type , "ballista") or string.find(soldier_type , "catapult") then
         return "workshop"
     end
 end
