@@ -271,12 +271,15 @@ function GameUIAllianceShrine:GetStageListItem(index,stage_obj)
     local desc_color = 0xffffff
     local logo_file = "alliance_shire_stage_bg_554x130_black.png"
     if not is_locked then
-        if troop.type == 'sentinel' or troop.type == 'crossbowman' or troop.type == 'horseArcher' or troop.type == 'ballista' then
-            logo_file = "alliance_shire_stage_bg_554x130_red.png"
+        if string.split(troop.type,"_")[2] == "1" then
+            logo_file = "alliance_shire_stage_bg_554x130_green.png"
             desc_color = 0xf6b304
-        else
+        elseif string.split(troop.type,"_")[2] == "2" then
             desc_color = 0x00d2ff
             logo_file = "alliance_shire_stage_bg_554x130_blue.png"
+        elseif string.split(troop.type,"_")[2] == "3" then
+            logo_file = "alliance_shire_stage_bg_554x130_purple.png"
+            desc_color = 0xf6b304
         end
     end
     local bg = WidgetUIBackGround.new({width = 568,height = 216},WidgetUIBackGround.STYLE_TYPE.STYLE_2)
