@@ -239,6 +239,16 @@ CC_USE_SPINE | 使用骨骼动画
 CC_USE_ETC1_ZLIB | 打开贴图文件的zlib压缩检查功能,用来压缩etc1文件。需要配合自定义的命令行工具CompressETCTexture用。
 CC_USE_POMELO_C_LIB | 启用pomelo c版本的客户端支持(android会自动添加引用的pomelo库,iOS则需要手动引入到Xcode)
 
+
+### DragonFall GCM
+
+~~~
+Server API Key:
+AIzaSyBgWSvfovLyEsJT1Al-vG-24reZOa6I5Jc
+Sender ID:
+841456299792
+~~~
+
 ---
 
 By DannyHe 11/11/2015
