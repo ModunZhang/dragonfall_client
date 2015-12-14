@@ -1,30 +1,9 @@
-
---初始本地化文件
-function __init_localize_file__()
-    local default_language = cc.UserDefault:getInstance():getStringForKey("GAME_LANGUAGE")
-    local init_language = default_language
-    if default_language and string.len(default_language) > 0 then
-        init_language = default_language
-    else
-        init_language = GameUtils:GetAppleLanguageCode()
-    end
-    local poName,real_language_code = GameUtils:GetPoFileLanguageCode(init_language)
-    local currentLanFile = string.format("i18n/%s.mo", poName)
-    local currentLanFilePath = cc.FileUtils:getInstance():fullPathForFilename(currentLanFile)
-    printLog("I18N","i18n file name:%s",currentLanFilePath)
-    if cc.FileUtils:getInstance():isFileExist(currentLanFilePath) then
-        _ = require("app.utils.Gettext").gettextFromFile(currentLanFilePath)
-        cc.UserDefault:getInstance():setStringForKey("GAME_LANGUAGE", real_language_code)
-    end
-end
-
 require("config")
 require("framework.init")
 require("app.Extend")
 require("app.utils.PlatformAdapter")
 require("app.utils.LuaUtils")
 require("app.utils.GameUtils")
-__init_localize_file__()
 require("app.datas.GameDatas")
 require("app.utils.DataUtils")
 require("app.utils.UtilsForEvent")
@@ -58,45 +37,8 @@ local AllianceManager_ = import(".entity.AllianceManager")
 Alliance_Manager = AllianceManager_.new()
 CLOUD_TAG = 1987
 local speed = 2
--- local function transition_(scene, status)
---     if status == "onEnter" then
---         local armature = ccs.Armature:create("Cloud_Animation")
---             :addTo(scene,0,CLOUD_TAG):pos(display.cx, display.cy)
-
---         cc.LayerColor:create(UIKit:hex2c4b(0x00ffffff)):addTo(scene):runAction(
---             transition.sequence{
---                 cc.CallFunc:create(function()
---                     armature:getAnimation():stop()
---                     armature:getAnimation():play("Animation1", -1, 0)
---                     armature:getAnimation():setSpeedScale(speed)
---                 end),
---                 cc.FadeIn:create(0.75/speed),
---                 cc.DelayTime:create(0.5/speed),
---                 cc.CallFunc:create(function()
---                     armature:getAnimation():stop()
---                     armature:getAnimation():play("Animation4", -1, 0)
---                     armature:getAnimation():setSpeedScale(speed)
---                 end),
---                 cc.CallFunc:create(function()
---                     if scene.hideOutEnterShow then
---                         scene:hideOutEnterShow()
---                     else
---                         scene:hideOutShowIn()
---                     end
---                 end),
---                 cc.FadeOut:create(0.75/speed),
---                 cc.CallFunc:create(function()
---                     scene:removeChildByTag(CLOUD_TAG)
---                     scene:finish()
---                 end),
---             }
---         )
---     elseif status == "onExit" then
---         scene:removeChildByTag(CLOUD_TAG)
---     end
--- end
-
 local MAX_ZORDER = 999999999
+
 function enter_scene(scene)
     local color_layer = cc.LayerColor:create(cc.c4b(255,255,255,255))
         :addTo(scene,MAX_ZORDER,CLOUD_TAG)
@@ -180,7 +122,11 @@ end
 
 function MyApp:run()
     cc.Director:getInstance():setProjection(0)
-    self:enterScene('LogoScene')
+    if device.platform == 'windows' or device.platform == 'winrt' then
+        self:enterScene('MainScene')
+    else
+        self:enterScene('LogoScene')
+    end
 end
 
 function MyApp:showDebugInfo()
@@ -204,28 +150,17 @@ function MyApp:restart(needDisconnect)
     end
 end
 
-function MyApp:GetGameLanguage()
-    return self.gameLanguage_
-end
-
 function MyApp:sendPlayerLanguageCodeIf()
-    if self:GetGameLanguage() ~= User.basicInfo.language then
-        NetManager:getSetPlayerLanguagePromise(self:GetGameLanguage())
+    if GameUtils:GetGameLanguage() ~= User.basicInfo.language then
+        NetManager:getSetPlayerLanguagePromise(GameUtils:GetGameLanguage())
     end
-end
-
-function MyApp:SetGameLanguage(lang)
-    print("SetGameLanguage----->",lang)
-    cc.UserDefault:getInstance():setStringForKey("GAME_LANGUAGE", lang)
-    cc.UserDefault:getInstance():flush()
-    self:restart()
 end
 
 function MyApp:InitGameBase()
     self.GameDefautlt_ = GameDefautlt.new()
     self.AudioManager_ = AudioManager.new(self:GetGameDefautlt())
     self.LocalPushManager_ = LocalPushManager.new(self:GetGameDefautlt())
-    self.gameLanguage_ = cc.UserDefault:getInstance():getStringForKey("GAME_LANGUAGE")
+    -- self.gameLanguage_ = cc.UserDefault:getInstance():getStringForKey("GAME_LANGUAGE")
     self.ChatManager_  = ChatManager.new(self:GetGameDefautlt())
 end
 
@@ -508,28 +443,6 @@ function MyApp:EnterUserMode()
     InitGame(DataManager:getUserData())
     DataManager:setUserAllianceData(DataManager.allianceData)
     -- DataManager:setEnemyAllianceData(DataManager.enemyAllianceData)
-end
-
-function MyApp:getSupportMailFormat(category,logMsg)
-
-    local UTCTime    = "UTC Time:" .. os.date('!%Y-%m-%d %H:%M:%S', self.timer:GetServerTime())
-    local GameName   = "Game:" .. "Dragonfall"
-    local Version    = "Version:" .. ext.getAppVersion()
-    local UserID   = "User ID:" .. DataManager:getUserData()._id
-    local Username   = "User name:" .. DataManager:getUserData().basicInfo.name
-    local Server     = "Server:" .. "World"
-    local OpenUDID   = "Open UDID:" .. device.getOpenUDID()
-    local Category   = "Category:" .. category or ""
-    local Language   = "Language:" .. self:GetGameLanguage()
-    local DeviceType = "Device Type:" ..ext.getDeviceModel()
-    local OSVersion  = "OS Version:" .. ext.getOSVersion()
-
-    local format_str = "\n\n\n\n\n---------------%s---------------\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s"
-    local result_str = string.format(format_str,_("不能删除"),UTCTime,GameName,Version,Username,UserID,Server,OpenUDID,Category,Language,DeviceType,OSVersion)
-    if logMsg then
-        result_str = string.format("%s\n---------------Log---------------\n%s",result_str,logMsg)
-    end
-    return "[Dragonfall]" .. category ,result_str
 end
 
 function MyApp:EnterViewModelAllianceScene(alliance_id)

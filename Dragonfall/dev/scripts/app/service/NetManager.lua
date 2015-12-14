@@ -820,7 +820,7 @@ function NetManager:initPlayerData(terrain, language)
         terrain == "iceField" )
     return get_blocking_request_promise("logic.playerHandler.initPlayerData", {
         terrain = terrain,
-        language = language or app:GetGameLanguage(),
+        language = language or GameUtils:GetGameLanguage(),
     }, "初始化玩家数据失败!"):done(get_player_response_msg)
 end
 -- 个人修改地形
