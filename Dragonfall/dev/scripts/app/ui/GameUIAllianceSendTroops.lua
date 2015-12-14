@@ -105,20 +105,30 @@ function GameUIAllianceSendTroops:GetMarchTime(soldier_show_table)
 end
 
 function GameUIAllianceSendTroops:RefreshMarchTimeAndBuff(soldier_show_table)
-    local time,buffTime = self:GetMarchTime(soldier_show_table)
-    self.march_time:setString(GameUtils:formatTimeStyle1(time))
-    self.buff_reduce_time:setString(string.format("-(%s)",GameUtils:formatTimeStyle1(buffTime)))
-    self.total_march_time = time - buffTime
+    if self.march_time then
+        local time,buffTime = self:GetMarchTime(soldier_show_table)
+        self.march_time:setString(GameUtils:formatTimeStyle1(time))
+        self.buff_reduce_time:setString(string.format("-(%s)",GameUtils:formatTimeStyle1(buffTime)))
+        self.total_march_time = time - buffTime
+    end
 end
 
 function GameUIAllianceSendTroops:ctor(march_callback,params)
     checktable(params)
     self.isPVE = type(params.isPVE) == 'boolean' and params.isPVE or false
+    self.isMilitary = type(params.isMilitary) == 'boolean' and params.isMilitary or false -- 是否为驻防
     self.returnCloseAction = type(params.returnCloseAction) == 'boolean' and params.returnCloseAction or false
     self.toLocation = params.toLocation or cc.p(0,0)
     self.targetAlliance = params.targetAlliance
-    self.terrain = User.basicInfo.terrain
-    GameUIAllianceSendTroops.super.ctor(self,City,_("准备进攻"))
+    self.terrain = params.terrain or User.basicInfo.terrain 
+    self.military_soldiers = params.military_soldiers -- 编辑驻防部队时传入当前驻防部队信息
+    GameUIAllianceSendTroops.super.ctor(self,City,params.title or _("准备进攻"))
+    local manager = ccs.ArmatureDataManager:getInstance()
+    for _, anis in pairs(UILib.soldier_animation_files) do
+        for _, v in pairs(anis) do
+            manager:addArmatureFileInfo(v)
+        end
+    end
     self.alliance = Alliance_Manager:GetMyAlliance()
     self.dragon_manager = City:GetFirstBuildingByType("dragonEyrie"):GetDragonManager()
     self.soldiers_table = {}
@@ -200,7 +210,7 @@ function GameUIAllianceSendTroops:OnMoveInStage()
 
     local march_btn = WidgetPushButton.new({normal = "red_btn_up_148x58.png",pressed = "red_btn_down_148x58.png"},nil,nil)
         :setButtonLabel(UIKit:ttfLabel({
-            text = _("行军"),
+            text = self.isMilitary and _("驻防") or _("行军"),
             size = 24,
             color = 0xffedae,
             shadow= true
@@ -236,7 +246,7 @@ function GameUIAllianceSendTroops:OnMoveInStage()
                 elseif #soldiers == 0 then
                     UIKit:showMessageDialog(_("提示"),_("请选择要派遣的部队"))
                     return
-                elseif self.alliance:IsReachEventLimit() then
+                elseif self.alliance:IsReachEventLimit() and not self.isMilitary then
                     local dialog = UIKit:showMessageDialog(_("提示"),_("没有空闲的行军队列"))
                     if User.basicInfo.marchQueue < 2 then
                         dialog:CreateOKButton(
@@ -262,7 +272,7 @@ function GameUIAllianceSendTroops:OnMoveInStage()
             end
 
         end):align(display.RIGHT_CENTER,window.right-50,window.top-910):addTo(self:GetView())
-    if not self.isPVE then
+    if not self.isPVE and not self.isMilitary then
         --行军所需时间
         display.newSprite("hourglass_30x38.png", window.cx, window.top-910)
             :addTo(self:GetView()):scale(0.6)
@@ -385,7 +395,7 @@ function GameUIAllianceSendTroops:SelectSoldiers()
     listnode:align(display.CENTER)
 
     self.soldier_listview = list
-    local function addListItem(name,star,max_soldier)
+    local function addListItem(name,star,max_soldier,current_soldier)
         if max_soldier<1 then
             return
         end
@@ -400,6 +410,7 @@ function GameUIAllianceSendTroops:SelectSoldiers()
             button = "slider_btn_66x66.png"}, {max = item.max_soldier}):addTo(content)
             :align(display.RIGHT_CENTER, w-5, 35)
             :scale(0.95)
+        
         -- soldier name
         local soldier_name_label = UIKit:ttfLabel({
             text = Localize.soldier_name[name],
@@ -520,6 +531,9 @@ function GameUIAllianceSendTroops:SelectSoldiers()
             btn_text:setString(count)
             slider:setSliderValue(count)
         end
+        if current_soldier then
+            item:SetSoldierCount(current_soldier)
+        end
         return item
     end
     local User = User
@@ -561,15 +575,26 @@ function GameUIAllianceSendTroops:SelectSoldiers()
     local map_s = User.soldiers
     for _,name in pairs(soldier_map) do
         local soldier_num = map_s[name]
-        if soldier_num>0 then
+        if soldier_num > 0 then
             table.insert(soldiers, {name = name,level = User:SoldierStarByName(name), max_num = soldier_num})
         end
     end
     for k,v in pairs(soldiers) do
-        table.insert(self.soldiers_table, addListItem(v.name,v.level,v.max_num))
+        local military_soldiers = self.military_soldiers
+        if military_soldiers then
+            for i,soldier in ipairs(military_soldiers) do
+                if soldier.name == v.name then
+                    table.insert(self.soldiers_table, addListItem(v.name,v.level,v.max_num,soldier.count))
+                end
+            end
+        else
+            table.insert(self.soldiers_table, addListItem(v.name,v.level,v.max_num))
+        end
     end
     list:reload()
-
+    if self.military_soldiers then
+        self:RefreashSoldierShow()
+    end
 end
 function GameUIAllianceSendTroops:CreateBetweenBgAndTitle()
     GameUIAllianceSendTroops.super.CreateBetweenBgAndTitle(self)
