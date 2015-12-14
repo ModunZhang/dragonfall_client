@@ -367,8 +367,8 @@ function display.newTTFLabel(params)
     local text       = tostring(params.text)
     local font       = params.font or display.DEFAULT_TTF_FONT
     local size       = params.size or display.DEFAULT_TTF_FONT_SIZE
-    if device.platform == 'winrt' and size < 18 then
-        size = 18
+    if device.platform == 'winrt' and size < 20 then
+        size = 20
     end
     local color      = params.color or display.COLOR_WHITE
     local textAlign  = params.align or cc.TEXT_ALIGNMENT_LEFT

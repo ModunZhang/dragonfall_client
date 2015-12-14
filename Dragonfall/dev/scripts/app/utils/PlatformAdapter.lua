@@ -121,6 +121,15 @@ function PlatformAdapter:winrt()
             ext.__logFile(table.concat(t,"\t") .. "\n")
         end
     end
+
+    ext.getDeviceLanguage = function()
+        local code = cc.Application:getInstance():getCurrentLanguageCode()
+        if string.find(code,'en') then
+            return 'en'
+        else
+            return code
+        end
+    end
 end
 
 function PlatformAdapter:mac()
