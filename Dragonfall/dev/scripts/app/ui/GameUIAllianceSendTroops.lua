@@ -120,15 +120,15 @@ function GameUIAllianceSendTroops:ctor(march_callback,params)
     self.returnCloseAction = type(params.returnCloseAction) == 'boolean' and params.returnCloseAction or false
     self.toLocation = params.toLocation or cc.p(0,0)
     self.targetAlliance = params.targetAlliance
-    self.terrain = params.terrain or User.basicInfo.terrain 
+    self.terrain = params.terrain or User.basicInfo.terrain
     self.military_soldiers = params.military_soldiers -- 编辑驻防部队时传入当前驻防部队信息
     GameUIAllianceSendTroops.super.ctor(self,City,params.title or _("准备进攻"))
-    local manager = ccs.ArmatureDataManager:getInstance()
-    for _, anis in pairs(UILib.soldier_animation_files) do
-        for _, v in pairs(anis) do
-            manager:addArmatureFileInfo(v)
-        end
-    end
+    -- local manager = ccs.ArmatureDataManager:getInstance()
+    -- for _, anis in pairs(UILib.soldier_animation_files) do
+    --     for _, v in pairs(anis) do
+    --         manager:addArmatureFileInfo(v)
+    --     end
+    -- end
     self.alliance = Alliance_Manager:GetMyAlliance()
     self.dragon_manager = City:GetFirstBuildingByType("dragonEyrie"):GetDragonManager()
     self.soldiers_table = {}
@@ -410,7 +410,7 @@ function GameUIAllianceSendTroops:SelectSoldiers()
             button = "slider_btn_66x66.png"}, {max = item.max_soldier}):addTo(content)
             :align(display.RIGHT_CENTER, w-5, 35)
             :scale(0.95)
-        
+
         -- soldier name
         local soldier_name_label = UIKit:ttfLabel({
             text = Localize.soldier_name[name],
@@ -575,19 +575,30 @@ function GameUIAllianceSendTroops:SelectSoldiers()
     local map_s = User.soldiers
     for _,name in pairs(soldier_map) do
         local soldier_num = map_s[name]
-        if soldier_num > 0 then
-            table.insert(soldiers, {name = name,level = User:SoldierStarByName(name), max_num = soldier_num})
+            local defence_soldier_count = 0
+            if self.military_soldiers and User.defenceTroop and User.defenceTroop ~= json.null then
+                for i,v in ipairs(User.defenceTroop.soldiers) do
+                    if v.name == name then
+                        defence_soldier_count = v.count
+                    end
+                end
+            end
+        if soldier_num + defence_soldier_count > 0 then
+            table.insert(soldiers, {name = name,level = User:SoldierStarByName(name), max_num = soldier_num + defence_soldier_count})
         end
     end
     for k,v in pairs(soldiers) do
         local military_soldiers = self.military_soldiers
+        local added = false
         if military_soldiers then
             for i,soldier in ipairs(military_soldiers) do
                 if soldier.name == v.name then
                     table.insert(self.soldiers_table, addListItem(v.name,v.level,v.max_num,soldier.count))
+                    added = true
                 end
             end
-        else
+        end
+        if not added then
             table.insert(self.soldiers_table, addListItem(v.name,v.level,v.max_num))
         end
     end
@@ -857,6 +868,7 @@ function GameUIAllianceSendTroops:onExit()
 end
 
 return GameUIAllianceSendTroops
+
 
 
 

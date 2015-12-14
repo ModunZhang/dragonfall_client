@@ -1590,9 +1590,9 @@ function NetManager:getAttackPlayerCityPromise(dragonType, soldiers, defenceAlli
 end
 
 --设置驻防使用的龙
-function NetManager:getSetDefenceDragonPromise(dragonType)
-    return get_none_blocking_request_promise("logic.playerHandler.setDefenceDragon",
-        {dragonType=dragonType},
+function NetManager:getSetDefenceTroopPromise(dragonType,soldiers)
+    return get_none_blocking_request_promise("logic.playerHandler.setDefenceTroop",
+        {dragonType=dragonType,soldiers=soldiers},
         "设置驻防使用的龙失败!"):done(get_player_response_msg)
 end
 --取消龙驻防
