@@ -16,13 +16,25 @@ local SPECIAL = GameDatas.Soldiers.special
 
 local GameUIAllianceSendTroops = UIKit:createUIClass("GameUIAllianceSendTroops","GameUIWithCommonHeader")
 local soldier_arrange = {
-    swordsman = {row = 4, col = 2},
-    ranger = {row = 4, col = 2},
-    lancer = {row = 3, col = 1},
-    catapult = {row = 2, col = 1},
+    swordsman_1 = {row = 4, col = 2},
+    swordsman_2 = {row = 4, col = 2},
+    swordsman_3 = {row = 4, col = 2},
+    ranger_1 = {row = 4, col = 2},
+    ranger_2 = {row = 4, col = 2},
+    ranger_3 = {row = 4, col = 2},
+    lancer_1 = {row = 3, col = 1},
+    lancer_2 = {row = 3, col = 1},
+    lancer_3 = {row = 3, col = 1},
+    catapult_1 = {row = 2, col = 1},
+    catapult_2 = {row = 2, col = 1},
+    catapult_3 = {row = 2, col = 1},
 
-    horseArcher = {row = 3, col = 1},
-    ballista = {row = 2, col = 1},
+    horseArcher_1 = {row = 3, col = 1},
+    horseArcher_2 = {row = 3, col = 1},
+    horseArcher_3 = {row = 3, col = 1},
+    ballista_1 = {row = 2, col = 1},
+    ballista_2 = {row = 2, col = 1},
+    ballista_3 = {row = 2, col = 1},
     skeletonWarrior = {row = 4, col = 2},
     skeletonArcher = {row = 4, col = 2},
 
@@ -33,19 +45,39 @@ local soldier_arrange = {
 
     paladin = {row = 4, col = 2},
     steamTank = {row = 2, col = 1},
-    sentinel = {row = 4, col = 2},
-    crossbowman = {row = 4, col = 2},
+    sentinel_1 = {row = 4, col = 2},
+    sentinel_2 = {row = 4, col = 2},
+    sentinel_3 = {row = 4, col = 2},
+    crossbowman_1 = {row = 4, col = 2},
+    crossbowman_2 = {row = 4, col = 2},
+    crossbowman_3 = {row = 4, col = 2},
 }
 local soldier_ani_width = {
-    swordsman = 180,
-    ranger = 180,
-    lancer = 180,
-    catapult = 180,
+    swordsman_1 = 180,
+    swordsman_2 = 180,
+    swordsman_3 = 180,
+    ranger_1 = 180,
+    ranger_2 = 180,
+    ranger_3 = 180,
+    lancer_1 = 180,
+    lancer_2 = 180,
+    lancer_3 = 180,
+    catapult_1 = 180,
+    catapult_2 = 180,
+    catapult_3 = 180,
 
-    sentinel = 180,
-    crossbowman = 180,
-    horseArcher = 180,
-    ballista = 180,
+    sentinel_1 = 180,
+    sentinel_2 = 180,
+    sentinel_3 = 180,
+    crossbowman_1 = 180,
+    crossbowman_2 = 180,
+    crossbowman_3 = 180,
+    horseArcher_1 = 180,
+    horseArcher_2 = 180,
+    horseArcher_3 = 180,
+    ballista_1 = 180,
+    ballista_2 = 180,
+    ballista_3 = 180,
 
     skeletonWarrior = 180,
     skeletonArcher = 180,
@@ -494,22 +526,38 @@ function GameUIAllianceSendTroops:SelectSoldiers()
     local User = User
     local soldiers = {}
     local soldier_map = {
-        "swordsman",
-        "ranger",
-        "lancer",
-        "catapult",
-        "sentinel",
-        "crossbowman",
-        "horseArcher",
-        "ballista",
+        "swordsman_1",
+        "ranger_1",
+        "lancer_1",
+        "catapult_1",
+        "sentinel_1",
+        "crossbowman_1",
+        "horseArcher_1",
+        "ballista_1",
+        "swordsman_2",
+        "ranger_2",
+        "lancer_2",
+        "catapult_2",
+        "sentinel_2",
+        "crossbowman_2",
+        "horseArcher_2",
+        "ballista_2",
+        "swordsman_3",
+        "ranger_3",
+        "lancer_3",
+        "catapult_3",
+        "sentinel_3",
+        "crossbowman_3",
+        "horseArcher_3",
+        "ballista_3",
         "skeletonWarrior",
         "skeletonArcher",
         "deathKnight",
         "meatWagon",
-    -- "priest",
-    -- "demonHunter",
-    -- "paladin",
-    -- "steamTank",
+        -- "priest",
+        -- "demonHunter",
+        -- "paladin",
+        -- "steamTank",
     }
     local map_s = User.soldiers
     for _,name in pairs(soldier_map) do
@@ -744,7 +792,7 @@ function GameUIAllianceSendTroops:CreateTroopsShow()
         self.soldier_crops = {}
         for index,v in pairs(soldiers) do
             local corp = self:NewCorps(v.soldier_type,v.power,v.soldier_star):addTo(self,2)
-            if v.soldier_type ~= "catapult" and v.soldier_type ~= "ballista" and v.soldier_type ~= "meatWagon" then
+            if not string.find(v.soldier_type , "catapult") and not string.find(v.soldier_type , "ballista") and not string.find(v.soldier_type , "meatWagon") then
                 corp:PlayAnimation("idle_90")
             else
                 corp:PlayAnimation("move_90")

@@ -26,6 +26,7 @@ function GameUIPVESendTroop:ctor(pve_soldiers,march_callback)
     GameUIPVESendTroop.super.ctor(self,City,_("准备进攻"))
     self.march_callback = march_callback
     self.pve_soldiers = pve_soldiers
+    dump(pve_soldiers,"pve_soldiers")
     self.dragon_manager = City:GetFirstBuildingByType("dragonEyrie"):GetDragonManager()
     self.soldiers_table = {}
     -- 默认选中最强的并且可以出战的龙,如果都不能出战，则默认最强龙
