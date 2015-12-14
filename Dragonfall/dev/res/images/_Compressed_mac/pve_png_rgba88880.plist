@@ -7,7 +7,7 @@
             <key>forbear_down.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{880,392},{110,112}}</string>
+                <string>{{880,398},{110,112}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -16,19 +16,6 @@
                 <string>{{0,0},{110,112}}</string>
                 <key>sourceSize</key>
                 <string>{110,112}</string>
-            </dict>
-            <key>forbear_up.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{880,506},{108,109}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{108,109}}</string>
-                <key>sourceSize</key>
-                <string>{108,109}</string>
             </dict>
             <key>pve_bg.png</key>
             <dict>
@@ -85,11 +72,11 @@
             <key>pve_deco_10.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{442,941},{64,80}}</string>
+                <string>{{926,918},{64,80}}</string>
                 <key>offset</key>
                 <string>{-1,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{19,10},{64,80}}</string>
                 <key>sourceSize</key>
@@ -98,33 +85,20 @@
             <key>pve_deco_11.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{714,901},{102,80}}</string>
+                <string>{{844,901},{102,80}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{1,10},{102,80}}</string>
-                <key>sourceSize</key>
-                <string>{104,100}</string>
-            </dict>
-            <key>pve_deco_12.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{818,901},{100,98}}</string>
-                <key>offset</key>
-                <string>{0,1}</string>
-                <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{2,0},{100,98}}</string>
+                <string>{{1,10},{102,80}}</string>
                 <key>sourceSize</key>
                 <string>{104,100}</string>
             </dict>
             <key>pve_deco_13.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{918,918},{90,94}}</string>
+                <string>{{880,512},{90,94}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -215,7 +189,7 @@
             <key>pve_deco_6.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{880,270},{118,120}}</string>
+                <string>{{880,276},{118,120}}</string>
                 <key>offset</key>
                 <string>{0,3}</string>
                 <key>rotated</key>
@@ -241,11 +215,11 @@
             <key>pve_deco_8.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{880,140},{128,110}}</string>
+                <string>{{714,901},{128,110}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{6,8},{128,110}}</string>
                 <key>sourceSize</key>
@@ -254,11 +228,11 @@
             <key>pve_deco_9.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{442,470},{134,125}}</string>
+                <string>{{880,140},{134,125}}</string>
                 <key>offset</key>
                 <string>{-1,1}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{2,12},{134,125}}</string>
                 <key>sourceSize</key>
@@ -289,6 +263,19 @@
                 <string>{{21,0},{86,128}}</string>
                 <key>sourceSize</key>
                 <string>{128,128}</string>
+            </dict>
+            <key>pve_moonGate.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{442,470},{138,153}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{138,153}}</string>
+                <key>sourceSize</key>
+                <string>{138,153}</string>
             </dict>
             <key>pve_reward_bg.png</key>
             <dict>
@@ -350,9 +337,9 @@
             <key>realTextureFileName</key>
             <string>pve_png_rgba88880.png</string>
             <key>size</key>
-            <string>{1014,1010}</string>
+            <string>{1014,1013}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:4aa60a7671b991e0d2e91585c5dac128:1/2$</string>
+            <string>$TexturePacker:SmartUpdate:16714572379f116363885f32bb4d35ae:1/2$</string>
             <key>textureFileName</key>
             <string>pve_png_rgba88880.png</string>
         </dict>

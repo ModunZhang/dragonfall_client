@@ -973,7 +973,8 @@ end
 local function get_recruitNormalSoldier_promise(soldierName, count, finish_now)
     local task = City:GetRecommendTask()
     if task then
-        if task:TaskType() == "recruit" and task.name == soldierName then
+        if task:TaskType() == "recruit" 
+        and string.find(soldierName, task.name) then
             City:SetBeginnersTaskFlag(task:Index())
         end
     end
