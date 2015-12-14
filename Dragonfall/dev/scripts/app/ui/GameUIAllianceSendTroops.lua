@@ -449,7 +449,7 @@ function GameUIAllianceSendTroops:SelectSoldiers()
             :align(display.LEFT_CENTER, 440,90)
 
         -- 士兵头像
-        local soldier_ui_config = UILib.soldier_image[name][star]
+        local soldier_ui_config = UILib.soldier_image[name]
         WidgetPushButton.new({normal = UILib.soldier_color_bg_images[name],pressed = UILib.soldier_color_bg_images[name]})
         :onButtonClicked(function(event)
             if event.name == "CLICKED_EVENT" then

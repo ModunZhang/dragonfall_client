@@ -1052,7 +1052,7 @@ end
 
 function UIKit:GetItemImage(reward_type,item_key)
     if reward_type == 'soldiers' then
-        return UILib.soldier_image[item_key][1]
+        return UILib.soldier_image[item_key]
     elseif reward_type == 'resource'
         or reward_type == 'special'
         or reward_type == 'speedup'

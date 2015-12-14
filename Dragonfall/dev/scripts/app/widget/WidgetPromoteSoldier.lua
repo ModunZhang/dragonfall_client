@@ -51,7 +51,7 @@ function WidgetPromoteSoldier:CreateSoldierBox(isGray)
     local soldier_box = display.newSprite("box_light_148x148.png")
     local blue_bg = display.newSprite("back_ground_121x122.png", soldier_box:getContentSize().width/2, soldier_box:getContentSize().height/2, {class=cc.FilteredSpriteWithOne}):addTo(soldier_box)
 
-    local soldier_icon = display.newSprite(UILib.soldier_image[soldier_type][star], soldier_box:getContentSize().width/2, soldier_box:getContentSize().height/2, {class=cc.FilteredSpriteWithOne}):addTo(soldier_box)
+    local soldier_icon = display.newSprite(UILib.soldier_image[soldier_type], soldier_box:getContentSize().width/2, soldier_box:getContentSize().height/2, {class=cc.FilteredSpriteWithOne}):addTo(soldier_box)
     soldier_icon:scale(124/math.max(soldier_icon:getContentSize().width,soldier_icon:getContentSize().height))
     if isGray then
         local my_filter = filter
@@ -75,7 +75,7 @@ function WidgetPromoteSoldier:CreateSoldierBox(isGray)
         local star = isNext and current_star+1 or current_star
         self:removeChild(self.soldier_icon, true)
 
-        local soldier_icon = display.newSprite(UILib.soldier_image[soldier_type][star], soldier_box:getContentSize().width/2, soldier_box:getContentSize().height/2, {class=cc.FilteredSpriteWithOne}):addTo(soldier_box)
+        local soldier_icon = display.newSprite(UILib.soldier_image[soldier_type], soldier_box:getContentSize().width/2, soldier_box:getContentSize().height/2, {class=cc.FilteredSpriteWithOne}):addTo(soldier_box)
         soldier_icon:scale(124/math.max(soldier_icon:getContentSize().width,soldier_icon:getContentSize().height))
         if isNext then
             local my_filter = filter

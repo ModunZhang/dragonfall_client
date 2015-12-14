@@ -739,59 +739,59 @@ function CityLayer:RefreshMyCitySoldierCount()
     self:UpdateSoldiersVisible()
 end
 function CityLayer:UpdateSoldiersVisible()
-    local map = self.scene:GetCity():GetUser().soldiers
-    self:IteratorSoldiers(function(_, v)
-        local type_, star = v:GetSoldierTypeAndStar()
-        local is_visible = map[type_] > 0
-        v:setVisible(is_visible)
-    end)
+    -- local map = self.scene:GetCity():GetUser().soldiers
+    -- self:IteratorSoldiers(function(_, v)
+    --     local type_, star = v:GetSoldierTypeAndStar()
+    --     local is_visible = map[type_] > 0
+    --     v:setVisible(is_visible)
+    -- end)
 end
 function CityLayer:UpdateSoldiersStar()
-    local User = self.scene:GetCity():GetUser()
-    local need_refresh = false
-    self:IteratorSoldiers(function(_, v)
-        local type_, star_old = v:GetSoldierTypeAndStar()
-        local star_now = User:SoldierStarByName(type_)
-        if star_now ~= star_old then
-            need_refresh = true
-        end
-    end)
-    if need_refresh then
-        self:RefreshSoldiers()
-    end
+    -- local User = self.scene:GetCity():GetUser()
+    -- local need_refresh = false
+    -- self:IteratorSoldiers(function(_, v)
+    --     local type_, star_old = v:GetSoldierTypeAndStar()
+    --     local star_now = User:SoldierStarByName(type_)
+    --     if star_now ~= star_old then
+    --         need_refresh = true
+    --     end
+    -- end)
+    -- if need_refresh then
+    --     self:RefreshSoldiers()
+    -- end
 end
 function CityLayer:RefreshSoldiers()
-    local User = self.scene:GetCity():GetUser()
-    for _,v in pairs(self.soldiers or {}) do
-        v:removeFromParent()
-    end
-    local soldiers = {}
-    for i, v in ipairs({
-        {x = 6, y = 18, soldier_type = "skeletonWarrior"},
-        {x = 4, y = 18, soldier_type = "skeletonArcher"},
-        {x = 8, y = 18, soldier_type = "deathKnight"},
-        {x = 2, y = 18, soldier_type = "meatWagon"},
+    -- local User = self.scene:GetCity():GetUser()
+    -- for _,v in pairs(self.soldiers or {}) do
+    --     v:removeFromParent()
+    -- end
+    -- local soldiers = {}
+    -- for i, v in ipairs({
+    --     {x = 6, y = 18, soldier_type = "skeletonWarrior"},
+    --     {x = 4, y = 18, soldier_type = "skeletonArcher"},
+    --     {x = 8, y = 18, soldier_type = "deathKnight"},
+    --     {x = 2, y = 18, soldier_type = "meatWagon"},
 
-        {x = 8, y = 15.5, soldier_type = "lancer"},
-        {x = 6, y = 15.5, soldier_type = "swordsman"},
-        {x = 4, y = 15.5, soldier_type = "ranger"},
-        {x = 2, y = 15.5, soldier_type = "catapult"},
+    --     {x = 8, y = 15.5, soldier_type = "lancer"},
+    --     {x = 6, y = 15.5, soldier_type = "swordsman"},
+    --     {x = 4, y = 15.5, soldier_type = "ranger"},
+    --     {x = 2, y = 15.5, soldier_type = "catapult"},
 
-        {x = 8, y = 13, soldier_type = "horseArcher"},
-        {x = 6, y = 13, soldier_type = "sentinel"},
-        {x = 4, y = 13, soldier_type = "crossbowman"},
-        {x = 2, y = 13, soldier_type = "ballista"},
-    }) do
-        local star = User:SoldierStarByName(v.soldier_type)
-        assert(star < 4)
-        local soldier = self:CreateSoldier(v.soldier_type, star, v.x, v.y):addTo(self:GetCityNode())
-        local x, y = soldier:getPosition()
-        soldier:pos(x, y + 25)
-        table.insert(soldiers, soldier)
-    end
-    self.soldiers = soldiers
+    --     {x = 8, y = 13, soldier_type = "horseArcher"},
+    --     {x = 6, y = 13, soldier_type = "sentinel"},
+    --     {x = 4, y = 13, soldier_type = "crossbowman"},
+    --     {x = 2, y = 13, soldier_type = "ballista"},
+    -- }) do
+    --     local star = User:SoldierStarByName(v.soldier_type)
+    --     assert(star < 4)
+    --     local soldier = self:CreateSoldier(v.soldier_type, star, v.x, v.y):addTo(self:GetCityNode())
+    --     local x, y = soldier:getPosition()
+    --     soldier:pos(x, y + 25)
+    --     table.insert(soldiers, soldier)
+    -- end
+    -- self.soldiers = soldiers
 
-    self:UpdateSoldiersVisible()
+    -- self:UpdateSoldiersVisible()
 end
 function CityLayer:UpdateHelpedByTroopsVisible(helped_by_troops)
     self:IteratorHelpedTroops(function(i, v)
@@ -838,7 +838,7 @@ function CityLayer:IteratorFunctionsBuildings(func)
     table.foreach(self.buildings, func)
 end
 function CityLayer:IteratorSoldiers(func)
-    table.foreach(self.soldiers, func)
+    -- table.foreach(self.soldiers, func)
 end
 function CityLayer:IteratorInnnerBuildings(func)
     local handle = false

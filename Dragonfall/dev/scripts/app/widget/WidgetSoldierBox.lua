@@ -30,7 +30,7 @@ end
 
 function WidgetSoldierBox:SetSoldier(soldier_type, star)
     star = checknumber(star)
-    local soldier_ui_config = UILib.soldier_image[soldier_type][star]
+    local soldier_ui_config = UILib.soldier_image[soldier_type]
     if soldier_ui_config then
         if self.soldier then
             self.soldier_bg:removeChild(self.soldier)

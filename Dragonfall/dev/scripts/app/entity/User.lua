@@ -679,15 +679,7 @@ function User:GetTerrainResourceBuff()
     end
     return setmetatable(buff, BUFF_META)
 end
---获得有加成的龙类型
-function User:GetBestDragon()
-    local bestDragonForTerrain = {
-        grassLand = "greenDragon",
-        desert= "redDragon",
-        iceField = "blueDragon",
-    }
-    return bestDragonForTerrain[self.basicInfo.terrain]
-end
+
 --[[end]]
 
 
@@ -818,29 +810,46 @@ end
 function User:GetBuildingSoldiersInfo(building)
     if building == "trainingGround" then
         return {
-            { "swordsman", self:SoldierStarByName("swordsman") },
-            {  "sentinel",  self:SoldierStarByName("sentinel") }
+            { "swordsman_1", self:SoldierStarByName("swordsman_1") },
+            { "swordsman_2", self:SoldierStarByName("swordsman_2") },
+            { "swordsman_3", self:SoldierStarByName("swordsman_3") },
+            {  "sentinel_1",  self:SoldierStarByName("sentinel_1") },
+            {  "sentinel_2",  self:SoldierStarByName("sentinel_2") },
+            {  "sentinel_3",  self:SoldierStarByName("sentinel_3") },
         }
     elseif building == "stable" then
         return {
-            {      "lancer",      self:SoldierStarByName("lancer") },
-            { "horseArcher", self:SoldierStarByName("horseArcher") }
+            {      "lancer_1",      self:SoldierStarByName("lancer_1") },
+            {      "lancer_2",      self:SoldierStarByName("lancer_2") },
+            {      "lancer_3",      self:SoldierStarByName("lancer_3") },
+            { "horseArcher_1", self:SoldierStarByName("horseArcher_1") },
+            { "horseArcher_2", self:SoldierStarByName("horseArcher_2") },
+            { "horseArcher_3", self:SoldierStarByName("horseArcher_3") },
         }
     elseif building == "hunterHall" then
         return {
-            {      "ranger",      self:SoldierStarByName("ranger") },
-            { "crossbowman", self:SoldierStarByName("crossbowman") }
+            {      "ranger_1",      self:SoldierStarByName("ranger_1") },
+            {      "ranger_2",      self:SoldierStarByName("ranger_2") },
+            {      "ranger_3",      self:SoldierStarByName("ranger_3") },
+            { "crossbowman_1", self:SoldierStarByName("crossbowman_1") },
+            { "crossbowman_2", self:SoldierStarByName("crossbowman_2") },
+            { "crossbowman_3", self:SoldierStarByName("crossbowman_3") },
         }
     elseif building == "workshop" then
         return {
-            { "catapult", self:SoldierStarByName("catapult") },
-            { "ballista", self:SoldierStarByName("ballista") }
+            { "catapult_1", self:SoldierStarByName("catapult_1") },
+            { "catapult_2", self:SoldierStarByName("catapult_2") },
+            { "catapult_3", self:SoldierStarByName("catapult_3") },
+            { "ballista_1", self:SoldierStarByName("ballista_1") },
+            { "ballista_2", self:SoldierStarByName("ballista_2") },
+            { "ballista_3", self:SoldierStarByName("ballista_3") },
         }
     end
     assert(false)
 end
 function User:GetSoldierUpkeep()
     local total = 0
+        print(debug.traceback("", 2))
     for soldier_name,count in pairs(self.soldiers) do
         total = total + self:GetSoldierConfig(soldier_name).consumeFoodPerHour * count
     end

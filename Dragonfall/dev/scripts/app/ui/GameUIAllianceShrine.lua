@@ -310,7 +310,7 @@ function GameUIAllianceShrine:GetStageListItem(index,stage_obj)
         x = x + 70
     end
 
-    local troop_image = UILib.soldier_image[troop.type][troop.star]
+    local troop_image = UILib.soldier_image[troop.type]
     if is_locked then
         local sp = display.newFilteredSprite(troop_image, "CUSTOM", json.encode({frag = "shaders/ps_discoloration.fs",shaderName = "ps_discoloration"}))
             :align(display.RIGHT_BOTTOM, 550, 0)
