@@ -337,7 +337,12 @@ end
 
 function GameUIWall:RefreshListView()
     self.info_list:removeAllItems()
-    local soldiers = User.defenceTroop.soldiers
+    local soldiers = clone(User.defenceTroop.soldiers)
+    table.sort( soldiers, function ( a,b )
+        local total_power_a = User:GetSoldierConfig(a.name).power * a.count
+        local total_power_b = User:GetSoldierConfig(b.name).power * b.count
+        return total_power_a > total_power_b
+    end )
     for i=1,#soldiers,4 do
         local row_item = display.newNode()
         local added = 1
