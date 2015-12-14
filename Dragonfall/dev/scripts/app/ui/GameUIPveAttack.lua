@@ -367,7 +367,7 @@ function GameUIPveAttack:Attack()
     table.remove(enemies, 1)
     UIKit:newGameUI('GameUIPVESendTroop',
         LuaUtils:table_map(enemies, function(k,v)
-            local name,star = unpack(string.split(v, "_"))
+            local name,star = unpack(string.split(v, ":"))
             return k, {name = name, star = tonumber(star)}
         end),
         function(dragonType, soldiers)
