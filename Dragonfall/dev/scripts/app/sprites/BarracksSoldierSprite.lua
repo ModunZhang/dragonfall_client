@@ -5,66 +5,34 @@ local min = math.min
 
 
 local move_ani_map = {
-    ranger = {
-        "gongjianshou_1_45",
-        "gongjianshou_2_45",
-        "gongjianshou_3_45",
-    },
-    crossbowman = {
-        "nugongshou_1_45",
-        "nugongshou_2_45",
-        "nugongshou_3_45",
-    },
-    catapult = {
-        "toushiche_45",
-        "toushiche_2_45",
-        "toushiche_3_45",
-    },
-    ballista = {
-        "nuche_1_45",
-        "nuche_2_45",
-        "nuche_3_45",
-    },
-    lancer = {
-        "qibing_1_45",
-        "qibing_2_45",
-        "qibing_3_45",
-    },
-    horseArcher = {
-        "youqibing_1_45",
-        "youqibing_2_45",
-        "youqibing_3_45",
-    },
-    swordsman = {
-        "bubing_1_45",
-        "bubing_2_45",
-        "bubing_3_45",
-    },
-    sentinel = {
-        "shaobing_1_45",
-        "shaobing_2_45",
-        "shaobing_3_45",
-    },
-    skeletonWarrior = {
-        "kulouyongshi_45",
-        "kulouyongshi_45",
-        "kulouyongshi_45",
-    },
-    skeletonArcher = {
-        "kulousheshou_45",
-        "kulousheshou_45",
-        "kulousheshou_45",
-    },
-    deathKnight = {
-        "siwangqishi_45",
-        "siwangqishi_45",
-        "siwangqishi_45",
-    },
-    meatWagon = {
-        "jiaorouche_45",
-        "jiaorouche_45",
-        "jiaorouche_45",
-    },
+    ranger_1 = "gongjianshou_1_45",
+    ranger_2 = "gongjianshou_2_45",
+    ranger_3 = "gongjianshou_3_45",
+    crossbowman_1 = "nugongshou_1_45",
+    crossbowman_2 = "nugongshou_2_45",
+    crossbowman_3 = "nugongshou_3_45",
+    catapult_1 = "toushiche_45",
+    catapult_2 = "toushiche_2_45",
+    catapult_3 = "toushiche_3_45",
+    ballista_1 = "nuche_1_45",
+    ballista_2 = "nuche_2_45",
+    ballista_3 = "nuche_3_45",
+    lancer_1 = "qibing_1_45",
+    lancer_2 = "qibing_2_45",
+    lancer_3 = "qibing_3_45",
+    horseArcher_1 = "youqibing_1_45",
+    horseArcher_2 = "youqibing_2_45",
+    horseArcher_3 = "youqibing_3_45",
+    swordsman_1 = "bubing_1_45",
+    swordsman_2 = "bubing_2_45",
+    swordsman_3 = "bubing_3_45",
+    sentinel_1 = "shaobing_1_45",
+    sentinel_2 = "shaobing_2_45",
+    sentinel_3 = "shaobing_3_45",
+    skeletonWarrior = "kulouyongshi_45",
+    skeletonArcher = "kulousheshou_45",
+    deathKnight = "siwangqishi_45",
+    meatWagon = "jiaorouche_45",
 }
 
 
@@ -119,7 +87,7 @@ function BarracksSoldierSprite:SetupAniConfig(act, isFlip)
     sprite:getAnimation():play(act)
 end
 function BarracksSoldierSprite:GetAniName()
-    return move_ani_map[self.soldier_type][self.soldier_star]
+    return move_ani_map[self.soldier_type]
 end
 function BarracksSoldierSprite:GetSpriteOffset()
     return 0,0

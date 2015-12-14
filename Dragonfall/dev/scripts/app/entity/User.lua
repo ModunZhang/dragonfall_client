@@ -849,7 +849,6 @@ function User:GetBuildingSoldiersInfo(building)
 end
 function User:GetSoldierUpkeep()
     local total = 0
-        print(debug.traceback("", 2))
     for soldier_name,count in pairs(self.soldiers) do
         total = total + self:GetSoldierConfig(soldier_name).consumeFoodPerHour * count
     end

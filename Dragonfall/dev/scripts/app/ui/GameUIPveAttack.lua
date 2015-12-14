@@ -601,10 +601,10 @@ function GameUIPveAttack:DecodeReport(report, dragon, attack_soldiers)
     local titlename = self.titlename
     local pve_name = self.pve_name
     local troops = string.split(sections[pve_name].troops, ",")
-    local _,_,level = unpack(string.split(troops[1], "_"))
+    local _,_,level = unpack(string.split(troops[1], ":"))
     table.remove(troops, 1)
     local defence_soldiers = LuaUtils:table_map(troops, function(k,v)
-        local name,star,count = unpack(string.split(v, "_"))
+        local name,star,count = unpack(string.split(v, ":"))
         return k, {name = name, star = tonumber(star), count = count}
     end)
     function report:GetFightAttackName()

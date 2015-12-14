@@ -326,7 +326,7 @@ function GameUIPveSummary:BuildDefeatUI(param)
         self:LeftButtonClicked()
     end)
 
-    WidgetSoldier.new("swordsman", 1):addTo(barracks):pos(-180, 0):scale(0.8)
+    WidgetSoldier.new("swordsman_1", 1):addTo(barracks):pos(-180, 0):scale(0.8)
 
     UIKit:ttfLabel({
         text = _("兵营"),
