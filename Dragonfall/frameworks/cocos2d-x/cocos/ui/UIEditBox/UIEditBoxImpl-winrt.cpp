@@ -360,6 +360,19 @@ void UIEditBoxImplWinrt::openKeyboard()
                 _delegate->editBoxEditingDidEnd(_editBox);
                 _delegate->editBoxReturn(_editBox);
             }
+//dannyhe fix bug with lua event
+#if CC_ENABLE_SCRIPT_BINDING
+			EditBox* pEditBox = this->getEditBox();
+			if (NULL != pEditBox && 0 != pEditBox->getScriptEditBoxHandler())
+			{
+				CommonScriptData endData(pEditBox->getScriptEditBoxHandler(), "ended", pEditBox);
+				ScriptEvent endEvent(kCommonEvent, (void*)&endData);
+				ScriptEngineManager::getInstance()->getScriptEngine()->sendEvent(&endEvent);
+				CommonScriptData data(pEditBox->getScriptEditBoxHandler(), "return", pEditBox);
+				ScriptEvent event(kCommonEvent, (void*)&data);
+				ScriptEngineManager::getInstance()->getScriptEngine()->sendEvent(&event);
+			}
+#endif
         });
 
         m_editBoxWinrt = ref new EditBoxWinRT(stringToPlatformString(placeHolder), stringToPlatformString(getText()), m_nMaxLength, m_eEditBoxInputMode, m_eEditBoxInputFlag, receiveHandler);
