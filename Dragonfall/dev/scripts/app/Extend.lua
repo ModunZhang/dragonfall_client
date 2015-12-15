@@ -15,6 +15,10 @@ local rgba4444 = import(".rgba4444")
 local jpg_rgb888 = import(".jpg_rgb888")
 local animation = import(".animation")
 
+
+jpg_rgb888["background_608x678.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
+
+
 local auto_cleanup = {
     ["jpg_png0.png"] = 1,
     ["jpg_png1.png"] = 1,
@@ -30,9 +34,18 @@ local auto_cleanup = {
     ["jpg_png11.png"] = 1,
     ["jpg_png12.png"] = 1,
     ["start_game_292x28.png"] = 1,
+    ["background_608x678.png"] = 1,
 }
 for k,v in pairs(jpg_rgb888) do
     auto_cleanup[k] = true
+end
+for _,v in pairs(plist_texture_data) do
+    auto_cleanup[v] = true
+end
+for _,v in pairs(animation) do
+    for _,found_data_in_plist in ipairs(v) do
+        auto_cleanup[found_data_in_plist] = true
+    end
 end
 
 math.round = function(n)
