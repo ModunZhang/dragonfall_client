@@ -44,7 +44,10 @@ for _,v in pairs(plist_texture_data) do
 end
 for _,v in pairs(animation) do
     for _,found_data_in_plist in ipairs(v) do
-        auto_cleanup[found_data_in_plist] = true
+        local png_path = DEBUG_GET_ANIMATION_PATH(found_data_in_plist)
+        if png_path then
+            auto_cleanup[png_path] = true
+        end
     end
 end
 
