@@ -14,10 +14,6 @@
 
 > 自定义的修改cocostudio生成的动画数据工程(mac)
 
-* CompressETCTexture
-
-> 自定义压缩纹理的工具工程,解析方式已经添加项目中(mac/win32)
-
 * crc32
 
 > 将生成crc32的命令行抽离出项目的单独工程(mac/win32)
@@ -39,11 +35,21 @@
 
 * mac
 
-> 执行命令 cmake -GXcode
+> 执行命令 cmake -G “Xcode” .
 
 * win32
+> 执行命令 cmake -G "Visual Studio 12 2013" .
+> 也可以使用cmake的gui工具生成项目
 
-> 使用cmake的gui工具生成项目即可
+### 子模块的引入
+
+之前我将自定义的压缩工具源码拷贝到了`external`文件下，发现维护起来很麻烦，所以这个项目就用子模块的形式引入。
+如果你发现你的`external`下没有这个项目,在项目根目录执行以下命令.
+
+~~~
+	git submodule init
+	git submodule update
+~~~
 
 ## cocos2dx的external
 
