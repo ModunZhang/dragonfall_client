@@ -234,7 +234,7 @@ function GameUIWall:CreateMilitaryUIIf()
                 NetManager:getSetDefenceTroopPromise(dragonType,soldiers):done(function ()
                     self:RefreshUIAfterSelectDragon(self.dragon_manager:GetDragon(dragonType),soldiers)
                 end)
-            end,{isMilitary = true,terrain = Alliance_Manager:GetMyAlliance().basicInfo.terrain,title = _("驻防部队")}):AddToCurrentScene(true)
+            end,{isMilitary = true,terrain = not Alliance_Manager:GetMyAlliance():IsDefault() and Alliance_Manager:GetMyAlliance().basicInfo.terrain or User.basicInfo.terrain,title = _("驻防部队")}):AddToCurrentScene(true)
         end)
     self.military_troop_btn = select_button
 
@@ -279,7 +279,7 @@ function GameUIWall:CreateMilitaryUIIf()
                 NetManager:getSetDefenceTroopPromise(dragonType,soldiers):done(function ()
                     self:RefreshUIAfterSelectDragon(self.dragon_manager:GetDragon(dragonType),soldiers)
                 end)
-            end,{isMilitary = true,terrain = Alliance_Manager:GetMyAlliance().basicInfo.terrain,title = _("驻防部队"),military_soldiers = User.defenceTroop.soldiers}):AddToCurrentScene(true)
+            end,{isMilitary = true,terrain = not Alliance_Manager:GetMyAlliance():IsDefault() and Alliance_Manager:GetMyAlliance().basicInfo.terrain or User.basicInfo.terrain,title = _("驻防部队"),military_soldiers = User.defenceTroop.soldiers}):AddToCurrentScene(true)
         end)
     self.edit_troop_btn = edit_button
     if dragon then
