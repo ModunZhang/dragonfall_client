@@ -797,6 +797,10 @@ end
 
 
 --[[soldier begin]]
+function User:IsSoldierUnlocked(soldierName)
+    return (self:GetSoldierConfig(soldierName).needBarracksLevel or math.huge) 
+        >= self:GetBarracksLevel()
+end
 function User:GetSoldierEventsBySeq()
     local events = {}
     for _,v in ipairs(self.soldierEvents) do
@@ -1145,6 +1149,13 @@ end
 
 
 --[[buildings begin]]
+function User:GetBarracksLevel()
+    for k,v in pairs(self.buildings) do
+        if v.type == "barracks" then
+            return v.level
+        end
+    end
+end
 function User:GetAcademyLevel()
     for k,v in pairs(self.buildings) do
         if v.type == "academy" then
@@ -1503,8 +1514,8 @@ function User:RefreshOutput()
     cart.limit = tradeGuild_info.maxCart
     cart.output = tradeGuild_info.cartRecovery
 
-    dump(self.resources, "self.user.resources_cache")
-    dump(self.resources_cache, "self.user.resources_cache")
+    -- dump(self.resources, "self.user.resources_cache")
+    -- dump(self.resources_cache, "self.user.resources_cache")
 end
 --[[end]]
 

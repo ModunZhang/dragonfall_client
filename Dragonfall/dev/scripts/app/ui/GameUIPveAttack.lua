@@ -164,8 +164,8 @@ function GameUIPveAttack:BuildBossUI()
         :align(display.CENTER, 95, h - 110)
         :scale(136/126):addTo(self:GetBody())
 
-    display.newSprite("alliance_moonGate.png")
-        :addTo(self:GetBody()):pos(95, h - 110):scale(0.8)
+    display.newSprite("pve_moonGate.png")
+    :addTo(self:GetBody()):pos(95, h - 110):scale(0.8)
 
     UIKit:ttfLabel({
         text = _("你能感觉到一个一场强大的生物驻守在这里, 阻挡着你继续前进, 但想要前往下一关卡必须击败它。"),

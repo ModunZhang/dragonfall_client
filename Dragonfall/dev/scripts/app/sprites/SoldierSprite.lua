@@ -1,22 +1,37 @@
 local Sprite = import(".Sprite")
 local SoldierSprite = class("SoldierSprite", Sprite)
 
-local normal = GameDatas.Soldiers.normal
-local special = GameDatas.Soldiers.special
+
 
 local soldier_config = {
-    ["swordsman"] = {count = 4, scale = 1},
-    ["ranger"] = {count = 4, scale = 1},
-    ["lancer"] = {count = 2, scale = 1},
-    ["catapult"] = {count = 1, scale = 1},
-    ["sentinel"] = {count = 4, scale = 1},
-    ["crossbowman"] = {count = 4, scale = 1},
-    ["horseArcher"] = {count = 2, scale = 1},
-    ["ballista"] = {count = 1, scale = 1},
-    ["skeletonWarrior"] = {count = 4, scale = 0.6},
-    ["skeletonArcher"] = {count = 4, scale = 0.6},
-    ["deathKnight"] = {count = 2, scale = 0.6},
-    ["meatWagon"] = {count = 1, scale = 0.6},
+    swordsman_1 = {count = 4, scale = 1},
+    swordsman_2 = {count = 4, scale = 1},
+    swordsman_3 = {count = 4, scale = 1},
+    ranger_1 = {count = 4, scale = 1},
+    ranger_2 = {count = 4, scale = 1},
+    ranger_3 = {count = 4, scale = 1},
+    lancer_1 = {count = 2, scale = 1},
+    lancer_2 = {count = 2, scale = 1},
+    lancer_3 = {count = 2, scale = 1},
+    catapult_1 = {count = 1, scale = 1},
+    catapult_2 = {count = 1, scale = 1},
+    catapult_3 = {count = 1, scale = 1},
+    sentinel_1 = {count = 4, scale = 1},
+    sentinel_2 = {count = 4, scale = 1},
+    sentinel_3 = {count = 4, scale = 1},
+    crossbowman_1 = {count = 4, scale = 1},
+    crossbowman_2 = {count = 4, scale = 1},
+    crossbowman_3 = {count = 4, scale = 1},
+    horseArcher_1 = {count = 2, scale = 1},
+    horseArcher_2 = {count = 2, scale = 1},
+    horseArcher_3 = {count = 2, scale = 1},
+    ballista_1 = {count = 1, scale = 1},
+    ballista_2 = {count = 1, scale = 1},
+    ballista_3 = {count = 1, scale = 1},
+    skeletonWarrior = {count = 4, scale = 0.6},
+    skeletonArcher = {count = 4, scale = 0.6},
+    deathKnight = {count = 2, scale = 0.6},
+    meatWagon = {count = 1, scale = 0.6},
 }
 local position_map = {
     [1] = {
@@ -39,11 +54,12 @@ local position_map = {
         {x = 0, y = -35},
     }
 }
-function SoldierSprite:ctor(city_layer, soldier_type, soldier_star, x, y)
+
+local normal = GameDatas.Soldiers.normal
+local special = GameDatas.Soldiers.special
+function SoldierSprite:ctor(city_layer, soldier_type, x, y)
     assert(soldier_type)
     self.soldier_type = soldier_type
-    local config = special[soldier_type] or normal[soldier_type.."_"..soldier_star]
-    self.soldier_star = soldier_star or config.star
     self.x, self.y = x, y
     SoldierSprite.super.ctor(self, city_layer, nil, city_layer:GetLogicMap():ConvertToMapPosition(x, y))
 
@@ -55,7 +71,7 @@ function SoldierSprite:CreateSprite()
     local node = display.newNode()
     local s = soldier_config[self.soldier_type].scale or 1
     for _,v in ipairs(position_map[soldier_config[self.soldier_type].count]) do
-        UIKit:CreateSoldierIdle45Ani(self.soldier_type, self.soldier_star)
+        UIKit:CreateSoldierIdle45Ani(self.soldier_type)
         :addTo(node):align(display.CENTER, v.x, v.y):scale(s)
     end
     return node
@@ -70,8 +86,8 @@ end
 function SoldierSprite:CreateBase()
     self:GenerateBaseTiles(2, 2)
 end
-function SoldierSprite:GetSoldierTypeAndStar()
-    return self.soldier_type, self.soldier_star
+function SoldierSprite:GetSoldierType()
+    return self.soldier_type
 end
 function SoldierSprite:SetPositionWithZOrder(x, y)
     self.x, self.y = self:GetLogicMap():ConvertToLogicPosition(x, y)
