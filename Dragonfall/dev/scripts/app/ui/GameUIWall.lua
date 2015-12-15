@@ -110,7 +110,7 @@ function GameUIWall:CreateMilitaryUIIf()
 
     local draogn_box = display.newSprite("alliance_item_flag_box_126X126.png")
         :addTo(military_node)
-        :align(display.LEFT_BOTTOM, window.left + 5,wall_bg:getPositionY() - wall_bg:getContentSize().height/2 - 10)
+        :align(display.LEFT_BOTTOM, 42,wall_bg:getPositionY() - wall_bg:getContentSize().height/2 - 10)
     local dragon_bg = display.newSprite("dragon_bg_114x114.png", 63, 63):addTo(draogn_box)
     self.dragon_head = display.newSprite(UILib.dragon_head['redDragon']):addTo(dragon_bg):pos(57,60)
     if not dragon then
