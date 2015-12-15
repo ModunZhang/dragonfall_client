@@ -296,8 +296,8 @@ end
 
 local function GetSoldier()
     mock{
-        {"soldiers.swordsman", 100},
-        {"soldiers.ranger", 100}
+        {"soldiers.swordsman_1", 100},
+        {"soldiers.ranger_1", 100}
     }
 
     local key = string.format("GetSoldier")
@@ -361,7 +361,7 @@ local function FightWithNpc(pve_name)
             {"soldierMaterials.magicBox", 1},
             {"soldierMaterials.deathHand", 1},
             {"soldierMaterials.soulStone", 1},
-            {"soldierMaterials.heroBones", 1},
+            {"soldierMaterials.heroBones", 2},
         }
     end
 

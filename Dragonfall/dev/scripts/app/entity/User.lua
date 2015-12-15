@@ -1514,8 +1514,8 @@ function User:RefreshOutput()
     cart.limit = tradeGuild_info.maxCart
     cart.output = tradeGuild_info.cartRecovery
 
-    dump(self.resources, "self.user.resources_cache")
-    dump(self.resources_cache, "self.user.resources_cache")
+    -- dump(self.resources, "self.user.resources_cache")
+    -- dump(self.resources_cache, "self.user.resources_cache")
 end
 --[[end]]
 

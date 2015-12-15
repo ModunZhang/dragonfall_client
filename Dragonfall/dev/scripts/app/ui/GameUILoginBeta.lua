@@ -665,8 +665,8 @@ function GameUILoginBeta:checkFte()
     if check("FinishUpgradingBuilding_barracks_1") then
         mockData.FinishUpgradingBuilding("barracks",1)
     end
-    if check("InstantRecruitSoldier_swordsman") then
-        mockData.InstantRecruitSoldier("swordsman", 10)
+    if check("InstantRecruitSoldier_swordsman_1") then
+        mockData.InstantRecruitSoldier("swordsman_1", 10)
     end
     if check("BuildHouseAt_5_3") then
         mockData.BuildHouseAt(5,3,"farmer")
@@ -691,7 +691,7 @@ function GameUILoginBeta:checkFte()
         mockData.FinishUpgradingBuilding("hospital",1)
     end
     if check("TreatSoldier") then
-        mockData.TreatSoldier("swordsman", 12)
+        mockData.TreatSoldier("swordsman_1", 12)
     end
     if check("BuildHouseAt_6_3") then
         mockData.BuildHouseAt(6,3,"woodcutter")

@@ -213,7 +213,7 @@ function WorldLayer:MoveAllianceFromTo(fromIndex, toIndex)
         table.insert(actions, cc.DelayTime:create(step_time))
     end
     local gap, scal, ft, offset = -65, 0.8, 0.5, -40
-    UIKit:CreateMoveSoldiers(degree, {name = "ranger", star = 3}, scal)
+    UIKit:CreateMoveSoldiers(degree, {name = "ranger_1", star = 3}, scal)
     :addTo(self.moveLayer)
     :pos(sour.x + normal.x * (2 * gap + offset), sour.y + normal.y * (2 * gap + offset))
     :runAction(transition.sequence{
@@ -224,7 +224,7 @@ function WorldLayer:MoveAllianceFromTo(fromIndex, toIndex)
         cc.RemoveSelf:create(),
     })
 
-    UIKit:CreateMoveSoldiers(degree, {name = "swordsman", star = 3}, scal)
+    UIKit:CreateMoveSoldiers(degree, {name = "swordsman_1", star = 3}, scal)
     :addTo(self.moveLayer)
     :pos(sour.x + normal.x * (gap + offset), sour.y + normal.y * (gap + offset))
     :runAction(transition.sequence{
@@ -235,7 +235,7 @@ function WorldLayer:MoveAllianceFromTo(fromIndex, toIndex)
         cc.RemoveSelf:create(),
     })
 
-    UIKit:CreateMoveSoldiers(degree, {name = "lancer", star = 3}, scal)
+    UIKit:CreateMoveSoldiers(degree, {name = "lancer_1", star = 3}, scal)
     :addTo(self.moveLayer)
     :pos(sour.x + normal.x * (offset + 10), sour.y + normal.y * (offset + 10))
     :runAction(transition.sequence{
