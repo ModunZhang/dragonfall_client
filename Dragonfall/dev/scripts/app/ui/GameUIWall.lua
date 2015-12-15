@@ -110,7 +110,7 @@ function GameUIWall:CreateMilitaryUIIf()
 
     local draogn_box = display.newSprite("alliance_item_flag_box_126X126.png")
         :addTo(military_node)
-        :align(display.LEFT_BOTTOM, window.left + 5,wall_bg:getPositionY() - wall_bg:getContentSize().height/2 - 10)
+        :align(display.LEFT_BOTTOM, 42,wall_bg:getPositionY() - wall_bg:getContentSize().height/2 - 10)
     local dragon_bg = display.newSprite("dragon_bg_114x114.png", 63, 63):addTo(draogn_box)
     self.dragon_head = display.newSprite(UILib.dragon_head['redDragon']):addTo(dragon_bg):pos(57,60)
     if not dragon then
@@ -234,7 +234,7 @@ function GameUIWall:CreateMilitaryUIIf()
                 NetManager:getSetDefenceTroopPromise(dragonType,soldiers):done(function ()
                     self:RefreshUIAfterSelectDragon(self.dragon_manager:GetDragon(dragonType),soldiers)
                 end)
-            end,{isMilitary = true,terrain = Alliance_Manager:GetMyAlliance().basicInfo.terrain,title = _("驻防部队")}):AddToCurrentScene(true)
+            end,{isMilitary = true,terrain = not Alliance_Manager:GetMyAlliance():IsDefault() and Alliance_Manager:GetMyAlliance().basicInfo.terrain or User.basicInfo.terrain,title = _("驻防部队")}):AddToCurrentScene(true)
         end)
     self.military_troop_btn = select_button
 
@@ -279,7 +279,7 @@ function GameUIWall:CreateMilitaryUIIf()
                 NetManager:getSetDefenceTroopPromise(dragonType,soldiers):done(function ()
                     self:RefreshUIAfterSelectDragon(self.dragon_manager:GetDragon(dragonType),soldiers)
                 end)
-            end,{isMilitary = true,terrain = Alliance_Manager:GetMyAlliance().basicInfo.terrain,title = _("驻防部队"),military_soldiers = User.defenceTroop.soldiers}):AddToCurrentScene(true)
+            end,{isMilitary = true,terrain = not Alliance_Manager:GetMyAlliance():IsDefault() and Alliance_Manager:GetMyAlliance().basicInfo.terrain or User.basicInfo.terrain,title = _("驻防部队"),military_soldiers = User.defenceTroop.soldiers}):AddToCurrentScene(true)
         end)
     self.edit_troop_btn = edit_button
     if dragon then
