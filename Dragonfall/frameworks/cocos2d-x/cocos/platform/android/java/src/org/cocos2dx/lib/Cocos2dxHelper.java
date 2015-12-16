@@ -79,11 +79,14 @@ public class Cocos2dxHelper {
     }
 
     private static boolean sInited = false;
+    //dannyhe Fixed #12887 : [Android] Cocos2dxHelper will not be initialized after activity recreate.
     public static void init(final Activity activity) {
+    	sActivity = activity;
+    	Cocos2dxHelper.sCocos2dxHelperListener = (Cocos2dxHelperListener)activity;
         if (!sInited) {
             final ApplicationInfo applicationInfo = activity.getApplicationInfo();
             
-            Cocos2dxHelper.sCocos2dxHelperListener = (Cocos2dxHelperListener)activity;
+//            Cocos2dxHelper.sCocos2dxHelperListener = (Cocos2dxHelperListener)activity;
                     
             Cocos2dxHelper.sPackageName = applicationInfo.packageName;
             if (CocosPlayClient.isEnabled() && !CocosPlayClient.isDemo()) {
@@ -103,7 +106,7 @@ public class Cocos2dxHelper {
             Cocos2dxHelper.nativeSetContext((Context)activity, Cocos2dxHelper.sAssetManager);
     
             Cocos2dxBitmap.setContext(activity);
-            sActivity = activity;
+//            sActivity = activity;
 
             sInited = true;
 
