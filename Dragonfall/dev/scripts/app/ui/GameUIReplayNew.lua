@@ -271,7 +271,7 @@ local function newDragon(replay_ui, dragon_type, level, is_left)
     }):align(display.CENTER, 65, -55):addTo(node,1):hide()
 
 
-    UIKit:CreateDragonBreahAni(dragon_type, is_left)
+    UIKit:CreateDragonBreathAni(dragon_type, is_left)
     :addTo(node):align(display.CENTER, is_left and 0 or 90, 0):scale(0.6)
 
     if is_left then

@@ -1109,12 +1109,12 @@ function UIKit:ButtonAddScaleAction(button)
 end
 
 local dragon_config = {
-    greenDragon = {"green_long_breath", cc.p(0.63,0.29), 1},
-    redDragon   = {  "red_long_breath", cc.p(0.63,0.29), 1},
-    blueDragon  = { "blue_long_breath", cc.p(0.63,0.29), 1},
-    blackDragon = {   "heilong_breath",  cc.p(0.63,0.2), 1.4},
+    greenDragon = {"green_long_breath", cc.p(0.63,0.29), 2},
+    redDragon   = {  "red_long_breath", cc.p(0.63,0.29), 2},
+    blueDragon  = { "blue_long_breath", cc.p(0.63,0.29), 2},
+    blackDragon = {   "heilong_breath",  cc.p(0.63,0.2), 2.4},
 }
-function UIKit:CreateDragonBreahAni(dragon_type, is_left)
+function UIKit:CreateDragonBreathAni(dragon_type, is_left)
     local ani, ap, s = unpack(dragon_config[dragon_type])
     local node = display.newNode()
     local sprite = ccs.Armature:create(ani):addTo(node)

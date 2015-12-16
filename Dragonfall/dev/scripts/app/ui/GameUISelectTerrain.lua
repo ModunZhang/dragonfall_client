@@ -81,7 +81,7 @@ function GameUISelectTerrain:RefreshDragon(terrainType)
     self.ui_map.dragon_background:setTexture(string.format("fte_select_dragon_%s.jpg", terrainType))
     self.ui_map.dragon_background:removeAllChildren()
     local s1 = self.ui_map.dragon_background:getContentSize()
-    UIKit:CreateDragonBreahAni(terrain_map[terrainType], true)
+    UIKit:CreateDragonBreathAni(terrain_map[terrainType], true)
     :addTo(self.ui_map.dragon_background)
     :pos(s1.width / 2 + 10, s1.height / 2 + 10):scale(0.45)
 
