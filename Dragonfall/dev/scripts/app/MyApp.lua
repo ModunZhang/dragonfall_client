@@ -1,7 +1,7 @@
 require("config")
 require("framework.init")
-require("app.Extend")
 require("app.utils.PlatformAdapter")
+require("app.Extend")
 require("app.utils.LuaUtils")
 require("app.utils.GameUtils")
 require("app.datas.GameDatas")
