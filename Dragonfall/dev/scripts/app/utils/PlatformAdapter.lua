@@ -123,12 +123,7 @@ function PlatformAdapter:winrt()
     end
 
     ext.getDeviceLanguage = function()
-        local code = cc.Application:getInstance():getCurrentLanguageCode()
-        if string.find(code,'en') then
-            return 'en'
-        else
-            return code
-        end
+        return cc.Application:getInstance():getCurrentLanguageCode()
     end
 end
 

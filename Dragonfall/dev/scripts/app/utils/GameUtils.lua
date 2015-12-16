@@ -517,13 +517,25 @@ function GameUtils:GetGameLanguageFromNative()
         ['zh-Hant-TW'] = 'tw',
         ['en'] = 'en',
     }
+    -- android: http://developer.android.com/reference/java/util/Locale.html
+    local android_language_map = 
+    {
+        ['zh_CN'] = 'cn',
+        ['zh_TW'] = 'tw',
+        ['en'] = 'en',
+    }
     local target_map
     if device.platform == 'ios' or device.platform == 'mac' then
         target_map = apple_language_map
     elseif device.platform == 'winrt' then
         target_map = windowsrt_language_map
+    elseif device.platform == 'android' then
+        target_map = android_language_map
     end
     local code = ext.getDeviceLanguage()
+    if device.platform == 'android' and string.find(code,'en') then
+        code = 'en'
+    end
     return target_map[code] or 'en' -- we can not find the right language ,'en' as the default value
 end
 
