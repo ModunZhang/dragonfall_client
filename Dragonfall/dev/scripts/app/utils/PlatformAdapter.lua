@@ -39,6 +39,7 @@ function PlatformAdapter:android()
             local t = {}
             for i,v in ipairs({...}) do
                 if type(v) == 'nil' then v = "nil" end
+                if type(v) == 'userdata' then v = "userdata" end
                 table.insert(t,tostring(v))
             end
             ext.__logFile(table.concat(t,"\t") .. "\n")
@@ -59,6 +60,7 @@ function PlatformAdapter:ios()
             local t = {}
             for i,v in ipairs({...}) do
                 if type(v) == 'nil' then v = "nil" end
+                if type(v) == 'userdata' then v = "userdata" end
                 table.insert(t,tostring(v))
             end
             ext.__logFile(table.concat(t,"\t") .. "\n")
@@ -116,6 +118,7 @@ function PlatformAdapter:winrt()
             local t = {}
             for i,v in ipairs({...}) do
                 if type(v) == 'nil' then v = "nil" end
+                if type(v) == 'userdata' then v = "userdata" end
                 table.insert(t,tostring(v))
             end
             ext.__logFile(table.concat(t,"\t") .. "\n")
@@ -325,7 +328,7 @@ function PlatformAdapter:common()
             printError__(...)
             if device.platform ~= 'winrt' then
                 local errDesc =   debug.traceback("", 2)
-                device.showAlert("☠Quick Framework错误☠",errDesc,"复制！",function()
+                device.showAlert("☠Quick Framework错误☠",errDesc,{"复制！"},function()
                     ext.copyText(errDesc)
                 end)
             end

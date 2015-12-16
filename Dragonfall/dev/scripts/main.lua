@@ -16,7 +16,7 @@ function __G__TRACKBACK__(errorMessage)
         print("----------------------------------------")
         if device.platform ~= 'winrt' then
             local errDesc = tostring(errorMessage) .. "\n" .. debug.traceback("", 2)
-            device.showAlert("☠错误☠",errDesc,"复制！",function()
+            device.showAlert("☠错误☠",errDesc,{"复制！"},function()
                 ext.copyText(errDesc)
             end)
         end
