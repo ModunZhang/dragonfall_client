@@ -186,20 +186,36 @@ end
 
 
 local soldier_arrange = {
-    swordsman = {row = 4, col = 2},
-    sentinel = {row = 4, col = 2},
+    swordsman_1 = {row = 4, col = 2},
+    swordsman_2 = {row = 4, col = 2},
+    swordsman_3 = {row = 4, col = 2},
+    sentinel_1 = {row = 4, col = 2},
+    sentinel_2 = {row = 4, col = 2},
+    sentinel_3 = {row = 4, col = 2},
     skeletonWarrior = {row = 4, col = 2},
 
-    ranger = {row = 4, col = 2},
-    crossbowman = {row = 4, col = 2},
+    ranger_1 = {row = 4, col = 2},
+    ranger_2 = {row = 4, col = 2},
+    ranger_3 = {row = 4, col = 2},
+    crossbowman_1 = {row = 4, col = 2},
+    crossbowman_2 = {row = 4, col = 2},
+    crossbowman_3 = {row = 4, col = 2},
     skeletonArcher = {row = 4, col = 2},
 
-    lancer = {row = 3, col = 1},
-    horseArcher = {row = 3, col = 1},
+    lancer_1 = {row = 3, col = 1},
+    lancer_2 = {row = 3, col = 1},
+    lancer_3 = {row = 3, col = 1},
+    horseArcher_1 = {row = 3, col = 1},
+    horseArcher_2 = {row = 3, col = 1},
+    horseArcher_3 = {row = 3, col = 1},
     deathKnight = {row = 3, col = 1},
 
-    catapult = {row = 2, col = 1},
-    ballista = {row = 2, col = 1},
+    catapult_1 = {row = 2, col = 1},
+    catapult_2 = {row = 2, col = 1},
+    catapult_3 = {row = 2, col = 1},
+    ballista_1 = {row = 2, col = 1},
+    ballista_2 = {row = 2, col = 1},
+    ballista_3 = {row = 2, col = 1},
     meatWagon = {row = 2, col = 1},
 }
 local function NewCorps(replay_ui, soldier, star, is_pve_soldier)
@@ -397,7 +413,7 @@ local function newSoldierInBattle(list_view, is_left)
         shadow = true,
     }):addTo(title):align(display.CENTER, s1.width/2, 13)
 
-    local soldier = WidgetSoldier.new("ranger", 1, false):addTo(content):pos(50, 50):scale(88/128)
+    local soldier = WidgetSoldier.new("ranger_1", 1, false):addTo(content):pos(50, 50):scale(88/128)
     display.newScale9Sprite("back_ground_166x84.png",190 , 50,cc.size(178,90),cc.rect(15,10,136,64)):addTo(content)
 
     local type_ = UIKit:ttfLabel({
@@ -825,12 +841,10 @@ function GameUIReplayNew:ctor(report, callback, skipcallback)
     self.callback = callback
     self.skipcallback = skipcallback
 
-    for _,v in ipairs(self:GetPreloadImages()) do
-        display.addSpriteFrames(DEBUG_GET_ANIMATION_PATH(v.list),DEBUG_GET_ANIMATION_PATH(v.image))
-    end
+    -- for _,v in ipairs(self:GetPreloadImages()) do
+    --     display.addSpriteFrames(DEBUG_GET_ANIMATION_PATH(v.list),DEBUG_GET_ANIMATION_PATH(v.image))
+    -- end
 
-    local manager = ccs.ArmatureDataManager:getInstance()
-    manager:addArmatureFileInfo(DEBUG_GET_ANIMATION_PATH("animations/paizi.ExportJson"))
     self.timer_node = display.newNode():addTo(self)
     self.round = 1
 end
@@ -1524,9 +1538,9 @@ function GameUIReplayNew:BuildUI()
     ui_map.arrow_green = display.newSprite("strong_vs_arrow_green.png")
         :addTo(top):pos(top_size.width/2, 55)
 
-    ui_map.soldier_inbattle_attack = WidgetSoldier.new("ranger", 1, false):addTo(top)
+    ui_map.soldier_inbattle_attack = WidgetSoldier.new("ranger_1", 1, false):addTo(top)
         :pos(65, 53):scale(74/128)
-    ui_map.soldier_inbattle_defence = WidgetSoldier.new("ranger", 1, false):addTo(top)
+    ui_map.soldier_inbattle_defence = WidgetSoldier.new("ranger_1", 1, false):addTo(top)
         :pos(top_size.width - 65, 53):scale(74/128)
 
     --

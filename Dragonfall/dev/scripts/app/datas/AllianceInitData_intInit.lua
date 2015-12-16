@@ -100,10 +100,15 @@ intInit["monsterRefreshMinutes"] = {
 	["value"] = 240,
 	["desc"] = "区域地图野怪多少分钟后刷新"
 }
-intInit["monstersPerPlayer"] = {
-	["type"] = "monstersPerPlayer",
-	["value"] = 2,
-	["desc"] = "每个联盟玩家创建多少个野怪"
+intInit["villageRefreshTime"] = {
+	["type"] = "villageRefreshTime",
+	["value"] = 240,
+	["desc"] = "区域地图村落多少分钟后刷新"
+}
+intInit["monsterCount"] = {
+	["type"] = "monsterCount",
+	["value"] = 40,
+	["desc"] = "每个联盟多少个野怪"
 }
 intInit["soldierFightWoundedPercent"] = {
 	["type"] = "soldierFightWoundedPercent",

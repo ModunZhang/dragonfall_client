@@ -261,9 +261,7 @@ function City:GetBeginnersTask()
                     return setmetatable({ name = v.name, level = level + 1 }, tech_meta)
                 end
             end
-        elseif v.type == "recruit" and
-            not flag[i] and
-            self:GetUser().woundedSoldiers[v.name] == 0 then
+        elseif v.type == "recruit" and not flag[i] then
             return setmetatable({ name = v.name, index = i }, recruit_meta)
         elseif v.type == "explore" and not flag[i] then
             return setmetatable({ index = i }, explore_meta)

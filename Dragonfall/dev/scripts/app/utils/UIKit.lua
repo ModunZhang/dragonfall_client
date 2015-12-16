@@ -1052,7 +1052,7 @@ end
 
 function UIKit:GetItemImage(reward_type,item_key)
     if reward_type == 'soldiers' then
-        return UILib.soldier_image[item_key][1]
+        return UILib.soldier_image[item_key]
     elseif reward_type == 'resource'
         or reward_type == 'special'
         or reward_type == 'speedup'
@@ -1126,79 +1126,43 @@ function UIKit:CreateDragonBreahAni(dragon_type, is_left)
 end
 
 
-local soldier_config = {
-    ["swordsman"] = {
-        {"heihua_bubing_2", 4},
-        {"heihua_bubing_2", 4},
-        {"heihua_bubing_3", 4},
-    },
-    ["ranger"] = {
-        {"heihua_gongjianshou_2", 4},
-        {"heihua_gongjianshou_2", 4},
-        {"heihua_gongjianshou_3", 4},
-    },
-    ["lancer"] = {
-        {"heihua_qibing_2", 2},
-        {"heihua_qibing_2", 2},
-        {"heihua_qibing_3", 2},
-    },
-    ["catapult"] = {
-        {"heihua_toushiche_2", 1},
-        {"heihua_toushiche_2", 1},
-        {"heihua_toushiche_3", 1},
-    },
-
-    -----
-    ["sentinel"] = {
-        {"heihua_shaobing_2", 4},
-        {"heihua_shaobing_2", 4},
-        {"heihua_shaobing_3", 4},
-    },
-    ["crossbowman"] = {
-        {"heihua_nugongshou_2", 4},
-        {"heihua_nugongshou_2", 4},
-        {"heihua_nugongshou_3", 4},
-    },
-    ["horseArcher"] = {
-        {"heihua_youqibing_2", 2},
-        {"heihua_youqibing_2", 2},
-        {"heihua_youqibing_3", 2},
-    },
-    ["ballista"] = {
-        {"heihua_nuche_2", 1},
-        {"heihua_nuche_2", 1},
-        {"heihua_nuche_3", 1},
-    },
-
-
-    ["skeletonWarrior"] = {
-        {"kulouyongshi", 4},
-        {"kulouyongshi", 4},
-        {"kulouyongshi", 4},
-    },
-    ["skeletonArcher"] = {
-        {"kulousheshou", 4},
-        {"kulousheshou", 4},
-        {"kulousheshou", 4},
-    },
-    ["deathKnight"] = {
-        {"siwangqishi", 2},
-        {"siwangqishi", 2},
-        {"siwangqishi", 2},
-    },
-    ["meatWagon"] = {
-        {"jiaorouche", 1},
-        {"jiaorouche", 1},
-        {"jiaorouche", 1},
-    },
+local monster_config = {
+    swordsman_1 = {"heihua_bubing_2_45", cc.p(0.55, 0.28), 4, 1},
+    swordsman_2 = {"heihua_bubing_2_45", cc.p(0.55, 0.28), 4, 1},
+    swordsman_3 = {"heihua_bubing_3_45", cc.p(0.4, 0.3), 4, -1},
+    ranger_1 = {"heihua_gongjianshou_2_45", cc.p(0.4, 0.15), 4, -1},
+    ranger_2 = {"heihua_gongjianshou_2_45", cc.p(0.4, 0.15), 4, -1},
+    ranger_3 = {"heihua_gongjianshou_3_45", cc.p(0.4, 0.3), 4, -1},
+    lancer_1 = {"heihua_qibing_2_45", cc.p(0.5, 0.4), 2, -1},
+    lancer_2 = {"heihua_qibing_2_45", cc.p(0.5, 0.4), 2, -1},
+    lancer_3 = {"heihua_qibing_3_45", cc.p(0.5, 0.45), 2, -1},
+    catapult_1 = {"heihua_toushiche_2_45", cc.p(0.5, 0.35), 1, -1},
+    catapult_2 = {"heihua_toushiche_2_45", cc.p(0.5, 0.35), 1, -1},
+    catapult_3 = {"heihua_toushiche_3_45", cc.p(0.5, 0.35), 1, -1},
+    sentinel_1 = {"heihua_shaobing_2_45", cc.p(0.5, 0.2), 4, -1},
+    sentinel_2 = {"heihua_shaobing_2_45", cc.p(0.5, 0.2), 4, -1},
+    sentinel_3 = {"heihua_shaobing_3_45", cc.p(0.5, 0.2), 4, -1},
+    crossbowman_1 = {"heihua_nugongshou_2_45", cc.p(0.5, 0.28), 4, -1},
+    crossbowman_2 = {"heihua_nugongshou_2_45", cc.p(0.5, 0.28), 4, -1},
+    crossbowman_3 = {"heihua_nugongshou_3_45", cc.p(0.5, 0.28), 4, -1},
+    horseArcher_1 = {"heihua_youqibing_2_45", cc.p(0.5, 0.3), 2, -1},
+    horseArcher_2 = {"heihua_youqibing_2_45", cc.p(0.5, 0.3), 2, -1},
+    horseArcher_3 = {"heihua_youqibing_3_45", cc.p(0.5, 0.3), 2, -1},
+    ballista_1 = {"heihua_nuche_2_45", cc.p(0.5, 0.4), 2, -1},
+    ballista_2 = {"heihua_nuche_2_45", cc.p(0.5, 0.4), 2, -1},
+    ballista_3 = {"heihua_nuche_3_45", cc.p(0.5, 0.4), 2, -1},
+    skeletonWarrior = {"kulouyongshi_45", cc.p(0.5, 0.35), 4},
+    skeletonArcher = {"kulousheshou_45", cc.p(0.5, 0.35), 4},
+    deathKnight = {"siwangqishi_45", cc.p(0.5, 0.42), 2},
+    meatWagon = {"jiaorouche_45", cc.p(0.5, 0.35), 1},
 }
 local position_map = {
     [1] = {
-        {x = 0, y = -10}
+        {x = 0, y = 0}
     },
     [2] = {
-        {x = -10, y = -10},
-        {x = 10, y = -30},
+        {x = -20, y = 10},
+        {x = 20, y = -10},
     },
     [4] = {
         {x = 0, y = 0},
@@ -1208,80 +1172,16 @@ local position_map = {
     }
 }
 function UIKit:CreateMonster(name)
-    local soldier_name, star = unpack(string.split(name, '_'))
-    local ani,count = unpack(soldier_config[soldier_name][tonumber(star)])
+    local soldier_name, star = unpack(string.split(name, ':'))
+    local _,_,count,s = unpack(monster_config[soldier_name])
     local node = display.newNode()
     for _,v in ipairs(position_map[count]) do
-        UIKit:CreateIdle45Ani(ani):pos(v.x, v.y):addTo(node)
+        UIKit:CreateSoldierIdle45Ani(soldier_name, star, monster_config)
+        :pos(v.x, v.y):addTo(node):setScaleX(s or 1)
     end
     return node
 end
----
-local soldier_animap = {
-    -- 普通兵种
-    --
-    bubing_1 = {cc.p(0.55, 0.38), false, 1},
-    bubing_2 = {cc.p(0.61, 0.45), false, 1},
-    bubing_3 = {cc.p(0.59, 0.48), false, 1},
-    --
-    gongjianshou_1 = {cc.p(0.52, 0.37), false, 1},
-    gongjianshou_2 = {cc.p(0.52, 0.37), false, 1},
-    gongjianshou_3 = {cc.p(0.52, 0.37), false, 1},
-    --
-    qibing_1 = {cc.p(0.5, 0.45), false, 1},
-    qibing_2 = {cc.p(0.5, 0.46), false, 1},
-    qibing_3 = {cc.p(0.5, 0.48), false, 1},
-    --
-    toushiche = {cc.p(0.39, 0.4), false, 1},
-    toushiche_2 = {cc.p(0.39, 0.4), false, 1},
-    toushiche_3 = {cc.p(0.37, 0.4), false, 1},
-    --
-    shaobing_1 = {cc.p(0.5, 0.36), false, 1},
-    shaobing_2 = {cc.p(0.5, 0.36), false, 1},
-    shaobing_3 = {cc.p(0.5, 0.36), false, 1},
-    --
-    nugongshou_1 = {cc.p(0.5, 0.38), false, 1},
-    nugongshou_2 = {cc.p(0.5, 0.38), false, 1},
-    nugongshou_3 = {cc.p(0.34, 0.38), false, 1},
-    --
-    youqibing_1 = {cc.p(0.5, 0.38), false, 1},
-    youqibing_2 = {cc.p(0.5, 0.38), false, 1},
-    youqibing_3 = {cc.p(0.5, 0.38), false, 1},
-    --
-    nuche_1 = {cc.p(0.5, 0.45), false, 1},
-    nuche_2 = {cc.p(0.5, 0.45), false, 1},
-    nuche_3 = {cc.p(0.5, 0.45), false, 1},
 
-    -- 特殊兵种
-    kulouyongshi = {cc.p(0.5, 0.45), false, 1.6},
-    kulousheshou = {cc.p(0.28, 0.45), false, 1.6},
-    siwangqishi = {cc.p(0.5, 0.45), false, 1.5},
-    jiaorouche = {cc.p(0.37, 0.45), false, 1.4},
-    -- 黑化兵
-    heihua_bubing_2 = {cc.p(0.5, 0.3), false, 1},
-    heihua_bubing_3 = {cc.p(0.45, 0.33), true, 0.9},
-    --
-    heihua_gongjianshou_2 = {cc.p(0.1, 0.09), true, 1, true},
-    heihua_gongjianshou_3 = {cc.p(0.47, 0.22), true, 1},
-    --
-    heihua_qibing_2 = {cc.p(0.5, 0.4), true, 0.9},
-    heihua_qibing_3 = {cc.p(0.55, 0.45), true, 0.9},
-    --
-    heihua_toushiche_2 = {cc.p(0.4, 0.4), true, 0.7},
-    heihua_toushiche_3 = {cc.p(0.4, 0.45), true, 0.7},
-    --
-    heihua_shaobing_2 = {cc.p(0.5, 0.22), true, 0.9},
-    heihua_shaobing_3 = {cc.p(0.5, 0.3), true, 0.9},
-    --
-    heihua_nugongshou_2 = {cc.p(0.48, 0.35), true, 0.9},
-    heihua_nugongshou_3 = {cc.p(0.48, 0.3), true, 0.9},
-    --
-    heihua_youqibing_2 = {cc.p(0.48, 0.3), true, 0.9},
-    heihua_youqibing_3 = {cc.p(0.48, 0.35), true, 0.9},
-    --
-    heihua_nuche_2 = {cc.p(0.5, 0.4), true, 0.7},
-    heihua_nuche_3 = {cc.p(0.5, 0.45), true, 0.7},
-}
 local dragon_fly_45_ani = {
     red_long_fly = {cc.p(0.65, 0.4), false, 1},
     blue_long_fly = {cc.p(0.65, 0.4), false, 1},
@@ -1293,60 +1193,60 @@ local dragon_fly_neg_45_ani = {
     green_long_fly = {cc.p(0.65, 0.45), false, 1},
 }
 local soldier_move_45_ani = {
-    bubing_1_45 = {cc.p(0.4, 0.38), false, 1},
-    bubing_2_45 = {cc.p(0.39, 0.38), false, 1},
-    bubing_3_45 = {cc.p(0.4, 0.45), false, 1},
-    gongjianshou_1_45 = {cc.p(0.5, 0.25), false, 1},
-    gongjianshou_2_45 = {cc.p(0.5, 0.35), false, 1},
-    gongjianshou_3_45 = {cc.p(0.49, 0.35), false, 1},
+    bubing_1_45 = {cc.p(0.4, 0.35), false, 1},
+    bubing_2_45 = {cc.p(0.3, 0.38), false, 1},
+    bubing_3_45 = {cc.p(0.3, 0.48), false, 1},
+    gongjianshou_1_45 = {cc.p(0.5, 0.23), false, 1},
+    gongjianshou_2_45 = {cc.p(0.5, 0.3), false, 1},
+    gongjianshou_3_45 = {cc.p(0.49, 0.28), false, 1},
     qibing_1_45 = {cc.p(0.48, 0.45), false, 1},
     qibing_2_45 = {cc.p(0.48, 0.45), false, 1},
     qibing_3_45 = {cc.p(0.48, 0.48), false, 1},
-    toushiche_45 = {cc.p(0.39, 0.4), false, 1},
-    toushiche_2_45 = {cc.p(0.39, 0.44), false, 1},
-    toushiche_3_45 = {cc.p(0.37, 0.44), false, 1},
-    shaobing_1_45 = {cc.p(0.47, 0.47), false, 1},
-    shaobing_2_45 = {cc.p(0.47, 0.47), false, 1},
-    shaobing_3_45 = {cc.p(0.5, 0.46), false, 1},
-    nugongshou_1_45 = {cc.p(0.47, 0.4), false, 1},
-    nugongshou_2_45 = {cc.p(0.47, 0.38), false, 1},
-    nugongshou_3_45 = {cc.p(0.32, 0.4), false, 1},
-    youqibing_1_45 = {cc.p(0.48, 0.38), false, 1},
-    youqibing_2_45 = {cc.p(0.48, 0.38), false, 1},
-    youqibing_3_45 = {cc.p(0.48, 0.38), false, 1},
+    toushiche_45 = {cc.p(0.5, 0.35), false, 1},
+    toushiche_2_45 = {cc.p(0.5, 0.38), false, 1},
+    toushiche_3_45 = {cc.p(0.5, 0.4), false, 1},
+    shaobing_1_45 = {cc.p(0.28, 0.45), false, 1},
+    shaobing_2_45 = {cc.p(0.28, 0.45), false, 1},
+    shaobing_3_45 = {cc.p(0.5, 0.45), false, 1},
+    nugongshou_1_45 = {cc.p(0.45, 0.35), false, 1},
+    nugongshou_2_45 = {cc.p(0.35, 0.35), false, 1},
+    nugongshou_3_45 = {cc.p(0.4, 0.35), false, 1},
+    youqibing_1_45 = {cc.p(0.4, 0.3), false, 1},
+    youqibing_2_45 = {cc.p(0.4, 0.3), false, 1},
+    youqibing_3_45 = {cc.p(0.4, 0.3), false, 1},
     nuche_1_45 = {cc.p(0.5, 0.45), false, 1},
-    nuche_2_45 = {cc.p(0.5, 0.45), false, 1},
-    nuche_3_45 = {cc.p(0.49, 0.45), false, 1},
+    nuche_2_45 = {cc.p(0.5, 0.4), false, 1},
+    nuche_3_45 = {cc.p(0.49, 0.4), false, 1},
     kulouyongshi_45 = {cc.p(0.47, 0.45), false, 1},
     kulousheshou_45 = {cc.p(0.24, 0.46), false, 1},
     siwangqishi_45 = {cc.p(0.5, 0.45), false, 1},
     jiaorouche_45 = {cc.p(0.338, 0.48), false, 1},
 }
 local soldier_move_neg_45_ani = {
-    bubing_1_45 = {cc.p(0.4, 0.28), false, 1},
-    bubing_2_45 = {cc.p(0.57, 0.4), false, 1},
-    bubing_3_45 = {cc.p(0.52, 0.4), false, 1},
-    gongjianshou_1_45 = {cc.p(0.51, 0.37), false, 1},
-    gongjianshou_2_45 = {cc.p(0.52, 0.37), false, 1},
-    gongjianshou_3_45 = {cc.p(0.52, 0.38), false, 1},
-    qibing_1_45 = {cc.p(0.4, 0.36), false, 1},
-    qibing_2_45 = {cc.p(0.4, 0.36), false, 1},
-    qibing_3_45 = {cc.p(0.4, 0.38), false, 1},
-    toushiche_45 = {cc.p(0.39, 0.43), false, 1},
-    toushiche_2_45 = {cc.p(0.39, 0.45), false, 1},
-    toushiche_3_45 = {cc.p(0.37, 0.44), false, 1},
-    shaobing_1_45 = {cc.p(0.45, 0.3), false, 1},
-    shaobing_2_45 = {cc.p(0.45, 0.3), false, 1},
-    shaobing_3_45 = {cc.p(0.47, 0.33), false, 1},
-    nugongshou_1_45 = {cc.p(0.46, 0.4), false, 1},
-    nugongshou_2_45 = {cc.p(0.46, 0.38), false, 1},
-    nugongshou_3_45 = {cc.p(0.3, 0.4), false, 1},
-    youqibing_1_45 = {cc.p(0.48, 0.38), false, 1},
-    youqibing_2_45 = {cc.p(0.48, 0.38), false, 1},
-    youqibing_3_45 = {cc.p(0.48, 0.38), false, 1},
-    nuche_1_45 = {cc.p(0.5, 0.45), false, 1},
-    nuche_2_45 = {cc.p(0.5, 0.45), false, 1},
-    nuche_3_45 = {cc.p(0.49, 0.45), false, 1},
+    bubing_1_45 = {cc.p(0.38, 0.25), false, 1},
+    bubing_2_45 = {cc.p(0.35, 0.2), false, 1},
+    bubing_3_45 = {cc.p(0.25, 0.2), false, 1},
+    gongjianshou_1_45 = {cc.p(0.6, 0.37), false, 1},
+    gongjianshou_2_45 = {cc.p(0.65, 0.37), false, 1},
+    gongjianshou_3_45 = {cc.p(0.7, 0.38), false, 1},
+    qibing_1_45 = {cc.p(0.2, 0.3), false, 1},
+    qibing_2_45 = {cc.p(0.2, 0.25), false, 1},
+    qibing_3_45 = {cc.p(0.05, 0.3), false, 1},
+    toushiche_45 = {cc.p(0.5, 0.4), false, 1},
+    toushiche_2_45 = {cc.p(0.5, 0.4), false, 1},
+    toushiche_3_45 = {cc.p(0.5, 0.4), false, 1},
+    shaobing_1_45 = {cc.p(0.28, 0.2), false, 1},
+    shaobing_2_45 = {cc.p(0.28, 0.2), false, 1},
+    shaobing_3_45 = {cc.p(0.4, 0.25), false, 1},
+    nugongshou_1_45 = {cc.p(0.4, 0.3), false, 1},
+    nugongshou_2_45 = {cc.p(0.35, 0.3), false, 1},
+    nugongshou_3_45 = {cc.p(0.3, 0.3), false, 1},
+    youqibing_1_45 = {cc.p(0.4, 0.25), false, 1},
+    youqibing_2_45 = {cc.p(0.4, 0.25), false, 1},
+    youqibing_3_45 = {cc.p(0.4, 0.25), false, 1},
+    nuche_1_45 = {cc.p(0.5, 0.4), false, 1},
+    nuche_2_45 = {cc.p(0.5, 0.4), false, 1},
+    nuche_3_45 = {cc.p(0.49, 0.4), false, 1},
     kulouyongshi_45 = {cc.p(0.46, 0.44), false, 1},
     kulousheshou_45 = {cc.p(0.26, 0.46), false, 1},
     siwangqishi_45 = {cc.p(0.4, 0.38), false, 1},
@@ -1368,91 +1268,43 @@ local function createAniWithConfig(ani, config, default_animation)
 end
 
 local soldier_ani_idle_map = {
-     ["swordsman"] = {
-        {"bubing_1_45", cc.p(0.5, 0.3)},
-        {"bubing_2_45", cc.p(0.5, 0.3)},
-        {"bubing_3_45", cc.p(0.5, 0.3)},
-    },
-    ["ranger"] = {
-        count = 4,
-        {"gongjianshou_1_45", cc.p(0.5, 0.3)},
-        {"gongjianshou_2_45", cc.p(0.5, 0.3)},
-        {"gongjianshou_3_45", cc.p(0.5, 0.3)},
-    },
-    ["lancer"] = {
-        count = 2,
-        {"qibing_1_45", cc.p(0.5, 0.48)},
-        {"qibing_2_45", cc.p(0.5, 0.48)},
-        {"qibing_3_45", cc.p(0.5, 0.48)},
-    },
-    ["catapult"] = {
-        count = 1,
-        {  "toushiche_45", cc.p(0.5, 0.3)},
-        {"toushiche_2_45", cc.p(0.5, 0.3)},
-        {"toushiche_3_45", cc.p(0.5, 0.3)},
-    },
-
-    ["sentinel"] = {
-        count = 4,
-        {"shaobing_1_45", cc.p(0.5, 0.23)},
-        {"shaobing_2_45", cc.p(0.5, 0.23)},
-        {"shaobing_3_45", cc.p(0.5, 0.23)},
-    },
-    ["crossbowman"] = {
-        count = 4,
-        {"nugongshou_1_45", cc.p(0.5, 0.25)},
-        {"nugongshou_2_45", cc.p(0.5, 0.25)},
-        {"nugongshou_3_45", cc.p(0.5, 0.25)},
-    },
-    ["horseArcher"] = {
-        count = 2,
-        {"youqibing_1_45", cc.p(0.5, 0.3)},
-        {"youqibing_2_45", cc.p(0.5, 0.3)},
-        {"youqibing_3_45", cc.p(0.5, 0.3)},
-    },
-    ["ballista"] = {
-        count = 1,
-        {"nuche_1_45", cc.p(0.5, 0.4)},
-        {"nuche_2_45", cc.p(0.5, 0.4)},
-        {"nuche_3_45", cc.p(0.5, 0.4)},
-    },
-    ----
-    ["skeletonWarrior"] = {
-        count = 4,
-        {"kulouyongshi_45", cc.p(0.5, 0.35)},
-        {"kulouyongshi_45", cc.p(0.5, 0.35)},
-        {"kulouyongshi_45", cc.p(0.5, 0.35)},
-    },
-    ["skeletonArcher"] = {
-        count = 4,
-        {"kulousheshou_45", cc.p(0.5, 0.35)},
-        {"kulousheshou_45", cc.p(0.5, 0.35)},
-        {"kulousheshou_45", cc.p(0.5, 0.35)},
-    },
-    ["deathKnight"] = {
-        count = 2,
-        {"siwangqishi_45", cc.p(0.5, 0.42)},
-        {"siwangqishi_45", cc.p(0.5, 0.42)},
-        {"siwangqishi_45", cc.p(0.5, 0.42)},
-    },
-    ["meatWagon"] = {
-        count = 1,
-        {"jiaorouche_45", cc.p(0.5, 0.35)},
-        {"jiaorouche_45", cc.p(0.5, 0.35)},
-        {"jiaorouche_45", cc.p(0.5, 0.35)},
-    },
+    swordsman_1 = {"bubing_1_45", cc.p(0.5, 0.3),4},
+    swordsman_2 = {"bubing_2_45", cc.p(0.5, 0.3),4},
+    swordsman_3 = {"bubing_3_45", cc.p(0.5, 0.3),4},
+    ranger_1 = {"gongjianshou_1_45", cc.p(0.5, 0.3),4},
+    ranger_2 = {"gongjianshou_2_45", cc.p(0.5, 0.3),4},
+    ranger_3 = {"gongjianshou_3_45", cc.p(0.5, 0.3),4},
+    lancer_1 = {"qibing_1_45", cc.p(0.5, 0.48),2},
+    lancer_2 = {"qibing_2_45", cc.p(0.5, 0.48),2},
+    lancer_3 = {"qibing_3_45", cc.p(0.5, 0.48),2},
+    catapult_1 = {"toushiche_45", cc.p(0.5, 0.3),1},
+    catapult_2 = {"toushiche_2_45", cc.p(0.5, 0.3),1},
+    catapult_3 = {"toushiche_3_45", cc.p(0.5, 0.3),1},
+    sentinel_1 = {"shaobing_1_45", cc.p(0.5, 0.23),4},
+    sentinel_2 = {"shaobing_2_45", cc.p(0.5, 0.23),4},
+    sentinel_3 = {"shaobing_3_45", cc.p(0.5, 0.23),4},
+    crossbowman_1 = {"nugongshou_1_45", cc.p(0.5, 0.25),4},
+    crossbowman_2 = {"nugongshou_2_45", cc.p(0.5, 0.25),4},
+    crossbowman_3 = {"nugongshou_3_45", cc.p(0.5, 0.25),4},
+    horseArcher_1 = {"youqibing_1_45", cc.p(0.5, 0.3),2},
+    horseArcher_2 = {"youqibing_2_45", cc.p(0.5, 0.3),2},
+    horseArcher_3 = {"youqibing_3_45", cc.p(0.5, 0.3),2},
+    ballista_1 = {"nuche_1_45", cc.p(0.5, 0.4),1},
+    ballista_2 = {"nuche_2_45", cc.p(0.5, 0.4),1},
+    ballista_3 = {"nuche_3_45", cc.p(0.5, 0.4),1},
+    skeletonWarrior = {"kulouyongshi_45", cc.p(0.5, 0.35),4},
+    skeletonArcher = {"kulousheshou_45", cc.p(0.5, 0.35),4},
+    deathKnight = {"siwangqishi_45", cc.p(0.5, 0.42),2},
+    meatWagon = {"jiaorouche_45", cc.p(0.5, 0.35),1},
 }
 
-function UIKit:CreateSoldierIdle45Ani(soldier_name, soldier_star)
-    local ani, ap, s = unpack(soldier_ani_idle_map[soldier_name][soldier_star])
+function UIKit:CreateSoldierIdle45Ani(soldier_name, soldier_star, idle_map)
+    idle_map = idle_map or soldier_ani_idle_map
+    local ani, ap = unpack(idle_map[soldier_name])
     local sprite = ccs.Armature:create(ani)
     sprite:setAnchorPoint(ap)
     sprite:getAnimation():play("idle_45")
-    sprite:setScaleX(s or 1)
     return sprite
-end
-function UIKit:CreateIdle45Ani(ani)
-    return createAniWithConfig(ani, soldier_animap[ani], "idle_45")
 end
 function UIKit:CreateDragonFly45Ani(ani)
     return createAniWithConfig(ani, dragon_fly_45_ani[ani], "flying_45")
@@ -1461,11 +1313,9 @@ function UIKit:CreateDragonFlyNeg45Ani(ani)
     return createAniWithConfig(ani, dragon_fly_neg_45_ani[ani], "flying_-45")
 end
 function UIKit:CreateSoldierMove45Ani(ani)
-    print(ani, soldier_move_45_ani[ani])
     return createAniWithConfig(ani, soldier_move_45_ani[ani], "move_45")
 end
 function UIKit:CreateSoldierMoveNeg45Ani(ani)
-    print(ani, soldier_move_neg_45_ani[ani])
     return createAniWithConfig(ani, soldier_move_neg_45_ani[ani], "move_-45")
 end
 function UIKit:GetSoldierMoveAniConfig(ani, act)
@@ -1525,82 +1375,34 @@ local soldier_dir_map = {
     {"move_45", 1}, -- y-
 }
 local soldier_config = {
-    ----
-    ["swordsman"] = {
-        count = 4,
-        {"bubing_1"},
-        {"bubing_2"},
-        {"bubing_3"},
-    },
-    ["ranger"] = {
-        count = 4,
-        {"gongjianshou_1"},
-        {"gongjianshou_2"},
-        {"gongjianshou_3"},
-    },
-    ["lancer"] = {
-        count = 2,
-        {"qibing_1"},
-        {"qibing_2"},
-        {"qibing_3"},
-    },
-    ["catapult"] = {
-        count = 1,
-        {  "toushiche"},
-        {"toushiche_2"},
-        {"toushiche_3"},
-    },
-
-    -----
-    ["sentinel"] = {
-        count = 4,
-        {"shaobing_1"},
-        {"shaobing_2"},
-        {"shaobing_3"},
-    },
-    ["crossbowman"] = {
-        count = 4,
-        {"nugongshou_1"},
-        {"nugongshou_2"},
-        {"nugongshou_3"},
-    },
-    ["horseArcher"] = {
-        count = 2,
-        {"youqibing_1"},
-        {"youqibing_2"},
-        {"youqibing_3"},
-    },
-    ["ballista"] = {
-        count = 1,
-        {"nuche_1"},
-        {"nuche_2"},
-        {"nuche_3"},
-    },
-    ----
-    ["skeletonWarrior"] = {
-        count = 4,
-        {"kulouyongshi"},
-        {"kulouyongshi"},
-        {"kulouyongshi"},
-    },
-    ["skeletonArcher"] = {
-        count = 4,
-        {"kulousheshou"},
-        {"kulousheshou"},
-        {"kulousheshou"},
-    },
-    ["deathKnight"] = {
-        count = 2,
-        {"siwangqishi"},
-        {"siwangqishi"},
-        {"siwangqishi"},
-    },
-    ["meatWagon"] = {
-        count = 1,
-        {"jiaorouche"},
-        {"jiaorouche"},
-        {"jiaorouche"},
-    },
+    swordsman_1 = {4, "bubing_1_45"},
+    swordsman_2 = {4, "bubing_2_45"},
+    swordsman_3 = {4, "bubing_3_45"},
+    ranger_1 = {4, "gongjianshou_1_45"},
+    ranger_2 = {4, "gongjianshou_2_45"},
+    ranger_3 = {4, "gongjianshou_3_45"},
+    lancer_1 = {2, "qibing_1_45"},
+    lancer_2 = {2, "qibing_2_45"},
+    lancer_3 = {2, "qibing_3_45"},
+    catapult_1 = {1, "toushiche_45"},
+    catapult_2 = {1, "toushiche_2_45"},
+    catapult_3 = {1, "toushiche_3_45"},
+    sentinel_1 = {4, "shaobing_1_45"},
+    sentinel_2 = {4, "shaobing_2_45"},
+    sentinel_3 = {4, "shaobing_3_45"},
+    crossbowman_1 = {4, "nugongshou_1_45"},
+    crossbowman_2 = {4, "nugongshou_2_45"},
+    crossbowman_3 = {4, "nugongshou_3_45"},
+    horseArcher_1 = {2, "youqibing_1_45"},
+    horseArcher_2 = {2, "youqibing_2_45"},
+    horseArcher_3 = {2, "youqibing_3_45"},
+    ballista_1 = {1, "nuche_1_45"},
+    ballista_2 = {1, "nuche_2_45"},
+    ballista_3 = {1, "nuche_3_45"},
+    skeletonWarrior = {4, "kulouyongshi_45"},
+    skeletonArcher = {4, "kulousheshou_45"},
+    deathKnight = {2, "siwangqishi_45"},
+    meatWagon = {1, "jiaorouche_45"},
 }
 local len = 30
 local location_map = {
@@ -1621,9 +1423,7 @@ local location_map = {
 local normal = GameDatas.Soldiers.normal
 local special = GameDatas.Soldiers.special
 function UIKit:CreateMoveSoldiers(degree, soldier, s)
-    local star = special[soldier.name] and 1 or (soldier.star or 1)
-    local config = soldier_config[soldier.name]
-    local soldier_ani_name = unpack(config[star])
+    local count, soldier_ani_name = unpack(soldier_config[soldier.name])
     local action_name, scalex = unpack(soldier_dir_map[GetDirIndexByDegree(degree)])
     local create_function
     if action_name == "move_45" then
@@ -1632,7 +1432,7 @@ function UIKit:CreateMoveSoldiers(degree, soldier, s)
         create_function = UIKit.CreateSoldierMoveNeg45Ani
     end
     local node = display.newNode():scale(s or 1)
-    for _,v in ipairs(location_map[config.count]) do
+    for _,v in ipairs(location_map[count]) do
         create_function(UIKit, soldier_ani_name):addTo(node)
             :pos(unpack(v)):setScaleX(scalex)
     end

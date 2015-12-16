@@ -798,7 +798,7 @@ function AllianceLayer:RefreshSpriteInfo(sprite, mapObj, alliance)
         local soldiers = string.split(corps[monster.index + 1], ",")
         info.banner:setTexture("none_banner.png")
         info.level:setString(monster.level)
-        info.name:setString(Localize.soldier_name[string.split(soldiers[1], '_')[1]])
+        info.name:setString(Localize.soldier_name[string.split(soldiers[1], ':')[1]])
     elseif mapObj.name == "woodVillage"
         or mapObj.name == "stoneVillage"
         or mapObj.name == "ironVillage"
@@ -1236,10 +1236,10 @@ local terrain_map = {
         "unlock_tile_surface_6_grassLand.png",
     },
     desert = {
-        "005.png",
-        "006.png",
-        "007.png",
-        "008.png",
+        "unlock_tile_surface_1_desert.png",
+        "unlock_tile_surface_2_desert.png",
+        "unlock_tile_surface_3_desert.png",
+        "unlock_tile_surface_4_desert.png",
     },
     iceField = {
         "unlock_tile_surface_4_iceField.png",

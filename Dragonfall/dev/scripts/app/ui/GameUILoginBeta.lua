@@ -19,36 +19,9 @@ function GameUILoginBeta:ctor()
     self.m_currentSize = 0
     self.local_resources = {
         {image = "animations/building_animation.pvr.ccz",list = "animations/building_animation.plist"},
-        -- {image = "animations/dragon_animation_0.pvr.ccz",list = "animations/dragon_animation_0.plist"},
-        -- {image = "animations/dragon_animation_1.pvr.ccz",list = "animations/dragon_animation_1.plist"},
-        -- {image = "animations/dragon_animation_2.pvr.ccz",list = "animations/dragon_animation_2.plist"},
-        -- {image = "animations/dragon_animation_3.pvr.ccz",list = "animations/dragon_animation_3.plist"},
-        -- {image = "animations/dragon_animation_4.pvr.ccz",list = "animations/dragon_animation_4.plist"},
-        -- {image = "animations/dragon_animation_5.pvr.ccz",list = "animations/dragon_animation_5.plist"},
-        -- {image = "animations/dragon_animation_6.pvr.ccz",list = "animations/dragon_animation_6.plist"},
-        -- {image = "animations/soldiers_animation_0.pvr.ccz",list = "animations/soldiers_animation_0.plist"},
-        -- {image = "animations/soldiers_animation_1.pvr.ccz",list = "animations/soldiers_animation_1.plist"},
-        -- {image = "animations/soldiers_animation_2.pvr.ccz",list = "animations/soldiers_animation_2.plist"},
-        -- {image = "animations/soldiers_animation_3.pvr.ccz",list = "animations/soldiers_animation_3.plist"},
         {image = "animations/ui_animation_0.pvr.ccz",list = "animations/ui_animation_0.plist"},
         {image = "animations/ui_animation_1.pvr.ccz",list = "animations/ui_animation_1.plist"},
         {image = "animations/ui_animation_2.pvr.ccz",list = "animations/ui_animation_2.plist"},
-        {image = "ui_png_bg0.pvr.ccz",list = "ui_png_bg0.plist"},
-        {image = "ui_png_bg1.pvr.ccz",list = "ui_png_bg1.plist"},
-        {image = "ui_png_button0.pvr.ccz",list = "ui_png_button0.plist"},
-        {image = "ui_png_button1.pvr.ccz",list = "ui_png_button1.plist"},
-        {image = "ui_png.pvr.ccz",list = "ui_png.plist"},
-        {image = "ui_pvr_0.pvr.ccz",list = "ui_pvr_0.plist"},
-        {image = "ui_pvr_1.pvr.ccz",list = "ui_pvr_1.plist"},
-
-
-    -- {image = "emoji.png",list = "emoji.plist"},
-
-
-    -- {image = "animations/heihua_animation_0.pvr.ccz",list = "animations/heihua_animation_0.plist"},
-    -- {image = "animations/heihua_animation_1.pvr.ccz",list = "animations/heihua_animation_1.plist"},
-    -- {image = "animations/heihua_animation_2.pvr.ccz",list = "animations/heihua_animation_2.plist"},
-    -- {image = "animations/region_animation_0.pvr.ccz",list = "animations/region_animation_0.plist"},
     }
     self.local_resources_percent_per = LOCAL_RESOURCES_PERCENT / #self.local_resources
 end
@@ -692,8 +665,8 @@ function GameUILoginBeta:checkFte()
     if check("FinishUpgradingBuilding_barracks_1") then
         mockData.FinishUpgradingBuilding("barracks",1)
     end
-    if check("InstantRecruitSoldier_swordsman") then
-        mockData.InstantRecruitSoldier("swordsman", 10)
+    if check("InstantRecruitSoldier_swordsman_1") then
+        mockData.InstantRecruitSoldier("swordsman_1", 10)
     end
     if check("BuildHouseAt_5_3") then
         mockData.BuildHouseAt(5,3,"farmer")
@@ -718,7 +691,7 @@ function GameUILoginBeta:checkFte()
         mockData.FinishUpgradingBuilding("hospital",1)
     end
     if check("TreatSoldier") then
-        mockData.TreatSoldier("swordsman", 12)
+        mockData.TreatSoldier("swordsman_1", 12)
     end
     if check("BuildHouseAt_6_3") then
         mockData.BuildHouseAt(6,3,"woodcutter")

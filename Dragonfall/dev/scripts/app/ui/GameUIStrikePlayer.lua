@@ -104,7 +104,7 @@ function GameUIStrikePlayer:BuildUI()
 					UIKit:showMessageDialogWithParams({
 	        			content = _("没有空闲的行军队列"),
 	        			ok_callback = function()
-	        				UIKit:newGameUI('GameUIWathTowerRegion',City,'march'):AddToCurrentScene(true)
+	        				UIKit:newGameUI('GameUIWatchTower',City,'march'):AddToCurrentScene(true)
 	        			end,
 	        			ok_string = _("前往解锁")
 	    			})
@@ -216,7 +216,7 @@ function GameUIStrikePlayer:CheckDragonIsFree()
 	    return false
 	end
 	if dragon:IsDefenced() then
-		 NetManager:getCancelDefenceDragonPromise():done(function()
+		 NetManager:getCancelDefenceTroopPromise():done(function()
 		 	self:SendDataToServer()
 		 end)
 		 return

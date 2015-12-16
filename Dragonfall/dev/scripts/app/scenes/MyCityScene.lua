@@ -47,7 +47,6 @@ function MyCityScene:onEnter()
     -- :align(display.RIGHT_TOP, display.width, display.height)
 
     alliance:AddListenOnType(self, "operation")
-    self:GetCity():GetUser():AddListenOnType(self, "soldierStars")
     self:GetCity():GetUser():AddListenOnType(self, "soldierEvents")
     self:GetCity():GetUser():AddListenOnType(self, "houseEvents")
     self:GetCity():GetUser():AddListenOnType(self, "buildingEvents")
@@ -350,9 +349,6 @@ function MyCityScene:OnUserDataChanged_soldierEvents(userData, deltaData)
         self:GetHomePage():OnUserDataChanged_growUpTasks()
         self:GetSceneLayer():MoveBarracksSoldiers(event.name)
     end
-end
-function MyCityScene:OnUserDataChanged_soldierStars(userData, deltaData)
-    self:GetSceneLayer():UpdateSoldiersStar()
 end
 function MyCityScene:OnUserDataChanged_basicInfo(userData, deltaData)
     MyCityScene.super.OnUserDataChanged_basicInfo(self, userData, deltaData)

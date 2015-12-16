@@ -15,18 +15,18 @@ function LogoScene:onEnter()
         ext.disableIdleTimer(true)
     end
     
-    -- self.layer = cc.LayerColor:create(cc.c4b(255,255,255,255)):addTo(self)
-    -- self.sprite = display.newSprite("batcat_logo_368x507.png", display.cx, display.cy):addTo(self.layer)
-    -- self:performWithDelay(function() self:beginAnimate() end,0.5)
+    self.layer = cc.LayerColor:create(cc.c4b(255,255,255,255)):addTo(self)
+    self.sprite = display.newSprite("batcat_logo_368x507.png", display.cx, display.cy):addTo(self.layer)
+    self:performWithDelay(function() self:beginAnimate() end,0.5)
 
 
-    display.newSprite("tmp_shrine_open_icon_96x96.png"):addTo(self):pos(display.cx, display.cy)
+    -- display.newSprite("tmp_shrine_open_icon_96x96.png"):addTo(self):pos(display.cx, display.cy)
 
-    UIKit:CreateSoldierMove45Ani("bubing_1_45"):addTo(self):pos(display.cx, display.cy)
+    -- UIKit:CreateSoldierMove45Ani("bubing_1_45"):addTo(self):pos(display.cx, display.cy)
     -- UIKit:CreateSoldierMove45Ani("bubing_2_45"):addTo(self):pos(display.cx, display.cy)
     -- UIKit:CreateSoldierMove45Ani("bubing_3_45"):addTo(self):pos(display.cx, display.cy)
 
-    UIKit:CreateSoldierMove45Ani("gongjianshou_1_45"):addTo(self):pos(display.cx, display.cy)
+    -- UIKit:CreateSoldierMove45Ani("gongjianshou_1_45"):addTo(self):pos(display.cx, display.cy)
     -- UIKit:CreateSoldierMove45Ani("gongjianshou_2_45"):addTo(self):pos(display.cx, display.cy)
     -- UIKit:CreateSoldierMove45Ani("gongjianshou_3_45"):addTo(self):pos(display.cx, display.cy)
 

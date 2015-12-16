@@ -760,7 +760,7 @@ local SOLDIER_CATEGORY_MAP = {
     ["wall"] = "wall"
 }
 for k,v in pairs(GameDatas.Soldiers.normal) do
-    SOLDIER_CATEGORY_MAP[v.name] = v.type
+    SOLDIER_CATEGORY_MAP[string.sub(v.name,1,-3)] = v.type
 end
 for k,v in pairs(GameDatas.Soldiers.special) do
     SOLDIER_CATEGORY_MAP[v.name] = v.type
@@ -810,13 +810,38 @@ local SOLDIER_CATEGORY = {
 }
 local SOLDIER_NAME = {
     ["swordsman"] = _("剑士"),
+    ["swordsman_1"] = _("剑士"),
+    ["swordsman_2"] = _("精英剑士"),
+    ["swordsman_3"] = _("皇家剑士"),
     ["sentinel"] = _("哨兵"),
+    ["sentinel_1"] = _("哨兵"),
+    ["sentinel_2"] = _("精英哨兵"),
+    ["sentinel_3"] = _("皇家哨兵"),
     ["ranger"] = _("弓箭手"),
+    ["ranger_1"] = _("弓箭手"),
+    ["ranger_2"] = _("精英弓箭手"),
+    ["ranger_3"] = _("皇家弓箭手"),
     ["crossbowman"] = _("弩弓手"),
+    ["crossbowman_1"] = _("弩弓手"),
+    ["crossbowman_2"] = _("精英弩弓手"),
+    ["crossbowman_3"] = _("皇家弩弓手"),
     ["lancer"] = _("枪骑兵"),
+    ["lancer_1"] = _("枪骑兵"),
+    ["lancer_2"] = _("精英枪骑兵"),
+    ["lancer_3"] = _("皇家枪骑兵"),
     ["horseArcher"] = _("弓骑兵"),
+    ["horseArcher"] = _("弓骑兵"),
+    ["horseArcher_1"] = _("弓骑兵"),
+    ["horseArcher_2"] = _("精英弓骑兵"),
+    ["horseArcher_3"] = _("皇家弓骑兵"),
     ["catapult"] = _("投石车"),
+    ["catapult_1"] = _("投石车"),
+    ["catapult_2"] = _("精英投石车"),
+    ["catapult_3"] = _("皇家投石车"),
     ["ballista"] = _("弩车"),
+    ["ballista_1"] = _("弩车"),
+    ["ballista_2"] = _("精英弩车"),
+    ["ballista_3"] = _("皇家弩车"),
 
     ["skeletonWarrior"] = _("骷髅勇士"),
     ["skeletonArcher"] = _("骷髅射手"),

@@ -15,6 +15,10 @@ local rgba4444 = import(".rgba4444")
 local jpg_rgb888 = import(".jpg_rgb888")
 local animation = import(".animation")
 
+
+jpg_rgb888["background_608x678.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
+
+
 local auto_cleanup = {
     ["jpg_png0.png"] = 1,
     ["jpg_png1.png"] = 1,
@@ -30,9 +34,21 @@ local auto_cleanup = {
     ["jpg_png11.png"] = 1,
     ["jpg_png12.png"] = 1,
     ["start_game_292x28.png"] = 1,
+    ["background_608x678.png"] = 1,
 }
 for k,v in pairs(jpg_rgb888) do
     auto_cleanup[k] = true
+end
+for _,v in pairs(plist_texture_data) do
+    auto_cleanup[v] = true
+end
+for _,v in pairs(animation) do
+    for _,found_data_in_plist in ipairs(v) do
+        local png_path = DEBUG_GET_ANIMATION_PATH(found_data_in_plist)
+        if png_path then
+            auto_cleanup[png_path] = true
+        end
+    end
 end
 
 math.round = function(n)
@@ -97,6 +113,7 @@ function Sprite:setTexture(arg)
     if type(arg) == 'string' then
         local found_data_in_plist = plist_texture_data[arg]
         if found_data_in_plist then
+            -- print(arg, found_data_in_plist)
             local frame = sharedSpriteFrameCache:getSpriteFrame(arg)
             if not frame then
                 local plistName = string.sub(found_data_in_plist,1,string.find(found_data_in_plist,"%.") - 1)
@@ -468,6 +485,7 @@ function display.newSprite(...)
     local found_data_in_plist = plist_texture_data[name]
     if found_data_in_plist then
         local frame = sharedSpriteFrameCache:getSpriteFrame(name)
+        -- print(name, found_data_in_plist)
         if not frame then
             local plistName = string.sub(found_data_in_plist,1,string.find(found_data_in_plist,"%.") - 1)
             plistName = string.format("%s.plist",plistName)

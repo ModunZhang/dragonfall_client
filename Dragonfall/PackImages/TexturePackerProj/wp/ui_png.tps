@@ -22,7 +22,7 @@
         <key>dataFormat</key>
         <string>cocos2d</string>
         <key>textureFileName</key>
-        <filename>../../../dev/res/images/_Compressed_wp/ui_png.png</filename>
+        <filename>../../../dev/res/images/_Compressed_wp/ui_png{n}.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>ditherType</key>
@@ -54,9 +54,9 @@
         <key>maxTextureSize</key>
         <QSize>
             <key>width</key>
-            <int>2048</int>
+            <int>1024</int>
             <key>height</key>
-            <int>2048</int>
+            <int>1024</int>
         </QSize>
         <key>fixedTextureSize</key>
         <QSize>
@@ -111,9 +111,9 @@
             <enum type="AndEngine::MagFilter">MagLinear</enum>
         </struct>
         <key>dataFileName</key>
-        <filename>../../../dev/res/images/_Compressed_wp/ui_png.plist</filename>
+        <filename>../../../dev/res/images/_Compressed_wp/ui_png{n}.plist</filename>
         <key>multiPack</key>
-        <false/>
+        <true/>
         <key>mainExtension</key>
         <string></string>
         <key>forceIdenticalLayout</key>

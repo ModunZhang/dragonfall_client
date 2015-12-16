@@ -973,7 +973,8 @@ end
 local function get_recruitNormalSoldier_promise(soldierName, count, finish_now)
     local task = City:GetRecommendTask()
     if task then
-        if task:TaskType() == "recruit" and task.name == soldierName then
+        if task:TaskType() == "recruit" 
+        and string.find(soldierName, task.name) then
             City:SetBeginnersTaskFlag(task:Index())
         end
     end
@@ -1590,14 +1591,14 @@ function NetManager:getAttackPlayerCityPromise(dragonType, soldiers, defenceAlli
 end
 
 --设置驻防使用的龙
-function NetManager:getSetDefenceDragonPromise(dragonType)
-    return get_none_blocking_request_promise("logic.playerHandler.setDefenceDragon",
-        {dragonType=dragonType},
+function NetManager:getSetDefenceTroopPromise(dragonType,soldiers)
+    return get_none_blocking_request_promise("logic.playerHandler.setDefenceTroop",
+        {dragonType=dragonType,soldiers=soldiers},
         "设置驻防使用的龙失败!"):done(get_player_response_msg)
 end
 --取消龙驻防
-function NetManager:getCancelDefenceDragonPromise()
-    return get_none_blocking_request_promise("logic.playerHandler.cancelDefenceDragon",
+function NetManager:getCancelDefenceTroopPromise()
+    return get_none_blocking_request_promise("logic.playerHandler.cancelDefenceTroop",
         nil,
         "取消龙驻防失败!"):done(get_player_response_msg)
 end

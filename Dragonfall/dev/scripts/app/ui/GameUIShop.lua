@@ -603,7 +603,7 @@ function GameUIShop:onEnter()
         :align(display.CENTER, window.left + 500, window.top - 1300)
         :onButtonClicked(function(event)
             cocos_promise.promiseWithCatchError(
-                NetManager:getSetDefenceDragonPromise("redDragon")
+                NetManager:getSetDefenceTroopPromise("redDragon")
             )
         end)
     WidgetPushButton.new(
