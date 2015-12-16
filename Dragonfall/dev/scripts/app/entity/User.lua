@@ -799,7 +799,7 @@ end
 --[[soldier begin]]
 function User:IsSoldierUnlocked(soldierName)
     return (self:GetSoldierConfig(soldierName).needBarracksLevel or math.huge) 
-        >= self:GetBarracksLevel()
+        <= self:GetBarracksLevel()
 end
 function User:GetSoldierEventsBySeq()
     local events = {}

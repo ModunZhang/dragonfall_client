@@ -1,7 +1,7 @@
 -- 0 - disable debug info, 1 - less debug info, 2 - verbose debug info
 DEBUG = 0
 DEBUG_FPS = false
-DEBUG_MEM = true
+DEBUG_MEM = false
 
 -- design resolution
 CONFIG_SCREEN_WIDTH = 640
@@ -57,7 +57,7 @@ CONFIG_IS_DEBUG = true
 -- 是否记录日志文件 如果关闭lua错误将被发送到三方sdk
 CONFIG_LOG_DEBUG_FILE = true 
 
-GLOBAL_FTE = false
+GLOBAL_FTE = true
 GLOBAL_FTE_DEBUG = false
 
 -- 是否关闭自动更新,不设置表示打开自动更新
