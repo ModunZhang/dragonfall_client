@@ -75,6 +75,10 @@ function MapScene:onExit()
         self:UnloadImages()
     end
 end
+function MapScene:onCleanup()
+    cc.Director:getInstance():purgeCachedData()
+    print("getAppMemoryUsage", ext.getAppMemoryUsage())
+end
 function MapScene:PreLoadImages()
     for _,v in ipairs(self:GetPreloadImages()) do
         display.addSpriteFrames(DEBUG_GET_ANIMATION_PATH(v.list),DEBUG_GET_ANIMATION_PATH(v.image))

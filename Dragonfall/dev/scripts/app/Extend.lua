@@ -4,7 +4,7 @@ NOT_HANDLE = function(...) print("net message not handel, please check !") end
 
 
 local sharedTextureCache = cc.Director:getInstance():getTextureCache()
-function showMemoryUsage()
+function showMemoryUsage(head)
     printInfo(string.format("LUA VM MEMORY USED: %0.2f KB", collectgarbage("count")))
     -- dannyhe 兼容所有平台的日志输出
     local msg = sharedTextureCache:getCachedTextureInfo()
@@ -13,7 +13,7 @@ function showMemoryUsage()
         printInfo(v)
     end
     printInfo("---------------------------------------------------")
-    print("getAppMemoryUsage", ext.getAppMemoryUsage())
+    print(head, "getAppMemoryUsage", ext.getAppMemoryUsage())
 end
 
 
