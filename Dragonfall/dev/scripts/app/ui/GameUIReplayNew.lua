@@ -1172,7 +1172,7 @@ function GameUIReplayNew:HurtSoldierLeft(corps, decrease)
         self:PromiseOfDelay(0.8):next(function()
             return promise.all(
                 self.ui_map.soldier_morale_attack:PromiseOfProgressTo(0.5, morale - moraleDecreased),
-                self:PormiseOfSchedule2(0.5, function(percent)
+                self:PormiseOfSchedule2(0.3, function(percent)
                     local count = math.round(morale - moraleDecreased * percent)
                     count = count <= 0 and 0 or count
                     self.ui_map.soldier_morale_attack:SetText(count.."/"..100)
@@ -1204,7 +1204,7 @@ function GameUIReplayNew:HurtSoldierRight(corps, decrease)
         self:PromiseOfDelay(0.8):next(function()
             return promise.all(
                 self.ui_map.soldier_morale_defence:PromiseOfProgressTo(0.5, morale - moraleDecreased),
-                self:PormiseOfSchedule2(0.5, function(percent)
+                self:PormiseOfSchedule2(0.3, function(percent)
                     local count = math.round(morale - moraleDecreased * percent)
                     count = count <= 0 and 0 or count
                     self.ui_map.soldier_morale_defence:SetText(count.."/"..100)
@@ -1679,9 +1679,9 @@ function GameUIReplayNew:BuildUI()
 end
 function GameUIReplayNew:GetPreloadImages()
     return {
-        {image = "animations/ui_animation_0.pvr.ccz",list = "animations/ui_animation_0.plist"},
-        {image = "animations/ui_animation_1.pvr.ccz",list = "animations/ui_animation_1.plist"},
-        {image = "animations/ui_animation_2.pvr.ccz",list = "animations/ui_animation_2.plist"},
+        -- {image = "animations/ui_animation_0.pvr.ccz",list = "animations/ui_animation_0.plist"},
+        -- {image = "animations/ui_animation_1.pvr.ccz",list = "animations/ui_animation_1.plist"},
+        -- {image = "animations/ui_animation_2.pvr.ccz",list = "animations/ui_animation_2.plist"},
     }
 end
 function GameUIReplayNew:OnHandle()

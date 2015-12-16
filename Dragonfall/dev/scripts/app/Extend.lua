@@ -2,6 +2,21 @@ require("cocos.cocos2d.Cocos2dConstants")
 print("加载玩家自定义函数!")
 NOT_HANDLE = function(...) print("net message not handel, please check !") end
 
+
+local sharedTextureCache = cc.Director:getInstance():getTextureCache()
+function showMemoryUsage()
+    printInfo(string.format("LUA VM MEMORY USED: %0.2f KB", collectgarbage("count")))
+    -- dannyhe 兼容所有平台的日志输出
+    local msg = sharedTextureCache:getCachedTextureInfo()
+    local t_msg = string.split(msg, "\n")
+    for __,v in ipairs(t_msg) do
+        printInfo(v)
+    end
+    printInfo("---------------------------------------------------")
+    print("getAppMemoryUsage", ext.getAppMemoryUsage())
+end
+
+
 local texture_data_file = ".texture_data"
 if device.platform == 'ios' then
     texture_data_file = ".texture_data_iOS" 
@@ -482,6 +497,9 @@ display.__newSprite = display.newSprite
 function display.newSprite(...)
     local args = {...}
     local name = args[1]
+    if string.find(name, ".jpg") then
+        print(...)
+    end
     local found_data_in_plist = plist_texture_data[name]
     if found_data_in_plist then
         local frame = sharedSpriteFrameCache:getSpriteFrame(name)

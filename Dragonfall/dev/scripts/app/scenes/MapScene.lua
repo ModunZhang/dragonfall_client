@@ -67,6 +67,8 @@ function MapScene:onEnter()
             self:DisableWaring()
         end
     end, 1)
+
+    collectgarbage("collect")
 end
 function MapScene:onExit()
     if self.UnloadImages then
