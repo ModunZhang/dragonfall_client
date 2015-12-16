@@ -9,8 +9,8 @@
 #define  LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG,LOG_TAG,__VA_ARGS__)
 
 using namespace cocos2d;
-
-void cocos_android_app_init (JNIEnv* env, jobject thiz) {
+ //dannyhe fix Fixed Application may be created more than once on Android. #12488
+void cocos_android_app_init (JNIEnv* env) {
     LOGD("cocos_android_app_init");
     AppDelegate *pAppDelegate = new AppDelegate();
 }
