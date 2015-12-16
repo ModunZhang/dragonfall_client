@@ -213,7 +213,7 @@ public class AppActivity extends Cocos2dxActivity{
 	
 	private boolean gameLaunched = false;
 	
-	public boolean isEnterBackground = false;
+	public static boolean isEnterBackground = false;
 	
 	private ProgressDialog loadingDialog = null;
 	

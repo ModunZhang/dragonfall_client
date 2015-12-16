@@ -99,7 +99,9 @@ void AppDelegate::applicationDidEnterBackground()
     SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
     SimpleAudioEngine::getInstance()->pauseAllEffects();
 #endif
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID)
 	Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("APP_ENTER_BACKGROUND_EVENT");
+#endif
 }
 
 // this function will be called when the app is active again
@@ -114,8 +116,9 @@ void AppDelegate::applicationWillEnterForeground()
     SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
     SimpleAudioEngine::getInstance()->resumeAllEffects();
 #endif
-
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID)
 	Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("APP_ENTER_FOREGROUND_EVENT");
+#endif
 }
 
 
