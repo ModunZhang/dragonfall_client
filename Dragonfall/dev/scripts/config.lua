@@ -1,7 +1,7 @@
 -- 0 - disable debug info, 1 - less debug info, 2 - verbose debug info
 DEBUG = 0
 DEBUG_FPS = false
-DEBUG_MEM = true
+DEBUG_MEM = false
 
 -- design resolution
 CONFIG_SCREEN_WIDTH = 640
