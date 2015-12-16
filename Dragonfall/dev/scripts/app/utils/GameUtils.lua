@@ -533,7 +533,7 @@ function GameUtils:GetGameLanguageFromNative()
         target_map = android_language_map
     end
     local code = ext.getDeviceLanguage()
-    if device.platform == 'android' and string.find(code,'en') then
+    if string.find(code,'en') then
         code = 'en'
     end
     return target_map[code] or 'en' -- we can not find the right language ,'en' as the default value

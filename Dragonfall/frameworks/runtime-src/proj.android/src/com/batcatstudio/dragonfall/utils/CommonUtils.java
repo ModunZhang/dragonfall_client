@@ -84,7 +84,7 @@ public class CommonUtils {
 	}
 
 	public static String getDeviceLanguage() {
-		return Locale.getDefault().getLanguage();
+		return Locale.getDefault().toString();
 	}
 
 	public static boolean sendMail(String receiver, String subject, String content) {

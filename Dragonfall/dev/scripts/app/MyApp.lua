@@ -334,19 +334,10 @@ function MyApp:onEnterResume()
     LuaUtils:outputTable("onEnterResume", {})
 end
 
--- local lockInputCount = 0
 function MyApp:lockInput(b)
-    -- if b then
-    --     lockInputCount = lockInputCount + 1
-    -- else
-    --     lockInputCount = lockInputCount - 1
-    -- end
-    -- if lockInputCount > 0 then
     cc.Director:getInstance():getEventDispatcher():setEnabled(not b)
-    -- elseif lockInputCount == 0 then
-    -- cc.Director:getInstance():getEventDispatcher():setEnabled(not b)
-    -- end
 end
+
 function MyApp:EnterFriendCityScene(id, location)
     self:EnterCitySceneByPlayerAndAlliance(id, true, location)
 end
@@ -638,32 +629,13 @@ function MyApp:transactionObserver(event)
         device.hideActivityIndicator()
     end
 end
+
 -- GameCenter
 ------------------------------------------------------------------------------------------------------------------
 -- 如果登陆成功 函数将会被回调
 function __G__GAME_CENTER_CALLBACK(gc_name,gc_id)
--- app:StarCheckGameCenterIf()
--- --如果玩家当前未绑定gc并且当前的gc未绑定任何账号 执行自动绑定
--- if gc_name and gc_id and NetManager:isConnected() and NetManager:IsLogin() then
---     NetManager:getGcBindStatusPromise(gc_id):done(function(response)
---         if User and not User:IsBindGameCenter() then
---             if not response.msg.isBind then
---                 NetManager:getBindGcIdPromise(gc_id):done(function()
---                     app:EndCheckGameCenterIf()
---                 end)
---             else
---                 app:EndCheckGameCenterIf()
---             end
---         end
---         ext.gamecenter.gc_bind = response.msg.isBind
---     end)
--- end
 end
 
-
-my_print = function(...)
-    LuaUtils:outputTable({...})
-end
 -- call from cpp
 function __G_APP_BACKGROUND_MUSIC_COMPLETION()
     if device.platform == 'winrt' then
