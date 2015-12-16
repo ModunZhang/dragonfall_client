@@ -50,6 +50,8 @@ function MyCityScene:onEnter()
     self:GetCity():GetUser():AddListenOnType(self, "soldierEvents")
     self:GetCity():GetUser():AddListenOnType(self, "houseEvents")
     self:GetCity():GetUser():AddListenOnType(self, "buildingEvents")
+
+    showMemoryUsage()
 end
 function MyCityScene:onExit()
     self.home_page = nil
