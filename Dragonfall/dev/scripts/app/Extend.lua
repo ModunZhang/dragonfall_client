@@ -13,7 +13,9 @@ function showMemoryUsage()
         printInfo(v)
     end
     printInfo("---------------------------------------------------")
-    print("getAppMemoryUsage", ext.getAppMemoryUsage())
+    if ext.getAppMemoryUsage then
+        print("getAppMemoryUsage", ext.getAppMemoryUsage())
+    end
 end
 
 
