@@ -81,11 +81,13 @@ function enter_scene_transition(scene_name, ...)
     animation:setSpeedScale(speed)
 
     local args = {...}
+    table.insert(args, 1, scene_name)
     transition.fadeIn(color_layer, {
         time = 0.75/speed,
         onComplete = function()
-            local next_scene = app:enterScene(scene_name, args)
-            enter_scene(next_scene)
+            -- local next_scene = 
+            app:enterScene("LoadingScene", args)
+            -- enter_scene(next_scene)
         end
     })
 end

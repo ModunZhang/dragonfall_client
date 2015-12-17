@@ -100,8 +100,10 @@ local _Armature = ccs.Armature
 local ccs_Armature_create = _Armature.create
 local manager = ccs.ArmatureDataManager:getInstance()
 function _Armature:create(ani)
-    local path = DEBUG_GET_ANIMATION_PATH(string.format("animations/%s.ExportJson", ani))
-    manager:addArmatureFileInfo(path)
+    if not manager:getArmatureData(ani) then
+        local path = DEBUG_GET_ANIMATION_PATH(string.format("animations/%s.ExportJson", ani))
+        manager:addArmatureFileInfo(path)
+    end
     return ccs_Armature_create(self, ani)
 end
 

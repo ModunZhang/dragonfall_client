@@ -123,12 +123,6 @@ function GameUIAllianceSendTroops:ctor(march_callback,params)
     self.terrain = params.terrain or User.basicInfo.terrain
     self.military_soldiers = params.military_soldiers -- 编辑驻防部队时传入当前驻防部队信息
     GameUIAllianceSendTroops.super.ctor(self,City,params.title or _("准备进攻"))
-    -- local manager = ccs.ArmatureDataManager:getInstance()
-    -- for _, anis in pairs(UILib.soldier_animation_files) do
-    --     for _, v in pairs(anis) do
-    --         manager:addArmatureFileInfo(v)
-    --     end
-    -- end
     self.alliance = Alliance_Manager:GetMyAlliance()
     self.dragon_manager = City:GetFirstBuildingByType("dragonEyrie"):GetDragonManager()
     self.soldiers_table = {}

@@ -42,13 +42,6 @@ function MapScene:OnUserDataChanged_basicInfo(userData, deltaData)
 end
 local animation = import("..animation")
 function MapScene:onEnter()
-    local manager = ccs.ArmatureDataManager:getInstance()
-    for k,v in pairs(animation) do
-        manager:removeArmatureFileInfo(string.format("animations/%s.ExportJson", k))
-    end
-    cc.Director:getInstance():purgeCachedData()
-    print("getAppMemoryUsage", ext.getAppMemoryUsage())
-
     if self.PreLoadImages then
         self:PreLoadImages()
     end
@@ -78,6 +71,7 @@ function MapScene:onEnter()
 
     collectgarbage("collect")
     scheduleAt(self, function()
+        -- showMemoryUsage("collect")
         print("getAppMemoryUsage", ext.getAppMemoryUsage())
     end, 2)
 end
