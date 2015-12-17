@@ -7,7 +7,8 @@
 
 ## 安装部分
 
-1. VS2013序列号
+* VS2013序列号
+
 ~~~~
 	Visual Studio Ultimate 2013 KEY（密钥）：BWG7X-J98B3-W34RT-33B3R-JVYW9
 
@@ -17,10 +18,11 @@
 
 	Team Foundation Server 2013 KEY（密钥）：MHG9J-HHHX9-WWPQP-D8T7H-7KCQG
 ~~~~
-2. VS2015序列号
+
+* VS2015序列号
+
 ~~~~
 	专业版：HMGNV-WCYXV-X7G9W-YCX63-B98R2
-
 	企业版：HM6NR-QXX7C-DFW2Y-8B82K-WTYJV
 ~~~~
 ## 需要注意的地方
