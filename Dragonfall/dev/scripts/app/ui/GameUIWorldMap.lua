@@ -67,6 +67,20 @@ function GameUIWorldMap:onEnter()
         self:UpdateEnemyArrow()
     end, 0.01)
 end
+function GameUIWorldMap:onExit()
+    removeImageByKey("protect_1.png")
+    removeImageByKey("protect_2.png")
+    removeImageByKey("world_alliance_desert.png")
+    removeImageByKey("world_alliance_grassLand.png")
+    removeImageByKey("world_alliance_desert.png")
+    removeImageByKey("world_crown.png")
+    removeImageByKey("world_edge.png")
+    removeImageByKey("world_map.png")
+    removeImageByKey("world_middle.png")
+    removeImageByKey("world_title1.jpg")
+    removeImageByKey("world_title2.jpg")
+    removeImageByKey("world_bg.jpg")
+end
 local deg = math.deg
 local ceil = math.ceil
 local point = cc.p
