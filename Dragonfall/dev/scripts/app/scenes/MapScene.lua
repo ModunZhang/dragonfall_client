@@ -69,11 +69,11 @@ function MapScene:onEnter()
         end
     end, 1)
 
-    collectgarbage("collect")
-    scheduleAt(self, function()
-        -- showMemoryUsage("collect")
-        print("getAppMemoryUsage", ext.getAppMemoryUsage())
-    end, 2)
+    -- collectgarbage("collect")
+    -- scheduleAt(self, function()
+    --     -- showMemoryUsage("collect")
+    --     print("getAppMemoryUsage", ext.getAppMemoryUsage())
+    -- end, 2)
 end
 function MapScene:onExit()
     if self.UnloadImages then
