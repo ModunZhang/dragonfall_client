@@ -88,6 +88,7 @@ end
 
 function GameUIActivityRewardNew:onExit()
     User:RemoveListenerOnType(self, "countInfo")
+    removeImageByKey("background_608x678.png")
     GameUIActivityRewardNew.super.onExit(self)
 end
 
