@@ -97,10 +97,10 @@ function LogoScene:onEnter()
     -- ccs.Armature:create("green_long_breath"):addTo(self)
     -- :pos(display.cx, display.cy):getAnimation():playWithIndex(0)
 
-    -- UIKit:CreateDragonBreahAni("redDragon", true):addTo(self):pos(display.cx, display.cy)
-    -- UIKit:CreateDragonBreahAni("blueDragon", true):addTo(self):pos(display.cx, display.cy)
-    -- UIKit:CreateDragonBreahAni("greenDragon", true):addTo(self):pos(display.cx, display.cy)
-    -- UIKit:CreateDragonBreahAni("blackDragon", true):addTo(self):pos(display.cx, display.cy)
+    -- UIKit:CreateDragonBreathAni("redDragon", true):addTo(self):pos(display.cx, display.cy)
+    -- UIKit:CreateDragonBreathAni("blueDragon", true):addTo(self):pos(display.cx, display.cy)
+    -- UIKit:CreateDragonBreathAni("greenDragon", true):addTo(self):pos(display.cx, display.cy)
+    -- UIKit:CreateDragonBreathAni("blackDragon", true):addTo(self):pos(display.cx, display.cy)
 
     -- UIKit:newGameUI('GameUISelectTerrain'):AddToScene(self, true)
 end

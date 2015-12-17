@@ -123,12 +123,6 @@ function GameUIAllianceSendTroops:ctor(march_callback,params)
     self.terrain = params.terrain or User.basicInfo.terrain
     self.military_soldiers = params.military_soldiers -- 编辑驻防部队时传入当前驻防部队信息
     GameUIAllianceSendTroops.super.ctor(self,City,params.title or _("准备进攻"))
-    -- local manager = ccs.ArmatureDataManager:getInstance()
-    -- for _, anis in pairs(UILib.soldier_animation_files) do
-    --     for _, v in pairs(anis) do
-    --         manager:addArmatureFileInfo(v)
-    --     end
-    -- end
     self.alliance = Alliance_Manager:GetMyAlliance()
     self.dragon_manager = City:GetFirstBuildingByType("dragonEyrie"):GetDragonManager()
     self.soldiers_table = {}
@@ -862,8 +856,20 @@ function GameUIAllianceSendTroops:OnUserDataChanged_soldiers(userData, deltaData
         end
     end
 end
+local animation = import("..animation")
 function GameUIAllianceSendTroops:onExit()
     User:RemoveListenerOnType(self, "soldiers")
+    display.getRunningScene():performWithDelay(function()
+        local manager = ccs.ArmatureDataManager:getInstance()
+        for k,v in pairs(animation) do
+            if string.find(k, "_90") then
+                local path = DEBUG_GET_ANIMATION_PATH(string.format("animations/%s.ExportJson", k))
+                print("removeArmatureFileInfo", path)
+                manager:removeArmatureFileInfo(path)
+            end
+        end
+        cc.Director:getInstance():purgeCachedData()
+    end, 0.1)
     GameUIAllianceSendTroops.super.onExit(self)
 end
 

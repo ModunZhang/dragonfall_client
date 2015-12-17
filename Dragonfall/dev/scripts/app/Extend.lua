@@ -2,6 +2,23 @@ require("cocos.cocos2d.Cocos2dConstants")
 print("加载玩家自定义函数!")
 NOT_HANDLE = function(...) print("net message not handel, please check !") end
 
+
+local sharedTextureCache = cc.Director:getInstance():getTextureCache()
+function showMemoryUsage(head)
+    printInfo(string.format("LUA VM MEMORY USED: %0.2f KB", collectgarbage("count")))
+    -- dannyhe 兼容所有平台的日志输出
+    local msg = sharedTextureCache:getCachedTextureInfo()
+    local t_msg = string.split(msg, "\n")
+    for __,v in ipairs(t_msg) do
+        printInfo(v)
+    end
+    printInfo("---------------------------------------------------")
+    if ext.getAppMemoryUsage then
+        print(head, "getAppMemoryUsage", ext.getAppMemoryUsage())
+    end
+end
+
+
 local texture_data_file = ".texture_data"
 if device.platform == 'ios' then
     texture_data_file = ".texture_data_iOS" 
@@ -13,10 +30,10 @@ plist_texture_data     = import(texture_data_file)
 local sharedSpriteFrameCache = cc.SpriteFrameCache:getInstance()
 local rgba4444 = import(".rgba4444")
 local jpg_rgb888 = import(".jpg_rgb888")
-local animation = import(".animation")
 
 
 jpg_rgb888["background_608x678.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
+jpg_rgb888["tmxmaps/terrain1.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
 
 
 local auto_cleanup = {
@@ -41,14 +58,6 @@ for k,v in pairs(jpg_rgb888) do
 end
 for _,v in pairs(plist_texture_data) do
     auto_cleanup[v] = true
-end
-for _,v in pairs(animation) do
-    for _,found_data_in_plist in ipairs(v) do
-        local png_path = DEBUG_GET_ANIMATION_PATH(found_data_in_plist)
-        if png_path then
-            auto_cleanup[png_path] = true
-        end
-    end
 end
 
 math.round = function(n)
@@ -91,17 +100,10 @@ local _Armature = ccs.Armature
 local ccs_Armature_create = _Armature.create
 local manager = ccs.ArmatureDataManager:getInstance()
 function _Armature:create(ani)
-    for _,found_data_in_plist in ipairs(animation[ani]) do
-        local png_path = DEBUG_GET_ANIMATION_PATH(found_data_in_plist)
-        if not sharedSpriteFrameCache:getSpriteFrame(png_path) then
-            local plistName = string.sub(png_path,1,string.find(png_path,"%.") - 1)
-            plistName = string.format("%s.plist", plistName)
-            printInfo("setTexture:load plist texture:%s", png_path)
-            display.addSpriteFrames(DEBUG_GET_ANIMATION_PATH(plistName), png_path)
-        end
+    if not manager:getArmatureData(ani) then
+        local path = DEBUG_GET_ANIMATION_PATH(string.format("animations/%s.ExportJson", ani))
+        manager:addArmatureFileInfo(path)
     end
-    local path = DEBUG_GET_ANIMATION_PATH(string.format("animations/%s.ExportJson", ani))
-    manager:addArmatureFileInfo(path)
     return ccs_Armature_create(self, ani)
 end
 
@@ -482,6 +484,9 @@ display.__newSprite = display.newSprite
 function display.newSprite(...)
     local args = {...}
     local name = args[1]
+    if string.find(name, ".jpg") then
+        print(...)
+    end
     local found_data_in_plist = plist_texture_data[name]
     if found_data_in_plist then
         local frame = sharedSpriteFrameCache:getSpriteFrame(name)

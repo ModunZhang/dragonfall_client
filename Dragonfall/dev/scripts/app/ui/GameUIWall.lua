@@ -181,7 +181,7 @@ function GameUIWall:CreateMilitaryUIIf()
         text = level_str,
         size = 20,
         color= 0x615b44
-    }):align(display.LEFT_BOTTOM,title_bg:getPositionX(), tips_label:getPositionY() + tips_label:getContentSize().height + 20):addTo(military_node)
+    }):align(display.LEFT_BOTTOM,title_bg:getPositionX(), tips_label:getPositionY() + tips_label:getContentSize().height + 52):addTo(military_node)
     self.level_title_label = level_title_label
     self.dragon_level_label = UIKit:ttfLabel({
         text = "",
@@ -337,6 +337,9 @@ end
 
 function GameUIWall:RefreshListView()
     self.info_list:removeAllItems()
+    if not User.defenceTroop or User.defenceTroop == json.null then
+        return
+    end
     local soldiers = clone(User.defenceTroop.soldiers)
     table.sort( soldiers, function ( a,b )
         local total_power_a = User:GetSoldierConfig(a.name).power * a.count
@@ -423,7 +426,7 @@ function GameUIWall:RefreshUIAfterSelectDragon(dragon,soldiers)
         self.edit_troop_btn:show()
         self.dragon_info_panel:show()
         self.tips_panel:hide()
-        self.level_title_label:setString(_("等级"))
+        self.level_title_label:setString(_("力量"))
         self.dragon_level_label:setString(string.formatnumberthousands(dragon:Strength()))
         self.dragon_level_label:show()
         self.tips_label:hide()
@@ -445,7 +448,7 @@ function GameUIWall:RefreshUIAfterSelectDragon(dragon,soldiers)
         self.tips_label:show()
         self.dragon_level_label:hide()
         self.level_title_label:setString(
-            string.format(_("当前城市地形:%s"),Localize.terrain[User.basicInfo.terrain])
+            string.format(_("当前联盟地形:%s"),Alliance_Manager:GetMyAlliance():IsDefault() and _("无") or Localize.terrain[Alliance_Manager:GetMyAlliance().basicInfo.terrain])
         )
         self.progressTimer_bg:hide()
         self.hp_label:hide()

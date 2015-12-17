@@ -271,7 +271,7 @@ local function newDragon(replay_ui, dragon_type, level, is_left)
     }):align(display.CENTER, 65, -55):addTo(node,1):hide()
 
 
-    UIKit:CreateDragonBreahAni(dragon_type, is_left)
+    UIKit:CreateDragonBreathAni(dragon_type, is_left)
     :addTo(node):align(display.CENTER, is_left and 0 or 90, 0):scale(0.6)
 
     if is_left then
@@ -891,11 +891,24 @@ function GameUIReplayNew:OnMoveInStage()
 
     GameUIReplayNew.super.OnMoveInStage(self)
 end
+local animation = import("..animation")
 function GameUIReplayNew:onExit()
     GameUIReplayNew.super.onExit(self)
     if type(self.callback) == "function" then
         self.callback(self)
     end
+    display.getRunningScene():performWithDelay(function()
+        local manager = ccs.ArmatureDataManager:getInstance()
+        for k,v in pairs(animation) do
+            if string.find(k, "_90") or k == "win"
+            or k == "paizi" or k == "chengqiang_1" then
+                local path = DEBUG_GET_ANIMATION_PATH(string.format("animations/%s.ExportJson", k))
+                print("removeArmatureFileInfo", path)
+                manager:removeArmatureFileInfo(path)
+            end
+        end
+        cc.Director:getInstance():purgeCachedData()
+    end, 0.1)
 end
 function GameUIReplayNew:GetOrderedAttackSoldiers()
     return self.report:GetOrderedAttackSoldiers()
@@ -1169,10 +1182,10 @@ function GameUIReplayNew:HurtSoldierLeft(corps, decrease)
             local count = math.ceil(soldierCount - soldierDamagedCount * percent)
             self.ui_map.soldier_count_attack:SetText(count.."/"..soldier.count)
         end),
-        self:PromiseOfDelay(0.8):next(function()
+        self:PromiseOfDelay(0.5):next(function()
             return promise.all(
                 self.ui_map.soldier_morale_attack:PromiseOfProgressTo(0.5, morale - moraleDecreased),
-                self:PormiseOfSchedule2(0.5, function(percent)
+                self:PormiseOfSchedule2(0.3, function(percent)
                     local count = math.round(morale - moraleDecreased * percent)
                     count = count <= 0 and 0 or count
                     self.ui_map.soldier_morale_attack:SetText(count.."/"..100)
@@ -1201,10 +1214,10 @@ function GameUIReplayNew:HurtSoldierRight(corps, decrease)
             local count = math.ceil(soldierCount - soldierDamagedCount * percent)
             self.ui_map.soldier_count_defence:SetText(count.."/"..soldier.count)
         end),
-        self:PromiseOfDelay(0.8):next(function()
+        self:PromiseOfDelay(0.5):next(function()
             return promise.all(
                 self.ui_map.soldier_morale_defence:PromiseOfProgressTo(0.5, morale - moraleDecreased),
-                self:PormiseOfSchedule2(0.5, function(percent)
+                self:PormiseOfSchedule2(0.3, function(percent)
                     local count = math.round(morale - moraleDecreased * percent)
                     count = count <= 0 and 0 or count
                     self.ui_map.soldier_morale_defence:SetText(count.."/"..100)
@@ -1679,9 +1692,9 @@ function GameUIReplayNew:BuildUI()
 end
 function GameUIReplayNew:GetPreloadImages()
     return {
-        {image = "animations/ui_animation_0.pvr.ccz",list = "animations/ui_animation_0.plist"},
-        {image = "animations/ui_animation_1.pvr.ccz",list = "animations/ui_animation_1.plist"},
-        {image = "animations/ui_animation_2.pvr.ccz",list = "animations/ui_animation_2.plist"},
+        -- {image = "animations/ui_animation_0.pvr.ccz",list = "animations/ui_animation_0.plist"},
+        -- {image = "animations/ui_animation_1.pvr.ccz",list = "animations/ui_animation_1.plist"},
+        -- {image = "animations/ui_animation_2.pvr.ccz",list = "animations/ui_animation_2.plist"},
     }
 end
 function GameUIReplayNew:OnHandle()

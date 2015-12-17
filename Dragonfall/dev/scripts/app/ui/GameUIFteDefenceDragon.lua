@@ -1,25 +1,26 @@
 local GameUIFteDefenceDragon = UIKit:createUIClass("GameUIFteDefenceDragon", "GameUIAllianceSendTroops")
-
+local DiffFunction = import("..utils.DiffFunction")
 
 
 
 
 function GameUIFteDefenceDragon:ctor(...)
+    local delta = DiffFunction(DataManager:getFteData(), {{"soldiers.swordsman_1", 10}})
+    DataManager:setFteUserDeltaData(delta)
+
+
     GameUIFteDefenceDragon.super.ctor(self, ...)
     self.__type  = UIKit.UITYPE.BACKGROUND
+
 end
 
 local mockData = import("..fte.mockData")
 local WidgetFteArrow = import("..widget.WidgetFteArrow")
-local DiffFunction = import("..utils.DiffFunction")
 function GameUIFteDefenceDragon:Find()
     return self.march_btn
 end
 function GameUIFteDefenceDragon:OnMoveInStage()
 	GameUIFteDefenceDragon.super.OnMoveInStage(self)
-
-    local delta = DiffFunction(DataManager:getFteData(), {{"soldiers.swordsman_1", 10}})
-    DataManager:setFteUserDeltaData(delta)
 
 	local r = self:Find():getCascadeBoundingBox()
     self:GetFteLayer():SetTouchObject(self:Find())
