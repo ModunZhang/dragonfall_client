@@ -100,6 +100,13 @@ local enter_next_scene = function(new_scene_name, ...)
     end
 end
 
+function MyApp:EnterMainScene()
+    self:enterScene('MainScene')
+end
+function MyApp:EnteOtherScene()
+    self:enterScene('OtherScene')
+end
+
 function MyApp:enterScene(sceneName, args, transitionType, time, more)
     local scenePackageName = self.packageRoot .. ".scenes." .. sceneName
     local sceneClass = require(scenePackageName)

@@ -1169,7 +1169,7 @@ function GameUIReplayNew:HurtSoldierLeft(corps, decrease)
             local count = math.ceil(soldierCount - soldierDamagedCount * percent)
             self.ui_map.soldier_count_attack:SetText(count.."/"..soldier.count)
         end),
-        self:PromiseOfDelay(0.8):next(function()
+        self:PromiseOfDelay(0.5):next(function()
             return promise.all(
                 self.ui_map.soldier_morale_attack:PromiseOfProgressTo(0.5, morale - moraleDecreased),
                 self:PormiseOfSchedule2(0.3, function(percent)
@@ -1201,7 +1201,7 @@ function GameUIReplayNew:HurtSoldierRight(corps, decrease)
             local count = math.ceil(soldierCount - soldierDamagedCount * percent)
             self.ui_map.soldier_count_defence:SetText(count.."/"..soldier.count)
         end),
-        self:PromiseOfDelay(0.8):next(function()
+        self:PromiseOfDelay(0.5):next(function()
             return promise.all(
                 self.ui_map.soldier_morale_defence:PromiseOfProgressTo(0.5, morale - moraleDecreased),
                 self:PormiseOfSchedule2(0.3, function(percent)
