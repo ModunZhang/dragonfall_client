@@ -1,8 +1,9 @@
 #Windows Phone说明
 ================
 
+因为wp10手机的解锁不能通过vs2015,而wp8.1的手机需要通过vs2013解锁。
+
 > 使用vs2013 update5 + windows 10开发wp8.1!
-> 
 > 使用vs2015 update1 + windows 10开发wp10!
 
 ## 安装部分
