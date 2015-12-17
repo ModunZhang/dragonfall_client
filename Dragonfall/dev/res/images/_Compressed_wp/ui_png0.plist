@@ -368,10 +368,23 @@
                 <key>sourceSize</key>
                 <string>{24,26}</string>
             </dict>
+            <key>icon_current_position_8x10.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{992,1011},{8,10}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{8,10}}</string>
+                <key>sourceSize</key>
+                <string>{8,10}</string>
+            </dict>
             <key>icon_my_alliance_position_4x4.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1011,1011},{4,4}}</string>
+                <string>{{1008,1011},{4,4}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -380,19 +393,6 @@
                 <string>{{0,0},{4,4}}</string>
                 <key>sourceSize</key>
                 <string>{4,4}</string>
-            </dict>
-            <key>level_9.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{992,1011},{8,13}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{8,13}}</string>
-                <key>sourceSize</key>
-                <string>{8,13}</string>
             </dict>
             <key>line_624x102.png</key>
             <dict>
@@ -534,7 +534,7 @@
             <key>size</key>
             <string>{1024,1024}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:afee8da81e83e99716ce83b35357e60e:1/10$</string>
+            <string>$TexturePacker:SmartUpdate:9126ce94a6c57d11fb1bf91258ce60eb:1/10$</string>
             <key>textureFileName</key>
             <string>ui_png0.png</string>
         </dict>
