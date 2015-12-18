@@ -36,7 +36,9 @@ extern "C"
 {
 #include "LuaBitOp/bit.c"
 }
+#ifndef __ANGEL_NEW__
 #include "LuaCrypt/lua_dhcrypt.c"
+#endif
 using namespace cocos2d;
 
 static int SendBinaryMessageToLua(int nHandler,const unsigned char* pTable,int nLength)
@@ -454,7 +456,9 @@ TOLUA_API int register_web_socket_manual(lua_State* tolua_S)
     if (nullptr == tolua_S)
         return 0 ;
     luaopen_bit(tolua_S);
+#ifndef __ANGEL_NEW__
 	luaopen_dhcrypt(tolua_S);
+#endif // !__ANGEL_NEW__
     
     lua_pushstring(tolua_S,"cc.WebSocket");
     lua_rawget(tolua_S,LUA_REGISTRYINDEX);
