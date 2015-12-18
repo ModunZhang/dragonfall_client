@@ -18,7 +18,7 @@ function GameUILoginBeta:ctor()
     self.m_totalSize = 0
     self.m_currentSize = 0
     self.local_resources = {
-        {image = "animations/building_animation.pvr.ccz",list = "animations/building_animation.plist"},
+        {image = "animations/building_animation0.pvr.ccz",list = "animations/building_animation0.plist"},
         -- {image = "animations/ui_animation_0.pvr.ccz",list = "animations/ui_animation_0.plist"},
         -- {image = "animations/ui_animation_1.pvr.ccz",list = "animations/ui_animation_1.plist"},
         -- {image = "animations/ui_animation_2.pvr.ccz",list = "animations/ui_animation_2.plist"},

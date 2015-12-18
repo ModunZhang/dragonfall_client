@@ -4,57 +4,57 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>X_1.png</key>
+            <key>unlock_tile_surface_2_grassLand.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{122,2},{56,56}}</string>
+                <string>{{330,4},{173,128}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{56,56}}</string>
+                <string>{{0,0},{173,128}}</string>
                 <key>sourceSize</key>
-                <string>{56,56}</string>
+                <string>{173,128}</string>
             </dict>
-            <key>X_2.png</key>
+            <key>unlock_tile_surface_4_grassLand.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{180,2},{56,56}}</string>
+                <string>{{4,204},{278,106}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{56,56}}</string>
+                <string>{{0,0},{278,106}}</string>
                 <key>sourceSize</key>
-                <string>{56,56}</string>
+                <string>{278,106}</string>
             </dict>
-            <key>green_btn_down_58x58.png</key>
+            <key>unlock_tile_surface_5_iceField.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{58,58}}</string>
+                <string>{{116,204},{317,216}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{58,58}}</string>
+                <string>{{0,0},{317,216}}</string>
                 <key>sourceSize</key>
-                <string>{58,58}</string>
+                <string>{317,216}</string>
             </dict>
-            <key>green_btn_up_58x58.png</key>
+            <key>unlock_tile_surface_7_iceField.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{62,2},{58,58}}</string>
+                <string>{{4,4},{320,194}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{58,58}}</string>
+                <string>{{0,0},{320,194}}</string>
                 <key>sourceSize</key>
-                <string>{58,58}</string>
+                <string>{320,194}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -62,13 +62,13 @@
             <key>format</key>
             <integer>2</integer>
             <key>realTextureFileName</key>
-            <string>ui_png_button1.pvr.ccz</string>
+            <string>terrain_pvr1.pvr.ccz</string>
             <key>size</key>
-            <string>{238,62}</string>
+            <string>{512,512}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:2f22a0b6f6b2fd3d7d15a2b044f0ac07:2/2$</string>
+            <string>$TexturePacker:SmartUpdate:c56f7ed4c4bf3df11a452d3aa4517a47:2/2$</string>
             <key>textureFileName</key>
-            <string>ui_png_button1.pvr.ccz</string>
+            <string>terrain_pvr1.pvr.ccz</string>
         </dict>
     </dict>
 </plist>
