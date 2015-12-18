@@ -132,6 +132,10 @@ function UIKit:getFontFilePath()
     end
 end
 
+function UIKit:getBMFontFilePath()
+    return "fonts/2333.fnt"
+end
+
 function UIKit:getEditBoxFont()
     if device.platform == 'android' then -- Android特殊处理,使用字体文件名作为参数,Java已修改。
         return self:getFontFilePath()
@@ -247,6 +251,19 @@ function UIKit:ttfLabel( params )
     if params.lineHeight and params.dimensions then
         label:setLineHeight(params.lineHeight)
     end
+    return label
+end
+--[[
+    参数和quick原函数一样
+]]--
+function UIKit:bmLabel( params )
+    if not checktable(params) then
+        printError("%s","params must a table")
+    end
+    params.font = UIKit:getBMFontFilePath()
+
+    local label = display.newBMFontLabel(params)
+
     return label
 end
 
@@ -1177,7 +1194,7 @@ function UIKit:CreateMonster(name)
     local node = display.newNode()
     for _,v in ipairs(position_map[count]) do
         UIKit:CreateSoldierIdle45Ani(soldier_name, star, monster_config)
-        :pos(v.x, v.y):addTo(node):setScaleX(s or 1)
+            :pos(v.x, v.y):addTo(node):setScaleX(s or 1)
     end
     return node
 end
@@ -1706,6 +1723,56 @@ function UIKit:CreateSand()
         emitter:setEmissionRate(50 + math.random(100))
     end, 2 + math.random(3))
     return emitter
+end
+
+function UIKit:CreateNumberImageNode(params)
+    local number_node = display.newNode()
+    number_node.params = params
+    function number_node:SetNumString(params)
+        if tolua.type(params) == "number" then
+            params = tostring(params)
+        end
+        local text = tolua.type(params) == "string" and params or self.params.text or ""
+        local color = tolua.type(params) == "table" and params.color or self.params.color
+        local size = tolua.type(params) == "table" and params.size or self.params.size
+        assert(tolua.type(text) == "string")
+        self:removeAllChildren()
+        local x = 0
+        local node_width = 0
+        for i=1,string.len(text) do
+            local replace_key
+            local num_string = string.sub(text,i,i)
+            if num_string == "/" then
+                replace_key = "slash"
+            elseif num_string == "." then
+                replace_key = "point"
+            elseif num_string == ":" then
+                replace_key = "colon"
+            elseif num_string == "," then
+                replace_key = "comma"
+            elseif num_string == "+" then
+                replace_key = "plus"
+            else
+                replace_key = num_string
+            end
+            local num_sprite =display.newSprite(string.format("icon_%s.png",replace_key)):addTo(self)
+            x = x + (i == 1 and num_sprite:getContentSize().width/2 or num_sprite:getContentSize().width) + ((replace_key == "point" or replace_key == "slash" or replace_key == "colon") and 6 or 0)
+            num_sprite:pos(x,15)
+            num_sprite:setColor(UIKit:hex2c4b(color))
+            if i == string.len(text) then
+                node_width = x + num_sprite:getContentSize().width/2
+            end
+        end
+        number_node:setContentSize(cc.size(node_width,30))
+        number_node:scale(size/30)
+    end
+    function number_node:SetNumColor( color)
+        for i,num_sprite in ipairs(self:getChildren()) do
+            num_sprite:setColor(UIKit:hex2c4b(color))
+        end
+    end
+    number_node:SetNumString(params)
+    return number_node
 end
 
 
