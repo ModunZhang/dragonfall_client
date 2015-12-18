@@ -36,7 +36,7 @@ extern "C"
 {
 #include "LuaBitOp/bit.c"
 }
-#ifndef __ANGEL_NEW__
+#if _MSC_VER < 1900 //dannyhe,just for vs2013 wp8.1 now
 #include "LuaCrypt/lua_dhcrypt.c"
 #endif
 using namespace cocos2d;
@@ -456,9 +456,9 @@ TOLUA_API int register_web_socket_manual(lua_State* tolua_S)
     if (nullptr == tolua_S)
         return 0 ;
     luaopen_bit(tolua_S);
-#ifndef __ANGEL_NEW__
+#if _MSC_VER < 1900 //dannyhe,just for vs2013 wp8.1 now
 	luaopen_dhcrypt(tolua_S);
-#endif // !__ANGEL_NEW__
+#endif //
     
     lua_pushstring(tolua_S,"cc.WebSocket");
     lua_rawget(tolua_S,LUA_REGISTRYINDEX);

@@ -950,7 +950,9 @@ static void RegisterExtModules(lua_State* tolua_S)
 	 tolua_ext_module_market(tolua_S);
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 	tolua_ext_module_audio(tolua_S);
+#ifdef __AdeasygoSDK__
 	tolua_ext_module_adeasygo(tolua_S);
+#endif
 #endif
 	tolua_ext_module_sysmail(tolua_S); //email
 	tolua_ext_module_localpush(tolua_S); //local push

@@ -239,6 +239,9 @@
     <Filter Include="external\xxtea">
       <UniqueIdentifier>{b9d01404-1f90-442a-9922-08c307cdf676}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ui\UIWidgets\UITextView">
+      <UniqueIdentifier>{bf555cc4-357a-4da4-a474-1ca17ddbfa92}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\cocos2d.cpp" />
@@ -1808,6 +1811,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\external\xxtea\xxtea_file.cpp">
       <Filter>external\xxtea</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ui\UITextView\UITextView.cpp">
+      <Filter>ui\UIWidgets\UITextView</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ui\UITextView\UITextViewImpl-winrt.cpp">
+      <Filter>ui\UIWidgets\UITextView</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3549,6 +3558,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\external\xxtea\xxtea.h">
       <Filter>external\xxtea</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ui\UITextView\UITextView.h">
+      <Filter>ui\UIWidgets\UITextView</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ui\UITextView\UITextViewImpl.h">
+      <Filter>ui\UIWidgets\UITextView</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ui\UITextView\UITextViewImpl-winrt.h">
+      <Filter>ui\UIWidgets\UITextView</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

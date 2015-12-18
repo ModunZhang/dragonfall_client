@@ -14,6 +14,33 @@
     <Filter Include="Classes">
       <UniqueIdentifier>{a18967bc-4fa1-4c67-bf7e-3f9c8b6a1129}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\ext">
+      <UniqueIdentifier>{b9ebef93-2ef7-4c36-aa2e-e4f6b64b98b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\FaceBook">
+      <UniqueIdentifier>{d97c8e67-c04f-4e69-99eb-2b05b49bf8af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\audio">
+      <UniqueIdentifier>{fa989d01-2222-47f9-a376-c338cf225517}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\AdeasygoSDK">
+      <UniqueIdentifier>{b667f9bf-2212-4f21-805d-67e66ec1bdf9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\ext\common">
+      <UniqueIdentifier>{95fbf85e-632f-4879-a861-61287502c9ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\ext\crc">
+      <UniqueIdentifier>{48b67396-ba15-43ee-af74-65682d69010b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\ext\io">
+      <UniqueIdentifier>{1f1d72a2-68d8-4cbf-960f-94f6292ae184}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\ext\notification">
+      <UniqueIdentifier>{5ef550b9-642a-455c-8f92-7342e55ac68f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\ext\sysmail">
+      <UniqueIdentifier>{f7657a0a-d13b-419d-9d93-7916fc51f34a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml" />
@@ -31,6 +58,39 @@
     <ClCompile Include="..\..\Classes\AppDelegate.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\extensions\ext\platform\winrt\WinRTHelper.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\extensions\ext\platform\winrt\audio\SimpleAudio.cpp">
+      <Filter>Classes\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\extensions\ext\platform\winrt\audio\to_lua_simpleaudio.cpp">
+      <Filter>Classes\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\extensions\ext\common\CommonUtils-winrt.cpp">
+      <Filter>Classes\ext\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\extensions\ext\crc\crc32.c">
+      <Filter>Classes\ext\crc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\extensions\ext\io\FileOperation.cpp">
+      <Filter>Classes\ext\io</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\extensions\ext\sysmail\Sysmail-winrt.cpp">
+      <Filter>Classes\ext\sysmail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\extensions\ext\sysmail\tolua_sysmail.cpp">
+      <Filter>Classes\ext\sysmail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\extensions\ext\notification\LocalNotification-winrt.cpp">
+      <Filter>Classes\ext\notification</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\extensions\ext\notification\tolua_local_push.cpp">
+      <Filter>Classes\ext\notification</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\extensions\ext\LuaExtension.cpp">
+      <Filter>Classes\ext</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.xaml.h" />
@@ -44,6 +104,36 @@
     <ClInclude Include="Cocos2dEngine\OpenGLESPage.xaml.h" />
     <ClInclude Include="..\..\Classes\AppDelegate.h">
       <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\extensions\ext\platform\winrt\WinRTHelper.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\extensions\ext\platform\winrt\audio\SimpleAudio.h">
+      <Filter>Classes\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\extensions\ext\platform\winrt\audio\to_lua_simpleaudio.h">
+      <Filter>Classes\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\extensions\ext\common\CommonUtils.h">
+      <Filter>Classes\ext\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\extensions\ext\io\FileOperation.h">
+      <Filter>Classes\ext\io</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\extensions\ext\sysmail\Sysmail.h">
+      <Filter>Classes\ext\sysmail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\extensions\ext\sysmail\tolua_sysmail.h">
+      <Filter>Classes\ext\sysmail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\extensions\ext\notification\LocalNotification.h">
+      <Filter>Classes\ext\notification</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\extensions\ext\notification\tolua_local_push.h">
+      <Filter>Classes\ext\notification</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\extensions\ext\LuaExtension.h">
+      <Filter>Classes\ext</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

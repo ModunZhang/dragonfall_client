@@ -349,7 +349,7 @@
 $(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\wp_8.1-specific\zlib\include;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(ProjectDir)..\..\src\extra;$(ProjectDir)..\..\src\extensions;
 $(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\wp_8.1-specific\zlib\include;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(ProjectDir)..\..\src\extra;$(ProjectDir)..\..\src\extensions;
 $(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\wp_8.1-specific\zlib\include;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(ProjectDir)..\..\src\extra;$(ProjectDir)..\..\src\extensions;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>__ANGEL_NEW__;WINRT;CC_USE_CURL=1;CC_LUA_ENGINE_ENABLED=1;COCOS2D_DEBUG=1;CC_ENABLE_CHIPMUNK_INTEGRATION=1;__STRICT_ANSI__;SQLITE_OS_WINRT;SQLITE_OMIT_WAL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WINRT;CC_USE_CURL=1;CC_LUA_ENGINE_ENABLED=1;COCOS2D_DEBUG=1;CC_ENABLE_CHIPMUNK_INTEGRATION=1;__STRICT_ANSI__;SQLITE_OS_WINRT;SQLITE_OMIT_WAL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4996;4700;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -367,7 +367,7 @@ $(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-
 $(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\wp_8.1-specific\zlib\include;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(ProjectDir)..\..\src\extra;$(ProjectDir)..\..\src\extensions;
 $(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\wp_8.1-specific\zlib\include;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(ProjectDir)..\..\src\extra;$(ProjectDir)..\..\src\extensions;
 $(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\wp_8.1-specific\zlib\include;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(ProjectDir)..\..\src\extra;$(ProjectDir)..\..\src\extensions;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>__ANGEL_NEW__;CC_USE_CURL=1;NDEBUG;CC_LUA_ENGINE_ENABLED=1;CC_ENABLE_CHIPMUNK_INTEGRATION=1;__STRICT_ANSI__;SQLITE_OS_WINRT;SQLITE_OMIT_WAL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CC_USE_CURL=1;NDEBUG;CC_LUA_ENGINE_ENABLED=1;CC_ENABLE_CHIPMUNK_INTEGRATION=1;__STRICT_ANSI__;SQLITE_OS_WINRT;SQLITE_OMIT_WAL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4996;4700;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -385,7 +385,7 @@ $(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-
 $(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\wp_8.1-specific\zlib\include;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(ProjectDir)..\..\src\extra;$(ProjectDir)..\..\src\extensions;
 $(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\wp_8.1-specific\zlib\include;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(ProjectDir)..\..\src\extra;$(ProjectDir)..\..\src\extensions;
 $(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\wp_8.1-specific\zlib\include;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(ProjectDir)..\..\src\extra;$(ProjectDir)..\..\src\extensions;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>__ANGEL_NEW__;WINRT;CC_USE_CURL=1;CC_LUA_ENGINE_ENABLED=1;COCOS2D_DEBUG=1;CC_ENABLE_CHIPMUNK_INTEGRATION=1;__STRICT_ANSI__;SQLITE_OS_WINRT;SQLITE_OMIT_WAL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WINRT;CC_USE_CURL=1;CC_LUA_ENGINE_ENABLED=1;COCOS2D_DEBUG=1;CC_ENABLE_CHIPMUNK_INTEGRATION=1;__STRICT_ANSI__;SQLITE_OS_WINRT;SQLITE_OMIT_WAL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4996;4700;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -403,7 +403,7 @@ $(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-
 $(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\wp_8.1-specific\zlib\include;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(ProjectDir)..\..\src\extra;$(ProjectDir)..\..\src\extensions;
 $(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\wp_8.1-specific\zlib\include;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(ProjectDir)..\..\src\extra;$(ProjectDir)..\..\src\extensions;
 $(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\wp_8.1-specific\zlib\include;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(ProjectDir)..\..\src\extra;$(ProjectDir)..\..\src\extensions;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>__ANGEL_NEW__;CC_USE_CURL=1;NDEBUG;CC_LUA_ENGINE_ENABLED=1;CC_ENABLE_CHIPMUNK_INTEGRATION=1;__STRICT_ANSI__;SQLITE_OS_WINRT;SQLITE_OMIT_WAL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CC_USE_CURL=1;NDEBUG;CC_LUA_ENGINE_ENABLED=1;CC_ENABLE_CHIPMUNK_INTEGRATION=1;__STRICT_ANSI__;SQLITE_OS_WINRT;SQLITE_OMIT_WAL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4996;4700;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -421,7 +421,7 @@ $(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-
 $(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\wp_8.1-specific\zlib\include;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(ProjectDir)..\..\src\extra;$(ProjectDir)..\..\src\extensions;
 $(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\wp_8.1-specific\zlib\include;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(ProjectDir)..\..\src\extra;$(ProjectDir)..\..\src\extensions;
 $(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\wp_8.1-specific\zlib\include;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(ProjectDir)..\..\src\extra;$(ProjectDir)..\..\src\extensions;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>__ANGEL_NEW__;WINRT;CC_USE_CURL=1;CC_LUA_ENGINE_ENABLED=1;COCOS2D_DEBUG=1;CC_ENABLE_CHIPMUNK_INTEGRATION=1;__STRICT_ANSI__;SQLITE_OS_WINRT;SQLITE_OMIT_WAL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WINRT;CC_USE_CURL=1;CC_LUA_ENGINE_ENABLED=1;COCOS2D_DEBUG=1;CC_ENABLE_CHIPMUNK_INTEGRATION=1;__STRICT_ANSI__;SQLITE_OS_WINRT;SQLITE_OMIT_WAL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4996;4700;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -439,7 +439,7 @@ $(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-
 $(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\wp_8.1-specific\zlib\include;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(ProjectDir)..\..\src\extra;$(ProjectDir)..\..\src\extensions;
 $(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\wp_8.1-specific\zlib\include;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(ProjectDir)..\..\src\extra;$(ProjectDir)..\..\src\extensions;
 $(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\wp_8.1-specific\zlib\include;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(ProjectDir)..\..\src\extra;$(ProjectDir)..\..\src\extensions;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>__ANGEL_NEW__;CC_USE_CURL=1;NDEBUG;CC_LUA_ENGINE_ENABLED=1;CC_ENABLE_CHIPMUNK_INTEGRATION=1;__STRICT_ANSI__;SQLITE_OS_WINRT;SQLITE_OMIT_WAL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CC_USE_CURL=1;NDEBUG;CC_LUA_ENGINE_ENABLED=1;CC_ENABLE_CHIPMUNK_INTEGRATION=1;__STRICT_ANSI__;SQLITE_OS_WINRT;SQLITE_OMIT_WAL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4996;4700;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>

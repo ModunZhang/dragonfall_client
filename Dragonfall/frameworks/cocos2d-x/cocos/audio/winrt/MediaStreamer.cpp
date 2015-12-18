@@ -24,7 +24,7 @@
 
 #include <wrl\wrappers\corewrappers.h>
 #include <ppltasks.h>
-#ifndef __ANGEL_NEW__
+#if _MSC_VER < 1900 //dannyhe,just for vs2013 wp8.1 now
 #include "lame.h"
 #endif
 
@@ -226,7 +226,7 @@ void MediaStreamer::Restart()
 //dannyhe
 void MediaStreamer::InitializeMp3(__in const WCHAR* url)
 {
-#ifndef __ANGEL_NEW__
+#if _MSC_VER < 1900 //dannyhe,just for vs2013 wp8.1 now
 	WCHAR filePath[MAX_PATH] = { 0 };
 	if ((wcslen(url) > 1 && url[1] == ':'))
 	{

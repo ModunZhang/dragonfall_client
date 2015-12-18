@@ -153,7 +153,7 @@
       <AdditionalIncludeDirectories>..\..\Classes;Cocos2dEngine;Generated Files\Cocos2dEngine;$(ProjectDir)..\..\..\..\extensions\sdk\Facebook;$(ProjectDir)..\..\..\..\extensions\ext\platform\winrt;$(ProjectDir)..\..\..\..\extensions\ext\common;$(ProjectDir)..\..\..\..\extensions\ext\notification;$(ProjectDir)..\..\..\..\extensions\ext\sysmail;$(ProjectDir)..\..\..\..\extensions\ext\io;$(ProjectDir)..\..\..\..\extensions\ext;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua;../../Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <PreprocessorDefinitions>CC_USE_WIC=1;__ANGEL_NEW__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CC_USE_WIC=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <IgnoreSpecificDefaultLibraries>MSVCRT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -167,7 +167,7 @@
       <AdditionalIncludeDirectories>..\..\Classes;Cocos2dEngine;Generated Files\Cocos2dEngine;$(ProjectDir)..\..\..\..\extensions\sdk\Facebook;$(ProjectDir)..\..\..\..\extensions\ext\platform\winrt;$(ProjectDir)..\..\..\..\extensions\ext\common;$(ProjectDir)..\..\..\..\extensions\ext\notification;$(ProjectDir)..\..\..\..\extensions\ext\sysmail;$(ProjectDir)..\..\..\..\extensions\ext\io;$(ProjectDir)..\..\..\..\extensions\ext;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua;../../Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <PreprocessorDefinitions>CC_USE_WIC=1;__ANGEL_NEW__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CC_USE_WIC=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -178,7 +178,7 @@
       <AdditionalIncludeDirectories>..\..\Classes;Cocos2dEngine;Generated Files\Cocos2dEngine;$(ProjectDir)..\..\..\..\extensions\sdk\Facebook;$(ProjectDir)..\..\..\..\extensions\ext\platform\winrt;$(ProjectDir)..\..\..\..\extensions\ext\common;$(ProjectDir)..\..\..\..\extensions\ext\notification;$(ProjectDir)..\..\..\..\extensions\ext\sysmail;$(ProjectDir)..\..\..\..\extensions\ext\io;$(ProjectDir)..\..\..\..\extensions\ext;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua;../../Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <PreprocessorDefinitions>CC_USE_WIC=1;__ANGEL_NEW__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CC_USE_WIC=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <IgnoreSpecificDefaultLibraries>MSVCRT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -192,7 +192,7 @@
       <AdditionalIncludeDirectories>..\..\Classes;Cocos2dEngine;Generated Files\Cocos2dEngine;$(ProjectDir)..\..\..\..\extensions\sdk\Facebook;$(ProjectDir)..\..\..\..\extensions\ext\platform\winrt;$(ProjectDir)..\..\..\..\extensions\ext\common;$(ProjectDir)..\..\..\..\extensions\ext\notification;$(ProjectDir)..\..\..\..\extensions\ext\sysmail;$(ProjectDir)..\..\..\..\extensions\ext\io;$(ProjectDir)..\..\..\..\extensions\ext;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua;../../Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <PreprocessorDefinitions>CC_USE_WIC=1;__ANGEL_NEW__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CC_USE_WIC=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -203,7 +203,7 @@
       <AdditionalIncludeDirectories>..\..\Classes;Cocos2dEngine;Generated Files\Cocos2dEngine;$(ProjectDir)..\..\..\..\extensions\sdk\Facebook;$(ProjectDir)..\..\..\..\extensions\ext\platform\winrt;$(ProjectDir)..\..\..\..\extensions\ext\common;$(ProjectDir)..\..\..\..\extensions\ext\notification;$(ProjectDir)..\..\..\..\extensions\ext\sysmail;$(ProjectDir)..\..\..\..\extensions\ext\io;$(ProjectDir)..\..\..\..\extensions\ext;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua;../../Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <PreprocessorDefinitions>CC_USE_WIC=1;__ANGEL_NEW__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CC_USE_WIC=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <IgnoreSpecificDefaultLibraries>MSVCRT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -217,10 +217,20 @@
       <AdditionalIncludeDirectories>..\..\Classes;Cocos2dEngine;Generated Files\Cocos2dEngine;$(ProjectDir)..\..\..\..\extensions\sdk\Facebook;$(ProjectDir)..\..\..\..\extensions\ext\platform\winrt;$(ProjectDir)..\..\..\..\extensions\ext\common;$(ProjectDir)..\..\..\..\extensions\ext\notification;$(ProjectDir)..\..\..\..\extensions\ext\sysmail;$(ProjectDir)..\..\..\..\extensions\ext\io;$(ProjectDir)..\..\..\..\extensions\ext;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua;../../Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <PreprocessorDefinitions>CC_USE_WIC=1;__ANGEL_NEW__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CC_USE_WIC=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\extensions\ext\common\CommonUtils.h" />
+    <ClInclude Include="..\..\..\..\extensions\ext\io\FileOperation.h" />
+    <ClInclude Include="..\..\..\..\extensions\ext\LuaExtension.h" />
+    <ClInclude Include="..\..\..\..\extensions\ext\notification\LocalNotification.h" />
+    <ClInclude Include="..\..\..\..\extensions\ext\notification\tolua_local_push.h" />
+    <ClInclude Include="..\..\..\..\extensions\ext\platform\winrt\audio\SimpleAudio.h" />
+    <ClInclude Include="..\..\..\..\extensions\ext\platform\winrt\audio\to_lua_simpleaudio.h" />
+    <ClInclude Include="..\..\..\..\extensions\ext\platform\winrt\WinRTHelper.h" />
+    <ClInclude Include="..\..\..\..\extensions\ext\sysmail\Sysmail.h" />
+    <ClInclude Include="..\..\..\..\extensions\ext\sysmail\tolua_sysmail.h" />
     <ClInclude Include="..\..\Classes\AppDelegate.h" />
     <ClInclude Include="App.xaml.h">
       <DependentUpon>App.xaml</DependentUpon>
@@ -244,6 +254,42 @@
     <None Include="Dragonfall_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\extensions\ext\common\CommonUtils-winrt.cpp" />
+    <ClCompile Include="..\..\..\..\extensions\ext\crc\crc32.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsWinRT>
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsWinRT>
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">false</CompileAsWinRT>
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">false</CompileAsWinRT>
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsWinRT>
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</CompileAsWinRT>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+      </ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+      </ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\extensions\ext\io\FileOperation.cpp" />
+    <ClCompile Include="..\..\..\..\extensions\ext\LuaExtension.cpp" />
+    <ClCompile Include="..\..\..\..\extensions\ext\notification\LocalNotification-winrt.cpp" />
+    <ClCompile Include="..\..\..\..\extensions\ext\notification\tolua_local_push.cpp" />
+    <ClCompile Include="..\..\..\..\extensions\ext\platform\winrt\audio\SimpleAudio.cpp" />
+    <ClCompile Include="..\..\..\..\extensions\ext\platform\winrt\audio\to_lua_simpleaudio.cpp" />
+    <ClCompile Include="..\..\..\..\extensions\ext\platform\winrt\WinRTHelper.cpp" />
+    <ClCompile Include="..\..\..\..\extensions\ext\sysmail\Sysmail-winrt.cpp" />
+    <ClCompile Include="..\..\..\..\extensions\ext\sysmail\tolua_sysmail.cpp" />
     <ClCompile Include="..\..\Classes\AppDelegate.cpp" />
     <ClCompile Include="App.xaml.cpp">
       <DependentUpon>App.xaml</DependentUpon>
