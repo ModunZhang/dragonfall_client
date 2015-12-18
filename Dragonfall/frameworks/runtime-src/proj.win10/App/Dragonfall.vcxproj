@@ -150,9 +150,10 @@
       <AdditionalOptions>/bigobj /Zm200 %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>4453;28204;4251</DisableSpecificWarnings>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>..\..\Classes;Cocos2dEngine;Generated Files\Cocos2dEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Classes;Cocos2dEngine;Generated Files\Cocos2dEngine;$(ProjectDir)..\..\..\..\extensions\sdk\Facebook;$(ProjectDir)..\..\..\..\extensions\ext\platform\winrt;$(ProjectDir)..\..\..\..\extensions\ext\common;$(ProjectDir)..\..\..\..\extensions\ext\notification;$(ProjectDir)..\..\..\..\extensions\ext\sysmail;$(ProjectDir)..\..\..\..\extensions\ext\io;$(ProjectDir)..\..\..\..\extensions\ext;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua;../../Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <PreprocessorDefinitions>CC_USE_WIC=1;__ANGEL_NEW__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <IgnoreSpecificDefaultLibraries>MSVCRT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -163,9 +164,10 @@
       <AdditionalOptions>/bigobj /Zm200 %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>4453;28204;4251</DisableSpecificWarnings>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>..\..\Classes;Cocos2dEngine;Generated Files\Cocos2dEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Classes;Cocos2dEngine;Generated Files\Cocos2dEngine;$(ProjectDir)..\..\..\..\extensions\sdk\Facebook;$(ProjectDir)..\..\..\..\extensions\ext\platform\winrt;$(ProjectDir)..\..\..\..\extensions\ext\common;$(ProjectDir)..\..\..\..\extensions\ext\notification;$(ProjectDir)..\..\..\..\extensions\ext\sysmail;$(ProjectDir)..\..\..\..\extensions\ext\io;$(ProjectDir)..\..\..\..\extensions\ext;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua;../../Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <PreprocessorDefinitions>CC_USE_WIC=1;__ANGEL_NEW__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -173,9 +175,10 @@
       <AdditionalOptions>/bigobj /Zm200 %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>4453;28204;4251</DisableSpecificWarnings>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>..\..\Classes;Cocos2dEngine;Generated Files\Cocos2dEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Classes;Cocos2dEngine;Generated Files\Cocos2dEngine;$(ProjectDir)..\..\..\..\extensions\sdk\Facebook;$(ProjectDir)..\..\..\..\extensions\ext\platform\winrt;$(ProjectDir)..\..\..\..\extensions\ext\common;$(ProjectDir)..\..\..\..\extensions\ext\notification;$(ProjectDir)..\..\..\..\extensions\ext\sysmail;$(ProjectDir)..\..\..\..\extensions\ext\io;$(ProjectDir)..\..\..\..\extensions\ext;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua;../../Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <PreprocessorDefinitions>CC_USE_WIC=1;__ANGEL_NEW__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <IgnoreSpecificDefaultLibraries>MSVCRT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -186,9 +189,10 @@
       <AdditionalOptions>/bigobj /Zm200 %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>4453;28204;4251</DisableSpecificWarnings>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>..\..\Classes;Cocos2dEngine;Generated Files\Cocos2dEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Classes;Cocos2dEngine;Generated Files\Cocos2dEngine;$(ProjectDir)..\..\..\..\extensions\sdk\Facebook;$(ProjectDir)..\..\..\..\extensions\ext\platform\winrt;$(ProjectDir)..\..\..\..\extensions\ext\common;$(ProjectDir)..\..\..\..\extensions\ext\notification;$(ProjectDir)..\..\..\..\extensions\ext\sysmail;$(ProjectDir)..\..\..\..\extensions\ext\io;$(ProjectDir)..\..\..\..\extensions\ext;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua;../../Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <PreprocessorDefinitions>CC_USE_WIC=1;__ANGEL_NEW__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -196,9 +200,10 @@
       <AdditionalOptions>/bigobj /Zm200 %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>4453;28204;4251</DisableSpecificWarnings>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>..\..\Classes;Cocos2dEngine;Generated Files\Cocos2dEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Classes;Cocos2dEngine;Generated Files\Cocos2dEngine;$(ProjectDir)..\..\..\..\extensions\sdk\Facebook;$(ProjectDir)..\..\..\..\extensions\ext\platform\winrt;$(ProjectDir)..\..\..\..\extensions\ext\common;$(ProjectDir)..\..\..\..\extensions\ext\notification;$(ProjectDir)..\..\..\..\extensions\ext\sysmail;$(ProjectDir)..\..\..\..\extensions\ext\io;$(ProjectDir)..\..\..\..\extensions\ext;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua;../../Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <PreprocessorDefinitions>CC_USE_WIC=1;__ANGEL_NEW__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <IgnoreSpecificDefaultLibraries>MSVCRT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -209,14 +214,14 @@
       <AdditionalOptions>/bigobj /Zm200 %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>4453;28204;4251</DisableSpecificWarnings>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>..\..\Classes;Cocos2dEngine;Generated Files\Cocos2dEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Classes;Cocos2dEngine;Generated Files\Cocos2dEngine;$(ProjectDir)..\..\..\..\extensions\sdk\Facebook;$(ProjectDir)..\..\..\..\extensions\ext\platform\winrt;$(ProjectDir)..\..\..\..\extensions\ext\common;$(ProjectDir)..\..\..\..\extensions\ext\notification;$(ProjectDir)..\..\..\..\extensions\ext\sysmail;$(ProjectDir)..\..\..\..\extensions\ext\io;$(ProjectDir)..\..\..\..\extensions\ext;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua;../../Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <PreprocessorDefinitions>CC_USE_WIC=1;__ANGEL_NEW__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Classes\AppDelegate.h" />
-    <ClInclude Include="..\..\Classes\HelloWorldScene.h" />
     <ClInclude Include="App.xaml.h">
       <DependentUpon>App.xaml</DependentUpon>
     </ClInclude>
@@ -240,7 +245,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Classes\AppDelegate.cpp" />
-    <ClCompile Include="..\..\Classes\HelloWorldScene.cpp" />
     <ClCompile Include="App.xaml.cpp">
       <DependentUpon>App.xaml</DependentUpon>
     </ClCompile>
@@ -262,23 +266,6 @@
     <Page Include="Cocos2dEngine\OpenGLESPage.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\cocos2d-x\cocos\2d\libcocos2d_win10\libcocos2d.vcxproj">
-      <Project>{07c2895d-720c-487d-b7b4-12c293ea533f}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\cocos2d-x\cocos\editor-support\spine\proj.win10\libSpine.vcxproj">
-      <Project>{4b3ba10a-941f-4e08-8a50-8a7fcb822bb8}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\cocos2d-x\external\Box2D\proj-win10\libbox2d.vcxproj">
-      <Project>{0c32d479-46d5-46c3-9aa9-0a8ff8320516}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\cocos2d-x\external\bullet\proj.win10\libbullet.vcxproj">
-      <Project>{ecee1119-ce2e-4f7e-83a8-1932ea48e893}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\cocos2d-x\external\recast\proj.win10\librecast.vcxproj">
-      <Project>{f551524d-8a70-4b2f-a7c2-28ae61150022}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <SDKReference Include="WindowsMobile, Version=10.0.10240.0" />
   </ItemGroup>
   <ItemGroup>
@@ -289,6 +276,23 @@
     <Image Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Image Include="Assets\StoreLogo.png" />
     <Image Include="Assets\Wide310x150Logo.scale-200.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\cocos2d-x\cocos\2d\libcocos2d_win10\libcocos2d.vcxproj">
+      <Project>{07c2895d-720c-487d-b7b4-12c293ea533f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\cocos2d-x\cocos\editor-support\spine\proj.win10\libSpine.vcxproj">
+      <Project>{4b3ba10a-941f-4e08-8a50-8a7fcb822bb8}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\cocos2d-x\cocos\quick_libs\proj.win10\quick_libs\quick_libs.vcxproj">
+      <Project>{76c21250-c4c0-46d7-8035-aacdf0f84cf3}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\cocos2d-x\cocos\scripting\lua-bindings\proj.win10\LibLua\LibLua.vcxproj">
+      <Project>{114616f0-e33c-43e6-8790-dfecf312b0fc}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\cocos2d-x\external\Box2D\proj-win10\libbox2d.vcxproj">
+      <Project>{0c32d479-46d5-46c3-9aa9-0a8ff8320516}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
