@@ -12,16 +12,6 @@ local animation = import("..animation")
 function LoadingScene:onEnter()
 	display.newColorLayer(cc.c4b(255, 255, 255, 255)):addTo(self)
 	self:performWithDelay(function()
-<<<<<<< HEAD
-		collectgarbage("collect")
-		local manager = ccs.ArmatureDataManager:getInstance()
-	    for k,v in pairs(animation) do
-	        local path = DEBUG_GET_ANIMATION_PATH(string.format("animations/%s.ExportJson", k))
-	        manager:removeArmatureFileInfo(path)
-	    end
-	    cc.Director:getInstance():purgeCachedData()
-	    print("LoadingScene getAppMemoryUsage1", ext.getAppMemoryUsage())
-=======
 		if device.platform == 'winrt' then
 			local manager = ccs.ArmatureDataManager:getInstance()
 		    for k,v in pairs(animation) do
@@ -30,7 +20,6 @@ function LoadingScene:onEnter()
 		    end
 		    cc.Director:getInstance():purgeCachedData()
 		end
->>>>>>> b7f3e6546fada2bf2ca369f5234eb09d46bba3fe
 	    enter_scene(app:enterScene(self.nextScene, self.args))
 	end, 0.1)
 end
