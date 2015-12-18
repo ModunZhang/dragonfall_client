@@ -84,6 +84,8 @@ extern CC_DLL const GLchar * cc3D_ColorNormal_frag;
 extern CC_DLL const GLchar * cc3D_Particle_vert;
 extern CC_DLL const GLchar * cc3D_Particle_tex_frag;
 extern CC_DLL const GLchar * cc3D_Particle_color_frag;
+//dannyhe
+extern CC_DLL const GLchar * ccPositionTexture_GrayScale_frag;
 
 //ETC dannyhe
 #if USE_ETC1_TEXTURE_WITH_ALPHA_DATA

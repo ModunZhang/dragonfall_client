@@ -438,8 +438,7 @@ void SIOClientImpl::onMessage(WebSocket* ws, const WebSocket::Data& data)
                 if(pos2 > pos)
                 {
                     s_data = s_data.substr(pos+1, pos2-pos-1);
-                    std::remove_copy(s_data.begin(), s_data.end(),
-                         std::back_inserter(eventname), '"');
+					s_data = s_data.substr(pos2 + 9, s_data.size() - (pos2 + 11));
                 }
 
                 c->fireEvent(eventname, payload);

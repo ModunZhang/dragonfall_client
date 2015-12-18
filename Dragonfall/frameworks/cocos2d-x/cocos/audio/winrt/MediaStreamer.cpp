@@ -24,7 +24,9 @@
 
 #include <wrl\wrappers\corewrappers.h>
 #include <ppltasks.h>
+#ifndef __ANGEL_NEW__
 #include "lame.h"
+#endif
 
 using namespace Microsoft::WRL;
 using namespace Windows::Storage;
@@ -224,7 +226,7 @@ void MediaStreamer::Restart()
 //dannyhe
 void MediaStreamer::InitializeMp3(__in const WCHAR* url)
 {
-
+#ifndef __ANGEL_NEW__
 	WCHAR filePath[MAX_PATH] = { 0 };
 	if ((wcslen(url) > 1 && url[1] == ':'))
 	{
@@ -375,6 +377,7 @@ void MediaStreamer::InitializeMp3(__in const WCHAR* url)
 	m_waveFormat.nBlockAlign = m_waveFormat.nChannels * m_waveFormat.wBitsPerSample / 8;
 	m_waveFormat.nAvgBytesPerSec = m_waveFormat.nSamplesPerSec * m_waveFormat.nBlockAlign;
 	m_waveFormat.cbSize = 0;
+#endif
 }
 
 void MediaStreamer::GetLengthOfId3v2Tag(_In_ const unsigned char * buf, _Outptr_ int * pLength)

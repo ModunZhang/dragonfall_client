@@ -907,9 +907,7 @@ namespace ui {
                 break;
             case State::GRAY:
             {
-                auto program = GLProgram::createWithByteArrays(ccPositionTextureColor_noMVP_vert,
-                                                               ccUIGrayScale_frag);
-                glState = GLProgramState::getOrCreateWithGLProgram(program);
+				glState = GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_POSITION_GRAYSCALE);
             }
             default:
                 break;

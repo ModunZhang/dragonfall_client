@@ -277,6 +277,23 @@ THE SOFTWARE.
 #endif
 #endif // CC_USE_WEBP
 
+ /** Support PNG or not. If your application don't use png format picture, you can undefine this macro to save package size.
+ */
+#ifndef CC_USE_PNG
+#define CC_USE_PNG  1
+#endif // CC_USE_PNG
+
+ /** Support WIC (Windows Image Component) or not. Replaces PNG, TIFF and JPEG
+ dannyhe 这里的宏定义和官方有差异CC_USE_WIC
+ */
+#ifdef CC_USE_WIC
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+#undef CC_USE_TIFF
+#undef CC_USE_JPEG
+#undef CC_USE_PNG
+#endif
+#endif // CC_USE_WIC
+
 /** Enable Script binding. */
 #ifndef CC_ENABLE_SCRIPT_BINDING
 #define CC_ENABLE_SCRIPT_BINDING 1

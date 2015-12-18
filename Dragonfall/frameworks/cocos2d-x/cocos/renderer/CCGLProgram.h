@@ -174,6 +174,8 @@ public:
     static const char* SHADER_NAME_POSITION_U_COLOR;
     /**Built in shader for draw a sector with 90 degrees with center at bottom left point.*/
     static const char* SHADER_NAME_POSITION_LENGTH_TEXTURE_COLOR;
+	/**Built in shader for ui effects */
+	static const char* SHADER_NAME_POSITION_GRAYSCALE;
     /** @{
         Built in shader for label and label with effects.
     */

@@ -1207,9 +1207,8 @@ GLProgramState* Widget::getNormalGLProgramState()const
 
 GLProgramState* Widget::getGrayGLProgramState()const
 {
-    auto program = GLProgram::createWithByteArrays(ccPositionTextureColor_noMVP_vert,
-                                                           ccUIGrayScale_frag);
-    GLProgramState *glState  = GLProgramState::getOrCreateWithGLProgram(program);
+	GLProgramState *glState = nullptr;
+	glState = GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_POSITION_GRAYSCALE);
     return glState;
 }
 

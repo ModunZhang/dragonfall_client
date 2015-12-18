@@ -233,38 +233,11 @@
     <Filter Include="ui\UIWidgets\ScrollWidget">
       <UniqueIdentifier>{6fcf3801-c3e1-4097-ba82-3da0a6599555}</UniqueIdentifier>
     </Filter>
-    <Filter Include="external\poly2tri">
-      <UniqueIdentifier>{acb13cf1-4b21-4392-826a-0ca62db8afe9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="external\poly2tri\common">
-      <UniqueIdentifier>{92cd288c-1327-4990-8ae2-dab11fa3a69c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="external\poly2tri\sweep">
-      <UniqueIdentifier>{bc47263f-0690-488e-b240-0b7bf763f401}</UniqueIdentifier>
-    </Filter>
     <Filter Include="audioengine">
       <UniqueIdentifier>{5937896e-882c-429a-ada7-72c799c06920}</UniqueIdentifier>
     </Filter>
-    <Filter Include="physics3d">
-      <UniqueIdentifier>{f68e83b4-2fa3-4f47-9864-e7dfd90c16a6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="navmesh">
-      <UniqueIdentifier>{cc4f6ca9-4231-479d-8e19-ede4dff3382e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="external\clipper">
-      <UniqueIdentifier>{e3a5fe25-a92e-4c98-9026-782b2b5b1388}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="cocostudio\reader\WidgetReader\SkeletonReader">
-      <UniqueIdentifier>{a10cc84c-5c61-43f4-a665-5e5cbab47ee1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="cocostudio\TimelineAction\Skeleton">
-      <UniqueIdentifier>{438e0063-bdbc-4252-a0f5-f55f7d54ed6f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="cocostudio\reader\WidgetReader\GameNodeDReader">
-      <UniqueIdentifier>{0760e708-a93e-41f5-abaf-a7e422882920}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="cocostudio\reader\WidgetReader\Light3DReader">
-      <UniqueIdentifier>{549d5ddb-02ff-4b34-8e49-8fb7570ecff4}</UniqueIdentifier>
+    <Filter Include="external\xxtea">
+      <UniqueIdentifier>{b9d01404-1f90-442a-9922-08c307cdf676}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -793,9 +766,6 @@
       <Filter>cocostudio\components</Filter>
     </ClCompile>
     <ClCompile Include="..\..\editor-support\cocostudio\CocoLoader.cpp">
-      <Filter>cocostudio\json</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\editor-support\cocostudio\CocoStudio.cpp">
       <Filter>cocostudio\json</Filter>
     </ClCompile>
     <ClCompile Include="..\..\editor-support\cocostudio\DictionaryHelper.cpp">
@@ -1692,19 +1662,10 @@
     <ClCompile Include="..\..\ui\UIScrollView.cpp">
       <Filter>ui\UIWidgets\ScrollWidget</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\ui\UIScrollViewBar.cpp">
-      <Filter>ui\UIWidgets\ScrollWidget</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\ui\UIButton.cpp">
       <Filter>ui\UIWidgets</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\ui\UIAbstractCheckButton.cpp">
-      <Filter>ui\UIWidgets</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\ui\UICheckBox.cpp">
-      <Filter>ui\UIWidgets</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\ui\UIRadioButton.cpp">
       <Filter>ui\UIWidgets</Filter>
     </ClCompile>
     <ClCompile Include="..\..\ui\UIImageView.cpp">
@@ -1737,114 +1698,8 @@
     <ClCompile Include="..\..\editor-support\cocostudio\CCSSceneReader.cpp">
       <Filter>cocostudio\reader</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\platform\winrt\WICImageLoader-winrt.cpp">
-      <Filter>platform\winrt</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\external\poly2tri\common\shapes.cc">
-      <Filter>external\poly2tri\common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\external\poly2tri\sweep\advancing_front.cc">
-      <Filter>external\poly2tri\sweep</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\external\poly2tri\sweep\cdt.cc">
-      <Filter>external\poly2tri\sweep</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\external\poly2tri\sweep\sweep.cc">
-      <Filter>external\poly2tri\sweep</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\external\poly2tri\sweep\sweep_context.cc">
-      <Filter>external\poly2tri\sweep</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\network\HttpClient-winrt.cpp">
-      <Filter>network</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\network\HttpConnection-winrt.cpp">
-      <Filter>network</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\base\CCNinePatchImageParser.cpp">
-      <Filter>base</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\renderer\CCMaterial.cpp">
-      <Filter>renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\renderer\CCPass.cpp">
-      <Filter>renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\renderer\CCRenderState.cpp">
-      <Filter>renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\renderer\CCTechnique.cpp">
-      <Filter>renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\renderer\CCVertexAttribBinding.cpp">
-      <Filter>renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\base\CCUserDefault-winrt.cpp">
-      <Filter>base</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\base\CCProperties.cpp">
-      <Filter>base</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\audio\AudioEngine.cpp">
       <Filter>audioengine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\audio\winrt\AudioCachePlayer.cpp">
-      <Filter>audioengine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\audio\winrt\AudioEngine-winrt.cpp">
-      <Filter>audioengine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\audio\winrt\AudioSourceReader.cpp">
-      <Filter>audioengine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\renderer\CCFrameBuffer.cpp" />
-    <ClCompile Include="..\..\navmesh\CCNavMesh.cpp">
-      <Filter>navmesh</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\navmesh\CCNavMeshAgent.cpp">
-      <Filter>navmesh</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\navmesh\CCNavMeshDebugDraw.cpp">
-      <Filter>navmesh</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\navmesh\CCNavMeshObstacle.cpp">
-      <Filter>navmesh</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\navmesh\CCNavMeshUtils.cpp">
-      <Filter>navmesh</Filter>
-    </ClCompile>
-    <ClCompile Include="..\CCAutoPolygon.cpp">
-      <Filter>2d</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\external\clipper\clipper.cpp">
-      <Filter>external\clipper</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\editor-support\cocostudio\CCComExtensionData.cpp">
-      <Filter>cocostudio\components</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\editor-support\cocostudio\WidgetReader\SkeletonReader\BoneNodeReader.cpp">
-      <Filter>cocostudio\reader\WidgetReader\SkeletonReader</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\editor-support\cocostudio\WidgetReader\SkeletonReader\SkeletonNodeReader.cpp">
-      <Filter>cocostudio\reader\WidgetReader\SkeletonReader</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\editor-support\cocostudio\ActionTimeline\CCBoneNode.cpp">
-      <Filter>cocostudio\TimelineAction\Skeleton</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\editor-support\cocostudio\ActionTimeline\CCSkeletonNode.cpp">
-      <Filter>cocostudio\TimelineAction\Skeleton</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\editor-support\cocostudio\ActionTimeline\CCSkinNode.cpp">
-      <Filter>cocostudio\TimelineAction\Skeleton</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\editor-support\cocostudio\WidgetReader\GameNode3DReader\GameNode3DReader.cpp">
-      <Filter>cocostudio\reader\WidgetReader\GameNodeDReader</Filter>
-    </ClCompile>
-    <ClCompile Include="..\CCCameraBackgroundBrush.cpp">
-      <Filter>2d</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\renderer\CCTextureCube.cpp">
-      <Filter>renderer</Filter>
     </ClCompile>
     <ClCompile Include="..\..\physics\CCPhysicsBody.cpp">
       <Filter>physics</Filter>
@@ -1860,30 +1715,6 @@
     </ClCompile>
     <ClCompile Include="..\..\physics\CCPhysicsWorld.cpp">
       <Filter>physics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\physics3d\CCPhysics3D.cpp">
-      <Filter>physics3d</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\physics3d\CCPhysics3DComponent.cpp">
-      <Filter>physics3d</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\physics3d\CCPhysics3DConstraint.cpp">
-      <Filter>physics3d</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\physics3d\CCPhysics3DDebugDrawer.cpp">
-      <Filter>physics3d</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\physics3d\CCPhysics3DObject.cpp">
-      <Filter>physics3d</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\physics3d\CCPhysics3DShape.cpp">
-      <Filter>physics3d</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\physics3d\CCPhysics3DWorld.cpp">
-      <Filter>physics3d</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\physics3d\CCPhysicsSprite3D.cpp">
-      <Filter>physics3d</Filter>
     </ClCompile>
     <ClCompile Include="..\..\3d\CCAABB.cpp">
       <Filter>3d</Filter>
@@ -1918,9 +1749,6 @@
     <ClCompile Include="..\..\3d\CCMeshVertexIndexData.cpp">
       <Filter>3d</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\3d\CCMotionStreak3D.cpp">
-      <Filter>3d</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\3d\CCOBB.cpp">
       <Filter>3d</Filter>
     </ClCompile>
@@ -1936,16 +1764,10 @@
     <ClCompile Include="..\..\3d\CCSkeleton3D.cpp">
       <Filter>3d</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\3d\CCSkybox.cpp">
-      <Filter>3d</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\3d\CCSprite3D.cpp">
       <Filter>3d</Filter>
     </ClCompile>
     <ClCompile Include="..\..\3d\CCSprite3DMaterial.cpp">
-      <Filter>3d</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\3d\CCTerrain.cpp">
       <Filter>3d</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\extensions\assets-manager\AssetsManager.cpp">
@@ -1963,14 +1785,29 @@
     <ClCompile Include="..\..\..\extensions\assets-manager\Manifest.cpp">
       <Filter>extension\AssetsManager</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\network\CCDownloader.cpp">
+    <ClCompile Include="..\..\platform\winrt\WICImageLoader-winrt.cpp">
+      <Filter>platform\winrt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\base\CCUserDefault.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\extensions\assets-manager\Downloader.cpp">
+      <Filter>extension\AssetsManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\network\HttpClient.cpp">
       <Filter>network</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\network\CCDownloader-curl.cpp">
-      <Filter>network</Filter>
+    <ClCompile Include="..\..\editor-support\cocostudio\CCObjectExtensionData.cpp">
+      <Filter>cocostudio\json</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\editor-support\cocostudio\WidgetReader\Light3DReader\Light3DReader.cpp">
-      <Filter>cocostudio\reader\WidgetReader\Light3DReader</Filter>
+    <ClCompile Include="..\CCSpriteTileMap.cpp">
+      <Filter>2d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\xxtea\xxtea.cpp">
+      <Filter>external\xxtea</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\xxtea\xxtea_file.cpp">
+      <Filter>external\xxtea</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3602,117 +3439,6 @@
     <ClInclude Include="..\..\editor-support\cocostudio\CCSSceneReader.h">
       <Filter>cocostudio\reader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\platform\winrt\WICImageLoader-winrt.h">
-      <Filter>platform\winrt</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\external\poly2tri\poly2tri.h">
-      <Filter>external\poly2tri</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\external\poly2tri\common\shapes.h">
-      <Filter>external\poly2tri\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\external\poly2tri\common\utils.h">
-      <Filter>external\poly2tri\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\external\poly2tri\sweep\advancing_front.h">
-      <Filter>external\poly2tri\sweep</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\external\poly2tri\sweep\cdt.h">
-      <Filter>external\poly2tri\sweep</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\external\poly2tri\sweep\sweep.h">
-      <Filter>external\poly2tri\sweep</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\external\poly2tri\sweep\sweep_context.h">
-      <Filter>external\poly2tri\sweep</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\network\HttpConnection-winrt.h">
-      <Filter>network</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\base\CCNinePatchImageParser.h">
-      <Filter>base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\renderer\CCMaterial.h">
-      <Filter>renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\renderer\CCPass.h">
-      <Filter>renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\renderer\CCRenderState.h">
-      <Filter>renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\renderer\CCTechnique.h">
-      <Filter>renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\renderer\CCVertexAttribBinding.h">
-      <Filter>renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\renderer\CCFrameBuffer.h">
-      <Filter>renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\base\CCProperties.h">
-      <Filter>base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\audio\winrt\AudioCachePlayer.h">
-      <Filter>audioengine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\audio\winrt\AudioEngine-winrt.h">
-      <Filter>audioengine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\audio\winrt\AudioSourceReader.h">
-      <Filter>audioengine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\navmesh\CCNavMesh.h">
-      <Filter>navmesh</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\navmesh\CCNavMeshAgent.h">
-      <Filter>navmesh</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\navmesh\CCNavMeshDebugDraw.h">
-      <Filter>navmesh</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\navmesh\CCNavMeshObstacle.h">
-      <Filter>navmesh</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\navmesh\CCNavMeshUtils.h">
-      <Filter>navmesh</Filter>
-    </ClInclude>
-    <ClInclude Include="..\CCAutoPolygon.h">
-      <Filter>2d</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\external\clipper\clipper.hpp">
-      <Filter>external\clipper</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\editor-support\cocostudio\CCComExtensionData.h">
-      <Filter>cocostudio\components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\editor-support\cocostudio\WidgetReader\SkeletonReader\BoneNodeReader.h">
-      <Filter>cocostudio\reader\WidgetReader\SkeletonReader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\editor-support\cocostudio\WidgetReader\SkeletonReader\CSBoneBinary_generated.h">
-      <Filter>cocostudio\reader\WidgetReader\SkeletonReader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\editor-support\cocostudio\WidgetReader\SkeletonReader\SkeletonNodeReader.h">
-      <Filter>cocostudio\reader\WidgetReader\SkeletonReader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\editor-support\cocostudio\ActionTimeline\CCBoneNode.h">
-      <Filter>cocostudio\TimelineAction\Skeleton</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\editor-support\cocostudio\ActionTimeline\CCSkeletonNode.h">
-      <Filter>cocostudio\TimelineAction\Skeleton</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\editor-support\cocostudio\ActionTimeline\CCSkinNode.h">
-      <Filter>cocostudio\TimelineAction\Skeleton</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\editor-support\cocostudio\WidgetReader\GameNode3DReader\GameNode3DReader.h">
-      <Filter>cocostudio\reader\WidgetReader\GameNodeDReader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\CCCameraBackgroundBrush.h">
-      <Filter>2d</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\renderer\CCTextureCube.h">
-      <Filter>renderer</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\physics\CCPhysicsBody.h">
       <Filter>physics</Filter>
     </ClInclude>
@@ -3730,30 +3456,6 @@
     </ClInclude>
     <ClInclude Include="..\..\physics\CCPhysicsWorld.h">
       <Filter>physics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\physics3d\CCPhysics3D.h">
-      <Filter>physics3d</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\physics3d\CCPhysics3DComponent.h">
-      <Filter>physics3d</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\physics3d\CCPhysics3DConstraint.h">
-      <Filter>physics3d</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\physics3d\CCPhysics3DDebugDrawer.h">
-      <Filter>physics3d</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\physics3d\CCPhysics3DObject.h">
-      <Filter>physics3d</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\physics3d\CCPhysics3DShape.h">
-      <Filter>physics3d</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\physics3d\CCPhysics3DWorld.h">
-      <Filter>physics3d</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\physics3d\CCPhysicsSprite3D.h">
-      <Filter>physics3d</Filter>
     </ClInclude>
     <ClInclude Include="..\..\3d\CCAABB.h">
       <Filter>3d</Filter>
@@ -3794,9 +3496,6 @@
     <ClInclude Include="..\..\3d\CCMeshVertexIndexData.h">
       <Filter>3d</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\3d\CCMotionStreak3D.h">
-      <Filter>3d</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\3d\CCOBB.h">
       <Filter>3d</Filter>
     </ClInclude>
@@ -3812,16 +3511,10 @@
     <ClInclude Include="..\..\3d\CCSkeleton3D.h">
       <Filter>3d</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\3d\CCSkybox.h">
-      <Filter>3d</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\3d\CCSprite3D.h">
       <Filter>3d</Filter>
     </ClInclude>
     <ClInclude Include="..\..\3d\CCSprite3DMaterial.h">
-      <Filter>3d</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\3d\CCTerrain.h">
       <Filter>3d</Filter>
     </ClInclude>
     <ClInclude Include="..\..\3d\cocos3d.h">
@@ -3842,17 +3535,20 @@
     <ClInclude Include="..\..\..\extensions\assets-manager\Manifest.h">
       <Filter>extension\AssetsManager</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\network\CCDownloader.h">
-      <Filter>network</Filter>
+    <ClInclude Include="..\..\platform\winrt\WICImageLoader-winrt.h">
+      <Filter>platform\winrt</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\network\CCDownloader-curl.h">
-      <Filter>network</Filter>
+    <ClInclude Include="..\..\..\extensions\assets-manager\Downloader.h">
+      <Filter>extension\AssetsManager</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\network\CCIDownloaderImpl.h">
-      <Filter>network</Filter>
+    <ClInclude Include="..\..\editor-support\cocostudio\CCObjectExtensionData.h">
+      <Filter>cocostudio\json</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\editor-support\cocostudio\WidgetReader\Light3DReader\Light3DReader.h">
-      <Filter>cocostudio\reader\WidgetReader\Light3DReader</Filter>
+    <ClInclude Include="..\CCSpriteTileMap.h">
+      <Filter>2d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\external\xxtea\xxtea.h">
+      <Filter>external\xxtea</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

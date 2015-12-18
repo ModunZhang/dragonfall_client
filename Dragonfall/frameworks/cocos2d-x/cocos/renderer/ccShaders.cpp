@@ -82,7 +82,7 @@ NS_CC_BEGIN
 #include "ccShader_3D_ColorNormalTex.frag"
 #include "ccShader_3D_Particle.vert"
 #include "ccShader_3D_Particle.frag"
-
+#include "ccShader_UI_Gray.frag"
 //ETC dannyhe
 #if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
 #include "ccShader_etc_shader.vert"
