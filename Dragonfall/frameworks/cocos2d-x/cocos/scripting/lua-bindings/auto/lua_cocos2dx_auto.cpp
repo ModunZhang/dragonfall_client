@@ -65830,9 +65830,10 @@ int lua_cocos2dx_GLViewImpl_createWithRect(lua_State* tolua_S)
             tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_GLViewImpl_createWithRect'", nullptr);
             return 0;
         }
-        cocos2d::GLViewImpl* ret = cocos2d::GLViewImpl::createWithRect(arg0, arg1);
-        object_to_luaval<cocos2d::GLViewImpl>(tolua_S, "cc.GLViewImpl",(cocos2d::GLViewImpl*)ret);
-        return 1;
+		/* cocos2d::GLViewImpl* ret = cocos2d::GLViewImpl::createWithRect(arg0, arg1);
+		 object_to_luaval<cocos2d::GLViewImpl>(tolua_S, "cc.GLViewImpl",(cocos2d::GLViewImpl*)ret);
+		 return 1;*/
+		return 0;
     }
     if (argc == 3)
     {
@@ -65847,9 +65848,10 @@ int lua_cocos2dx_GLViewImpl_createWithRect(lua_State* tolua_S)
             tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_GLViewImpl_createWithRect'", nullptr);
             return 0;
         }
-        cocos2d::GLViewImpl* ret = cocos2d::GLViewImpl::createWithRect(arg0, arg1, arg2);
+     /*   cocos2d::GLViewImpl* ret = cocos2d::GLViewImpl::createWithRect(arg0, arg1, arg2);
         object_to_luaval<cocos2d::GLViewImpl>(tolua_S, "cc.GLViewImpl",(cocos2d::GLViewImpl*)ret);
-        return 1;
+        return 1;*/
+		return 0;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "cc.GLViewImpl:createWithRect",argc, 2);
     return 0;
@@ -65919,9 +65921,10 @@ int lua_cocos2dx_GLViewImpl_createWithFullScreen(lua_State* tolua_S)
             tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_GLViewImpl_createWithFullScreen'", nullptr);
             return 0;
         }
-        cocos2d::GLViewImpl* ret = cocos2d::GLViewImpl::createWithFullScreen(arg0);
+       /* cocos2d::GLViewImpl* ret = cocos2d::GLViewImpl::createWithFullScreen(arg0);
         object_to_luaval<cocos2d::GLViewImpl>(tolua_S, "cc.GLViewImpl",(cocos2d::GLViewImpl*)ret);
-        return 1;
+        return 1;*/
+		return 0;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "cc.GLViewImpl:createWithFullScreen",argc, 1);
     return 0;
