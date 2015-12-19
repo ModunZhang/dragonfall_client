@@ -4,7 +4,39 @@ require("app.utils.PlatformAdapter")
 require("app.Extend")
 require("app.utils.LuaUtils")
 require("app.utils.GameUtils")
-require("app.datas.GameDatas")
+if true or device.platform ~= 'winrt' then
+    require("app.datas.GameDatas")
+else
+    GameDatas = {}
+    setmetatable(GameDatas, {
+        __index = function(_,k1)
+            local mid_t = {}
+            setmetatable(mid_t, {
+                __index = function(_, k2)
+                    if not rawget(GameDatas, k1) then
+                        local t = {}
+                        setmetatable(t, {
+                            __index = function(_,k2)
+                                if not rawget(GameDatas[k1], k2) then
+                                    rawset(GameDatas[k1], k2, {})
+                                end
+                                require(string.format("app.datas.%s_%s", k1, k2))
+                                return GameDatas[k1][k2]
+                            end
+                        })
+                        rawset(GameDatas, k1, t)
+                    end
+                    if not rawget(GameDatas[k1], k2) then
+                        rawset(GameDatas[k1], k2, {})
+                    end
+                    require(string.format("app.datas.%s_%s", k1, k2))
+                    return GameDatas[k1][k2]
+                end
+            })
+            return mid_t
+        end
+    })
+end
 require("app.utils.DataUtils")
 require("app.utils.UtilsForEvent")
 require("app.utils.UtilsForTask")
