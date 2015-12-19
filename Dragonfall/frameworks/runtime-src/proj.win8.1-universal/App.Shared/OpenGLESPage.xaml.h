@@ -43,6 +43,9 @@ namespace cocos2d
         void OnVisibilityChanged(Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::VisibilityChangedEventArgs^ args);
 #if (WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP) || _MSC_VER >= 1900
         void OnBackButtonPressed(Platform::Object^ sender, Windows::Phone::UI::Input::BackPressedEventArgs^ args);
+		//dannyhe
+		void OnSwapChainPanelSizeChanged(Platform::Object^ sender, Windows::UI::Xaml::SizeChangedEventArgs^ e);
+		Concurrency::critical_section mSwapChainPanelSizeCriticalSection;
 #endif
         void CreateRenderSurface();
         void DestroyRenderSurface();

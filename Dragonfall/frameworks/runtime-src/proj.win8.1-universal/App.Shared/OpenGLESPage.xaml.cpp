@@ -38,6 +38,7 @@ using namespace Windows::UI::Xaml::Navigation;
 
 #if (WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP) || _MSC_VER >= 1900
 using namespace Windows::Phone::UI::Input;
+#include "AdeasygoSDK/AdeasygoHelper.h"
 #endif
 
 OpenGLESPage::OpenGLESPage() :
@@ -68,8 +69,13 @@ OpenGLESPage::OpenGLESPage(OpenGLES* openGLES) :
 	window->KeyUp += ref new TypedEventHandler<CoreWindow^, KeyEventArgs^>(this, &OpenGLESPage::OnKeyReleased);
 
 	window->CharacterReceived += ref new TypedEventHandler<CoreWindow^, CharacterReceivedEventArgs^>(this, &OpenGLESPage::OnCharacterReceived);
-
-
+//dannyhe 
+	swapChainPanel->SizeChanged +=
+		ref new Windows::UI::Xaml::SizeChangedEventHandler(this, &OpenGLESPage::OnSwapChainPanelSizeChanged);
+#if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP) || _MSC_VER >= 1900 //need test wp10 support!
+	Windows::UI::ViewManagement::ApplicationView::GetForCurrentView()->SuppressSystemOverlays = true; //full screen if switch auto hide navigation bar "on"
+	Windows::UI::ViewManagement::ApplicationView::GetForCurrentView()->SetDesiredBoundsMode(Windows::UI::ViewManagement::ApplicationViewBoundsMode::UseCoreWindow);
+#endif
     DisplayInformation^ currentDisplayInformation = DisplayInformation::GetForCurrentView();
 
     currentDisplayInformation->OrientationChanged +=
@@ -158,7 +164,6 @@ void OpenGLESPage::CreateRenderSurface()
         // The app can configure the the SwapChainPanel which may boost performance.
         // By default, this template uses the default configuration.
         mRenderSurface = mOpenGLES->CreateSurface(swapChainPanel, nullptr, nullptr);
-
         // You can configure the SwapChainPanel to render at a lower resolution and be scaled up to
         // the swapchain panel size. This scaling is often free on mobile hardware.
         //
@@ -448,7 +453,14 @@ void OpenGLESPage::OnVisibilityChanged(Windows::UI::Core::CoreWindow^ sender, Wi
         SetVisibility(false);
     }
 }
-
+void OpenGLESPage::OnSwapChainPanelSizeChanged(Object^ sender, Windows::UI::Xaml::SizeChangedEventArgs^ e)
+{
+	// Size change events occur outside of the render thread.  A lock is required when updating
+	// the swapchainpanel size
+	critical_section::scoped_lock lock(mSwapChainPanelSizeCriticalSection);
+	extendedSplashImage->Height = e->NewSize.Height;
+	extendedSplashImage->Width = e->NewSize.Width;
+}
 #if (WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP) || _MSC_VER >= 1900
 /*
 We set args->Handled = true to prevent the app from quitting when the back button is pressed.
@@ -462,10 +474,29 @@ is not handled by the game.
 */
 void OpenGLESPage::OnBackButtonPressed(Object^ sender, BackPressedEventArgs^ args)
 {
-    if (mRenderer)
-    {
-        mRenderer->QueueBackButtonEvent();
-        args->Handled = true;
-    }
+	if(!mRenderer)return;//retun if mRenderer isn't inited
+#if defined(__AdeasygoSDK__)
+	if (!cocos2d::AdeasygoHelper::Instance->IsVisible)
+#endif // defined(__AdeasygoSDK__)
+	{
+		using namespace Windows::UI::Popups;
+		auto loader = ref new Windows::ApplicationModel::Resources::ResourceLoader();
+		auto title = loader->GetString("exit_game_title");
+		auto content = loader->GetString("exit_game_content");
+		auto yes_string = loader->GetString("yes");
+		auto no_string = loader->GetString("no");
+		auto msgDlg = ref new MessageDialog(content, title);
+
+		msgDlg->Commands->Append(ref new UICommand(yes_string, ref new UICommandInvokedHandler([this](IUICommand^)
+		{
+			mRenderer->QueueBackButtonEvent();
+		})));
+		msgDlg->Commands->Append(ref new UICommand(no_string, ref new UICommandInvokedHandler([=](IUICommand^){})));
+		msgDlg->ShowAsync();
+	}
+#if defined(__AdeasygoSDK__)
+	cocos2d::AdeasygoHelper::Instance->IsVisible = false;
+#endif // defined(__AdeasygoSDK__)
+	args->Handled = true;
 }
 #endif

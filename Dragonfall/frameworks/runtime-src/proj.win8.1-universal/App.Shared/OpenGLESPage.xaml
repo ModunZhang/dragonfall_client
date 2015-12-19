@@ -8,11 +8,11 @@
     mc:Ignorable="d">
     
     <SwapChainPanel x:Name="swapChainPanel">
-        <!--<Grid Background="#FFFFFF" x:Name="extendedSplashGrid">
+        <Grid Background="#FFFFFF" x:Name="extendedSplashGrid">
             <Canvas>
-                <Image x:Name="extendedSplashImage" Source="Assets/SplashScreen.png"/>
+                <Image x:Name="extendedSplashImage" Source="Assets/SplashScreen.png" Stretch="Fill" />
             </Canvas>
-        </Grid>-->
+        </Grid>
         <Button x:Name="cocos2d_editbox" Visibility="Collapsed" Height="1">
             <Button.Flyout>
                 <Flyout x:Name="cocos2d_editbox_flyout">
