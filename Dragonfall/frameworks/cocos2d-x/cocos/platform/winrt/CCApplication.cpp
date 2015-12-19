@@ -215,7 +215,14 @@ LanguageType Application::getCurrentLanguage()
 
 Application::Platform  Application::getTargetPlatform()
 {
-      return Platform::OS_WINRT;
+	if (isWindowsPhone())
+	{
+		return Platform::OS_WINRT;
+	} 
+	else
+	{
+		return Platform::OS_WINDOWS;
+	}
 }
 
 bool Application::openURL(const std::string &url)
