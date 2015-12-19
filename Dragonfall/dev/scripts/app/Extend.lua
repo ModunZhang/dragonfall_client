@@ -32,6 +32,10 @@ local rgba4444 = import(".rgba4444")
 local jpg_rgb888 = import(".jpg_rgb888")
 
 jpg_rgb888["tmxmaps/terrain1.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
+jpg_rgb888["world_bg.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
+jpg_rgb888["world_title1.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
+jpg_rgb888["world_title2.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
+jpg_rgb888["world_terrain.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
 
 
 local auto_cleanup = {

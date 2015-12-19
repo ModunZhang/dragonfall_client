@@ -77,9 +77,11 @@ function GameUIWorldMap:onExit()
     removeImageByKey("world_edge.png")
     removeImageByKey("world_map.png")
     removeImageByKey("world_middle.png")
-    removeImageByKey("world_title1.jpg")
-    removeImageByKey("world_title2.jpg")
-    removeImageByKey("world_bg.jpg")
+    
+    removeImageByKey("world_bg.png")
+    removeImageByKey("world_title1.png")
+    removeImageByKey("world_title2.png")
+    removeImageByKey("world_terrain.png")
 end
 local deg = math.deg
 local ceil = math.ceil
