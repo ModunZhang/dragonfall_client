@@ -94,7 +94,6 @@ end
 
 function GameUIActivityRewardNew:onCleanup()
     GameUIActivityRewardNew.super.onCleanup(self)
-    cc.Director:getInstance():getTextureCache():removeTextureForKey("activity_first_purgure_588x176.jpg")
 end
 
 function GameUIActivityRewardNew:OnUserDataChanged_countInfo()

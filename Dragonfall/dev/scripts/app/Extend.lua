@@ -52,6 +52,10 @@ local auto_cleanup = {
     ["jpg_png10.png"] = 1,
     ["jpg_png11.png"] = 1,
     ["jpg_png12.png"] = 1,
+    ["jpg_png13.png"] = 1,
+    ["jpg_png14.png"] = 1,
+    ["jpg_png15.png"] = 1,
+    ["jpg_png16.png"] = 1,
     ["start_game_292x28.png"] = 1,
     ["background_608x678.png"] = 1,
 }
