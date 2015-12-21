@@ -1941,9 +1941,9 @@ function NetManager:getGrowUpTaskRewardsPromise(taskType, taskId)
 end
 
 -- 领取日常任务奖励
-function NetManager:getDailyTaskRewards(taskType)
+function NetManager:getDailyTaskRewards()
     return get_blocking_request_promise("logic.playerHandler.getDailyTaskRewards",
-        {taskType = taskType},
+        {},
         "领取日常任务奖励!"):done(get_player_response_msg)
 end
 
