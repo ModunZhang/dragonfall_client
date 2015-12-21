@@ -68,8 +68,11 @@ OpenGLESPage::OpenGLESPage(OpenGLES* openGLES) :
 	window->KeyUp += ref new TypedEventHandler<CoreWindow^, KeyEventArgs^>(this, &OpenGLESPage::OnKeyReleased);
 
 	window->CharacterReceived += ref new TypedEventHandler<CoreWindow^, CharacterReceivedEventArgs^>(this, &OpenGLESPage::OnCharacterReceived);
-
-
+	//try enter full screen,dannyhe
+	if(Windows::Foundation::Metadata::ApiInformation::IsMethodPresent("Windows.UI.ViewManagement.ApplicationView","TryEnterFullScreenMode"))
+	{
+		Windows::UI::ViewManagement::ApplicationView::GetForCurrentView()->TryEnterFullScreenMode();
+	}
     DisplayInformation^ currentDisplayInformation = DisplayInformation::GetForCurrentView();
 
     currentDisplayInformation->OrientationChanged +=
