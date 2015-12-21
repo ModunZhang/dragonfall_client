@@ -36,7 +36,7 @@ if __name__=="__main__":
 					target = json.JSONDecoder().decode(source)  
 					D[os.path.splitext(fileName)[0]] = target['config_png_path']
 
-	with codecs.open('../../dev/scripts/app/' + destfile, 'w', 'utf-8') as f:
+	with codecs.open('../../dev/scripts/app/' + destfile, 'wb', 'utf-8') as f:
 		f.write('local animation = {}\n')
 		L = []
 		for (k,v) in D.items():

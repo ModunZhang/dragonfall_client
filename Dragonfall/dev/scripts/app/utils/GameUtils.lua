@@ -308,12 +308,13 @@ function GameUtils:GetServerInfo(param, callback)
     local request = network.createHTTPRequest(function(event)
         if event.name == "completed" then
             callback(true, json.decode(event.request:getResponseData()))
-        elseif event.name == "failed" then
+        elseif event.name == "progress" then
+        else
             callback(false)
         end
     end, 
     string.format("http://gate.batcatstudio.com/dragonfall/query-entry?env=%s&version=%s&platform=%s", string.urlencode(param.env), string.urlencode(param.version),platform), "GET")
-    request:setTimeout(180)
+    request:setTimeout(60)
     request:start()
 end
 

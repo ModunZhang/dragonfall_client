@@ -450,7 +450,9 @@ function display.newScene(name)
         end
     end
     function scene:NoWaitForNet()
-        self:removeChildByTag(WAI_TAG, true)
+        if self:getChildByTag(WAI_TAG) then
+            self:removeChildByTag(WAI_TAG, true)
+        end
     end
 
     function scene:onEnterTransitionFinish()

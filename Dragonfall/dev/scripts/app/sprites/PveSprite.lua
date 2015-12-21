@@ -58,7 +58,7 @@ function PveSprite:IsSpecial()
     if not self:IsBoss() then
         local troops = string.split(sections[self.npc_name].troops, ",")
         for i,v in ipairs(troops) do
-            local name = unpack(string.split(v, "_"))
+            local name = unpack(string.split(v, ":"))
             if special[name] then
                 return true
             end

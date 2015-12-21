@@ -159,7 +159,6 @@ function GameUILoginBeta:startGame()
             self.user_agreement_label:fadeOut(0.5)
             self.user_agreement_button:hide()
             self:RunFte(function()
-                self.passed_splash = true
                 self:loginAction()
             end)
         end
@@ -295,13 +294,14 @@ function GameUILoginBeta:GetServerInfo(callback)
                 callback()
             end
         else
+            local SIMULATION_WORKING_TIME = 3
             self:performWithDelay(function()
                 self:showError(_("获取服务器信息失败!"),function()
                     self:GetServerInfo(function()
                         self:LoadServerInfo()
                     end)
                 end)
-            end, 3)
+            end, SIMULATION_WORKING_TIME)
         end
     end)
 end
