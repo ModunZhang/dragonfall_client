@@ -118,7 +118,7 @@ float GetBatteryLevel()
 #if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
 	return Windows::Phone::Devices::Power::Battery::GetDefault()->RemainingChargePercent;
 #else
-	return 1;
+	return 1.0f;
 #endif
 }
 /// <summary>

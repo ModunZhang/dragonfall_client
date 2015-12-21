@@ -6,8 +6,8 @@
     xmlns:localData="using:Shared">
 
     <Application.Resources>
-
-      <x:String x:Key="AppName">HelloCpp</x:String>
-
+      <x:String x:Key="AppName">Dragonfall</x:String>
+      <x:String x:Key="AppMinVersion">1.1.2</x:String>
+      <x:Boolean x:Key="AppHoc">False</x:Boolean>
     </Application.Resources>
 </Application>
