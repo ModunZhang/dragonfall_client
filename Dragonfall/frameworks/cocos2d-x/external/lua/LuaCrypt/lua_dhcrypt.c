@@ -281,7 +281,7 @@ lrc4(lua_State *L) {
 	const unsigned char *in = (const unsigned char *)luaL_checklstring(L, 2, &datalen);
 
 	unsigned char * out = (unsigned char *)malloc(datalen);
-	memmove(out, in, sizeof(out));
+	memmove(out, in, datalen);
 
 	unsigned char *md = (unsigned char *)md5((char *)key_buf, key_buf_len);
 

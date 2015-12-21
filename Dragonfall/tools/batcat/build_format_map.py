@@ -44,7 +44,7 @@ if __name__=="__main__":
 			assert False, "unhandled option"
 
 	if jpg:
-		with codecs.open(dest_dir + dest_file, 'w', 'utf-8') as f:
+		with codecs.open(dest_dir + dest_file, 'wb', 'utf-8') as f:
 			basename, _ = os.path.splitext(dest_file)
 			for root, dirs, files in os.walk(images_dir):
 				if root == images_dir:
@@ -56,7 +56,7 @@ if __name__=="__main__":
 					f.write('return %s' % basename)
 	elif rgba444:
 		try:
-			with codecs.open(dest_dir + dest_file, 'w', 'utf-8') as f:
+			with codecs.open(dest_dir + dest_file, 'wb', 'utf-8') as f:
 				_, file_name = os.path.split(resource_dir)
 				f.write('local %s = {}\n' % file_name)
 				for root, dirs, files in os.walk(resource_dir):
