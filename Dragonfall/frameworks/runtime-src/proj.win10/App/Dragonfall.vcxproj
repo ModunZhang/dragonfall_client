@@ -315,13 +315,20 @@
     <SDKReference Include="WindowsMobile, Version=10.0.10240.0" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Assets\LockScreenLogo.scale-200.png" />
+    <Image Include="Assets\LockScreenLogo.scale-200.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
     <Image Include="Assets\SplashScreen.scale-200.png" />
     <Image Include="Assets\Square150x150Logo.scale-200.png" />
+    <Image Include="Assets\Square310x310Logo.scale-125.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
     <Image Include="Assets\Square44x44Logo.scale-200.png" />
     <Image Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
+    <Image Include="Assets\Square71x71Logo.scale-100.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
     <Image Include="Assets\StoreLogo.png" />
-    <Image Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\cocos2d-x\cocos\2d\libcocos2d_win10\libcocos2d.vcxproj">
@@ -339,6 +346,11 @@
     <ProjectReference Include="..\..\..\cocos2d-x\external\Box2D\proj-win10\libbox2d.vcxproj">
       <Project>{0c32d479-46d5-46c3-9aa9-0a8ff8320516}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\en-US\Resources.resw" />
+    <PRIResource Include="Strings\zh-Hans-CN\Resources.resw" />
+    <PRIResource Include="Strings\zh-Hant-TW\Resources.resw" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

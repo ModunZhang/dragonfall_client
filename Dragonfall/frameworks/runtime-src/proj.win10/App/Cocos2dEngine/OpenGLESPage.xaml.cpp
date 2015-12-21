@@ -462,10 +462,29 @@ is not handled by the game.
 */
 void OpenGLESPage::OnBackButtonPressed(Object^ sender, BackPressedEventArgs^ args)
 {
-    if (mRenderer)
-    {
-        mRenderer->QueueBackButtonEvent();
-        args->Handled = true;
-    }
+	if (!mRenderer)return;//retun if mRenderer isn't inited
+#if defined(__AdeasygoSDK__)
+	if (!cocos2d::AdeasygoHelper::Instance->IsVisible)
+#endif // defined(__AdeasygoSDK__)
+	{
+		using namespace Windows::UI::Popups;
+		auto loader = ref new Windows::ApplicationModel::Resources::ResourceLoader();
+		auto title = loader->GetString("exit_game_title");
+		auto content = loader->GetString("exit_game_content");
+		auto yes_string = loader->GetString("yes");
+		auto no_string = loader->GetString("no");
+		auto msgDlg = ref new MessageDialog(content, title);
+
+		msgDlg->Commands->Append(ref new UICommand(yes_string, ref new UICommandInvokedHandler([this](IUICommand^)
+		{
+			mRenderer->QueueBackButtonEvent();
+		})));
+		msgDlg->Commands->Append(ref new UICommand(no_string, ref new UICommandInvokedHandler([=](IUICommand^) {})));
+		msgDlg->ShowAsync();
+	}
+#if defined(__AdeasygoSDK__)
+	cocos2d::AdeasygoHelper::Instance->IsVisible = false;
+#endif // defined(__AdeasygoSDK__)
+	args->Handled = true;
 }
 #endif
