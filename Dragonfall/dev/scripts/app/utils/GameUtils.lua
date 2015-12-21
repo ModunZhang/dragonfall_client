@@ -308,6 +308,7 @@ function GameUtils:GetServerInfo(param, callback)
     local request = network.createHTTPRequest(function(event)
         if event.name == "completed" then
             callback(true, json.decode(event.request:getResponseData()))
+        elseif event.name == "progress" then
         else
             callback(false)
         end
