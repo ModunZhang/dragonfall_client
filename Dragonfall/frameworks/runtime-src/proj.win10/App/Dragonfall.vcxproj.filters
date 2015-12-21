@@ -103,6 +103,12 @@
     <ClCompile Include="..\..\..\..\extensions\ext\LuaExtension.cpp">
       <Filter>Classes\ext</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\extensions\sdk\Facebook\FacebookSDK-winrt.cpp">
+      <Filter>Classes\FaceBook</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\extensions\sdk\Facebook\tolua_fb_sdk.cpp">
+      <Filter>Classes\FaceBook</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.xaml.h" />
@@ -146,6 +152,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\..\extensions\ext\LuaExtension.h">
       <Filter>Classes\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\extensions\sdk\Facebook\FacebookSDK.h">
+      <Filter>Classes\FaceBook</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\extensions\sdk\Facebook\tolua_fb_sdk.h">
+      <Filter>Classes\FaceBook</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

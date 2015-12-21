@@ -17,7 +17,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libLua", "..\..\cocos2d-x\c
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "quick_libs", "..\..\cocos2d-x\cocos\quick_libs\proj.win10\quick_libs\quick_libs.vcxproj", "{76C21250-C4C0-46D7-8035-AACDF0F84CF3}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Facebook", "..\..\..\..\external\WindowsPhone\FBWinSDK\FBSDK-UWP\FBSDK-UWP\FBSDK-UWP.vcxproj", "{973A943B-FF77-4267-8F30-F5FE2B7F5583}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\..\..\..\external\WindowsPhone\FBWinSDK\FBWinSDK\FBWinSDK.Shared\FBWinSDK.Shared.vcxitems*{973a943b-ff77-4267-8f30-f5fe2b7f5583}*SharedItemsImports = 4
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
 		Debug|x64 = Debug|x64
@@ -105,6 +110,18 @@ Global
 		{76C21250-C4C0-46D7-8035-AACDF0F84CF3}.Release|x64.Build.0 = Release|x64
 		{76C21250-C4C0-46D7-8035-AACDF0F84CF3}.Release|x86.ActiveCfg = Release|Win32
 		{76C21250-C4C0-46D7-8035-AACDF0F84CF3}.Release|x86.Build.0 = Release|Win32
+		{973A943B-FF77-4267-8F30-F5FE2B7F5583}.Debug|ARM.ActiveCfg = Debug|ARM
+		{973A943B-FF77-4267-8F30-F5FE2B7F5583}.Debug|ARM.Build.0 = Debug|ARM
+		{973A943B-FF77-4267-8F30-F5FE2B7F5583}.Debug|x64.ActiveCfg = Debug|x64
+		{973A943B-FF77-4267-8F30-F5FE2B7F5583}.Debug|x64.Build.0 = Debug|x64
+		{973A943B-FF77-4267-8F30-F5FE2B7F5583}.Debug|x86.ActiveCfg = Debug|Win32
+		{973A943B-FF77-4267-8F30-F5FE2B7F5583}.Debug|x86.Build.0 = Debug|Win32
+		{973A943B-FF77-4267-8F30-F5FE2B7F5583}.Release|ARM.ActiveCfg = Release|ARM
+		{973A943B-FF77-4267-8F30-F5FE2B7F5583}.Release|ARM.Build.0 = Release|ARM
+		{973A943B-FF77-4267-8F30-F5FE2B7F5583}.Release|x64.ActiveCfg = Release|x64
+		{973A943B-FF77-4267-8F30-F5FE2B7F5583}.Release|x64.Build.0 = Release|x64
+		{973A943B-FF77-4267-8F30-F5FE2B7F5583}.Release|x86.ActiveCfg = Release|Win32
+		{973A943B-FF77-4267-8F30-F5FE2B7F5583}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -114,5 +131,6 @@ Global
 		{4B3BA10A-941F-4E08-8A50-8A7FCB822BB8} = {B2F1FF1B-005C-490E-999E-17BD4B720B5C}
 		{114616F0-E33C-43E6-8790-DFECF312B0FC} = {B2F1FF1B-005C-490E-999E-17BD4B720B5C}
 		{76C21250-C4C0-46D7-8035-AACDF0F84CF3} = {B2F1FF1B-005C-490E-999E-17BD4B720B5C}
+		{973A943B-FF77-4267-8F30-F5FE2B7F5583} = {B2F1FF1B-005C-490E-999E-17BD4B720B5C}
 	EndGlobalSection
 EndGlobal
