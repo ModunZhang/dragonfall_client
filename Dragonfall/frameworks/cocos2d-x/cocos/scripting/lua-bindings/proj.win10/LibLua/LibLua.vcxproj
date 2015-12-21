@@ -900,6 +900,7 @@
       <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">true</CompileAsWinRT>
       <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</CompileAsWinRT>
       <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</CompileAsWinRT>
+      <FunctionLevelLinking Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">true</FunctionLevelLinking>
     </ClCompile>
     <ClCompile Include="..\..\auto\lua_cocos2dx_cocosdenshion_auto.cpp">
       <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</CompileAsWinRT>
