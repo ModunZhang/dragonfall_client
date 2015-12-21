@@ -133,7 +133,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(EngineRoot)cocos\scripting\lua-bindings\manual\network;$(EngineRoot)cocos\math\kazmath\include;$(EngineRoot)external\tiff\include\$(COCOS2D_PLATFORM);$(EngineRoot)external\protobuf-lite\win32;$(EngineRoot)external\protobuf-lite\src;$(EngineRoot)external\png\include\$(COCOS2D_PLATFORM);$(EngineRoot)external\jpeg\include\$(COCOS2D_PLATFORM);$(EngineRoot)cocos\audio\include;$(EngineRoot)cocos\math\kazmath;$(EngineRoot)cocos\scripting\lua-bindings\manual\extension;$(EngineRoot)cocos\scripting\lua-bindings\manual\ui;$(EngineRoot)cocos\scripting\lua-bindings\manual\cocostudio;$(EngineRoot)cocos\editor-support\cocostudio\ActionTimeline;$(EngineRoot)cocos\ui;$(EngineRoot)extensions;$(EngineRoot)cocos\editor-support\spine;$(EngineRoot)cocos\editor-support\cocostudio;$(EngineRoot)cocos\editor-support\cocosbuilder;$(EngineRoot)cocos\deprecated;$(EngineRoot)cocos\2d\renderer;$(EngineRoot)cocos\physics;$(EngineRoot);$(EngineRoot)cocos\2d;$(EngineRoot)cocos\base;$(EngineRoot)cocos;$(EngineRoot)cocos\scripting\lua-bindings\manual\cocos2d;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\quick;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(EngineRoot)external\openssl\include\$(COCOS2D_PLATFORM);$(EngineRoot)cocos\scripting\lua-bindings\manual\network;$(EngineRoot)cocos\math\kazmath\include;$(EngineRoot)external\tiff\include\$(COCOS2D_PLATFORM);$(EngineRoot)external\protobuf-lite\win32;$(EngineRoot)external\protobuf-lite\src;$(EngineRoot)external\png\include\$(COCOS2D_PLATFORM);$(EngineRoot)external\jpeg\include\$(COCOS2D_PLATFORM);$(EngineRoot)cocos\audio\include;$(EngineRoot)cocos\math\kazmath;$(EngineRoot)cocos\scripting\lua-bindings\manual\extension;$(EngineRoot)cocos\scripting\lua-bindings\manual\ui;$(EngineRoot)cocos\scripting\lua-bindings\manual\cocostudio;$(EngineRoot)cocos\editor-support\cocostudio\ActionTimeline;$(EngineRoot)cocos\ui;$(EngineRoot)extensions;$(EngineRoot)cocos\editor-support\spine;$(EngineRoot)cocos\editor-support\cocostudio;$(EngineRoot)cocos\editor-support\cocosbuilder;$(EngineRoot)cocos\deprecated;$(EngineRoot)cocos\2d\renderer;$(EngineRoot)cocos\physics;$(EngineRoot);$(EngineRoot)cocos\2d;$(EngineRoot)cocos\base;$(EngineRoot)cocos;$(EngineRoot)cocos\scripting\lua-bindings\manual\cocos2d;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\quick;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;COCOS2D_DEBUG=1;CC_LUA_ENGINE_ENABLED=1;__STRICT_ANSI__;SQLITE_OS_WINRT;SQLITE_OMIT_WAL;CC_USE_JSON=1;CC_USE_CURL=1;CC_USE_CCS_ARMATURE=1;CC_USE_EXTRA_FILTERS=1;CC_USE_WEBSOCKET=1;CC_USE_TGA=1;CC_USE_SQLITE=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4996;4700;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
@@ -142,13 +142,19 @@
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
     </Link>
+    <Lib>
+      <AdditionalDependencies>libeay32.lib;ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>$(EngineRoot)external\openssl\prebuilt\$(COCOS2D_PLATFORM)\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(EngineRoot)cocos\scripting\lua-bindings\manual\network;$(EngineRoot)cocos\math\kazmath\include;$(EngineRoot)external\tiff\include\$(COCOS2D_PLATFORM);$(EngineRoot)external\protobuf-lite\win32;$(EngineRoot)external\protobuf-lite\src;$(EngineRoot)external\png\include\$(COCOS2D_PLATFORM);$(EngineRoot)external\jpeg\include\$(COCOS2D_PLATFORM);$(EngineRoot)cocos\audio\include;$(EngineRoot)cocos\math\kazmath;$(EngineRoot)cocos\scripting\lua-bindings\manual\extension;$(EngineRoot)cocos\scripting\lua-bindings\manual\ui;$(EngineRoot)cocos\scripting\lua-bindings\manual\cocostudio;$(EngineRoot)cocos\editor-support\cocostudio\ActionTimeline;$(EngineRoot)cocos\ui;$(EngineRoot)extensions;$(EngineRoot)cocos\editor-support\spine;$(EngineRoot)cocos\editor-support\cocostudio;$(EngineRoot)cocos\editor-support\cocosbuilder;$(EngineRoot)cocos\deprecated;$(EngineRoot)cocos\2d\renderer;$(EngineRoot)cocos\physics;$(EngineRoot);$(EngineRoot)cocos\2d;$(EngineRoot)cocos\base;$(EngineRoot)cocos;$(EngineRoot)cocos\scripting\lua-bindings\manual\cocos2d;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\quick;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(EngineRoot)external\openssl\include\$(COCOS2D_PLATFORM);$(EngineRoot)cocos\scripting\lua-bindings\manual\network;$(EngineRoot)cocos\math\kazmath\include;$(EngineRoot)external\tiff\include\$(COCOS2D_PLATFORM);$(EngineRoot)external\protobuf-lite\win32;$(EngineRoot)external\protobuf-lite\src;$(EngineRoot)external\png\include\$(COCOS2D_PLATFORM);$(EngineRoot)external\jpeg\include\$(COCOS2D_PLATFORM);$(EngineRoot)cocos\audio\include;$(EngineRoot)cocos\math\kazmath;$(EngineRoot)cocos\scripting\lua-bindings\manual\extension;$(EngineRoot)cocos\scripting\lua-bindings\manual\ui;$(EngineRoot)cocos\scripting\lua-bindings\manual\cocostudio;$(EngineRoot)cocos\editor-support\cocostudio\ActionTimeline;$(EngineRoot)cocos\ui;$(EngineRoot)extensions;$(EngineRoot)cocos\editor-support\spine;$(EngineRoot)cocos\editor-support\cocostudio;$(EngineRoot)cocos\editor-support\cocosbuilder;$(EngineRoot)cocos\deprecated;$(EngineRoot)cocos\2d\renderer;$(EngineRoot)cocos\physics;$(EngineRoot);$(EngineRoot)cocos\2d;$(EngineRoot)cocos\base;$(EngineRoot)cocos;$(EngineRoot)cocos\scripting\lua-bindings\manual\cocos2d;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\quick;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;CC_LUA_ENGINE_ENABLED=1;__STRICT_ANSI__;SQLITE_OS_WINRT;SQLITE_OMIT_WAL;CC_USE_JSON=1;CC_USE_CURL=1;CC_USE_CCS_ARMATURE=1;CC_USE_EXTRA_FILTERS=1;CC_USE_WEBSOCKET=1;CC_USE_TGA=1;CC_USE_SQLITE=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4996;4700;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
@@ -157,13 +163,19 @@
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
     </Link>
+    <Lib>
+      <AdditionalDependencies>libeay32.lib;ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>$(EngineRoot)external\openssl\prebuilt\$(COCOS2D_PLATFORM)\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(EngineRoot)cocos\scripting\lua-bindings\manual\network;$(EngineRoot)cocos\math\kazmath\include;$(EngineRoot)external\tiff\include\$(COCOS2D_PLATFORM);$(EngineRoot)external\protobuf-lite\win32;$(EngineRoot)external\protobuf-lite\src;$(EngineRoot)external\png\include\$(COCOS2D_PLATFORM);$(EngineRoot)external\jpeg\include\$(COCOS2D_PLATFORM);$(EngineRoot)cocos\audio\include;$(EngineRoot)cocos\math\kazmath;$(EngineRoot)cocos\scripting\lua-bindings\manual\extension;$(EngineRoot)cocos\scripting\lua-bindings\manual\ui;$(EngineRoot)cocos\scripting\lua-bindings\manual\cocostudio;$(EngineRoot)cocos\editor-support\cocostudio\ActionTimeline;$(EngineRoot)cocos\ui;$(EngineRoot)extensions;$(EngineRoot)cocos\editor-support\spine;$(EngineRoot)cocos\editor-support\cocostudio;$(EngineRoot)cocos\editor-support\cocosbuilder;$(EngineRoot)cocos\deprecated;$(EngineRoot)cocos\2d\renderer;$(EngineRoot)cocos\physics;$(EngineRoot);$(EngineRoot)cocos\2d;$(EngineRoot)cocos\base;$(EngineRoot)cocos;$(EngineRoot)cocos\scripting\lua-bindings\manual\cocos2d;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\quick;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(EngineRoot)external\openssl\include\$(COCOS2D_PLATFORM);$(EngineRoot)cocos\scripting\lua-bindings\manual\network;$(EngineRoot)cocos\math\kazmath\include;$(EngineRoot)external\tiff\include\$(COCOS2D_PLATFORM);$(EngineRoot)external\protobuf-lite\win32;$(EngineRoot)external\protobuf-lite\src;$(EngineRoot)external\png\include\$(COCOS2D_PLATFORM);$(EngineRoot)external\jpeg\include\$(COCOS2D_PLATFORM);$(EngineRoot)cocos\audio\include;$(EngineRoot)cocos\math\kazmath;$(EngineRoot)cocos\scripting\lua-bindings\manual\extension;$(EngineRoot)cocos\scripting\lua-bindings\manual\ui;$(EngineRoot)cocos\scripting\lua-bindings\manual\cocostudio;$(EngineRoot)cocos\editor-support\cocostudio\ActionTimeline;$(EngineRoot)cocos\ui;$(EngineRoot)extensions;$(EngineRoot)cocos\editor-support\spine;$(EngineRoot)cocos\editor-support\cocostudio;$(EngineRoot)cocos\editor-support\cocosbuilder;$(EngineRoot)cocos\deprecated;$(EngineRoot)cocos\2d\renderer;$(EngineRoot)cocos\physics;$(EngineRoot);$(EngineRoot)cocos\2d;$(EngineRoot)cocos\base;$(EngineRoot)cocos;$(EngineRoot)cocos\scripting\lua-bindings\manual\cocos2d;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\quick;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;COCOS2D_DEBUG=1;CC_LUA_ENGINE_ENABLED=1;__STRICT_ANSI__;SQLITE_OS_WINRT;SQLITE_OMIT_WAL;CC_USE_JSON=1;CC_USE_CURL=1;CC_USE_CCS_ARMATURE=1;CC_USE_EXTRA_FILTERS=1;CC_USE_WEBSOCKET=1;CC_USE_TGA=1;CC_USE_SQLITE=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4996;4700;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
@@ -172,13 +184,19 @@
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
     </Link>
+    <Lib>
+      <AdditionalDependencies>libeay32.lib;ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>$(EngineRoot)external\openssl\prebuilt\$(COCOS2D_PLATFORM)\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(EngineRoot)cocos\scripting\lua-bindings\manual\network;$(EngineRoot)cocos\math\kazmath\include;$(EngineRoot)external\tiff\include\$(COCOS2D_PLATFORM);$(EngineRoot)external\protobuf-lite\win32;$(EngineRoot)external\protobuf-lite\src;$(EngineRoot)external\png\include\$(COCOS2D_PLATFORM);$(EngineRoot)external\jpeg\include\$(COCOS2D_PLATFORM);$(EngineRoot)cocos\audio\include;$(EngineRoot)cocos\math\kazmath;$(EngineRoot)cocos\scripting\lua-bindings\manual\extension;$(EngineRoot)cocos\scripting\lua-bindings\manual\ui;$(EngineRoot)cocos\scripting\lua-bindings\manual\cocostudio;$(EngineRoot)cocos\editor-support\cocostudio\ActionTimeline;$(EngineRoot)cocos\ui;$(EngineRoot)extensions;$(EngineRoot)cocos\editor-support\spine;$(EngineRoot)cocos\editor-support\cocostudio;$(EngineRoot)cocos\editor-support\cocosbuilder;$(EngineRoot)cocos\deprecated;$(EngineRoot)cocos\2d\renderer;$(EngineRoot)cocos\physics;$(EngineRoot);$(EngineRoot)cocos\2d;$(EngineRoot)cocos\base;$(EngineRoot)cocos;$(EngineRoot)cocos\scripting\lua-bindings\manual\cocos2d;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\quick;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(EngineRoot)external\openssl\include\$(COCOS2D_PLATFORM);$(EngineRoot)cocos\scripting\lua-bindings\manual\network;$(EngineRoot)cocos\math\kazmath\include;$(EngineRoot)external\tiff\include\$(COCOS2D_PLATFORM);$(EngineRoot)external\protobuf-lite\win32;$(EngineRoot)external\protobuf-lite\src;$(EngineRoot)external\png\include\$(COCOS2D_PLATFORM);$(EngineRoot)external\jpeg\include\$(COCOS2D_PLATFORM);$(EngineRoot)cocos\audio\include;$(EngineRoot)cocos\math\kazmath;$(EngineRoot)cocos\scripting\lua-bindings\manual\extension;$(EngineRoot)cocos\scripting\lua-bindings\manual\ui;$(EngineRoot)cocos\scripting\lua-bindings\manual\cocostudio;$(EngineRoot)cocos\editor-support\cocostudio\ActionTimeline;$(EngineRoot)cocos\ui;$(EngineRoot)extensions;$(EngineRoot)cocos\editor-support\spine;$(EngineRoot)cocos\editor-support\cocostudio;$(EngineRoot)cocos\editor-support\cocosbuilder;$(EngineRoot)cocos\deprecated;$(EngineRoot)cocos\2d\renderer;$(EngineRoot)cocos\physics;$(EngineRoot);$(EngineRoot)cocos\2d;$(EngineRoot)cocos\base;$(EngineRoot)cocos;$(EngineRoot)cocos\scripting\lua-bindings\manual\cocos2d;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\quick;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;CC_LUA_ENGINE_ENABLED=1;__STRICT_ANSI__;SQLITE_OS_WINRT;SQLITE_OMIT_WAL;CC_USE_JSON=1;CC_USE_CURL=1;CC_USE_CCS_ARMATURE=1;CC_USE_EXTRA_FILTERS=1;CC_USE_WEBSOCKET=1;CC_USE_TGA=1;CC_USE_SQLITE=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4996;4700;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
@@ -187,13 +205,19 @@
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
     </Link>
+    <Lib>
+      <AdditionalDependencies>libeay32.lib;ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>$(EngineRoot)external\openssl\prebuilt\$(COCOS2D_PLATFORM)\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(EngineRoot)cocos\scripting\lua-bindings\manual\network;$(EngineRoot)cocos\math\kazmath\include;$(EngineRoot)external\tiff\include\$(COCOS2D_PLATFORM);$(EngineRoot)external\protobuf-lite\win32;$(EngineRoot)external\protobuf-lite\src;$(EngineRoot)external\png\include\$(COCOS2D_PLATFORM);$(EngineRoot)external\jpeg\include\$(COCOS2D_PLATFORM);$(EngineRoot)cocos\audio\include;$(EngineRoot)cocos\math\kazmath;$(EngineRoot)cocos\scripting\lua-bindings\manual\extension;$(EngineRoot)cocos\scripting\lua-bindings\manual\ui;$(EngineRoot)cocos\scripting\lua-bindings\manual\cocostudio;$(EngineRoot)cocos\editor-support\cocostudio\ActionTimeline;$(EngineRoot)cocos\ui;$(EngineRoot)extensions;$(EngineRoot)cocos\editor-support\spine;$(EngineRoot)cocos\editor-support\cocostudio;$(EngineRoot)cocos\editor-support\cocosbuilder;$(EngineRoot)cocos\deprecated;$(EngineRoot)cocos\2d\renderer;$(EngineRoot)cocos\physics;$(EngineRoot);$(EngineRoot)cocos\2d;$(EngineRoot)cocos\base;$(EngineRoot)cocos;$(EngineRoot)cocos\scripting\lua-bindings\manual\cocos2d;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\quick;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(EngineRoot)external\openssl\include\$(COCOS2D_PLATFORM);$(EngineRoot)cocos\scripting\lua-bindings\manual\network;$(EngineRoot)cocos\math\kazmath\include;$(EngineRoot)external\tiff\include\$(COCOS2D_PLATFORM);$(EngineRoot)external\protobuf-lite\win32;$(EngineRoot)external\protobuf-lite\src;$(EngineRoot)external\png\include\$(COCOS2D_PLATFORM);$(EngineRoot)external\jpeg\include\$(COCOS2D_PLATFORM);$(EngineRoot)cocos\audio\include;$(EngineRoot)cocos\math\kazmath;$(EngineRoot)cocos\scripting\lua-bindings\manual\extension;$(EngineRoot)cocos\scripting\lua-bindings\manual\ui;$(EngineRoot)cocos\scripting\lua-bindings\manual\cocostudio;$(EngineRoot)cocos\editor-support\cocostudio\ActionTimeline;$(EngineRoot)cocos\ui;$(EngineRoot)extensions;$(EngineRoot)cocos\editor-support\spine;$(EngineRoot)cocos\editor-support\cocostudio;$(EngineRoot)cocos\editor-support\cocosbuilder;$(EngineRoot)cocos\deprecated;$(EngineRoot)cocos\2d\renderer;$(EngineRoot)cocos\physics;$(EngineRoot);$(EngineRoot)cocos\2d;$(EngineRoot)cocos\base;$(EngineRoot)cocos;$(EngineRoot)cocos\scripting\lua-bindings\manual\cocos2d;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\quick;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;COCOS2D_DEBUG=1;CC_LUA_ENGINE_ENABLED=1;__STRICT_ANSI__;SQLITE_OS_WINRT;SQLITE_OMIT_WAL;CC_USE_JSON=1;CC_USE_CURL=1;CC_USE_CCS_ARMATURE=1;CC_USE_EXTRA_FILTERS=1;CC_USE_WEBSOCKET=1;CC_USE_TGA=1;CC_USE_SQLITE=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4996;4700;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
@@ -202,13 +226,19 @@
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
     </Link>
+    <Lib>
+      <AdditionalDependencies>libeay32.lib;ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>$(EngineRoot)external\openssl\prebuilt\$(COCOS2D_PLATFORM)\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(EngineRoot)cocos\scripting\lua-bindings\manual\network;$(EngineRoot)cocos\math\kazmath\include;$(EngineRoot)external\tiff\include\$(COCOS2D_PLATFORM);$(EngineRoot)external\protobuf-lite\win32;$(EngineRoot)external\protobuf-lite\src;$(EngineRoot)external\png\include\$(COCOS2D_PLATFORM);$(EngineRoot)external\jpeg\include\$(COCOS2D_PLATFORM);$(EngineRoot)cocos\audio\include;$(EngineRoot)cocos\math\kazmath;$(EngineRoot)cocos\scripting\lua-bindings\manual\extension;$(EngineRoot)cocos\scripting\lua-bindings\manual\ui;$(EngineRoot)cocos\scripting\lua-bindings\manual\cocostudio;$(EngineRoot)cocos\editor-support\cocostudio\ActionTimeline;$(EngineRoot)cocos\ui;$(EngineRoot)extensions;$(EngineRoot)cocos\editor-support\spine;$(EngineRoot)cocos\editor-support\cocostudio;$(EngineRoot)cocos\editor-support\cocosbuilder;$(EngineRoot)cocos\deprecated;$(EngineRoot)cocos\2d\renderer;$(EngineRoot)cocos\physics;$(EngineRoot);$(EngineRoot)cocos\2d;$(EngineRoot)cocos\base;$(EngineRoot)cocos;$(EngineRoot)cocos\scripting\lua-bindings\manual\cocos2d;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\quick;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(EngineRoot)external\openssl\include\$(COCOS2D_PLATFORM);$(EngineRoot)cocos\scripting\lua-bindings\manual\network;$(EngineRoot)cocos\math\kazmath\include;$(EngineRoot)external\tiff\include\$(COCOS2D_PLATFORM);$(EngineRoot)external\protobuf-lite\win32;$(EngineRoot)external\protobuf-lite\src;$(EngineRoot)external\png\include\$(COCOS2D_PLATFORM);$(EngineRoot)external\jpeg\include\$(COCOS2D_PLATFORM);$(EngineRoot)cocos\audio\include;$(EngineRoot)cocos\math\kazmath;$(EngineRoot)cocos\scripting\lua-bindings\manual\extension;$(EngineRoot)cocos\scripting\lua-bindings\manual\ui;$(EngineRoot)cocos\scripting\lua-bindings\manual\cocostudio;$(EngineRoot)cocos\editor-support\cocostudio\ActionTimeline;$(EngineRoot)cocos\ui;$(EngineRoot)extensions;$(EngineRoot)cocos\editor-support\spine;$(EngineRoot)cocos\editor-support\cocostudio;$(EngineRoot)cocos\editor-support\cocosbuilder;$(EngineRoot)cocos\deprecated;$(EngineRoot)cocos\2d\renderer;$(EngineRoot)cocos\physics;$(EngineRoot);$(EngineRoot)cocos\2d;$(EngineRoot)cocos\base;$(EngineRoot)cocos;$(EngineRoot)cocos\scripting\lua-bindings\manual\cocos2d;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)external\lua\quick;$(EngineRoot)external\lua\lua;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;CC_LUA_ENGINE_ENABLED=1;__STRICT_ANSI__;SQLITE_OS_WINRT;SQLITE_OMIT_WAL;CC_USE_JSON=1;CC_USE_CURL=1;CC_USE_CCS_ARMATURE=1;CC_USE_EXTRA_FILTERS=1;CC_USE_WEBSOCKET=1;CC_USE_TGA=1;CC_USE_SQLITE=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4996;4700;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
@@ -217,6 +247,12 @@
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
     </Link>
+    <Lib>
+      <AdditionalDependencies>libeay32.lib;ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>$(EngineRoot)external\openssl\prebuilt\$(COCOS2D_PLATFORM)\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\external\lua\lua\lapi.h" />
@@ -300,6 +336,14 @@
       <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsWinRT>
       <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsWinRT>
       <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">false</CompileAsWinRT>
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">false</CompileAsWinRT>
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsWinRT>
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</CompileAsWinRT>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\external\lua\LuaCrypt\lua_dhcrypt.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">false</CompileAsWinRT>
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsWinRT>
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsWinRT>
       <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">false</CompileAsWinRT>
       <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsWinRT>
       <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</CompileAsWinRT>

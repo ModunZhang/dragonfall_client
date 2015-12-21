@@ -307,6 +307,9 @@
     <ClCompile Include="..\..\manual\spine\LuaSkeletonAnimation.cpp">
       <Filter>scripting\luabindings\manual</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\..\external\lua\LuaCrypt\lua_dhcrypt.c">
+      <Filter>external\lua\LuaCrypt</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\external\lua\lua\lapi.h">
