@@ -110,9 +110,6 @@ function GameUIMission:CreateUIIf_achievement()
         :addTo(layer)
     header_bg:setTouchEnabled(true)
 
-    self.info_icon = display.newSprite("mission_i_38x42.png")
-        :align(display.LEFT_BOTTOM, 10, 128)
-        :addTo(header_bg)
     local recommend_contet_bg = display.newSprite("recommend_misson_bg_438x158.png")
         :align(display.LEFT_BOTTOM, 176,12)
         :addTo(header_bg)
@@ -141,7 +138,6 @@ function GameUIMission:CreateUIIf_achievement()
     list:onTouch(handler(self, self.listviewListener))
     self.achievement_list = list
     list_node:addTo(layer):pos((layer:getContentSize().width - 558)/2,14)
-    self:SchedulerInfo()
     self:RefreshAchievementList()
     return self.achievement_layer
 end
@@ -157,16 +153,6 @@ function GameUIMission:CreateBetweenBgAndTitle()
     local layer = display.newNode():pos(0,0):addTo(self:GetView())
     layer:size(window.width,window.height)
     self.main_ui = layer
-end
-
-function GameUIMission:SchedulerInfo()
-    self:ShakeInfoIcon()
-    self.action_node:schedule(handler(self, self.ShakeInfoIcon), 5)
-end
-
-function GameUIMission:ShakeInfoIcon()
-    local action = self:GetShakeAction()
-    self.info_icon:runAction(action)
 end
 
 function GameUIMission:GetShakeAction(t)

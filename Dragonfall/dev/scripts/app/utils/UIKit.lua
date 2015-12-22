@@ -1048,9 +1048,11 @@ function UIKit:addTipsToNode( node,tips , include_node ,tip_dimensions,offset_x,
     end
     node:addNodeEventListener(cc.NODE_TOUCH_EVENT, function(event)
         if event.name == "began" then
+            local touch_postion = node:convertToNodeSpace(cc.p(event.x,event.y))
+
             local world_postion = node:getParent():convertToWorldSpace(cc.p(node:getPosition()))
             local node_postioon = include_node:convertToNodeSpace(world_postion)
-            tips_bg:setPosition(node_postioon.x + (offset_x or 0), node_postioon.y + node:getContentSize().height/2 + (offset_y or 0))
+            tips_bg:setPosition(node_postioon.x + (offset_x or 0), node_postioon.y  + touch_postion.y + 20 + (offset_y or 0))
             tips_bg:SetTips(tips)
             tips_bg:show()
         elseif event.name == "ended" then

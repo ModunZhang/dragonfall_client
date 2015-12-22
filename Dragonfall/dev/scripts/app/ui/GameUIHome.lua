@@ -192,11 +192,10 @@ function GameUIHome:CreateTop()
         color = 0xf3f0b6,
     }):addTo(top_bg):align(display.LEFT_CENTER, ox + 14, 42)
 
-    self.shadow_power_label = UIKit:ttfLabel({
+    self.shadow_power_label = UIKit:CreateNumberImageNode({
         text = "",
         size = 20,
         color = 0xf3f0b6,
-        shadow = true
     }):addTo(top_bg):align(display.LEFT_CENTER, ox + 14, 42):hide()
 
     -- 资源按钮
@@ -397,7 +396,7 @@ local POWER_ANI_TAG = 1001
 function GameUIHome:ShowPowerAni(wp, old_power)
     local pnt = self.top
     self.power_label:hide()
-    self.shadow_power_label:show():setString(string.formatnumberthousands(old_power))
+    self.shadow_power_label:show():SetNumString(string.formatnumberthousands(old_power))
 
     pnt:removeChildByTag(POWER_ANI_TAG)
     local tp = pnt:convertToNodeSpace(self.power_label:convertToWorldSpace(cc.p(0,0)))
@@ -414,7 +413,7 @@ function GameUIHome:ShowPowerAni(wp, old_power)
     emitter:runAction(transition.sequence{
         cc.MoveTo:create(time, cc.p(tp.x, tp.y)),
         cc.CallFunc:create(function()
-            self:ScaleIcon(self.power_label:show())
+            self:ScaleIcon(self.power_label:show(),self.power_label:getScale())
             self.shadow_power_label:hide()
         end),
         cc.DelayTime:create(delay_time),

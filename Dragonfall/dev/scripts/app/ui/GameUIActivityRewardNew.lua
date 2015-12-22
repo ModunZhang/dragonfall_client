@@ -1075,7 +1075,7 @@ function GameUIActivityRewardNew:GetOnLineTimePointData()
         end
         local reward_type,item_key,count = unpack(string.split(v.rewards,":"))
         local name = self:GetRewardName(reward_type,item_key)
-        table.insert(r,{reward_type,item_key,string.format(_("在线%s分钟"),v.onLineMinutes),name .. "x" .. count,flag,v.timePoint})
+        table.insert(r,{reward_type,item_key,string.format(_("在线%s分钟"),v.onLineMinutes),name .. " x" .. count,flag,v.timePoint})
     end
     return r
 end

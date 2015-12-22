@@ -325,13 +325,21 @@ end
 
 function GameUIWall:GetTipsBoxWithTipsContent(content)
     local tips_bg = WidgetUIBackGround.new({width = 556,height = 106},WidgetUIBackGround.STYLE_TYPE.STYLE_5)
+
+    local list = UIListView.new{
+        -- bgColor = UIKit:hex2c4b(0x7a100000),
+        viewRect = cc.rect(13,10, 530, 106 - 20),
+        direction = cc.ui.UIScrollView.DIRECTION_VERTICAL
+    }:addTo(tips_bg)
     local y = 100
     for _,v in ipairs(content) do
         local tips_label = UIKit:ttfLabel({text = v,size = 18,color = 0x403c2f,dimensions = cc.size(500,0) })
-            :align(display.LEFT_TOP, 10, y)
-            :addTo(tips_bg)
-        y = y - 10 - tips_label:getContentSize().height
+        local item = list:newItem()
+        item:setItemSize(530, tips_label:getContentSize().height)
+        item:addContent(tips_label)
+        list:addItem(item)
     end
+    list:reload()
     return tips_bg
 end
 
@@ -373,50 +381,6 @@ end
 function GameUIWall:GetDragon()
     return self.dragon_manager:GetDefenceDragon()
 end
-
--- function GameUIWall:OnSelectDragonButtonClicked()
---     WidgetSelectWallDragon.new({
---         callback  = {
---             function(dragon)
---                 self:OnDragonSelected(dragon)
---             end,
---             function()
---                 self:OnDragonSelected()
---             end
---         },
---         default_dragon_type = self.dragon_manager:GetDefenceDragon() and self.dragon_manager:GetDefenceDragon():Type()
---     }):addTo(self:GetView())
--- end
-
--- function GameUIWall:OnDragonSelected(dragon)
---     if dragon then
---         if self:GetDragon() and self:GetDragon():Type() == dragon:Type() then return end
---         if dragon:IsDead() then
---             UIKit:showMessageDialog(nil,_("选择的龙已经死亡")):CreateCancelButton(
---                 {
---                     listener = function ()
---                         UIKit:newGameUI("GameUIDragonEyrieMain", self.city, self.city:GetFirstBuildingByType("dragonEyrie"), "dragon", false, dragon:Type()):AddToCurrentScene(true)
---                         self:LeftButtonClicked()
---                     end,
---                     btn_name= _("查看"),
---                     btn_images = {normal = "blue_btn_up_148x58.png",pressed = "blue_btn_down_148x58.png"}
---                 }
---             )
---             return
---         end
---         NetManager:getSetDefenceTroopPromise(dragon:Type()):done(function()
---             self:RefreshUIAfterSelectDragon(dragon,soldiers)
---         end)
---     else
---         if self:GetDragon() then
---             NetManager:getCancelDefenceTroopPromise():done(function()
---                 self:RefreshUIAfterSelectDragon()
---             end)
---         else
---             UIKit:showMessageDialog(_("错误"),_("还没有龙驻防"), function()end)
---         end
---     end
--- end
 
 function GameUIWall:RefreshUIAfterSelectDragon(dragon,soldiers)
     if dragon then

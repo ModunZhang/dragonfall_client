@@ -257,9 +257,24 @@ function GameUIAllianceSendTroops:OnMoveInStage()
                     return
                 end
                 if self.dragon:IsDefenced() then
-                    NetManager:getCancelDefenceTroopPromise():done(function()
-                        self:CallFuncMarch_Callback(dragonType,soldiers)
-                    end)
+                    UIKit:showMessageDialog(_("提示"),_("当前选择的龙处于驻防状态，是否取消驻防将这条龙派出")):CreateCancelButton(
+                        {
+                            listener = function ()
+                                NetManager:getCancelDefenceTroopPromise():done(function()
+                                    self:CallFuncMarch_Callback(dragonType,soldiers)
+                                    self:LeftButtonClicked()
+                                end)
+                            end,
+                            btn_name= _("派出"),
+                            btn_images = {normal = "red_btn_up_148x58.png",pressed = "red_btn_down_148x58.png"}
+                        }
+                    ):CreateOKButton({
+                        listener = function ()
+                        end,
+                        btn_name= _("取消"),
+                        btn_images = {normal = "yellow_btn_up_148x58.png",pressed = "yellow_btn_down_148x58.png"}
+                    })
+
                 else
                     self:CallFuncMarch_Callback(dragonType,soldiers)
                 end
@@ -569,14 +584,14 @@ function GameUIAllianceSendTroops:SelectSoldiers()
     local map_s = User.soldiers
     for _,name in pairs(soldier_map) do
         local soldier_num = map_s[name]
-            local defence_soldier_count = 0
-            if self.military_soldiers and User.defenceTroop and User.defenceTroop ~= json.null then
-                for i,v in ipairs(User.defenceTroop.soldiers) do
-                    if v.name == name then
-                        defence_soldier_count = v.count
-                    end
+        local defence_soldier_count = 0
+        if self.military_soldiers and User.defenceTroop and User.defenceTroop ~= json.null then
+            for i,v in ipairs(User.defenceTroop.soldiers) do
+                if v.name == name then
+                    defence_soldier_count = v.count
                 end
             end
+        end
         if soldier_num + defence_soldier_count > 0 then
             table.insert(soldiers, {name = name,level = User:SoldierStarByName(name), max_num = soldier_num + defence_soldier_count})
         end
@@ -874,6 +889,7 @@ function GameUIAllianceSendTroops:onExit()
 end
 
 return GameUIAllianceSendTroops
+
 
 
 

@@ -973,8 +973,8 @@ end
 local function get_recruitNormalSoldier_promise(soldierName, count, finish_now)
     local task = City:GetRecommendTask()
     if task then
-        if task:TaskType() == "recruit" 
-        and string.find(soldierName, task.name) then
+        if task:TaskType() == "recruit"
+            and string.find(soldierName, task.name) then
             City:SetBeginnersTaskFlag(task:Index())
         end
     end
@@ -1594,7 +1594,9 @@ end
 function NetManager:getSetDefenceTroopPromise(dragonType,soldiers)
     return get_none_blocking_request_promise("logic.playerHandler.setDefenceTroop",
         {dragonType=dragonType,soldiers=soldiers},
-        "设置驻防使用的龙失败!"):done(get_player_response_msg)
+        "设置驻防使用的龙失败!"):done(get_player_response_msg):done(function()
+            GameGlobalUI:showTips(_("提示"),_("驻防成功"))
+        end)
 end
 --取消龙驻防
 function NetManager:getCancelDefenceTroopPromise()
@@ -1692,9 +1694,9 @@ function NetManager:getUpgradeProductionTechPromise(techName,finishNow)
     }, "升级生产科技失败!"):done(get_player_response_msg):done(function()
         if finishNow then
             GameGlobalUI:showTips(
-                    _("生产科技升级完成"), 
-                    Localize.productiontechnology_name[techName]
-                    .."Lv"..User.productionTechs[techName].level)  
+                _("生产科技升级完成"),
+                Localize.productiontechnology_name[techName]
+                .."Lv"..User.productionTechs[techName].level)
         end
         app:GetAudioManager():PlayeEffectSoundWithKey("TECHNOLOGY")
     end)
@@ -1707,9 +1709,9 @@ local function upgrade_military_tech_promise(techName,finishNow)
     }, "升级军事科技失败!"):done(get_player_response_msg):done(function()
         if finishNow then
             GameGlobalUI:showTips(_("军事科技升级完成"),
-                    UtilsForTech:GetTechLocalize(techName)
-                    .."Lv"..
-                    User.militaryTechs[techName].level)
+                UtilsForTech:GetTechLocalize(techName)
+                .."Lv"..
+                User.militaryTechs[techName].level)
             app:GetAudioManager():PlayeEffectSoundWithKey("COMPLETE")
         end
     end)
@@ -1855,11 +1857,11 @@ function NetManager:getVerifyIAPPromise(transactionId,receiptData)
 end
 -- WindowsPhone内购
 function NetManager:getVerifyAdeasygoIAPPromise(transactionIdentifier)
-   if not self.__AdeasygoUID  then
+    if not self.__AdeasygoUID  then
         self.__AdeasygoUID = ext.adeasygo.getUid()
-   end
-   local uid = self.__AdeasygoUID
-   return get_none_blocking_request_promise("logic.playerHandler.addWpAdeasygoPlayerBillingData",
+    end
+    local uid = self.__AdeasygoUID
+    return get_none_blocking_request_promise("logic.playerHandler.addWpAdeasygoPlayerBillingData",
         {
             transactionId=transactionIdentifier,
             uid = uid,
@@ -1972,8 +1974,8 @@ function NetManager:getBindGcPromise(type,gcId,gcName)
         type=type,
         gcId=gcId,
         gcName=gcName,
-        },
-        "设置gc失败"):done(get_player_response_msg)
+    },
+    "设置gc失败"):done(get_player_response_msg)
 end
 -- 更新GcName
 function NetManager:getUpdateGcNamePromise(gcName)
@@ -2066,7 +2068,7 @@ function NetManager:getMoveAlliancePromise(targetMapIndex)
         targetMapIndex = targetMapIndex,
     },"移联盟失败!"):done(function(response)
         -- LuaUtils:outputTable(response)
-    end)
+        end)
 end
 function NetManager:getEnterMapIndexPromise(mapIndex)
     return get_none_blocking_request_promise("logic.allianceHandler.enterMapIndex",{
@@ -2134,6 +2136,8 @@ function NetManager:downloadFile(fileInfo, cb, progressCb)
         progressCb(totalSize, currentSize)
     end)
 end
+
+
 
 
 
