@@ -15,14 +15,9 @@ function LogoScene:onEnter()
         ext.disableIdleTimer(true)
     end
     
-    -- self.layer = cc.LayerColor:create(cc.c4b(255,255,255,255)):addTo(self)
-    -- self.sprite = display.newSprite("batcat_logo_368x507.png", display.cx, display.cy):addTo(self.layer)
-    -- self:performWithDelay(function() self:beginAnimate() end,0.5)
-    local t = {}
-    for i = 1, 20000 do
-        t[i] = i
-    end
-    dump(t)
+    self.layer = cc.LayerColor:create(cc.c4b(255,255,255,255)):addTo(self)
+    self.sprite = display.newSprite("batcat_logo_368x507.png", display.cx, display.cy):addTo(self.layer)
+    self:performWithDelay(function() self:beginAnimate() end,0.5)
 end
 
 function LogoScene:beginAnimate()
