@@ -456,7 +456,7 @@ function GameUIMission:GetDailyItem(data,index)
     UIKit:ttfLabel({
         text = self.city:GetUser():GetDailyTasksFinishedCountByIndex(index).."/"..data.maxCount,
         size = 20,
-        color= 0x403c2f,
+        color= self.city:GetUser():GetDailyTasksFinishedCountByIndex(index) ~= data.maxCount and 0x403c2f or 0x007c23,
     }):align(display.CENTER, 400, content_height/2):addTo(content)
     display.newSprite("next_32x38.png"):align(display.RIGHT_CENTER, 510, content_height/2):addTo(content)
 
@@ -544,7 +544,7 @@ function GameUIMission:OpenGetDailyRewardDialog(reward_index,flag)
 
     end
 
-    WidgetPushButton.new({normal = "yellow_btn_up_148x58.png",pressed = "yellow_btn_down_148x58.png"})
+    local btn = WidgetPushButton.new({normal = "yellow_btn_up_148x58.png",pressed = "yellow_btn_down_148x58.png",disabled = "grey_btn_148x58.png"})
         :align(display.BOTTOM_CENTER, size.width/2, 24)
         :addTo(body)
         :setButtonLabel("normal", UIKit:commonButtonLable({
@@ -563,7 +563,7 @@ function GameUIMission:OpenGetDailyRewardDialog(reward_index,flag)
                 dialog:LeftButtonClicked()
             end)
         end)
-
+    btn:setButtonEnabled(flag == 1)
 
 end
 -- 获取当前能够领取日常任务奖励的数量
