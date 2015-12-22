@@ -560,6 +560,7 @@ function GameUIMission:OpenGetDailyRewardDialog(reward_index,flag)
             end
             NetManager:getDailyTaskRewards():done(function ()
                 GameGlobalUI:showTips(_("获得奖励"),string.format(_("获得%s"),show_msg))
+                dialog:LeftButtonClicked()
             end)
         end)
 
@@ -569,7 +570,8 @@ end
 function GameUIMission:GetDailyTasksCanGetRewardCount()
     local points = self:GetDailyTasksFinishedPoints()
     local count = -1
-    for i,reward in ipairs(dailyTaskRewardsConfig) do
+    for i=0,4 do
+        local reward = dailyTaskRewardsConfig[i]
         if points >= reward.score then
             count = i
         end

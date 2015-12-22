@@ -181,7 +181,7 @@ function GameUIWall:CreateMilitaryUIIf()
         text = level_str,
         size = 20,
         color= 0x615b44
-    }):align(display.LEFT_BOTTOM,title_bg:getPositionX(), tips_label:getPositionY() + tips_label:getContentSize().height + 52):addTo(military_node)
+    }):align(display.LEFT_BOTTOM,title_bg:getPositionX(), tips_label:getPositionY() + tips_label:getContentSize().height + 20):addTo(military_node)
     self.level_title_label = level_title_label
     self.dragon_level_label = UIKit:ttfLabel({
         text = "",
@@ -201,7 +201,7 @@ function GameUIWall:CreateMilitaryUIIf()
         viewRect = cc.rect(11,10, 546, 270),
         direction = cc.ui.UIScrollView.DIRECTION_VERTICAL
     },true)
-    list_node:addTo(military_node):align(display.BOTTOM_CENTER, window.width/2, window.bottom_top + 80)
+    list_node:addTo(military_node):align(display.BOTTOM_CENTER, window.width/2, 160)
     self.info_list = info_list
 
     local tips_panel = self:GetTipsBoxWithTipsContent({
