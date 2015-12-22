@@ -185,9 +185,8 @@ namespace ui {
 		m_textBox->PlaceholderText = m_strPlaceholder;
 		m_textBox->Select(m_textBox->Text->Length(), 0);
 		m_textBox->MaxLength = m_maxLength < 0 ? 0 : m_maxLength;
-		//多行输入的特性设置
-		m_textBox->MinHeight = 100;
-		m_textBox->MaxHeight = 200;
+		m_textBox->Height = 100;
+		m_textBox->Width = m_panel->ActualWidth;
 		m_textBox->TextWrapping = Windows::UI::Xaml::TextWrapping::Wrap;
 		m_textBox->AcceptsReturn = true;
 		SetInputScope(m_textBox, m_inputMode);

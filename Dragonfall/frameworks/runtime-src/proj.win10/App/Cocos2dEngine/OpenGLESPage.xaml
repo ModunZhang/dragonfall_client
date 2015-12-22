@@ -6,20 +6,28 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-
+    <!--dannyhe 修改2dx在wp上的输入框,多行输入框还需测试-->
     <SwapChainPanel x:Name="swapChainPanel">
         <Button x:Name="cocos2d_editbox" Visibility="Collapsed" Height="1">
             <Button.Flyout>
                 <Flyout x:Name="cocos2d_editbox_flyout">
+                    <Flyout.FlyoutPresenterStyle>
+                        <Style TargetType="FlyoutPresenter">
+                            <Setter Property="Padding" Value="0"/>
+                            <!--<Setter Property="Background" Value="WhiteSmoke"/>-->
+                            <Setter Property="BorderBrush" Value="Transparent"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                        </Style>
+                    </Flyout.FlyoutPresenterStyle>
                     <Grid VerticalAlignment="Top" x:Name="cocos2d_editbox_grid">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="120" />
-                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-
-                        <Button x:Name="cocos2d_editbox_done" Grid.Column="1" VerticalAlignment="Center">Done</Button>
-                        <Button x:Name="cocos2d_editbox_cancel" Grid.Column="2" VerticalAlignment="Center">Cancel</Button>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Button x:Name="cocos2d_editbox_done" Grid.Row="1" HorizontalAlignment="Right" Background="Black" Margin="0,2,0,2">Done</Button>
                     </Grid>
                 </Flyout>
             </Button.Flyout>

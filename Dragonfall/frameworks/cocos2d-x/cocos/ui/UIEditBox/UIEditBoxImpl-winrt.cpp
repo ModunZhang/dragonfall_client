@@ -220,6 +220,7 @@ void EditBoxWinRT::SetupTextBox()
     m_textBox->Text = m_strText;
     m_textBox->Name = "cocos2d_editbox_textbox";
     m_textBox->MinWidth = 200;
+	m_textBox->Width = m_panel->ActualWidth;
     m_textBox->PlaceholderText = m_strPlaceholder;
     m_textBox->Select(m_textBox->Text->Length(), 0);
     m_textBox->MaxLength = m_maxLength < 0 ? 0 : m_maxLength;
@@ -238,6 +239,7 @@ void EditBoxWinRT::SetupPasswordBox()
     m_passwordBox->Name = "cocos2d_editbox_textbox";
     m_passwordBox->SelectAll();
     m_passwordBox->PlaceholderText = m_strPlaceholder;
+	m_textBox->Width = m_panel->ActualWidth;
     m_passwordBox->MaxLength = m_maxLength < 0 ? 0 : m_maxLength;
     auto g = findXamlElement(m_flyout->Content, "cocos2d_editbox_grid");
     auto grid = dynamic_cast<Grid^>(g);
