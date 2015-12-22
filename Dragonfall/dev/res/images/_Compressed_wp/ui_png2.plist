@@ -4,32 +4,6 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>1_11x24.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{1008,943},{11,24}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{11,24}}</string>
-                <key>sourceSize</key>
-                <string>{11,24}</string>
-            </dict>
-            <key>VIP_10_46x32.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{600,973},{46,32}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{46,32}}</string>
-                <key>sourceSize</key>
-                <string>{46,32}</string>
-            </dict>
             <key>back_ground_130x166.png</key>
             <dict>
                 <key>frame</key>
@@ -69,19 +43,6 @@
                 <key>sourceSize</key>
                 <string>{284,128}</string>
             </dict>
-            <key>back_ground_83x32.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{600,884},{83,32}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{83,32}}</string>
-                <key>sourceSize</key>
-                <string>{83,32}</string>
-            </dict>
             <key>background_330x78.png</key>
             <dict>
                 <key>frame</key>
@@ -98,7 +59,7 @@
             <key>box_136x136.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{458,884},{136,136}}</string>
+                <string>{{292,884},{136,136}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -134,18 +95,18 @@
                 <key>sourceSize</key>
                 <string>{620,628}</string>
             </dict>
-            <key>box_buff_1.png</key>
+            <key>box_gacha_senior_136x136_2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{292,884},{136,160}}</string>
+                <string>{{434,884},{134,136}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{136,160}}</string>
+                <string>{{1,0},{134,136}}</string>
                 <key>sourceSize</key>
-                <string>{136,160}</string>
+                <string>{136,136}</string>
             </dict>
             <key>dragon_info_bg_290x92.png</key>
             <dict>
@@ -185,6 +146,19 @@
                 <string>{{0,0},{639,69}}</string>
                 <key>sourceSize</key>
                 <string>{639,69}</string>
+            </dict>
+            <key>grey_btn_112x58.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{574,884},{112,58}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{112,58}}</string>
+                <key>sourceSize</key>
+                <string>{112,58}</string>
             </dict>
             <key>head_bg.png</key>
             <dict>
@@ -264,6 +238,19 @@
                 <key>sourceSize</key>
                 <string>{113,128}</string>
             </dict>
+            <key>retreat_button_icon_22x18.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{608,1002},{22,18}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{22,18}}</string>
+                <key>sourceSize</key>
+                <string>{22,18}</string>
+            </dict>
             <key>setting_rank_p_75x70.png</key>
             <dict>
                 <key>frame</key>
@@ -289,6 +276,19 @@
                 <string>{{0,0},{322,76}}</string>
                 <key>sourceSize</key>
                 <string>{322,76}</string>
+            </dict>
+            <key>tmp_icon_hp_18x28.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{574,1002},{18,28}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{18,28}}</string>
+                <key>sourceSize</key>
+                <string>{18,28}</string>
             </dict>
             <key>upgrade_resources_background_red.png</key>
             <dict>
@@ -339,7 +339,7 @@
             <key>size</key>
             <string>{1024,1024}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:5ccdf5353cb4ccf47c73a2ce1788878f:9faba4778be0b106ce5e91bdd4642e1f:39442dfca8f6c7372ed050ea490c4ab9$</string>
+            <string>$TexturePacker:SmartUpdate:ac537ac0fdfe6b0a97b60481a3e403d5:f0bcf7720d86dba7f3865b178166948c:39442dfca8f6c7372ed050ea490c4ab9$</string>
             <key>textureFileName</key>
             <string>ui_png2.png</string>
         </dict>

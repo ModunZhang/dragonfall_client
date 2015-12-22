@@ -169,8 +169,8 @@ function GameUIMission:ShakeInfoIcon()
     self.info_icon:runAction(action)
 end
 
-function GameUIMission:GetShakeAction()
-    local t = 0.025
+function GameUIMission:GetShakeAction(t)
+    local t = t or 0.025
     local r = 5
     local action = transition.sequence({
         cc.RotateBy:create(t, r),
@@ -456,7 +456,7 @@ function GameUIMission:GetDailyItem(data,index)
     UIKit:ttfLabel({
         text = self.city:GetUser():GetDailyTasksFinishedCountByIndex(index).."/"..data.maxCount,
         size = 20,
-        color= 0x403c2f,
+        color= self.city:GetUser():GetDailyTasksFinishedCountByIndex(index) ~= data.maxCount and 0x403c2f or 0x007c23,
     }):align(display.CENTER, 400, content_height/2):addTo(content)
     display.newSprite("next_32x38.png"):align(display.RIGHT_CENTER, 510, content_height/2):addTo(content)
 
@@ -505,6 +505,14 @@ function GameUIMission:GetRewardsNode()
                 end)
             local box = display.newSprite(box_image):addTo(btn):align(display.RIGHT_BOTTOM, 100, 0)
             box:setTouchEnabled(false)
+            if User.countInfo.dailyTaskRewardCount == i and flag == 1 then
+                local action = parent:GetShakeAction(0.1)
+                box:runAction(
+                    cc.RepeatForever:create(
+                        action
+                    )
+                )
+            end
         end
     end
     node:RefreshBoxes()
@@ -544,7 +552,7 @@ function GameUIMission:OpenGetDailyRewardDialog(reward_index,flag)
 
     end
 
-    WidgetPushButton.new({normal = "yellow_btn_up_148x58.png",pressed = "yellow_btn_down_148x58.png"})
+    local btn = WidgetPushButton.new({normal = "yellow_btn_up_148x58.png",pressed = "yellow_btn_down_148x58.png",disabled = "grey_btn_148x58.png"})
         :align(display.BOTTOM_CENTER, size.width/2, 24)
         :addTo(body)
         :setButtonLabel("normal", UIKit:commonButtonLable({
@@ -558,12 +566,16 @@ function GameUIMission:OpenGetDailyRewardDialog(reward_index,flag)
                 UIKit:showMessageDialog(_("提示"),_("已经领取过奖励"))
                 return
             end
+            if User.countInfo.dailyTaskRewardCount ~= reward_index + 1 then
+                UIKit:showMessageDialog(_("提示"),_("请首先领取前面的奖励"))
+                return
+            end
             NetManager:getDailyTaskRewards():done(function ()
                 GameGlobalUI:showTips(_("获得奖励"),string.format(_("获得%s"),show_msg))
                 dialog:LeftButtonClicked()
             end)
         end)
-
+    btn:setButtonEnabled(flag == 1)
 
 end
 -- 获取当前能够领取日常任务奖励的数量
@@ -731,6 +743,7 @@ end
 
 
 return GameUIMission
+
 
 
 
