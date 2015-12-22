@@ -501,22 +501,7 @@ function GameUIMission:GetRewardsNode()
                 :setButtonLabelOffset(-14,0)
                 :addTo(self)
                 :onButtonClicked(function()
-                    if flag == 0 then
-                        UIKit:showMessageDialog(_("提示"),_("积分不足，不能领取奖励"))
-                        return
-                    elseif flag == 2 then
-                        UIKit:showMessageDialog(_("提示"),_("已经领取过奖励"))
-                        return
-                    end
-                    NetManager:getDailyTaskRewards():done(function ()
-                        local rewards = string.split(dailyTaskRewardsConfig[i].rewards,";")
-                        local show_msg = ""
-                        for i,re in ipairs(rewards) do
-                            local data = string.split(re,":")
-                            show_msg = show_msg .. Localize_item.item_name[data[2]] .. (i ~= #rewards and "," or "")
-                        end
-                        GameGlobalUI:showTips(_("获得奖励"),string.format(_("获得%s"),show_msg))
-                    end)
+                    parent:OpenGetDailyRewardDialog(i,flag)
                 end)
             local box = display.newSprite(box_image):addTo(btn):align(display.RIGHT_BOTTOM, 100, 0)
             box:setTouchEnabled(false)
@@ -524,6 +509,61 @@ function GameUIMission:GetRewardsNode()
     end
     node:RefreshBoxes()
     return node
+end
+function GameUIMission:OpenGetDailyRewardDialog(reward_index,flag)
+    local rewards = string.split(dailyTaskRewardsConfig[reward_index].rewards,";")
+    local dialog = UIKit:newWidgetUI("WidgetPopDialog", #rewards * 130 + 140,_("奖励"),window.top-130):AddToCurrentScene(true)
+    local body = dialog:GetBody()
+    local size = body:getContentSize()
+    local list_bg = display.newScale9Sprite("background_568x120.png",size.width/2,(#rewards * 130+24)/2+90,cc.size(568,#rewards * 130+22),cc.rect(10,10,548,100))
+        :addTo(body)
+    local show_msg = ""
+    for i,re in ipairs(rewards) do
+        local data = string.split(re,":")
+        show_msg = show_msg .. Localize_item.item_name[data[2]] .. (i ~= #rewards and "," or "")
+
+        local body_1 = display.newScale9Sprite(string.format("back_ground_548x40_%d.png",i%2==0 and 1 or 2),list_bg:getContentSize().width/2,list_bg:getContentSize().height - 10 - 65 - (i-1) * 130,cc.size(548,130),cc.rect(10,10,528,20)):addTo(list_bg)
+        body_1:setNodeEventEnabled(true)
+        local item_bg = display.newSprite("box_118x118.png"):addTo(body_1):pos(65,65)
+        local item_icon = display.newSprite(UILib.item[data[2]]):addTo(item_bg):align(display.CENTER, item_bg:getContentSize().width/2, item_bg:getContentSize().height/2):scale(0.6)
+        item_icon:scale(100/item_icon:getContentSize().width)
+
+        -- 道具名称
+        UIKit:ttfLabel({
+            text = UtilsForItem:GetItemLocalize(data[2]),
+            size = 24,
+            color = 0x403c2f,
+        }):addTo(body_1):align(display.LEFT_CENTER,130, body_1:getContentSize().height-22)
+        -- 道具介绍
+        UIKit:ttfLabel({
+            text = UtilsForItem:GetItemDesc(data[2]),
+            size = 20,
+            color = 0x5c553f,
+            dimensions = cc.size(260,0)
+        }):addTo(body_1):align(display.LEFT_CENTER,130, body_1:getContentSize().height/2-10)
+
+    end
+
+    WidgetPushButton.new({normal = "yellow_btn_up_148x58.png",pressed = "yellow_btn_down_148x58.png"})
+        :align(display.BOTTOM_CENTER, size.width/2, 24)
+        :addTo(body)
+        :setButtonLabel("normal", UIKit:commonButtonLable({
+            text = _("领取")
+        }))
+        :onButtonClicked(function()
+            if flag == 0 then
+                UIKit:showMessageDialog(_("提示"),_("积分不足，不能领取奖励"))
+                return
+            elseif flag == 2 then
+                UIKit:showMessageDialog(_("提示"),_("已经领取过奖励"))
+                return
+            end
+            NetManager:getDailyTaskRewards():done(function ()
+                GameGlobalUI:showTips(_("获得奖励"),string.format(_("获得%s"),show_msg))
+            end)
+        end)
+
+
 end
 -- 获取当前能够领取日常任务奖励的数量
 function GameUIMission:GetDailyTasksCanGetRewardCount()
@@ -689,6 +729,11 @@ end
 
 
 return GameUIMission
+
+
+
+
+
 
 
 
