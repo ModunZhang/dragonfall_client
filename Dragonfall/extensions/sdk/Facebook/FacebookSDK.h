@@ -7,6 +7,7 @@
 
 #ifndef DRAGONFALL_SDK_FACEBOOK_H_
 #define DRAGONFALL_SDK_FACEBOOK_H_
+#if CC_USE_FACEBOOK
 #include "cocos2d.h"
 extern void FacebookCallback(int handleId, cocos2d::ValueMap valMap);
 
@@ -55,4 +56,5 @@ private:
 	void clearFacebookCookies();
 #endif
 };
+#endif
 #endif //DRAGONFALL_SDK_FACEBOOK_H_

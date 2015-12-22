@@ -1,5 +1,5 @@
 #include "FacebookSDK.h"
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT && CC_USE_FACEBOOK
 
 #include <ppltasks.h>
 #include <collection.h>

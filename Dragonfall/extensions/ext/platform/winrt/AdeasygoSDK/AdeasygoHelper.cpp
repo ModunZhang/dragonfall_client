@@ -1,3 +1,4 @@
+#if defined(__AdeasygoSDK__) && CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 #include "pch.h"
 #include "AdeasygoHelper.h"
 #include <ppltasks.h>
@@ -408,3 +409,4 @@ namespace cocos2d
 	}
 #endif /* WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP) */
 }
+#endif // __AdeasygoSDK__

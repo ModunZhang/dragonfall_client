@@ -1,4 +1,5 @@
 #pragma once
+#if defined(__AdeasygoSDK__) && CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 #include "cocos2d.h"
 namespace cocos2d
 {
@@ -99,3 +100,4 @@ namespace cocos2d
 #endif
 	};
 }
+#endif // __AdeasygoSDK__

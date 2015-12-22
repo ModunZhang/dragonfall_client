@@ -5,6 +5,7 @@
 //  Created by dannyhe on 2015/11/12.
 //
 
+#if CC_USE_FACEBOOK
 #include "tolua_fb_sdk.h"
 #include "cocos2d.h"
 #include "Sysmail.h"
@@ -76,3 +77,4 @@ void tolua_ext_module_facebook(lua_State* tolua_S)
     tolua_function(tolua_S, "getPlayerNameAndId", tolua_fb_getUserNameAndId);
 	tolua_endmodule(tolua_S);
 }
+#endif

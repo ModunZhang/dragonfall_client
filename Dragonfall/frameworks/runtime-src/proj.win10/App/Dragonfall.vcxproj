@@ -226,6 +226,8 @@
     <ClInclude Include="..\..\..\..\extensions\ext\LuaExtension.h" />
     <ClInclude Include="..\..\..\..\extensions\ext\notification\LocalNotification.h" />
     <ClInclude Include="..\..\..\..\extensions\ext\notification\tolua_local_push.h" />
+    <ClInclude Include="..\..\..\..\extensions\ext\platform\winrt\AdeasygoSDK\AdeasygoHelper.h" />
+    <ClInclude Include="..\..\..\..\extensions\ext\platform\winrt\AdeasygoSDK\to_lua_adeasygo_helper.h" />
     <ClInclude Include="..\..\..\..\extensions\ext\platform\winrt\audio\SimpleAudio.h" />
     <ClInclude Include="..\..\..\..\extensions\ext\platform\winrt\audio\to_lua_simpleaudio.h" />
     <ClInclude Include="..\..\..\..\extensions\ext\platform\winrt\WinRTHelper.h" />
@@ -287,6 +289,8 @@
     <ClCompile Include="..\..\..\..\extensions\ext\LuaExtension.cpp" />
     <ClCompile Include="..\..\..\..\extensions\ext\notification\LocalNotification-winrt.cpp" />
     <ClCompile Include="..\..\..\..\extensions\ext\notification\tolua_local_push.cpp" />
+    <ClCompile Include="..\..\..\..\extensions\ext\platform\winrt\AdeasygoSDK\AdeasygoHelper.cpp" />
+    <ClCompile Include="..\..\..\..\extensions\ext\platform\winrt\AdeasygoSDK\to_lua_adeasygo_helper.cpp" />
     <ClCompile Include="..\..\..\..\extensions\ext\platform\winrt\audio\SimpleAudio.cpp" />
     <ClCompile Include="..\..\..\..\extensions\ext\platform\winrt\audio\to_lua_simpleaudio.cpp" />
     <ClCompile Include="..\..\..\..\extensions\ext\platform\winrt\WinRTHelper.cpp" />
@@ -319,7 +323,12 @@
     <SDKReference Include="WindowsMobile, Version=10.0.10240.0" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Assets\SplashScreen.scale-200.png" />
+    <Image Include="Assets\SplashScreen.scale-100.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Assets\SplashScreen.scale-200.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
     <Image Include="Assets\Square150x150Logo.scale-200.png" />
     <Image Include="Assets\Square310x310Logo.scale-125.png">
       <DeploymentContent>true</DeploymentContent>
@@ -355,6 +364,12 @@
     <PRIResource Include="Strings\en-US\Resources.resw" />
     <PRIResource Include="Strings\zh-Hans-CN\Resources.resw" />
     <PRIResource Include="Strings\zh-Hant-TW\Resources.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Adeasygo.PaySDKWP81">
+      <HintPath>..\..\..\..\..\external\WindowsPhone\Adeasygo.PaySDKWP8.1_Com_V1.3.0.0\Release\Adeasygo.PaySDKWP81.winmd</HintPath>
+      <IsWinMDFile>true</IsWinMDFile>
+    </Reference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

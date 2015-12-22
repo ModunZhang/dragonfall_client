@@ -109,6 +109,12 @@
     <ClCompile Include="..\..\..\..\extensions\sdk\Facebook\tolua_fb_sdk.cpp">
       <Filter>Classes\FaceBook</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\extensions\ext\platform\winrt\AdeasygoSDK\AdeasygoHelper.cpp">
+      <Filter>Classes\AdeasygoSDK</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\extensions\ext\platform\winrt\AdeasygoSDK\to_lua_adeasygo_helper.cpp">
+      <Filter>Classes\AdeasygoSDK</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.xaml.h" />
@@ -159,6 +165,12 @@
     <ClInclude Include="..\..\..\..\extensions\sdk\Facebook\tolua_fb_sdk.h">
       <Filter>Classes\FaceBook</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\extensions\ext\platform\winrt\AdeasygoSDK\AdeasygoHelper.h">
+      <Filter>Classes\AdeasygoSDK</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\extensions\ext\platform\winrt\AdeasygoSDK\to_lua_adeasygo_helper.h">
+      <Filter>Classes\AdeasygoSDK</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />
@@ -202,6 +214,9 @@
       <Filter>Assets</Filter>
     </Image>
     <Image Include="Assets\Square71x71Logo.scale-100.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SplashScreen.scale-100.png">
       <Filter>Assets</Filter>
     </Image>
   </ItemGroup>

@@ -18,6 +18,9 @@
 
 #include "App.xaml.h"
 #include "OpenGLESPage.xaml.h"
+#ifdef __AdeasygoSDK__
+#include "AdeasygoSDK/AdeasygoHelper.h"
+#endif // __AdeasygoSDK__
 
 using namespace CocosAppWinRT;
 using namespace cocos2d;
