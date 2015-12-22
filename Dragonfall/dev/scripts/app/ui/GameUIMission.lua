@@ -169,8 +169,8 @@ function GameUIMission:ShakeInfoIcon()
     self.info_icon:runAction(action)
 end
 
-function GameUIMission:GetShakeAction()
-    local t = 0.025
+function GameUIMission:GetShakeAction(t)
+    local t = t or 0.025
     local r = 5
     local action = transition.sequence({
         cc.RotateBy:create(t, r),
@@ -505,6 +505,14 @@ function GameUIMission:GetRewardsNode()
                 end)
             local box = display.newSprite(box_image):addTo(btn):align(display.RIGHT_BOTTOM, 100, 0)
             box:setTouchEnabled(false)
+            if User.countInfo.dailyTaskRewardCount == i and flag == 1 then
+                local action = parent:GetShakeAction(0.1)
+                box:runAction(
+                    cc.RepeatForever:create(
+                        action
+                    )
+                )
+            end
         end
     end
     node:RefreshBoxes()
@@ -556,6 +564,10 @@ function GameUIMission:OpenGetDailyRewardDialog(reward_index,flag)
                 return
             elseif flag == 2 then
                 UIKit:showMessageDialog(_("提示"),_("已经领取过奖励"))
+                return
+            end
+            if User.countInfo.dailyTaskRewardCount ~= reward_index + 1 then
+                UIKit:showMessageDialog(_("提示"),_("请首先领取前面的奖励"))
                 return
             end
             NetManager:getDailyTaskRewards():done(function ()
@@ -731,6 +743,7 @@ end
 
 
 return GameUIMission
+
 
 
 

@@ -213,13 +213,6 @@ function GameUIWatchTower:GetMyEventItemWithIndex(index,isOpen,entity)
         }):align(display.LEFT_CENTER, 50 , num_bg:getContentSize().height/2)
             :addTo(num_bg)
 
-
-        -- local day = #config_day14
-        -- for i,v in ipairs(config_day14) do
-        --     if string.find(v.rewards, "marchQueue") then
-        --         day = i
-        --     end
-        -- end
         UIKit:ttfLabel({
             text =  string.format(_("累计签到%s天，永久+1进攻队列"), 7),
             size = 22,

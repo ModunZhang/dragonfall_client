@@ -239,19 +239,16 @@ function GameUIActivityRewardNew:ui_EVERY_DAY_LOGIN()
     }):align(display.CENTER_BOTTOM, 304, 16):addTo(self.bg)
     local x,y = 3,786 - 10
     for i=1,30 do
-        local button = WidgetPushButton.new({normal = 'box_118x118.png'})
+        local button = display.newSprite('box_118x118.png')
             :align(display.LEFT_TOP, x, y)
             :addTo(content_bg)
-            :onButtonClicked(function()
-                self:On_EVERY_DAY_LOGIN_GetReward(i,rewards[i])
-            end)
             :scale(110/118)
-        UIKit:addTipsToNode(button,Localize_item.item_name[rewards[i].reward],self,nil,56,0)
+        UIKit:addTipsToNode(button,Localize_item.item_name[rewards[i].reward],self,nil,56,-59)
         table.insert(self.rewards_buttons,button)
-        local enable = display.newSprite(UILib.item[rewards[i].reward], 59, -59, {class=cc.FilteredSpriteWithOne}):addTo(button)
+        local enable = display.newSprite(UILib.item[rewards[i].reward], 59, -59 + 118, {class=cc.FilteredSpriteWithOne}):addTo(button)
         local size = enable:getContentSize()
         enable:scale(90/math.max(size.width,size.height))
-        local check_bg = display.newSprite("activity_check_bg_55x51.png"):align(display.RIGHT_BOTTOM,105,-105):addTo(button,2):scale(34/55)
+        local check_bg = display.newSprite("activity_check_bg_55x51.png"):align(display.RIGHT_BOTTOM,105,-105 + 118):addTo(button,2):scale(34/55)
         button.icon = enable
         button.check_bg = check_bg
         display.newSprite("activity_check_body_55x51.png"):addTo(check_bg):pos(27,17)
@@ -282,7 +279,7 @@ function GameUIActivityRewardNew:ui_EVERY_DAY_LOGIN()
             end
         end
         if could_get then
-            display.newSprite("icon_daily_box_118x118.png"):align(display.LEFT_TOP,0,0):addTo(button,2)
+            display.newSprite("icon_daily_box_118x118.png"):align(display.LEFT_TOP,0, 118):addTo(button,2)
             local reward_info = display.newNode()
             reward_info:setContentSize(cc.size(536,118))
             reward_info:align(display.LEFT_TOP, 0, y)
@@ -307,7 +304,7 @@ function GameUIActivityRewardNew:ui_EVERY_DAY_LOGIN()
                 dimensions = cc.size(400,0)
             }):align(display.LEFT_TOP, 14, -40):addTo(reward_info)
         end
-        local num_bg = display.newSprite("activity_num_bg_28x28.png",20,-18):addTo(button)
+        local num_bg = display.newSprite("activity_num_bg_28x28.png",20,-18 + 118):addTo(button)
         UIKit:ttfLabel({
             text = i,
             size = 15,
