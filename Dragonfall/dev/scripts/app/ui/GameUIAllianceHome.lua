@@ -417,55 +417,6 @@ function GameUIAllianceHome:RefreshTop(force_refresh)
             }):align(display.LEFT_CENTER, 100, 20)
             :addTo(enemy_name_bg)
 
-        -- local status = alliance.basicInfo.status
-        -- local status = "peace"
-        -- if status == "peace" or status == "protect" then
-        --     -- 己方战力
-        --     local self_power_bg = display.newSprite("power_background_146x26.png")
-        --         :align(display.LEFT_CENTER, -107, -65):addTo(top_self_bg)
-        --     local our_num_icon = cc.ui.UIImage.new("dragon_strength_27x31.png"):align(display.CENTER, -107, -65):addTo(top_self_bg)
-        --     local self_power_label = UIKit:ttfLabel(
-        --         {
-        --             text = string.formatnumberthousands(alliance.basicInfo.power),
-        --             size = 20,
-        --             color = 0xbdb582
-        --         }):align(display.LEFT_CENTER, 20, self_power_bg:getContentSize().height/2)
-        --         :addTo(self_power_bg)
-        --     local other_alliance = current_alliance
-        --     if current_map_index ~= alliance:MapIndex() and other_alliance then
-        --         local enemy_flag = ui_helper:CreateFlagContentSprite(other_alliance.basicInfo.flag):scale(0.5)
-        --         enemy_flag:align(display.CENTER,100-enemy_flag:getCascadeBoundingBox().size.width, -30)
-        --             :addTo(enemy_name_bg)
-        --         enemy_name_label:setString("["..other_alliance.basicInfo.tag.."] "..other_alliance.basicInfo.name)
-
-        --         -- 敌方战力
-        --         local enemy_power_bg = display.newSprite("power_background_146x26.png")
-        --             :align(display.LEFT_CENTER, -20, -65):addTo(top_enemy_bg)
-        --         local enemy_num_icon = cc.ui.UIImage.new("dragon_strength_27x31.png")
-        --             :align(display.CENTER, 0, enemy_power_bg:getContentSize().height/2)
-        --             :addTo(enemy_power_bg)
-        --         local enemy_power_label = UIKit:ttfLabel(
-        --             {
-        --                 text = string.formatnumberthousands(other_alliance.basicInfo.power),
-        --                 size = 20,
-        --                 color = 0xbdb582
-        --             }):align(display.LEFT_CENTER, 20, enemy_power_bg:getContentSize().height/2)
-        --             :addTo(enemy_power_bg)
-        --     else
-        --         local fight_icon_66x66 = display.newSprite("icon_capture_80x72.png"):addTo(top_enemy_bg):align(display.LEFT_CENTER, -108,-37)
-        --         enemy_name_label:align(display.CENTER, 220, 20)
-        --         enemy_name_label:setString(_("占领联盟"))
-        --         local capture_bg = display.newSprite("power_background_146x26_2.png")
-        --             :align(display.LEFT_CENTER, -20, -65):addTo(top_enemy_bg)
-        --         local capture_label = UIKit:ttfLabel(
-        --             {
-        --                 text = "0",
-        --                 size = 20,
-        --                 color = 0xbdb582
-        --             }):align(display.CENTER, capture_bg:getContentSize().width/2, capture_bg:getContentSize().height/2)
-        --             :addTo(capture_bg)
-        --     end
-        -- else
         local our_kill = alliance.allianceFight.attacker.alliance.id == alliance._id and alliance.allianceFight.attacker.allianceCountData.kill or alliance.allianceFight.defencer.allianceCountData.kill
         local enemy_kill = alliance.allianceFight.attacker.alliance.id == alliance._id and alliance.allianceFight.defencer.allianceCountData.kill or alliance.allianceFight.attacker.allianceCountData.kill
         print("our_kill=",our_kill,"enemy_kill=",enemy_kill)
@@ -627,79 +578,6 @@ function GameUIAllianceHome:RefreshTop(force_refresh)
         end
     end
     self:TopTabButtons()
-
-    -- local home = self
-    -- function Top:Refresh()
-    --     local alliance = home.alliance
-    --     local status = alliance.basicInfo.status
-    --     period_label:setString(home:GetAlliancePeriod())
-    --     enemy_name_label:setVisible(status~="peace")
-    --     -- 和平期
-    --     if status=="peace" then
-    --         enemy_peace_label:setVisible(true)
-    --         fight_icon_66x66:setVisible(true)
-    --         if enemy_name_bg:getChildByTag(201) then
-    --             enemy_name_bg:removeChildByTag(201, true)
-    --         end
-    --     else
-    --         fight_icon_66x66:setVisible(false)
-    --         enemy_peace_label:setVisible(false)
-
-    --         -- 敌方联盟旗帜
-    --         if enemy_name_bg:getChildByTag(201) then
-    --             enemy_name_bg:removeChildByTag(201, true)
-    --         end
-    --         if status=="fight" or status=="prepare" then
-    --             local enemy_flag = ui_helper:CreateFlagContentSprite(enemyAlliance.basicInfo.flag):scale(0.5)
-    --             enemy_flag:align(display.CENTER,100-enemy_flag:getCascadeBoundingBox().size.width, -30)
-    --                 :addTo(enemy_name_bg)
-    --             enemy_flag:setTag(201)
-    --             enemy_name_label:setString("["..enemyAlliance.basicInfo.tag.."] "..enemyAlliance.basicInfo.name)
-    --         elseif status=="protect" then
-    --             local enemy_reprot_data = alliance:GetEnemyLastAllianceFightReportsData()
-    --             local enemy_flag = ui_helper:CreateFlagContentSprite(enemy_reprot_data.flag):scale(0.5)
-    --             enemy_flag:align(display.CENTER,100-enemy_flag:getCascadeBoundingBox().size.width, -30)
-    --                 :addTo(enemy_name_bg)
-    --             enemy_flag:setTag(201)
-    --             enemy_name_label:setString("["..enemy_reprot_data.tag.."] "..enemy_reprot_data.name)
-    --         end
-    --     end
-    --     if status=="fight"  then
-    --         our_num_icon:setTexture("battle_33x33.png")
-    --         enemy_num_icon:setTexture("battle_33x33.png")
-    --         enemy_num_icon:scale(1.0)
-
-    --         self:SetOurPowerOrKill(0)
-    --         self:SetEnemyPowerOrKill(0)
-    --     elseif status=="protect" then
-    --         our_num_icon:setTexture("battle_33x33.png")
-    --         enemy_num_icon:setTexture("battle_33x33.png")
-    --         enemy_num_icon:scale(1.0)
-    --         local our_reprot_data_kill = alliance:GetOurLastAllianceFightReportsData().kill
-    --         local enemy_reprot_data_kill = alliance:GetEnemyLastAllianceFightReportsData().kill
-    --         self:SetOurPowerOrKill(our_reprot_data_kill)
-    --         self:SetEnemyPowerOrKill(enemy_reprot_data_kill)
-    --     else
-    --         if status~="peace" then
-    --             enemy_num_icon:setTexture("dragon_strength_27x31.png")
-    --             self:SetEnemyPowerOrKill(enemyAlliance.basicInfo.power)
-    --             enemy_num_icon:scale(1.0)
-    --         else
-    --             enemy_num_icon:setTexture("res_citizen_88x82.png")
-    --             enemy_num_icon:scale(0.4)
-    --             self:SetEnemyPowerOrKill(0)
-    --         end
-    --         our_num_icon:setTexture("dragon_strength_27x31.png")
-    --         self:SetOurPowerOrKill(alliance.basicInfo.power)
-    --     end
-    -- end
-    -- function Top:SetOurPowerOrKill(num)
-    --     self_power_label:setString(string.formatnumberthousands(num))
-    -- end
-    -- function Top:SetEnemyPowerOrKill(num)
-    --     enemy_power_label:setString(string.formatnumberthousands(num))
-    -- end
-    -- return Top
 end
 function GameUIAllianceHome:CreateBottom()
     local bottom_bg = WidgetHomeBottom.new(self.city):addTo(self)

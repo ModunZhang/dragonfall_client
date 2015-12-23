@@ -897,18 +897,18 @@ function GameUIReplayNew:onExit()
     if type(self.callback) == "function" then
         self.callback(self)
     end
-    display.getRunningScene():performWithDelay(function()
-        local manager = ccs.ArmatureDataManager:getInstance()
-        for k,v in pairs(animation) do
-            if string.find(k, "_90") or k == "win"
-            or k == "paizi" or k == "chengqiang_1" then
-                local path = DEBUG_GET_ANIMATION_PATH(string.format("animations/%s.ExportJson", k))
-                print("removeArmatureFileInfo", path)
-                manager:removeArmatureFileInfo(path)
-            end
-        end
-        cc.Director:getInstance():purgeCachedData()
-    end, 0.1)
+    -- display.getRunningScene():performWithDelay(function()
+    --     local manager = ccs.ArmatureDataManager:getInstance()
+    --     for k,v in pairs(animation) do
+    --         if string.find(k, "_90") or k == "win"
+    --         or k == "paizi" or k == "chengqiang_1" then
+    --             local path = DEBUG_GET_ANIMATION_PATH(string.format("animations/%s.ExportJson", k))
+    --             print("removeArmatureFileInfo", path)
+    --             manager:removeArmatureFileInfo(path)
+    --         end
+    --     end
+    --     cc.Director:getInstance():purgeCachedData()
+    -- end, 0.1)
 end
 function GameUIReplayNew:GetOrderedAttackSoldiers()
     return self.report:GetOrderedAttackSoldiers()

@@ -1316,7 +1316,10 @@ function AllianceLayer:LoadMiddleTerrain(map, terrain)
 end
 function AllianceLayer:CreateDesertBg()
     local terrain = "desert"
-    local map = cc.TMXTiledMap:create(string.format("tmxmaps/alliance_%s1.tmx", terrain))
+    local map
+    GameUtils:LoadImagesWithFormat(function()
+        map = cc.TMXTiledMap:create(string.format("tmxmaps/alliance_%s1.tmx", terrain))
+    end, cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565)
     local width = map:getContentSize().width
     local LEN = 160
     display.newSprite(string.format("plus_right_%s.png", terrain))
@@ -1347,7 +1350,10 @@ function AllianceLayer:CreateDesertBg()
 end
 function AllianceLayer:CreateIceFieldBg()
     local terrain = "iceField"
-    local map = cc.TMXTiledMap:create(string.format("tmxmaps/alliance_%s1.tmx", terrain))
+    local map 
+    GameUtils:LoadImagesWithFormat(function()
+        map = cc.TMXTiledMap:create(string.format("tmxmaps/alliance_%s1.tmx", terrain))
+    end, cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565)
     local width = map:getContentSize().width
 
     local LEN = 160
@@ -1379,7 +1385,10 @@ function AllianceLayer:CreateIceFieldBg()
 end
 function AllianceLayer:CreateGrassLandBg()
     local terrain = "grassLand"
-    local map = cc.TMXTiledMap:create(string.format("tmxmaps/alliance_%s1.tmx", terrain))
+    local map
+    GameUtils:LoadImagesWithFormat(function()
+        map = cc.TMXTiledMap:create(string.format("tmxmaps/alliance_%s1.tmx", terrain))
+    end, cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565)
     local width = map:getContentSize().width
 
     local LEN = 160

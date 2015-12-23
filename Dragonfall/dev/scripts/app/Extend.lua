@@ -454,14 +454,15 @@ function display.newScene(name)
             self:removeChildByTag(WAI_TAG, true)
         end
     end
-
-    function scene:onEnterTransitionFinish()
-        local message = UIKit:getMessageDialogWillShow()
-        printLog("Info", "Check MessageDialog :%s %s",self.__cname,tolua.type(message))
-        if message then
-            print("add MessageDialog---->",self.__cname)
-            message:AddToScene(self,false)
-            UIKit:clearMessageDialogWillShow()
+    if name ~= "LoadingScene" then
+        function scene:onEnterTransitionFinish()
+            local message = UIKit:getMessageDialogWillShow()
+            printLog("Info", "Check MessageDialog :%s %s",self.__cname,tolua.type(message))
+            if message then
+                print("add MessageDialog---->",self.__cname)
+                message:AddToScene(self,false)
+                UIKit:clearMessageDialogWillShow()
+            end
         end
     end
     return scene

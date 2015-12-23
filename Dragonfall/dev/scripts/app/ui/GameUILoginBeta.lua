@@ -18,13 +18,16 @@ function GameUILoginBeta:ctor()
     self.m_totalSize = 0
     self.m_currentSize = 0
     self.local_resources = {
-        {image = "animations/building_animation0.pvr.ccz",list = "animations/building_animation0.plist"},
+        -- {image = "animations/building_animation0.pvr.ccz",list = "animations/building_animation0.plist"},
         -- {image = "animations/ui_animation_0.pvr.ccz",list = "animations/ui_animation_0.plist"},
         -- {image = "animations/ui_animation_1.pvr.ccz",list = "animations/ui_animation_1.plist"},
         -- {image = "animations/ui_animation_2.pvr.ccz",list = "animations/ui_animation_2.plist"},
-        -- {image = "ui_pvr0.pvr.ccz",list = "ui_pvr0.plist"},
-        -- {image = "ui_pvr1.pvr.ccz",list = "ui_pvr1.plist"},
-        -- {image = "ui_pvr2.pvr.ccz",list = "ui_pvr2.plist"},
+        {image = "ui_png0.pvr.ccz",list = "ui_png0.plist"},
+        {image = "ui_png1.pvr.ccz",list = "ui_png1.plist"},
+        
+        {image = "ui_pvr0.pvr.ccz",list = "ui_pvr0.plist"},
+        {image = "ui_pvr1.pvr.ccz",list = "ui_pvr1.plist"},
+        {image = "ui_pvr2.pvr.ccz",list = "ui_pvr2.plist"},
     }
     self.local_resources_percent_per = LOCAL_RESOURCES_PERCENT / #self.local_resources
 end

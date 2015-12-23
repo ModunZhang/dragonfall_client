@@ -874,17 +874,17 @@ end
 local animation = import("..animation")
 function GameUIAllianceSendTroops:onExit()
     User:RemoveListenerOnType(self, "soldiers")
-    display.getRunningScene():performWithDelay(function()
-        local manager = ccs.ArmatureDataManager:getInstance()
-        for k,v in pairs(animation) do
-            if string.find(k, "_90") then
-                local path = DEBUG_GET_ANIMATION_PATH(string.format("animations/%s.ExportJson", k))
-                print("removeArmatureFileInfo", path)
-                manager:removeArmatureFileInfo(path)
-            end
-        end
-        cc.Director:getInstance():purgeCachedData()
-    end, 0.1)
+    -- display.getRunningScene():performWithDelay(function()
+    --     local manager = ccs.ArmatureDataManager:getInstance()
+    --     for k,v in pairs(animation) do
+    --         if string.find(k, "_90") then
+    --             local path = DEBUG_GET_ANIMATION_PATH(string.format("animations/%s.ExportJson", k))
+    --             print("removeArmatureFileInfo", path)
+    --             manager:removeArmatureFileInfo(path)
+    --         end
+    --     end
+    --     cc.Director:getInstance():purgeCachedData()
+    -- end, 0.1)
     GameUIAllianceSendTroops.super.onExit(self)
 end
 
