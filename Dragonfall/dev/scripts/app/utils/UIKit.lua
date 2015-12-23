@@ -1128,10 +1128,10 @@ function UIKit:ButtonAddScaleAction(button)
 end
 
 local dragon_config = {
-    greenDragon = {"green_long_breath", cc.p(0.63,0.29), 2},
-    redDragon   = {  "red_long_breath", cc.p(0.63,0.29), 2},
-    blueDragon  = { "blue_long_breath", cc.p(0.63,0.29), 2},
-    blackDragon = {   "heilong_breath",  cc.p(0.63,0.2), 2.4},
+    greenDragon = {"green_long_breath", cc.p(0.63,0.29), 1.4},
+    redDragon   = {  "red_long_breath", cc.p(0.63,0.29), 1.4},
+    blueDragon  = { "blue_long_breath", cc.p(0.63,0.29), 1.4},
+    blackDragon = {   "heilong_breath", cc.p(0.63,0.29), 1.8},
 }
 function UIKit:CreateDragonBreathAni(dragon_type, is_left)
     local ani, ap, s = unpack(dragon_config[dragon_type])
@@ -1296,8 +1296,8 @@ local soldier_ani_idle_map = {
     lancer_1 = {"qibing_1_45", cc.p(0.5, 0.48),2},
     lancer_2 = {"qibing_2_45", cc.p(0.5, 0.48),2},
     lancer_3 = {"qibing_3_45", cc.p(0.5, 0.48),2},
-    catapult_1 = {"toushiche_45", cc.p(0.5, 0.3),1},
-    catapult_2 = {"toushiche_2_45", cc.p(0.5, 0.3),1},
+    catapult_1 = {"toushiche_45", cc.p(0.5, 0.15),1},
+    catapult_2 = {"toushiche_2_45", cc.p(0.45, 0.3),1},
     catapult_3 = {"toushiche_3_45", cc.p(0.5, 0.3),1},
     sentinel_1 = {"shaobing_1_45", cc.p(0.5, 0.23),4},
     sentinel_2 = {"shaobing_2_45", cc.p(0.5, 0.23),4},
@@ -1308,7 +1308,7 @@ local soldier_ani_idle_map = {
     horseArcher_1 = {"youqibing_1_45", cc.p(0.5, 0.3),2},
     horseArcher_2 = {"youqibing_2_45", cc.p(0.5, 0.3),2},
     horseArcher_3 = {"youqibing_3_45", cc.p(0.5, 0.3),2},
-    ballista_1 = {"nuche_1_45", cc.p(0.5, 0.4),1},
+    ballista_1 = {"nuche_1_45", cc.p(0.4, 0.4),1},
     ballista_2 = {"nuche_2_45", cc.p(0.5, 0.4),1},
     ballista_3 = {"nuche_3_45", cc.p(0.5, 0.4),1},
     skeletonWarrior = {"kulouyongshi_45", cc.p(0.5, 0.35),4},
