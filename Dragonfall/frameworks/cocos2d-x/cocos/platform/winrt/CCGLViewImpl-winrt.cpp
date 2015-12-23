@@ -485,10 +485,9 @@ GLViewImpl* GLViewImpl::sharedOpenGLView()
 
 int GLViewImpl::Run() 
 {
-	//dannyhe:Hide splash image
+	//FIXME:dannyhe,remove the element to free memory?
 	if (!m_running)
 	{
-		
 		m_dispatcher.Get()->RunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal, ref new DispatchedHandler([this]()
 		{
 
@@ -499,7 +498,7 @@ int GLViewImpl::Run()
 				Controls::Grid^ grid = dynamic_cast<Controls::Grid^>(item);
 				if (grid)
 				{
-					grid->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
+					auto ret = removeXamlElement(m_panel.Get(), grid);
 				}
 			}
 		}));
