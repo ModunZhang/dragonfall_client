@@ -71,8 +71,10 @@ OpenGLESPage::OpenGLESPage(OpenGLES* openGLES) :
 	window->KeyUp += ref new TypedEventHandler<CoreWindow^, KeyEventArgs^>(this, &OpenGLESPage::OnKeyReleased);
 
 	window->CharacterReceived += ref new TypedEventHandler<CoreWindow^, CharacterReceivedEventArgs^>(this, &OpenGLESPage::OnCharacterReceived);
-	//try enter full screen,dannyhe
-	if(Windows::Foundation::Metadata::ApiInformation::IsMethodPresent("Windows.UI.ViewManagement.ApplicationView","TryEnterFullScreenMode"))
+	//set the view bounds with fullscreen
+	Windows::UI::ViewManagement::ApplicationView::GetForCurrentView()->SetDesiredBoundsMode(Windows::UI::ViewManagement::ApplicationViewBoundsMode::UseCoreWindow);
+	//full screen on windows phone
+	if(Windows::Foundation::Metadata::ApiInformation::IsMethodPresent("Windows.UI.ViewManagement.ApplicationView","TryEnterFullScreenMode") && Windows::Foundation::Metadata::ApiInformation::IsTypePresent("Windows.Phone.UI.Input.HardwareButtons"))
 	{
 		Windows::UI::ViewManagement::ApplicationView::GetForCurrentView()->TryEnterFullScreenMode();
 	}
