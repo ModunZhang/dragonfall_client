@@ -69,10 +69,7 @@ OpenGLESPage::OpenGLESPage(OpenGLES* openGLES) :
 	window->KeyUp += ref new TypedEventHandler<CoreWindow^, KeyEventArgs^>(this, &OpenGLESPage::OnKeyReleased);
 
 	window->CharacterReceived += ref new TypedEventHandler<CoreWindow^, CharacterReceivedEventArgs^>(this, &OpenGLESPage::OnCharacterReceived);
-//dannyhe 
-	swapChainPanel->SizeChanged +=
-		ref new Windows::UI::Xaml::SizeChangedEventHandler(this, &OpenGLESPage::OnSwapChainPanelSizeChanged);
-#if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP) || _MSC_VER >= 1900 //need test wp10 support!
+#if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP) || _MSC_VER >= 1900 
 	Windows::UI::ViewManagement::ApplicationView::GetForCurrentView()->SuppressSystemOverlays = true; //full screen if switch auto hide navigation bar "on"
 	Windows::UI::ViewManagement::ApplicationView::GetForCurrentView()->SetDesiredBoundsMode(Windows::UI::ViewManagement::ApplicationViewBoundsMode::UseCoreWindow);
 #endif
@@ -452,14 +449,6 @@ void OpenGLESPage::OnVisibilityChanged(Windows::UI::Core::CoreWindow^ sender, Wi
     {
         SetVisibility(false);
     }
-}
-void OpenGLESPage::OnSwapChainPanelSizeChanged(Object^ sender, Windows::UI::Xaml::SizeChangedEventArgs^ e)
-{
-	// Size change events occur outside of the render thread.  A lock is required when updating
-	// the swapchainpanel size
-	critical_section::scoped_lock lock(mSwapChainPanelSizeCriticalSection);
-	extendedSplashImage->Height = e->NewSize.Height;
-	extendedSplashImage->Width = e->NewSize.Width;
 }
 #if (WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP) || _MSC_VER >= 1900
 /*

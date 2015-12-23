@@ -6,11 +6,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    <!--dannyhe 修改2dx在wp上的输入框,多行输入框还需测试-->
     <SwapChainPanel x:Name="swapChainPanel">
-        <Grid Background="#FFFFFF" x:Name="extendedSplashGrid">
+        <Grid Background="White" x:Name="extendedSplashGrid">
             <Canvas>
-                <Image x:Name="extendedSplashImage" Source="Assets/SplashScreen.png"/>
+                <Image x:Name="extendedSplashImage" Source="ms-appx:///Assets/SplashScreen.png" Width="{Binding Path=ActualWidth,ElementName=swapChainPanel}" 
+                       Height="{Binding Path=ActualHeight,ElementName=swapChainPanel}"/>
             </Canvas>
         </Grid>
         <Button x:Name="cocos2d_editbox" Visibility="Collapsed" Height="1">
