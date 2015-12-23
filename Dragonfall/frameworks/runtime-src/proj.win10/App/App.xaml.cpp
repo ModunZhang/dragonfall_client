@@ -34,6 +34,12 @@ void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEvent
 
     // Place the page in the current window and ensure that it is active.
     Windows::UI::Xaml::Window::Current->Content = mPage;
+	//set the window size for windows 10
+	if (!Windows::Foundation::Metadata::ApiInformation::IsTypePresent("Windows.Phone.UI.Input.HardwareButtons"))
+	{
+		Windows::UI::ViewManagement::ApplicationView::GetForCurrentView()->PreferredLaunchViewSize = Windows::Foundation::Size(640.0f, 960.0f);
+		Windows::UI::ViewManagement::ApplicationView::GetForCurrentView()->PreferredLaunchWindowingMode = Windows::UI::ViewManagement::ApplicationViewWindowingMode::PreferredLaunchViewSize;
+	}
     Windows::UI::Xaml::Window::Current->Activate();
 }
 
