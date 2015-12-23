@@ -552,7 +552,7 @@ function GameUIMission:OpenGetDailyRewardDialog(reward_index,flag)
                 UIKit:showMessageDialog(_("提示"),_("已经领取过奖励"))
                 return
             end
-            if User.countInfo.dailyTaskRewardCount ~= reward_index + 1 then
+            if User.countInfo.dailyTaskRewardCount ~= reward_index then
                 UIKit:showMessageDialog(_("提示"),_("请首先领取前面的奖励"))
                 return
             end

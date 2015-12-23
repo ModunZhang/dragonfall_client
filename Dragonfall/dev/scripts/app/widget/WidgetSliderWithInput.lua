@@ -84,7 +84,7 @@ function WidgetSliderWithInput:ctor(params)
         else
             btn_value = e_value
         end
-        if btn_unit == "K" then
+        if unit == "K" then
             self.btn_text:setString(math.floor(tonumber(btn_value)))
         else
             self.btn_text:setString(tonumber(btn_value))
