@@ -62,9 +62,9 @@ local auto_cleanup = {
 for k,v in pairs(jpg_rgb888) do
     auto_cleanup[k] = true
 end
-for _,v in pairs(plist_texture_data) do
-    auto_cleanup[v] = true
-end
+-- for _,v in pairs(plist_texture_data) do
+--     auto_cleanup[v] = true
+-- end
 
 math.round = function(n)
     return math.ceil(n - 0.5)
