@@ -25,10 +25,10 @@
 
 
  ***************************************************************************/
-
-
+//dannyhe only needed if _MSC_VER < 1900 https://github.com/cocos2d/cocos2d-x/commit/7d22e49642c79a46290000d561cf57a2a2032205
+#if _MSC_VER < 1900
 char *inet_ntop(int af, const void *addr, char *buf, size_t size);
-
+#endif
 
 #endif /* HEADER_CURL_INET_NTOP_H */
 
