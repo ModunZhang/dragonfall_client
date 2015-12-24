@@ -362,7 +362,7 @@ local PROTECT_TAG = 110
 function WorldLayer:CreateAllianceSprite(index, alliance)
     local index = tostring(index)
     local p = self:ConvertLogicPositionToMapPosition(self:IndexToLogic(index))
-    local node = display.newNode():addTo(self.allianceLayer):pos(p.x, p.y)
+    local node = display.newNode():addTo(self.allianceLayer):pos(p.x, p.y):zorder(index)
     node.alliance = alliance
     
     local sprite = display.newSprite(string.format("world_alliance_%s.png", alliance.terrain))
