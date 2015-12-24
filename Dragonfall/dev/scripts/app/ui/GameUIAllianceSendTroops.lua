@@ -257,7 +257,7 @@ function GameUIAllianceSendTroops:OnMoveInStage()
                     return
                 end
                 if self.dragon:IsDefenced() then
-                    UIKit:showMessageDialog(_("提示"),_("当前选择的龙处于驻防状态，是否取消驻防将这条龙派出")):CreateCancelButton(
+                    UIKit:showMessageDialog(_("提示"),_("当前选择的龙处于驻防状态，是否取消驻防将这条龙派出")):CreateOKButton(
                         {
                             listener = function ()
                                 NetManager:getCancelDefenceTroopPromise():done(function()
@@ -268,7 +268,7 @@ function GameUIAllianceSendTroops:OnMoveInStage()
                             btn_name= _("派出"),
                             btn_images = {normal = "red_btn_up_148x58.png",pressed = "red_btn_down_148x58.png"}
                         }
-                    ):CreateOKButton({
+                    ):CreateCancelButton({
                         listener = function ()
                         end,
                         btn_name= _("取消"),
