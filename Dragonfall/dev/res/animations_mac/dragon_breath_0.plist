@@ -4,291 +4,525 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>root/blue_dragon/Idle/00000.png</key>
+            <key>root/black_dragon/00000.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{434,746},{424,340}}</string>
+                <string>{{1188,1616},{294,292}}</string>
                 <key>offset</key>
-                <string>{1,-4}</string>
+                <string>{0,-5}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{0,11},{294,292}}</string>
+                <key>sourceSize</key>
+                <string>{294,304}</string>
+            </dict>
+            <key>root/black_dragon/00001.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,1318},{292,296}}</string>
+                <key>offset</key>
+                <string>{-1,-3}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{2,10},{424,340}}</string>
+                <string>{{0,7},{292,296}}</string>
                 <key>sourceSize</key>
-                <string>{426,352}</string>
+                <string>{294,304}</string>
             </dict>
-            <key>root/blue_dragon/Idle/00001.png</key>
+            <key>root/black_dragon/00002.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{860,748},{422,342}}</string>
+                <string>{{296,1600},{288,296}}</string>
                 <key>offset</key>
-                <string>{-1,-2}</string>
+                <string>{-3,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{1,7},{422,342}}</string>
+                <string>{{0,4},{288,296}}</string>
                 <key>sourceSize</key>
-                <string>{426,352}</string>
+                <string>{294,304}</string>
             </dict>
-            <key>root/blue_dragon/Idle/00002.png</key>
+            <key>root/black_dragon/00003.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,1448},{418,342}}</string>
+                <string>{{594,1606},{284,296}}</string>
                 <key>offset</key>
                 <string>{-4,1}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,4},{418,342}}</string>
+                <string>{{1,3},{284,296}}</string>
                 <key>sourceSize</key>
-                <string>{426,352}</string>
+                <string>{294,304}</string>
             </dict>
-            <key>root/blue_dragon/Idle/00003.png</key>
+            <key>root/black_dragon/00004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1022,1426},{414,342}}</string>
+                <string>{{296,1318},{280,298}}</string>
                 <key>offset</key>
-                <string>{-6,3}</string>
+                <string>{-2,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,2},{414,342}}</string>
+                <string>{{5,0},{280,298}}</string>
                 <key>sourceSize</key>
-                <string>{426,352}</string>
+                <string>{294,304}</string>
             </dict>
-            <key>root/blue_dragon/Idle/00007.png</key>
+            <key>root/black_dragon/00005.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1694,1448},{408,344}}</string>
+                <string>{{596,1328},{276,298}}</string>
                 <key>offset</key>
-                <string>{2,0}</string>
+                <string>{0,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{11,4},{408,344}}</string>
+                <string>{{9,0},{276,298}}</string>
                 <key>sourceSize</key>
-                <string>{426,352}</string>
+                <string>{294,304}</string>
             </dict>
-            <key>root/blue_dragon/Idle/00008.png</key>
+            <key>root/black_dragon/00006.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{346,1448},{416,342}}</string>
+                <string>{{1248,1300},{278,300}}</string>
                 <key>offset</key>
-                <string>{2,-2}</string>
+                <string>{-1,2}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{7,7},{416,342}}</string>
+                <string>{{7,0},{278,300}}</string>
                 <key>sourceSize</key>
-                <string>{426,352}</string>
+                <string>{294,304}</string>
             </dict>
-            <key>root/blue_dragon/Idle/00009.png</key>
+            <key>root/black_dragon/00007.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{434,1088},{422,342}}</string>
-                <key>offset</key>
-                <string>{2,-4}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{4,9},{422,342}}</string>
-                <key>sourceSize</key>
-                <string>{426,352}</string>
-            </dict>
-            <key>root/green_dragon/Idle/00000.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,2},{446,368}}</string>
-                <key>offset</key>
-                <string>{0,-5}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,11},{446,368}}</string>
-                <key>sourceSize</key>
-                <string>{446,380}</string>
-            </dict>
-            <key>root/green_dragon/Idle/00001.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,372},{442,368}}</string>
-                <key>offset</key>
-                <string>{-2,-2}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,8},{442,368}}</string>
-                <key>sourceSize</key>
-                <string>{446,380}</string>
-            </dict>
-            <key>root/green_dragon/Idle/00002.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{1336,2},{438,368}}</string>
-                <key>offset</key>
-                <string>{-4,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,6},{438,368}}</string>
-                <key>sourceSize</key>
-                <string>{446,380}</string>
-            </dict>
-            <key>root/green_dragon/Idle/00003.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{1336,372},{434,370}}</string>
-                <key>offset</key>
-                <string>{-6,3}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,2},{434,370}}</string>
-                <key>sourceSize</key>
-                <string>{446,380}</string>
-            </dict>
-            <key>root/green_dragon/Idle/00004.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,742},{430,370}}</string>
-                <key>offset</key>
-                <string>{-6,5}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{2,0},{430,370}}</string>
-                <key>sourceSize</key>
-                <string>{446,380}</string>
-            </dict>
-            <key>root/green_dragon/Idle/00005.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{1306,744},{422,370}}</string>
-                <key>offset</key>
-                <string>{-3,5}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{9,0},{422,370}}</string>
-                <key>sourceSize</key>
-                <string>{446,380}</string>
-            </dict>
-            <key>root/green_dragon/Idle/00006.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{880,374},{424,372}}</string>
-                <key>offset</key>
-                <string>{-1,4}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{10,0},{424,372}}</string>
-                <key>sourceSize</key>
-                <string>{446,380}</string>
-            </dict>
-            <key>root/green_dragon/Idle/00007.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{446,374},{432,370}}</string>
+                <string>{{2,1616},{284,298}}</string>
                 <key>offset</key>
                 <string>{0,1}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{7,4},{432,370}}</string>
+                <string>{{5,2},{284,298}}</string>
                 <key>sourceSize</key>
-                <string>{446,380}</string>
+                <string>{294,304}</string>
             </dict>
-            <key>root/green_dragon/Idle/00008.png</key>
+            <key>root/black_dragon/00008.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{896,2},{438,370}}</string>
+                <string>{{932,1324},{290,298}}</string>
                 <key>offset</key>
-                <string>{0,-2}</string>
+                <string>{-1,-2}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{4,7},{438,370}}</string>
+                <string>{{1,5},{290,298}}</string>
                 <key>sourceSize</key>
-                <string>{446,380}</string>
+                <string>{294,304}</string>
             </dict>
-            <key>root/green_dragon/Idle/00009.png</key>
+            <key>root/black_dragon/00009.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{450,2},{444,370}}</string>
+                <string>{{892,1616},{294,294}}</string>
                 <key>offset</key>
                 <string>{0,-4}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{1,9},{444,370}}</string>
+                <string>{{0,9},{294,294}}</string>
                 <key>sourceSize</key>
-                <string>{446,380}</string>
+                <string>{294,304}</string>
+            </dict>
+            <key>root/blue_dragon/Idle/00000.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{1310,284},{318,256}}</string>
+                <key>offset</key>
+                <string>{1,-4}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{2,8},{318,256}}</string>
+                <key>sourceSize</key>
+                <string>{320,264}</string>
+            </dict>
+            <key>root/blue_dragon/Idle/00001.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{670,282},{318,258}}</string>
+                <key>offset</key>
+                <string>{-1,-2}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,5},{318,258}}</string>
+                <key>sourceSize</key>
+                <string>{320,264}</string>
+            </dict>
+            <key>root/blue_dragon/Idle/00002.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{332,560},{314,258}}</string>
+                <key>offset</key>
+                <string>{-3,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,3},{314,258}}</string>
+                <key>sourceSize</key>
+                <string>{320,264}</string>
+            </dict>
+            <key>root/blue_dragon/Idle/00003.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{988,542},{312,258}}</string>
+                <key>offset</key>
+                <string>{-4,2}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,1},{312,258}}</string>
+                <key>sourceSize</key>
+                <string>{320,264}</string>
+            </dict>
+            <key>root/blue_dragon/Idle/00004.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{634,822},{308,258}}</string>
+                <key>offset</key>
+                <string>{-4,3}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{2,0},{308,258}}</string>
+                <key>sourceSize</key>
+                <string>{320,264}</string>
+            </dict>
+            <key>root/blue_dragon/Idle/00005.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{1298,1040},{302,258}}</string>
+                <key>offset</key>
+                <string>{-1,3}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{8,0},{302,258}}</string>
+                <key>sourceSize</key>
+                <string>{320,264}</string>
+            </dict>
+            <key>root/blue_dragon/Idle/00006.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{944,1064},{302,258}}</string>
+                <key>offset</key>
+                <string>{0,2}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{9,1},{302,258}}</string>
+                <key>sourceSize</key>
+                <string>{320,264}</string>
+            </dict>
+            <key>root/blue_dragon/Idle/00007.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{988,802},{308,260}}</string>
+                <key>offset</key>
+                <string>{1,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{7,2},{308,260}}</string>
+                <key>sourceSize</key>
+                <string>{320,264}</string>
+            </dict>
+            <key>root/blue_dragon/Idle/00008.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,562},{314,258}}</string>
+                <key>offset</key>
+                <string>{1,-2}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{4,5},{314,258}}</string>
+                <key>sourceSize</key>
+                <string>{320,264}</string>
+            </dict>
+            <key>root/blue_dragon/Idle/00009.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{990,282},{318,258}}</string>
+                <key>offset</key>
+                <string>{1,-3}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{2,6},{318,258}}</string>
+                <key>sourceSize</key>
+                <string>{320,264}</string>
+            </dict>
+            <key>root/green_dragon/Idle/00000.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{338,2},{334,276}}</string>
+                <key>offset</key>
+                <string>{0,-4}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,8},{334,276}}</string>
+                <key>sourceSize</key>
+                <string>{334,284}</string>
+            </dict>
+            <key>root/green_dragon/Idle/00001.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{674,2},{332,278}}</string>
+                <key>offset</key>
+                <string>{-1,-1}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,4},{332,278}}</string>
+                <key>sourceSize</key>
+                <string>{334,284}</string>
+            </dict>
+            <key>root/green_dragon/Idle/00002.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,282},{328,278}}</string>
+                <key>offset</key>
+                <string>{-3,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,3},{328,278}}</string>
+                <key>sourceSize</key>
+                <string>{334,284}</string>
+            </dict>
+            <key>root/green_dragon/Idle/00003.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{1008,2},{326,278}}</string>
+                <key>offset</key>
+                <string>{-4,2}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,1},{326,278}}</string>
+                <key>sourceSize</key>
+                <string>{334,284}</string>
+            </dict>
+            <key>root/green_dragon/Idle/00004.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{1662,2},{322,278}}</string>
+                <key>offset</key>
+                <string>{-4,3}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{2,0},{322,278}}</string>
+                <key>sourceSize</key>
+                <string>{334,284}</string>
+            </dict>
+            <key>root/green_dragon/Idle/00005.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{670,542},{316,278}}</string>
+                <key>offset</key>
+                <string>{-2,3}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{7,0},{316,278}}</string>
+                <key>sourceSize</key>
+                <string>{334,284}</string>
+            </dict>
+            <key>root/green_dragon/Idle/00006.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{1662,282},{320,280}}</string>
+                <key>offset</key>
+                <string>{-1,2}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{6,0},{320,280}}</string>
+                <key>sourceSize</key>
+                <string>{334,284}</string>
+            </dict>
+            <key>root/green_dragon/Idle/00007.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{1336,2},{324,280}}</string>
+                <key>offset</key>
+                <string>{0,1}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{5,1},{324,280}}</string>
+                <key>sourceSize</key>
+                <string>{334,284}</string>
+            </dict>
+            <key>root/green_dragon/Idle/00008.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{338,280},{330,278}}</string>
+                <key>offset</key>
+                <string>{0,-1}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{2,4},{330,278}}</string>
+                <key>sourceSize</key>
+                <string>{334,284}</string>
+            </dict>
+            <key>root/green_dragon/Idle/00009.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,2},{334,278}}</string>
+                <key>offset</key>
+                <string>{0,-3}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,6},{334,278}}</string>
+                <key>sourceSize</key>
+                <string>{334,284}</string>
             </dict>
             <key>root/red_dragon/Idle/00000.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,1114},{420,332}}</string>
+                <string>{{318,820},{314,248}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{420,332}}</string>
+                <string>{{0,0},{314,248}}</string>
                 <key>sourceSize</key>
-                <string>{420,332}</string>
+                <string>{314,248}</string>
             </dict>
             <key>root/red_dragon/Idle/00001.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{690,1432},{416,330}}</string>
+                <string>{{1302,542},{312,248}}</string>
                 <key>offset</key>
-                <string>{-2,1}</string>
+                <string>{-1,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{416,330}}</string>
+                <string>{{0,0},{312,248}}</string>
                 <key>sourceSize</key>
-                <string>{420,332}</string>
+                <string>{314,248}</string>
             </dict>
             <key>root/red_dragon/Idle/00002.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1366,1448},{412,326}}</string>
+                <string>{{1302,792},{310,246}}</string>
                 <key>offset</key>
-                <string>{-4,3}</string>
+                <string>{-2,1}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{412,326}}</string>
+                <string>{{0,0},{310,246}}</string>
                 <key>sourceSize</key>
-                <string>{420,332}</string>
+                <string>{314,248}</string>
+            </dict>
+            <key>root/red_dragon/Idle/00003.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,1072},{308,244}}</string>
+                <key>offset</key>
+                <string>{-3,2}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{308,244}}</string>
+                <key>sourceSize</key>
+                <string>{314,248}</string>
+            </dict>
+            <key>root/red_dragon/Idle/00004.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{1614,814},{306,244}}</string>
+                <key>offset</key>
+                <string>{-4,2}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{306,244}}</string>
+                <key>sourceSize</key>
+                <string>{314,248}</string>
+            </dict>
+            <key>root/red_dragon/Idle/00005.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{628,1082},{302,244}}</string>
+                <key>offset</key>
+                <string>{-2,2}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{4,0},{302,244}}</string>
+                <key>sourceSize</key>
+                <string>{314,248}</string>
+            </dict>
+            <key>root/red_dragon/Idle/00006.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{1602,1060},{302,244}}</string>
+                <key>offset</key>
+                <string>{0,2}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{6,0},{302,244}}</string>
+                <key>sourceSize</key>
+                <string>{314,248}</string>
+            </dict>
+            <key>root/red_dragon/Idle/00007.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{318,1070},{308,246}}</string>
+                <key>offset</key>
+                <string>{0,1}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{3,0},{308,246}}</string>
+                <key>sourceSize</key>
+                <string>{314,248}</string>
             </dict>
             <key>root/red_dragon/Idle/00008.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1366,1116},{414,330}}</string>
-                <key>offset</key>
-                <string>{-1,1}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{2,0},{414,330}}</string>
-                <key>sourceSize</key>
-                <string>{420,332}</string>
-            </dict>
-            <key>root/red_dragon/Idle/00009.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{858,1092},{420,332}}</string>
+                <string>{{1616,564},{310,248}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{420,332}}</string>
+                <string>{{2,0},{310,248}}</string>
                 <key>sourceSize</key>
-                <string>{420,332}</string>
+                <string>{314,248}</string>
+            </dict>
+            <key>root/red_dragon/Idle/00009.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,822},{314,248}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{314,248}}</string>
+                <key>sourceSize</key>
+                <string>{314,248}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -300,7 +534,7 @@
             <key>size</key>
             <string>{2048,2048}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:9dcf13a7e33cd0fd304ad291d134e44d:1/2$</string>
+            <string>$TexturePacker:SmartUpdate:2c459377d17abd056294c16b1c6fc8fe:1/1$</string>
             <key>textureFileName</key>
             <string>dragon_breath_0.png</string>
         </dict>

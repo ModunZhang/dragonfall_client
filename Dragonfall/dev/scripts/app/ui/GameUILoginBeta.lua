@@ -9,7 +9,7 @@ local UIListView = import(".UIListView")
 local Localize = import("..utils.Localize")
 local LOCAL_RESOURCES_PERCENT = 100
 local WidgetPushTransparentButton = import("..widget.WidgetPushTransparentButton")
-
+local animation = import("..animation")
 function GameUILoginBeta:ctor()
     GameUILoginBeta.super.ctor(self)
     self.m_localJson = nil
@@ -18,10 +18,16 @@ function GameUILoginBeta:ctor()
     self.m_totalSize = 0
     self.m_currentSize = 0
     self.local_resources = {
-        {image = "animations/building_animation.pvr.ccz",list = "animations/building_animation.plist"},
-        {image = "animations/ui_animation_0.pvr.ccz",list = "animations/ui_animation_0.plist"},
-        {image = "animations/ui_animation_1.pvr.ccz",list = "animations/ui_animation_1.plist"},
-        {image = "animations/ui_animation_2.pvr.ccz",list = "animations/ui_animation_2.plist"},
+        -- {image = "animations/building_animation0.pvr.ccz",list = "animations/building_animation0.plist"},
+        -- {image = "animations/ui_animation_0.pvr.ccz",list = "animations/ui_animation_0.plist"},
+        -- {image = "animations/ui_animation_1.pvr.ccz",list = "animations/ui_animation_1.plist"},
+        -- {image = "animations/ui_animation_2.pvr.ccz",list = "animations/ui_animation_2.plist"},
+        {image = "ui_png0.pvr.ccz",list = "ui_png0.plist"},
+        {image = "ui_png1.pvr.ccz",list = "ui_png1.plist"},
+        
+        {image = "ui_pvr0.pvr.ccz",list = "ui_pvr0.plist"},
+        {image = "ui_pvr1.pvr.ccz",list = "ui_pvr1.plist"},
+        {image = "ui_pvr2.pvr.ccz",list = "ui_pvr2.plist"},
     }
     self.local_resources_percent_per = LOCAL_RESOURCES_PERCENT / #self.local_resources
 end
@@ -156,7 +162,6 @@ function GameUILoginBeta:startGame()
             self.user_agreement_label:fadeOut(0.5)
             self.user_agreement_button:hide()
             self:RunFte(function()
-                self.passed_splash = true
                 self:loginAction()
             end)
         end
@@ -292,13 +297,14 @@ function GameUILoginBeta:GetServerInfo(callback)
                 callback()
             end
         else
+            local SIMULATION_WORKING_TIME = 3
             self:performWithDelay(function()
                 self:showError(_("获取服务器信息失败!"),function()
                     self:GetServerInfo(function()
                         self:LoadServerInfo()
                     end)
                 end)
-            end, 3)
+            end, SIMULATION_WORKING_TIME)
         end
     end)
 end

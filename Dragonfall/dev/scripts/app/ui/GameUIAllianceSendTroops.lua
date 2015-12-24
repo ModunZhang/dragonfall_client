@@ -123,12 +123,6 @@ function GameUIAllianceSendTroops:ctor(march_callback,params)
     self.terrain = params.terrain or User.basicInfo.terrain
     self.military_soldiers = params.military_soldiers -- 编辑驻防部队时传入当前驻防部队信息
     GameUIAllianceSendTroops.super.ctor(self,City,params.title or _("准备进攻"))
-    -- local manager = ccs.ArmatureDataManager:getInstance()
-    -- for _, anis in pairs(UILib.soldier_animation_files) do
-    --     for _, v in pairs(anis) do
-    --         manager:addArmatureFileInfo(v)
-    --     end
-    -- end
     self.alliance = Alliance_Manager:GetMyAlliance()
     self.dragon_manager = City:GetFirstBuildingByType("dragonEyrie"):GetDragonManager()
     self.soldiers_table = {}
@@ -263,9 +257,24 @@ function GameUIAllianceSendTroops:OnMoveInStage()
                     return
                 end
                 if self.dragon:IsDefenced() then
-                    NetManager:getCancelDefenceTroopPromise():done(function()
-                        self:CallFuncMarch_Callback(dragonType,soldiers)
-                    end)
+                    UIKit:showMessageDialog(_("提示"),_("当前选择的龙处于驻防状态，是否取消驻防将这条龙派出")):CreateCancelButton(
+                        {
+                            listener = function ()
+                                NetManager:getCancelDefenceTroopPromise():done(function()
+                                    self:CallFuncMarch_Callback(dragonType,soldiers)
+                                    self:LeftButtonClicked()
+                                end)
+                            end,
+                            btn_name= _("派出"),
+                            btn_images = {normal = "red_btn_up_148x58.png",pressed = "red_btn_down_148x58.png"}
+                        }
+                    ):CreateOKButton({
+                        listener = function ()
+                        end,
+                        btn_name= _("取消"),
+                        btn_images = {normal = "yellow_btn_up_148x58.png",pressed = "yellow_btn_down_148x58.png"}
+                    })
+
                 else
                     self:CallFuncMarch_Callback(dragonType,soldiers)
                 end
@@ -575,14 +584,14 @@ function GameUIAllianceSendTroops:SelectSoldiers()
     local map_s = User.soldiers
     for _,name in pairs(soldier_map) do
         local soldier_num = map_s[name]
-            local defence_soldier_count = 0
-            if self.military_soldiers and User.defenceTroop and User.defenceTroop ~= json.null then
-                for i,v in ipairs(User.defenceTroop.soldiers) do
-                    if v.name == name then
-                        defence_soldier_count = v.count
-                    end
+        local defence_soldier_count = 0
+        if self.military_soldiers and User.defenceTroop and User.defenceTroop ~= json.null then
+            for i,v in ipairs(User.defenceTroop.soldiers) do
+                if v.name == name then
+                    defence_soldier_count = v.count
                 end
             end
+        end
         if soldier_num + defence_soldier_count > 0 then
             table.insert(soldiers, {name = name,level = User:SoldierStarByName(name), max_num = soldier_num + defence_soldier_count})
         end
@@ -862,12 +871,25 @@ function GameUIAllianceSendTroops:OnUserDataChanged_soldiers(userData, deltaData
         end
     end
 end
+local animation = import("..animation")
 function GameUIAllianceSendTroops:onExit()
     User:RemoveListenerOnType(self, "soldiers")
+    -- display.getRunningScene():performWithDelay(function()
+    --     local manager = ccs.ArmatureDataManager:getInstance()
+    --     for k,v in pairs(animation) do
+    --         if string.find(k, "_90") then
+    --             local path = DEBUG_GET_ANIMATION_PATH(string.format("animations/%s.ExportJson", k))
+    --             print("removeArmatureFileInfo", path)
+    --             manager:removeArmatureFileInfo(path)
+    --         end
+    --     end
+    --     cc.Director:getInstance():purgeCachedData()
+    -- end, 0.1)
     GameUIAllianceSendTroops.super.onExit(self)
 end
 
 return GameUIAllianceSendTroops
+
 
 
 

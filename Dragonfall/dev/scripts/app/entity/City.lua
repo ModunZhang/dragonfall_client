@@ -408,7 +408,7 @@ function City:NewBuildingWithType(building_type, x, y, w, h, level, finish_time)
 end
 function City:InitRuins()
     self.ruins = {}
-    for _,v in ipairs(GameDatas.ClientInitGame['ruins']) do
+    for _,v in ipairs(GameDatas.ClientInitGame.ruins) do
         insert(self.ruins,
             Building.new{
                 building_type = v.building_type,

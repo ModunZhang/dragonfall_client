@@ -171,6 +171,9 @@ function PlatformAdapter:mac()
     ext.isLowMemoryDevice = function()
         return false
     end
+    ext.getAppMemoryUsage = function()
+        return 0
+    end
 
     DEBUG_GET_ANIMATION_PATH = function(filePath)
         filePath = string.gsub(filePath,".pvr.ccz",".png")

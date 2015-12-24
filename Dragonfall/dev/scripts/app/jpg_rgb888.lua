@@ -1,5 +1,4 @@
 local jpg_rgb888 = {}
-jpg_rgb888["activity_first_purgure_588x176.jpg"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
 jpg_rgb888["alliance_battle_bg_612x886.jpg"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
 jpg_rgb888["back_ground_vip_608x164.jpg"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
 jpg_rgb888["background_550x170.jpg"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
@@ -17,6 +16,7 @@ jpg_rgb888["left_background_2_desert.jpg"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
 jpg_rgb888["left_background_2_grassLand.jpg"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
 jpg_rgb888["left_background_2_iceField.jpg"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
 jpg_rgb888["mission_header_bg_616x184.jpg"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
+jpg_rgb888["mission_header_bg_nan_616x184.jpg"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
 jpg_rgb888["pve_background.jpg"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
 jpg_rgb888["region_tips_556x344.jpg"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
 jpg_rgb888["right_background_1_desert.jpg"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565

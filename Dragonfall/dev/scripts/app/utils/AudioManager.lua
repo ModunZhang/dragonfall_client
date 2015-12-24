@@ -150,7 +150,8 @@ function AudioManager:PlayeEffectSound(filename)
 end
 
 function AudioManager:PlayeAttackSoundBySoldierName(soldier_name)
-	local audio_name = string.format("sfx_%s_attack.mp3", soldier_name)
+	local soldier = unpack(string.split(soldier_name, "_"))
+	local audio_name = string.format("sfx_%s_attack.mp3", soldier)
 	assert(audio_name, audio_name.." 音乐不存在")
 	self:PlayeEffectSound(audio_name)
 end

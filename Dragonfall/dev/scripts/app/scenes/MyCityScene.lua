@@ -14,7 +14,7 @@ local MyCityScene = class("MyCityScene", CityScene)
 local GameUIActivityRewardNew = import("..ui.GameUIActivityRewardNew")
 local ipairs = ipairs
 
-function MyCityScene:ctor(city,isFromLogin)
+function MyCityScene:ctor(city,isFromLogin,operetion)
     self.util_node = display.newNode():addTo(self)
     MyCityScene.super.ctor(self,city)
     if type(isFromLogin) == 'boolean' then
@@ -22,6 +22,7 @@ function MyCityScene:ctor(city,isFromLogin)
     else
         self.isFromLogin = false
     end
+    self.operetion = operetion
 end
 function MyCityScene:onEnter()
     MyCityScene.super.onEnter(self)
@@ -50,6 +51,26 @@ function MyCityScene:onEnter()
     self:GetCity():GetUser():AddListenOnType(self, "soldierEvents")
     self:GetCity():GetUser():AddListenOnType(self, "houseEvents")
     self:GetCity():GetUser():AddListenOnType(self, "buildingEvents")
+
+    if self.operetion == "twinkle_military" then
+        self:GotoLogicPointInstant(22, 50)
+        self:GetSceneLayer():ZoomTo(0.68)
+        for i=17,20 do
+            local tile = self.city:GetTileByLocationId(i)
+            local b_x,b_y =tile.x,tile.y
+            -- 建筑是否已解锁
+            if self.city:IsUnLockedAtIndex(b_x,b_y) then
+                local buildings = self:GetSceneLayer():GetBuildings(i)
+                Sprite:PromiseOfFlash(unpack(buildings)):next(function()
+                    Sprite:PromiseOfFlash(unpack(buildings)):next(function()
+                        Sprite:PromiseOfFlash(unpack(buildings))
+                    end)
+                end)
+            end
+        end
+    end
+
+    showMemoryUsage()
 end
 function MyCityScene:onExit()
     self.home_page = nil
@@ -332,7 +353,7 @@ function MyCityScene:OnUserDataChanged_buildingEvents(userData, deltaData)
     if ok then
         for i,v in ipairs(value) do
             if v.location == 21 then
-                self:GetSceneLayer():UpdateWallsWithCity(self:GetCity())    
+                self:GetSceneLayer():UpdateWallsWithCity(self:GetCity())
             end
         end
         self:GetSceneLayer():CheckCanUpgrade()
@@ -470,4 +491,8 @@ function MyCityScene:OpenUI(building, default_tab, need_tips, build_name)
 end
 
 return MyCityScene
+
+
+
+
 

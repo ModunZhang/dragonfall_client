@@ -1145,22 +1145,24 @@ local GAME_LANGUAGE = {
 }
 
 local DAILY_TASKS = {
-    empireRise = {
-        title = _("帝国崛起"),
-        desc  = _("处理城市中的政务,获得奖励")
-    },
-    conqueror = {
-        title = _("征服者"),
-        desc  = _("用武力赢取荣耀和奖励"),
-    },
-    brotherClub = {
-        title = _("兄弟会"),
-        desc  = _("为了联盟兄弟两肋插刀"),
-    },
-    growUp = {
-        title = _("超凡之路"),
-        desc  = _("使用特殊能力提升成长速度")
-    }
+    upgradeBuilding = _("建造或升级任意建筑"),
+    upgradeProudctionTech = _("升级任意学院科技"),
+    upgradeMilitaryTech = _("升级任意军事科技"),
+    makeBuildingMaterial = _("制造一批建筑材料"),
+    makeTechnologyMaterial = _("制造一批军事材料"),
+    attackShrine = _("参加一次圣地战"),
+    attackCity = _("进攻敌方城市"),
+    attackVillage = _("占领任意一座村落"),
+    pve = _("进行一次飞艇探索（扫荡不计入）"),
+    donate = _("进行一次联盟捐赠"),
+    buyAllianceItem = _("在联盟商店购买一次道具"),
+    helpSpeedup = _("协助盟友加速（需点击协助加速全部）"),
+    helpDefence = _("对盟友进行一次协防"),
+    speedupBuildingUpgrade = _("加速一次正在升级的建筑"),
+    speedupSoldierRecruit = _("加速一次正在招募的兵种"),
+    treatSoldiers = _("治疗一批伤兵"),
+    makeDragonEquipment = _("打造一件龙的装备"),
+    buyShopItem = _("在商店购买任意一件道具"),
 }
 
 local SELENAQUESTION_TIPS = {
