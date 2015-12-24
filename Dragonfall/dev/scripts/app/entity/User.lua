@@ -809,37 +809,37 @@ function User:GetBuildingSoldiersInfo(building)
     if building == "trainingGround" then
         return {
             { "swordsman_1", self:SoldierStarByName("swordsman_1") },
-            { "swordsman_2", self:SoldierStarByName("swordsman_2") },
-            { "swordsman_3", self:SoldierStarByName("swordsman_3") },
             {  "sentinel_1",  self:SoldierStarByName("sentinel_1") },
+            { "swordsman_2", self:SoldierStarByName("swordsman_2") },
             {  "sentinel_2",  self:SoldierStarByName("sentinel_2") },
+            { "swordsman_3", self:SoldierStarByName("swordsman_3") },
             {  "sentinel_3",  self:SoldierStarByName("sentinel_3") },
         }
     elseif building == "stable" then
         return {
             {      "lancer_1",      self:SoldierStarByName("lancer_1") },
-            {      "lancer_2",      self:SoldierStarByName("lancer_2") },
-            {      "lancer_3",      self:SoldierStarByName("lancer_3") },
             { "horseArcher_1", self:SoldierStarByName("horseArcher_1") },
+            {      "lancer_2",      self:SoldierStarByName("lancer_2") },
             { "horseArcher_2", self:SoldierStarByName("horseArcher_2") },
+            {      "lancer_3",      self:SoldierStarByName("lancer_3") },
             { "horseArcher_3", self:SoldierStarByName("horseArcher_3") },
         }
     elseif building == "hunterHall" then
         return {
             {      "ranger_1",      self:SoldierStarByName("ranger_1") },
-            {      "ranger_2",      self:SoldierStarByName("ranger_2") },
-            {      "ranger_3",      self:SoldierStarByName("ranger_3") },
             { "crossbowman_1", self:SoldierStarByName("crossbowman_1") },
+            {      "ranger_2",      self:SoldierStarByName("ranger_2") },
             { "crossbowman_2", self:SoldierStarByName("crossbowman_2") },
+            {      "ranger_3",      self:SoldierStarByName("ranger_3") },
             { "crossbowman_3", self:SoldierStarByName("crossbowman_3") },
         }
     elseif building == "workshop" then
         return {
             { "catapult_1", self:SoldierStarByName("catapult_1") },
-            { "catapult_2", self:SoldierStarByName("catapult_2") },
-            { "catapult_3", self:SoldierStarByName("catapult_3") },
             { "ballista_1", self:SoldierStarByName("ballista_1") },
+            { "catapult_2", self:SoldierStarByName("catapult_2") },
             { "ballista_2", self:SoldierStarByName("ballista_2") },
+            { "catapult_3", self:SoldierStarByName("catapult_3") },
             { "ballista_3", self:SoldierStarByName("ballista_3") },
         }
     end
