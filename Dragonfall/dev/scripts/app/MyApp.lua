@@ -4,7 +4,39 @@ require("app.utils.PlatformAdapter")
 require("app.Extend")
 require("app.utils.LuaUtils")
 require("app.utils.GameUtils")
-require("app.datas.GameDatas")
+if true or device.platform ~= 'winrt' then
+    require("app.datas.GameDatas")
+else
+    GameDatas = {}
+    setmetatable(GameDatas, {
+        __index = function(_,k1)
+            local mid_t = {}
+            setmetatable(mid_t, {
+                __index = function(_, k2)
+                    if not rawget(GameDatas, k1) then
+                        local t = {}
+                        setmetatable(t, {
+                            __index = function(_,k2)
+                                if not rawget(GameDatas[k1], k2) then
+                                    rawset(GameDatas[k1], k2, {})
+                                end
+                                require(string.format("app.datas.%s_%s", k1, k2))
+                                return GameDatas[k1][k2]
+                            end
+                        })
+                        rawset(GameDatas, k1, t)
+                    end
+                    if not rawget(GameDatas[k1], k2) then
+                        rawset(GameDatas[k1], k2, {})
+                    end
+                    require(string.format("app.datas.%s_%s", k1, k2))
+                    return GameDatas[k1][k2]
+                end
+            })
+            return mid_t
+        end
+    })
+end
 require("app.utils.DataUtils")
 require("app.utils.UtilsForEvent")
 require("app.utils.UtilsForTask")
@@ -81,11 +113,13 @@ function enter_scene_transition(scene_name, ...)
     animation:setSpeedScale(speed)
 
     local args = {...}
+    table.insert(args, 1, scene_name)
     transition.fadeIn(color_layer, {
         time = 0.75/speed,
         onComplete = function()
-            local next_scene = app:enterScene(scene_name, args)
-            enter_scene(next_scene)
+            -- local next_scene = 
+            app:enterScene("LoadingScene", args)
+            -- enter_scene(next_scene)
         end
     })
 end
@@ -98,6 +132,13 @@ local enter_next_scene = function(new_scene_name, ...)
     else
         app:enterScene(new_scene_name, {...}, "custom", -1, transition_)
     end
+end
+
+function MyApp:EnterMainScene()
+    self:enterScene('MainScene')
+end
+function MyApp:EnteOtherScene()
+    self:enterScene('OtherScene')
 end
 
 function MyApp:enterScene(sceneName, args, transitionType, time, more)
@@ -316,15 +357,6 @@ function MyApp:onEnterForeground()
             scene:GetHomePage():PromiseOfFteAlliance()
         end
     end
-    if scene and scene.__cname == "MainScene" then
-        if (self:GetGameDefautlt():IsPassedSplash()
-            or scene.ui.passed_splash)
-            and not scene.ui.enter_next_scene then
-            return scene.ui:loginAction()
-        else
-            return
-        end
-    end
     self:retryConnectServer(false)
 end
 function MyApp:onEnterPause()
@@ -361,9 +393,9 @@ function MyApp:EnterMyCityFteScene()
     -- app:enterScene("MyCityFteScene", {City}, "custom", -1, transition_)
     enter_next_scene("MyCityFteScene", City)
 end
-function MyApp:EnterMyCityScene(isFromFte)
+function MyApp:EnterMyCityScene(isFromFte,operetion)
     -- app:enterScene("MyCityScene", {City,isFromFte}, "custom", -1, transition_)
-    enter_next_scene("MyCityScene", City, isFromFte)
+    enter_next_scene("MyCityScene", City, isFromFte,operetion)
 end
 function MyApp:EnterFteScene()
     -- app:enterScene("FteScene", nil, "custom", -1, transition_)

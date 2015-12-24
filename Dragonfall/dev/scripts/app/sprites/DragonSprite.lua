@@ -18,7 +18,7 @@ end
 function DragonSprite:CreateSprite(dragonType)
     self.dragonType = dragonType
     if dragonType then
-        return UIKit:CreateDragonBreahAni(dragonType, true)
+        return UIKit:CreateDragonBreathAni(dragonType, true)
     else
         return display.newNode()
     end

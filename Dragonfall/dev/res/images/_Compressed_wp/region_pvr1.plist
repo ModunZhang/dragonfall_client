@@ -7,7 +7,7 @@
             <key>alliance_shrine_2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{227,952},{55,96}}</string>
+                <string>{{4,964},{55,96}}</string>
                 <key>offset</key>
                 <string>{-35,-19}</string>
                 <key>rotated</key>
@@ -17,36 +17,10 @@
                 <key>sourceSize</key>
                 <string>{127,140}</string>
             </dict>
-            <key>cloud_1.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{490,480},{480,464}}</string>
-                <key>offset</key>
-                <string>{0,8}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{480,464}}</string>
-                <key>sourceSize</key>
-                <string>{480,480}</string>
-            </dict>
-            <key>crushed_airship.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{490,950},{80,70}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{80,70}}</string>
-                <key>sourceSize</key>
-                <string>{80,70}</string>
-            </dict>
             <key>hill_1_iceField_new.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{4,482},{480,464}}</string>
+                <string>{{490,480},{480,464}}</string>
                 <key>offset</key>
                 <string>{0,-8}</string>
                 <key>rotated</key>
@@ -82,10 +56,23 @@
                 <key>sourceSize</key>
                 <string>{480,480}</string>
             </dict>
+            <key>lake_2_iceField_new.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{4,482},{478,476}}</string>
+                <key>offset</key>
+                <string>{-1,-2}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,4},{478,476}}</string>
+                <key>sourceSize</key>
+                <string>{480,480}</string>
+            </dict>
             <key>plus_down2_desert.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{4,952},{217,62}}</string>
+                <string>{{488,950},{217,62}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -105,7 +92,7 @@
             <key>size</key>
             <string>{1024,1024}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:05b09ae862b258acbb602af4d1128088:2/6$</string>
+            <string>$TexturePacker:SmartUpdate:a79bb13af0c6216b84df2555cc70e092:e95082521472038fefd3ed39e4af0b90:a64df76543e14dbabe269b5fef224fe7$</string>
             <key>textureFileName</key>
             <string>region_pvr1.png</string>
         </dict>

@@ -17,19 +17,6 @@
                 <key>sourceSize</key>
                 <string>{100,56}</string>
             </dict>
-            <key>VIP_4_46x32.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{992,965},{28,32}}</string>
-                <key>offset</key>
-                <string>{-1,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{8,0},{28,32}}</string>
-                <key>sourceSize</key>
-                <string>{46,32}</string>
-            </dict>
             <key>alliacne_search_29x33.png</key>
             <dict>
                 <key>frame</key>
@@ -134,6 +121,19 @@
                 <key>sourceSize</key>
                 <string>{608,62}</string>
             </dict>
+            <key>background_74x28.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{992,923},{74,28}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{74,28}}</string>
+                <key>sourceSize</key>
+                <string>{74,28}</string>
+            </dict>
             <key>background_768x152.png</key>
             <dict>
                 <key>frame</key>
@@ -146,19 +146,6 @@
                 <string>{{0,0},{768,152}}</string>
                 <key>sourceSize</key>
                 <string>{768,152}</string>
-            </dict>
-            <key>battery_cell.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{992,923},{28,36}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{28,36}}</string>
-                <key>sourceSize</key>
-                <string>{28,36}</string>
             </dict>
             <key>bottom_bg_768x136.png</key>
             <dict>
@@ -368,10 +355,23 @@
                 <key>sourceSize</key>
                 <string>{24,26}</string>
             </dict>
+            <key>icon_current_position_8x10.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{992,1011},{8,10}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{8,10}}</string>
+                <key>sourceSize</key>
+                <string>{8,10}</string>
+            </dict>
             <key>icon_my_alliance_position_4x4.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1011,1011},{4,4}}</string>
+                <string>{{1008,1011},{4,4}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -380,19 +380,6 @@
                 <string>{{0,0},{4,4}}</string>
                 <key>sourceSize</key>
                 <string>{4,4}</string>
-            </dict>
-            <key>level_9.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{992,1011},{8,13}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{8,13}}</string>
-                <key>sourceSize</key>
-                <string>{8,13}</string>
             </dict>
             <key>line_624x102.png</key>
             <dict>
@@ -534,7 +521,7 @@
             <key>size</key>
             <string>{1024,1024}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:afee8da81e83e99716ce83b35357e60e:1/10$</string>
+            <string>$TexturePacker:SmartUpdate:ac537ac0fdfe6b0a97b60481a3e403d5:f0bcf7720d86dba7f3865b178166948c:39442dfca8f6c7372ed050ea490c4ab9$</string>
             <key>textureFileName</key>
             <string>ui_png0.png</string>
         </dict>

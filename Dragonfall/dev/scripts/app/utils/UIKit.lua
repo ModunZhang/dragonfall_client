@@ -132,6 +132,10 @@ function UIKit:getFontFilePath()
     end
 end
 
+function UIKit:getBMFontFilePath()
+    return "fonts/2333.fnt"
+end
+
 function UIKit:getEditBoxFont()
     if device.platform == 'android' then -- Android特殊处理,使用字体文件名作为参数,Java已修改。
         return self:getFontFilePath()
@@ -247,6 +251,19 @@ function UIKit:ttfLabel( params )
     if params.lineHeight and params.dimensions then
         label:setLineHeight(params.lineHeight)
     end
+    return label
+end
+--[[
+    参数和quick原函数一样
+]]--
+function UIKit:bmLabel( params )
+    if not checktable(params) then
+        printError("%s","params must a table")
+    end
+    params.font = UIKit:getBMFontFilePath()
+
+    local label = display.newBMFontLabel(params)
+
     return label
 end
 
@@ -1031,9 +1048,11 @@ function UIKit:addTipsToNode( node,tips , include_node ,tip_dimensions,offset_x,
     end
     node:addNodeEventListener(cc.NODE_TOUCH_EVENT, function(event)
         if event.name == "began" then
+            local touch_postion = node:convertToNodeSpace(cc.p(event.x,event.y))
+
             local world_postion = node:getParent():convertToWorldSpace(cc.p(node:getPosition()))
             local node_postioon = include_node:convertToNodeSpace(world_postion)
-            tips_bg:setPosition(node_postioon.x + (offset_x or 0), node_postioon.y + node:getContentSize().height/2 + (offset_y or 0))
+            tips_bg:setPosition(node_postioon.x + (offset_x or 0), node_postioon.y  + touch_postion.y + 20 + (offset_y or 0))
             tips_bg:SetTips(tips)
             tips_bg:show()
         elseif event.name == "ended" then
@@ -1109,12 +1128,12 @@ function UIKit:ButtonAddScaleAction(button)
 end
 
 local dragon_config = {
-    greenDragon = {"green_long_breath", cc.p(0.63,0.29), 1},
-    redDragon   = {  "red_long_breath", cc.p(0.63,0.29), 1},
-    blueDragon  = { "blue_long_breath", cc.p(0.63,0.29), 1},
-    blackDragon = {   "heilong_breath",  cc.p(0.63,0.2), 1.4},
+    greenDragon = {"green_long_breath", cc.p(0.63,0.29), 1.4},
+    redDragon   = {  "red_long_breath", cc.p(0.63,0.29), 1.4},
+    blueDragon  = { "blue_long_breath", cc.p(0.63,0.29), 1.4},
+    blackDragon = {   "heilong_breath", cc.p(0.63,0.29), 1.8},
 }
-function UIKit:CreateDragonBreahAni(dragon_type, is_left)
+function UIKit:CreateDragonBreathAni(dragon_type, is_left)
     local ani, ap, s = unpack(dragon_config[dragon_type])
     local node = display.newNode()
     local sprite = ccs.Armature:create(ani):addTo(node)
@@ -1148,9 +1167,9 @@ local monster_config = {
     horseArcher_1 = {"heihua_youqibing_2_45", cc.p(0.5, 0.3), 2, -1},
     horseArcher_2 = {"heihua_youqibing_2_45", cc.p(0.5, 0.3), 2, -1},
     horseArcher_3 = {"heihua_youqibing_3_45", cc.p(0.5, 0.3), 2, -1},
-    ballista_1 = {"heihua_nuche_2_45", cc.p(0.5, 0.4), 2, -1},
-    ballista_2 = {"heihua_nuche_2_45", cc.p(0.5, 0.4), 2, -1},
-    ballista_3 = {"heihua_nuche_3_45", cc.p(0.5, 0.4), 2, -1},
+    ballista_1 = {"heihua_nuche_2_45", cc.p(0.5, 0.4), 1, -1},
+    ballista_2 = {"heihua_nuche_2_45", cc.p(0.5, 0.4), 1, -1},
+    ballista_3 = {"heihua_nuche_3_45", cc.p(0.5, 0.4), 1, -1},
     skeletonWarrior = {"kulouyongshi_45", cc.p(0.5, 0.35), 4},
     skeletonArcher = {"kulousheshou_45", cc.p(0.5, 0.35), 4},
     deathKnight = {"siwangqishi_45", cc.p(0.5, 0.42), 2},
@@ -1177,7 +1196,7 @@ function UIKit:CreateMonster(name)
     local node = display.newNode()
     for _,v in ipairs(position_map[count]) do
         UIKit:CreateSoldierIdle45Ani(soldier_name, star, monster_config)
-        :pos(v.x, v.y):addTo(node):setScaleX(s or 1)
+            :pos(v.x, v.y):addTo(node):setScaleX(s or 1)
     end
     return node
 end
@@ -1277,8 +1296,8 @@ local soldier_ani_idle_map = {
     lancer_1 = {"qibing_1_45", cc.p(0.5, 0.48),2},
     lancer_2 = {"qibing_2_45", cc.p(0.5, 0.48),2},
     lancer_3 = {"qibing_3_45", cc.p(0.5, 0.48),2},
-    catapult_1 = {"toushiche_45", cc.p(0.5, 0.3),1},
-    catapult_2 = {"toushiche_2_45", cc.p(0.5, 0.3),1},
+    catapult_1 = {"toushiche_45", cc.p(0.5, 0.15),1},
+    catapult_2 = {"toushiche_2_45", cc.p(0.45, 0.3),1},
     catapult_3 = {"toushiche_3_45", cc.p(0.5, 0.3),1},
     sentinel_1 = {"shaobing_1_45", cc.p(0.5, 0.23),4},
     sentinel_2 = {"shaobing_2_45", cc.p(0.5, 0.23),4},
@@ -1289,7 +1308,7 @@ local soldier_ani_idle_map = {
     horseArcher_1 = {"youqibing_1_45", cc.p(0.5, 0.3),2},
     horseArcher_2 = {"youqibing_2_45", cc.p(0.5, 0.3),2},
     horseArcher_3 = {"youqibing_3_45", cc.p(0.5, 0.3),2},
-    ballista_1 = {"nuche_1_45", cc.p(0.5, 0.4),1},
+    ballista_1 = {"nuche_1_45", cc.p(0.4, 0.4),1},
     ballista_2 = {"nuche_2_45", cc.p(0.5, 0.4),1},
     ballista_3 = {"nuche_3_45", cc.p(0.5, 0.4),1},
     skeletonWarrior = {"kulouyongshi_45", cc.p(0.5, 0.35),4},
@@ -1706,6 +1725,56 @@ function UIKit:CreateSand()
         emitter:setEmissionRate(50 + math.random(100))
     end, 2 + math.random(3))
     return emitter
+end
+
+function UIKit:CreateNumberImageNode(params)
+    local number_node = display.newNode()
+    number_node.params = params
+    function number_node:SetNumString(params)
+        if tolua.type(params) == "number" then
+            params = tostring(params)
+        end
+        local text = tolua.type(params) == "string" and params or self.params.text or ""
+        local color = tolua.type(params) == "table" and params.color or self.params.color
+        local size = tolua.type(params) == "table" and params.size or self.params.size
+        assert(tolua.type(text) == "string")
+        self:removeAllChildren()
+        local x = 0
+        local node_width = 0
+        for i=1,string.len(text) do
+            local replace_key
+            local num_string = string.sub(text,i,i)
+            if num_string == "/" then
+                replace_key = "slash"
+            elseif num_string == "." then
+                replace_key = "point"
+            elseif num_string == ":" then
+                replace_key = "colon"
+            elseif num_string == "," then
+                replace_key = "comma"
+            elseif num_string == "+" then
+                replace_key = "plus"
+            else
+                replace_key = num_string
+            end
+            local num_sprite =display.newSprite(string.format("icon_%s.png",replace_key)):addTo(self)
+            x = x + (i == 1 and num_sprite:getContentSize().width/2 or num_sprite:getContentSize().width) + ((replace_key == "point" or replace_key == "slash" or replace_key == "colon") and 6 or 0)
+            num_sprite:pos(x,15)
+            num_sprite:setColor(UIKit:hex2c4b(color))
+            if i == string.len(text) then
+                node_width = x + num_sprite:getContentSize().width/2
+            end
+        end
+        number_node:setContentSize(cc.size(node_width,30))
+        number_node:scale(size/30)
+    end
+    function number_node:SetNumColor( color)
+        for i,num_sprite in ipairs(self:getChildren()) do
+            num_sprite:setColor(UIKit:hex2c4b(color))
+        end
+    end
+    number_node:SetNumString(params)
+    return number_node
 end
 
 

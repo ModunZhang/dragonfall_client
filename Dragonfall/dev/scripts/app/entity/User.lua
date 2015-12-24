@@ -501,14 +501,8 @@ end
 --[[end]]
 
 --[[dailyTasks begin]]
-function User:GetDailyTasksInfo(task_type)
-    return self.dailyTasks[task_type] or {}
-end
-function User:CheckDailyTasksWasRewarded(task_type)
-    for __,v in ipairs(self:GetAllDailyTasks().rewarded) do
-        if v == task_type then return true end
-    end
-    return false
+function User:GetDailyTasksFinishedCountByIndex(index)
+    return self.dailyTasks[index] or 0
 end
 function User:GetAllDailyTasks()
     return self.dailyTasks or {}
@@ -799,7 +793,7 @@ end
 --[[soldier begin]]
 function User:IsSoldierUnlocked(soldierName)
     return (self:GetSoldierConfig(soldierName).needBarracksLevel or math.huge) 
-        >= self:GetBarracksLevel()
+        <= self:GetBarracksLevel()
 end
 function User:GetSoldierEventsBySeq()
     local events = {}
