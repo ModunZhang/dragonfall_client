@@ -876,7 +876,7 @@ function GameUIAlliance:HaveAlliaceUI_overviewIf()
     }):addTo(notice_button)
     btn_label:align(display.LEFT_CENTER, -(btn_label:getContentSize().width + 26)/2,-18)
 
-    display.newSprite("alliance_notice_icon_26x26.png"):addTo(notice_button):align(display.LEFT_CENTER,btn_label:getContentSize().width + btn_label:getPositionX(),-18)
+    display.newSprite("alliance_notice_icon_26x26.png"):addTo(notice_button):align(display.LEFT_CENTER,btn_label:getContentSize().width + btn_label:getPositionX()+10,-18)
 
 
     local line_2 = display.newSprite("dividing_line.png")
