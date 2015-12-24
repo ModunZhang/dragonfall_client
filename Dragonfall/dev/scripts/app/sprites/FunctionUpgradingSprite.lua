@@ -35,9 +35,11 @@ function FunctionUpgradingSprite:GetSpriteTopPosition()
     local x,y = FunctionUpgradingSprite.super.GetSpriteTopPosition(self)
     local type_ = self:GetEntity():GetType()
     if type_ == "keep" then
-        return x - 30, y - 50
+        return x - 30, y 
     elseif type_ == "watchTower" then
         return x - 30, y - 50
+    elseif type_ == "dragonEyrie" then
+        return x + 20, y + 70
     end
     return x,y
 end
