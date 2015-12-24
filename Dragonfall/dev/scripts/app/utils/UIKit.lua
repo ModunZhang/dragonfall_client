@@ -1152,21 +1152,21 @@ local monster_config = {
     ranger_1 = {"heihua_gongjianshou_2_45", cc.p(0.4, 0.15), 4, -1},
     ranger_2 = {"heihua_gongjianshou_2_45", cc.p(0.4, 0.15), 4, -1},
     ranger_3 = {"heihua_gongjianshou_3_45", cc.p(0.4, 0.3), 4, -1},
-    lancer_1 = {"heihua_qibing_2_45", cc.p(0.5, 0.4), 2, -1},
-    lancer_2 = {"heihua_qibing_2_45", cc.p(0.5, 0.4), 2, -1},
-    lancer_3 = {"heihua_qibing_3_45", cc.p(0.5, 0.45), 2, -1},
+    lancer_1 = {"heihua_qibing_2_45", cc.p(0.5, 0.5), 2, -1},
+    lancer_2 = {"heihua_qibing_2_45", cc.p(0.5, 0.5), 2, -1},
+    lancer_3 = {"heihua_qibing_3_45", cc.p(0.5, 0.55), 2, -1},
     catapult_1 = {"heihua_toushiche_2_45", cc.p(0.5, 0.35), 1, -1},
     catapult_2 = {"heihua_toushiche_2_45", cc.p(0.5, 0.35), 1, -1},
-    catapult_3 = {"heihua_toushiche_3_45", cc.p(0.5, 0.35), 1, -1},
+    catapult_3 = {"heihua_toushiche_3_45", cc.p(0.5, 0.4), 1, -1},
     sentinel_1 = {"heihua_shaobing_2_45", cc.p(0.5, 0.2), 4, -1},
     sentinel_2 = {"heihua_shaobing_2_45", cc.p(0.5, 0.2), 4, -1},
     sentinel_3 = {"heihua_shaobing_3_45", cc.p(0.5, 0.2), 4, -1},
     crossbowman_1 = {"heihua_nugongshou_2_45", cc.p(0.5, 0.28), 4, -1},
     crossbowman_2 = {"heihua_nugongshou_2_45", cc.p(0.5, 0.28), 4, -1},
     crossbowman_3 = {"heihua_nugongshou_3_45", cc.p(0.5, 0.28), 4, -1},
-    horseArcher_1 = {"heihua_youqibing_2_45", cc.p(0.5, 0.3), 2, -1},
-    horseArcher_2 = {"heihua_youqibing_2_45", cc.p(0.5, 0.3), 2, -1},
-    horseArcher_3 = {"heihua_youqibing_3_45", cc.p(0.5, 0.3), 2, -1},
+    horseArcher_1 = {"heihua_youqibing_2_45", cc.p(0.5, 0.45), 2, -1},
+    horseArcher_2 = {"heihua_youqibing_2_45", cc.p(0.5, 0.45), 2, -1},
+    horseArcher_3 = {"heihua_youqibing_3_45", cc.p(0.5, 0.45), 2, -1},
     ballista_1 = {"heihua_nuche_2_45", cc.p(0.5, 0.4), 1, -1},
     ballista_2 = {"heihua_nuche_2_45", cc.p(0.5, 0.4), 1, -1},
     ballista_3 = {"heihua_nuche_3_45", cc.p(0.5, 0.4), 1, -1},
@@ -1177,26 +1177,59 @@ local monster_config = {
 }
 local position_map = {
     [1] = {
-        {x = 0, y = 0}
+        {x = 0, y = -20}
     },
     [2] = {
-        {x = -20, y = 10},
-        {x = 20, y = -10},
+        {x = -20, y = 0},
+        {x = 20, y = -20},
     },
     [4] = {
-        {x = 0, y = 0},
-        {x = -25, y = -15},
-        {x = 25, y = -15},
-        {x = 0, y = -30},
+        {x = 0, y = -10},
+        {x = -25, y = -25},
+        {x = 25, y = -25},
+        {x = 0, y = -40},
     }
 }
+local monster_scale = {
+    swordsman_1     = 1,
+    swordsman_2     = 1,
+    swordsman_3     = 1,
+    ranger_1        = 1,
+    ranger_2        = 1,
+    ranger_3        = 1,
+    lancer_1        = 1,
+    lancer_2        = 1,
+    lancer_3        = 1,
+    catapult_1      = 0.8,
+    catapult_2      = 0.8,
+    catapult_3      = 0.8,
+    sentinel_1      = 1,
+    sentinel_2      = 1,
+    sentinel_3      = 1,
+    crossbowman_1   = 1,
+    crossbowman_2   = 1,
+    crossbowman_3   = 1,
+    horseArcher_1   = 1,
+    horseArcher_2   = 1,
+    horseArcher_3   = 1,
+    ballista_1      = 0.8,
+    ballista_2      = 0.8,
+    ballista_3      = 0.8,
+    skeletonWarrior = 1,
+    skeletonArcher  = 1,
+    deathKnight     = 1,
+    meatWagon       = 1,
+}
 function UIKit:CreateMonster(name)
-    local soldier_name, star = unpack(string.split(name, ':'))
-    local _,_,count,s = unpack(monster_config[soldier_name])
+    local soldierName, star = unpack(string.split(name, ':'))
+    local _,_,count,s = unpack(monster_config[soldierName])
     local node = display.newNode()
+    local unit_scale = monster_scale[soldierName]
     for _,v in ipairs(position_map[count]) do
-        UIKit:CreateSoldierIdle45Ani(soldier_name, star, monster_config)
-            :pos(v.x, v.y):addTo(node):setScaleX(s or 1)
+        local soldier = UIKit:CreateSoldierIdle45Ani(soldierName, star, monster_config)
+        :addTo(node):pos(v.x, v.y)
+        soldier:setScaleX((s or 1) * unit_scale)
+        soldier:setScaleY(unit_scale)
     end
     return node
 end
