@@ -158,6 +158,9 @@ function GameUILoginBeta:startGame()
         if app:GetGameDefautlt():IsPassedSplash() then
             self:loginAction()
         else
+            self:performWithDelay(function()
+                self:AddSkip()
+            end, 4)
             self.verLabel:fadeOut(0.5)
             self.user_agreement_label:fadeOut(0.5)
             self.user_agreement_button:hide()
@@ -167,6 +170,22 @@ function GameUILoginBeta:startGame()
         end
     end)})
     self.star_game_sprite:runAction(seq)
+end
+function GameUILoginBeta:AddSkip()
+    cc.ui.UIPushButton.new({normal = "skip.png",pressed = "skip.png"})
+    :addTo(self, 1000000):align(display.RIGHT_TOP, display.width, display.height)
+    :onButtonClicked(function(event)
+        event.target:setButtonEnabled(false)
+        UIKit:showMessageDialog(_("提示"),_("是否跳过开头动画?"),function()
+            self:Skip()
+        end, function()
+            event.target:setButtonEnabled(true)
+        end, false)
+    end):opacity(0):fadeIn(0.5)
+end
+function GameUILoginBeta:Skip()
+    self.animation_node:stopAllActions()
+    self:loginAction()
 end
 function GameUILoginBeta:createUserAgreement()
     local user_agreement_label = cc.ui.UILabel.new({
