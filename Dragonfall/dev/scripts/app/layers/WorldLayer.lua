@@ -17,7 +17,7 @@ local worldsize = {
 
 
 function WorldLayer:ctor(scene)
-    WorldLayer.super.ctor(self, scene, 1.0, 3.0)
+    WorldLayer.super.ctor(self, scene, 1.0, 1.2)
 end
 function WorldLayer:onEnter()
     self:CreateBg()
