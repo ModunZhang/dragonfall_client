@@ -120,7 +120,8 @@ function UtilsForBuilding:GetWarehouseLimit(userData, offset)
 end
 
 local materialDepot = GameDatas.BuildingFunction.materialDepot
-function UtilsForBuilding:GetMaterialDepotLimit(userData)
+function UtilsForBuilding:GetMaterialDepotLimit(userData, offset)
+    offset = offset or 0
     local limit = {
         dragonMaterials     = 0,
         soldierMaterials    = 0,
@@ -128,7 +129,7 @@ function UtilsForBuilding:GetMaterialDepotLimit(userData)
         technologyMaterials = 0,
     }
     for _,building in ipairs(self:GetBuildingsBy(userData, "materialDepot", 1)) do
-        local config = materialDepot[building.level]
+        local config = materialDepot[building.level + offset]
         for k,v in pairs(limit) do
             limit[k] = v + config[k]
         end

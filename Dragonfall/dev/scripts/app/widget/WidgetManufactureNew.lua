@@ -386,7 +386,7 @@ end
 function WidgetManufactureNew:CheckOverFlow(content)
     local city = self.toolShop:BelongCity()
     local User = city:GetUser()
-    local limit = city:GetFirstBuildingByType("materialDepot"):GetMaxMaterial()
+    local limit = UtilsForBuilding:GetMaterialDepotLimit(User).soldierMaterials
     local mm = User.technologyMaterials
     for k,v in pairs(User.buildingMaterials) do
         mm[k] = v
