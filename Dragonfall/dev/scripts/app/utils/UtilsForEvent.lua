@@ -12,8 +12,8 @@ function UtilsForEvent:GetEventInfo(event)
     return math.ceil(left), (time - start) * 100.0 / (finish - start)
 end
 function UtilsForEvent:GetMilitaryTechEventLocalize(tech_name, level)
-    local category, tech_type = unpack(string.split(tech_name, ":"))
-    if not tech_type then
+    local category, tech_type = unpack(string.split(tech_name, "_"))
+    if tonumber(tech_type) then
         return string.format(_("晋升%s的星级 star %d"),
             Localize.soldier_name[tech_name], level + 1)
     end
