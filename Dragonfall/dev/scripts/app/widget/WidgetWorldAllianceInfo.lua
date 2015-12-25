@@ -18,7 +18,17 @@ function WidgetWorldAllianceInfo:ctor(object,mapIndex,need_goto_btn)
     self.object = object
     self.mapIndex = mapIndex
     self.need_goto_btn = need_goto_btn
-    WidgetWorldAllianceInfo.super.ctor(self,object and 454 or 580,object and  object.alliance.name or _("无主领土"),window.top-120)
+    local round = DataUtils:getMapRoundByMapIndex(mapIndex)
+    local title_bg = round == 0 and "title_purple_600x56.png"
+    WidgetWorldAllianceInfo.super.ctor(self,object and 454 or 580,object and  object.alliance.name or _("无主领土"),window.top-120,title_bg)
+    if round == 0 then
+        display.newSprite("world_icon1.png"):addTo(self.title_sprite):pos(self.title_label:getPositionX() + self.title_label:getContentSize().width/2 + 30,self.title_label:getPositionY())
+    elseif round == 1 then
+        display.newSprite("world_icon2.png"):addTo(self.title_sprite):pos(self.title_label:getPositionX() + self.title_label:getContentSize().width/2 + 30,self.title_label:getPositionY())
+    elseif round == 2 then
+        display.newSprite("world_icon3.png"):addTo(self.title_sprite):pos(self.title_label:getPositionX() + self.title_label:getContentSize().width/2 + 30,self.title_label:getPositionY())
+    end
+    
     self:setNodeEventEnabled(true)
 
     self.mask_layer = display.newLayer():addTo(self, 2):hide()

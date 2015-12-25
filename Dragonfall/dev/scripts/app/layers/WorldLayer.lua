@@ -390,7 +390,7 @@ function WorldLayer:CreateAllianceSprite(index, alliance)
     if round <= 3 then
         local half = sprite.name:getContentSize().width / 4
         sprite.round = display.newSprite(string.format("world_icon%d.png", round))
-        :addTo(sprite):pos(size.width/2 - half - 14, 2)
+        :addTo(sprite):pos(size.width/2 - half - 14, 2):scale(28/40)
     end
 
 
@@ -508,7 +508,7 @@ function WorldLayer:UpdateAllianceSprite(index, alliance)
         if sprite.round then
             sprite.round:setTexture(png)
         else
-            sprite.round = display.newSprite(png):addTo(sprite)
+            sprite.round = display.newSprite(png):addTo(sprite):scale(28/40)
         end
         local half = sprite.name:getContentSize().width / 4
         sprite.round:pos(size.width/2 - half - 14, 2)
