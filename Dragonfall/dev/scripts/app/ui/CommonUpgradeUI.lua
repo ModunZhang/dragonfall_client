@@ -369,12 +369,10 @@ function CommonUpgradeUI:SetUpgradeEfficiency()
         local max = UtilsForBuilding:GetMaxRecruitSoldier(User)
         eff_node:AddItem(bd.maxRecruit, formatNumber(max), formatNumber(UtilsForBuilding:GetMaxRecruitSoldier(User, 1) - max))
     elseif self.building:GetType()=="blackSmith" then
-        local added = building:GetNextLevelEfficiency() - building:GetEfficiency()
-        eff_node:AddItem( bd.blackSmith_efficiency, (building:GetEfficiency()*100).."%", added > 0 and added * 100 .. "%" or "")
-        -- local additon = (building:GetNextLevelEfficiency()-building:GetEfficiency())*100
-        -- if additon>0 then
-        --     efficiency = string.format("%s+%.1f%%,",bd.blackSmith_efficiency,additon)
-        -- end
+        local efficiency = UtilsForBuilding:GetEfficiencyBy(User, "blackSmith")
+        local next_efficiency = UtilsForBuilding:GetEfficiencyBy(User, "blackSmith", 1)
+        local added = next_efficiency - next_efficiency
+        eff_node:AddItem( bd.blackSmith_efficiency, (efficiency*100).."%", added > 0 and added * 100 .. "%" or "")
     elseif self.building:GetType()=="foundry" then
         eff_node:AddItem( bd.foundry_miner, formatNumber(building:GetNextLevelMaxHouseNum()), formatNumber(building:GetNextLevelMaxHouseNum() - building:GetMaxHouseNum()) )
         local added = building:GetNextLevelProtection() - building:GetProtection()
@@ -434,18 +432,11 @@ function CommonUpgradeUI:SetUpgradeEfficiency()
         local nextmaxcasualty = UtilsForBuilding:GetMaxCasualty(User, 1)
         eff_node:AddItem(bd.maxCasualty, formatNumber(maxcasualty), formatNumber(nextmaxcasualty - maxcasualty))
     elseif self.building:GetType()=="townHall" then
+        local efficiency = UtilsForBuilding:GetEfficiencyBy(User, "townHall")
+        local next_efficiency = UtilsForBuilding:GetEfficiencyBy(User, "townHall", 1)
         eff_node:AddItem( bd.townHall_dwelling, formatNumber(building:GetMaxHouseNum()), formatNumber(building:GetNextLevelMaxHouseNum() - building:GetMaxHouseNum()) )
-        local added = building:GetNextLevelEfficiency() - building:GetEfficiency()
-        eff_node:AddItem( _("提升任务奖励"), (building:GetEfficiency()*100).."%", added > 0 and added * 100 .. "%" or ""  )
-        -- local house_add = building:GetNextLevelMaxHouseNum()-building:GetMaxHouseNum()
-        -- efficiency = ""
-        -- if house_add>0 then
-        --     efficiency = string.format("%s+%d," ,bd.townHall_dwelling,house_add)
-        -- end
-        -- local award_add = (building:GetNextLevelEfficiency() - building:GetEfficiency()) * 100
-        -- if award_add > 0 then
-        --     efficiency = efficiency .. string.format("%s+%d%%," ,_("提升任务奖励"),award_add)
-        -- end
+        local added = next_efficiency - efficiency
+        eff_node:AddItem( _("提升任务奖励"), (efficiency*100).."%", added > 0 and added * 100 .. "%" or ""  )
     elseif self.building:GetType()=="dwelling" then
         eff_node:AddItem( bd.dwelling_citizen, formatNumber(building:GetProductionLimit()), formatNumber(building:GetNextLevelCitizen() - building:GetProductionLimit()) )
         eff_node:AddItem( bd.dwelling_poduction, formatNumber(building:GetProductionPerHour()), formatNumber(building:GetNextLevelProductionPerHour() - building:GetProductionPerHour()) )

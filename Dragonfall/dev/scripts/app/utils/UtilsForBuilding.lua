@@ -41,6 +41,15 @@ function UtilsForBuilding:GetBuildingBy(userData, nameOrLocation)
     end
 end
 
+
+function UtilsForBuilding:GetEfficiencyBy(userData, name, offset)
+    offset = offset or 0
+    local configs = self:GetBuildingConfig(name)
+    for _,building in ipairs(self:GetBuildingsBy(userData, name)) do
+        return configs[building.level + offset].efficiency
+    end
+end
+
 local BuildingFunction = GameDatas.BuildingFunction
 function UtilsForBuilding:GetBuildingConfig(buildingName)
     return BuildingFunction[buildingName]

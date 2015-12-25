@@ -1,7 +1,6 @@
 local UpgradeBuilding = import("..entity.UpgradeBuilding")
 local BuildingRegister = {
     toolShop 		= import("..entity.ToolShopUpgradeBuilding"),
-    blackSmith      = import("..entity.BlackSmithUpgradeBuilding"),
     woodcutter 		= import("..entity.WoodResourceUpgradeBuilding"),
     farmer 			= import("..entity.FoodResourceUpgradeBuilding"),
     miner 			= import("..entity.IronResourceUpgradeBuilding"),
@@ -13,7 +12,7 @@ local BuildingRegister = {
     stoneMason      = import("..entity.PResourceUpgradeBuilding"),
     lumbermill      = import("..entity.PResourceUpgradeBuilding"),
     mill            = import("..entity.PResourceUpgradeBuilding"),
-    townHall 	    = import("..entity.TownHallUpgradeBuilding"),
+    townHall 	    = import("..entity.PResourceUpgradeBuilding"),
     tradeGuild 	    = import("..entity.TradeGuildUpgradeBuilding"),
     trainingGround  = import("..entity.MilitaryTechnologyUpgradeBuilding"),
     stable          = import("..entity.MilitaryTechnologyUpgradeBuilding"),
