@@ -69,7 +69,8 @@ function GameUISplashBeta:RunFte(func)
  --        	func()
  --        end
  --    end):hide()
-    display.newNode():addTo(self):runAction(transition.sequence{
+    self.animation_node = display.newNode():addTo(self)
+    self.animation_node:runAction(transition.sequence{
         cc.CallFunc:create(function() self.logo:fadeOut(1) end),
         cc.DelayTime:create(1),
         cc.DelayTime:create(1),

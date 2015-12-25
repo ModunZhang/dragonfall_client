@@ -389,18 +389,18 @@ function GameUIWorldMap:OnTouchCancelled(pre_x, pre_y, x, y)
     print("OnTouchCancelled")
 end
 function GameUIWorldMap:OnTwoTouch(x1, y1, x2, y2, event_type)
-    -- local scene = self.scene_layer
-    -- if event_type == "began" then
-    --     scene:StopScaleAnimation()
-    --     self.distance = math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1))
-    --     scene:ZoomBegin(x1, y1, x2, y2)
-    -- elseif event_type == "moved" then
-    --     local new_distance = math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1))
-    --     scene:ZoomBy(new_distance / self.distance, (x1 + x2) * 0.5, (y1 + y2) * 0.5)
-    -- elseif event_type == "ended" then
-    --     scene:ZoomEnd()
-    --     self.distance = nil
-    -- end
+    local scene = self.scene_layer
+    if event_type == "began" then
+        scene:StopScaleAnimation()
+        self.distance = math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1))
+        scene:ZoomBegin(x1, y1, x2, y2)
+    elseif event_type == "moved" then
+        local new_distance = math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1))
+        scene:ZoomBy(new_distance / self.distance, (x1 + x2) * 0.5, (y1 + y2) * 0.5)
+    elseif event_type == "ended" then
+        scene:ZoomEnd()
+        self.distance = nil
+    end
 end
 --
 function GameUIWorldMap:OnTouchBegan(pre_x, pre_y, x, y)
