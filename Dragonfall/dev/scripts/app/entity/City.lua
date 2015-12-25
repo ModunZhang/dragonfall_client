@@ -218,7 +218,7 @@ function City:GetBeginnersTask()
         if v.type == "reward" and not flag[i] and count > 0 then
             return setmetatable({ index = i }, reward_meta)
         elseif v.type == "unlock" then
-            if self:GetFirstBuildingByType("keep"):GetFreeUnlockPoint() > 0 then
+            if UtilsForBuilding:GetFreeUnlockPoint(self:GetUser()) > 0 then
                 for i,lstr in ipairs(string.split(v.name, ",")) do
                     local location_id = tonumber(lstr)
                     local building = self:GetBuildingByLocationId(location_id)

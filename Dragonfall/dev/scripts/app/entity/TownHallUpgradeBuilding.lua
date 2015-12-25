@@ -6,10 +6,6 @@ local TownHallUpgradeBuilding = class("TownHallUpgradeBuilding", PResourceUpgrad
 function TownHallUpgradeBuilding:ctor(building_info)
     TownHallUpgradeBuilding.super.ctor(self, building_info)
 end
-
-function TownHallUpgradeBuilding:GetNextLevelDwellingNum()
-    return config_function[self:GetNextLevel()].houseAdd
-end
 function TownHallUpgradeBuilding:GetNextLevelEfficiency()
     return config_function[self:GetNextLevel()].efficiency
 end

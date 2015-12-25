@@ -17,18 +17,6 @@ function BlackSmithUpgradeBuilding:GetEfficiency()
     end
     return 0
 end
-function BlackSmithUpgradeBuilding:GeneralToolsLocalPush(event)
-    if ext and ext.localpush then
-        local title = string.format(_("制造%s装备完成"), Localize.equip[event:Content()])
-        app:GetPushManager():UpdateToolEquipmentPush(event:FinishTime(), title, event.id)
-    end
-end
-function BlackSmithUpgradeBuilding:CancelToolsLocalPush(event_id)
-    if ext and ext.localpush then
-        app:GetPushManager():CancelToolEquipmentPush(event_id)
-    end
-end
-
 return BlackSmithUpgradeBuilding
 
 

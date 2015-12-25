@@ -25,12 +25,25 @@ function UtilsForBuilding:GetBuildingsBy(userData, name, level)
 end
 
 
-function UtilsForBuilding:GetBuildingBy(userData, name)
-    for k,v in pairs(userData.buildings) do
-        if v.type == name then
-            return v
+function UtilsForBuilding:GetBuildingBy(userData, nameOrLocation)
+    if type(nameOrLocation) == "string" then
+        for k,v in pairs(userData.buildings) do
+            if v.type == nameOrLocation then
+                return v
+            end
+        end
+    else
+        for k,v in pairs(userData.buildings) do
+            if v.location == nameOrLocation then
+                return v
+            end
         end
     end
+end
+
+local BuildingFunction = GameDatas.BuildingFunction
+function UtilsForBuilding:GetBuildingConfig(buildingName)
+    return BuildingFunction[buildingName]
 end
 
 local HouseLevelUp = GameDatas.HouseLevelUp
@@ -80,7 +93,8 @@ end
 
 
 local warehouse = GameDatas.BuildingFunction.warehouse
-function UtilsForBuilding:GetWarehouseLimit(userData)
+function UtilsForBuilding:GetWarehouseLimit(userData, offset)
+    offset = offset or 0
     local limit = {
         maxWood = 0,
         maxFood = 0,
@@ -88,7 +102,7 @@ function UtilsForBuilding:GetWarehouseLimit(userData)
         maxStone= 0,
     }
     for _,building in ipairs(self:GetBuildingsBy(userData, "warehouse", 1)) do
-        local config = warehouse[building.level]
+        local config = warehouse[building.level + offset]
         for k,v in pairs(limit) do
             limit[k] = v + config[k]
         end
@@ -231,11 +245,71 @@ function UtilsForBuilding:GetWallInfo(userData)
 end
 
 
+--获取伤病最大上限
+local hospital = GameDatas.BuildingFunction.hospital
+function UtilsForBuilding:GetMaxCasualty(userData, offset)
+    offset = offset or 0
+    assert(offset >= 0)
+    local value = 0
+    local tech = userData.productionTechs["rescueTent"]
+    local tech_effect = UtilsForTech:GetEffect("rescueTent", tech)
+    for _,building in ipairs(self:GetBuildingsBy(userData, "hospital", 1)) do
+        return math.floor(hospital[building.level + offset].maxCitizen * (1 + tech_effect))
+    end
+    return value
+end
+
+
+-- 
+local keep = GameDatas.BuildingFunction.keep
+function UtilsForBuilding:GetFreeUnlockPoint(userData)
+    local unlocked_count = 0
+    for _,building in pairs(userData.buildings) do
+        if building.level > 0 
+        and building.type ~= "wall"
+        and building.type ~= "tower" then
+            unlocked_count = unlocked_count + 1
+        end
+    end
+    for _,event in pairs(userData.buildingEvents) do
+        local building = self:GetBuildingBy(userData, event.location)
+        if building.level == 0 
+        and building.type ~= "wall"
+        and building.type ~= "tower" then
+            unlocked_count = unlocked_count + 1
+        end
+    end
+    return self:GetUnlockPoint(userData) - unlocked_count
+end
+function UtilsForBuilding:GetUnlockPoint(userData, offset)
+    offset = offset or 0
+    assert(offset >= 0)
+    for _,building in ipairs(self:GetBuildingsBy(userData, "keep", 1)) do
+        return keep[building.level + offset].unlock
+    end
+    assert(false)
+end
+function UtilsForBuilding:GetBeHelpedCount(userData, offset)
+    offset = offset or 0
+    assert(offset >= 0)
+    for _,building in ipairs(self:GetBuildingsBy(userData, "keep", 1)) do
+        return keep[building.level + offset].beHelpedCount
+    end
+    assert(false)
+end
 
 
 
-
-
+local barracks = GameDatas.BuildingFunction.barracks
+function UtilsForBuilding:GetMaxRecruitSoldier(userData, offset)
+    offset = offset or 0
+    assert(offset >= 0)
+    local max = 0
+    for _,building in ipairs(self:GetBuildingsBy(userData, "barracks", 1)) do
+        max = max + barracks[building.level + offset].maxRecruit
+    end
+    return max
+end
 
 
 
