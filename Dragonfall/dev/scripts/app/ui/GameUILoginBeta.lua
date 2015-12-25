@@ -668,6 +668,7 @@ function GameUILoginBeta:checkFte()
             break
         end
     end
+    DataManager.need_notify = false
     if check("HateDragon") and dragon_type then
         mockData.HateDragon(dragon_type)
     end
@@ -765,6 +766,7 @@ function GameUILoginBeta:checkFte()
     if check("BuildHouseAt_8_3") then
         mockData.BuildHouseAt(8,3,"miner")
     end
+    DataManager.need_notify = true
 end
 
 

@@ -60,35 +60,6 @@ function BarracksUpgradeBuilding:GetUnlockSoldiers()
     return r
 end
 
--- fte
-local function promiseOfSoldier(callbacks, soldier_type)
-    assert(soldier_type)
-    assert(#callbacks == 0)
-    local p = promise.new()
-    table.insert(callbacks, function(type_)
-        if soldier_type == type_ then
-            return p:resolve(soldier_type)
-        end
-    end)
-    return p
-end
-local function checkSoldier(callbacks, soldier_type)
-    if #callbacks > 0 and callbacks[1](soldier_type) then
-        table.remove(callbacks, 1)
-    end
-end
-function BarracksUpgradeBuilding:CheckRecruit(soldier_type)
-    checkSoldier(self.recruit_soldier_callbacks, soldier_type)
-end
-function BarracksUpgradeBuilding:PromiseOfRecruitSoldier(soldier_type)
-    return promiseOfSoldier(self.recruit_soldier_callbacks, soldier_type)
-end
-function BarracksUpgradeBuilding:CheckFinish(soldier_type)
-    checkSoldier(self.finish_soldier_callbacks, soldier_type)
-end
-function BarracksUpgradeBuilding:PromiseOfFinishSoldier(soldier_type)
-    return promiseOfSoldier(self.finish_soldier_callbacks, soldier_type)
-end
 
 return BarracksUpgradeBuilding
 

@@ -34,20 +34,6 @@ function HospitalUpgradeBuilding:ResetAllListeners()
 
     HospitalUpgradeBuilding.super.ResetAllListeners(self)
 end
-function HospitalUpgradeBuilding:OnUserDataChanged(...)
-    HospitalUpgradeBuilding.super.OnUserDataChanged(self, ...)
-    local userData, current_time, location_info, sub_location_id, deltaData = ...
-    if deltaData then
-        local ok, value = deltaData("treatSoldierEvents.add")
-        if ok then
-            self:CheckTreat(value[1].soldiers)
-        end
-        local ok, value = deltaData("treatSoldierEvents.remove")
-        if ok then
-            self:CheckFinish(value[1].soldiers)
-        end
-    end
-end
 -- 医院伤兵是否超过上限
 function HospitalUpgradeBuilding:IsWoundedSoldierOverhead()
     local max = self:GetMaxCasualty()
@@ -76,43 +62,6 @@ function HospitalUpgradeBuilding:GetCasualtyRate()
     end
     return 0
 end
-
-
-
-
---- fte 
--- fte
-local function promiseOfSoldier(callbacks, soldier_type)
-    assert(soldier_type)
-    assert(#callbacks == 0)
-    local p = promise.new()
-    table.insert(callbacks, function(soldiers)
-        for _,v in pairs(soldiers) do
-            if v.name == soldier_type then
-                return p:resolve(soldier_type)
-            end
-        end
-    end)
-    return p
-end
-local function checkSoldier(callbacks, soldiers)
-    if #callbacks > 0 and callbacks[1](soldiers) then
-        table.remove(callbacks, 1)
-    end
-end
-function HospitalUpgradeBuilding:CheckTreat(soldiers)
-    checkSoldier(self.treat_soldier_callbacks, soldiers)
-end
-function HospitalUpgradeBuilding:PromiseOfTreatSoldier(soldier_type)
-    return promiseOfSoldier(self.treat_soldier_callbacks, soldier_type)
-end
-function HospitalUpgradeBuilding:CheckFinish(soldiers)
-    checkSoldier(self.finish_soldier_callbacks, soldiers)
-end
-function HospitalUpgradeBuilding:PromiseOfFinishTreatSoldier(soldier_type)
-    return promiseOfSoldier(self.finish_soldier_callbacks, soldier_type)
-end
-
 return HospitalUpgradeBuilding
 
 

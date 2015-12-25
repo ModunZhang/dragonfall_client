@@ -1057,8 +1057,6 @@ function City:CreateDecorator(current_time, decorator_building)
     assert(self:GetDecoratorsByLocationId(tile.location_id)[sub_location] == nil)
     self:GetDecoratorsByLocationId(tile.location_id)[sub_location] = decorator_building
 
-    self:OnCreateDecorator(current_time, decorator_building)
-
     self:CheckIfDecoratorsIntersectWithRuins()
     self:NotifyListeneOnType(City.LISTEN_TYPE.CREATE_DECORATOR, function(listener)
         listener:OnCreateDecorator(decorator_building)
@@ -1134,8 +1132,6 @@ function City:DestoryDecoratorByPosition(current_time, x, y)
                 return true
             end
         end)
-
-        self:OnDestoryDecorator(current_time, destory_decorator)
 
         self:NotifyListeneOnType(City.LISTEN_TYPE.DESTROY_DECORATOR, function(listener)
             listener:OnDestoryDecorator(destory_decorator, release_ruins)
@@ -1239,16 +1235,6 @@ function City:OnHouseChanged(userData, current_time, deltaData)
         end)
     end)
     return true, is_unlock_any_tiles, unlock_table
-end
-function City:OnCreateDecorator(current_time, building)
-end
-function City:OnDestoryDecorator(current_time, building)
-end
-function City:OnBuildingUpgradingBegin(building, current_time)
-end
-function City:OnBuildingUpgrading(building, current_time)
-end
-function City:OnBuildingUpgradeFinished(building)
 end
 function City:LockTilesByIndexArray(index_array)
     table.foreach(index_array, function(_, index)
@@ -1403,21 +1389,6 @@ function City:GenerateTowers(walls)
     end
 
     self.visible_towers = visible_tower
-end
-
---
-function City:PromiseOfRecruitSoldier(soldier_type)
-    return self:GetFirstBuildingByType("barracks"):PromiseOfRecruitSoldier(soldier_type)
-end
-function City:PromiseOfFinishSoldier(soldier_type)
-    return self:GetFirstBuildingByType("barracks"):PromiseOfFinishSoldier(soldier_type)
-end
---
-function City:PromiseOfTreatSoldier(soldier_type)
-    return self:GetFirstBuildingByType("hospital"):PromiseOfTreatSoldier(soldier_type)
-end
-function City:PromiseOfFinishTreatSoldier(soldier_type)
-    return self:GetFirstBuildingByType("hospital"):PromiseOfFinishTreatSoldier(soldier_type)
 end
 --
 function City:PromiseOfFinishEquipementDragon()

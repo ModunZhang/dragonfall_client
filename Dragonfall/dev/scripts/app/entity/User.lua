@@ -1823,7 +1823,27 @@ local after_map = {
         if ok then
             check_function(userData.finish_upgrade_callbacks, value)
         end
-    end
+    end,
+    soldierEvents = function(userData, deltaData)
+        local ok,value = deltaData("soldierEvents.add")
+        if ok then
+            check_function(userData.begin_recruit_callbacks, value)
+        end
+        local ok,value = deltaData("soldierEvents.remove")
+        if ok then
+            check_function(userData.finish_recruit_callbacks, value)
+        end
+    end,
+    treatSoldierEvents = function(userData, deltaData)
+        local ok,value = deltaData("treatSoldierEvents.add")
+        if ok then
+            check_function(userData.begin_treat_callbacks, value)
+        end
+        local ok,value = deltaData("treatSoldierEvents.remove")
+        if ok then
+            check_function(userData.finish_treat_callbacks, value)
+        end
+    end,
 }
 function User:OnUserDataChanged(userData, deltaData)
     for k,v in pairs(userData) do
@@ -2013,6 +2033,50 @@ function User:PromiseOfFinishUpgrading()
 
     local p = promise.new()
     table.insert(self.finish_upgrade_callbacks, function(v)
+        return p:resolve()
+    end)
+    return p
+end
+function User:PromiseOfBeginRecruit()
+    self.begin_recruit_callbacks = self.begin_recruit_callbacks or {}
+
+    assert(#self.begin_recruit_callbacks == 0)
+
+    local p = promise.new()
+    table.insert(self.begin_recruit_callbacks, function(v)
+        return p:resolve()
+    end)
+    return p
+end
+function User:PromiseOfFinishRecruit()
+    self.finish_recruit_callbacks = self.finish_recruit_callbacks or {}
+
+    assert(#self.finish_recruit_callbacks == 0)
+
+    local p = promise.new()
+    table.insert(self.finish_recruit_callbacks, function(v)
+        return p:resolve()
+    end)
+    return p
+end
+function User:PromiseOfBeginTreat()
+    self.begin_treat_callbacks = self.begin_treat_callbacks or {}
+
+    assert(#self.begin_treat_callbacks == 0)
+
+    local p = promise.new()
+    table.insert(self.begin_treat_callbacks, function(v)
+        return p:resolve()
+    end)
+    return p
+end
+function User:PromiseOfFinishTreat()
+    self.finish_treat_callbacks = self.finish_treat_callbacks or {}
+
+    assert(#self.finish_treat_callbacks == 0)
+
+    local p = promise.new()
+    table.insert(self.finish_treat_callbacks, function(v)
         return p:resolve()
     end)
     return p
