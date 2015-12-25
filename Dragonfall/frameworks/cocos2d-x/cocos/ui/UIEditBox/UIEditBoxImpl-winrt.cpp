@@ -87,53 +87,63 @@ void EditBoxWinRT::OpenXamlEditBox(Platform::String^ strText)
     {
         critical_section::scoped_lock lock(m_criticalSection);
         m_strText = strText;
-        auto item = findXamlElement(m_panel.Get(), "cocos2d_editbox");
-        if (item != nullptr)
-        {
-            Controls::Button^ button = dynamic_cast<Controls::Button^>(item);
-            if (button)
-            {
-                m_flyout = dynamic_cast<Flyout^>(button->Flyout);
-                if (m_flyout)
-                {
-                    if (m_inputFlag == EditBox::InputFlag::PASSWORD)
-                    {
-                        SetupPasswordBox();
-                    }
-                    else
-                    {
-                        SetupTextBox();
-                    }
-
-                    auto doneButton = findXamlElement(m_flyout->Content, "cocos2d_editbox_done");
-                    if (doneButton != nullptr)
-                    {
-                        m_doneButton = dynamic_cast<Controls::Button^>(doneButton);
-                        m_doneToken = m_doneButton->Click += ref new RoutedEventHandler(this, &EditBoxWinRT::Done);
-                    }
-
-                    auto cancelButton = findXamlElement(m_flyout->Content, "cocos2d_editbox_cancel");
-                    if (cancelButton != nullptr)
-                    {
-                        m_cancelButton = dynamic_cast<Controls::Button^>(cancelButton);
-                        m_cancelToken = m_cancelButton->Click += ref new RoutedEventHandler(this, &EditBoxWinRT::Cancel);
-                    }
-                }
-            }
-
-            if (m_flyout)
-            {
-                auto inputPane = InputPane::GetForCurrentView();
-                m_hideKeyboardToken = inputPane->Hiding += ref new TypedEventHandler<InputPane^, InputPaneVisibilityEventArgs^>(this, &EditBoxWinRT::HideKeyboard);
-
-                m_closedToken = m_flyout->Closed += ref new EventHandler<Platform::Object^>(this, &EditBoxWinRT::Closed);
-                m_flyout->ShowAt(m_panel.Get());
-            }
-        }
+		auto item = findXamlElement(m_panel.Get(), "cocos2d_editbox_grid");
+		if (item != nullptr)
+		{
+			m_Grid = dynamic_cast<Controls::StackPanel^>(item);
+			if (m_Grid)
+			{
+				if (m_inputFlag == EditBox::InputFlag::PASSWORD)
+				{
+					SetupPasswordBox();
+				}
+				else
+				{
+					SetupTextBox();
+				}
+				
+			}
+		}
+		if (m_Grid)
+		{
+			auto doneButton = findXamlElement(m_Grid, "cocos2d_editbox_done");
+			if (doneButton != nullptr)
+			{
+				m_doneButton = dynamic_cast<Controls::Button^>(doneButton);
+				m_doneToken = m_doneButton->Click += ref new RoutedEventHandler(this, &EditBoxWinRT::Done);
+			}
+			auto inputPane = InputPane::GetForCurrentView();
+			m_hideKeyboardToken = inputPane->Hiding += ref new TypedEventHandler<InputPane^, InputPaneVisibilityEventArgs^>(this, &EditBoxWinRT::HideKeyboard);
+			m_closedToken = m_Grid->Tapped += ref new TappedEventHandler(this, &EditBoxWinRT::Closed);
+			m_Grid->Visibility = Windows::UI::Xaml::Visibility::Visible;
+			
+			if (m_inputFlag == EditBox::InputFlag::PASSWORD)
+			{
+				m_cancelToken = m_passwordBox->LostFocus += ref new RoutedEventHandler(this, &EditBoxWinRT::Cancel);
+				m_keyDownToken = m_passwordBox->KeyDown += ref new Input::KeyEventHandler(this, &EditBoxWinRT::OnKeyDown);
+				m_passwordBox->Focus(Windows::UI::Xaml::FocusState::Keyboard);
+			}
+			else
+			{
+				m_keyDownToken = m_textBox->KeyDown += ref new Input::KeyEventHandler(this, &EditBoxWinRT::OnKeyDown);
+				m_cancelToken = m_textBox->LostFocus += ref new RoutedEventHandler(this, &EditBoxWinRT::Cancel);
+				m_textBox->Focus(Windows::UI::Xaml::FocusState::Keyboard);
+			}
+		}
     }));
 }
 
-void EditBoxWinRT::Closed(Platform::Object^ sender, Platform::Object^ e)
+void EditBoxWinRT::OnKeyDown(Platform::Object^ sender, Windows::UI::Xaml::Input::KeyRoutedEventArgs^ e)
+{
+	if (e->Key == Windows::System::VirtualKey::Enter)
+	{
+		QueueText();
+		HideFlyout();
+		e->Handled = true;
+	}
+}
+
+void EditBoxWinRT::Closed(Platform::Object^ sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs^ e)
 {
     critical_section::scoped_lock lock(m_criticalSection);
     RemoveControls();
@@ -159,10 +169,10 @@ void EditBoxWinRT::HideKeyboard(Windows::UI::ViewManagement::InputPane^ inputPan
 void EditBoxWinRT::HideFlyout()
 {
     critical_section::scoped_lock lock(m_criticalSection);
-    if (m_flyout)
-    {
-        m_flyout->Hide();
-    }
+	if (m_Grid && m_Grid->Visibility == Windows::UI::Xaml::Visibility::Visible)
+	{
+		m_Grid->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
+	}
 }
 
 void EditBoxWinRT::RemoveControls()
@@ -173,6 +183,12 @@ void EditBoxWinRT::RemoveControls()
         m_dispatcher.Get()->RunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal, ref new DispatchedHandler([this]()
         {
             critical_section::scoped_lock lock(m_criticalSection);
+			if (m_Grid != nullptr)
+			{
+				m_Grid->Tapped -= m_closedToken;
+				m_Grid->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
+				m_Grid = nullptr;
+			}
 
             if (m_doneButton != nullptr)
             {
@@ -180,21 +196,19 @@ void EditBoxWinRT::RemoveControls()
                 m_doneButton = nullptr;
             }
  
-            if (m_cancelButton != nullptr)
+            if (m_textBox != nullptr)
             {
-                m_cancelButton->Click -= m_cancelToken;
-                m_cancelButton = nullptr;
+				m_textBox->LostFocus -= m_cancelToken;
+				m_textBox->KeyDown -= m_keyDownToken;
+				m_textBox = nullptr;
             }
 
-            m_textBox = nullptr;
-            m_passwordBox = nullptr;
-
-            if (m_flyout != nullptr)
-            {
-                m_flyout->Closed -= m_closedToken;
-                m_flyout = nullptr;
-            }
-
+           if (m_passwordBox != nullptr)
+           {
+			   m_passwordBox->KeyDown -= m_keyDownToken;
+			   m_passwordBox->LostFocus -= m_cancelToken;
+			   m_passwordBox = nullptr;
+           }
             auto inputPane = InputPane::GetForCurrentView();
             inputPane->Hiding -= m_hideKeyboardToken;
         }));
@@ -203,14 +217,12 @@ void EditBoxWinRT::RemoveControls()
 
 void EditBoxWinRT::RemoveTextBox()
 {
-    auto g = findXamlElement(m_flyout->Content, "cocos2d_editbox_grid");
-    auto grid = dynamic_cast<Grid^>(g);
-    auto box = findXamlElement(m_flyout->Content, "cocos2d_editbox_textbox");
-
-    if (box)
-    {
-        removeXamlElement(grid, box);
-    }
+	if (m_Grid == nullptr) { return; }
+	auto box = findXamlElement(m_Grid, "cocos2d_editbox_textbox");
+	if (box)
+	{
+		removeXamlElement(m_Grid, box);
+	}
 }
 
 void EditBoxWinRT::SetupTextBox()
@@ -219,16 +231,14 @@ void EditBoxWinRT::SetupTextBox()
     m_textBox = ref new TextBox;
     m_textBox->Text = m_strText;
     m_textBox->Name = "cocos2d_editbox_textbox";
-    m_textBox->MinWidth = 200;
-	m_textBox->Width = m_panel->ActualWidth;
     m_textBox->PlaceholderText = m_strPlaceholder;
     m_textBox->Select(m_textBox->Text->Length(), 0);
     m_textBox->MaxLength = m_maxLength < 0 ? 0 : m_maxLength;
 	m_textBox->Margin = 0;
     SetInputScope(m_textBox, m_inputMode);
-    auto g = findXamlElement(m_flyout->Content, "cocos2d_editbox_grid");
-    auto grid = dynamic_cast<Grid^>(g);
-    grid->Children->InsertAt(0, m_textBox);
+	m_textBox->Height = 24;
+	m_textBox->VerticalAlignment = Windows::UI::Xaml::VerticalAlignment::Top;
+	m_Grid->Children->InsertAt(0, m_textBox);
 }
 
 void EditBoxWinRT::SetupPasswordBox()
@@ -240,12 +250,10 @@ void EditBoxWinRT::SetupPasswordBox()
     m_passwordBox->Name = "cocos2d_editbox_textbox";
     m_passwordBox->SelectAll();
     m_passwordBox->PlaceholderText = m_strPlaceholder;
-	m_textBox->Width = m_panel->ActualWidth;
-	m_textBox->Margin = 0;
     m_passwordBox->MaxLength = m_maxLength < 0 ? 0 : m_maxLength;
-    auto g = findXamlElement(m_flyout->Content, "cocos2d_editbox_grid");
-    auto grid = dynamic_cast<Grid^>(g);
-    grid->Children->InsertAt(0, m_passwordBox);
+	m_passwordBox->Height = 24;
+	m_passwordBox->VerticalAlignment = Windows::UI::Xaml::VerticalAlignment::Top;
+	m_Grid->Children->InsertAt(0, m_passwordBox);
 }
 
 

@@ -57,7 +57,8 @@ namespace ui {
 
         void Done(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
         void Cancel(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
-        void Closed(Platform::Object^ sender, Platform::Object^ e);
+        void Closed(Platform::Object^ sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs^ e);
+		void OnKeyDown(Platform::Object^ sender, Windows::UI::Xaml::Input::KeyRoutedEventArgs^ e);
         void HideKeyboard(Windows::UI::ViewManagement::InputPane^ inputPane, Windows::UI::ViewManagement::InputPaneVisibilityEventArgs^ args);
         void HideFlyout();
 
@@ -67,7 +68,7 @@ namespace ui {
 
         Windows::UI::Xaml::Controls::TextBox^ m_textBox;
         Windows::UI::Xaml::Controls::PasswordBox^ m_passwordBox;
-        Windows::UI::Xaml::Controls::Flyout^ m_flyout;
+        Windows::UI::Xaml::Controls::StackPanel^ m_Grid;
         Windows::UI::Xaml::Controls::Button^ m_doneButton;
         Windows::UI::Xaml::Controls::Button^ m_cancelButton;
 
@@ -75,6 +76,7 @@ namespace ui {
         Windows::Foundation::EventRegistrationToken m_cancelToken;
         Windows::Foundation::EventRegistrationToken m_closedToken;
         Windows::Foundation::EventRegistrationToken m_hideKeyboardToken;
+		Windows::Foundation::EventRegistrationToken m_keyDownToken;
 
         Concurrency::critical_section m_criticalSection;
 

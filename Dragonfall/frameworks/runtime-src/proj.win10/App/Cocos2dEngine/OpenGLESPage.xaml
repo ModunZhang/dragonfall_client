@@ -13,28 +13,9 @@
                        Height="{Binding Path=ActualHeight,ElementName=swapChainPanel}"/>
             </Canvas>
         </Grid>
-        <Button x:Name="cocos2d_editbox" Visibility="Collapsed" Height="1">
-            <Button.Flyout>
-                <Flyout x:Name="cocos2d_editbox_flyout">
-                    <Flyout.FlyoutPresenterStyle>
-                        <Style TargetType="FlyoutPresenter">
-                            <Setter Property="Padding" Value="0"/>
-                            <Setter Property="BorderBrush" Value="Transparent"/>
-                            <Setter Property="BorderThickness" Value="0"/>
-                        </Style>
-                    </Flyout.FlyoutPresenterStyle>
-                    <Grid VerticalAlignment="Top" x:Name="cocos2d_editbox_grid">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Button x:Name="cocos2d_editbox_done" Grid.Row="1" HorizontalAlignment="Right" Background="Black" Margin="0,2,0,2">Done</Button>
-                    </Grid>
-                </Flyout>
-            </Button.Flyout>
-        </Button>
+        <StackPanel Background="Transparent" x:Name="cocos2d_editbox_grid" VerticalAlignment="Top" Height="{Binding Path=ActualHeight,ElementName=swapChainPanel}" Visibility="Collapsed">
+            <!--<TextBox PlaceholderText="hell world" Height="24" VerticalAlignment="Top" ></TextBox>-->
+            <Button x:Name="cocos2d_editbox_done" HorizontalAlignment="Right" Background="Black" Margin="0,2,0,2" Visibility='Collapsed'>Done</Button>
+        </StackPanel>
     </SwapChainPanel>
 </Page>
