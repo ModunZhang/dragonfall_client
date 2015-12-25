@@ -123,7 +123,7 @@ function GameUIBarracks:CreateSoldierUI()
         {"swordsman_3", "ranger_3", "lancer_3", "catapult_3"},
         {"sentinel_3", "crossbowman_3", "horseArcher_3", "ballista_3"},
     }) do
-        local item = self:CreateSpecialItemWithListView(self.list_view, v,titles[i].title, titles[i].title_img,i == 1 and _("此系列单位生命属性较高") or _("此系列单位攻击属性较高"))
+        local item = self:CreateSpecialItemWithListView(self.list_view, v,titles[i].title, titles[i].title_img)
         self.list_view:addItem(item)
     end
 
