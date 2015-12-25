@@ -46,10 +46,13 @@ function UtilsForBuilding:GetEfficiencyBy(userData, name, offset)
     return self:GetPropertyBy(userData, name, "efficiency", offset)
 end
 function UtilsForBuilding:GetPropertyBy(userData, name, property, offset)
+    return self:GetConfigBy(userData, name, offset)[property]
+end
+function UtilsForBuilding:GetConfigBy(userData, name, offset)
     offset = offset or 0
     local configs = self:GetBuildingConfig(name)
     for _,building in ipairs(self:GetBuildingsBy(userData, name)) do
-        return configs[building.level + offset][property]
+        return configs[building.level + offset]
     end
 end
 
@@ -340,5 +343,3 @@ function UtilsForBuilding:GetToolShopNeedByCategory(userData, category)
     end
     assert(false)
 end
-
-

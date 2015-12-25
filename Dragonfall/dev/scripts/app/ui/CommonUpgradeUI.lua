@@ -401,21 +401,28 @@ function CommonUpgradeUI:SetUpgradeEfficiency()
     elseif self.building:GetType()=="miner" then
         eff_node:AddItem( bd.miner_poduction, formatNumber(building:GetProductionPerHour()), formatNumber(building:GetNextLevelProductionPerHour() - building:GetProductionPerHour()) )
     elseif self.building:GetType()=="wall" then
-        local current_config = self.building:GetWallConfig()
-        local next_config = self.building:GetWallNextLevelConfig()
-        eff_node:AddItem( _("城墙血量"),formatNumber(current_config.wallHp),formatNumber(next_config.wallHp - current_config.wallHp) )
-        eff_node:AddItem( _("城墙血量每小时回复"),current_config.wallRecovery,next_config.wallRecovery - current_config.wallRecovery)
+        local wallHp = UtilsForBuilding:GetPropertyBy(User, "wall", "wallHp")
+        local next_wallHp = UtilsForBuilding:GetPropertyBy(User, "wall", "wallHp", 1)
+        
+        local wallRecovery = UtilsForBuilding:GetPropertyBy(User, "wall", "wallRecovery")
+        local next_wallRecovery = UtilsForBuilding:GetPropertyBy(User, "wall", "wallRecovery", 1)
+
+        eff_node:AddItem(_("城墙血量"),formatNumber(wallHp),formatNumber(next_wallHp - wallHp))
+        eff_node:AddItem(_("城墙血量每小时回复"), wallRecovery, next_wallRecovery - wallRecovery)
     elseif self.building:GetType()=="tower" then
-        local current_config = self.building:GetTowerConfig()
-        local next_config = self.building:GetTowerNextLevelConfig()
-        eff_node:AddItem( _("攻击"),formatNumber(current_config.infantry),formatNumber(next_config.infantry - current_config.infantry) )
-        eff_node:AddItem( _("防御力"),formatNumber(current_config.defencePower),formatNumber(next_config.defencePower - current_config.defencePower) )
+        local infantry = UtilsForBuilding:GetPropertyBy(User, "tower", "infantry")
+        local next_infantry = UtilsForBuilding:GetPropertyBy(User, "tower", "infantry", 1)
+
+        local defencePower = UtilsForBuilding:GetPropertyBy(User, "tower", "defencePower")
+        local next_defencePower = UtilsForBuilding:GetPropertyBy(User, "tower", "defencePower", 1)
+
+        eff_node:AddItem(_("攻击"),formatNumber(infantry),formatNumber(next_infantry - infantry))
+        eff_node:AddItem(_("防御力"),formatNumber(defencePower),formatNumber(next_defencePower - defencePower))
     elseif self.building:GetType()=="academy" then
-        local level = UtilsForBuilding:GetBuildingBy(User, "academy")
-        local current_config = UtilsForBuilding:GetBuildingConfig(buildingName)[level]
-        local next_config = UtilsForBuilding:GetBuildingConfig(buildingName)[level + 1]
-        local added = next_config.efficiency - current_config.efficiency
-        eff_node:AddItem( _("学院科技研发速度"),current_config.efficiency * 100, added > 0 and (added * 100) .. "%" or "" )
+        local efficiency = UtilsForBuilding:GetEfficiencyBy(User, "academy")
+        local next_efficiency = UtilsForBuilding:GetEfficiencyBy(User, "academy", 1)
+        local added = next_efficiency - efficiency
+        eff_node:AddItem( _("学院科技研发速度"),efficiency * 100, added > 0 and (added * 100) .. "%" or "" )
     elseif self.building:GetType()=="tradeGuild" then
         local cart = self.building:GetMaxCart()
         local next_cart = self.building:GetNextLevelMaxCart()
