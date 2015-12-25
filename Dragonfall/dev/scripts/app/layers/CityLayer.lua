@@ -143,7 +143,6 @@ function CityLayer:OnTileLocked(city)
 end
 function CityLayer:OnTileUnlocked(city)
     self:OnTileChanged(city)
-    print("OnTileUnlocked")
 end
 function CityLayer:OnTileChanged(city)
     self:UpdateRuinsVisibleWithCity(city)

@@ -1787,6 +1787,15 @@ local before_map = {
         userData:RefreshOutput()
     end,
 }
+local function check_function(callbacks, value)
+    if type(callbacks) == "table" then
+        for i,v in ipairs(value) do
+            if #callbacks > 0 and callbacks[1](v) then
+                table.remove(callbacks, 1)
+            end
+        end
+    end
+end
 local after_map = {
     growUpTasks = function(userData)
         if userData.reward_callback and
@@ -1795,6 +1804,26 @@ local after_map = {
             userData.reward_callback = nil
         end
     end,
+    buildingEvents = function(userData, deltaData)
+        local ok,value = deltaData("buildingEvents.add")
+        if ok then
+            check_function(userData.begin_upgrade_callbacks, value)
+        end
+        local ok,value = deltaData("buildingEvents.remove")
+        if ok then
+            check_function(userData.finish_upgrade_callbacks, value)
+        end
+    end,
+    houseEvents = function(userData, deltaData)
+        local ok,value = deltaData("houseEvents.add")
+        if ok then
+            check_function(userData.begin_upgrade_callbacks, value)
+        end
+        local ok,value = deltaData("houseEvents.remove")
+        if ok then
+            check_function(userData.finish_upgrade_callbacks, value)
+        end
+    end
 }
 function User:OnUserDataChanged(userData, deltaData)
     for k,v in pairs(userData) do
@@ -1957,8 +1986,7 @@ function User:OnPropertyChange(property_name, old_value, new_value)
 end
 
 
-
---
+-- promise
 local promise = import("..utils.promise")
 function User:PromiseOfGetCityBuildRewards()
     local p = promise.new()
@@ -1967,7 +1995,28 @@ function User:PromiseOfGetCityBuildRewards()
     end
     return p
 end
+function User:PromiseOfBeginUpgrading()
+    self.begin_upgrade_callbacks = self.begin_upgrade_callbacks or {}
 
+    assert(#self.begin_upgrade_callbacks == 0)
+
+    local p = promise.new()
+    table.insert(self.begin_upgrade_callbacks, function(v)
+        return p:resolve()
+    end)
+    return p
+end
+function User:PromiseOfFinishUpgrading()
+    self.finish_upgrade_callbacks = self.finish_upgrade_callbacks or {}
+
+    assert(#self.finish_upgrade_callbacks == 0)
+
+    local p = promise.new()
+    table.insert(self.finish_upgrade_callbacks, function(v)
+        return p:resolve()
+    end)
+    return p
+end
 return User
 
 

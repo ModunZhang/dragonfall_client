@@ -61,18 +61,14 @@ function City:ctor(user)
     self.belong_user = user
     self.buildings = {}
     self.walls = {}
-    self.gate = GateEntity.new({building_type = "wall", city = self}):AddUpgradeListener(self)
-    self.tower = TowerEntity.new({building_type = "tower", city = self}):AddUpgradeListener(self)
+    self.gate = GateEntity.new({building_type = "wall", city = self})
+    self.tower = TowerEntity.new({building_type = "tower", city = self})
     self.visible_towers = {}
     self.decorators = {}
     self.need_update_buildings = {}
     self.building_location_map = {}
     self:InitLocations()
     self:InitRuins()
-
-    -- fte
-    self.upgrading_building_callbacks = {}
-    self.finish_upgrading_callbacks = {}
 end
 --------------------
 function City:GetRecommendTask()
@@ -385,14 +381,7 @@ function City:InitWithJsonData(userData)
     return self
 end
 function City:ResetAllListeners()
-    self.upgrading_building_callbacks = {}
-    self.finish_upgrading_callbacks = {}
-
     self:ClearAllListener()
-    self:IteratorCanUpgradeBuildings(function(building)
-        building:ResetAllListeners()
-        building:AddUpgradeListener(self)
-    end)
 end
 function City:NewBuildingWithType(building_type, x, y, w, h, level, finish_time)
     return BuildingRegister[building_type].new{
@@ -447,7 +436,6 @@ function City:InitBuildings(buildings)
             assert(not self[type_])
             self[type_] = building
         end
-        building:AddUpgradeListener(self)
     end)
 end
 function City:InitLocations()
@@ -460,8 +448,6 @@ end
 function City:InitDecorators(decorators)
     self.decorators = decorators
     table.foreach(decorators, function(key, building)
-        building:AddUpgradeListener(self)
-
         local tile = self:GetTileWhichBuildingBelongs(building)
         local sub_location = tile:GetBuildingLocation(building)
         assert(sub_location)
@@ -1255,18 +1241,14 @@ function City:OnHouseChanged(userData, current_time, deltaData)
     return true, is_unlock_any_tiles, unlock_table
 end
 function City:OnCreateDecorator(current_time, building)
-    building:AddUpgradeListener(self)
 end
 function City:OnDestoryDecorator(current_time, building)
-    building:RemoveUpgradeListener(self)
 end
 function City:OnBuildingUpgradingBegin(building, current_time)
-    self:CheckUpgradingBuildingPormise(building)
 end
 function City:OnBuildingUpgrading(building, current_time)
 end
 function City:OnBuildingUpgradeFinished(building)
-    self:CheckFinishUpgradingBuildingPormise(building)
 end
 function City:LockTilesByIndexArray(index_array)
     table.foreach(index_array, function(_, index)
@@ -1307,19 +1289,8 @@ function City:UnlockTilesByIndex(x, y)
     self:NotifyListeneOnType(City.LISTEN_TYPE.UNLOCK_TILE, function(listener)
         listener:OnTileUnlocked(city, x, y)
     end)
-    -- 检查是否解锁完一圈
-    -- local round = self:GetAroundByPosition(x, y)
-    -- if self:IsUnlockedInAroundNumber(round) then
-    --     self:NotifyListeneOnType(City.LISTEN_TYPE.UNLOCK_ROUND, function(listener)
-    --         listener:OnRoundUnlocked(round)
-    --     end)
-    -- end
     return success, ret_code
 end
--- function City:OnInitBuilding(building)
---     building.city = self
---     building:AddUpgradeListener(self)
--- end
 ---------
 local function find_beside_wall(walls, wall)
     for i, v in ipairs(walls) do
@@ -1434,34 +1405,6 @@ function City:GenerateTowers(walls)
     self.visible_towers = visible_tower
 end
 
--- promise
-local function promiseOfBuilding(callbacks, building_type, level)
-    assert(#callbacks == 0)
-    local p = promise.new()
-    insert(callbacks, function(building)
-        if building_type == nil or (building:GetType() == building_type and (not level or level == building:GetLevel())) then
-            return p:resolve(building)
-        end
-    end)
-    return p
-end
-local function checkBuilding(callbacks, building)
-    if #callbacks > 0 and callbacks[1](building) then
-        table.remove(callbacks, 1)
-    end
-end
-function City:PromiseOfUpgradingByLevel(building_type, level)
-    return promiseOfBuilding(self.upgrading_building_callbacks, building_type, level)
-end
-function City:CheckUpgradingBuildingPormise(building)
-    return checkBuilding(self.upgrading_building_callbacks, building)
-end
-function City:PromiseOfFinishUpgradingByLevel(building_type, level)
-    return promiseOfBuilding(self.finish_upgrading_callbacks, building_type, level)
-end
-function City:CheckFinishUpgradingBuildingPormise(building)
-    return checkBuilding(self.finish_upgrading_callbacks, building)
-end
 --
 function City:PromiseOfRecruitSoldier(soldier_type)
     return self:GetFirstBuildingByType("barracks"):PromiseOfRecruitSoldier(soldier_type)
