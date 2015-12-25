@@ -1390,26 +1390,10 @@ function City:GenerateTowers(walls)
 
     self.visible_towers = visible_tower
 end
---
-function City:PromiseOfFinishEquipementDragon()
-    return self:GetDragonEyrie():GetDragonManager():PromiseOfFinishEquipementDragon()
-end
 
 function City:GetWatchTowerLevel()
     local watch_tower = self:GetFirstBuildingByType("watchTower")
     return watch_tower and watch_tower:GetLevel() or 0
-end
-
-function City:GeneralProductionLocalPush(productionTechnologyEvent)
-    if ext and ext.localpush then
-        local title = productionTechnologyEvent:GetBuffLocalizedDescComplete()
-        app:GetPushManager():UpdateTechnologyPush(productionTechnologyEvent:FinishTime(),title,productionTechnologyEvent:Id())
-    end
-end
-function City:CancelProductionLocalPush(Id)
-    if ext and ext.localpush then
-        app:GetPushManager():CancelTechnologyPush(Id)
-    end
 end
 
 

@@ -321,7 +321,6 @@ function DragonManager:RefreshDragonData( dragons,resource_refresh_time,hp_recov
             end
         end
     end
-    self:CheckFinishEquipementDragonPormise()
 end
 
 
@@ -394,28 +393,6 @@ function DragonManager:OnHPChanged()
     end)
 end
 --新手引导
-DragonManager.promise_callbacks = {}
-function DragonManager:PromiseOfFinishEquipementDragon()
-    local p = promise.new()
-    table.insert(self.promise_callbacks, function(dragon)
-        if dragon:Ishated() then
-            for _,eq in pairs(dragon:Equipments()) do
-                if eq:IsLoaded() then
-                    return p:resolve()
-                end
-            end
-        end
-    end)
-    return p
-end
-
-function DragonManager:CheckFinishEquipementDragonPormise()
-    for _,dragon in pairs(self:GetDragons()) do
-        if #self.promise_callbacks > 0 and self.promise_callbacks[1](dragon) then
-            table.remove(self.promise_callbacks, 1)
-        end
-    end
-end
 function DragonManager:PromiseOfHate()
     local p = promise.new()
     DragonManager.hate_callback = function()
