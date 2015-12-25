@@ -365,8 +365,7 @@ function GameUIUnlockBuilding:PormiseOfFte()
     self:GetFteLayer().arrow = WidgetFteArrow.new(str):addTo(self:GetFteLayer())
         :TurnRight():align(display.RIGHT_CENTER, r.x - 20, r.y + r.height/2)
 
-
-    return self.city:PromiseOfUpgradingByLevel(self.building:GetType())
+    return self.city:GetUser():PromiseOfBeginUpgrading()
 end
 
 

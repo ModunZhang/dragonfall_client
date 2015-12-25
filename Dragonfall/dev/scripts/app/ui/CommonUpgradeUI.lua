@@ -316,28 +316,18 @@ function CommonUpgradeUI:SetUpgradeEfficiency()
     local eff_node = self.eff_node
     eff_node.items = nil
     eff_node:removeAllChildren()
-
+    local User = self.city:GetUser()
     local bd = Localize.building_description
     local building = self.building
     local efficiency = ""
     local formatNumber = string.formatnumberthousands
     if building:GetType() == "keep" then
-        eff_node:AddItem( bd.unlock, building:GetUnlockPoint(), building:GetNextLevelUnlockPoint() - building:GetUnlockPoint() )
-        eff_node:AddItem( bd.beHelpCount, building:GetBeHelpedCount(), building:GetNextLevelBeHelpedCount() - building:GetBeHelpedCount() )
-        -- local unlock_point = building:GetNextLevelUnlockPoint() - building:GetUnlockPoint()
-        -- if unlock_point > 0 then
-        --     efficiency = efficiency..string.format("%s+%d,",bd.unlock,unlock_point)
-        -- end
-        -- local be_helped_count = building:GetNextLevelBeHelpedCount()-building:GetBeHelpedCount()
-        -- if be_helped_count>0 then
-        --     efficiency = efficiency.. string.format("%s+%d,",bd.beHelpCount,be_helped_count)
-        -- end
+        local unlock_point = UtilsForBuilding:GetUnlockPoint(User)
+        local helped_count = UtilsForBuilding:GetBeHelpedCount(User)
+        eff_node:AddItem( bd.unlock, unlock_point, UtilsForBuilding:GetUnlockPoint(User, 1) - unlock_point )
+        eff_node:AddItem( bd.beHelpCount, helped_count, UtilsForBuilding:GetBeHelpedCount(User, 1) - helped_count )
     elseif self.building:GetType()=="dragonEyrie" then
         eff_node:AddItem( bd.vitalityRecoveryPerHour, formatNumber(building:GetHPRecoveryPerHourWithoutBuff()), formatNumber(building:GetNextLevelHPRecoveryPerHour() - building:GetHPRecoveryPerHourWithoutBuff()) )
-        -- local additon = building:GetNextLevelHPRecoveryPerHour()-building:GetHPRecoveryPerHourWithoutBuff()
-        -- if additon>0 then
-        --     efficiency = efficiency .. string.format("%s+%d,",bd.vitalityRecoveryPerHour,additon)
-        -- end
     elseif self.building:GetType()=="watchTower" then
         local warning = GameDatas.ClientInitGame.watchTower
         efficiency = string.format(bd["watchTower_"..self.building:GetLevel()],warning[self.building:GetLevel()].waringMinute)
@@ -348,11 +338,9 @@ function CommonUpgradeUI:SetUpgradeEfficiency()
             color = 0x615b44
         }):align(display.LEFT_TOP,0,240):addTo(eff_node)
     elseif self.building:GetType()=="warehouse" then
-        eff_node:AddItem( bd.warehouse_max, formatNumber(building:GetResourceValueLimit()), formatNumber(building:GetResourceNextLevelValueLimit() - building:GetResourceValueLimit()) )
-        -- local additon = building:GetResourceNextLevelValueLimit()-building:GetResourceValueLimit()
-        -- if additon>0 then
-        --     efficiency = string.format("%s+%s,",bd.warehouse_max,string.formatnumberthousands(additon))
-        -- end
+        local limit = UtilsForBuilding:GetWarehouseLimit(User).maxWood
+        local next_limit = UtilsForBuilding:GetWarehouseLimit(User, 1).maxWood
+        eff_node:AddItem(bd.warehouse_max, formatNumber(limit), formatNumber(next_limit - limit))
     elseif self.building:GetType()=="toolShop" then
         eff_node:AddItem( bd.poduction, formatNumber(building:GetProduction()), formatNumber(building:GetNextLevelProduction() - building:GetProduction()) )
         eff_node:AddItem( _("一次随机制造种类"), formatNumber(building:GetProductionType()), formatNumber(building:GetNextLevelProductionType() - building:GetProductionType()) )
@@ -378,11 +366,8 @@ function CommonUpgradeUI:SetUpgradeEfficiency()
         --     efficiency = string.format("%s+%d,",bd.maxMaterial,additon)
         -- end
     elseif self.building:GetType()=="barracks" then
-        eff_node:AddItem( bd.maxRecruit, formatNumber(building:GetMaxRecruitSoldierCount()), formatNumber(building:GetNextLevelMaxRecruitSoldierCount() - building:GetMaxRecruitSoldierCount()) )
-        -- local additon = building:GetNextLevelMaxRecruitSoldierCount()-building:GetMaxRecruitSoldierCount()
-        -- if additon>0 then
-        --     efficiency = string.format("%s+%d,",bd.maxRecruit,additon)
-        -- end
+        local max = UtilsForBuilding:GetMaxRecruitSoldier(User)
+        eff_node:AddItem(bd.maxRecruit, formatNumber(max), formatNumber(UtilsForBuilding:GetMaxRecruitSoldier(User, 1) - max))
     elseif self.building:GetType()=="blackSmith" then
         local added = building:GetNextLevelEfficiency() - building:GetEfficiency()
         eff_node:AddItem( bd.blackSmith_efficiency, (building:GetEfficiency()*100).."%", added > 0 and added * 100 .. "%" or "")
@@ -445,12 +430,9 @@ function CommonUpgradeUI:SetUpgradeEfficiency()
         --     efficiency = efficiency..string.format("%s+%.1f%%,",bd.stoneMason_protection,addtion)
         -- end
     elseif self.building:GetType()=="hospital" then
-        eff_node:AddItem( bd.maxCasualty, formatNumber(building:GetMaxCasualty()), formatNumber(building:GetNextLevelMaxCasualty() - building:GetMaxCasualty()) )
-
-        -- local addtion = building:GetNextLevelMaxCasualty()-building:GetMaxCasualty()
-        -- if addtion>0 then
-        --     efficiency = string.format("%s+%d,",bd.maxCasualty,addtion)
-        -- end
+        local maxcasualty = UtilsForBuilding:GetMaxCasualty(User)
+        local nextmaxcasualty = UtilsForBuilding:GetMaxCasualty(User, 1)
+        eff_node:AddItem(bd.maxCasualty, formatNumber(maxcasualty), formatNumber(nextmaxcasualty - maxcasualty))
     elseif self.building:GetType()=="townHall" then
         eff_node:AddItem( bd.townHall_dwelling, formatNumber(building:GetMaxHouseNum()), formatNumber(building:GetNextLevelMaxHouseNum() - building:GetMaxHouseNum()) )
         local added = building:GetNextLevelEfficiency() - building:GetEfficiency()
@@ -522,8 +504,9 @@ function CommonUpgradeUI:SetUpgradeEfficiency()
         --     efficiency = efficiency .. string.format(_("防御力+%d,"),next_config.defencePower - current_config.defencePower)
         -- end
     elseif self.building:GetType()=="academy" then
-        local current_config = self.building:GetAcademyConfig()
-        local next_config = self.building:GetAcademyNextLevelConfig()
+        local level = UtilsForBuilding:GetBuildingBy(User, "academy")
+        local current_config = UtilsForBuilding:GetBuildingConfig(buildingName)[level]
+        local next_config = UtilsForBuilding:GetBuildingConfig(buildingName)[level + 1]
         local added = next_config.efficiency - current_config.efficiency
         eff_node:AddItem( _("学院科技研发速度"),current_config.efficiency * 100, added > 0 and (added * 100) .. "%" or "" )
         -- if next_config.efficiency - current_config.efficiency > 0 then

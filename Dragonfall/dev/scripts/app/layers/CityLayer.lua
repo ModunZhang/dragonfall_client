@@ -143,7 +143,6 @@ function CityLayer:OnTileLocked(city)
 end
 function CityLayer:OnTileUnlocked(city)
     self:OnTileChanged(city)
-    print("OnTileUnlocked")
 end
 function CityLayer:OnTileChanged(city)
     self:UpdateRuinsVisibleWithCity(city)
@@ -168,18 +167,11 @@ function CityLayer:OnCreateDecorator(building)
     city_node:addChild(house)
     table.insert(self.houses, house)
     self:CreateLevelArrowBy(house)
-
-    -- self:NotifyObservers(function(listener)
-    --     listener:OnCreateDecoratorSprite(house)
-    -- end)
 end
 function CityLayer:OnDestoryDecorator(destory_decorator, release_ruins)
     for i, house in pairs(self.houses) do
         local x, y = house:GetLogicPosition()
         if destory_decorator:IsSamePositionWith(house) then
-            -- self:NotifyObservers(function(listener)
-            --     listener:OnDestoryDecoratorSprite(house)
-            -- end)
             local house = table.remove(self.houses, i)
             self:DeleteLevelArrowBy(house)
             house:removeFromParent()

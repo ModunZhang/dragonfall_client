@@ -764,7 +764,7 @@ end
 -- 可能得到材料的派兵行为检查
 function UIKit:showSendTroopMessageDialog(attack_func,material_name,effect_str,isNotEffection)
     -- 特殊提示，医院爆满，特殊兵种材料爆满
-    local is_hospital_overhead = City:GetFirstBuildingByType("hospital"):IsWoundedSoldierOverhead()
+    local is_hospital_overhead = User:IsWoundedSoldierOverflow()
     local is_material_overhead = User:IsMaterialOutOfRange(material_name)
     --
     if is_material_overhead and not isNotEffection or is_hospital_overhead then

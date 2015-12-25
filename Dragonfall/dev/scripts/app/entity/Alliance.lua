@@ -877,31 +877,6 @@ end
 function Alliance:IsMyAlliance()
     return self.isMyAlliance
 end
-
-function Alliance:updateWatchTowerLocalPushIf(marchEvent)
--- if marchEvent:GetPlayerRole() == marchEvent.MARCH_EVENT_PLAYER_ROLE.RECEIVER then
---     if not marchEvent:IsReturnEvent() then
---         local marchType = marchEvent:MarchType()
---         local msg = marchEvent:IsStrikeEvent() and _("你的城市正被敌军突袭") or _("你的城市正被敌军攻击")
---         local warningTime = self:GetAllianceBelvedere():GetWarningTime()
---         if marchType == 'city' then
---             app:GetPushManager():UpdateWatchTowerPush(marchEvent:ArriveTime() - warningTime,msg,marchEvent:Id())
---         end
---     end
--- end
-end
---因为这里添加了音效效果 so 所有的事件删除都要调用此方法
-function Alliance:cancelLocalMarchEventPushIf(marchEvent)
-    if marchEvent:GetPlayerRole() == marchEvent.MARCH_EVENT_PLAYER_ROLE.RECEIVER then
-        if marchEvent:IsReturnEvent() then
-            if not marchEvent:IsStrikeEvent() then --我的一般进攻部队返回城市
-                app:GetAudioManager():PlayeEffectSoundWithKey("TROOP_BACK")
-            end
-        else
-            app:GetPushManager():CancelWatchTowerPush(marchEvent:Id())
-        end
-    end
-end
 return Alliance
 
 

@@ -364,7 +364,6 @@ function GameUIHospital:CreateCasualtyRateBar()
     pro:setBarChangeRate(cc.p(1,0))
     pro:setMidpoint(cc.p(0,0))
     pro:align(display.LEFT_BOTTOM, 0, 0):addTo(bar)
-    -- pro:setPercentage(0/self.building:GetMaxCasualty())
     self:SetProgressCasualtyRate()
     self.heal_layer.casualty_rate_label = cc.ui.UILabel.new({
         UILabelType = cc.ui.UILabel.LABEL_TYPE_TTF,
@@ -389,7 +388,7 @@ function GameUIHospital:SetProgressCasualtyRate()
     self.heal_layer.ProgressTimer:setPercentage(
         User:GetTreatCitizen()
         /
-        self.building:GetMaxCasualty() * 100
+        UtilsForBuilding:GetMaxCasualty(User) * 100
     )
 end
 -- 设置伤兵比例条文本框
@@ -398,7 +397,7 @@ function GameUIHospital:SetProgressCasualtyRateLabel()
     self.heal_layer.casualty_rate_label:setString(
         string.formatnumberthousands(User:GetTreatCitizen())
         .."/"..
-        string.formatnumberthousands(self.building:GetMaxCasualty())
+        string.formatnumberthousands(UtilsForBuilding:GetMaxCasualty(User))
     )
 end
 

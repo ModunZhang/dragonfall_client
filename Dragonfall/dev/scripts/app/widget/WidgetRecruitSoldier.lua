@@ -44,9 +44,10 @@ function WidgetRecruitSoldier:ctor(barracks, city, soldier_name, soldier_star)
     
     self.star = soldier_star or city:GetUser():SoldierStarByName(soldier_name)
     local soldier_config, aaa = self:GetConfigBySoldierTypeAndStar(soldier_name, self.star)
-    self.recruit_max = barracks:GetMaxRecruitSoldierCount()
+    self.recruit_max = UtilsForBuilding:GetMaxRecruitSoldier(city:GetUser())
+
     if soldier_config.citizen ~= 0 then
-        self.recruit_max = math.floor(barracks:GetMaxRecruitSoldierCount()/soldier_config.citizen)
+        self.recruit_max = math.floor(UtilsForBuilding:GetMaxRecruitSoldier(city:GetUser())/soldier_config.citizen)
     end
     self.city = city
 

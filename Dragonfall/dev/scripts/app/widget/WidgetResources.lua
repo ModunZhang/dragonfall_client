@@ -15,12 +15,12 @@ function WidgetResources:onEnter()
     self:CreateResourceListView()
     self:InitAllResources()
     scheduleAt(self, function()
-        local maxwood, maxfood, maxiron, maxstone = self.building:GetResourceValueLimit()
+        local limits = UtilsForBuilding:GetWarehouseLimit(User)
         local resource_max = {
-            wood = maxwood,
-            food = maxfood,
-            iron = maxiron,
-            stone = maxstone,
+            wood = limits.maxWood,
+            food = limits.maxFood,
+            iron = limits.maxIron,
+            stone = limits.maxStone,
         }
         local citizen_map = UtilsForBuilding:GetCitizenMap(self.city:GetUser())
         if self.resource_items then
@@ -93,7 +93,8 @@ end
 
 function WidgetResources:InitAllResources()
     local current_time = app.timer:GetServerTime()
-    local maxwood, maxfood, maxiron, maxstone = self.building:GetResourceValueLimit()
+    local limits = UtilsForBuilding:GetWarehouseLimit(User)
+    local maxwood, maxfood, maxiron, maxstone = limits.maxWood, limits.maxFood, limits.maxIron, limits.maxStone
     local all_resources = {
         food = {
             resource_icon="res_food_91x74.png",

@@ -187,7 +187,7 @@ function MyCityScene:NewLockButtonFromBuildingSprite(building_sprite)
     local wp = building_sprite:GetWorldPosition()
     local lp = self:GetTopLayer():convertToNodeSpace(wp)
     local btn_png = "tmp_lock_btn.png"
-    if self.city:GetFirstBuildingByType("keep"):GetFreeUnlockPoint() > 0 then
+    if UtilsForBuilding:GetFreeUnlockPoint(self.city:GetUser()) > 0 then
         btn_png = "tmp_unlock_btn.png"
     end
     local button = cc.ui.UIPushButton.new({normal = btn_png, pressed = btn_png})
@@ -205,7 +205,7 @@ function MyCityScene:NewLockButtonFromBuildingSprite(building_sprite)
 end
 function MyCityScene:RefreshLockBtnStatus()
     local btn_png = "tmp_lock_btn.png"
-    if self.city:GetFirstBuildingByType("keep"):GetFreeUnlockPoint() > 0 then
+    if UtilsForBuilding:GetFreeUnlockPoint(self.city:GetUser()) > 0 then
         btn_png = "tmp_unlock_btn.png"
     end
     self:IteratorLockButtons(function(btn)
