@@ -1,6 +1,5 @@
 local UpgradeBuilding = import("..entity.UpgradeBuilding")
 local BuildingRegister = {
-    toolShop 		= import("..entity.ToolShopUpgradeBuilding"),
     woodcutter 		= import("..entity.WoodResourceUpgradeBuilding"),
     farmer 			= import("..entity.FoodResourceUpgradeBuilding"),
     miner 			= import("..entity.IronResourceUpgradeBuilding"),

@@ -43,10 +43,13 @@ end
 
 
 function UtilsForBuilding:GetEfficiencyBy(userData, name, offset)
+    return self:GetPropertyBy(userData, name, "efficiency", offset)
+end
+function UtilsForBuilding:GetPropertyBy(userData, name, property, offset)
     offset = offset or 0
     local configs = self:GetBuildingConfig(name)
     for _,building in ipairs(self:GetBuildingsBy(userData, name)) do
-        return configs[building.level + offset].efficiency
+        return configs[building.level + offset][property]
     end
 end
 
@@ -321,5 +324,21 @@ function UtilsForBuilding:GetMaxRecruitSoldier(userData, offset)
     return max
 end
 
+
+
+local needs = {"Wood", "Stone", "Iron", "time"}
+local toolShop = GameDatas.BuildingFunction.toolShop
+function UtilsForBuilding:GetToolShopNeedByCategory(userData, category)
+    for _,building in ipairs(self:GetBuildingsBy(userData, "toolShop", 1)) do
+        local need = {}
+        local config = toolShop[building.level]
+        local key = category == "buildingMaterials" and "Bm" or "Am"
+        for _, v in ipairs(needs) do
+            table.insert(need, config[string.format("product%s%s", key, v)])
+        end
+        return config["production"], unpack(need)
+    end
+    assert(false)
+end
 
 

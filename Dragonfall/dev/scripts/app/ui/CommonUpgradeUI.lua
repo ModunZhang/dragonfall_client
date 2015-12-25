@@ -342,9 +342,15 @@ function CommonUpgradeUI:SetUpgradeEfficiency()
         local next_limit = UtilsForBuilding:GetWarehouseLimit(User, 1).maxWood
         eff_node:AddItem(bd.warehouse_max, formatNumber(limit), formatNumber(next_limit - limit))
     elseif self.building:GetType()=="toolShop" then
-        eff_node:AddItem( bd.poduction, formatNumber(building:GetProduction()), formatNumber(building:GetNextLevelProduction() - building:GetProduction()) )
-        eff_node:AddItem( _("一次随机制造种类"), formatNumber(building:GetProductionType()), formatNumber(building:GetNextLevelProductionType() - building:GetProductionType()) )
-        eff_node:AddItem( _("制造材料资源消耗降低"), ((building:GetLevel() - 1) * 0.5 + (building:IsMaxLevel() and 0.5 or 0)).."%", building:IsMaxLevel() and "" or building:GetLevel() == 39 and "1%" or "0.5%" )
+        local production = UtilsForBuilding:GetPropertyBy(User, "toolShop", "production")
+        local next_production = UtilsForBuilding:GetPropertyBy(User, "toolShop", "production", 1)
+
+        local productionType = UtilsForBuilding:GetPropertyBy(User, "toolShop", "productionType")
+        local next_productionType = UtilsForBuilding:GetPropertyBy(User, "toolShop", "productionType", 1)
+
+        eff_node:AddItem(bd.poduction, formatNumber(production), formatNumber(next_production - production))
+        eff_node:AddItem(_("一次随机制造种类"), formatNumber(productionType), formatNumber(next_productionType - productionType))
+        eff_node:AddItem(_("制造材料资源消耗降低"), ((building:GetLevel() - 1) * 0.5 + (building:IsMaxLevel() and 0.5 or 0)).."%", building:IsMaxLevel() and "" or building:GetLevel() == 39 and "1%" or "0.5%")
     elseif self.building:GetType()=="materialDepot" then
         local max = UtilsForBuilding:GetMaterialDepotLimit(User).soldierMaterials
         local next_max = UtilsForBuilding:GetMaterialDepotLimit(User, 1).soldierMaterials
