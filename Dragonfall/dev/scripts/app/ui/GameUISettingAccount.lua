@@ -14,6 +14,7 @@ end
 
 function GameUISettingAccount:onEnter()
     GameUISettingAccount.super.onEnter(self)
+    dump(User.gc,"gc===")
     self:UpdateGcName()
     self:CheckGameCenter()
 end
@@ -82,7 +83,7 @@ function GameUISettingAccount:CreateGameCenterPanel()
     display.newSprite("icon_gameCenter_104x104.png"):align(display.LEFT_CENTER, 12, bg_height/2)
         :addTo(self.gamecenter_panel)
     self.gamecenter_bind_state_label = UIKit:ttfLabel({
-        text = "gameCenter 名字（已绑定）gameCenter 名字（已绑定）gameCenter 名字（已绑定）gameCenter 名字（已绑定）",
+        text = "",
         size = 20,
         color= 0x403c2f,
         dimensions = cc.size(260,0)
@@ -100,7 +101,8 @@ function GameUISettingAccount:CreateGameCenterPanel()
             local gcName,gcId = ext.gamecenter.getPlayerNameAndId()
             UIKit:showMessageDialog(_("提示"),string.format(_("是否确认将账号绑定到GameCenter %s"),gcName),function()
                 NetManager:getBindGcPromise("gamecenter",gcId,gcName):done(function (response)
-                    User.gc = response.msg.playerData[2]
+                    LuaUtils:outputTable("绑定到GameCenter ",response)
+                    User.gc = response.msg.playerData[1][2]
                     GameGlobalUI:showTips(_("提示"),_("绑定账号成功"))
                     self:LeftButtonClicked()
                 end)
@@ -138,7 +140,7 @@ function GameUISettingAccount:CreateFacebookPanel()
             local gcName,gcId = ext.facebook.getPlayerNameAndId()
             UIKit:showMessageDialog(_("提示"),string.format(_("是否确认将账号绑定到Facebook %s"),gcName),function()
                 NetManager:getBindGcPromise("facebook",gcId,gcName):done(function (response)
-                    User.gc = response.msg.playerData[2]
+                    User.gc = response.msg.playerData[1][2]
                     GameGlobalUI:showTips(_("提示"),_("绑定账号成功"))
                     self:LeftButtonClicked()
                 end)
@@ -148,7 +150,7 @@ function GameUISettingAccount:CreateFacebookPanel()
                 if data.event == "login_success" then
                     local userid,username = data.userid,data.username
                     NetManager:getBindGcPromise("facebook",userid,username):done(function (response)
-                        User.gc = response.msg.playerData[2]
+                        User.gc = response.msg.playerData[1][2]
                         GameGlobalUI:showTips(_("提示"),_("绑定账号成功"))
                         self:LeftButtonClicked()
                     end)

@@ -228,7 +228,9 @@ function GameUIAllianceCityEnter:GetEnterButtons()
                         else
                             NetManager:getAttackPlayerCityPromise(dragonType, soldiers, alliance._id, member.id):done(function()
                                 app:GetAudioManager():PlayeEffectSoundWithKey("TROOP_SENDOUT")
-                                gameuialliancesendtroops:LeftButtonClicked()
+                                if gameuialliancesendtroops.LeftButtonClicked then
+                                    gameuialliancesendtroops:LeftButtonClicked()
+                                end
                             end)
                         end
                     end,{targetAlliance = alliance,toLocation = toLocation,returnCloseAction = true}):AddToCurrentScene(true)
