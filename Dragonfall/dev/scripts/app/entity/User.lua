@@ -1469,6 +1469,13 @@ local before_map = {
                 userData:HouseLocalPush(v)
             end
         end
+
+        local ok, value = deltaData("houseEvents.add")
+        if ok then
+            for i,v in ipairs(value) do
+                userData:HouseLocalPush(v)
+            end
+        end
     end,
     buildingEvents = function(userData, deltaData)
         userData:RefreshOutput()
@@ -1485,6 +1492,13 @@ local before_map = {
         end
 
         local ok, value = deltaData("buildingEvents.edit")
+        if ok then
+            for i,v in ipairs(value) do
+                userData:BuildingLocalPush(v)
+            end
+        end
+
+        local ok, value = deltaData("buildingEvents.add")
         if ok then
             for i,v in ipairs(value) do
                 userData:BuildingLocalPush(v)
@@ -1509,6 +1523,13 @@ local before_map = {
         end
 
         local ok, value = deltaData("productionTechEvents.edit")
+        if ok then
+            for i,v in ipairs(value) do
+                userData:ProductTechLocalPush(v)
+            end
+        end
+
+        local ok, value = deltaData("productionTechEvents.add")
         if ok then
             for i,v in ipairs(value) do
                 userData:ProductTechLocalPush(v)
@@ -1540,6 +1561,13 @@ local before_map = {
                 userData:MilitaryLocalPush(v)
             end
         end
+
+        local ok, value = deltaData("militaryTechEvents.add")
+        if ok then
+            for i,v in ipairs(value) do
+                userData:MilitaryLocalPush(v)
+            end
+        end
     end,
 
     soldiers = function(userData, deltaData)
@@ -1556,6 +1584,13 @@ local before_map = {
         end
 
         local ok, value = deltaData("soldierEvents.edit")
+        if ok then
+            for i,v in ipairs(value) do
+                userData:RecruitLocalPush(v)
+            end
+        end
+
+        local ok, value = deltaData("soldierEvents.add")
         if ok then
             for i,v in ipairs(value) do
                 userData:RecruitLocalPush(v)
@@ -1588,6 +1623,13 @@ local before_map = {
                 userData:TreatLocalPush(v)
             end
         end
+
+        local ok, value = deltaData("treatSoldierEvents.add")
+        if ok then
+            for i,v in ipairs(value) do
+                userData:TreatLocalPush(v)
+            end
+        end
     end,
 
     soldierStars = function(userData, deltaData)
@@ -1615,6 +1657,13 @@ local before_map = {
                 userData:StarLocalPush(v)
             end
         end
+
+        local ok, value = deltaData("soldierStarEvents.add")
+        if ok then
+            for i,v in ipairs(value) do
+                userData:StarLocalPush(v)
+            end
+        end
     end,
 
     dragons = function()end,
@@ -1629,6 +1678,13 @@ local before_map = {
             end
         end
         local ok, value = deltaData("dragonEquipmentEvents.edit")
+        if ok then
+            for i,v in ipairs(value) do
+                userData:EquipLocalPush(v)
+            end
+        end
+
+        local ok, value = deltaData("dragonEquipmentEvents.add")
         if ok then
             for i,v in ipairs(value) do
                 userData:EquipLocalPush(v)
@@ -1656,6 +1712,13 @@ local before_map = {
                 else
                     userData:MaterialLocalPush(v)
                 end
+            end
+        end
+
+        local ok, value = deltaData("materialEvents.add")
+        if ok then
+            for k,v in ipairs(value) do
+                userData:MaterialLocalPush(v)
             end
         end
     end,
