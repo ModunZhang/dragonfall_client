@@ -206,8 +206,8 @@ function WidgetEventTabButtons:RefreshAllEvents()
     else
         self:GetTabByKey("material"):SetOrResetProgress(nil)
     end
-
-    local event = User:GetBuildingEventsBySeq()[1]
+    
+    local event = UtilsForBuilding:GetBuildingEventsBySeq(User)[1]
     if event then
         local time, percent = UtilsForEvent:GetEventInfo(event)
         self:GetTabByKey("build"):SetOrResetProgress(time, percent)
@@ -958,14 +958,14 @@ function WidgetEventTabButtons:BuildingDescribe(event)
     local User = self.city:GetUser()
     local str
     if event.location then
-        local building = User:GetBuildingByEvent(event)
+        local building = UtilsForBuilding:GetBuildingByEvent(User, event)
         if building.level == 0 then
             str = string.format(_("%s (解锁)"), Localize.building_name[building.type])
         else
             str = string.format(_("%s (升级到 等级%d)"), Localize.building_name[building.type], building.level + 1)
         end
     else
-        local house = User:GetBuildingByEvent(event)
+        local house = UtilsForBuilding:GetBuildingByEvent(User, event)
         if house.level == 0 then
             str = string.format(_("%s (建造)"), Localize.building_name[house.type])
         else

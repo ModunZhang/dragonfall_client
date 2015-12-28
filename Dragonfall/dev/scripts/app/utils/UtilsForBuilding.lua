@@ -63,9 +63,10 @@ function UtilsForBuilding:GetConfigBy(userData, nameOrLocation, offset)
     return configs[building.level + offset]
 end
 
+local HouseFunction = GameDatas.HouseFunction
 local BuildingFunction = GameDatas.BuildingFunction
 function UtilsForBuilding:GetBuildingConfig(buildingName)
-    return BuildingFunction[buildingName]
+    return BuildingFunction[buildingName] or HouseFunction[buildingName]
 end
 
 local HouseLevelUp = GameDatas.HouseLevelUp
@@ -395,7 +396,7 @@ local p_resource_building_to_house = {
 function UtilsForBuilding:GetHouseType(buildingName)
     return p_resource_building_to_house[buildingName]
 end
-function UtilsForBuilding:GetBuildingProtection(buildingName, offset)
+function UtilsForBuilding:GetBuildingProtection(userData, buildingName, offset)
     offset = offset or 0
     local configs = UtilsForBuilding:GetBuildingConfig(buildingName)
     local protection = 0
@@ -404,4 +405,61 @@ function UtilsForBuilding:GetBuildingProtection(buildingName, offset)
     end
     return protection
 end
+
+
+function UtilsForBuilding:GetFreeBuildQueueCount(userData)
+    return userData.basicInfo.buildQueue - self:GetBuildingEventsCount(userData)
+end
+function UtilsForBuilding:GetBuildingEventsCount(userData)
+    return #userData.buildingEvents + #userData.houseEvents
+end
+function UtilsForBuilding:GetBuildingEventsBySeq(userData)
+    local events = {}
+    for i,v in ipairs(userData.houseEvents) do
+        table.insert(events, v)
+    end
+    for i,v in ipairs(userData.buildingEvents) do
+        table.insert(events, v)
+    end
+    table.sort(events, function(a, b)
+        return (a.finishTime - a.startTime) < (b.finishTime - b.startTime)
+    end)
+    return events
+end
+function UtilsForBuilding:GetBuildingByEvent(userData, event)
+    if event.location then
+        return self:GetBuildingByLocation(userData, event.location)
+    end
+    return self:GetHouseByLocation(userData, event.buildingLocation, event.houseLocation)
+end
+function UtilsForBuilding:GetHouseByLocation(userData, buildingLocation, houseLocation)
+    local building = self:GetBuildingByLocation(userData, buildingLocation)
+    assert(building)
+    for i,v in ipairs(building.houses) do
+        if v.location == houseLocation then
+            return v
+        end
+    end
+end
+function UtilsForBuilding:GetBuildingByLocation(userData, location)
+    return userData.buildings[string.format("location_%d", location)]
+end
+function UtilsForBuilding:GetBuildingEventByLocation(userData, buildingLocation, houseLocation)
+    if houseLocation then
+        for _,v in ipairs(userData.houseEvents) do
+            if v.buildingLocation == buildingLocation
+                and v.houseLocation == houseLocation then
+                return v
+            end
+        end
+    else
+        for _,v in ipairs(userData.buildingEvents) do
+            if v.location == buildingLocation then
+                return v
+            end
+        end
+    end
+end
+
+
 

@@ -502,9 +502,6 @@ end
 function City:IsGate(building)
     return building:GetType() == "wall"
 end
-function City:GetAvailableBuildQueueCounts()
-    return self:GetUser().basicInfo.buildQueue - #self:GetUpgradingBuildings()
-end
 function City:GetUpgradingBuildings(need_sort)
     local builds = {}
     self:IteratorCanUpgradeBuildings(function(building)

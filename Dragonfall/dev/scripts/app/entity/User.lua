@@ -1166,53 +1166,6 @@ end
 function User:GetUnlockBuildingsBy(name)
     return UtilsForBuilding:GetBuildingsBy(self, name, 1)
 end
-function User:GetBuildingByEvent(event)
-    if event.location then
-        return self:GetBuildingByLocation(event.location)
-    end
-    return self:GetHouseByLocation(event.buildingLocation, event.houseLocation)
-end
-function User:GetHouseByLocation(buildingLocation, houseLocation)
-    local building = self:GetBuildingByLocation(buildingLocation)
-    assert(building)
-    for i,v in ipairs(building.houses) do
-        if v.location == houseLocation then
-            return v
-        end
-    end
-end
-function User:GetBuildingByLocation(location)
-    return self.buildings[string.format("location_%d", location)]
-end
-function User:GetBuildingEventByLocation(buildingLocation, houseLocation)
-    if houseLocation then
-        for i,v in ipairs(self.houseEvents) do
-            if v.buildingLocation == buildingLocation
-                and v.houseLocation == houseLocation then
-                return v
-            end
-        end
-    else
-        for i,v in ipairs(self.buildingEvents) do
-            if v.location == buildingLocation then
-                return v
-            end
-        end
-    end
-end
-function User:GetBuildingEventsBySeq()
-    local events = {}
-    for i,v in ipairs(self.houseEvents) do
-        table.insert(events, v)
-    end
-    for i,v in ipairs(self.buildingEvents) do
-        table.insert(events, v)
-    end
-    table.sort(events, function(a, b)
-        return (a.finishTime - a.startTime) < (b.finishTime - b.startTime)
-    end)
-    return events
-end
 --[[end]]
 
 
@@ -1503,7 +1456,7 @@ local before_map = {
         if ok then
             for i,v in ipairs(value) do
                 app:GetPushManager():CancelBuildPush(v.id)
-                local house = userData:GetHouseByLocation(v.buildingLocation, v.houseLocation)
+                local house = UtilsForBuilding:GetHouseByLocation(userData, v.buildingLocation, v.houseLocation)
                 GameGlobalUI:showTips(_("提示"),
                     string.format(_("建造%s至%d级完成"),
                         Localize.building_name[house.type], house.level))
@@ -1524,7 +1477,7 @@ local before_map = {
         if ok then
             for i,v in ipairs(value) do
                 app:GetPushManager():CancelBuildPush(v.id)
-                local building = userData:GetBuildingByLocation(v.location)
+                local building = UtilsForBuilding:GetBuildingByLocation(userData, v.location)
                 GameGlobalUI:showTips(_("提示"),
                     string.format(_("建造%s至%d级完成"),
                         Localize.building_name[building.type], building.level))
@@ -1855,7 +1808,7 @@ end
 function User:HouseLocalPush(event)
     local push_man = app:GetPushManager()
     self.local_push_map = self.local_push_map or {}
-    local building = self:GetBuildingByEvent(event)
+    local building = UtilsForBuilding:GetBuildingByEvent(self, event)
     local title = string.format(_("修建%s到LV%d完成"),
         Localize.getLocaliedKeyByType(building.type),
         (building.level + 1))
@@ -1865,7 +1818,7 @@ end
 function User:BuildingLocalPush(event)
     local push_man = app:GetPushManager()
     self.local_push_map = self.local_push_map or {}
-    local building = self:GetBuildingByEvent(event)
+    local building = UtilsForBuilding:GetBuildingByEvent(self, event)
     local title = string.format(_("修建%s到LV%d完成"),
         Localize.getLocaliedKeyByType(building.type),
         (building.level + 1))
