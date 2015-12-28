@@ -103,7 +103,7 @@ function GameUIBuild:OnCityChanged()
     table.foreachi(self.base_resource_building_items or {}, function(i, v)
         local building_type = base_items[i].building_type
         local number = #self.build_city:GetDecoratorsByType(building_type)
-        local max_number = self.build_city:GetMaxHouseCanBeBuilt(building_type)
+        local max_number = UtilsForBuilding:GetMaxBuildHouse(self.build_city:GetUser(), building_type)
         local free_build_queue = UtilsForBuilding:GetFreeBuildQueueCount(self.build_city:GetUser())
         local building = BuildingRegister[building_type].new({building_type = building_type, level = 1, finishTime = 0})
         v:SetNumber(number, max_number)
