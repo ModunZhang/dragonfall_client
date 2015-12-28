@@ -630,10 +630,10 @@ local BUILDING_MAP = {
     miner = "foundry",
 }
 function City:GetMaxHouseCanBeBuilt(house_type)
-    --基础值
     local max = intInit.eachHouseInitCount.value
     for _, v in pairs(self:GetBuildingByType(BUILDING_MAP[house_type])) do
-        max = max + v:GetMaxHouseNum()
+        local houseAdd = UtilsForBuilding:GetPropertyBy(self:GetUser(), v:GetType(), "houseAdd")
+        max = max + houseAdd
     end
     return max
 end

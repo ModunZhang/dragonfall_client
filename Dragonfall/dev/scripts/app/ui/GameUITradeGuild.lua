@@ -45,7 +45,7 @@ function GameUITradeGuild:ctor(city,building, default_tab)
     local bn = Localize.building_name
     GameUITradeGuild.super.ctor(self,city,bn[building:GetType()],building,default_tab)
     self.user = city:GetUser()
-    self.max_sell_queue = self.building:GetMaxSellQueue()
+    self.max_sell_queue = UtilsForBuilding:GetMaxSellQueue(self.user)
 end
 
 function GameUITradeGuild:CreateBetweenBgAndTitle()
@@ -471,7 +471,7 @@ function GameUITradeGuild:LoadMyGoodsPage()
         {
             width = 388,
             text_1 = _("每小时制造"),
-            text_2 = tradeGuild:GetCartRecovery(),
+            text_2 = UtilsForBuilding:GetCartRecovery(User),
         }
     ):align(display.CENTER,window.cx +70 , window.top- 204)
         :addTo(layer)
@@ -629,7 +629,7 @@ function GameUITradeGuild:CreateSellItem(list,index)
             title_label:setString(_("未解锁"))
             UIKit:ttfLabel(
                 {
-                    text = _("需要贸易行会").." Lv "..self.building:GetUnlockSellQueueLevel(index),
+                    text = _("需要贸易行会").." Lv "..UtilsForBuilding:GetUnlockSellQueueLevel(index),
                     size = 20,
                     color = 0x403c2f,
                     dimensions = cc.size(200,0)
@@ -645,7 +645,7 @@ function GameUITradeGuild:GetMaxSellListNum()
     return 4
 end
 function GameUITradeGuild:GetUnlockedSellListNum()
-    return self.building:GetMaxSellQueue()
+    return UtilsForBuilding:GetMaxSellQueue(self.user)
 end
 function GameUITradeGuild:GetOnSellGoods()
     local my_deals = User:GetMyDeals()
@@ -1068,9 +1068,9 @@ function GameUITradeGuild:OnUserDataChanged_buildingEvents(userData, deltaData)
     if self.cart_num and self.cart_recovery then
         local tradeGuild = City:GetFirstBuildingByType("tradeGuild")
         self.cart_num:SetValue(User:GetResValueByType("cart").. "/"..User:GetResProduction("cart").limit)
-        self.cart_recovery:SetValue(tradeGuild:GetCartRecovery())
+        self.cart_recovery:SetValue(UtilsForBuilding:GetCartRecovery(self.user))
     end
-    local queue_num = self.building:GetMaxSellQueue()
+    local queue_num = UtilsForBuilding:GetMaxSellQueue(self.user)
     if queue_num>self.max_sell_queue then
         self:LoadMyGoodsList()
     end
@@ -1079,9 +1079,9 @@ function GameUITradeGuild:OnUserDataChanged_buildings(userData, deltaData)
     if self.cart_num and self.cart_recovery then
         local tradeGuild = City:GetFirstBuildingByType("tradeGuild")
         self.cart_num:SetValue(User:GetResValueByType("cart").. "/"..User:GetResProduction("cart").limit)
-        self.cart_recovery:SetValue(tradeGuild:GetCartRecovery())
+        self.cart_recovery:SetValue(UtilsForBuilding:GetCartRecovery(self.user))
     end
-    local queue_num = self.building:GetMaxSellQueue()
+    local queue_num = UtilsForBuilding:GetMaxSellQueue(self.user)
     if queue_num>self.max_sell_queue then
         self:LoadMyGoodsList()
     end

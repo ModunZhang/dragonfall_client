@@ -8,7 +8,6 @@ local VillageEvent = import("..entity.VillageEvent")
 local GameUIStrikePlayer = import(".GameUIStrikePlayer")
 local SpriteConfig = import("..sprites.SpriteConfig")
 local UILib = import(".UILib")
-local BelvedereEntity = import("..entity.BelvedereEntity")
 
 function GameUIAllianceVillageEnter:ctor(building,alliance)
     GameUIAllianceVillageEnter.super.ctor(self,building,alliance)
