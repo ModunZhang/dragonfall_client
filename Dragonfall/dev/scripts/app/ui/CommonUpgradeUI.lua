@@ -367,7 +367,7 @@ function CommonUpgradeUI:SetUpgradeEfficiency()
         -- end
     elseif self.building:GetType()=="barracks" then
         local max = UtilsForBuilding:GetMaxRecruitSoldier(User)
-        eff_node:AddItem(bd.maxRecruit, formatNumber(max), formatNumber(UtilsForBuilding:GetMaxRecruitSoldier(User, 1) - max))
+        eff_node:AddItem(bd.maxRecruit, formatNumber(max), formatNumber(UtilsForBuilding:GetMaxRecruitSoldier(User, self.building:IsMaxLevel() and 0 or 1) - max))
     elseif self.building:GetType()=="blackSmith" then
         local added = building:GetNextLevelEfficiency() - building:GetEfficiency()
         eff_node:AddItem( bd.blackSmith_efficiency, (building:GetEfficiency()*100).."%", added > 0 and added * 100 .. "%" or "")
