@@ -285,7 +285,7 @@ function MyCityFteScene:RunFte()
         end
     end):next(function()
 
-            cc.ui.UIPushButton.new({normal = "skip.png",pressed = "skip.png"})
+            cc.ui.UIPushButton.new({normal = "skip1.png",pressed = "skip1.png"})
                 :addTo(self, 1000000):align(display.RIGHT_TOP, display.width, display.height)
                 :onButtonClicked(function(event)
                     event.target:setButtonEnabled(false)
