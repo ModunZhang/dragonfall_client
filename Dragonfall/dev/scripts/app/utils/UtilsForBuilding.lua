@@ -478,4 +478,15 @@ function UtilsForBuilding:GetMaxBuildHouse(userData, houseType)
 end
 
 
+local res_map = {
+    miner      = "iron",
+    farmer     = "food",
+    quarrier   = "stone",
+    woodcutter = "wood",
+    dwelling   = "coin,citizen",
+}
+function UtilsForBuilding:GetHouseResType(houseType)
+    return res_map[houseType]
+end
+
 
