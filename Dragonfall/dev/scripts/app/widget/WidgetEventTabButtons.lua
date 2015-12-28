@@ -264,7 +264,7 @@ function WidgetEventTabButtons:RefreshBuildQueueByType(...)
         local item = self.tab_map[key]
         local able = self:IsTabEnable(key)
         if key == "build" then
-            local count = #city:GetUpgradingBuildings()
+            local count = UtilsForBuilding:GetBuildingEventsCount(User)
             local total = User.basicInfo.buildQueue
             item:SetActiveNumber(count, total):Enable(able)
         elseif key == "soldier" then
@@ -307,7 +307,7 @@ function WidgetEventTabButtons:ShowStartEvent()
     end
 end
 function WidgetEventTabButtons:HasAnyBuildingEvent()
-    return #self.city:GetUpgradingBuildings() > 0
+    return UtilsForBuilding:GetBuildingEventsCount(self.city:GetUser())
 end
 function WidgetEventTabButtons:HasAnySoldierEvent()
     return #self.city:GetUser().soldierEvents > 0
