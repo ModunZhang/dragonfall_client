@@ -85,7 +85,7 @@ function UpgradingSprite:ctor(city_layer, entity)
     -- else
     --     self:CreateLevelNode()
     -- end
-    if User:GetBuildingEventByLocation(self:GetCurrentLocation()) then
+    if UtilsForBuilding:GetBuildingEventByLocation(User, self:GetCurrentLocation()) then
         if entity:GetType() ~= "wall" then
             self:UpgradeBegin()
         elseif entity:IsGate() then

@@ -115,7 +115,7 @@ end
 function CommonUpgradeUI:Upgrading()
     if City:IsFunctionBuilding(self.building) then
         local buildingLocation = self:GetCurrentLocation()
-        local event = User:GetBuildingEventByLocation(buildingLocation)
+        local event = UtilsForBuilding:GetBuildingEventByLocation(User, buildingLocation)
         if event then
             local pro = self.acc_layer.ProgressTimer
             local time, percent = UtilsForEvent:GetEventInfo(event)
@@ -127,7 +127,7 @@ function CommonUpgradeUI:Upgrading()
         end
     else
         local buildingLocation, houseLocation = self:GetCurrentLocation()
-        local event = User:GetBuildingEventByLocation(buildingLocation, houseLocation)
+        local event = UtilsForBuilding:GetBuildingEventByLocation(User, buildingLocation, houseLocation)
         if event then
             local pro = self.acc_layer.ProgressTimer
             local time, percent = UtilsForEvent:GetEventInfo(event)
@@ -140,7 +140,7 @@ function CommonUpgradeUI:Upgrading()
     end
 end
 function CommonUpgradeUI:GetCurrentEvent()
-    return User:GetBuildingEventByLocation(self:GetCurrentLocation())
+    return UtilsForBuilding:GetBuildingEventByLocation(User, self:GetCurrentLocation())
 end
 function CommonUpgradeUI:GetCurrentLocation()
     if self.building:GetType() == "wall" then
@@ -652,6 +652,7 @@ function CommonUpgradeUI:SetUpgradeRequirementListview()
     local materials = User.buildingMaterials
     local building = self.building
     local pre_condition = building:IsBuildingUpgradeLegal()
+    local buildingEventsCount = UtilsForBuilding:GetBuildingEventsCount(User)
     local requirements = {
         {
             resource_type = _("前置条件"),
@@ -662,10 +663,10 @@ function CommonUpgradeUI:SetUpgradeRequirementListview()
         },
         {
             resource_type = "building_queue",
-            isVisible = #city:GetUpgradingBuildings() >= User.basicInfo.buildQueue,
-            isSatisfy = #city:GetUpgradingBuildings()  < User.basicInfo.buildQueue,
+            isVisible = buildingEventsCount >= User.basicInfo.buildQueue,
+            isSatisfy = buildingEventsCount  < User.basicInfo.buildQueue,
             icon="hammer_33x40.png",
-            description=_("建造队列已满")..(User.basicInfo.buildQueue-#city:GetUpgradingBuildings()).."/"..User.basicInfo.buildQueue
+            description=_("建造队列已满")..(User.basicInfo.buildQueue-buildingEventsCount).."/"..User.basicInfo.buildQueue
         },
         {
             resource_type = _("木材"),
@@ -829,7 +830,8 @@ function CommonUpgradeUI:CreateFreeSpeedUpBuildingUpgradeButton()
             end
         end):align(display.CENTER, display.cx+194, display.top - 335):addTo(self.acc_layer)
     local building = self.building
-    local event = User:GetBuildingEventByLocation(self:GetCurrentLocation())
+
+    local event = UtilsForBuilding:GetBuildingEventByLocation(User, self:GetCurrentLocation())
     if event then
         local time = UtilsForEvent:GetEventInfo(event)
         if DataUtils:getFreeSpeedUpLimitTime() >= time then

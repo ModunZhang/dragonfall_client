@@ -169,7 +169,7 @@ function GameUIBuild:OnBuildOnItem(item)
         local dialog =  UIKit:showMessageDialog()
         local required_gems = 0
         if current <= 0 then
-            local event = User:GetBuildingEventByLocation(self:GetCurrentLocation(order_events[1]))
+            local event = UtilsForBuilding:GetBuildingEventByLocation(User, self:GetCurrentLocation(order_events[1]))
             if event then
                 local time = UtilsForEvent:GetEventInfo(event)
                 required_gems = DataUtils:getGemByTimeInterval(time)

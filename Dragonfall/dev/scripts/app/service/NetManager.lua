@@ -866,7 +866,7 @@ function NetManager:getUpgradeHouseByLocationPromise(location, sub_location)
 end
 function NetManager:getInstantUpgradeHouseByLocationPromise(location, sub_location)
     return get_upgradeHouse_promise(location, sub_location, true):done(function()
-        local house = User:GetHouseByLocation(location, sub_location)
+        local house = UtilsForBuilding:GetHouseByLocation(User, location, sub_location)
         GameGlobalUI:showTips(_("提示"),
             string.format(_("建造%s至%d级完成"),
                 Localize.building_name[house.type], house.level))
@@ -885,7 +885,7 @@ function NetManager:getUpgradeBuildingByLocationPromise(location)
 end
 function NetManager:getInstantUpgradeBuildingByLocationPromise(location)
     return get_upgradeBuilding_promise(location, true):done(function()
-        local building = User:GetBuildingByLocation(location)
+        local building = UtilsForBuilding:GetBuildingByLocation(User, location)
         GameGlobalUI:showTips(_("提示"),
             string.format(_("建造%s至%d级完成"),
                 Localize.building_name[building.type], building.level))
@@ -898,7 +898,7 @@ function NetManager:getUpgradeTowerPromise()
 end
 function NetManager:getInstantUpgradeTowerPromise()
     return NetManager:getInstantUpgradeBuildingByLocationPromise(22):done(function()
-        local building = User:GetBuildingByLocation(22)
+        local building = UtilsForBuilding:GetBuildingByLocation(User, 22)
         GameGlobalUI:showTips(_("提示"),
             string.format(_("建造%s至%d级完成"),
                 Localize.building_name[building.type], building.level))
@@ -911,7 +911,7 @@ function NetManager:getUpgradeWallByLocationPromise()
 end
 function NetManager:getInstantUpgradeWallByLocationPromise()
     return NetManager:getInstantUpgradeBuildingByLocationPromise(21):done(function()
-        local building = User:GetBuildingByLocation(21)
+        local building = UtilsForBuilding:GetBuildingByLocation(User, 21)
         GameGlobalUI:showTips(_("提示"),
             string.format(_("建造%s至%d级完成"),
                 Localize.building_name[building.type], building.level))
