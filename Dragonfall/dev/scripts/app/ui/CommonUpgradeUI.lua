@@ -319,6 +319,7 @@ function CommonUpgradeUI:SetUpgradeEfficiency()
     local User = self.city:GetUser()
     local bd = Localize.building_description
     local building = self.building
+    local location = self.city:GetLocationIdByBuilding(building)
     local efficiency = ""
     local formatNumber = string.formatnumberthousands
     if building:GetType() == "keep" then
@@ -364,44 +365,43 @@ function CommonUpgradeUI:SetUpgradeEfficiency()
         local added = next_efficiency - next_efficiency
         eff_node:AddItem( bd.blackSmith_efficiency, (efficiency*100).."%", added > 0 and added * 100 .. "%" or "")
     elseif self.building:GetType()=="foundry" then
-        local houseAdd = UtilsForBuilding:GetPropertyBy(User, self.building:GetType(), "houseAdd")
-        local next_houseAdd = UtilsForBuilding:GetPropertyBy(User, self.building:GetType(), "houseAdd", 1)
+        local houseAdd = UtilsForBuilding:GetPropertyBy(User, location, "houseAdd")
+        local next_houseAdd = UtilsForBuilding:GetPropertyBy(User, location, "houseAdd", 1)
 
-        local protection = UtilsForBuilding:GetPropertyBy(User, self.building:GetType(), "protection")
-        local next_protection = UtilsForBuilding:GetPropertyBy(User, self.building:GetType(), "protection", 1)
+        local protection = UtilsForBuilding:GetPropertyBy(User, location, "protection")
+        local next_protection = UtilsForBuilding:GetPropertyBy(User, location, "protection", 1)
 
         eff_node:AddItem( bd.foundry_miner, formatNumber(next_houseAdd), formatNumber(next_houseAdd - houseAdd) )
         local added = next_protection - protection
         eff_node:AddItem( bd.foundry_protection, (protection*100).."%", added > 0 and added * 100 .. "%" or "" )
     elseif self.building:GetType()=="lumbermill" then
 
-        local houseAdd = UtilsForBuilding:GetPropertyBy(User, self.building:GetType(), "houseAdd")
-        local next_houseAdd = UtilsForBuilding:GetPropertyBy(User, self.building:GetType(), "houseAdd", 1)
+        local houseAdd = UtilsForBuilding:GetPropertyBy(User, location, "houseAdd")
+        local next_houseAdd = UtilsForBuilding:GetPropertyBy(User, location, "houseAdd", 1)
 
-        local protection = UtilsForBuilding:GetPropertyBy(User, self.building:GetType(), "protection")
-        local next_protection = UtilsForBuilding:GetPropertyBy(User, self.building:GetType(), "protection", 1)
+        local protection = UtilsForBuilding:GetPropertyBy(User, location, "protection")
+        local next_protection = UtilsForBuilding:GetPropertyBy(User, location, "protection", 1)
 
         eff_node:AddItem( bd.lumbermill_woodcutter, formatNumber(houseAdd), formatNumber(next_houseAdd - houseAdd) )
         local added = next_protection - protection
         eff_node:AddItem( bd.lumbermill_protection, (protection*100).."%",  added > 0 and added * 100 .. "%" or "")
     elseif self.building:GetType()=="mill" then
+        local houseAdd = UtilsForBuilding:GetPropertyBy(User, location, "houseAdd")
+        local next_houseAdd = UtilsForBuilding:GetPropertyBy(User, location, "houseAdd", 1)
 
-        local houseAdd = UtilsForBuilding:GetPropertyBy(User, self.building:GetType(), "houseAdd")
-        local next_houseAdd = UtilsForBuilding:GetPropertyBy(User, self.building:GetType(), "houseAdd", 1)
-
-        local protection = UtilsForBuilding:GetPropertyBy(User, self.building:GetType(), "protection")
-        local next_protection = UtilsForBuilding:GetPropertyBy(User, self.building:GetType(), "protection", 1)
+        local protection = UtilsForBuilding:GetPropertyBy(User, location, "protection")
+        local next_protection = UtilsForBuilding:GetPropertyBy(User, location, "protection", 1)
 
         eff_node:AddItem( bd.mill_farmer, formatNumber(houseAdd), formatNumber(next_houseAdd - houseAdd) )
         local added = next_protection - protection
         eff_node:AddItem( bd.mill_protection, (protection*100).."%", added > 0 and added * 100 .. "%" or "")
     elseif self.building:GetType()=="stoneMason" then
 
-        local houseAdd = UtilsForBuilding:GetPropertyBy(User, self.building:GetType(), "houseAdd")
-        local next_houseAdd = UtilsForBuilding:GetPropertyBy(User, self.building:GetType(), "houseAdd", 1)
+        local houseAdd = UtilsForBuilding:GetPropertyBy(User, location, "houseAdd")
+        local next_houseAdd = UtilsForBuilding:GetPropertyBy(User, location, "houseAdd", 1)
 
-        local protection = UtilsForBuilding:GetPropertyBy(User, self.building:GetType(), "protection")
-        local next_protection = UtilsForBuilding:GetPropertyBy(User, self.building:GetType(), "protection", 1)
+        local protection = UtilsForBuilding:GetPropertyBy(User, location, "protection")
+        local next_protection = UtilsForBuilding:GetPropertyBy(User, location, "protection", 1)
 
         eff_node:AddItem( bd.stoneMason_quarrier, formatNumber(houseAdd), formatNumber(next_houseAdd - houseAdd) )
         local added = next_protection - protection
@@ -412,8 +412,8 @@ function CommonUpgradeUI:SetUpgradeEfficiency()
         eff_node:AddItem(bd.maxCasualty, formatNumber(maxcasualty), formatNumber(nextmaxcasualty - maxcasualty))
     elseif self.building:GetType()=="townHall" then
 
-        local houseAdd = UtilsForBuilding:GetPropertyBy(User, self.building:GetType(), "houseAdd")
-        local next_houseAdd = UtilsForBuilding:GetPropertyBy(User, self.building:GetType(), "houseAdd", 1)
+        local houseAdd = UtilsForBuilding:GetPropertyBy(User, location, "houseAdd")
+        local next_houseAdd = UtilsForBuilding:GetPropertyBy(User, location, "houseAdd", 1)
 
         local efficiency = UtilsForBuilding:GetEfficiencyBy(User, "townHall")
         local next_efficiency = UtilsForBuilding:GetEfficiencyBy(User, "townHall", 1)

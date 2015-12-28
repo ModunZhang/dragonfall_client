@@ -13,12 +13,20 @@ function UtilsForBuilding:GetHousesBy(userData, name, level)
     return t
 end
 
-function UtilsForBuilding:GetBuildingsBy(userData, name, level)
+function UtilsForBuilding:GetBuildingsBy(userData, nameOrLocation, level)
     level = level or 0
     local t = {}
-    for _,building in pairs(userData.buildings) do
-        if building.level >= level and building.type == name then
-            table.insert(t, building)
+    if type(nameOrLocation) ==  "string" then
+        for _,building in pairs(userData.buildings) do
+            if building.level >= level and building.type == nameOrLocation then
+                table.insert(t, building)
+            end
+        end
+    elseif type(nameOrLocation) == "number" then
+        for _,building in pairs(userData.buildings) do
+            if building.level >= level and building.location == nameOrLocation then
+                table.insert(t, building)
+            end
         end
     end
     return t
@@ -45,15 +53,14 @@ end
 function UtilsForBuilding:GetEfficiencyBy(userData, name, offset)
     return self:GetPropertyBy(userData, name, "efficiency", offset)
 end
-function UtilsForBuilding:GetPropertyBy(userData, name, property, offset)
-    return self:GetConfigBy(userData, name, offset)[property]
+function UtilsForBuilding:GetPropertyBy(userData, nameOrLocation, property, offset)
+    return self:GetConfigBy(userData, nameOrLocation, offset)[property]
 end
-function UtilsForBuilding:GetConfigBy(userData, name, offset)
+function UtilsForBuilding:GetConfigBy(userData, nameOrLocation, offset)
     offset = offset or 0
-    local configs = self:GetBuildingConfig(name)
-    for _,building in ipairs(self:GetBuildingsBy(userData, name)) do
-        return configs[building.level + offset]
-    end
+    local building = self:GetBuildingBy(userData, nameOrLocation)
+    local configs = self:GetBuildingConfig(building.type)
+    return configs[building.level + offset]
 end
 
 local BuildingFunction = GameDatas.BuildingFunction
