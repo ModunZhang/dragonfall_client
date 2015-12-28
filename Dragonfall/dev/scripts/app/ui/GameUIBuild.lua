@@ -97,17 +97,18 @@ function GameUIBuild:LoadBuildingQueue()
     return back_ground
 end
 function GameUIBuild:UpdateBuildingQueue(city)
-    self.queue:SetBuildingQueue(city:GetAvailableBuildQueueCounts(), city:GetUser().basicInfo.buildQueue)
+    self.queue:SetBuildingQueue(UtilsForBuilding:GetFreeBuildQueueCount(city:GetUser()), city:GetUser().basicInfo.buildQueue)
 end
 function GameUIBuild:OnCityChanged()
     table.foreachi(self.base_resource_building_items or {}, function(i, v)
         local building_type = base_items[i].building_type
         local number = #self.build_city:GetDecoratorsByType(building_type)
-        local max_number = City:GetMaxHouseCanBeBuilt(building_type)
+        local max_number = self.build_city:GetMaxHouseCanBeBuilt(building_type)
+        local free_build_queue = UtilsForBuilding:GetFreeBuildQueueCount(self.build_city:GetUser())
         local building = BuildingRegister[building_type].new({building_type = building_type, level = 1, finishTime = 0})
         v:SetNumber(number, max_number)
         if building then
-            if self.build_city:GetAvailableBuildQueueCounts() <= 0 then
+            if free_build_queue <= 0 then
                 v:SetCondition(_("建造队列不足"), display.COLOR_RED)
             elseif building:GetCitizen() > self.build_city:GetUser():GetResProduction("citizen").limit then
                 v:SetBuildEnable(false)
@@ -127,8 +128,10 @@ function GameUIBuild:OnBuildOnItem(item)
     local User = city:GetUser()
     local max = User.basicInfo.buildQueue
     local current_time = app.timer:GetServerTime()
-    local upgrading_buildings = city:GetUpgradingBuildingsWithOrder(current_time)
-    local current = max - #upgrading_buildings
+
+    local order_events = UtilsForBuilding:GetBuildingEventsBySeq(User)
+
+    local current = max - #order_events
 
     local m = User.buildingMaterials
     local config = house_levelup_config[item.building.building_type]
@@ -166,7 +169,7 @@ function GameUIBuild:OnBuildOnItem(item)
         local dialog =  UIKit:showMessageDialog()
         local required_gems = 0
         if current <= 0 then
-            local event = User:GetBuildingEventByLocation(self:GetCurrentLocation(upgrading_buildings[1]))
+            local event = UtilsForBuilding:GetBuildingEventByLocation(User, self:GetCurrentLocation(order_events[1]))
             if event then
                 local time = UtilsForEvent:GetEventInfo(event)
                 required_gems = DataUtils:getGemByTimeInterval(time)
@@ -204,20 +207,25 @@ function GameUIBuild:OnBuildOnItem(item)
         )
     end
 end
-function GameUIBuild:GetCurrentLocation(building)
-    if building:GetType() == "wall" then
-        return 21
-    elseif building:GetType() == "tower" then
-        return 22
+function GameUIBuild:GetCurrentLocation(event)
+    if UtilsForEvent:IsBuildingEvent(event) then
+        return event.location
+    elseif UtilsForEvent:IsHouseEvent(event) then
+        return event.buildingLocation, event.houseLocation
     end
-    local City = building:BelongCity()
-    local tile = City:GetTileWhichBuildingBelongs(building)
-    if City:IsFunctionBuilding(building) then
-        return tile.location_id
-    else
-        local houseLocation = tile:GetBuildingLocation(building)
-        return tile.location_id, houseLocation
-    end
+    -- if building:GetType() == "wall" then
+    --     return 21
+    -- elseif building:GetType() == "tower" then
+    --     return 22
+    -- end
+    -- local City = building:BelongCity()
+    -- local tile = City:GetTileWhichBuildingBelongs(building)
+    -- if City:IsFunctionBuilding(building) then
+    --     return tile.location_id
+    -- else
+    --     local houseLocation = tile:GetBuildingLocation(building)
+    --     return tile.location_id, houseLocation
+    -- end
 end
 function GameUIBuild:BuildWithRuins(select_ruins, building_type)
     local x, y = select_ruins:GetLogicPosition()

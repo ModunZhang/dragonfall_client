@@ -1170,7 +1170,7 @@ local resourceBuildingMap = {
     food = "mill"
 }
 local function getBuildingBuffForResourceProtectPercent(resourceName)
-    return UtilsForBuilding:GetBuildingProtection(
+    return UtilsForBuilding:GetBuildingProtection(User,
                 resourceBuildingMap[resourceName]
             )
 end

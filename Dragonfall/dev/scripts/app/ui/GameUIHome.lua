@@ -509,7 +509,7 @@ function GameUIHome:FindVip()
     return self.vip_btn
 end
 function GameUIHome:PromiseOfFteWaitFinish()
-    if #self.city:GetUpgradingBuildings() > 0 then
+    if UtilsForBuilding:GetBuildingEventsCount(self.city:GetUser()) > 0 then
         if not self.event_tab:IsShow() then
             self.event_tab:EventChangeOn("build", true)
         end
@@ -522,10 +522,7 @@ function GameUIHome:PromiseOfFteWaitFinish()
     return cocos_promise.defer()
 end
 function GameUIHome:PromiseOfFteFreeSpeedUp()
-    if #self.city:GetUpgradingBuildings() > 0 then
-        -- if not self.event_tab:IsShow() then
-        --     self.event_tab:EventChangeOn("build", true)
-        -- end
+    if UtilsForBuilding:GetBuildingEventsCount(self.city:GetUser()) > 0 then
         self:GetFteLayer()
         self.event_tab:PromiseOfPopUp():next(function()
             self:GetFteLayer():SetTouchObject(self:Find())
@@ -533,12 +530,13 @@ function GameUIHome:PromiseOfFteFreeSpeedUp()
             self:Find():onButtonClicked(function()
                 self:Find():setButtonEnabled(false)
 
-                local building = self:GetBuilding()
-                if building then
-                    if building:IsHouse() then
-                        mockData.FinishBuildHouseAt(self:GetBuildingLocation(), building:GetNextLevel())
+                local event = UtilsForBuilding:GetBuildingEventsBySeq(self.city:GetUser())[1]
+                if event then
+                    local building = UtilsForBuilding:GetBuildingByEvent(self.city:GetUser(), event)
+                    if event.buildingLocation then
+                        mockData.FinishBuildHouseAt(event.buildingLocation, building.level + 1)
                     else
-                        mockData.FinishUpgradingBuilding(building:GetType(), building:GetNextLevel())
+                        mockData.FinishUpgradingBuilding(building.type, building.level + 1)
                     end
                 end
             end)
@@ -559,10 +557,7 @@ function GameUIHome:PromiseOfFteFreeSpeedUp()
     return cocos_promise.defer()
 end
 function GameUIHome:PromiseOfFteInstantSpeedUp()
-    if #self.city:GetUpgradingBuildings() > 0 then
-        -- if not self.event_tab:IsShow() then
-        --     self.event_tab:EventChangeOn("build", true)
-        -- end
+    if UtilsForBuilding:GetBuildingEventsCount(self.city:GetUser()) > 0 then
         self:GetFteLayer()
         self.event_tab:PromiseOfPopUp():next(function()
             self:GetFteLayer():SetTouchObject(self:Find())
@@ -570,15 +565,15 @@ function GameUIHome:PromiseOfFteInstantSpeedUp()
             self:Find():onButtonClicked(function()
                 self:Find():setButtonEnabled(false)
 
-                local building = self:GetBuilding()
-                if building then
-                    if building:IsHouse() then
-                        mockData.FinishBuildHouseAt(self:GetBuildingLocation(), building:GetNextLevel())
+                local event = UtilsForBuilding:GetBuildingEventsBySeq(self.city:GetUser())[1]
+                if event then
+                    local building = UtilsForBuilding:GetBuildingByEvent(self.city:GetUser(), event)
+                    if event.buildingLocation then
+                        mockData.FinishBuildHouseAt(event.buildingLocation, building.level + 1)
                     else
-                        mockData.FinishUpgradingBuilding(building:GetType(), building:GetNextLevel())
+                        mockData.FinishUpgradingBuilding(building.type, building.level + 1)
                     end
                 end
-
             end)
 
             local r = self:Find():getCascadeBoundingBox()
@@ -597,18 +592,6 @@ function GameUIHome:PromiseOfFteInstantSpeedUp()
             :next(function()self:GetFteLayer():removeFromParent()end)
     end
     return cocos_promise.defer()
-end
-function GameUIHome:GetBuildingLocation()
-    local building = self.city:GetUpgradingBuildings()[1]
-    assert(building)
-    local x,y = building:GetLogicPosition()
-    local tile = self.city:GetTileByBuildingPosition(x, y)
-    return tile.location_id
-end
-function GameUIHome:GetBuilding()
-    local building = self.city:GetUpgradingBuildings()[1]
-    assert(building)
-    return building
 end
 function GameUIHome:PromiseOfActivePromise()
     self:GetFteLayer():SetTouchObject(self:FindVip())

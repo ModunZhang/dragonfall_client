@@ -178,6 +178,9 @@ function GameUIUnlockBuilding:SetUpgradeRequirementListview()
 
     local has_materials = User.buildingMaterials
     local pre_condition = building:IsBuildingUpgradeLegal()
+
+    local buildingCount = UtilsForBuilding:GetBuildingEventsCount(User)
+
     local requirements = {
         {
             resource_type = _("前置条件"),
@@ -190,9 +193,9 @@ function GameUIUnlockBuilding:SetUpgradeRequirementListview()
         {
             resource_type = _("建造队列"),
             isVisible = true,
-            isSatisfy = #City:GetUpgradingBuildings() < User.basicInfo.buildQueue,
+            isSatisfy = buildingCount < User.basicInfo.buildQueue,
             icon="hammer_33x40.png",
-            description=_("建造队列")..(User.basicInfo.buildQueue-#City:GetUpgradingBuildings()).."/"..1
+            description=_("建造队列")..(User.basicInfo.buildQueue-buildingCount).."/"..1
         },
         {
             resource_type = _("木材"),

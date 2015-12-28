@@ -502,33 +502,6 @@ end
 function City:IsGate(building)
     return building:GetType() == "wall"
 end
-function City:GetAvailableBuildQueueCounts()
-    return self:GetUser().basicInfo.buildQueue - #self:GetUpgradingBuildings()
-end
-function City:GetUpgradingBuildings(need_sort)
-    local builds = {}
-    self:IteratorCanUpgradeBuildings(function(building)
-        if building:IsUpgrading() then
-            insert(builds, building)
-        end
-    end)
-    if need_sort then
-        table.sort(builds, function(a, b)
-            local a_index = self:GetLocationIdByBuildingType(a:GetType())
-            local b_index = self:GetLocationIdByBuildingType(b:GetType())
-            if a_index and b_index then
-                return a_index < b_index
-            elseif a_index == nil and b_index then
-                return false
-            elseif a_index and b_index == nil then
-                return true
-            else
-                return a:GetType() == b:GetType() and a:IsAheadOfBuilding(b) or a:IsImportantThanBuilding(b)
-            end
-        end)
-    end
-    return builds
-end
 function City:GetUpgradingBuildingsWithOrder(current_time)
     local builds = {}
     self:IteratorCanUpgradeBuildings(function(building)
