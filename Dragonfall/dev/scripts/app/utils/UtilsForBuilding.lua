@@ -460,6 +460,22 @@ function UtilsForBuilding:GetBuildingEventByLocation(userData, buildingLocation,
         end
     end
 end
+-- 取得小屋最大建造数量
+local house2building = {
+    dwelling = "townHall",
+    woodcutter = "lumbermill",
+    farmer = "mill",
+    quarrier = "stoneMason",
+    miner = "foundry",
+}
+local eachHouseInitCount_value = GameDatas.PlayerInitData.intInit.eachHouseInitCount.value
+function UtilsForBuilding:GetMaxBuildHouse(userData, houseType)
+    local max = eachHouseInitCount_value
+    for _,building in ipairs(self:GetBuildingsBy(userData, house2building[houseType], 1)) do
+        max = max + self:GetPropertyBy(userData, building.type, "houseAdd")
+    end
+    return max
+end
 
 
 

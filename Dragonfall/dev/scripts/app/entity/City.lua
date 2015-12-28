@@ -502,20 +502,8 @@ end
 function City:IsGate(building)
     return building:GetType() == "wall"
 end
-function City:GetUpgradingBuildingsWithOrder(current_time)
-    local builds = {}
-    self:IteratorCanUpgradeBuildings(function(building)
-        if building:IsUpgrading() then
-            insert(builds, building)
-        end
-    end)
-    table.sort(builds, function(a, b)
-        return a:GetUpgradingLeftTimeByCurrentTime(current_time) < b:GetUpgradingLeftTimeByCurrentTime(current_time)
-    end)
-    return builds
-end
-function City:GetLeftBuildingCountsByType(building_type)
-    return self:GetMaxHouseCanBeBuilt(building_type) - #self:GetBuildingByType(building_type)
+function City:GetLeftBuildingCountsByType(houseType)
+    return UtilsForBuilding:GetMaxBuildHouse(self:GetUser(), houseType) - #self:GetBuildingByType(houseType)
 end
 local function alignmeng_path(path)
     if #path <= 3 then

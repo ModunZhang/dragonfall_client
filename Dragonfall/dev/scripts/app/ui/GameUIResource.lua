@@ -288,7 +288,9 @@ end
 function GameUIResource:GetDataSource()
     local dataSource = {{_("待建地基"),'x' .. #self.city:GetRuinsNotBeenOccupied()}}
     local decorators = self.city:GetDecoratorsByType(self.building:GetType())
-    table.insert(dataSource,{_("可建造数量"),#decorators .. '/' .. self.city:GetMaxHouseCanBeBuilt(self.building:GetType())})
+    local houseType = self.building:GetType()
+    local houseMax = UtilsForBuilding:GetMaxBuildHouse(self.city:GetUser(), houseType)
+    table.insert(dataSource,{_("可建造数量"),#decorators .. '/' .. houseMax})
     local __,__,title = self:GetTitleByType(self.building)
     table.insert(dataSource,{title,string.format("%d/h", self.city:GetUser():GetResProduction(self.building:GetResType()).output)})
 
