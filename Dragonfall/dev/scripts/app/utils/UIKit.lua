@@ -1191,34 +1191,34 @@ local position_map = {
     }
 }
 local monster_scale = {
-    swordsman_1     = 0.8,
-    swordsman_2     = 0.8,
-    swordsman_3     = 0.8,
-    ranger_1        = 0.8,
-    ranger_2        = 0.8,
-    ranger_3        = 0.8,
-    lancer_1        = 0.8,
-    lancer_2        = 0.8,
-    lancer_3        = 0.8,
-    catapult_1      = 0.7,
-    catapult_2      = 0.7,
-    catapult_3      = 0.7,
-    sentinel_1      = 0.8,
-    sentinel_2      = 0.8,
-    sentinel_3      = 0.8,
-    crossbowman_1   = 0.8,
-    crossbowman_2   = 0.8,
-    crossbowman_3   = 0.8,
-    horseArcher_1   = 0.8,
-    horseArcher_2   = 0.8,
-    horseArcher_3   = 0.8,
-    ballista_1      = 0.7,
-    ballista_2      = 0.7,
-    ballista_3      = 0.7,
-    skeletonWarrior = 0.8,
-    skeletonArcher  = 0.8,
-    deathKnight     = 0.8,
-    meatWagon       = 0.8,
+    swordsman_1     = 1,
+    swordsman_2     = 1,
+    swordsman_3     = 1,
+    ranger_1        = 1,
+    ranger_2        = 1,
+    ranger_3        = 1,
+    lancer_1        = 1,
+    lancer_2        = 1,
+    lancer_3        = 1,
+    catapult_1      = 0.8,
+    catapult_2      = 0.8,
+    catapult_3      = 0.8,
+    sentinel_1      = 1,
+    sentinel_2      = 1,
+    sentinel_3      = 1,
+    crossbowman_1   = 1,
+    crossbowman_2   = 1,
+    crossbowman_3   = 1,
+    horseArcher_1   = 1,
+    horseArcher_2   = 1,
+    horseArcher_3   = 1,
+    ballista_1      = 0.8,
+    ballista_2      = 0.8,
+    ballista_3      = 0.8,
+    skeletonWarrior = 1,
+    skeletonArcher  = 1,
+    deathKnight     = 1,
+    meatWagon       = 1,
 }
 function UIKit:CreateMonster(name)
     local soldierName, star = unpack(string.split(name, ':'))
@@ -1791,15 +1791,15 @@ function UIKit:CreateNumberImageNode(params)
                 replace_key = num_string
             end
             local num_sprite =display.newSprite(string.format("icon_%s.png",replace_key)):addTo(self)
-            x = x + (i == 1 and num_sprite:getContentSize().width/2 or num_sprite:getContentSize().width) + ((replace_key == "point" or replace_key == "slash" or replace_key == "colon") and 6 or 0)
-            num_sprite:pos(x,15)
+            x = x + (i == 1 and num_sprite:getContentSize().width/2 or num_sprite:getContentSize().width) 
+            num_sprite:pos(x + ((replace_key == "point" or replace_key == "slash" or replace_key == "colon" or replace_key == "comma") and 6 or 0),15)
             num_sprite:setColor(UIKit:hex2c4b(color))
             if i == string.len(text) then
                 node_width = x + num_sprite:getContentSize().width/2
             end
         end
-        number_node:setContentSize(cc.size(node_width,30))
-        number_node:scale(size/30)
+        self:setContentSize(cc.size(node_width,30))
+        self:scale(size/30)
     end
     function number_node:SetNumColor( color)
         for i,num_sprite in ipairs(self:getChildren()) do
