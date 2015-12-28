@@ -122,7 +122,7 @@ function GameUISettingAccount:CreateFacebookPanel()
     display.newSprite("icon_facebook_104x104.png"):align(display.LEFT_CENTER, 12, bg_height/2)
         :addTo(self.facebook_panel)
     self.facebook_bind_state_label = UIKit:ttfLabel({
-        text = "gameCenter 名字（已绑定）gameCenter 名字（已绑定）gameCenter 名字（已绑定）gameCenter 名字（已绑定）",
+        text = "",
         size = 20,
         color= 0x403c2f,
         dimensions = cc.size(260,0)
@@ -328,7 +328,7 @@ function GameUISettingAccount:ExchangeBindAccount()
                         else
                             UIKit:showMessageDialog(_("提示"),string.format(_("是否确认切换账号到GameCenter %s"),gcName),function()
                                 NetManager:getSwitchGcPromise(gcId):done(function ()
-                                    app.restart(false)
+                                    app:restart(true)
                                 end)
                             end,function()end)
                         end
@@ -345,7 +345,7 @@ function GameUISettingAccount:ExchangeBindAccount()
                                 UIKit:showMessageDialog(_("提示"),_("你的Facebook账号绑定了当前游戏账号，请登录其他Facebook账号，再重试"))
                             else
                                 NetManager:getSwitchGcPromise(userid):done(function (response)
-                                    app.restart(false)
+                                    app:restart(true)
                                 end)
                             end
                         else
