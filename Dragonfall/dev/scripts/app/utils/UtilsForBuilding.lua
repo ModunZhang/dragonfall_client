@@ -5,7 +5,7 @@ function UtilsForBuilding:GetHousesBy(userData, name, level)
     local t = {}
     for _,building in pairs(userData.buildings) do
         for _,house in pairs(building.houses) do
-            if house.level > 0 and (not name or house.type == name) then
+            if house.level >= level and (not name or house.type == name) then
                 table.insert(t, house)
             end
         end
@@ -478,6 +478,7 @@ function UtilsForBuilding:GetMaxBuildHouse(userData, houseType)
 end
 
 
+-- 第一项是主要产出
 local res_map = {
     miner      = "iron",
     farmer     = "food",

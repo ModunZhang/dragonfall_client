@@ -44,9 +44,6 @@ function ResourceUpgradeBuilding:GetNextLevelProductionPerHour()
     local current_config = config[self:GetNextLevel()]
     return current_config.production
 end
-function ResourceUpgradeBuilding:GetResType()
-    return ""
-end
 
 function ResourceUpgradeBuilding:IsAbleToUpgrade(isUpgradeNow)
     -- 升级是否使空闲城民小于0
