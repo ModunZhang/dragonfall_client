@@ -376,3 +376,25 @@ function UtilsForBuilding:GetUnlockSellQueueLevel(queueIndex)
     end
 end
 
+
+
+local p_resource_building_to_house = {
+    ["townHall"] = "dwelling",
+    ["foundry"] = "miner",
+    ["stoneMason"] = "quarrier",
+    ["lumbermill"] = "woodcutter",
+    ["mill"] = "farmer",
+}
+function UtilsForBuilding:GetHouseType(buildingName)
+    return p_resource_building_to_house[buildingName]
+end
+function UtilsForBuilding:GetBuildingProtection(buildingName, offset)
+    offset = offset or 0
+    local configs = UtilsForBuilding:GetBuildingConfig(buildingName)
+    local protection = 0
+    for _,building in ipairs(self:GetBuildingsBy(userData, buildingName, 1)) do
+        protection = protection + configs[building.level + offset].protection
+    end
+    return protection
+end
+
