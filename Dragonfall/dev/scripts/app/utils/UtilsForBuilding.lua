@@ -41,6 +41,21 @@ function UtilsForBuilding:GetBuildingBy(userData, nameOrLocation)
     end
 end
 
+
+function UtilsForBuilding:GetEfficiencyBy(userData, name, offset)
+    return self:GetPropertyBy(userData, name, "efficiency", offset)
+end
+function UtilsForBuilding:GetPropertyBy(userData, name, property, offset)
+    return self:GetConfigBy(userData, name, offset)[property]
+end
+function UtilsForBuilding:GetConfigBy(userData, name, offset)
+    offset = offset or 0
+    local configs = self:GetBuildingConfig(name)
+    for _,building in ipairs(self:GetBuildingsBy(userData, name)) do
+        return configs[building.level + offset]
+    end
+end
+
 local BuildingFunction = GameDatas.BuildingFunction
 function UtilsForBuilding:GetBuildingConfig(buildingName)
     return BuildingFunction[buildingName]
@@ -111,7 +126,8 @@ function UtilsForBuilding:GetWarehouseLimit(userData, offset)
 end
 
 local materialDepot = GameDatas.BuildingFunction.materialDepot
-function UtilsForBuilding:GetMaterialDepotLimit(userData)
+function UtilsForBuilding:GetMaterialDepotLimit(userData, offset)
+    offset = offset or 0
     local limit = {
         dragonMaterials     = 0,
         soldierMaterials    = 0,
@@ -119,7 +135,7 @@ function UtilsForBuilding:GetMaterialDepotLimit(userData)
         technologyMaterials = 0,
     }
     for _,building in ipairs(self:GetBuildingsBy(userData, "materialDepot", 1)) do
-        local config = materialDepot[building.level]
+        local config = materialDepot[building.level + offset]
         for k,v in pairs(limit) do
             limit[k] = v + config[k]
         end
@@ -313,3 +329,17 @@ end
 
 
 
+local needs = {"Wood", "Stone", "Iron", "time"}
+local toolShop = GameDatas.BuildingFunction.toolShop
+function UtilsForBuilding:GetToolShopNeedByCategory(userData, category)
+    for _,building in ipairs(self:GetBuildingsBy(userData, "toolShop", 1)) do
+        local need = {}
+        local config = toolShop[building.level]
+        local key = category == "buildingMaterials" and "Bm" or "Am"
+        for _, v in ipairs(needs) do
+            table.insert(need, config[string.format("product%s%s", key, v)])
+        end
+        return config["production"], unpack(need)
+    end
+    assert(false)
+end
