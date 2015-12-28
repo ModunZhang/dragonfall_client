@@ -424,10 +424,10 @@ function CommonUpgradeUI:SetUpgradeEfficiency()
         local added = next_efficiency - efficiency
         eff_node:AddItem( _("学院科技研发速度"),efficiency * 100, added > 0 and (added * 100) .. "%" or "" )
     elseif self.building:GetType()=="tradeGuild" then
-        local cart = self.building:GetMaxCart()
-        local next_cart = self.building:GetNextLevelMaxCart()
-        local recovery = self.building:GetCartRecovery()
-        local next_recovery = self.building:GetNextLevelCartRecovery()
+        local cart = UtilsForBuilding:GetMaxCart(User)
+        local next_cart = UtilsForBuilding:GetMaxCart(User, 1)
+        local recovery = UtilsForBuilding:GetCartRecovery(User)
+        local next_recovery = UtilsForBuilding:GetCartRecovery(User, 1)
         eff_node:AddItem( _("资源小车上限"),formatNumber(cart), formatNumber(next_cart - cart) )
         eff_node:AddItem( _("资源小车每小时回复速度"),formatNumber(recovery), formatNumber(next_recovery - recovery) )
     elseif self.building:GetType()=="trainingGround" then

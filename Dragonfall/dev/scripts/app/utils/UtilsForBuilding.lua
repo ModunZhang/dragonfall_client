@@ -343,3 +343,36 @@ function UtilsForBuilding:GetToolShopNeedByCategory(userData, category)
     end
     assert(false)
 end
+
+
+local tradeGuild = GameDatas.BuildingFunction.tradeGuild
+function UtilsForBuilding:GetMaxCart(userData, offset)
+    offset = offset or 0
+    local effect = UtilsForTech:GetEffect("logistics", userData.productionTechs["logistics"])
+    for _,building in ipairs(self:GetBuildingsBy(userData, "tradeGuild", 1)) do
+        return math.ceil(tradeGuild[building.level + offset].maxCart * (1 + effect))
+    end
+    return 0
+end
+function UtilsForBuilding:GetMaxSellQueue(userData, offset)
+    offset = offset or 0
+    for _,building in ipairs(self:GetBuildingsBy(userData, "tradeGuild", 1)) do
+        return tradeGuild[building.level + offset].maxSellQueue
+    end
+    return 0
+end
+function UtilsForBuilding:GetCartRecovery(userData, offset)
+    offset = offset or 0
+    for _,building in ipairs(self:GetBuildingsBy(userData, "tradeGuild", 1)) do
+        return tradeGuild[building.level + offset].cartRecovery
+    end
+    return 0
+end
+function UtilsForBuilding:GetUnlockSellQueueLevel(queueIndex)
+    for k,v in pairs(tradeGuild) do
+        if v.maxSellQueue == queueIndex then
+            return k
+        end
+    end
+end
+
