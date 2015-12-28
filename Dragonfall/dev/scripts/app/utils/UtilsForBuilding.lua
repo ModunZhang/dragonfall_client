@@ -405,3 +405,23 @@ function UtilsForBuilding:GetBuildingProtection(buildingName, offset)
     return protection
 end
 
+
+function UtilsForBuilding:GetFreeBuildQueueCount(userData)
+    return userData.basicInfo.buildQueue - #userData.buildingEvents
+end
+function UtilsForBuilding:GetBuildingEventsBySeq(userData)
+    local events = {}
+    for i,v in ipairs(userData.houseEvents) do
+        table.insert(events, v)
+    end
+    for i,v in ipairs(userData.buildingEvents) do
+        table.insert(events, v)
+    end
+    table.sort(events, function(a, b)
+        return (a.finishTime - a.startTime) < (b.finishTime - b.startTime)
+    end)
+    return events
+end
+
+
+

@@ -206,8 +206,8 @@ function WidgetEventTabButtons:RefreshAllEvents()
     else
         self:GetTabByKey("material"):SetOrResetProgress(nil)
     end
-
-    local event = User:GetBuildingEventsBySeq()[1]
+    
+    local event = UtilsForBuilding:GetBuildingEventsBySeq(User)[1]
     if event then
         local time, percent = UtilsForEvent:GetEventInfo(event)
         self:GetTabByKey("build"):SetOrResetProgress(time, percent)

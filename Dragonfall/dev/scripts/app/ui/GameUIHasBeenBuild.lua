@@ -406,8 +406,10 @@ function GameUIHasBeenBuild:OnMoveInStage()
     self.build_city:GetUser():AddListenOnType(self, "buildingEvents")
     scheduleAt(self, function()
         local City = self.build_city
-        self.queue:SetBuildingQueue(City:GetAvailableBuildQueueCounts(),
-            City:GetUser().basicInfo.buildQueue)
+        self.queue:SetBuildingQueue(
+            UtilsForBuilding:GetFreeBuildQueueCount(City:GetUser()),
+            City:GetUser().basicInfo.buildQueue
+        )
         self:RefreshAllItems()
     end)
 end
