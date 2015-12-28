@@ -7,11 +7,9 @@ local Enum = import("..utils.Enum")
 local Orient = import(".Orient")
 local Tile = import(".Tile")
 local Building = import(".Building")
-local GateEntity = import(".GateEntity")
-local TowerEntity = import(".TowerEntity")
+local UpgradeBuilding = import(".UpgradeBuilding")
 local TowerUpgradeBuilding = import(".TowerUpgradeBuilding")
 local MultiObserver = import(".MultiObserver")
-local property = import("..utils.property")
 local City = class("City", MultiObserver)
 local floor = math.floor
 local ceil = math.ceil
@@ -61,8 +59,8 @@ function City:ctor(user)
     self.belong_user = user
     self.buildings = {}
     self.walls = {}
-    self.gate = GateEntity.new({building_type = "wall", city = self})
-    self.tower = TowerEntity.new({building_type = "tower", city = self})
+    self.gate = UpgradeBuilding.new({building_type = "wall", city = self})
+    self.tower = UpgradeBuilding.new({building_type = "tower", city = self})
     self.visible_towers = {}
     self.decorators = {}
     self.need_update_buildings = {}
@@ -499,10 +497,10 @@ function City:IsHouse(building)
     return building:IsHouse()
 end
 function City:IsTower(building)
-    return iskindof(building, "TowerEntity")
+    return building:GetType() == "tower"
 end
 function City:IsGate(building)
-    return iskindof(building, "GateEntity")
+    return building:GetType() == "wall"
 end
 function City:GetAvailableBuildQueueCounts()
     return self:GetUser().basicInfo.buildQueue - #self:GetUpgradingBuildings()
@@ -632,10 +630,10 @@ local BUILDING_MAP = {
     miner = "foundry",
 }
 function City:GetMaxHouseCanBeBuilt(house_type)
-    --基础值
     local max = intInit.eachHouseInitCount.value
     for _, v in pairs(self:GetBuildingByType(BUILDING_MAP[house_type])) do
-        max = max + v:GetMaxHouseNum()
+        local houseAdd = UtilsForBuilding:GetPropertyBy(self:GetUser(), v:GetType(), "houseAdd")
+        max = max + houseAdd
     end
     return max
 end

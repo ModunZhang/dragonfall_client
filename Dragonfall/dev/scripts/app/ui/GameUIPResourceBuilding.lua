@@ -64,9 +64,10 @@ end
 function GameUIPResourceBuilding:ProduceIncreasePart()
     -- 是否达成标识
     local building_x,building_y = self.building:GetLogicPosition()
+    local house_type = UtilsForBuilding:GetHouseType(self.building:GetType())
 
     -- 匹配对应关系的小屋数量
-    local house_count = #self.city:GetHousesAroundFunctionBuildingByType(self.building , self.building:GetHouseType(), 2)
+    local house_count = #self.city:GetHousesAroundFunctionBuildingByType(self.building , house_type, 2)
 
     -- 周围小屋数量 3/6 是否达成
     local first_count = house_count>3 and 3 or house_count
@@ -83,8 +84,9 @@ function GameUIPResourceBuilding:ProduceIncreasePart()
         },
     }
     -- bg
+    local house_type = UtilsForBuilding:GetHouseType(self.building:GetType())
     local bg = WidgetInfoWithTitle.new({
-        title = string.format(_("周围2格范围的%s数量"),Localize.building_name[self.building:GetHouseType()]),
+        title = string.format(_("周围2格范围的%s数量"),Localize.building_name[house_type]),
         h = 146,
         info = info
     }):align(display.CENTER, display.cx, display.top-200):addTo(self.info_layer)
@@ -195,14 +197,16 @@ function GameUIPResourceBuilding:RebuildPart()
         }):align(display.CENTER, bg_size.width/2 ,230)
         :addTo(bg)
 
-    local after_rebuild_max_house_num = City:GetMaxHouseCanBeBuilt(self.building:GetHouseType())-self.building:GetMaxHouseNum()
+    local house_type = UtilsForBuilding:GetHouseType(self.building:GetType())
+    local houseAdd = UtilsForBuilding:GetPropertyBy(self.city:GetUser(), self.building:GetType(), "houseAdd")
+    local after_rebuild_max_house_num = City:GetMaxHouseCanBeBuilt(house_type)-houseAdd
     -- 魔法石数量是否满足转换条件
     local need_gems = 100
     local info = {
         {
-            string.format(_("%s数量"),Localize.building_name[self.building:GetHouseType()]),
+            string.format(_("%s数量"),Localize.building_name[house_type]),
             string.format(_("≤%d"),after_rebuild_max_house_num),
-            #City:GetBuildingByType(self.building:GetHouseType())<=after_rebuild_max_house_num and "yes_40x40.png" or "no_40x40.png"
+            #City:GetBuildingByType(house_type)<=after_rebuild_max_house_num and "yes_40x40.png" or "no_40x40.png"
         },
         {
             _("金龙币"),
@@ -239,7 +243,11 @@ function GameUIPResourceBuilding:RebuildPart()
 end
 function GameUIPResourceBuilding:CheckSwitch(switch_to_building_type)
     local current_building = self.building
+    local house_type = UtilsForBuilding:GetHouseType(self.building:GetType())
+    local houseAdd = UtilsForBuilding:GetPropertyBy(self.city:GetUser(), current_building:GetType(), "houseAdd")
     local city = current_building:BelongCity()
+
+
     if city:GetUser():GetGemValue()<intInit.switchProductionBuilding.value then
         UIKit:showMessageDialog(_("提示"),_("金龙币不足"))
             :CreateOKButton(
@@ -252,7 +260,7 @@ function GameUIPResourceBuilding:CheckSwitch(switch_to_building_type)
                 }
             )
         return
-    elseif (city:GetMaxHouseCanBeBuilt(current_building:GetHouseType())-current_building:GetMaxHouseNum())<#city:GetBuildingByType(current_building:GetHouseType()) then
+    elseif (city:GetMaxHouseCanBeBuilt(house_type)-houseAdd)<#city:GetBuildingByType(house_type) then
         UIKit:showMessageDialog(_("提示"),_("小屋数量过多"))
         return
     elseif current_building:IsUpgrading() then

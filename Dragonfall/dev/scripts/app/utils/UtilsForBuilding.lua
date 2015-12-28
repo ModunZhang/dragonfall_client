@@ -13,12 +13,20 @@ function UtilsForBuilding:GetHousesBy(userData, name, level)
     return t
 end
 
-function UtilsForBuilding:GetBuildingsBy(userData, name, level)
+function UtilsForBuilding:GetBuildingsBy(userData, nameOrLocation, level)
     level = level or 0
     local t = {}
-    for _,building in pairs(userData.buildings) do
-        if building.level >= level and building.type == name then
-            table.insert(t, building)
+    if type(nameOrLocation) ==  "string" then
+        for _,building in pairs(userData.buildings) do
+            if building.level >= level and building.type == nameOrLocation then
+                table.insert(t, building)
+            end
+        end
+    elseif type(nameOrLocation) == "number" then
+        for _,building in pairs(userData.buildings) do
+            if building.level >= level and building.location == nameOrLocation then
+                table.insert(t, building)
+            end
         end
     end
     return t
@@ -39,6 +47,20 @@ function UtilsForBuilding:GetBuildingBy(userData, nameOrLocation)
             end
         end
     end
+end
+
+
+function UtilsForBuilding:GetEfficiencyBy(userData, name, offset)
+    return self:GetPropertyBy(userData, name, "efficiency", offset)
+end
+function UtilsForBuilding:GetPropertyBy(userData, nameOrLocation, property, offset)
+    return self:GetConfigBy(userData, nameOrLocation, offset)[property]
+end
+function UtilsForBuilding:GetConfigBy(userData, nameOrLocation, offset)
+    offset = offset or 0
+    local building = self:GetBuildingBy(userData, nameOrLocation)
+    local configs = self:GetBuildingConfig(building.type)
+    return configs[building.level + offset]
 end
 
 local BuildingFunction = GameDatas.BuildingFunction
@@ -111,7 +133,8 @@ function UtilsForBuilding:GetWarehouseLimit(userData, offset)
 end
 
 local materialDepot = GameDatas.BuildingFunction.materialDepot
-function UtilsForBuilding:GetMaterialDepotLimit(userData)
+function UtilsForBuilding:GetMaterialDepotLimit(userData, offset)
+    offset = offset or 0
     local limit = {
         dragonMaterials     = 0,
         soldierMaterials    = 0,
@@ -119,7 +142,7 @@ function UtilsForBuilding:GetMaterialDepotLimit(userData)
         technologyMaterials = 0,
     }
     for _,building in ipairs(self:GetBuildingsBy(userData, "materialDepot", 1)) do
-        local config = materialDepot[building.level]
+        local config = materialDepot[building.level + offset]
         for k,v in pairs(limit) do
             limit[k] = v + config[k]
         end
@@ -312,4 +335,73 @@ function UtilsForBuilding:GetMaxRecruitSoldier(userData, offset)
 end
 
 
+
+local needs = {"Wood", "Stone", "Iron", "time"}
+local toolShop = GameDatas.BuildingFunction.toolShop
+function UtilsForBuilding:GetToolShopNeedByCategory(userData, category)
+    for _,building in ipairs(self:GetBuildingsBy(userData, "toolShop", 1)) do
+        local need = {}
+        local config = toolShop[building.level]
+        local key = category == "buildingMaterials" and "Bm" or "Am"
+        for _, v in ipairs(needs) do
+            table.insert(need, config[string.format("product%s%s", key, v)])
+        end
+        return config["production"], unpack(need)
+    end
+    assert(false)
+end
+
+
+local tradeGuild = GameDatas.BuildingFunction.tradeGuild
+function UtilsForBuilding:GetMaxCart(userData, offset)
+    offset = offset or 0
+    local effect = UtilsForTech:GetEffect("logistics", userData.productionTechs["logistics"])
+    for _,building in ipairs(self:GetBuildingsBy(userData, "tradeGuild", 1)) do
+        return math.ceil(tradeGuild[building.level + offset].maxCart * (1 + effect))
+    end
+    return 0
+end
+function UtilsForBuilding:GetMaxSellQueue(userData, offset)
+    offset = offset or 0
+    for _,building in ipairs(self:GetBuildingsBy(userData, "tradeGuild", 1)) do
+        return tradeGuild[building.level + offset].maxSellQueue
+    end
+    return 0
+end
+function UtilsForBuilding:GetCartRecovery(userData, offset)
+    offset = offset or 0
+    for _,building in ipairs(self:GetBuildingsBy(userData, "tradeGuild", 1)) do
+        return tradeGuild[building.level + offset].cartRecovery
+    end
+    return 0
+end
+function UtilsForBuilding:GetUnlockSellQueueLevel(queueIndex)
+    for k,v in pairs(tradeGuild) do
+        if v.maxSellQueue == queueIndex then
+            return k
+        end
+    end
+end
+
+
+
+local p_resource_building_to_house = {
+    ["townHall"] = "dwelling",
+    ["foundry"] = "miner",
+    ["stoneMason"] = "quarrier",
+    ["lumbermill"] = "woodcutter",
+    ["mill"] = "farmer",
+}
+function UtilsForBuilding:GetHouseType(buildingName)
+    return p_resource_building_to_house[buildingName]
+end
+function UtilsForBuilding:GetBuildingProtection(buildingName, offset)
+    offset = offset or 0
+    local configs = UtilsForBuilding:GetBuildingConfig(buildingName)
+    local protection = 0
+    for _,building in ipairs(self:GetBuildingsBy(userData, buildingName, 1)) do
+        protection = protection + configs[building.level + offset].protection
+    end
+    return protection
+end
 

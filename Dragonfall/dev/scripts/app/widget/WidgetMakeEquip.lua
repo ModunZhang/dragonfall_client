@@ -402,8 +402,9 @@ function WidgetMakeEquip:UpdateGemLabel()
 end
 -- 更新buff加成
 function WidgetMakeEquip:UpdateBuffTime()
+    local User = self.city:GetUser()
     local time = self.equip_config.makeTime
-    local efficiency = self.black_smith:GetEfficiency()
+    local efficiency = UtilsForBuilding:GetEfficiencyBy(User, "blackSmith")
     local buff_time = DataUtils:getBuffEfffectTime(time,efficiency)
     self.buff_time:setString(string.format("(-%s)", GameUtils:formatTimeStyle1(buff_time)))
 end

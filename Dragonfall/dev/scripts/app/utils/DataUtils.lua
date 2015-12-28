@@ -1163,20 +1163,16 @@ function DataUtils:DoBattle(attacker, defencer, terrain, enemy_name)
     return report
 end
 -- 获取资源保护百分比
+local resourceBuildingMap = {
+    wood = "lumbermill",
+    stone = "stoneMason",
+    iron = "foundry",
+    food = "mill"
+}
 local function getBuildingBuffForResourceProtectPercent(resourceName)
-    local resourceBuildingMap = {
-        wood = "lumbermill",
-        stone = "stoneMason",
-        iron = "foundry",
-        food = "mill"
-    }
-    local buildingName = resourceBuildingMap[resourceName]
-    local buildings = City:GetFirstBuildingByType(buildingName)
-    local protectPercent = 0
-    if buildings and buildings:GetLevel() > 0 then
-        protectPercent = protectPercent + buildings:GetProtection()
-    end
-    return protectPercent
+    return UtilsForBuilding:GetBuildingProtection(
+                resourceBuildingMap[resourceName]
+            )
 end
 -- local function getPlayerItemBuffForResourceLootPercentSubtract()
 --     local itemBuff = 0
@@ -1249,7 +1245,7 @@ function DataUtils:getMapRoundByMapIndex( mapIndex )
     for round,location in ipairs(locations) do
         for i,v in ipairs(location) do
             if v.from.x <= locationX and v.from.y <= locationY and v.to.x >= locationX and v.to.y >= locationY then
-                theRound = round - 1 
+                theRound = round - 1
             end
         end
     end
@@ -1257,15 +1253,15 @@ function DataUtils:getMapRoundByMapIndex( mapIndex )
 end
 --根据MapIndex获取对应buff增益数量
 function DataUtils:getMapBuffNumByMapIndex( mapIndex )
-        local map_round = self:getMapRoundByMapIndex(mapIndex)
-        local buff_1 = buff[map_round]
-        local buff_num = 0
-        for i,v in pairs(buff_1) do
-            if i ~="monsterLevel" and i ~= "round" and v > 0 then
-                buff_num = buff_num + 1
-            end
+    local map_round = self:getMapRoundByMapIndex(mapIndex)
+    local buff_1 = buff[map_round]
+    local buff_num = 0
+    for i,v in pairs(buff_1) do
+        if i ~="monsterLevel" and i ~= "round" and v > 0 then
+            buff_num = buff_num + 1
         end
-        return buff_num
+    end
+    return buff_num
 end
 
 function DataUtils:GetAllianceMapBuffByRound(round)
@@ -1290,6 +1286,7 @@ function DataUtils:GetAllianceMapBuffByRound(round)
 end
 
 return DataUtils
+
 
 
 
