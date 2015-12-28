@@ -317,7 +317,7 @@ function AllianceLayer:CreateOrUpdateCorps(id, start_pos, end_pos, start_time, f
         local corps = display.newNode():addTo(self.corps_node)
         local is_strike = not soldiers or #soldiers == 0
         if is_strike then
-            UIKit:CreateDragonByDegree(march_info.degree, 1.2, dragonType):addTo(corps)
+            UIKit:CreateDragonByDegree(march_info.degree, 1.4, dragonType):addTo(corps)
         else
             UIKit:CreateMoveSoldiers(march_info.degree, soldiers[1]):addTo(corps)
         end
@@ -1105,17 +1105,21 @@ function AllianceLayer:CreateAllianceObjects(obj_node, terrain, style, index, al
                 :addTo(node, 0, SPRITE_TAG)
             if name == "palace" then
                 sprite:setAnchorPoint(cc.p(0.5, 0.4))
+            elseif name == "shop" then
+                sprite:scale(1.1)
             elseif name == "orderHall" then
-                sprite:setAnchorPoint(cc.p(0.5, 0.35))
+                sprite:scale(1.1):setAnchorPoint(cc.p(0.5, 0.35))
             elseif name == "bloodSpring" then
                 sprite:scale(0.7):setAnchorPoint(cc.p(0.5, 0.4))
                 local size = sprite:getContentSize()
                 ccs.Armature:create("longpengquan"):addTo(sprite)
                 :pos(size.width/2, size.height/2):getAnimation():playWithIndex(0)
             elseif name == "shrine" then
-                local size = sprite:getContentSize()
+                local size = sprite:scale(1.4):getContentSize()
                 node.part = createBuildingSprite("alliance_shrine_2.png")
                             :addTo(sprite, 1):pos(size.width/2, size.height/2)
+            elseif name == "watchTower" then
+                sprite:scale(1.2)
             end
             node.x = v.x
             node.y = v.y
