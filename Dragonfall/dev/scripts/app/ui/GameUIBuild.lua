@@ -46,7 +46,7 @@ function GameUIBuild:OnMoveInStage()
         table.insert(self.base_resource_building_items, item)
         if self.need_tips and self.build_name == v.building_type then
             WidgetFteArrow.new(_("点击建造小屋"))
-            :addTo(item, 100):TurnRight():align(display.RIGHT_CENTER, 380, 40)
+                :addTo(item, 100):TurnRight():align(display.RIGHT_CENTER, 380, 40)
         end
     end
     self.base_list_view:reload()
@@ -105,21 +105,19 @@ function GameUIBuild:OnCityChanged()
         local number = #self.build_city:GetDecoratorsByType(building_type)
         local max_number = UtilsForBuilding:GetMaxBuildHouse(self.build_city:GetUser(), building_type)
         local free_build_queue = UtilsForBuilding:GetFreeBuildQueueCount(self.build_city:GetUser())
-        local building = BuildingRegister[building_type].new({building_type = building_type, level = 1, finishTime = 0})
+        local need_citizen = UtilsForBuilding:GetUsedCitizen(self.build_city:GetUser(), {type = building_type, level = 1})
         v:SetNumber(number, max_number)
-        if building then
-            if free_build_queue <= 0 then
-                v:SetCondition(_("建造队列不足"), display.COLOR_RED)
-            elseif building:GetCitizen() > self.build_city:GetUser():GetResProduction("citizen").limit then
-                v:SetBuildEnable(false)
-                v:SetCondition(_("城民上限不足,请首先升级或建造小屋"), display.COLOR_RED)
-            elseif number >= max_number then
-                v:SetBuildEnable(false)
-                v:SetCondition(_("已达到最大建筑数量"), display.COLOR_RED)
-            else
-                v:SetBuildEnable(true)
-                v:SetCondition(_("满足条件"))
-            end
+        if free_build_queue <= 0 then
+            v:SetCondition(_("建造队列不足"), display.COLOR_RED)
+        elseif need_citizen > self.build_city:GetUser():GetResProduction("citizen").limit then
+            v:SetBuildEnable(false)
+            v:SetCondition(_("城民上限不足,请首先升级或建造小屋"), display.COLOR_RED)
+        elseif number >= max_number then
+            v:SetBuildEnable(false)
+            v:SetCondition(_("已达到最大建筑数量"), display.COLOR_RED)
+        else
+            v:SetBuildEnable(true)
+            v:SetCondition(_("满足条件"))
         end
     end)
 end
@@ -357,6 +355,7 @@ function GameUIBuild:CreateItemWithListView(list_view)
 end
 
 return GameUIBuild
+
 
 
 

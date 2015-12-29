@@ -502,13 +502,16 @@ local res_map = {
 function UtilsForBuilding:GetHouseResType(houseType)
     return res_map[houseType]
 end
-function UtilsForBuilding:GetUsedCitizen(userData, buildingLocation, house, offset)
-    local configs = self:GetLevelUpConfigBy(userData, house, offset)
+function UtilsForBuilding:GetUsedCitizen(userData, house, buildingLocation, offset)
+    offset = offset or 0
+    local configs = self:GetLevelUpConfig(house.type)
     local efficiency_level = house.level
-    for _,event in pairs(userData.houseEvents) do
-        if buildingLocation == event.buildingLocation
-        and house.location == event.houseLocation then
-            efficiency_level = house.level + 1
+    if buildingLocation then
+        for _,event in pairs(userData.houseEvents) do
+            if buildingLocation == event.buildingLocation
+            and house.location == event.houseLocation then
+                efficiency_level = house.level + 1
+            end
         end
     end
     return configs[efficiency_level].citizen
