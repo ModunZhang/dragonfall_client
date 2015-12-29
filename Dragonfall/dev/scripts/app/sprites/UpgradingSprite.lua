@@ -33,9 +33,9 @@ function UpgradingSprite:UpgradeFinished()
     local running_scene = display.getRunningScene()
     if iskindof(running_scene, "MyCityScene") and self:GetEntity():IsHouse() then
         local _,tp = self:GetWorldPosition()
-        running_scene:GetHomePage():ShowResourceAni(self:GetEntity():GetResType(), tp)
-        if self:GetEntity():GetType() == "dwelling" then
-            running_scene:GetHomePage():ShowResourceAni("coin", tp)
+        local reses = UtilsForBuilding:GetHouseResType(self:GetEntity():GetType())
+        for i,resType in ipairs(string.split(reses, ",")) do
+            running_scene:GetHomePage():ShowResourceAni(resType, tp)
         end
     end
 end

@@ -230,7 +230,8 @@ function GameUIResource:CreateInfomation()
     local __,resource_title = self:GetTitleByType(self.building)
     self.secondLabel:setString(resource_title)
 
-    if "citizen" ==  self.building:GetResType() then
+    local reses = UtilsForBuilding:GetHouseResType(self.building:GetType())
+    if string.find(reses, "coin") then
         self.secondValueLabel:setString(string.format("-%d",self.building:GetProductionLimit()))
         self.firstLable:setString(_("银币产量"))
         self.firstValueLabel:setString(string.format("-%d/h",self.building:GetProductionPerHour()))
@@ -242,7 +243,7 @@ function GameUIResource:CreateInfomation()
         local buff_vip      = User:GetVipBuff()
         local buff_terrain  = User:GetTerrainResourceBuff()
         local buff_total    = buff_building + buff_tech + buff_item + buff_vip + buff_terrain
-        local key = self.building:GetResType()
+        local key = string.find(reses, "citizen") and "citizen" or reses
         if buff_total[key] then
             reduce = reduce * (1 + buff_total[key])
         end
@@ -287,14 +288,17 @@ end
 
 function GameUIResource:GetDataSource()
     local dataSource = {{_("待建地基"),'x' .. #self.city:GetRuinsNotBeenOccupied()}}
-    local decorators = self.city:GetDecoratorsByType(self.building:GetType())
     local houseType = self.building:GetType()
+    local decorators = self.city:GetDecoratorsByType(houseType)
     local houseMax = UtilsForBuilding:GetMaxBuildHouse(self.city:GetUser(), houseType)
+    local reses = UtilsForBuilding:GetHouseResType(houseType)
+
     table.insert(dataSource,{_("可建造数量"),#decorators .. '/' .. houseMax})
     local __,__,title = self:GetTitleByType(self.building)
-    table.insert(dataSource,{title,string.format("%d/h", self.city:GetUser():GetResProduction(self.building:GetResType()).output)})
+    local resType = string.find(reses, "citizen") and "citizen" or reses
+    table.insert(dataSource,{title,string.format("%d/h", self.city:GetUser():GetResProduction(resType).output)})
 
-    if self.building:GetResType() == "citizen" then
+    if string.find(reses, "coin") then
         local desc = string.format("%d/h", self.city:GetUser():GetResProduction("coin").output)
         table.insert(dataSource,{_("当前产出银币"),desc})
     end
@@ -322,16 +326,16 @@ end
 
 
 function GameUIResource:GetTitleByType(building)
-    local type_ = building:GetResType()
-    if type_ == "wood" then
+    local reses = UtilsForBuilding:GetHouseResType(building:GetType())
+    if string.find(reses, "wood") then
         return _("木工小屋"),_("木材产量"),_("当前产出木材")
-    elseif type_ == "iron" then
+    elseif string.find(reses, "iron") then
         return _("矿工小屋"),_("铁矿产量"),_("当前产出铁矿")
-    elseif type_ == "stone" then
+    elseif string.find(reses, "stone") then
         return _("石匠小屋"),_("石料产量"),_("当前产出石料")
-    elseif type_ == "food" then
+    elseif string.find(reses, "food") then
         return _("农夫小屋"),_("粮食产量"),_("当前产出粮食")
-    elseif type_ == "citizen" then
+    elseif string.find(reses, "citizen") then
         return _("住宅"),_("城民上限"),_("当前城民增长")
     else
         assert(false)
@@ -348,6 +352,17 @@ function GameUIResource:ChaiButtonAction( event )
         UIKit:showMessageDialog(_("提示"), _("正在建造或者升级小屋,不能拆除!"), function()end)
         return
     end
+    
+    local buff_limit = UtilsForTech:GetLimitBuff(self.city:GetUser())
+    local supply_citizen = (1 + buff_limit.citizen) * self.building:GetCitizen()
+    local after_citizen = self.city:GetUser():GetResProduction("citizen").limit - supply_citizen
+    if after_citizen < UtilsForBuilding:GetCitizenMap(self.city:GetUser()).total then
+        UIKit:showMessageDialog(_("提示"), _("将导致人口不足,无法拆除!"), function()end)
+        return 
+    end
+
+
+
     local tile = self.city:GetTileWhichBuildingBelongs(self.building)
     local house_location = tile:GetBuildingLocation(self.building)
     local torch_count = User:GetItemCount("torch")

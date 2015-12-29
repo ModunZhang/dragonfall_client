@@ -4,6 +4,7 @@ precision highp float;
 
 varying vec4 v_fragmentColor;
 varying vec2 v_texCoord;
+uniform float width;
 uniform vec4 size;
 uniform sampler2D terrain;
 mat4 ranges = mat4(
@@ -19,8 +20,8 @@ vec2 getpos( vec4 range, float x, float y ) {
 void main(void) {
 	float x = mod( v_texCoord.x, size.z ) * size.x;
 	float y = mod( v_texCoord.y, size.w ) * size.y;
-	float X = floor(v_texCoord.x / size.z) / 35.0;
-	float Y = floor(v_texCoord.y / size.w) / 35.0;
+	float X = floor(v_texCoord.x / size.z) / width;
+	float Y = floor(v_texCoord.y / size.w) / width;
 	vec4 range = ranges[int(floor(texture2D(terrain, vec2(X, Y)).r / 0.24))];
 	gl_FragColor = texture2D(CC_Texture0, getpos(range, x, y));
 }

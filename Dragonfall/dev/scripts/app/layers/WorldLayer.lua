@@ -134,7 +134,8 @@ function WorldLayer:CreateMap()
             HEIGHT,
             0.5/(WIDTH/4),
             1/HEIGHT,
-        }
+        },
+        width = bigMapLength_value,
     })):align(display.LEFT_BOTTOM, 0, 0):addTo(clip)
     local cache = cc.Director:getInstance():getTextureCache()
     cache:addImage("world_map.png"):setAliasTexParameters()

@@ -1,9 +1,9 @@
 local UpgradeBuilding = import("..entity.UpgradeBuilding")
 local BuildingRegister = {
-    woodcutter 		= import("..entity.WoodResourceUpgradeBuilding"),
-    farmer 			= import("..entity.FoodResourceUpgradeBuilding"),
-    miner 			= import("..entity.IronResourceUpgradeBuilding"),
-    quarrier 		= import("..entity.StoneResourceUpgradeBuilding"),
+    woodcutter 		= import("..entity.ResourceUpgradeBuilding"),
+    farmer 			= import("..entity.ResourceUpgradeBuilding"),
+    miner 			= import("..entity.ResourceUpgradeBuilding"),
+    quarrier 		= import("..entity.ResourceUpgradeBuilding"),
     dwelling 		= import("..entity.CitizenResourceUpgradeBuilding"),
     dragonEyrie     = import("..entity.DragonEyrieUpgradeBuilding"),
 }

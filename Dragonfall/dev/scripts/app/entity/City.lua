@@ -1058,9 +1058,6 @@ function City:GetDecoratorsByType(building_type)
     end)
     return r
 end
-function City:DestoryDecorator(current_time, building)
-    self:DestoryDecoratorByPosition(current_time, building.x, building.y)
-end
 function City:DestoryDecoratorByPosition(current_time, x, y)
     local destory_decorator = self:GetDecoratorByPosition(x, y)
 
@@ -1170,7 +1167,7 @@ function City:OnHouseChanged(userData, current_time, deltaData)
                     -- 如果类型不对也认为是删除
                     if not house_info or
                         (house_info.type ~= building:GetType()) then
-                        self:DestoryDecorator(current_time, building)
+                        self:DestoryDecoratorByPosition(current_time, building.x, building.y)
                     end
             end)
 
@@ -1349,12 +1346,6 @@ function City:GenerateTowers(walls)
 
     self.visible_towers = visible_tower
 end
-
-function City:GetWatchTowerLevel()
-    local watch_tower = self:GetFirstBuildingByType("watchTower")
-    return watch_tower and watch_tower:GetLevel() or 0
-end
-
 
 
 
