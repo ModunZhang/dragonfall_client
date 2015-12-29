@@ -54,18 +54,18 @@ function GameUIAllianceJoinTips:onEnter()
 		:onButtonClicked(function()
 			self:OnGetRewardButtonClicked()
 		end)
-	self.create_alliance_button = WidgetPushButton.new({normal = "yellow_btn_up_186x66.png",pressed = "yellow_btn_down_186x66.png"})
-		:align(display.BOTTOM_LEFT, 14, 25)
-		:addTo(self:GetBody())
-		:setButtonLabel("normal", UIKit:commonButtonLable({
-			text = _("创建联盟")
-		}))
-		:onButtonClicked(function()
-			self:LeftButtonClicked()
-			UIKit:newGameUI("GameUIAlliance","create"):AddToCurrentScene(true)
-		end)
+	-- self.create_alliance_button = WidgetPushButton.new({normal = "yellow_btn_up_186x66.png",pressed = "yellow_btn_down_186x66.png"})
+	-- 	:align(display.BOTTOM_LEFT, 14, 25)
+	-- 	:addTo(self:GetBody())
+	-- 	:setButtonLabel("normal", UIKit:commonButtonLable({
+	-- 		text = _("创建联盟")
+	-- 	}))
+	-- 	:onButtonClicked(function()
+	-- 		self:LeftButtonClicked()
+	-- 		UIKit:newGameUI("GameUIAlliance","create"):AddToCurrentScene(true)
+	-- 	end)
 	self.join_alliance_button = WidgetPushButton.new({normal = "yellow_btn_up_186x66.png",pressed = "yellow_btn_down_186x66.png"})
-		:align(display.BOTTOM_RIGHT, 588, 25)
+		:align(display.BOTTOM_CENTER, self:GetBody():getContentSize().width/2, 25)
 		:addTo(self:GetBody())
 		:setButtonLabel("normal", UIKit:commonButtonLable({
 			text = _("加入联盟")
@@ -81,12 +81,12 @@ end
 
 function GameUIAllianceJoinTips:RefreshUI()
 	if self.alliance:IsDefault() then
-		self.create_alliance_button:setVisible(true)
+		-- self.create_alliance_button:setVisible(true)
 		self.join_alliance_button:setVisible(true)
 		self.get_reward_button:setVisible(false)
 	else
 		self.get_reward_button:setVisible(true)
-		self.create_alliance_button:setVisible(false)
+		-- self.create_alliance_button:setVisible(false)
 		self.join_alliance_button:setVisible(false)
 
 		if User.countInfo.firstJoinAllianceRewardGeted then
