@@ -17,6 +17,7 @@ local Localize_item = import("..utils.Localize_item")
 local UILib = import(".UILib")
 local UIListView = import(".UIListView")
 local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
+local lights = import("..particles.lights")
 local dailyTasksConfig = GameDatas.PlayerInitData.dailyTasks
 local dailyTaskRewardsConfig = GameDatas.PlayerInitData.dailyTaskRewards
 
@@ -521,6 +522,8 @@ function GameUIMission:OpenGetDailyRewardDialog(reward_index,flag)
         local item_bg = display.newSprite("box_118x118.png"):addTo(body_1):pos(65,65)
         local item_icon = display.newSprite(UILib.item[data[2]]):addTo(item_bg):align(display.CENTER, item_bg:getContentSize().width/2, item_bg:getContentSize().height/2):scale(0.6)
         item_icon:scale(100/item_icon:getContentSize().width)
+        lights():addTo(item_icon):pos(80, 80)
+
 
         -- 道具名称
         UIKit:ttfLabel({
@@ -561,8 +564,14 @@ function GameUIMission:OpenGetDailyRewardDialog(reward_index,flag)
                 dialog:LeftButtonClicked()
             end)
         end)
-    btn:setButtonEnabled(flag == 1)
-
+    local ta = UIKit:ttfLabel({
+        text = _("已领取"),
+        size = 24,
+        color = 0x403c2f,
+    }):align(display.BOTTOM_CENTER, size.width/2, 30)
+        :addTo(body)
+    btn:setVisible(flag == 1)
+    ta:setVisible(flag ~= 1)
 end
 -- 获取当前能够领取日常任务奖励的数量
 function GameUIMission:GetDailyTasksCanGetRewardCount()
@@ -588,7 +597,7 @@ function GameUIMission:GetDailyTasksFinishedPoints()
 end
 function GameUIMission:RefreshDisplayGreenPoint()
     if not self.tab_buttons then return end
-    self.tab_buttons:SetButtonTipNumber("daily",self:GetDailyTasksCanGetRewardCount() - User.countInfo.dailyTaskRewardCount + 1)
+    self.tab_buttons:SetGreenTipsShow("daily",self:GetDailyTasksFinishedPoints() < 200)
 end
 
 
@@ -729,6 +738,7 @@ end
 
 
 return GameUIMission
+
 
 
 
