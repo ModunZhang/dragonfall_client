@@ -570,8 +570,12 @@ function GameUIMission:OpenGetDailyRewardDialog(reward_index,flag)
         color = 0x403c2f,
     }):align(display.BOTTOM_CENTER, size.width/2, 30)
         :addTo(body)
-    btn:setVisible(flag == 1)
-    ta:setVisible(flag ~= 1)
+    if flag == 0 then
+        btn:setButtonEnabled(false)
+    elseif flag == 2 then
+        btn:setVisible(false)
+    end
+    ta:setVisible(flag == 2)
 end
 -- 获取当前能够领取日常任务奖励的数量
 function GameUIMission:GetDailyTasksCanGetRewardCount()
@@ -738,6 +742,7 @@ end
 
 
 return GameUIMission
+
 
 
 
