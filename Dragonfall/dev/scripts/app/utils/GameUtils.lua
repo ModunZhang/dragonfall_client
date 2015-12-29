@@ -537,6 +537,14 @@ function GameUtils:GetGameLanguageFromNative()
     if string.find(code,'en') then
         code = 'en'
     end
+    if device.platform == 'ios' or device.platform == 'mac' then -- fix iOS9
+        for k,v in pairs(target_map) do
+            local transferred = string.gsub(k,"%-","%%-")
+            if string.find(code, transferred) then
+                return v
+            end
+        end
+    end
     return target_map[code] or 'en' -- we can not find the right language ,'en' as the default value
 end
 
