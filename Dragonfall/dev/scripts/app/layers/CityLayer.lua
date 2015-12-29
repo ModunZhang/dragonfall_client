@@ -281,7 +281,7 @@ local SCENE_ZORDER = Enum("SCENE_BACKGROUND", "CITY_LAYER", "SKY_LAYER", "INFO_L
 local CITY_ZORDER = Enum("BUILDING_NODE", "LEVEL_NODE")
 function CityLayer:ctor(city_scene)
     Observer.extend(self)
-    CityLayer.super.ctor(self, city_scene, 0.6, 1.5)
+    CityLayer.super.ctor(self, city_scene, 0.6, 1.0)
     self.scene = city_scene
     self.buildings = {}
     self.houses = {}
