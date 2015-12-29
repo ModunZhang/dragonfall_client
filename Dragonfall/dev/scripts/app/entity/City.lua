@@ -1041,14 +1041,6 @@ function City:GetRuinsNotBeenOccupied()
     end)
     return r
 end
---根据type获取装饰物列表
-function City:GetCitizenByType(building_type)
-    local total_citizen = 0
-    for k, v in pairs(self:GetDecoratorsByType(building_type)) do
-        total_citizen = total_citizen + v:GetCitizen()
-    end
-    return total_citizen
-end
 function City:GetDecoratorsByType(building_type)
     local r = {}
     self:IteratorDecoratorBuildingsByFunc(function(key, building)

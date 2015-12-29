@@ -50,24 +50,39 @@ function UtilsForBuilding:GetBuildingBy(userData, nameOrLocation)
 end
 
 
-function UtilsForBuilding:GetEfficiencyBy(userData, name, offset)
-    return self:GetPropertyBy(userData, name, "efficiency", offset)
+function UtilsForBuilding:GetEfficiencyBy(userData, nameOrLocation, offset)
+    return self:GetPropertyBy(userData, nameOrLocation, "efficiency", offset)
 end
 function UtilsForBuilding:GetPropertyBy(userData, nameOrLocation, property, offset)
-    return self:GetConfigBy(userData, nameOrLocation, offset)[property]
+    return self:GetFunctionConfigBy(userData, nameOrLocation, offset)[property]
 end
-function UtilsForBuilding:GetConfigBy(userData, nameOrLocation, offset)
+function UtilsForBuilding:GetFunctionConfigBy(userData, nameOrLocation, offset)
     offset = offset or 0
     local building = self:GetBuildingBy(userData, nameOrLocation)
     local configs = self:GetBuildingConfig(building.type)
     return configs[building.level + offset]
 end
 
+function UtilsForBuilding:GetLevelUpConfigBy(userData, houseOrBuilding, offset)
+    offset = offset or 0
+    local configs = self:GetLevelUpConfig(houseOrBuilding.type)
+    return configs[houseOrBuilding.level + offset]
+end
+
+
 local HouseFunction = GameDatas.HouseFunction
 local BuildingFunction = GameDatas.BuildingFunction
-function UtilsForBuilding:GetBuildingConfig(buildingName)
-    return BuildingFunction[buildingName] or HouseFunction[buildingName]
+function UtilsForBuilding:GetBuildingConfig(houseOrBuildingName)
+    return BuildingFunction[houseOrBuildingName] 
+        or HouseFunction[houseOrBuildingName]
 end
+local HouseLevelUp = GameDatas.HouseLevelUp
+local BuildingLevelUp = GameDatas.BuildingLevelUp
+function UtilsForBuilding:GetLevelUpConfig(houseOrBuildingName)
+    return BuildingLevelUp[houseOrBuildingName] 
+        or HouseLevelUp[houseOrBuildingName]
+end
+
 
 local HouseLevelUp = GameDatas.HouseLevelUp
 function UtilsForBuilding:GetCitizenMap(userData)
@@ -111,8 +126,6 @@ function UtilsForBuilding:GetCitizenMap(userData)
         + house_citizen.woodcutter
     return house_citizen
 end
-
-
 
 
 local warehouse = GameDatas.BuildingFunction.warehouse
@@ -488,6 +501,17 @@ local res_map = {
 }
 function UtilsForBuilding:GetHouseResType(houseType)
     return res_map[houseType]
+end
+function UtilsForBuilding:GetUsedCitizen(userData, buildingLocation, house, offset)
+    local configs = self:GetLevelUpConfigBy(userData, house, offset)
+    local efficiency_level = house.level
+    for _,event in pairs(userData.houseEvents) do
+        if buildingLocation == event.buildingLocation
+        and house.location == event.houseLocation then
+            efficiency_level = house.level + 1
+        end
+    end
+    return configs[efficiency_level].citizen
 end
 
 

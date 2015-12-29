@@ -93,6 +93,7 @@ end
 
 function WidgetResources:InitAllResources()
     local current_time = app.timer:GetServerTime()
+    local citizen_map = UtilsForBuilding:GetCitizenMap(User)
     local limits = UtilsForBuilding:GetWarehouseLimit(User)
     local maxwood, maxfood, maxiron, maxstone = limits.maxWood, limits.maxFood, limits.maxIron, limits.maxStone
     local all_resources = {
@@ -101,7 +102,7 @@ function WidgetResources:InitAllResources()
             resource_limit_value = maxfood,
             resource_current_value=User:GetResValueByType("food"),
             total_income=GameUtils:formatNumber(User:GetFoodRealOutput()).."/h",
-            occupy_citizen=GameUtils:formatNumber(City:GetCitizenByType("farmer")),
+            occupy_citizen=GameUtils:formatNumber(citizen_map.farmer),
             maintenance_cost="-"..GameUtils:formatNumber(User:GetSoldierUpkeep()).."/h",
             type = "food"
         },
@@ -110,7 +111,7 @@ function WidgetResources:InitAllResources()
             resource_limit_value= maxwood,
             resource_current_value=User:GetResValueByType("wood"),
             total_income=GameUtils:formatNumber(User:GetResProduction("wood").output).."/h",
-            occupy_citizen=GameUtils:formatNumber(City:GetCitizenByType("woodcutter")),
+            occupy_citizen=GameUtils:formatNumber(citizen_map.woodcutter),
             type = "wood"
         },
         stone = {
@@ -118,7 +119,7 @@ function WidgetResources:InitAllResources()
             resource_limit_value= maxstone,
             resource_current_value=User:GetResValueByType("stone"),
             total_income=GameUtils:formatNumber(User:GetResProduction("stone").output).."/h",
-            occupy_citizen=GameUtils:formatNumber(City:GetCitizenByType("quarrier")),
+            occupy_citizen=GameUtils:formatNumber(citizen_map.quarrier),
             type = "stone"
         },
         iron = {
@@ -126,7 +127,7 @@ function WidgetResources:InitAllResources()
             resource_limit_value=maxiron,
             resource_current_value=User:GetResValueByType("iron"),
             total_income=GameUtils:formatNumber(User:GetResProduction("iron").output).."/h",
-            occupy_citizen=GameUtils:formatNumber(City:GetCitizenByType("miner")),
+            occupy_citizen=GameUtils:formatNumber(citizen_map.miner),
             type = "iron"
         },
         coin = {
