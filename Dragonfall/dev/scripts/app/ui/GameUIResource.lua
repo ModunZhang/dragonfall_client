@@ -352,6 +352,17 @@ function GameUIResource:ChaiButtonAction( event )
         UIKit:showMessageDialog(_("提示"), _("正在建造或者升级小屋,不能拆除!"), function()end)
         return
     end
+    
+    local buff_limit = UtilsForTech:GetLimitBuff(self.city:GetUser())
+    local supply_citizen = (1 + buff_limit.citizen) * self.building:GetCitizen()
+    local after_citizen = self.city:GetUser():GetResProduction("citizen").limit - supply_citizen
+    if after_citizen < UtilsForBuilding:GetCitizenMap(self.city:GetUser()).total then
+        UIKit:showMessageDialog(_("提示"), _("将导致人口不足,无法拆除!"), function()end)
+        return 
+    end
+
+
+
     local tile = self.city:GetTileWhichBuildingBelongs(self.building)
     local house_location = tile:GetBuildingLocation(self.building)
     local torch_count = User:GetItemCount("torch")
