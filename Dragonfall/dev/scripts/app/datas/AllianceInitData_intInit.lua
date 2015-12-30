@@ -122,7 +122,7 @@ intInit["allianceMoveColdMinutes"] = {
 }
 intInit["bigMapLength"] = {
 	["type"] = "bigMapLength",
-	["value"] = 35,
+	["value"] = 41,
 	["desc"] = "大地图的大小"
 }
 intInit["allianceFightRewardHonour"] = {
