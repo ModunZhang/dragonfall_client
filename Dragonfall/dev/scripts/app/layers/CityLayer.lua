@@ -195,8 +195,8 @@ function CityLayer:OnUserDataChanged_buildings(userData, deltaData)
         v:RefreshSprite()
     end
     self:CheckUpgradeCondition()
-
-    if deltaData("buildings.location_2.level") then
+    
+    if deltaData("buildings.location_5.level") then
         self:RefreshSoldiers()
     end
 end
