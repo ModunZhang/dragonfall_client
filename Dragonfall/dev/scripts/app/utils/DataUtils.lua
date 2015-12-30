@@ -49,24 +49,45 @@ end
   获取建筑升级时,需要的资源和道具
 ]]
 function DataUtils:getBuildingUpgradeRequired(buildingType, buildingLevel)
-    local temp = BuildingLevelUp[buildingType] or HouseLevelUp[buildingType]
-    local config = temp[buildingLevel]
-    local required = {
-        resources={
-            wood=config.wood,
-            stone=config.stone,
-            iron=config.iron,
-            citizen=config.citizen
-        },
-        materials={
-            blueprints=config.blueprints,
-            tools=config.tools,
-            tiles=config.tiles,
-            pulley=config.pulley
-        },
-        buildTime=config.buildTime
-    }
-    return required
+    local house_configs = HouseLevelUp[buildingType]
+    local building_configs = BuildingLevelUp[buildingType]
+    if building_configs then
+        local config = building_configs[buildingLevel]
+        return {
+            resources={
+                wood=config.wood,
+                stone=config.stone,
+                iron=config.iron,
+            },
+            materials={
+                blueprints=config.blueprints,
+                tools=config.tools,
+                tiles=config.tiles,
+                pulley=config.pulley
+            },
+            buildTime=config.buildTime
+        }
+    elseif house_configs then
+        local config = house_configs[buildingLevel]
+        local next_config = house_configs[buildingLevel + 1]
+        return {
+            resources={
+                wood=config.wood,
+                stone=config.stone,
+                iron=config.iron,
+                citizen=next_config.citizen - config.citizen
+            },
+            materials={
+                blueprints=config.blueprints,
+                tools=config.tools,
+                tiles=config.tiles,
+                pulley=config.pulley
+            },
+            buildTime=config.buildTime
+        }
+    else
+        assert(false)
+    end
 end
 
 --[[
@@ -88,6 +109,7 @@ function DataUtils:buyResource(need, has)
                 assert(freeCitizenLimit ~= 0)
                 while required > 0 and freeCitizenLimit ~= 0 do
                     local requiredPercent = required / freeCitizenLimit
+                    print(required, freeCitizenLimit, requiredPercent)
                     for i=#config,1,-1 do
                         item = config[i]
                         if item.min < requiredPercent then

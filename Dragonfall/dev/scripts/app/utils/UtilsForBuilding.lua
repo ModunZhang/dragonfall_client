@@ -490,7 +490,7 @@ local eachHouseInitCount_value = GameDatas.PlayerInitData.intInit.eachHouseInitC
 function UtilsForBuilding:GetMaxBuildHouse(userData, houseType)
     local max = eachHouseInitCount_value
     for _,building in ipairs(self:GetBuildingsBy(userData, house2building[houseType], 1)) do
-        max = max + self:GetPropertyBy(userData, building.type, "houseAdd")
+        max = max + self:GetPropertyBy(userData, building.location, "houseAdd")
     end
     return max
 end
@@ -520,6 +520,16 @@ function UtilsForBuilding:GetUsedCitizen(userData, house, buildingLocation, offs
         end
     end
     return configs[efficiency_level].citizen
+end
+
+
+function UtilsForBuilding:GetUpgradeNowGems(userData, houseOrBuilding)
+    local config = DataUtils:getBuildingUpgradeRequired(houseOrBuilding.type, houseOrBuilding.level)
+    local required_gems = 0
+    required_gems = required_gems + DataUtils:buyResource(config.resources, {})
+    required_gems = required_gems + DataUtils:buyMaterial(config.materials, {})
+    required_gems = required_gems + DataUtils:getGemByTimeInterval(config.buildTime)
+    return required_gems
 end
 
 

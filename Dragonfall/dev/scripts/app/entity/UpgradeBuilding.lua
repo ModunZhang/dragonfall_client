@@ -329,12 +329,10 @@ function UpgradeBuilding:IsAbleToUpgrade(isUpgradeNow)
 end
 
 function UpgradeBuilding:getUpgradeNowNeedGems()
-    local resource_config = DataUtils:getBuildingUpgradeRequired(self.building_type, self:GetNextLevel())
-    local required_gems = 0
-    required_gems = required_gems + DataUtils:buyResource(resource_config.resources, {})
-    required_gems = required_gems + DataUtils:buyMaterial(resource_config.materials, {})
-    required_gems = required_gems + DataUtils:getGemByTimeInterval(resource_config.buildTime)
-    return required_gems
+    return UtilsForBuilding:GetUpgradeNowGems(
+            self:BelongCity():GetUser(), 
+            {type = self.building_type , level = self:GetLevel() + 1}
+        )
 end
 
 function UpgradeBuilding:getUpgradeRequiredGems()

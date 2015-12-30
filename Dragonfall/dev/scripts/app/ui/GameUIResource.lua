@@ -222,16 +222,16 @@ function GameUIResource:CreateInfomation()
     }):addTo(self.infomationLayer)
         :align(display.TOP_CENTER, window.cx,secondLine:getPositionY()-240)
 
-
+    local house = {type = self.building:GetType(), level = self.building:GetLevel()}
 
     self.listView = self.info:GetListView()
-    local citizen = self.building:GetCitizen()
+
+    local citizen = UtilsForBuilding:GetLevelUpConfigBy(User, house).citizen
     self.firstValueLabel:setString(string.format('%d',citizen))
     local __,resource_title = self:GetTitleByType(self.building)
     self.secondLabel:setString(resource_title)
 
     local reses = UtilsForBuilding:GetHouseResType(self.building:GetType())
-    local house = {type = self.building:GetType(), level = self.building:GetLevel()}
     if string.find(reses, "coin") then
         local citizen_limit = UtilsForBuilding:GetFunctionConfigBy(User, house).citizen
         self.secondValueLabel:setString(string.format("-%d", citizen_limit))
@@ -356,13 +356,17 @@ function GameUIResource:ChaiButtonAction( event )
         UIKit:showMessageDialog(_("提示"), _("正在建造或者升级小屋,不能拆除!"), function()end)
         return
     end
-    
-    local buff_limit = UtilsForTech:GetLimitBuff(self.city:GetUser())
-    local supply_citizen = (1 + buff_limit.citizen) * self.building:GetCitizen()
-    local after_citizen = self.city:GetUser():GetResProduction("citizen").limit - supply_citizen
-    if after_citizen < UtilsForBuilding:GetCitizenMap(self.city:GetUser()).total then
-        UIKit:showMessageDialog(_("提示"), _("将导致人口不足,无法拆除!"), function()end)
-        return 
+    if self.building:GetType() == "dwelling" then
+        local house = {type = self.building:GetType(), level = self.building:GetLevel()}
+        local citizen = UtilsForBuilding:GetLevelUpConfigBy(User, house).citizen
+        
+        local buff_limit = UtilsForTech:GetLimitBuff(self.city:GetUser())
+        local supply_citizen = (1 + buff_limit.citizen) * citizen
+        local after_citizen = self.city:GetUser():GetResProduction("citizen").limit - supply_citizen
+        if after_citizen < UtilsForBuilding:GetCitizenMap(self.city:GetUser()).total then
+            UIKit:showMessageDialog(_("提示"), _("将导致人口不足,无法拆除!"), function()end)
+            return 
+        end
     end
 
 
