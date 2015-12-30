@@ -16,8 +16,9 @@ local worldsize = {
 }
 
 
-function WorldLayer:ctor(scene)
+function WorldLayer:ctor(scene,mapIndex)
     WorldLayer.super.ctor(self, scene, 1.0, 1.2)
+    self.current_mapIndex = mapIndex
 end
 function WorldLayer:onEnter()
     self:CreateBg()
@@ -400,6 +401,11 @@ function WorldLayer:CreateAllianceSprite(index, alliance)
         :addTo(sprite, 10):align(display.CENTER, 100, 90):scale(0.4)
     if Alliance_Manager:GetMyAlliance().mapIndex == tonumber(index) then
         display.newSprite("icon_current_position.png")
+        :addTo(node, 0, 2):scale(0.8)
+        :pos(sprite:getPositionX(), sprite:getPositionY() + sprite:getContentSize().height / 2)
+    end
+    if self.current_mapIndex == tonumber(index) then
+        display.newSprite("icon_current_position_1.png")
         :addTo(node, 0, 2):scale(0.8)
         :pos(sprite:getPositionX(), sprite:getPositionY() + sprite:getContentSize().height / 2)
     end

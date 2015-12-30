@@ -210,7 +210,7 @@ function GameUIAllianceMemberInfo:AdapterPlayerList()
         table.insert(r,{_("职位"),_("无")})
         table.insert(r,{_("联盟"),_("无")})
     end
-    if player.alliance.tag == Alliance_Manager:GetMyAlliance().basicInfo.tag then
+    if player.alliance and player.alliance.tag == Alliance_Manager:GetMyAlliance().basicInfo.tag then
         if type(player.online) == 'boolean' and player.online then
             table.insert(r,{_("最后登陆"),_("在线")})
         else

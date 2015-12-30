@@ -12,7 +12,7 @@ function GameUIWorldMap:ctor(fromIndex, toIndex, mapIndex)
 	GameUIWorldMap.super.ctor(self)
     self.__type  = UIKit.UITYPE.BACKGROUND
     self.scene_node = display.newNode():addTo(self)
-    self.scene_layer = WorldLayer.new(self):addTo(self.scene_node, 0)
+    self.scene_layer = WorldLayer.new(self,mapIndex):addTo(self.scene_node, 0)
     self.touch_layer = self:CreateMultiTouchLayer():addTo(self.scene_node, 1)
     self.mask_layer = display.newLayer():addTo(self, 2):hide()
     self.event_manager = EventManager.new(self)
@@ -133,7 +133,10 @@ function GameUIWorldMap:InitArrow()
     --     color = 0xf5e8c4
     -- }):addTo(self.arrow):rotation(90):align(display.LEFT_CENTER, 0, -50)
 end
-local screen_rect = cc.rect(0, 200, display.width, display.height - 200)
+if display.width > 640 then
+        node:scale(display.width/node:getContentSize().width)
+    end
+local screen_rect = cc.rect(0, 152 * (display.width > 640 and display.width/768 or 1), display.width, display.height - 200)
 function GameUIWorldMap:UpdateArrow()
     local mapIndex = Alliance_Manager:GetMyAlliance().mapIndex
     local x,y = self:GetSceneLayer():IndexToLogic(mapIndex)
