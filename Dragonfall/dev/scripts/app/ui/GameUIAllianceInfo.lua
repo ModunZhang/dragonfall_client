@@ -617,7 +617,9 @@ function GameUIAllianceInfo:FillDataToAllianceItem(list_data,content,item)
 
             local isOnline = (type(data.online) == 'boolean' and data.online) and true or false
             real_content.player_icon.icon:setTexture(UIKit:GetPlayerIconImage(data.icon))
-            if isOnline then
+            local archon_data = self:GetAllianceArchonData()
+
+            if isOnline or not Alliance_Manager:GetMyAlliance():GetMemeberById(archon_data.id) then
                 real_content.player_icon.icon:clearFilter()
                 real_content.player_icon:clearFilter()
             else
