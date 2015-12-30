@@ -373,7 +373,7 @@ function WorldLayer:CreateAllianceSprite(index, alliance)
         :addTo(node, 0, 2):scale(0.8)
         :pos(sprite:getPositionX(), sprite:getPositionY() + sprite:getContentSize().height / 2)
     end
-    if self.current_mapIndex == tonumber(index) then
+    if self.current_mapIndex == tonumber(index) and Alliance_Manager:GetMyAlliance().mapIndex ~= self.current_mapIndex then
         display.newSprite("icon_current_position_1.png")
         :addTo(node, 0, 2):scale(0.8)
         :pos(sprite:getPositionX(), sprite:getPositionY() + sprite:getContentSize().height / 2)
