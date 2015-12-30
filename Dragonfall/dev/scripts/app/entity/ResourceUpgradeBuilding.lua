@@ -24,13 +24,6 @@ function ResourceUpgradeBuilding:GetNextLevelLevelCitizen()
     local config = config_house_levelup[self:GetType()]
     return config[self:GetNextLevel()].citizen
 end
-function ResourceUpgradeBuilding:GetProductionPerHour()
-    local config = config_house_function[self:GetType()]
-    if self:GetLevel() > 0 then
-        return config[self:GetEfficiencyLevel()].production
-    end
-    return 0
-end
 function ResourceUpgradeBuilding:GetNextLevelProductionPerHour()
     local config = config_house_function[self:GetType()]
     local current_config = config[self:GetNextLevel()]

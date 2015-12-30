@@ -318,6 +318,7 @@ function CommonUpgradeUI:SetUpgradeEfficiency()
     eff_node:removeAllChildren()
     local User = self.city:GetUser()
     local bd = Localize.building_description
+    local houseOrBuilding = {type = self.building:GetType(), level = self.building:GetLevel()}
     local building = self.building
     local location = self.city:GetLocationIdByBuilding(building)
     local efficiency = ""
@@ -422,18 +423,30 @@ function CommonUpgradeUI:SetUpgradeEfficiency()
         local added = next_efficiency - efficiency
         eff_node:AddItem( _("提升任务奖励"), (efficiency*100).."%", added > 0 and added * 100 .. "%" or ""  )
     elseif self.building:GetType()=="dwelling" then
-        local citizen = UtilsForBuilding:GetFunctionConfigBy(User, {type = building:GetType(), level = building:GetLevel()}).citizen
-        local next_citizen = UtilsForBuilding:GetFunctionConfigBy(User, {type = building:GetType(), level = building:GetLevel()}, 1).citizen
+        local citizen = UtilsForBuilding:GetFunctionConfigBy(User, houseOrBuilding).citizen
+        local next_citizen = UtilsForBuilding:GetFunctionConfigBy(User, houseOrBuilding, 1).citizen
+
+        local production = UtilsForBuilding:GetFunctionConfigBy(User, houseOrBuilding).production
+        local next_production = UtilsForBuilding:GetFunctionConfigBy(User, houseOrBuilding, 1).production
+
         eff_node:AddItem(bd.dwelling_citizen, formatNumber(citizen), formatNumber(next_citizen - citizen))
-        eff_node:AddItem(bd.dwelling_poduction, formatNumber(building:GetProductionPerHour()), formatNumber(building:GetNextLevelProductionPerHour() - building:GetProductionPerHour()))
+        eff_node:AddItem(bd.dwelling_poduction, formatNumber(production), formatNumber(next_production - production))
     elseif self.building:GetType()=="woodcutter" then
-        eff_node:AddItem( bd.woodcutter_poduction, formatNumber(building:GetProductionPerHour()), formatNumber(building:GetNextLevelProductionPerHour() - building:GetProductionPerHour()) )
+        local production = UtilsForBuilding:GetFunctionConfigBy(User, houseOrBuilding).production
+        local next_production = UtilsForBuilding:GetFunctionConfigBy(User, houseOrBuilding, 1).production
+        eff_node:AddItem(bd.woodcutter_poduction, formatNumber(production), formatNumber(next_production - production))
     elseif self.building:GetType()=="farmer" then
-        eff_node:AddItem( bd.farmer_poduction, formatNumber(building:GetProductionPerHour()), formatNumber(building:GetNextLevelProductionPerHour() - building:GetProductionPerHour()) )
+        local production = UtilsForBuilding:GetFunctionConfigBy(User, houseOrBuilding).production
+        local next_production = UtilsForBuilding:GetFunctionConfigBy(User, houseOrBuilding, 1).production
+        eff_node:AddItem(bd.farmer_poduction, formatNumber(production), formatNumber(next_production - production))
     elseif self.building:GetType()=="quarrier" then
-        eff_node:AddItem( bd.quarrier_poduction, formatNumber(building:GetProductionPerHour()), formatNumber(building:GetNextLevelProductionPerHour() - building:GetProductionPerHour()) )
+        local production = UtilsForBuilding:GetFunctionConfigBy(User, houseOrBuilding).production
+        local next_production = UtilsForBuilding:GetFunctionConfigBy(User, houseOrBuilding, 1).production
+        eff_node:AddItem(bd.quarrier_poduction, formatNumber(production), formatNumber(next_production - production))
     elseif self.building:GetType()=="miner" then
-        eff_node:AddItem( bd.miner_poduction, formatNumber(building:GetProductionPerHour()), formatNumber(building:GetNextLevelProductionPerHour() - building:GetProductionPerHour()) )
+        local production = UtilsForBuilding:GetFunctionConfigBy(User, houseOrBuilding).production
+        local next_production = UtilsForBuilding:GetFunctionConfigBy(User, houseOrBuilding, 1).production
+        eff_node:AddItem(bd.miner_poduction, formatNumber(production), formatNumber(next_production - production))
     elseif self.building:GetType()=="wall" then
         local wallHp = UtilsForBuilding:GetPropertyBy(User, "wall", "wallHp")
         local next_wallHp = UtilsForBuilding:GetPropertyBy(User, "wall", "wallHp", 1)
