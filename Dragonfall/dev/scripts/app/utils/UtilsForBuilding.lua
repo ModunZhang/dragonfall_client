@@ -26,6 +26,7 @@ function UtilsForBuilding:GetBuildingsBy(userData, nameOrLocation, level)
         for _,building in pairs(userData.buildings) do
             if building.level >= level and building.location == nameOrLocation then
                 table.insert(t, building)
+                break
             end
         end
     end
