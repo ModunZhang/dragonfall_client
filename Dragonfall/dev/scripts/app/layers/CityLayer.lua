@@ -412,22 +412,18 @@ function CityLayer:ReloadSceneBackground()
     end
     local background = self.background
     function square:Flash(time)
-        -- local sprite = display.newSprite("click_empty.png")
-        -- :addTo(background):opacity(0)
-        -- if device.platform == "ios" then
-        --     sprite:pos(1050, 440 + 1224)
-        -- else
-        --     sprite:pos(1050 + 150, 440 + 1224 - 150)
-        -- end
-        -- sprite:setScaleX(1.8)
-        -- sprite:setScaleY(1.3)
-        -- sprite:rotation(-30)
-        -- sprite:setSkewX(-23)
-        -- sprite:runAction(transition.sequence({
-        --     cc.FadeIn:create(time/2),
-        --     cc.FadeOut:create(time/2),
-        --     cc.RemoveSelf:create(),
-        -- }))
+        local sprite = display.newSprite("click_empty.png")
+        :addTo(background):opacity(0)
+        sprite:pos(980, 440 + 1280)
+        sprite:setScaleX(1.8)
+        sprite:setScaleY(1.3)
+        sprite:rotation(-30)
+        sprite:setSkewX(-23)
+        sprite:runAction(transition.sequence({
+            cc.FadeIn:create(time/2),
+            cc.FadeOut:create(time/2),
+            cc.RemoveSelf:create(),
+        }))
     end
     self.square = square
 end
