@@ -352,6 +352,10 @@ function AllianceDetailScene:onEnter()
     -- :onButtonClicked(function(event)
     --     app:onEnterForeground()
     -- end)
+
+    if app:GetAudioManager():GetLastPlayedFileName() == "sfx_city" then
+        app:GetAudioManager():PlayGameMusicAutoCheckScene()
+    end
 end
 function AllianceDetailScene:onExit()
     self.fetchtimer:stopAllActions()
