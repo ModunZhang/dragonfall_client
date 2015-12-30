@@ -232,7 +232,8 @@ function GameUIResource:CreateInfomation()
 
     local reses = UtilsForBuilding:GetHouseResType(self.building:GetType())
     if string.find(reses, "coin") then
-        self.secondValueLabel:setString(string.format("-%d",self.building:GetProductionLimit()))
+        local citizen_limit = UtilsForBuilding:GetFunctionConfigBy(User, {type = self.building:GetType(), level = self.building:GetLevel()}).citizen
+        self.secondValueLabel:setString(string.format("-%d", citizen_limit))
         self.firstLable:setString(_("银币产量"))
         self.firstValueLabel:setString(string.format("-%d/h",self.building:GetProductionPerHour()))
     else

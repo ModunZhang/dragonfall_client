@@ -36,18 +36,8 @@ end
 function UpgradeBuilding:GetRealEntity()
     return self
 end
-function UpgradeBuilding:GetFreeSpeedupTime()
-    return DataUtils:getFreeSpeedUpLimitTime()
-end
-function UpgradeBuilding:EventType()
-    return self:IsHouse() and "houseEvents" or "buildingEvents"
-end
 function UpgradeBuilding:UniqueUpgradingKey()
     return self.unique_upgrading_key
-end
-function UpgradeBuilding:GetUpgradingLeftTimeByCurrentTime(current_time)
-    local left_time = self.upgrade_to_next_level_time - current_time
-    return left_time > 0 and left_time or 0
 end
 function UpgradeBuilding:CanUpgrade()
     local legal = self:IsBuildingUpgradeLegal()
@@ -66,20 +56,14 @@ function UpgradeBuilding:IsUpgrading()
     return self.upgrade_to_next_level_time ~= 0
 end
 function UpgradeBuilding:InstantUpgradeTo(level)
-    local is_upgrading = self.upgrade_to_next_level_time ~= 0
     self.level = level
     self.upgrade_to_next_level_time = 0
 end
 function UpgradeBuilding:GetUpgradeTimeToNextLevel()
-    return self:GetNextLevelUpgradeTimeByLevel(self.level)
-end
-function UpgradeBuilding:GetNextLevelUpgradeTimeByLevel(level)
-    local config = self.config_building_levelup[self:GetType()]
-    if config then
-        local is_max_level = #config == level
-        return is_max_level and 0 or config[level + 1].buildTime
-    end
-    return 1
+    return UtilsForBuilding:GetLevelUpConfigBy(
+        self:BelongCity():GetUser(), 
+        {type = self:GetType(), level = self.level + 1}
+    ).buildTime
 end
 function UpgradeBuilding:GetNextLevel()
     return self:IsMaxLevel() and self.level or self.level + 1
@@ -87,13 +71,6 @@ end
 function UpgradeBuilding:IsMaxLevel()
     local config = self.config_building_levelup[self:GetType()]
     return #config == self.level
-end
-function UpgradeBuilding:GetBeforeLevel()
-    if self.level > 0 then
-        return self.level - 1
-    else
-        return 0
-    end
 end
 function UpgradeBuilding:GetEfficiencyLevel()
     return self.level <= 0 and 1 or self.level

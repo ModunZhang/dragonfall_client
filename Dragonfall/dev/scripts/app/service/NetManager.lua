@@ -12,6 +12,7 @@ NetManager = {}
 -- 过滤器
 local function get_player_response_msg(response)
     if response.msg.playerData then
+        LuaUtils:outputTable(response)
         local user_data = DataManager:getUserData()
         local edit = decodeInUserDataFromDeltaData(user_data, response.msg.playerData)
         -- LuaUtils:outputTable("get_player_response_msg edit",edit)

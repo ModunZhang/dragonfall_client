@@ -8,14 +8,6 @@ function ResourceUpgradeBuilding:ctor(building_info)
     self.config_building_function = config_house_function
     self.config_building_levelup = config_house_levelup
 end
-function ResourceUpgradeBuilding:GetNextLevelUpgradeTimeByLevel(level)
-    local config = config_house_levelup[self:GetType()]
-    if config then
-        local is_max_level = #config == level
-        return is_max_level and 0 or config[level + 1].buildTime
-    end
-    return 1
-end
 function ResourceUpgradeBuilding:GetNextLevel()
     local config = config_house_levelup[self:GetType()]
     return #config == self.level and self.level or self.level + 1

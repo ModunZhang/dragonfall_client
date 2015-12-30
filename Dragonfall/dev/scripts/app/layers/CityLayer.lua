@@ -644,19 +644,6 @@ function CityLayer:UpdateSingleTreeVisibleWithCity(city)
         tree:setVisible(city:GetTileByBuildingPosition(tree.x, tree.y):IsUnlocked())
     end)
 end
--- function CityLayer:UpdateLockedTilesWithCity(city)
---     local city_node = self:GetCityNode()
---     for _, v in pairs(self.locked_tiles) do
---         v:removeFromParent()
---     end
---     self.locked_tiles = {}
---     city:IteratorTilesByFunc(function(x, y, tile)
---         local building = city:GetBuildingByLocationId(tile.location_id)
---         if tile:NeedWalls() and tile.locked and not building:IsUnlocking() then
---             table.insert(self.locked_tiles, self:CreateLockedTileSpriteWithTile(tile):addTo(city_node))
---         end
---     end)
--- end
 function CityLayer:UpdateTilesWithCity(city)
     local city_node = self:GetCityNode()
     for _, v in pairs(self.tiles) do

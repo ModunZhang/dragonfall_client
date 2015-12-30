@@ -56,13 +56,18 @@ end
 function UtilsForBuilding:GetPropertyBy(userData, nameOrLocation, property, offset)
     return self:GetFunctionConfigBy(userData, nameOrLocation, offset)[property]
 end
-function UtilsForBuilding:GetFunctionConfigBy(userData, nameOrLocation, offset)
+function UtilsForBuilding:GetFunctionConfigBy(userData, nameOrLocationOrHouseOrBuilding, offset)
     offset = offset or 0
-    local building = self:GetBuildingBy(userData, nameOrLocation)
-    local configs = self:GetBuildingConfig(building.type)
-    return configs[building.level + offset]
+    local _type = type(nameOrLocationOrHouseOrBuilding)
+    local houseOrBuilding
+    if _type == "number" or _type == "string" then
+        houseOrBuilding = self:GetBuildingBy(userData, nameOrLocationOrHouseOrBuilding)
+    elseif _type == "table" then
+        houseOrBuilding = nameOrLocationOrHouseOrBuilding
+    end
+    local configs = self:GetBuildingConfig(houseOrBuilding.type)
+    return configs[houseOrBuilding.level + offset]
 end
-
 function UtilsForBuilding:GetLevelUpConfigBy(userData, houseOrBuilding, offset)
     offset = offset or 0
     local configs = self:GetLevelUpConfig(houseOrBuilding.type)

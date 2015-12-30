@@ -422,8 +422,10 @@ function CommonUpgradeUI:SetUpgradeEfficiency()
         local added = next_efficiency - efficiency
         eff_node:AddItem( _("提升任务奖励"), (efficiency*100).."%", added > 0 and added * 100 .. "%" or ""  )
     elseif self.building:GetType()=="dwelling" then
-        eff_node:AddItem( bd.dwelling_citizen, formatNumber(building:GetProductionLimit()), formatNumber(building:GetNextLevelCitizen() - building:GetProductionLimit()) )
-        eff_node:AddItem( bd.dwelling_poduction, formatNumber(building:GetProductionPerHour()), formatNumber(building:GetNextLevelProductionPerHour() - building:GetProductionPerHour()) )
+        local citizen = UtilsForBuilding:GetFunctionConfigBy(User, {type = building:GetType(), level = building:GetLevel()}).citizen
+        local next_citizen = UtilsForBuilding:GetFunctionConfigBy(User, {type = building:GetType(), level = building:GetLevel()}, 1).citizen
+        eff_node:AddItem(bd.dwelling_citizen, formatNumber(citizen), formatNumber(next_citizen - citizen))
+        eff_node:AddItem(bd.dwelling_poduction, formatNumber(building:GetProductionPerHour()), formatNumber(building:GetNextLevelProductionPerHour() - building:GetProductionPerHour()))
     elseif self.building:GetType()=="woodcutter" then
         eff_node:AddItem( bd.woodcutter_poduction, formatNumber(building:GetProductionPerHour()), formatNumber(building:GetNextLevelProductionPerHour() - building:GetProductionPerHour()) )
     elseif self.building:GetType()=="farmer" then
