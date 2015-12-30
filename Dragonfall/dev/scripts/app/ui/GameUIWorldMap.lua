@@ -329,7 +329,8 @@ function GameUIWorldMap:LoadRoundInfo(mapIndex)
         end
         return true
     end)
-    function node:RefreshRoundInfo(mapIndex,x, y)
+    function node:RefreshRoundInfo(mapIndex, x, y)
+        if x >= bigMapLength_value or x < 0 or y >= bigMapLength_value or y < 0 then return end
         self.mapIndex = mapIndex
         local map_round = DataUtils:getMapRoundByMapIndex(mapIndex)
         local buff = alliancemap_buff[map_round]

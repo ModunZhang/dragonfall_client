@@ -4,15 +4,17 @@ local MapLayer = import(".MapLayer")
 local WorldLayer = class("WorldLayer", MapLayer)
 
 local bigMapLength_value = GameDatas.AllianceInitData.intInit.bigMapLength.value
+local middle_index = math.floor((bigMapLength_value-1)/2 + 0.5)
 local ui_helper = WidgetAllianceHelper.new()
 local TILE_LENGTH = 207
 local CORNER_LENGTH = 47
 local WIDTH, HEIGHT = bigMapLength_value, bigMapLength_value
 local MAX_INDEX = WIDTH * HEIGHT - 1
 local width, height = WIDTH * TILE_LENGTH, HEIGHT * TILE_LENGTH
+local SCENE_OFFSET = {x = 15, y = 70}
 local worldsize = {
-    width = width + 2 * CORNER_LENGTH + 200, 
-    height = height + 2 * CORNER_LENGTH + 500,
+    width = width + CORNER_LENGTH * 2 + SCENE_OFFSET.x * 2, 
+    height = height + CORNER_LENGTH * 2 + SCENE_OFFSET.y * 2 + 45,
 }
 
 
@@ -23,12 +25,12 @@ end
 function WorldLayer:onEnter()
     self:CreateBg()
     self.scene_node = display.newNode():addTo(self)
-                      :align(display.LEFT_BOTTOM, 15,70)
+                      :align(display.LEFT_BOTTOM, SCENE_OFFSET.x, SCENE_OFFSET.y)
     self:CreateCorner()
     self:CreateEdge()
     self.map = self:CreateMap()
 
-    local p = self:ConvertLogicPositionToMapPosition(self:IndexToLogic(612))
+    local p = self:ConvertLogicPositionToMapPosition(middle_index, middle_index)
     display.newSprite("world_middle.png"):addTo(self.map):pos(p.x, p.y)
 
     self.leveLayer = display.newNode():addTo(self.map,1)
@@ -52,8 +54,8 @@ function WorldLayer:onExit()
     cache:removeTextureForKey("world_terrain.png")
 end
 function WorldLayer:CreateBg()
-    local sx, sy = 12, 7
-    local offsetY = - 400
+    local sx, sy = math.ceil(worldsize.width / 634), math.ceil(worldsize.height / 1130)
+    local offsetY = 0
     local sprite = display.newFilteredSprite("world_bg.png", "CUSTOM", json.encode({
         frag = "shaders/plane.fs",
         shaderName = "plane1",
@@ -62,17 +64,15 @@ function WorldLayer:CreateBg()
     local size = sprite:getContentSize()
     sprite:setScaleX(sx)
     sprite:setScaleY(sy)
-    worldsize.width = size.width * sx - 235
-    worldsize.height = size.height * sy + offsetY
 
     display.newFilteredSprite("world_title2.png", "CUSTOM", json.encode({
         frag = "shaders/plane.fs",
         shaderName = "plane2",
         param = {1/sx, 1, sx, 1}
-    })):addTo(self):align(display.LEFT_TOP,0,size.height * sy + offsetY):setScaleX(sx)
+    })):addTo(self):align(display.LEFT_TOP,0,worldsize.height):setScaleX(sx)
 
     display.newSprite("world_title1.png")
-    :addTo(self):align(display.LEFT_TOP,0,size.height * sy + offsetY):scale(0.7)
+    :addTo(self):align(display.LEFT_TOP,0,worldsize.height):scale(0.7)
 end
 function WorldLayer:CreateCorner()
     display.newSprite("world_tile.png"):pos(CORNER_LENGTH/2 + 2, CORNER_LENGTH/2 + 2)
@@ -156,7 +156,7 @@ function WorldLayer:CreateMap()
 end
 function WorldLayer:LoadLevelBg(index)
     local x,y = self:IndexToLogic(index)
-    local mx, my = 17, 17
+    local mx, my = middle_index, middle_index
     if x >= 0
     and x < bigMapLength_value
     and y >= 0
@@ -178,7 +178,7 @@ function WorldLayer:LoadLevelBg(index)
 end
 function WorldLayer:GetRoundNumber(index)
     local x,y = self:IndexToLogic(index)
-    local mx, my = 17, 17
+    local mx, my = middle_index, middle_index
     return math.max(math.abs(x - mx), math.abs(y - my)) + 1
 end
 local screen_rect = cc.rect(0, 0, display.width, display.height)
@@ -271,49 +271,18 @@ function WorldLayer:MoveAllianceFromTo(fromIndex, toIndex)
 end
 
 function WorldLayer:LoadAlliance()
-    -- local flagSprites = {}
-    -- local mapIndexStr = tostring(Alliance_Manager:GetMyAlliance().mapIndex)
-    -- local allainceSprites = {
-    --     [mapIndexStr] = self.allainceSprites[mapIndexStr]
-    -- }
-    -- LuaUtils:outputTable(allainceSprites)
-    -- self.allainceSprites[mapIndexStr] = nil
-    -- local indexes = self:GetAvailableIndex()
-    -- for k,v in pairs(self.currentIndexs or {}) do
-    --     if indexes[k] then
-    --         if self.flagSprites[k] then
-    --             flagSprites[k] = self.flagSprites[k]
-    --         end
-    --         self.flagSprites[k] = nil
-    --         if self.allainceSprites[k] then
-    --             allainceSprites[k] = self.allainceSprites[k]
-    --         end
-    --         self.allainceSprites[k] = nil
-    --     end
-    -- end
-    -- for k,v in pairs(self.flagSprites) do
-    --     v:removeFromParent()
-    -- end
-    -- for k,v in pairs(self.allainceSprites) do
-    --     v:removeFromParent()
-    -- end
-    -- self.flagSprites = flagSprites
-    -- self.allainceSprites = allainceSprites
-
-    -- local indexes = self:GetAvailableIndex()
-    -- self.currentIndexs = indexes
-    -- local request_body = self:GetAvailableIndex()
-    -- local request_body = {}
-    -- for k,v in pairs(self:GetAvailableIndex()) do
-    --     table.insert(request_body, tonumber(k))
-    -- end
     local indexes = self:GetAvailableIndex()
     local key_map = {}
     for i,v in ipairs(indexes) do
         key_map[tostring(v)] = json.null
     end
-    NetManager:getMapAllianceDatasPromise(self:GetAvailableIndex())
-    :done(function(response)
+    if not next(indexes) then 
+        if UIKit:GetUIInstance("GameUIWorldMap") then
+            UIKit:GetUIInstance("GameUIWorldMap"):HideLoading()
+        end
+        return 
+    end
+    NetManager:getMapAllianceDatasPromise(self:GetAvailableIndex()):done(function(response)
         dump(response.msg.datas)
         for k,v in pairs(response.msg.datas) do
             key_map[k] = v
@@ -469,7 +438,7 @@ function WorldLayer:CraeteLineWith(from, to)
     p2.x = p2.x + tox
     p2.y = p2.y + toy
     local length = cc.pGetLength(cc.pSub(p1,p2))
-    local unit_count = math.ceil(length / 17)
+    local unit_count = math.ceil(length / middle_index)
     local degree = math.deg(cc.pGetAngle(cc.pSub(p1, p2), cc.p(0, 1)))
     local sprite = display.newSprite("fight_line_6x17.png", nil, nil, 
         {class=cc.FilteredSpriteWithOne})
@@ -573,7 +542,7 @@ function WorldLayer:CreateFlag(index)
     local indexstr = tostring(index)
     local p = self:ConvertLogicPositionToMapPosition(self:IndexToLogic(index))
     local node
-    if tonumber(index) == self:LogicToIndex(17, 17) then
+    if tonumber(index) == self:LogicToIndex(middle_index, middle_index) then
         node = display.newNode():addTo(self.allianceLayer):pos(p.x+50, p.y + 50)
         display.newSprite("world_crown_circle2.png"):addTo(node):pos(-40, -50)
         local circle = display.newSprite("world_crown_circle1.png"):addTo(node):pos(-40, -50)
