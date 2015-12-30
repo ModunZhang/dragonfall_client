@@ -242,7 +242,7 @@ function GameUIVipNew:InitVipTop()
                 }):AddToCurrentScene()
             end
         end)
-    local isactive, leftTime = User:IsVIPActived()
+    local isactive, leftTime = UtilsForVip:IsVipActived(User)
     local status_text = isactive and _("已激活").." "..GameUtils:formatTimeStyle1(leftTime) or _("未激活VIP")
     self.vip_status_label = UIKit:ttfLabel({
         text = status_text,
@@ -277,7 +277,7 @@ function GameUIVipNew:InitVipTop()
 
     -- 当前vip等级
     -- 是否激活
-    if User:IsVIPActived() then
+    if UtilsForVip:IsVipActived(User) then
         btn_pic = "vip_unlock_normal.png"
     else
         btn_pic = "vip_lock.png"
@@ -600,7 +600,7 @@ function GameUIVipNew:OnUserDataChanged_basicInfo(userData, deltaData)
     end
 end
 function GameUIVipNew:OnVipEventTimer()
-    local isactive, time = User:IsVIPActived()
+    local isactive, time = UtilsForVip:IsVipActived(User)
     if time > 0 then
         self.vip_status_label:setString(_("已激活").." "..GameUtils:formatTimeStyle1(time))
         self.vip_level_bg:setTexture("vip_unlock_normal.png")

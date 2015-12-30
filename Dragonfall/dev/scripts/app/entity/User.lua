@@ -525,18 +525,6 @@ function User:GetSpecialVipLevelExpTo(level)
     local level = #vip_level >= level and level or #vip_level
     return vip_level[level].expTo
 end
-function User:GetCurrentVipConfig()
-    return self:IsVIPActived() and vip_level[self:GetVipLevel()] or vip_level[0]
-end
-function User:IsVIPActived()
-    local vipEvent = self.vipEvents[1]
-    if vipEvent then
-        local left = vipEvent.finishTime / 1000 - app.timer:GetServerTime()
-        local isactive = left > 0
-        return isactive, isactive and left or 0
-    end
-    return false, 0
-end
 --[[end]]
 
 
@@ -756,7 +744,7 @@ function User:GetSoldierUpkeep()
         total = math.ceil(total * (1 - UtilsForItem:GetItemBuff("quarterMaster")))
     end
     -- vip效果
-    if self:IsVIPActived() then
+    if UtilsForVip:IsVipActived(self) then
         total = total * (1-UtilsForVip:GetVipBuffByName(self, "soldierConsumeSub"))
     end
     return total

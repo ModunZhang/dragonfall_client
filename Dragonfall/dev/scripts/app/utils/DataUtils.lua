@@ -1237,7 +1237,7 @@ end
 -- end
 local function getPlayerVipForResourceLootPercentSubtract()
     local vipBuffAddPercent = 0
-    if User:IsVIPActived() then
+    if UtilsForVip:IsVipActived(User) then
         vipBuffAddPercent = VipLevel[User:GetVipLevel()].storageProtectAdd
     end
     return vipBuffAddPercent

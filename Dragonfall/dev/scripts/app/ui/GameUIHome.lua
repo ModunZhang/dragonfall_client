@@ -262,7 +262,7 @@ function GameUIHome:CreateTop()
                 UIKit:newGameUI('GameUIVipNew', self.city,"VIP"):AddToCurrentScene(true)
             end
         end)
-    local vip_btn_img = User:IsVIPActived() and "vip_bg_110x124.png" or "vip_bg_disable_110x124.png"
+    local vip_btn_img = UtilsForVip:IsVipActived(User) and "vip_bg_110x124.png" or "vip_bg_disable_110x124.png"
     vip_btn:setButtonImage(cc.ui.UIPushButton.NORMAL, vip_btn_img, true)
     vip_btn:setButtonImage(cc.ui.UIPushButton.PRESSED, vip_btn_img, true)
     self.vip_level = display.newNode():addTo(vip_btn):pos(-3, 0):scale(0.8)
@@ -380,13 +380,13 @@ function GameUIHome:RefreshExp()
 end
 function GameUIHome:RefreshVIP()
     local vip_btn = self.vip_btn
-    local vip_btn_img = User:IsVIPActived() and "vip_bg_110x124.png" or "vip_bg_disable_110x124.png"
+    local vip_btn_img = UtilsForVip:IsVipActived(User) and "vip_bg_110x124.png" or "vip_bg_disable_110x124.png"
     vip_btn:setButtonImage(cc.ui.UIPushButton.NORMAL, vip_btn_img, true)
     vip_btn:setButtonImage(cc.ui.UIPushButton.PRESSED, vip_btn_img, true)
     local vip_level = self.vip_level
     vip_level:removeAllChildren()
     local level_img = display.newSprite(string.format("VIP_%d_46x32.png", User:GetVipLevel()),5,0,{class=cc.FilteredSpriteWithOne}):addTo(vip_level)
-    if not User:IsVIPActived() then
+    if not UtilsForVip:IsVipActived(User) then
         local my_filter = filter
         local filters = my_filter.newFilter("GRAY", {0.2, 0.3, 0.5, 0.1})
         level_img:setFilter(filters)
