@@ -1597,6 +1597,7 @@ function NetManager:getSetDefenceTroopPromise(dragonType,soldiers)
         {dragonType=dragonType,soldiers=soldiers},
         "设置驻防使用的龙失败!"):done(get_player_response_msg):done(function()
             GameGlobalUI:showTips(_("提示"),_("驻防成功"))
+            app:GetAudioManager():PlayeEffectSoundWithKey("TROOP_RECRUIT")
         end)
 end
 --取消龙驻防
