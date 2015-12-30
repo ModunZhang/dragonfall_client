@@ -43,6 +43,58 @@ end
 --[[
 end
 ]]
+function DataUtils:GetOutput(userData)
+    local production    = UtilsForBuilding:GetHouseProductions(userData)
+    local buff_building = UtilsForBuilding:GetBuildingsBuff(userData)
+    local buff_terrain  = UtilsForBuilding:GetTerrainResourceBuff(userData)
+    local buff_tech     = UtilsForTech:GetBuff(userData)
+    local buff_item     = UtilsForItem:GetBuff(userData)
+    local buff_vip      = UtilsForVip:GetVipBuff(userData)
+    -- production = production * (1 + buff_building + buff_item + buff_tech + buff_vip + buff_terrain)
+
+    -- local wall_info = UtilsForBuilding:GetWallInfo(self)
+    -- production.wallHp = wall_info.wallRecovery
+
+    -- local limits = UtilsForBuilding:GetWarehouseLimit(self)
+    -- local limits_map = setmetatable({
+    --     coin = math.huge,
+    --     wood = limits.maxWood,
+    --     food = limits.maxFood,
+    --     iron = limits.maxIron,
+    --     stone= limits.maxStone,
+    --     wallHp = wall_info.wallHp,
+    --     citizen= UtilsForBuilding:GetCitizenLimit(self),
+    -- }, BUFF_META)
+    -- local buff_limit = UtilsForTech:GetLimitBuff(self)
+    -- limits_map = limits_map * (1 + buff_limit)
+
+    -- for k,v in pairs(limits_map) do
+    --     local res = self.resources_cache[k]
+    --     if k == "citizen" then
+    --         res.limit = v - UtilsForBuilding:GetCitizenMap(self).total
+    --     else
+    --         res.limit = v
+    --     end
+    -- end
+
+    -- for k,v in pairs(production) do
+    --     local res = self.resources_cache[k]
+    --     if k == "food" then
+    --         res.output = math.floor(v - self:GetSoldierUpkeep())
+    --     else
+    --         res.output = math.floor(v)
+    --     end
+    -- end
+    -- local citizen = self:GetResProduction("citizen")
+    -- citizen.output = math.floor(citizen.limit / playerCitizenRecoverFullNeedHours_value)
+    -- local cart = self:GetResProduction("cart")
+    -- local tradeGuild_info = UtilsForBuilding:GetTradeGuildInfo(self)
+    -- cart.limit = tradeGuild_info.maxCart
+    -- cart.output = tradeGuild_info.cartRecovery
+end
+--[[
+end
+]]
 
 
 --[[
@@ -304,7 +356,7 @@ end
 function DataUtils:getAllSoldierVipBuffValue()
     local buff_table = {}
     --攻击力加成
-    local attck_buff = User:GetVIPSoldierAttackPowerAdd()
+    local attck_buff = UtilsForVip:GetVipBuffByName(User, "soldierAttackPowerAdd")
     if attck_buff > 0 then
         buff_table = {
             {"*","infantry",attck_buff},
@@ -315,17 +367,17 @@ function DataUtils:getAllSoldierVipBuffValue()
         }
     end
     --防御
-    local defence_buff = User:GetVIPSoldierHpAdd()
+    local defence_buff = UtilsForVip:GetVipBuffByName(User, "soldierHpAdd")
     if defence_buff > 0 then
         table.insert(buff_table,{"*","hp",defence_buff})
     end
     --维护费用
-    local consumeFood_buff = User:GetVIPSoldierConsumeSub()
+    local consumeFood_buff = UtilsForVip:GetVipBuffByName(User, "soldierConsumeSub")
     if consumeFood_buff > 0 then
         table.insert(buff_table,{"*","consumeFoodPerHour",consumeFood_buff})
     end
     --行军速度
-    local march_buff = User:GetVIPMarchSpeedAdd()
+    local march_buff = UtilsForVip:GetVipBuffByName(User, "marchSpeedAdd")
     if march_buff > 0 then
         table.insert(buff_table,{"*","march",march_buff})
     end
@@ -446,7 +498,7 @@ function DataUtils:getPlayerMarchTimeBuffEffectValue()
         effect = effect + UtilsForItem:GetItemBuff("marchSpeedBonus")
     end
     -- vip buffer
-    effect = effect + User:GetVIPMarchSpeedAdd()
+    effect = effect + UtilsForVip:GetVipBuffByName(User, "marchSpeedAdd")
     -- 联盟行军buff
     effect = effect + buff[self:getMapRoundByMapIndex(Alliance_Manager:GetMyAlliance().mapIndex)].marchSpeedAddPercent / 100
     return effect
@@ -506,7 +558,7 @@ function DataUtils:getBuffEfffectTime(time,decreasePercent)
 end
 -- 各种升级事件免费加速门坎 单位：秒
 function DataUtils:getFreeSpeedUpLimitTime()
-    return User:GetVIPFreeSpeedUpTime() * 60
+    return UtilsForVip:GetVipFreeSpeedUpTime(User) * 60
 end
 
 local config_online = GameDatas.Activities.online
@@ -544,7 +596,7 @@ function DataUtils:GetDragonHpBuffTotal()
     if User:IsItemEventActive("dragonHpBonus") then
         effect = effect + UtilsForItem:GetItemBuff("dragonHpBonus")
     end
-    effect = effect + User:GetVIPDragonHpRecoveryAdd()
+    effect = effect + UtilsForVip:GetVipBuffByName(User, "dragonHpRecoveryAdd")
     return effect
 end
 --龙的生命值恢复buff
@@ -780,26 +832,6 @@ local function getPlayerSoldierHpBuff(soldierName, soldierStar, dragon, terrain,
 end
 local function createPlayerSoldiersForFight(soldiers, dragon, terrain, is_dragon_win)
     return LuaUtils:table_map(soldiers, function(k, soldier)
-        -- local soldier_man = City:GetSoldierManager()
-        -- local config = getSoldiersConfig(soldier.name, soldier.star)
-        -- local atkBuff = getPlayerSoldierAtkBuff(soldier.name, soldier.star, dragon, terrain, is_dragon_win)
-        -- var atkWallBuff = self.getDragonAtkWallBuff(dragon)
-        -- local hpBuff = getPlayerSoldierHpBuff(soldier.name, soldier.star, dragon, terrain, is_dragon_win)
-        -- local techBuffToInfantry = soldier_man:GetMilitaryTechsByName(config.type.."_".."infantry"):GetAtkEff()
-        -- local techBuffToArcher = soldier_man:GetMilitaryTechsByName(config.type.."_".."archer"):GetAtkEff()
-        -- local techBuffToCavalry = soldier_man:GetMilitaryTechsByName(config.type.."_".."cavalry"):GetAtkEff()
-        -- local techBuffToSiege = soldier_man:GetMilitaryTechsByName(config.type.."_".."siege"):GetAtkEff()
-        -- local techBuffHpAdd = soldier_man:GetMilitaryTechsByName(config.type.."_".."hpAdd"):GetAtkEff()
-        -- local vipAttackBuff = User:GetVIPSoldierAttackPowerAdd()
-        -- local vipHpBuff = User:GetVIPSoldierHpAdd()
-        -- dump(hpBuff, "hpBuff")
-        -- dump(vipHpBuff, "vipHpBuff")
-        -- dump(atkBuff, "atkBuff")
-        -- dump(vipAttackBuff, "vipAttackBuff")
-        -- dump(techBuffToInfantry, "techBuffToInfantry")
-        -- dump(techBuffToArcher, "techBuffToArcher")
-        -- dump(techBuffToCavalry, "techBuffToCavalry")
-        -- dump(techBuffToSiege, "techBuffToSiege")
         return k, {
             name = soldier.name,
             star = soldier.star,
@@ -822,7 +854,7 @@ local function createPlayerSoldiersForFight(soldiers, dragon, terrain, is_dragon
 end
 local function getPlayerDragonExpAdd(dragon)
     local itemBuff = 0
-    local vipBuff = User:GetVIPDragonExpAdd()
+    local vipBuff = UtilsForVip:GetVipBuffByName(User, "dragonExpAdd")
     if User:IsItemEventActive("dragonExpBonus") then
         local effect1 = UtilsForItem:GetItemBuff("dragonExpBonus")
         itemBuff = effect1

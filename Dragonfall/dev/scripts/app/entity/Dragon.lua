@@ -493,7 +493,7 @@ function Dragon:__getDragonLeadershipBuff()
 			effect = effect + buffData[2]
 		end
 	end)
-	effect = effect + User:GetVIPDragonLeaderShipAdd()
+	effect = effect + UtilsForVip:GetVipBuffByName(User, "dragonLeaderShipAdd")
 	return effect
 end
 return Dragon

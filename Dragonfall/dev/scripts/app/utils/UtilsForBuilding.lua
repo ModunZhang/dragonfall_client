@@ -170,6 +170,31 @@ function UtilsForBuilding:GetMaterialDepotLimit(userData, offset)
 end
 
 
+local intInit = GameDatas.PlayerInitData.intInit
+local grassLandFoodAddPercent_value = intInit.grassLandFoodAddPercent.value/100
+local grassLandWoodAddPercent_value = intInit.grassLandWoodAddPercent.value/100
+local grassLandIronAddPercent_value = intInit.grassLandIronAddPercent.value/100
+local grassLandStoneAddPercent_value = intInit.grassLandStoneAddPercent.value/100
+function UtilsForBuilding:GetTerrainResourceBuff(userData)
+    local buff = {
+        food = 0,
+        wood = 0,
+        iron = 0,
+        stone= 0,
+        coin = 0,
+        wallHp = 0,
+        citizen= 0,
+    }
+    if userData.basicInfo.terrain == "grassLand" then
+        buff.food = grassLandFoodAddPercent_value
+        buff.wood = grassLandWoodAddPercent_value
+        buff.iron = grassLandIronAddPercent_value
+        buff.stone= grassLandStoneAddPercent_value
+    end
+    return setmetatable(buff, BUFF_META)
+end
+
+
 local production_map = {
     dwelling   = "coin",
     farmer     = "food",
@@ -521,8 +546,6 @@ function UtilsForBuilding:GetUsedCitizen(userData, house, buildingLocation, offs
     end
     return configs[efficiency_level].citizen
 end
-
-
 function UtilsForBuilding:GetUpgradeNowGems(userData, houseOrBuilding)
     local config = DataUtils:getBuildingUpgradeRequired(houseOrBuilding.type, houseOrBuilding.level)
     local required_gems = 0
@@ -531,5 +554,16 @@ function UtilsForBuilding:GetUpgradeNowGems(userData, houseOrBuilding)
     required_gems = required_gems + DataUtils:getGemByTimeInterval(config.buildTime)
     return required_gems
 end
+-- function UtilsForBuilding:IsAbleToUpgrade(userData, houseOrBuilding)
+--     if res_map[houseOrBuilding.type] then
+--         local citizen = self:GetLevelUpConfigBy(userData, houseOrBuilding).citizen
+--         local next_citizen = self:GetLevelUpConfigBy(userData, houseOrBuilding, 1).citizen
+--         local free_citizen_limit = userData:GetResProduction("citizen").limit
+--         if next_citizen - citizen > free_citizen_limit then
+--             return self.NOT_ABLE_TO_UPGRADE.FREE_CITIZEN_ERROR
+--         end
+--     end
+-- end
+
 
 

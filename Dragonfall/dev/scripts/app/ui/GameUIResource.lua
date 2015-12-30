@@ -242,10 +242,10 @@ function GameUIResource:CreateInfomation()
     else
         local reduce = UtilsForBuilding:GetFunctionConfigBy(User, house).production
         local buff_building = UtilsForBuilding:GetBuildingsBuff(User)
+        local buff_terrain  = UtilsForBuilding:GetTerrainResourceBuff(User)
         local buff_tech     = UtilsForTech:GetBuff(User)
         local buff_item     = UtilsForItem:GetBuff(User)
-        local buff_vip      = User:GetVipBuff()
-        local buff_terrain  = User:GetTerrainResourceBuff()
+        local buff_vip      = UtilsForVip:GetVipBuff(User)
         local buff_total    = buff_building + buff_tech + buff_item + buff_vip + buff_terrain
         local key = string.find(reses, "citizen") and "citizen" or reses
         if buff_total[key] then

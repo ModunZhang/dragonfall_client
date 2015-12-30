@@ -514,74 +514,7 @@ end
 -- 获取当天剩余普通免费gacha次数
 local freeNormalGachaCountPerDay_value = GameDatas.PlayerInitData.intInit.freeNormalGachaCountPerDay.value
 function User:GetOddFreeNormalGachaCount()
-    return freeNormalGachaCountPerDay_value + self:GetVIPNormalGachaAdd() - self.countInfo.todayFreeNormalGachaCount
-end
-function User:GetVIPFreeSpeedUpTime()
-    return self:GetCurrentVipConfig().freeSpeedup
-end
-function User:GetVIPWoodProductionAdd()
-    return self:GetCurrentVipConfig().woodProductionAdd
-end
-local resource_buff = {
-    wallHp  = "RecoveryAdd",
-    food    = "ProductionAdd",
-    wood    = "ProductionAdd",
-    stone   = "ProductionAdd",
-    coin    = "ProductionAdd",
-    iron    = "ProductionAdd",
-    citizen = "ProductionAdd",
-}
-function User:GetResourceBuff()
-    local buff = {}
-    local config = self:GetCurrentVipConfig()
-    for res_type,suffix in pairs(resource_buff) do
-        local value = config[string.format("%s%s", res_type, suffix)]
-        buff[res_type] = value or 0
-    end
-    return buff
-end
-function User:GetVIPStoneProductionAdd()
-    return self:GetCurrentVipConfig().stoneProductionAdd
-end
-function User:GetVIPIronProductionAdd()
-    return self:GetCurrentVipConfig().ironProductionAdd
-end
-function User:GetVIPFoodProductionAdd()
-    return self:GetCurrentVipConfig().foodProductionAdd
-end
-function User:GetVIPCitizenRecoveryAdd()
-    return self:GetCurrentVipConfig().citizenRecoveryAdd
-end
-function User:GetVIPMarchSpeedAdd()
-    return self:GetCurrentVipConfig().marchSpeedAdd
-end
-function User:GetVIPNormalGachaAdd()
-    return self:GetCurrentVipConfig().normalGachaAdd
-end
---暗仓保护上限提升
-function User:GetVIPStorageProtectAdd()
-    return self:GetCurrentVipConfig().storageProtectAdd
-end
-function User:GetVIPWallHpRecoveryAdd()
-    return self:GetCurrentVipConfig().wallHpRecoveryAdd
-end
-function User:GetVIPDragonExpAdd()
-    return self:GetCurrentVipConfig().dragonExpAdd
-end
-function User:GetVIPDragonHpRecoveryAdd()
-    return self:GetCurrentVipConfig().dragonHpRecoveryAdd
-end
-function User:GetVIPSoldierAttackPowerAdd()
-    return self:GetCurrentVipConfig().soldierAttackPowerAdd
-end
-function User:GetVIPSoldierHpAdd()
-    return self:GetCurrentVipConfig().soldierHpAdd
-end
-function User:GetVIPDragonLeaderShipAdd()
-    return self:GetCurrentVipConfig().dragonLeaderShipAdd
-end
-function User:GetVIPSoldierConsumeSub()
-    return self:GetCurrentVipConfig().soldierConsumeSub
+    return freeNormalGachaCountPerDay_value + UtilsForVip:GetVipBuffByName(self, "normalGachaAdd") - self.countInfo.todayFreeNormalGachaCount
 end
 local vip_level = GameDatas.Vip.level
 function User:GetSpecialVipLevelExp(level)
@@ -592,7 +525,7 @@ function User:GetSpecialVipLevelExpTo(level)
     local level = #vip_level >= level and level or #vip_level
     return vip_level[level].expTo
 end
-function User:GetCurrentVipConfig(level)
+function User:GetCurrentVipConfig()
     return self:IsVIPActived() and vip_level[self:GetVipLevel()] or vip_level[0]
 end
 function User:IsVIPActived()
@@ -603,17 +536,6 @@ function User:IsVIPActived()
         return isactive, isactive and left or 0
     end
     return false, 0
-end
-function User:GetVipBuff()
-    return setmetatable({
-        coin = 0,
-        wood = self:GetVIPWoodProductionAdd(),
-        food = self:GetVIPFoodProductionAdd(),
-        iron = self:GetVIPIronProductionAdd(),
-        stone= self:GetVIPStoneProductionAdd(),
-        wallHp = self:GetVIPWallHpRecoveryAdd(),
-        citizen= self:GetVIPCitizenRecoveryAdd(),
-    }, BUFF_META)
 end
 --[[end]]
 
@@ -650,30 +572,6 @@ function User:GetTerrainDefenceBuff()
     end
     return {}
 end
-local intInit = GameDatas.PlayerInitData.intInit
-local grassLandFoodAddPercent_value = intInit.grassLandFoodAddPercent.value/100
-local grassLandWoodAddPercent_value = intInit.grassLandWoodAddPercent.value/100
-local grassLandIronAddPercent_value = intInit.grassLandIronAddPercent.value/100
-local grassLandStoneAddPercent_value = intInit.grassLandStoneAddPercent.value/100
-function User:GetTerrainResourceBuff()
-    local buff = {
-        food = 0,
-        wood = 0,
-        iron = 0,
-        stone= 0,
-        coin = 0,
-        wallHp = 0,
-        citizen= 0,
-    }
-    if self.basicInfo.terrain == "grassLand" then
-        buff.food = grassLandFoodAddPercent_value
-        buff.wood = grassLandWoodAddPercent_value
-        buff.iron = grassLandIronAddPercent_value
-        buff.stone= grassLandStoneAddPercent_value
-    end
-    return setmetatable(buff, BUFF_META)
-end
-
 --[[end]]
 
 
@@ -859,7 +757,7 @@ function User:GetSoldierUpkeep()
     end
     -- vip效果
     if self:IsVIPActived() then
-        total = total * (1-self:GetVIPSoldierConsumeSub())
+        total = total * (1-UtilsForVip:GetVipBuffByName(self, "soldierConsumeSub"))
     end
     return total
 end
@@ -1349,15 +1247,16 @@ local playerCitizenRecoverFullNeedHours_value = GameDatas.
     intInit.
     playerCitizenRecoverFullNeedHours.value
 function User:RefreshOutput()
-    local wall_info = UtilsForBuilding:GetWallInfo(self)
-
-    local production = UtilsForBuilding:GetHouseProductions(self)
-    production.wallHp = wall_info.wallRecovery
+    local production    = UtilsForBuilding:GetHouseProductions(self)
     local buff_building = UtilsForBuilding:GetBuildingsBuff(self)
+    local buff_terrain  = UtilsForBuilding:GetTerrainResourceBuff(self)
     local buff_tech     = UtilsForTech:GetBuff(self)
     local buff_item     = UtilsForItem:GetBuff(self)
-    local buff_vip      = self:GetVipBuff()
-    local buff_terrain  = self:GetTerrainResourceBuff()
+    local buff_vip      = UtilsForVip:GetVipBuff(self)
+    
+    local wall_info     = UtilsForBuilding:GetWallInfo(self)
+    production.wallHp   = wall_info.wallRecovery
+
     production = production * (1 + buff_building + buff_item + buff_tech + buff_vip + buff_terrain)
 
     local limits = UtilsForBuilding:GetWarehouseLimit(self)
