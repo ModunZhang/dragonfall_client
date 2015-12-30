@@ -25,6 +25,7 @@ local MAP_LEGNTH_WIDTH = bigMapLength_value
 local MAP_LEGNTH_HEIGHT = bigMapLength_value
 local TILE_WIDTH = 160
 local ALLIANCE_WIDTH, ALLIANCE_HEIGHT = intInit.allianceRegionMapWidth.value, intInit.allianceRegionMapHeight.value
+local middle_index = (ALLIANCE_WIDTH - 1) / 2
 local worldsize = {width = ALLIANCE_WIDTH * 160 * MAP_LEGNTH_WIDTH, height = ALLIANCE_HEIGHT * 160 * MAP_LEGNTH_HEIGHT}
 local timer = app.timer
 local MINE,FRIEND,ENEMY = 1,2,3
@@ -1044,7 +1045,7 @@ end
 function AllianceLayer:CreateCloud()
     local sprite = display.newSprite(string.format("cloud_%d.png", math.random(4)))
     function sprite:Run()
-        local x = math.random(25 * TILE_WIDTH) + TILE_WIDTH
+        local x = math.random(ALLIANCE_HEIGHT * 0.8 * TILE_WIDTH) + TILE_WIDTH
         local y = math.random(1 + (ALLIANCE_HEIGHT - 2) * TILE_WIDTH)
         local dis = ALLIANCE_WIDTH * TILE_WIDTH - x - TILE_WIDTH
         time = dis / (math.random(10) + 20)
@@ -1168,8 +1169,8 @@ function AllianceLayer:CreateNoManLand(obj_node, terrain, index)
         end
     end
     ccs.Armature:create("daqizi")
-    :addTo(obj_node, getZorderByXY(15,15))
-    :pos(self:GetInnerMapPosition(15,15))
+    :addTo(obj_node, getZorderByXY(middle_index,middle_index))
+    :pos(self:GetInnerMapPosition(middle_index,middle_index))
     :getAnimation():playWithIndex(0)
 
     obj_node.decorators = decorators
@@ -1326,11 +1327,11 @@ function AllianceLayer:CreateDesertBg()
     end, cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565)
     local width = map:getContentSize().width
     local LEN = 160
-    display.newSprite(string.format("plus_right_%s.png", terrain))
-        :addTo(map):align(display.LEFT_BOTTOM, map:getContentSize().width - LEN, 0)
-    for i = 0, 9 do
+    -- display.newSprite(string.format("plus_right_%s.png", terrain))
+    --     :addTo(map):align(display.LEFT_BOTTOM, map:getContentSize().width - LEN, 0)
+    for i = 0, math.floor(ALLIANCE_WIDTH/3 + 0.5) do
         display.newSprite(string.format("plus_right_%s.png", terrain))
-            :addTo(map):align(display.LEFT_BOTTOM, map:getContentSize().width - LEN, i * 480 + 160)
+            :addTo(map):align(display.LEFT_BOTTOM, map:getContentSize().width - LEN, i * 480)
     end
     local w = 0
     math.randomseed(737)
@@ -1361,11 +1362,9 @@ function AllianceLayer:CreateIceFieldBg()
     local width = map:getContentSize().width
 
     local LEN = 160
-    display.newSprite(string.format("plus_right_%s.png", terrain))
-        :addTo(map):align(display.LEFT_BOTTOM, map:getContentSize().width - LEN, 0)
-    for i = 0, 9 do
+    for i = 0, math.floor(ALLIANCE_WIDTH/3 - 0.5) do
         display.newSprite(string.format("plus_right_%s.png", terrain))
-            :addTo(map):align(display.LEFT_BOTTOM, map:getContentSize().width - LEN, i * 480 + 160)
+            :addTo(map):align(display.LEFT_BOTTOM, map:getContentSize().width - LEN, i * 480)
     end
     local w = 0
     math.randomseed(737)
@@ -1374,7 +1373,7 @@ function AllianceLayer:CreateIceFieldBg()
         local png = string.format("plus_down%d_%s.png", index, terrain)
         local sprite = display.newSprite(png):addTo(map)
         local size = sprite:getContentSize()
-        local offset = (index == 1 and -25 or -90)
+        local offset = (index == 1 and -20 or -50)
         local x = (index == 1 and -5 or -5)
         local y = (index == 1 and 20 or 18)
         sprite:align(display.LEFT_TOP, w + x, y)
@@ -1396,11 +1395,11 @@ function AllianceLayer:CreateGrassLandBg()
     local width = map:getContentSize().width
 
     local LEN = 160
-    display.newSprite(string.format("plus_right_%s.png", terrain))
-        :addTo(map):align(display.LEFT_BOTTOM, map:getContentSize().width - LEN, 0)
-    for i = 0, 9 do
+    -- display.newSprite(string.format("plus_right_%s.png", terrain))
+    --     :addTo(map):align(display.LEFT_BOTTOM, map:getContentSize().width - LEN, 0)
+    for i = 0, math.floor(ALLIANCE_WIDTH/3 + 0.5) do
         display.newSprite(string.format("plus_right_%s.png", terrain))
-            :addTo(map):align(display.LEFT_BOTTOM, map:getContentSize().width - LEN, i * 480 + 160)
+            :addTo(map):align(display.LEFT_BOTTOM, map:getContentSize().width - LEN, i * 480)
     end
     local w = 0
     math.randomseed(737)
@@ -1409,7 +1408,7 @@ function AllianceLayer:CreateGrassLandBg()
         local png = string.format("plus_down%d_grassLand.png", index)
         local sprite = display.newSprite(png):addTo(map)
         local size = sprite:getContentSize()
-        local offset = (index == 1 and -40 or -60)
+        local offset = (index == 1 and -40 or -50)
         local x = (index == 1 and -20 or -30)
         local y = (index == 1 and 30 or 38)
         sprite:align(display.LEFT_TOP, w + x, y)
