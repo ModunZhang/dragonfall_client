@@ -681,7 +681,7 @@ end
 
 --[[soldier begin]]
 function User:IsSoldierUnlocked(soldierName)
-    return (self:GetSoldierConfig(soldierName).needBarracksLevel or math.huge) 
+    return (self:GetSoldierConfig(soldierName).needBarracksLevel or math.huge)
         <= self:GetBarracksLevel()
 end
 function User:GetSoldierEventsBySeq()
@@ -982,19 +982,19 @@ function User:CanUpgrade(tech_name, tech)
         table.insert(results, _("升级军事科技队列被占用"))
     end
     if current_coin < level_up_config.coin then
-        table.insert(results, string.format( _("银币不足 需要补充 %d"), level_up_config.coin - current_coin ) )
+        table.insert(results, string.format( _("银币不足,需要补充:%s"),string.formatnumberthousands(level_up_config.coin - current_coin)))
     end
     if has_materials.trainingFigure < level_up_config.trainingFigure then
-        table.insert(results, string.format( _("木人桩 需要补充 %d"), level_up_config.trainingFigure - has_materials.trainingFigure ) )
+        table.insert(results, string.format( _("木人桩不足,需要补充:%s"), string.formatnumberthousands(level_up_config.trainingFigure - has_materials.trainingFigure )))
     end
     if has_materials.bowTarget < level_up_config.bowTarget then
-        table.insert(results, string.format( _("箭靶 需要补充 %d"), level_up_config.bowTarget - has_materials.bowTarget ) )
+        table.insert(results, string.format( _("箭靶不足,需要补充:%s"), string.formatnumberthousands(level_up_config.bowTarget - has_materials.bowTarget)))
     end
     if has_materials.saddle < level_up_config.saddle then
-        table.insert(results, string.format( _("马鞍 需要补充 %d"), level_up_config.saddle - has_materials.saddle ) )
+        table.insert(results, string.format( _("马鞍不足,需要补充:%s"), string.formatnumberthousands(level_up_config.saddle - has_materials.saddle )))
     end
     if has_materials.ironPart < level_up_config.ironPart then
-        table.insert(results, string.format( _("精铁零件 需要补充 %d"), level_up_config.ironPart - has_materials.ironPart ) )
+        table.insert(results, string.format( _("精铁零件不足,需要补充:%s"), string.formatnumberthousands(level_up_config.ironPart - has_materials.ironPart )))
     end
 
     return results
@@ -1022,8 +1022,8 @@ function User:GetProductionTech(index)
     end
 end
 function User:GetProductionTechEff(index)
-   local tech_name,v = self:GetProductionTech(index)
-   return productionTechs[tech_name].effectPerLevel * v.level
+    local tech_name,v = self:GetProductionTech(index)
+    return productionTechs[tech_name].effectPerLevel * v.level
 end
 function User:HasProductionTechEvent()
     return next(self.productionTechEvents)
@@ -1241,7 +1241,7 @@ function User:RefreshOutput()
     local buff_tech     = UtilsForTech:GetBuff(self)
     local buff_item     = UtilsForItem:GetBuff(self)
     local buff_vip      = UtilsForVip:GetVipBuff(self)
-    
+
     local wall_info     = UtilsForBuilding:GetWallInfo(self)
     production.wallHp   = wall_info.wallRecovery
 
@@ -1921,6 +1921,7 @@ function User:PromiseOfFinishTreat()
     return p
 end
 return User
+
 
 
 

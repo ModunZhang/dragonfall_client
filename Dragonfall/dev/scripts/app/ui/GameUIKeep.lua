@@ -155,7 +155,7 @@ function GameUIKeep:CreateCityBasicInfo()
                 text = v[2],
                 size = 20,
                 color = 0x403c2f
-            }):align(display.RIGHT_CENTER, display.right -40, display.top-185 - (i > 2 and 40 or 0))
+            }):align(display.RIGHT_CENTER, window.right -40, display.top-185 - (i > 2 and 40 or 0))
                 :addTo(self.info_layer)
             UIKit:ttfLabel({
                 text = v[1],
