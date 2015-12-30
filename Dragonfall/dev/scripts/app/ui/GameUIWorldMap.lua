@@ -133,9 +133,6 @@ function GameUIWorldMap:InitArrow()
     --     color = 0xf5e8c4
     -- }):addTo(self.arrow):rotation(90):align(display.LEFT_CENTER, 0, -50)
 end
-if display.width > 640 then
-        node:scale(display.width/node:getContentSize().width)
-    end
 local screen_rect = cc.rect(0, 152 * (display.width > 640 and display.width/768 or 1), display.width, display.height - 200)
 function GameUIWorldMap:UpdateArrow()
     local mapIndex = Alliance_Manager:GetMyAlliance().mapIndex
