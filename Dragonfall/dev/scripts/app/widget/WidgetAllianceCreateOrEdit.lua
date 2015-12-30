@@ -13,7 +13,9 @@ local CONTENT_WIDTH = window.width - 80
 local UICheckBoxButton = import("..ui.UICheckBoxButton")
 local Localize = import("..utils.Localize")
 local WidgetAllianceCreateOrEdit = class("WidgetAllianceCreateOrEdit",function()
-	return display.newNode()
+	local node = display.newNode()
+	node:setContentSize(cc.size(608,872))
+	return node
 end)
 
 local config_intInit = GameDatas.AllianceInitData.intInit
@@ -64,6 +66,7 @@ function WidgetAllianceCreateOrEdit:onEnter()
 	    -- textfield
 	    self.textfieldPanel = self:createTextfieldPanel():addTo(self)
 	    	:pos(-10,self.landformPanel:getPositionY()+self.landformPanel:getCascadeBoundingBox().height+20)
+	    	print("self.landformPanel:getPositionY()+self.landformPanel:getCascadeBoundingBox().height+20=",self.landformPanel:getPositionY()+self.landformPanel:getCascadeBoundingBox().height+20)
 end
 
 function WidgetAllianceCreateOrEdit:Helper()

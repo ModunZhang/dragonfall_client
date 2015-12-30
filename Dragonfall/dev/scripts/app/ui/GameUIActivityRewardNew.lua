@@ -289,9 +289,16 @@ function GameUIActivityRewardNew:ui_EVERY_DAY_LOGIN()
                     text = _("领取"),
                     color = 0xfff3c7
                 })):align(display.RIGHT_CENTER,540, -59):onButtonClicked(function(event)
-                    self:On_EVERY_DAY_LOGIN_GetReward(auto_get_reward,rewards[auto_get_reward])
+                self:On_EVERY_DAY_LOGIN_GetReward(auto_get_reward,rewards[auto_get_reward])
                 end):addTo(reward_info)
-            get_btn:setButtonEnabled(auto_get_reward ~= 0)
+            get_btn:setVisible(auto_get_reward ~= 0)
+            if auto_get_reward == 0 then
+                UIKit:ttfLabel({
+                    text = _("已领取"),
+                    size = 22,
+                    color= 0x403c2f
+                }):align(display.RIGHT_CENTER,520, -59):addTo(reward_info)
+            end
             UIKit:ttfLabel({
                 text = Localize_item.item_name[rewards[i].reward],
                 size = 22,
@@ -1101,6 +1108,7 @@ function GameUIActivityRewardNew:GetNextOnlineTimePoint()
 end
 
 return GameUIActivityRewardNew
+
 
 
 

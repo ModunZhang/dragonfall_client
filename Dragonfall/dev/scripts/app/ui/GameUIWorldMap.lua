@@ -445,6 +445,7 @@ function GameUIWorldMap:OnTouchClicked(pre_x, pre_y, x, y)
     if not index then
         return
     end
+    app:GetAudioManager():PlayeEffectSoundWithKey("NORMAL_DOWN")
     UIKit:newWidgetUI("WidgetWorldAllianceInfo",click_object,index,true):AddToCurrentScene()
 end
 function GameUIWorldMap:IsFingerOn()
