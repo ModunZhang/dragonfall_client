@@ -6,6 +6,7 @@
 #include "LuaExtension.h"
 #include "2d/CCFontFNT.h"
 #include "2d/CCFontAtlasCache.h"
+#include "cocostudio/CCArmatureDataManager.h"
 //json
 #include "../cocos2d-x/external/json/document.h"
 #include "../cocos2d-x/external/json/rapidjson.h"
@@ -145,6 +146,7 @@ void AppDelegateExtern::purgeAllCachedData()
 	SpriteFrameCache::getInstance()->removeSpriteFrames();
 	TextureCache::getInstance()->removeAllTextures();
 	FileUtils::getInstance()->purgeCachedEntries();
+    cocostudio::ArmatureDataManager::destroyInstance();
 	//maybe we need free audio resources
 }
 
