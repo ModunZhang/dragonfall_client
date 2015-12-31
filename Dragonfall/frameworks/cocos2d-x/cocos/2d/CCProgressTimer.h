@@ -196,7 +196,9 @@ protected:
     CustomCommand _customCommand;
 
     bool _reverseDirection;
-
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+    Sprite *_alphaSprite;
+#endif
 private:
     CC_DISALLOW_COPY_AND_ASSIGN(ProgressTimer);
 };

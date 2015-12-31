@@ -87,8 +87,11 @@ extern CC_DLL const GLchar * cc3D_Particle_color_frag;
 
 //ETC dannyhe
 #if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
-extern CC_DLL const GLchar * ccShader_etc_shader_frag;
-extern CC_DLL const GLchar * ccShader_etc_shader_vert;
+extern CC_DLL const GLchar * ccShader_etc1_PositionTextureColor_noMVP_frag;
+extern CC_DLL const GLchar * ccShader_etc1_PositionTextureColor_noMVP_vert;
+
+extern CC_DLL const GLchar * ccShader_etc1_PositionTextureColor_frag;
+extern CC_DLL const GLchar * ccShader_etc1_PositionTextureColor_vert;
 #endif
 
 // end of shaders group

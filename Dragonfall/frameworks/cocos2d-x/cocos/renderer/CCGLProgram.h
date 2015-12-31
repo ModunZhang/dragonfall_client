@@ -216,7 +216,8 @@ public:
     // ETC dannyhe
 #if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
     /**ETC1+Alpha**/
-    static const char* SHADER_NAME_ETC_ALPHA;
+    static const char* SHADER_NAME_ETC_ALPHA_POSITION_TEXTURE_COLOR_NO_MVP;
+    static const char* SHADER_NAME_ETC_ALPHA_POSITION_TEXTURE_COLOR;
 #endif
     
     /**

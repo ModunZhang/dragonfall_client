@@ -1,4 +1,4 @@
-const char* ccShader_etc_shader_vert = STRINGIFY(
+const char* ccShader_etc1_PositionTextureColor_noMVP_vert = STRINGIFY(
 attribute vec4 a_position;
 attribute vec2 a_texCoord;
 attribute vec4 a_color;

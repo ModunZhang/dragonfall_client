@@ -32,10 +32,6 @@ THE SOFTWARE.
 #include "2d/CCSprite.h"
 #include "renderer/ccGLStateCache.h"
 #include "renderer/CCRenderer.h"
-//dannyhe ETC
-#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
-#include "CCRenderTexture.h"
-#endif
 NS_CC_BEGIN
 
 #define kProgressTextureCoordsCount 4
@@ -52,26 +48,14 @@ ProgressTimer::ProgressTimer()
 ,_vertexDataCount(0)
 ,_vertexData(nullptr)
 ,_reverseDirection(false)
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+,_alphaSprite(nullptr)
+#endif
 {}
 
 ProgressTimer* ProgressTimer::create(Sprite* sp)
 {
     ProgressTimer *progressTimer = new (std::nothrow) ProgressTimer();
-#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
-    Texture2D::PixelFormat _textureFormat = sp->getTexture()->getPixelFormat();
-    if (_textureFormat == Texture2D::PixelFormat::ETC)
-    {
-        sp->setFlippedY(true);
-        sp->setAnchorPoint(Vec2(0, 0));
-        sp->setPosition(Vec2(0,0));
-        Size __size = sp->getContentSize();
-        RenderTexture *__canva = RenderTexture::create(__size.width, __size.height);
-        __canva->begin();
-        sp->visit();
-        __canva->end();
-        sp = Sprite::createWithTexture(__canva->getSprite()->getTexture());
-    }
-#endif
     if (progressTimer->initWithSprite(sp))
     {
         progressTimer->autorelease();
@@ -97,9 +81,19 @@ bool ProgressTimer::initWithSprite(Sprite* sp)
     setMidpoint(Vec2(0.5f, 0.5f));
     setBarChangeRate(Vec2(1,1));
     setSprite(sp);
-
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+    if(!_alphaSprite)
+    {
+        setGLProgramState(GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR));
+    }
+    else
+    {
+        setGLProgramState(GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_ETC_ALPHA_POSITION_TEXTURE_COLOR));
+    }
+#else
     // shader state
     setGLProgramState(GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR));
+#endif
     return true;
 }
 
@@ -107,6 +101,9 @@ ProgressTimer::~ProgressTimer(void)
 {
     CC_SAFE_FREE(_vertexData);
     CC_SAFE_RELEASE(_sprite);
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+    CC_SAFE_RELEASE(_alphaSprite);
+#endif
 }
 
 void ProgressTimer::setPercentage(float percentage)
@@ -133,6 +130,18 @@ void ProgressTimer::setSprite(Sprite *sprite)
             CC_SAFE_FREE(_vertexData);
             _vertexDataCount = 0;
         }
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+        if(_sprite->needETCAlphaData())
+        {
+            Sprite* alphaSprite = Sprite::create(_sprite->getETCAlphaTextureName());
+            if(nullptr != alphaSprite)
+            {
+                CC_SAFE_RETAIN(alphaSprite);
+                CC_SAFE_RELEASE(_alphaSprite);
+                _alphaSprite = alphaSprite;
+            }
+        }
+#endif
     }        
 }
 
@@ -523,7 +532,12 @@ void ProgressTimer::onDraw(const Mat4 &transform, uint32_t flags)
     GL::enableVertexAttribs(GL::VERTEX_ATTRIB_FLAG_POS_COLOR_TEX );
 
     GL::bindTexture2D( _sprite->getTexture()->getName() );
-
+#if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
+    if(_alphaSprite)
+    {
+        GL::bindTexture2DN(1, _alphaSprite->getTexture()->getName() );
+    }
+#endif
     glVertexAttribPointer( GLProgram::VERTEX_ATTRIB_POSITION, 2, GL_FLOAT, GL_FALSE, sizeof(_vertexData[0]) , &_vertexData[0].vertices);
     glVertexAttribPointer( GLProgram::VERTEX_ATTRIB_TEX_COORD, 2, GL_FLOAT, GL_FALSE, sizeof(_vertexData[0]), &_vertexData[0].texCoords);
     glVertexAttribPointer( GLProgram::VERTEX_ATTRIB_COLOR, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(_vertexData[0]), &_vertexData[0].colors);

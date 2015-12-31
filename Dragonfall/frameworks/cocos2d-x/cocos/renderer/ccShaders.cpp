@@ -85,8 +85,10 @@ NS_CC_BEGIN
 
 //ETC dannyhe
 #if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
-#include "ccShader_etc_shader.vert"
-#include "ccShader_etc_shader.frag"
+#include "ccShader_etc1_PositionTextureColor_noMVP.vert"
+#include "ccShader_etc1_PositionTextureColor_noMVP.frag"
+#include "ccShader_etc1_PositionTextureColor.frag"
+#include "ccShader_etc1_PositionTextureColor.vert"
 #endif
 
 NS_CC_END

@@ -50928,6 +50928,17 @@ static int lua_cocos2dx_Sprite_finalize(lua_State* tolua_S)
 }
 
 //dannyhe
+static int lua_cocos2dx_Sprite_needETCAlphaData(lua_State* tolua_S)
+{
+    cocos2d::Sprite* cobj = nullptr;
+
+    cobj = (cocos2d::Sprite*)tolua_tousertype(tolua_S,1,0);
+
+    bool ret = cobj->needETCAlphaData();
+    tolua_pushboolean(tolua_S,(bool)ret);
+    return 1;
+}
+
 static int lua_cocos2dx_Sprite_bindAlphaDataToETCTextureIf(lua_State* tolua_S)
 {
 #if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
@@ -51016,6 +51027,7 @@ int lua_register_cocos2dx_Sprite(lua_State* tolua_S)
         tolua_function(tolua_S,"createWithSpriteFrame", lua_cocos2dx_Sprite_createWithSpriteFrame);
         //dannyhe
         tolua_function(tolua_S,"bindAlphaDataToETCTextureIf", lua_cocos2dx_Sprite_bindAlphaDataToETCTextureIf);
+        tolua_function(tolua_S,"needETCAlphaData", lua_cocos2dx_Sprite_needETCAlphaData);
     tolua_endmodule(tolua_S);
     std::string typeName = typeid(cocos2d::Sprite).name();
     g_luaType[typeName] = "cc.Sprite";

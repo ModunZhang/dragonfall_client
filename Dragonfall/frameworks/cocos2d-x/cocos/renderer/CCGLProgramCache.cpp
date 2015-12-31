@@ -69,7 +69,8 @@ enum {
     kShaderType_MAX,
 //dannyhe ETC
 #if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
-    kShaderType_ETC_Alpha,
+    kShaderType_ETCAlphaPositionTextureColor_noMVP,
+    kShaderType_ETCAlphaPositionTextureColor,
 #endif
 };
 
@@ -135,8 +136,11 @@ void GLProgramCache::loadDefaultGLPrograms()
     //ETC dannyhe
 #if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
     p = new (std::nothrow) GLProgram();
-    loadDefaultGLProgram(p, kShaderType_ETC_Alpha);
-    _programs.insert( std::make_pair( GLProgram::SHADER_NAME_ETC_ALPHA, p ) );
+    loadDefaultGLProgram(p, kShaderType_ETCAlphaPositionTextureColor_noMVP);
+    _programs.insert( std::make_pair( GLProgram::SHADER_NAME_ETC_ALPHA_POSITION_TEXTURE_COLOR_NO_MVP, p ) );
+    p = new (std::nothrow) GLProgram();
+    loadDefaultGLProgram(p, kShaderType_ETCAlphaPositionTextureColor);
+    _programs.insert( std::make_pair( GLProgram::SHADER_NAME_ETC_ALPHA_POSITION_TEXTURE_COLOR, p ) );
 #endif
     
     // Position Texture Color without MVP shader
@@ -269,9 +273,12 @@ void GLProgramCache::reloadDefaultGLPrograms()
  
     //dannyhe ETC
 #if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
-    p = getGLProgram(GLProgram::SHADER_NAME_ETC_ALPHA);
+    p = getGLProgram(GLProgram::SHADER_NAME_ETC_ALPHA_POSITION_TEXTURE_COLOR_NO_MVP);
     p->reset();
-    loadDefaultGLProgram(p, kShaderType_ETC_Alpha);
+    loadDefaultGLProgram(p, kShaderType_ETCAlphaPositionTextureColor_noMVP); 
+    p = getGLProgram(GLProgram::SHADER_NAME_ETC_ALPHA_POSITION_TEXTURE_COLOR);
+    p->reset();
+    loadDefaultGLProgram(p, kShaderType_ETCAlphaPositionTextureColor);
 #endif
     
     // Position Texture Color without MVP shader
@@ -397,8 +404,11 @@ void GLProgramCache::loadDefaultGLProgram(GLProgram *p, int type)
     switch (type) {
             //dannyhe ETC
 #if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
-        case kShaderType_ETC_Alpha:
-            p->initWithByteArrays(ccShader_etc_shader_vert, ccShader_etc_shader_frag);
+        case kShaderType_ETCAlphaPositionTextureColor_noMVP:
+            p->initWithByteArrays(ccShader_etc1_PositionTextureColor_noMVP_vert, ccShader_etc1_PositionTextureColor_noMVP_frag);
+            break;
+        case kShaderType_ETCAlphaPositionTextureColor:
+            p->initWithByteArrays(ccShader_etc1_PositionTextureColor_vert, ccShader_etc1_PositionTextureColor_frag);
             break;
 #endif
         case kShaderType_PositionTextureColor:

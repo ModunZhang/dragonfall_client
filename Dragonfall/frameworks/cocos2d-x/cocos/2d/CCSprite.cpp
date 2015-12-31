@@ -285,6 +285,8 @@ Sprite::Sprite(void)
 , _texture(nullptr)
 , _spriteFrame(nullptr)
 , _insideBounds(true)
+, _etc_texture_file("")
+, _etc_alpha_texture_file("")
 {
 #if CC_SPRITE_DEBUG_DRAW
     _debugDrawNode = DrawNode::create();
@@ -944,6 +946,7 @@ void Sprite::bindAlphaDataToETCTextureIf(Texture2D * texture,std::string etc1_fi
     CCLOG("Sprite:bindAlphaDataToETCTextureIf---%s,%d",etc1_file.c_str(),_textureFormat);
     if (_textureFormat == Texture2D::PixelFormat::ETC)
     {
+        _etc_texture_file = etc1_file;
         CCASSERT(etc1_file.size() > 0, "CCSprite#bindAlphaDataToETCTextureIf: texture file name not found");
         std::string alpha_file = etc1_file.erase(etc1_file.find_last_of("."));
         alpha_file = alpha_file + "_alpha_etc1.png";
@@ -956,8 +959,9 @@ void Sprite::bindAlphaDataToETCTextureIf(Texture2D * texture,std::string etc1_fi
 #endif
         if (texture_alpha)
         {
+            _etc_alpha_texture_file = alpha_file;
             CCLOG("Sprite:bindAlphaDataToETCTextureIf:Bind alpha data %s -> %s",alpha_file.c_str(),etc1_file.c_str());
-            auto program = GLProgramCache::getInstance()->getGLProgram(GLProgram::SHADER_NAME_ETC_ALPHA); //新加的etc shader
+            auto program = GLProgramCache::getInstance()->getGLProgram(GLProgram::SHADER_NAME_ETC_ALPHA_POSITION_TEXTURE_COLOR_NO_MVP); //新加的etc shader
             auto etc_program_state = GLProgramState::create(program);
             etc_program_state->setUniformTexture("u_texture1", texture_alpha);
             setGLProgramState(etc_program_state);

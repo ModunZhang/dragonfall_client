@@ -75,7 +75,8 @@ const char* GLProgram::SHADER_3D_PARTICLE_TEXTURE = "Shader3DParticleTexture";
 
 //ETC dannyhe
 #if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
-const char* GLProgram::SHADER_NAME_ETC_ALPHA = "etc_alpha";
+const char* GLProgram::SHADER_NAME_ETC_ALPHA_POSITION_TEXTURE_COLOR_NO_MVP = "ShaderETCAlphaPositionTextureColor_noMVP";
+const char* GLProgram::SHADER_NAME_ETC_ALPHA_POSITION_TEXTURE_COLOR = "ShaderETCAlphaPositionTextureColor";
 #endif
 
 // uniform names

@@ -74,9 +74,21 @@ struct transformValues_;
 class CC_DLL Sprite : public Node, public TextureProtocol
 {
 public:
+    bool needETCAlphaData()
+    {
+        return _etc_alpha_texture_file.length() > 0;
+    }
+    std::string getETCTextureName()
+    {
+        return _etc_texture_file;
+    }
+    std::string getETCAlphaTextureName()
+    {
+        return _etc_alpha_texture_file;
+    }
 #if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
     //dannyhe Android获取alpha图片
-    void bindAlphaDataToETCTextureIf(Texture2D * texture,std::string etc1_file);
+    virtual void bindAlphaDataToETCTextureIf(Texture2D * texture,std::string etc1_file);
 #endif
      /** Sprite invalid index on the SpriteBatchNode. */
     static const int INDEX_NOT_INITIALIZED = -1;
@@ -525,6 +537,9 @@ CC_CONSTRUCTOR_ACCESS:
     virtual bool initWithFile(const std::string& filename, const Rect& rect);
 
 protected:
+    //dannyhe etc纹理的alpha 数据纹理
+    std::string _etc_texture_file;
+    std::string _etc_alpha_texture_file;
 
     void updateColor() override;
     virtual void setTextureCoords(Rect rect);
