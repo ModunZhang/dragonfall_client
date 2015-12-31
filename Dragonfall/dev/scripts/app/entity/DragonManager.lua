@@ -10,7 +10,6 @@ local DragonManager = class("DragonManager", MultiObserver)
 local AutomaticUpdateResource = import(".AutomaticUpdateResource")
 local Dragon = import(".Dragon")
 local promise = import("..utils.promise")
-local DragonEvent = import(".DragonEvent")
 local DragonDeathEvent = import(".DragonDeathEvent")
 local config_intInit = GameDatas.PlayerInitData.intInit
 
@@ -23,7 +22,6 @@ DragonManager.LISTEN_TYPE = Enum("OnHPChanged","OnBasicChanged","OnDragonHatched
 function DragonManager:ctor()
     DragonManager.super.ctor(self)
     self.dragons_hp = {}
-    -- self.dragon_events = {} --孵化事件
     self.dragonDeathEvents = {} --复活事件
 end
 function DragonManager:GetEnableHatedDragon()

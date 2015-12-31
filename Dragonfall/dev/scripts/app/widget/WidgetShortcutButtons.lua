@@ -37,9 +37,9 @@ function WidgetShortcutButtons:ctor(city)
             if not event.target:CheckVisible() then
                 event.target:hide()
             else
-                local dragon = this.city:GetDragonEyrie():GetDragonManager():GetEnableHatedDragon()
+                local dragon = UtilsForDragon:GetCanHatedDragon(this.city:GetUser())
                 if dragon then
-                    UIKit:newGameUI("GameUIDragonEyrieMain", self.city, self.city:GetFirstBuildingByType("dragonEyrie"), "dragon", false, dragon:Type()):AddToCurrentScene(true)
+                    UIKit:newGameUI("GameUIDragonEyrieMain", self.city, self.city:GetFirstBuildingByType("dragonEyrie"), "dragon", false, dragon.type):AddToCurrentScene(true)
                 end
             end
         end))
