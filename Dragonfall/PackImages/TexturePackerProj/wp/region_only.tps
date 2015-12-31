@@ -22,7 +22,7 @@
         <key>dataFormat</key>
         <string>cocos2d</string>
         <key>textureFileName</key>
-        <filename>../../../dev/res/images/_Compressed_wp/region_png.png</filename>
+        <filename>../../../dev/res/images/_Compressed_wp/region_only{n}.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>ditherType</key>
@@ -111,9 +111,9 @@
             <enum type="AndEngine::MagFilter">MagLinear</enum>
         </struct>
         <key>dataFileName</key>
-        <filename>../../../dev/res/images/_Compressed_wp/region_png.plist</filename>
+        <filename>../../../dev/res/images/_Compressed_wp/region_only{n}.plist</filename>
         <key>multiPack</key>
-        <false/>
+        <true/>
         <key>mainExtension</key>
         <string></string>
         <key>forceIdenticalLayout</key>
@@ -148,7 +148,7 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>../../region_png</filename>
+            <filename>../../region_only</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
