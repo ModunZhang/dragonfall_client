@@ -175,7 +175,7 @@ function WidgetPromoteSoldier:UpgradeButtons()
         text = self:GetInstantUpgradeGems(),
         size = 20,
         color = 0x403c2f
-    }):align(display.LEFT_CENTER,size.width/2 - 230,size.height-294):addTo(body)
+    }):align(display.LEFT_CENTER,size.width/2 - 230,size.height-290):addTo(body)
     --升级所需时间
     local level_up_config = self:GetNextLevelConfig()
 
@@ -184,7 +184,7 @@ function WidgetPromoteSoldier:UpgradeButtons()
         text = GameUtils:formatTimeStyle1(level_up_config.upgradeTimeSecondsNeed),
         size = 18,
         color = 0x403c2f
-    }):align(display.LEFT_CENTER,size.width/2+125,size.height-294):addTo(body)
+    }):align(display.LEFT_CENTER,size.width/2+125,size.height-290):addTo(body)
 
 end
 function WidgetPromoteSoldier:UpgradeRequirement()

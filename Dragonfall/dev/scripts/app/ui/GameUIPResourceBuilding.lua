@@ -211,7 +211,7 @@ function GameUIPResourceBuilding:RebuildPart()
         },
         {
             _("金龙币"),
-            string.format("%d/"..intInit.switchProductionBuilding.value,City:GetUser():GetGemValue()),
+            string.format("%s/"..intInit.switchProductionBuilding.value,string.formatnumberthousands(City:GetUser():GetGemValue())),
             City:GetUser():GetGemValue()>need_gems and "yes_40x40.png" or "no_40x40.png"
         },
     }
