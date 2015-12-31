@@ -442,42 +442,21 @@ function GameUIWatchTower:OnEventDetailButtonClicked(entity)
     if strEntityType == "attackMarchEvents" then
         if entity.marchType == "helpDefence" then
             NetManager:getHelpDefenceMarchEventDetailPromise(entity.id):done(function(response)
-                -- UIKit:newGameUI("GameUIWatchTowerTroopDetail",GameUIWatchTowerTroopDetail.DATA_TYPE.MARCH,response.msg.eventDetail,User:Id())
-                --     :AddToCurrentScene(true)
                 UIKit:newGameUI("GameUIAllianceWatchTowerTroopDetail",response.msg.eventDetail,watchTowerLevel,false,GameUIAllianceWatchTowerTroopDetail.DATA_TYPE.HELP_DEFENCE)
                     :AddToCurrentScene(true)
             end)
         else
             local my_status = Alliance_Manager:GetMyAlliance().basicInfo.status
-            -- if my_status == "prepare" or  my_status == "fight" then
-            -- local __,alliance_id = entity:WithObject():FromLocation()
-            -- NetManager:getAttackMarchEventDetailPromise(entity:WithObject():Id(),alliance_id):done(function(response)
-            --     UIKit:newGameUI("GameUIWatchTowerTroopDetail",GameUIWatchTowerTroopDetail.DATA_TYPE.HELP_DEFENCE,response.msg.eventDetail,User:Id())
-            --         :AddToCurrentScene(true)
-            -- end)
             NetManager:getAttackMarchEventDetailPromise(entity.id,entity.fromAlliance.id):done(function(response)
                 UIKit:newGameUI("GameUIAllianceWatchTowerTroopDetail",response.msg.eventDetail,watchTowerLevel,true,GameUIAllianceWatchTowerTroopDetail.DATA_TYPE.MARCH)
                     :AddToCurrentScene(true)
             end)
-            -- else
-            --     UIKit:showMessageDialog(_("错误"),_("联盟未处于战争期"),function()end)
-            -- end
         end
     elseif strEntityType == "strikeMarchEvents" then
-        -- local my_status = Alliance_Manager:GetMyAlliance().basicInfo.status
-        -- if my_status == "prepare" or  my_status == "fight" then
-        -- local __,alliance_id = entity:WithObject():FromLocation()
-        -- NetManager:getStrikeMarchEventDetailPromise(entity:WithObject():Id(),alliance_id):done(function(response)
-        --     UIKit:newGameUI("GameUIWatchTowerTroopDetail",GameUIWatchTowerTroopDetail.DATA_TYPE.STRIKE,response.msg.eventDetail,User:Id())
-        --         :AddToCurrentScene(true)
-        -- end)
         NetManager:getStrikeMarchEventDetailPromise(entity.id,entity.fromAlliance.id):done(function(response)
             UIKit:newGameUI("GameUIAllianceWatchTowerTroopDetail",response.msg.eventDetail,watchTowerLevel,true,GameUIAllianceWatchTowerTroopDetail.DATA_TYPE.STRIKE)
                 :AddToCurrentScene(true)
         end)
-        -- else
-        --     UIKit:showMessageDialog(_("错误"),_("联盟未处于战争期"),function()end)
-        -- end
     end
 end
 
