@@ -28,8 +28,7 @@ function WidgetShortcutButtons:ctor(city)
     local buff_button = WidgetAutoOrderBuffButton.new()
     order:AddElement(buff_button)
 
-
-    if not self.city:GetDragonEyrie():GetDragonManager():IsAllHated() then
+    if not UtilsForDragon:IsDragonAllHated(self.city:GetUser()) then
         local this = self
         local dragon_egg_btn = UIKit:ButtonAddScaleAction(cc.ui.UIPushButton.new(
             {normal = "dragon_eggs_68x80.png", pressed = "dragon_eggs_68x80.png"}
@@ -44,7 +43,7 @@ function WidgetShortcutButtons:ctor(city)
             end
         end))
         function dragon_egg_btn:CheckVisible()
-            return this.city:GetDragonEyrie():GetDragonManager():IsHateEnable()
+            return not not UtilsForDragon:GetCanHatedDragon(this.city:GetUser())
         end
         function dragon_egg_btn:GetElementSize()
             return {width = 68,height = 80}
@@ -75,9 +74,9 @@ function WidgetShortcutButtons:ctor(city)
     }):addTo(status_bg):align(display.CENTER,48,18)
     local this = self
     function dragon_defence_btn:CheckVisible()
-    	local defenceDragon = this.city:GetDragonEyrie():GetDragonManager():GetDefenceDragon()
+        local defenceDragon = UtilsForDragon:GetDefenceDragon(this.city:GetUser())
         if defenceDragon then
-            dragon_img:setTexture(UILib.dragon_head[defenceDragon:Type()])
+            dragon_img:setTexture(UILib.dragon_head[defenceDragon.type])
             dragon_img:show()
             warning_icon:hide()
             label:setString(_("已驻防"))
