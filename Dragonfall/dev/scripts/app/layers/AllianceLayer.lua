@@ -767,7 +767,7 @@ function AllianceLayer:RefreshSpriteInfo(sprite, mapObj, alliance)
 
         info.banner:setTexture(banners[member.helpedByTroopsCount])
         info.level:setString(member.keepLevel)
-        info.name:setString(string.format("[%s]%s", alliance.basicInfo.tag, member.name))
+        info.name:setString(string.format("%s", member.name))
 
         if member.isProtected then
             if sprite:getChildByTag(SMOKE_TAG) then
