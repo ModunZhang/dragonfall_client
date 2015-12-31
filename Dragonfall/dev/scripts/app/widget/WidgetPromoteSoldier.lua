@@ -318,7 +318,7 @@ function WidgetPromoteSoldier:IsAbleToUpgradeSecond()
         table.insert(results, _("升级军事科技队列被占用"))
     end
     if current_coin<level_up_config.upgradeCoinNeed then
-        table.insert(results, _("银币不足,需要补充:%s"),string.formatnumberthousands(level_up_config.upgradeCoinNeed-current_coin ))
+        table.insert(results, _("银币不足,需要补充:%s 银币"),string.formatnumberthousands(level_up_config.upgradeCoinNeed-current_coin ))
     end
 
 
