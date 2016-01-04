@@ -425,7 +425,11 @@ function GameUIPVESendTroop:SelectSoldiers()
     for _,name in pairs(soldier_map) do
         local soldier_num = map_s[name]
         if soldier_num > 0 then
-            table.insert(soldiers, {name = name,level = User:SoldierStarByName(name), max_num = soldier_num})
+            table.insert(soldiers, {
+                name = name,
+                level = UtilsForSoldier:SoldierStarByName(User, name),
+                max_num = soldier_num
+            })
         end
     end
     for k,v in pairs(soldiers) do

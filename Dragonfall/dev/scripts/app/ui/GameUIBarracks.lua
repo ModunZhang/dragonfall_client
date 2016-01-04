@@ -235,7 +235,10 @@ function GameUIBarracks:CreateItemWithListView(list_view, soldiers)
                     :addTo(self,1000, WidgetRecruitSoldier_tag):pos(0,0)
             end):addTo(row_item)
                 :alignByPoint(cc.p(0.5, 0.5), origin_x + (unit_width + gap_x) * (i - 1) + unit_width / 2, 0)
-                :SetSoldier(soldier_name, self.barracks_city:GetUser():SoldierStarByName(soldier_name))
+                :SetSoldier(
+                    soldier_name, 
+                    UtilsForSoldier:SoldierStarByName(self.barracks_city:GetUser(), soldier_name)
+                )
         if self.need_recruit_soldier == soldier_name then
             if arrow_left_dir_map[soldier_name] then
                 WidgetFteArrow.new(_("点击士兵"))
@@ -273,12 +276,19 @@ function GameUIBarracks:CreateSpecialItemWithListView( list_view, soldiers ,titl
                 if self.soldier_map[soldier_name]:IsLocked() then
                     return
                 end
-                WidgetRecruitSoldier.new(self.barracks, self.barracks_city, soldier_name,self.barracks_city:GetUser():SoldierStarByName(soldier_name))
-                    :addTo(self,1000, WidgetRecruitSoldier_tag)
-                    :align(display.CENTER, window.cx, 500 / 2)
+                WidgetRecruitSoldier.new(
+                    self.barracks, 
+                    self.barracks_city, 
+                    soldier_name,
+                    UtilsForSoldier:SoldierStarByName(self.barracks_city:GetUser(), soldier_name)
+                ):addTo(self,1000, WidgetRecruitSoldier_tag)
+                 :align(display.CENTER, window.cx, 500 / 2)
             end):addTo(row_item)
                 :alignByPoint(cc.p(0.5, 0.5), origin_x + (unit_width + gap_x) * (i - 1) + unit_width / 2, row_height - 130)
-                :SetSoldier(soldier_name, self.barracks_city:GetUser():SoldierStarByName(soldier_name))
+                :SetSoldier(
+                    soldier_name, 
+                    UtilsForSoldier:SoldierStarByName(self.barracks_city:GetUser(), soldier_name)
+                )
     end
 
     -- title
