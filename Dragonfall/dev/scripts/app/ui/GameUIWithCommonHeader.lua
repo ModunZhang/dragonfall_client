@@ -174,9 +174,9 @@ function GameUIWithCommonHeader:CreateHomeButton(on_clicked)
         end)
         :align(display.LEFT_TOP, 50 , 86)
     cc.ui.UIImage.new("home_icon.png")
-        :pos(34, -50)
+        :pos(28, -50)
         :addTo(home_button)
-        :scale(0.8)
+        -- :scale(0.8)
     return home_button
 end
 
