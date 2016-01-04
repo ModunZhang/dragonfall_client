@@ -47,7 +47,8 @@ function WidgetResources:OnUserDataChanged_buildingEvents()
     self:RefreshProtectPercent()
 end
 function WidgetResources:OnUserDataChanged_soldiers()
-    self.maintenance_cost.value:setString("-"..GameUtils:formatNumber(User:GetSoldierUpkeep()).."/h")
+    local upkeep = UtilsForSoldier:GetSoldierUpkeep(User)
+    self.maintenance_cost.value:setString("-"..GameUtils:formatNumber(upkeep).."/h")
 end
 function WidgetResources:OnUserDataChanged_vipEvents()
     self:RefreshProtectPercent()
@@ -96,6 +97,7 @@ function WidgetResources:InitAllResources()
     local citizen_map = UtilsForBuilding:GetCitizenMap(User)
     local limits = UtilsForBuilding:GetWarehouseLimit(User)
     local maxwood, maxfood, maxiron, maxstone = limits.maxWood, limits.maxFood, limits.maxIron, limits.maxStone
+    local upkeep = UtilsForSoldier:GetSoldierUpkeep(User)
     local all_resources = {
         food = {
             resource_icon="res_food_91x74.png",
@@ -103,7 +105,7 @@ function WidgetResources:InitAllResources()
             resource_current_value=User:GetResValueByType("food"),
             total_income=GameUtils:formatNumber(User:GetFoodRealOutput()).."/h",
             occupy_citizen=GameUtils:formatNumber(citizen_map.farmer),
-            maintenance_cost="-"..GameUtils:formatNumber(User:GetSoldierUpkeep()).."/h",
+            maintenance_cost="-"..GameUtils:formatNumber(upkeep).."/h",
             type = "food"
         },
         wood = {

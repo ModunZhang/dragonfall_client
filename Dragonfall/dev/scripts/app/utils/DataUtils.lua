@@ -43,55 +43,83 @@ end
 --[[
 end
 ]]
-function DataUtils:GetOutput(userData)
+
+local staminaMax_value = GameDatas.PlayerInitData.intInit.staminaMax.value
+local staminaRecoverPerHour_value = GameDatas.PlayerInitData.intInit.staminaRecoverPerHour.value
+function getresoutput()
+    return {
+        gem         = {limit =        math.huge, output = 0},
+        blood       = {limit =        math.huge, output = 0},
+        casinoToken = {limit =        math.huge, output = 0},
+        stamina     = {limit = staminaMax_value, output = staminaRecoverPerHour_value},
+        cart        = {limit =        math.huge, output = 0},
+        wallHp      = {limit =        math.huge, output = 0},
+        coin        = {limit =        math.huge, output = 0},
+        wood        = {limit =        math.huge, output = 0},
+        food        = {limit =        math.huge, output = 0},
+        iron        = {limit =        math.huge, output = 0},
+        stone       = {limit =        math.huge, output = 0},
+        citizen     = {limit =        math.huge, output = 0},
+    }
+end
+local playerCitizenRecoverFullNeedHours_value = GameDatas.
+    PlayerInitData.
+    intInit.
+    playerCitizenRecoverFullNeedHours.value
+function DataUtils:GetResOutput(userData)
+    local reses = getresoutput()
+
     local production    = UtilsForBuilding:GetHouseProductions(userData)
     local buff_building = UtilsForBuilding:GetBuildingsBuff(userData)
     local buff_terrain  = UtilsForBuilding:GetTerrainResourceBuff(userData)
     local buff_tech     = UtilsForTech:GetBuff(userData)
     local buff_item     = UtilsForItem:GetBuff(userData)
     local buff_vip      = UtilsForVip:GetVipBuff(userData)
-    -- production = production * (1 + buff_building + buff_item + buff_tech + buff_vip + buff_terrain)
 
-    -- local wall_info = UtilsForBuilding:GetWallInfo(self)
-    -- production.wallHp = wall_info.wallRecovery
+    local wall_info     = UtilsForBuilding:GetWallInfo(userData)
+    production.wallHp   = wall_info.wallRecovery
 
-    -- local limits = UtilsForBuilding:GetWarehouseLimit(self)
-    -- local limits_map = setmetatable({
-    --     coin = math.huge,
-    --     wood = limits.maxWood,
-    --     food = limits.maxFood,
-    --     iron = limits.maxIron,
-    --     stone= limits.maxStone,
-    --     wallHp = wall_info.wallHp,
-    --     citizen= UtilsForBuilding:GetCitizenLimit(self),
-    -- }, BUFF_META)
-    -- local buff_limit = UtilsForTech:GetLimitBuff(self)
-    -- limits_map = limits_map * (1 + buff_limit)
+    production = production * (1 + buff_building + buff_item + buff_tech + buff_vip + buff_terrain)
 
-    -- for k,v in pairs(limits_map) do
-    --     local res = self.resources_cache[k]
-    --     if k == "citizen" then
-    --         res.limit = v - UtilsForBuilding:GetCitizenMap(self).total
-    --     else
-    --         res.limit = v
-    --     end
-    -- end
+    local limits = UtilsForBuilding:GetWarehouseLimit(userData)
+    local limits_map = setmetatable({
+        coin = math.huge,
+        wood = limits.maxWood,
+        food = limits.maxFood,
+        iron = limits.maxIron,
+        stone= limits.maxStone,
+        wallHp = wall_info.wallHp,
+        citizen= UtilsForBuilding:GetCitizenLimit(userData),
+    }, BUFF_META)
+    local buff_limit = UtilsForTech:GetLimitBuff(userData)
+    limits_map = limits_map * (1 + buff_limit)
 
-    -- for k,v in pairs(production) do
-    --     local res = self.resources_cache[k]
-    --     if k == "food" then
-    --         res.output = math.floor(v - self:GetSoldierUpkeep())
-    --     else
-    --         res.output = math.floor(v)
-    --     end
-    -- end
-    -- local citizen = self:GetResProduction("citizen")
-    -- citizen.output = math.floor(citizen.limit / playerCitizenRecoverFullNeedHours_value)
-    -- local cart = self:GetResProduction("cart")
-    -- local tradeGuild_info = UtilsForBuilding:GetTradeGuildInfo(self)
-    -- cart.limit = tradeGuild_info.maxCart
-    -- cart.output = tradeGuild_info.cartRecovery
+    for k,v in pairs(limits_map) do
+        local res = reses[k]
+        if k == "citizen" then
+            res.limit = v - UtilsForBuilding:GetCitizenMap(userData).total
+        else
+            res.limit = v
+        end
+    end
+    
+    for k,v in pairs(production) do
+        local res = reses[k]
+        if k == "food" then
+            res.output = math.floor(v - UtilsForSoldier:GetSoldierUpkeep(userData))
+        else
+            res.output = math.floor(v)
+        end
+    end
+    local citizen = reses.citizen
+    citizen.output = math.floor(citizen.limit / playerCitizenRecoverFullNeedHours_value)
+    local cart = reses.cart
+    local tradeGuild_info = UtilsForBuilding:GetTradeGuildInfo(userData)
+    cart.limit = tradeGuild_info.maxCart
+    cart.output = tradeGuild_info.cartRecovery
+    return reses
 end
+
 --[[
 end
 ]]
@@ -494,7 +522,7 @@ end
 
 function DataUtils:getPlayerMarchTimeBuffEffectValue()
     local effect = 0
-    if User:IsItemEventActive("marchSpeedBonus") then
+    if UtilsForItem:IsItemEventActive(User, "marchSpeedBonus") then
         effect = effect + UtilsForItem:GetItemBuff("marchSpeedBonus")
     end
     -- vip buffer
@@ -593,7 +621,7 @@ end
 --龙的生命值恢复buff
 function DataUtils:GetDragonHpBuffTotal()
     local effect = 0
-    if User:IsItemEventActive("dragonHpBonus") then
+    if UtilsForItem:IsItemEventActive(User, "dragonHpBonus") then
         effect = effect + UtilsForItem:GetItemBuff("dragonHpBonus")
     end
     effect = effect + UtilsForVip:GetVipBuffByName(User, "dragonHpRecoveryAdd")
@@ -774,7 +802,7 @@ local function getPlayerSoldierAtkBuff(soldierName, soldierStar, dragon, terrain
     local soldierType = getSoldiersConfig(soldierName, soldierStar).type
 
     local eventType = soldierType.."AtkBonus"
-    if User:IsItemEventActive(eventType) then
+    if UtilsForItem:IsItemEventActive(User, eventType) then
         local effect1 = UtilsForItem:GetItemBuff(eventType)
         itemBuff = effect1
     end
@@ -806,7 +834,7 @@ local function getPlayerSoldierHpBuff(soldierName, soldierStar, dragon, terrain,
     local skillBuff = 0
     local equipmentBuff = 0
 
-    if User:IsItemEventActive("unitHpBonus") then
+    if UtilsForItem:IsItemEventActive(User, "unitHpBonus") then
         local effect1 = UtilsForItem:GetItemBuff("unitHpBonus")
         itemBuff = effect1
     end
@@ -855,7 +883,7 @@ end
 local function getPlayerDragonExpAdd(dragon)
     local itemBuff = 0
     local vipBuff = UtilsForVip:GetVipBuffByName(User, "dragonExpAdd")
-    if User:IsItemEventActive("dragonExpBonus") then
+    if UtilsForItem:IsItemEventActive(User, "dragonExpBonus") then
         local effect1 = UtilsForItem:GetItemBuff("dragonExpBonus")
         itemBuff = effect1
     end

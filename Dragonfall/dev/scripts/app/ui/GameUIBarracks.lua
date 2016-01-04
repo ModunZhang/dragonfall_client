@@ -341,7 +341,7 @@ end
 function GameUIBarracks:RefershUnlockInfo()
     local level = self.barracks:GetLevel()
     for k,v in pairs(self.soldier_map) do
-        local needBarracksLevel = User:GetSoldierConfig(k).needBarracksLevel
+        local needBarracksLevel = UtilsForSoldier:GetSoldierConfig(User, k).needBarracksLevel
         if needBarracksLevel then
             local is_unlock = needBarracksLevel <= level
             v:Enable(is_unlock)

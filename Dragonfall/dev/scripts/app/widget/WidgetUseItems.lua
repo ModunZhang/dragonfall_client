@@ -117,7 +117,7 @@ function WidgetUseItems:OpenBuffDialog( item_name )
 
     -- 是否激活buff
     local event_type = string.split(item_name,"_")[1]
-    local isactive, time = User:IsItemEventActive(event_type)
+    local isactive, time = UtilsForItem:IsItemEventActive(User, event_type)
     local buff_status_label = UIKit:ttfLabel({
         size = 22,
         color = isactive and 0x007c23 or 0x403c2f,
@@ -153,7 +153,7 @@ function WidgetUseItems:OpenBuffDialog( item_name )
         end
     end
     dialog:scheduleAt(function()
-        local isactive, time = User:IsItemEventActive(event_type)
+        local isactive, time = UtilsForItem:IsItemEventActive(User, event_type)
         if isactive then
             buff_status_label:setString(string.format( _("已激活,剩余时间:%s"), GameUtils:formatTimeStyle1(time) ))
             buff_status_label:setColor(UIKit:hex2c4b(0x007c23))

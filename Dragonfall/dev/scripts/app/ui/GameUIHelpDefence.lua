@@ -66,7 +66,7 @@ function GameUIHelpDefence:OnMoveInStage()
     local soldiers = self.soldiers
     for i,soldier in ipairs(soldiers) do
         local soldier_level = soldier.star
-        local soldier_config = self.city:GetUser():GetSoldierConfig(soldier.name)
+        local soldier_config = UtilsForSoldier:GetSoldierConfig(self.city:GetUser(), soldier.name)
         local soldier_number = soldier.count
         table.insert(soldier_show_table, {
             soldier_type = soldier.name,

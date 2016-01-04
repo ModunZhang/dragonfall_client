@@ -350,8 +350,8 @@ function GameUIWall:RefreshListView()
     end
     local soldiers = clone(User.defenceTroop.soldiers)
     table.sort( soldiers, function ( a,b )
-        local total_power_a = User:GetSoldierConfig(a.name).power * a.count
-        local total_power_b = User:GetSoldierConfig(b.name).power * b.count
+        local total_power_a = UtilsForSoldier:GetSoldierConfig(User, a.name).power * a.count
+        local total_power_b = UtilsForSoldier:GetSoldierConfig(User, b.name).power * b.count
         return total_power_a > total_power_b
     end )
     for i=1,#soldiers,4 do

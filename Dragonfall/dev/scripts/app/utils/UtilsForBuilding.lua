@@ -555,6 +555,11 @@ function UtilsForBuilding:GetUpgradeNowGems(userData, houseOrBuilding)
     required_gems = required_gems + DataUtils:getGemByTimeInterval(config.buildTime)
     return required_gems
 end
+function UtilsForBuilding:GetNextLevel(houseOrBuilding)
+    local level = houseOrBuilding.level
+    local configs = self:GetLevelUpConfig(houseOrBuilding.type)
+    return (configs == level) and level or level + 1
+end
 -- function UtilsForBuilding:IsAbleToUpgrade(userData, houseOrBuilding)
 --     if res_map[houseOrBuilding.type] then
 --         local citizen = self:GetLevelUpConfigBy(userData, houseOrBuilding).citizen

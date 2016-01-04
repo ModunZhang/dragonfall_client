@@ -72,7 +72,7 @@ function GameUISquare:CreateSoldierUI()
                 :SetNumber(soldier_num)
             add_count = add_count + 1
 
-            total_citizen = total_citizen + User:GetSoldierConfig(soldier_name).citizen * soldier_num
+            total_citizen = total_citizen + UtilsForSoldier:GetSoldierConfig(User, soldier_name).citizen * soldier_num
         end
     end
     local item = list:newItem()

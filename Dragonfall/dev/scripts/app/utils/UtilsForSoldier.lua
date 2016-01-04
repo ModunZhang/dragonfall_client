@@ -33,8 +33,33 @@ local soldier_belong_building = {
 function UtilsForSoldier:SoldierBelongBuilding(soldier_name)
 	return soldier_belong_building[soldier_name]
 end
+local soldiers_normal = GameDatas.Soldiers.normal
 local soldiers_special = GameDatas.Soldiers.special
 function UtilsForSoldier:IsSpecial(soldier_name)
 	return soldiers_special[soldier_name]
 end
-
+function UtilsForSoldier:GetSoldierUpkeep(userData)
+    local total = 0
+    for soldier_name,count in pairs(userData.soldiers) do
+        total = total + self:GetSoldierConfig(userData, soldier_name).consumeFoodPerHour * count
+    end
+    -- item效果
+    if UtilsForItem:IsItemEventActive(userData, "quarterMaster") then
+        total = math.ceil(total * (1 - UtilsForItem:GetItemBuff("quarterMaster")))
+    end
+    -- vip效果
+    if UtilsForVip:IsVipActived(userData) then
+        total = total * (1-UtilsForVip:GetVipBuffByName(userData, "soldierConsumeSub"))
+    end
+    return total
+end
+function UtilsForSoldier:GetSoldierConfig(userData, soldier_name)
+    return  self:IsSpecial(soldier_name)
+        and soldiers_special[soldier_name]
+        or soldiers_normal[soldier_name.."_"..self:SoldierStarByName(userData, soldier_name)]
+end
+function UtilsForSoldier:SoldierStarByName(userData, soldier_name)
+    return  UtilsForSoldier:IsSpecial(soldier_name)
+        and soldiers_special[soldier_name].star
+        or userData.soldierStars[soldier_name] or 1
+end

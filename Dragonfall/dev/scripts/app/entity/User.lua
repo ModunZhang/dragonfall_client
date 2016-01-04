@@ -326,15 +326,6 @@ end
 
 
 --[[items begin]]
-function User:IsItemEventActive(type_)
-    for k,v in pairs(self.itemEvents) do
-        if v.type == type_ then
-            local time = UtilsForItem:GetItemEventTime(v)
-            return time > 0, time
-        end
-    end
-    return false, 0
-end
 function User:IsAnyItmeEventActive()
     return next(self.itemEvents)
 end
@@ -425,7 +416,8 @@ function User:GetResProduction(type_)
     return self.resources_cache[type_]
 end
 function User:GetFoodRealOutput()
-    return self:GetSoldierUpkeep() + self.resources_cache.food.output
+    local upkeep = UtilsForSoldier:GetSoldierUpkeep(self)
+    return upkeep + self.resources_cache.food.output
 end
 --[[end]]
 
@@ -622,7 +614,7 @@ end
 function User:GetTreatTime(soldiers)
     local treat_time = 0
     for _,v in pairs(soldiers) do
-        local config = self:GetSoldierConfig(v.name)
+        local config = UtilsForSoldier:GetSoldierConfig(self, v.name)
         total_iron = total_iron + config.treatTime * v.count
     end
     return treat_time
@@ -630,7 +622,7 @@ end
 function User:GetTreatCoin(soldiers)
     local treatCoin = 0
     for _,v in pairs(soldiers) do
-        local config = self:GetSoldierConfig(v.name)
+        local config = UtilsForSoldier:GetSoldierConfig(self, v.name)
         treatCoin = treatCoin + config.treatCoin * v.count
     end
     return treatCoin
@@ -638,7 +630,7 @@ end
 function User:GetTreatAllTime()
     local total_time = 0
     for soldier_name,count in pairs(self.woundedSoldiers) do
-        local config = self:GetSoldierConfig(soldier_name)
+        local config = UtilsForSoldier:GetSoldierConfig(self, soldier_name)
         total_time = total_time + config.treatTime * count
     end
     return total_time
@@ -646,7 +638,7 @@ end
 function User:GetTreatCitizen()
     local total_citizen = 0
     for soldier_name,count in pairs(self.woundedSoldiers) do
-        local config = self:GetSoldierConfig(soldier_name)
+        local config = UtilsForSoldier:GetSoldierConfig(self, soldier_name)
         total_citizen = total_citizen + config.citizen * count
     end
     return total_citizen
@@ -681,7 +673,8 @@ end
 
 --[[soldier begin]]
 function User:IsSoldierUnlocked(soldierName)
-    return (self:GetSoldierConfig(soldierName).needBarracksLevel or math.huge)
+    local config = UtilsForSoldier:GetSoldierConfig(User, soldierName)
+    return (config.needBarracksLevel or math.huge)
         <= self:GetBarracksLevel()
 end
 function User:GetSoldierEventsBySeq()
@@ -734,28 +727,8 @@ function User:GetBuildingSoldiersInfo(building)
     end
     assert(false)
 end
-function User:GetSoldierUpkeep()
-    local total = 0
-    for soldier_name,count in pairs(self.soldiers) do
-        total = total + self:GetSoldierConfig(soldier_name).consumeFoodPerHour * count
-    end
-    -- item效果
-    if self:IsItemEventActive("quarterMaster") then
-        total = math.ceil(total * (1 - UtilsForItem:GetItemBuff("quarterMaster")))
-    end
-    -- vip效果
-    if UtilsForVip:IsVipActived(self) then
-        total = total * (1-UtilsForVip:GetVipBuffByName(self, "soldierConsumeSub"))
-    end
-    return total
-end
 local soldiers_normal = GameDatas.Soldiers.normal
 local soldiers_special = GameDatas.Soldiers.special
-function User:GetSoldierConfig(soldier_name)
-    return  UtilsForSoldier:IsSpecial(soldier_name)
-        and soldiers_special[soldier_name]
-        or soldiers_normal[soldier_name.."_"..self:SoldierStarByName(soldier_name)]
-end
 function User:SoldierStarByName(soldier_name)
     return  UtilsForSoldier:IsSpecial(soldier_name)
         and soldiers_special[soldier_name].star
@@ -1272,7 +1245,7 @@ function User:RefreshOutput()
     for k,v in pairs(production) do
         local res = self.resources_cache[k]
         if k == "food" then
-            res.output = math.floor(v - self:GetSoldierUpkeep())
+            res.output = math.floor(v - UtilsForSoldier:GetSoldierUpkeep(self))
         else
             res.output = math.floor(v)
         end
