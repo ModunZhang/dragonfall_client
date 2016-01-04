@@ -39,6 +39,7 @@ User.LISTEN_TYPE = Enum(
     "allianceDonate",
 
     "dragons",
+    "dragonDeathEvents",
     "dragonEquipments",
     "dragonEquipmentEvents",
 
@@ -1470,6 +1471,14 @@ local before_map = {
     end,
 
     dragons = function()end,
+    dragonDeathEvents = function(userData, deltaData)
+        local ok, value = deltaData("dragonDeathEvents.remove")
+        if ok then
+            for k,v in ipairs(value) do
+                GameGlobalUI:showTips(_("提示"),string.format(_("%s已经复活"),Localize.dragon[v.dragonType]))
+            end
+        end
+    end,
     dragonEquipments = function()end,
     dragonEquipmentEvents = function(userData, deltaData)
         local ok, value = deltaData("dragonEquipmentEvents.remove")
