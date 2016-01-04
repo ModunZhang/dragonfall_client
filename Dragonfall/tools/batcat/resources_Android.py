@@ -74,7 +74,7 @@ def AlphaImage(in_path, out_path):
 
 ########################################################################
 #这里定义的图片名称将以png格式打入android资源包
-NORMAL_IMAGE_NAMES = ['region_ui_only0']
+NORMAL_IMAGE_NAMES = []
 def NormalImages(in_path,out_path,outdir):
     fileName,fileExt = os.path.basename(in_path).split('.')
     if fileName in NORMAL_IMAGE_NAMES:

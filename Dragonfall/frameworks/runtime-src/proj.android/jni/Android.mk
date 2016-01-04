@@ -18,21 +18,22 @@ hellolua/main.cpp \
 ../../../../extensions/ext/notification/tolua_local_push.cpp \
 ../../../../extensions/ext/io/FileOperation.cpp \
 ../../../../extensions/ext/notification/LocalNotification-android.cpp \
-../../../../extensions/sdk/MarketSDKTool-android.cpp
+../../../../extensions/sdk/MarketSDKTool-android.cpp \
+../../../../extensions/ext/platform/android/jni_StoreKit.cpp
 
 ifeq ($(CC_USE_POMELO_C_LIB),1)
 LOCAL_SRC_FILES += ../../../../extensions/sdk/libpomelo/CCPomelo.cpp
 endif
 
-MY_FILES_PATH  :=  $(LOCAL_PATH)/../../../../extensions/ext/platform/android
+#MY_FILES_PATH  :=  $(LOCAL_PATH)/../../../../extensions/ext/platform/android
 
-MY_FILES_SUFFIX := %.cpp 
+#MY_FILES_SUFFIX := %.cpp 
 
-My_All_Files := $(foreach src_path,$(MY_FILES_PATH), $(shell find "$(src_path)" -type f) ) 
-My_All_Files := $(My_All_Files:$(MY_CPP_PATH)/./%=$(MY_CPP_PATH)%)
-MY_SRC_LIST  := $(filter $(MY_FILES_SUFFIX),$(My_All_Files)) 
-MY_SRC_LIST  := $(MY_SRC_LIST:$(LOCAL_PATH)/%=%)
-LOCAL_SRC_FILES += $(MY_SRC_LIST)
+#My_All_Files := $(foreach src_path,$(MY_FILES_PATH), $(shell find "$(src_path)" -type f) ) 
+#My_All_Files := $(My_All_Files:$(MY_CPP_PATH)/./%=$(MY_CPP_PATH)%)
+#MY_SRC_LIST  := $(filter $(MY_FILES_SUFFIX),$(My_All_Files)) 
+#MY_SRC_LIST  := $(MY_SRC_LIST:$(LOCAL_PATH)/%=%)
+#LOCAL_SRC_FILES += $(MY_SRC_LIST)
 
 $(warning APP_CPPFLAGS:$(APP_CPPFLAGS))
 LOCAL_C_INCLUDES := \
