@@ -22,6 +22,8 @@ end
 local texture_data_file = ".texture_data"
 if device.platform == 'ios' then
     texture_data_file = ".texture_data_iOS" 
+elseif device.platform == 'android' then
+    texture_data_file = ".texture_data_android" 
 elseif device.platform == 'winrt' then
     texture_data_file = ".texture_data_wp" 
 end

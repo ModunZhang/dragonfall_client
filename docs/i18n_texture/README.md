@@ -41,12 +41,17 @@
 
 ######images下文件夹说明
 
-
-	_CanCompress:将被直接压缩为pvrtc4的散图
-	_Compressed:iOS已经被合成最终大图的图
-	_Compressed_mac:Player已经被合成最终大图的图
-	_Compressed_wp:Windows Phone下合成的大图
-	rgba444_single:将被压缩为rgba4444格式的散图
+	_CanCompress: 将被直接压缩为pvrtc4/etc1+alpha/dds的散图
+	
+	_Compressed: iOS已经被合成最终大图的图
+	
+	_Compressed_mac: Player已经被合成最终大图的图
+	
+	_Compressed_wp: Windows Phone下合成的大图
+	
+	_Compressed_android: Android下合成的大图
+	
+	rgba444_single: 将被压缩为rgba4444格式的散图
 	
 ######贴图操作说明:
 

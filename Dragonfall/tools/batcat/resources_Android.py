@@ -72,6 +72,22 @@ def AlphaImage(in_path, out_path):
         CONVERTTOOL, in_path, out_path)
     return executeCommand(command, QUIET_MODE)[0] == 0
 
+########################################################################
+#这里定义的图片名称将以png格式打入android资源包
+NORMAL_IMAGE_NAMES = ['region_ui_only0']
+def NormalImages(in_path,out_path,outdir):
+    fileName,fileExt = os.path.basename(in_path).split('.')
+    if fileName in NORMAL_IMAGE_NAMES:
+        if fileExt == 'plist':
+            shutil.copy(in_path, outdir)
+        elif fileExt not in getTempFileExtensions():
+            if NEED_ENCRYPT_RES:
+                CompileResources(in_path, outdir)
+            else:
+                shutil.copy(in_path, outdir)
+        return True
+    return False
+########################################################################
 
 def exportImagesRes(image_dir_path):
     outdir = os.path.join(RES_DEST_DIR, os.path.basename(image_dir_path))
@@ -96,7 +112,7 @@ def exportImagesRes(image_dir_path):
         elif os.path.isdir(sourceFile):
             dir_name = os.path.basename(sourceFile)
             Logging.warning("文件夹: %s" % dir_name)
-            if "_Compressed_mac" == dir_name:  # _Compressed_mac文件夹
+            if "_Compressed_android" == dir_name:  # _Compressed_mac文件夹
                 for image_file in os.listdir(sourceFile):
                     image_sourceFile = os.path.join(sourceFile,  image_file)
                     image_targetFile = os.path.join(outdir,  image_file)
@@ -106,6 +122,8 @@ def exportImagesRes(image_dir_path):
                         Logging.info("忽略 %s" % image_sourceFile)
                         continue
                     Logging.debug("处理 %s" % image_sourceFile)
+                    if NormalImages(image_sourceFile,image_targetFile,outdir):
+                        continue
                     fileInfo = image_file.split('.')
                     fileExt = fileInfo[-1]
                     if fileExt == 'plist':
@@ -154,6 +172,8 @@ def exportImagesRes(image_dir_path):
                         Logging.info("忽略 %s" % image_sourceFile)
                         continue
                     Logging.debug("处理 %s" % image_sourceFile)
+                    if NormalImages(image_sourceFile,image_targetFile,outdir):
+                        continue
                     fileInfo = image_file.split('.')
                     fileExt = fileInfo[-1]
                     if fileExt in getTempFileExtensions():
@@ -198,6 +218,8 @@ def exportImagesRes(image_dir_path):
                     image_targetFile = os.path.join(outdir,  image_file)
                     image_outdir = os.path.dirname(image_targetFile)
                     fileExt = image_sourceFile.split('.')[-1]
+                    if NormalImages(image_sourceFile,image_targetFile,outdir):
+                        continue
                     if fileExt in getTempFileExtensions():
                         continue
                     if not fileNewer(image_sourceFile, image_targetFile):
@@ -261,6 +283,8 @@ def exportAnimationRes(animation_path):
         if not os.path.exists(outdir):
             os.makedirs(outdir)
         if not fileNewer(sourceFile, targetFile) or fileExt == 'DS_Store':
+            continue
+        if NormalImages(sourceFile,targetFile,outdir):
             continue
         if fileExt == "plist" or fileExt == "ExportJson":
             shutil.copy(sourceFile, targetFile)
