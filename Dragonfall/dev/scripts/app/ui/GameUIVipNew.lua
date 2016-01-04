@@ -215,7 +215,7 @@ function GameUIVipNew:InitVipTop()
     local shadow = display.newColorLayer(UIKit:hex2c4b(0xff000000))
     shadow:setContentSize(cc.size(620,164))
     shadow:pos((display.width - 620) / 2, window.top_bottom - 146):addTo(vip_layer)
-    local back_ground_vip_608x164 = device.platform == 'winrt' and "back_ground_vip_608x164.png" or "back_ground_vip_608x164.jpg" 
+    local back_ground_vip_608x164 = device.platform == 'winrt' and "back_ground_vip_608x164.png" or "back_ground_vip_608x164.jpg"
     local top_bg = display.newSprite(back_ground_vip_608x164):align(display.TOP_CENTER, window.cx, window.top_bottom + 16):addTo(vip_layer)
     local bg_size = top_bg:getContentSize()
     local line = display.newSprite("line_624x58.png"):align(display.TOP_CENTER, bg_size.width/2, 16):addTo(top_bg)
@@ -387,6 +387,7 @@ function GameUIVipNew:CreateVipEff()
     end):addTo(vip_layer)
     pv:setTouchSwallowEnabled(false)
     local all_vip_nodes = {}
+    local all_right_levels = {}
     for i=1,VIP_MAX_LEVEL do
         if i ~= self.current_vip_level then
             local item = pv:newItem()
@@ -395,6 +396,7 @@ function GameUIVipNew:CreateVipEff()
             local vip_node = self:CreateVipEffNodeByLevel(i)
             vip_node:align(display.TOP_LEFT,0, 514 ):addTo(content_node)
             table.insert(all_vip_nodes, vip_node)
+            table.insert(all_right_levels, i)
             item:addChild(content_node)
             pv:addItem(item)
         end
@@ -416,12 +418,12 @@ function GameUIVipNew:CreateVipEff()
             for i,vip_node in ipairs(all_vip_nodes) do
                 local tar_y = vip_node:getPositionY() + offset_y
                 tar_y = math.max(tar_y,514)
-                tar_y = math.min(tar_y, math.max(self:GetVipEffectiveCountByLevel(pv:getCurPageIdx()) * 86,current_vip_node:getContentSize().height))
+                tar_y = math.min(tar_y, math.max(self:GetVipEffectiveCountByLevel(all_right_levels[pv:getCurPageIdx()]) * 86,current_vip_node:getContentSize().height))
                 vip_node:setPositionY(tar_y)
             end
             local tar_y = current_vip_node:getPositionY() + offset_y
             tar_y = math.max(tar_y,window.bottom_top + 44 + 514)
-            tar_y = math.min(tar_y,math.max(window.bottom_top + 44 + self:GetVipEffectiveCountByLevel(pv:getCurPageIdx()) * 86,window.bottom_top + 44 + current_vip_node:getContentSize().height))
+            tar_y = math.min(tar_y,math.max(window.bottom_top + 44 + self:GetVipEffectiveCountByLevel(all_right_levels[pv:getCurPageIdx()]) * 86,window.bottom_top + 44 + current_vip_node:getContentSize().height))
             current_vip_node:setPositionY(tar_y)
         end
         return true
@@ -441,12 +443,12 @@ function GameUIVipNew:CreateVipEff()
             for i,vip_node in ipairs(all_vip_nodes) do
                 local tar_y = vip_node:getPositionY() + offset_y
                 tar_y = math.max(tar_y,514)
-                tar_y = math.min(tar_y, math.max(self:GetVipEffectiveCountByLevel(pv:getCurPageIdx()) * 86,current_vip_node:getContentSize().height))
+                tar_y = math.min(tar_y, math.max(self:GetVipEffectiveCountByLevel(all_right_levels[pv:getCurPageIdx()]) * 86,current_vip_node:getContentSize().height))
                 vip_node:setPositionY(tar_y)
             end
             local tar_y = current_vip_node:getPositionY() + offset_y
             tar_y = math.max(tar_y,window.bottom_top + 44 + 514)
-            tar_y = math.min(tar_y,math.max(window.bottom_top + 44 + self:GetVipEffectiveCountByLevel(pv:getCurPageIdx()) * 86,window.bottom_top + 44 + current_vip_node:getContentSize().height))
+            tar_y = math.min(tar_y,math.max(window.bottom_top + 44 + self:GetVipEffectiveCountByLevel(all_right_levels[pv:getCurPageIdx()]) * 86,window.bottom_top + 44 + current_vip_node:getContentSize().height))
             current_vip_node:setPositionY(tar_y)
         end
         return true
@@ -610,6 +612,7 @@ function GameUIVipNew:OnVipEventTimer()
     end
 end
 return GameUIVipNew
+
 
 
 
