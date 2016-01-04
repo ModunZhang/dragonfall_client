@@ -1196,62 +1196,12 @@ end
 
 
 --[[production begin]]
-local playerCitizenRecoverFullNeedHours_value = GameDatas.
-    PlayerInitData.
-    intInit.
-    playerCitizenRecoverFullNeedHours.value
 function User:RefreshOutput()
-    local production    = UtilsForBuilding:GetHouseProductions(self)
-    local buff_building = UtilsForBuilding:GetBuildingsBuff(self)
-    local buff_terrain  = UtilsForBuilding:GetTerrainResourceBuff(self)
-    local buff_tech     = UtilsForTech:GetBuff(self)
-    local buff_item     = UtilsForItem:GetBuff(self)
-    local buff_vip      = UtilsForVip:GetVipBuff(self)
-
-    local wall_info     = UtilsForBuilding:GetWallInfo(self)
-    production.wallHp   = wall_info.wallRecovery
-
-    production = production * (1 + buff_building + buff_item + buff_tech + buff_vip + buff_terrain)
-
-    local limits = UtilsForBuilding:GetWarehouseLimit(self)
-    local limits_map = setmetatable({
-        coin = math.huge,
-        wood = limits.maxWood,
-        food = limits.maxFood,
-        iron = limits.maxIron,
-        stone= limits.maxStone,
-        wallHp = wall_info.wallHp,
-        citizen= UtilsForBuilding:GetCitizenLimit(self),
-    }, BUFF_META)
-    local buff_limit = UtilsForTech:GetLimitBuff(self)
-    limits_map = limits_map * (1 + buff_limit)
-
-    for k,v in pairs(limits_map) do
-        local res = self.resources_cache[k]
-        if k == "citizen" then
-            res.limit = v - UtilsForBuilding:GetCitizenMap(self).total
-        else
-            res.limit = v
-        end
+    local reses = DataUtils:GetResOutput(self)
+    for k,v in pairs(self.resources_cache) do
+        v.limit = reses[k].limit
+        v.output = reses[k].output
     end
-
-    for k,v in pairs(production) do
-        local res = self.resources_cache[k]
-        if k == "food" then
-            res.output = math.floor(v - UtilsForSoldier:GetSoldierUpkeep(self))
-        else
-            res.output = math.floor(v)
-        end
-    end
-    local citizen = self:GetResProduction("citizen")
-    citizen.output = math.floor(citizen.limit / playerCitizenRecoverFullNeedHours_value)
-    local cart = self:GetResProduction("cart")
-    local tradeGuild_info = UtilsForBuilding:GetTradeGuildInfo(self)
-    cart.limit = tradeGuild_info.maxCart
-    cart.output = tradeGuild_info.cartRecovery
-
-    -- dump(self.resources, "self.user.resources_cache")
-    -- dump(self.resources_cache, "self.user.resources_cache")
 end
 --[[end]]
 
