@@ -4,10 +4,23 @@
     <dict>
         <key>frames</key>
         <dict>
+            <key>my_keep_1.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{569,373},{150,139}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{150,139}}</string>
+                <key>sourceSize</key>
+                <string>{150,139}</string>
+            </dict>
             <key>my_keep_2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{569,373},{149,147}}</string>
+                <string>{{173,378},{149,147}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -29,6 +42,19 @@
                 <string>{{0,0},{155,169}}</string>
                 <key>sourceSize</key>
                 <string>{155,169}</string>
+            </dict>
+            <key>other_keep_1.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{569,514},{150,139}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{150,139}}</string>
+                <key>sourceSize</key>
+                <string>{150,139}</string>
             </dict>
             <key>other_keep_3.png</key>
             <dict>
@@ -170,7 +196,7 @@
             <key>size</key>
             <string>{1024,1024}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:e4f8ad44208032e0ca9286145a24a49a:2/2$</string>
+            <string>$TexturePacker:SmartUpdate:24ea730456f6d3adad28b2fac5faf05d:2/2$</string>
             <key>textureFileName</key>
             <string>region_only1.pvr.ccz</string>
         </dict>
