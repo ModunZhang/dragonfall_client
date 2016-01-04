@@ -53,32 +53,37 @@ function GameUISettingServer:BuildUI()
             text = _("传送"),
         }))
         :onButtonClicked(function()
-            if not Alliance_Manager:GetMyAlliance():IsDefault() then
-                UIKit:showMessageDialog(_("错误"),_("你已加入联盟不能切换服务器，退出联盟后重试。"))
-                return
-            end
-            if not couldChangeFree and User:GetGemValue() < intInit.switchServerGemUsed.value then
-                UIKit:showMessageDialog(_("提示"),_("金龙币不足")):CreateOKButton(
-                    {
-                        listener = function ()
-                            UIKit:newGameUI("GameUIStore"):AddToCurrentScene(true)
-                        end,
-                        btn_name= _("前往商店")
-                    })
-                return
-            end
-            if (self.server.openAt - intInit.switchServerLimitDays.value * 24 * 60 * 60 * 1000) > User.countInfo.registerTime  then
-                UIKit:showMessageDialog(_("错误"),_("不能迁移到选定的服务器"))
-                return
-            end
-            if User:GetMyDeals() and #User:GetMyDeals() > 0 then
-                UIKit:showMessageDialog(_("错误"),_("您有商品正在出售,不能切换服务器"))
-                return
-            end
-            
-            if self.server_code ~= User.serverId then
-                NetManager:getSwitchServer(self.server_code)
-            end
+            UIKit:showMessageDialog(_("提示"),string.format(_("是否确认将该账号迁移至服务器 %s ？（你的游戏进度将不会丢失）"),self.server.name)):CreateOKButton(
+                {
+                    listener = function ()
+                        if not Alliance_Manager:GetMyAlliance():IsDefault() then
+                            UIKit:showMessageDialog(_("错误"),_("你已加入联盟不能切换服务器，退出联盟后重试。"))
+                            return
+                        end
+                        if not couldChangeFree and User:GetGemValue() < intInit.switchServerGemUsed.value then
+                            UIKit:showMessageDialog(_("提示"),_("金龙币不足")):CreateOKButton(
+                                {
+                                    listener = function ()
+                                        UIKit:newGameUI("GameUIStore"):AddToCurrentScene(true)
+                                    end,
+                                    btn_name= _("前往商店")
+                                })
+                            return
+                        end
+                        if (self.server.openAt - intInit.switchServerLimitDays.value * 24 * 60 * 60 * 1000) > User.countInfo.registerTime  then
+                            UIKit:showMessageDialog(_("错误"),_("不能迁移到选定的服务器"))
+                            return
+                        end
+                        if User:GetMyDeals() and #User:GetMyDeals() > 0 then
+                            UIKit:showMessageDialog(_("错误"),_("您有商品正在出售,不能切换服务器"))
+                            return
+                        end
+
+                        if self.server_code ~= User.serverId then
+                            NetManager:getSwitchServer(self.server_code)
+                        end
+                    end
+                })
         end)
     -- 切换服务器需要花费的金龙币
     if not couldChangeFree then
@@ -297,6 +302,7 @@ function GameUISettingServer:RefreshServerInfo()
 end
 
 return GameUISettingServer
+
 
 
 
