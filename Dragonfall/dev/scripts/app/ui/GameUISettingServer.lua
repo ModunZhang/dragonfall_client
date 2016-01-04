@@ -53,37 +53,37 @@ function GameUISettingServer:BuildUI()
             text = _("传送"),
         }))
         :onButtonClicked(function()
-            UIKit:showMessageDialog(_("提示"),string.format(_("是否确认将该账号迁移至服务器 %s ？（你的游戏进度将不会丢失）"),self.server.name)):CreateOKButton(
-                {
-                    listener = function ()
-                        if not Alliance_Manager:GetMyAlliance():IsDefault() then
-                            UIKit:showMessageDialog(_("错误"),_("你已加入联盟不能切换服务器，退出联盟后重试。"))
-                            return
-                        end
-                        if not couldChangeFree and User:GetGemValue() < intInit.switchServerGemUsed.value then
-                            UIKit:showMessageDialog(_("提示"),_("金龙币不足")):CreateOKButton(
-                                {
-                                    listener = function ()
-                                        UIKit:newGameUI("GameUIStore"):AddToCurrentScene(true)
-                                    end,
-                                    btn_name= _("前往商店")
-                                })
-                            return
-                        end
-                        if (self.server.openAt - intInit.switchServerLimitDays.value * 24 * 60 * 60 * 1000) > User.countInfo.registerTime  then
-                            UIKit:showMessageDialog(_("错误"),_("不能迁移到选定的服务器"))
-                            return
-                        end
-                        if User:GetMyDeals() and #User:GetMyDeals() > 0 then
-                            UIKit:showMessageDialog(_("错误"),_("您有商品正在出售,不能切换服务器"))
-                            return
-                        end
+                if not Alliance_Manager:GetMyAlliance():IsDefault() then
+                    UIKit:showMessageDialog(_("错误"),_("你已加入联盟不能切换服务器，退出联盟后重试。"))
+                    return
+                end
+                if not couldChangeFree and User:GetGemValue() < intInit.switchServerGemUsed.value then
+                    UIKit:showMessageDialog(_("提示"),_("金龙币不足")):CreateOKButton(
+                        {
+                            listener = function ()
+                                UIKit:newGameUI("GameUIStore"):AddToCurrentScene(true)
+                            end,
+                            btn_name= _("前往商店")
+                        })
+                    return
+                end
+                if (self.server.openAt - intInit.switchServerLimitDays.value * 24 * 60 * 60 * 1000) > User.countInfo.registerTime  then
+                    UIKit:showMessageDialog(_("错误"),_("不能迁移到选定的服务器"))
+                    return
+                end
+                if User:GetMyDeals() and #User:GetMyDeals() > 0 then
+                    UIKit:showMessageDialog(_("错误"),_("您有商品正在出售,不能切换服务器"))
+                    return
+                end
 
-                        if self.server_code ~= User.serverId then
-                            NetManager:getSwitchServer(self.server_code)
+                UIKit:showMessageDialog(_("提示"),string.format(_("是否确认将该账号迁移至服务器 %s ？（你的游戏进度将不会丢失）"),self.server.name)):CreateOKButton(
+                    {
+                        listener = function ()
+                            if self.server_code ~= User.serverId then
+                                NetManager:getSwitchServer(self.server_code)
+                            end
                         end
-                    end
-                })
+                    })
         end)
     -- 切换服务器需要花费的金龙币
     if not couldChangeFree then
@@ -125,6 +125,10 @@ function GameUISettingServer:BuildUI()
         color= 0x076886,
     }):align(display.RIGHT_CENTER, info_icon:getPositionX() - 10, tips_bg:getContentSize().height/2):addTo(tips_bg)
     UIKit:addTipsToNode(ruls,{_("你只能在未加入联盟的情况传送到新的服务器。"),
+        _("城堡在Lv10一下(不包括Lv10)可免费传送。"),
+        _("城堡在Lv10一下(城堡在Lv10以上(包括Lv10)不能传送到新服。)可免费传送。"),
+    },tips_bg,cc.size(420,0),-200,-200)
+     UIKit:addTipsToNode(info_icon,{_("你只能在未加入联盟的情况传送到新的服务器。"),
         _("城堡在Lv10一下(不包括Lv10)可免费传送。"),
         _("城堡在Lv10一下(城堡在Lv10以上(包括Lv10)不能传送到新服。)可免费传送。"),
     },tips_bg,cc.size(420,0),-200,-200)
@@ -302,6 +306,7 @@ function GameUISettingServer:RefreshServerInfo()
 end
 
 return GameUISettingServer
+
 
 
 
