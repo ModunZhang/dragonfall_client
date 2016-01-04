@@ -471,7 +471,7 @@ function MyCityScene:OpenUI(building, default_tab, need_tips, build_name)
     elseif type_ == "airship" then
         local dragon_manger = city:GetDragonEyrie():GetDragonManager()
         local dragon_type = dragon_manger:GetCanFightPowerfulDragonType()
-        if #dragon_type > 0 or dragon_manger:GetDefenceDragon() then
+        if #dragon_type > 0 or UtilsForDragon:GetDefenceDragon(User) then
             app:EnterPVEScene(city:GetUser():GetLatestPveIndex())
         else
             UIKit:showMessageDialog(_("主人"),_("需要一条空闲状态的魔龙才能探险"))
