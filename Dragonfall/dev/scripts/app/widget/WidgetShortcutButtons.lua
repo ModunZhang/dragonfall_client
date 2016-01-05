@@ -71,6 +71,14 @@ function WidgetShortcutButtons:ctor(city)
         :align(display.CENTER, -2,0)
         :addTo(dragon_defence_btn)
         :hide()
+    dragon_defence_btn:runAction(
+        cc.RepeatForever:create(
+            transition.sequence{
+                cc.ScaleTo:create(0.8, 0.8),
+                cc.ScaleTo:create(0.8, 0.7),
+            }
+        )
+    )
     -- local status_bg = display.newScale9Sprite("online_time_bg_96x36.png",0,0,cc.size(96,36),cc.rect(10,5,76,26))
     --     :addTo(dragon_defence_btn):align(display.CENTER,0,-55):scale(0.7)
     -- local label = UIKit:ttfLabel({
