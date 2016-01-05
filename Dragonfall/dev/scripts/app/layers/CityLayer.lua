@@ -355,7 +355,10 @@ function CityLayer:CheckCanUpgrade()
 end
 --
 function CityLayer:InitWeather()
-
+    local emitter = UIKit:CreateFog():addTo(self, 11):pos(0, 1224)
+    for i = 1, 1000 do
+        emitter:update(0.01)
+    end
 end
 function CityLayer:ChangeTerrain()
     self:ReloadSceneBackground()
@@ -426,6 +429,12 @@ function CityLayer:ReloadSceneBackground()
         }))
     end
     self.square = square
+
+
+    -- local emitter = UIKit:CreateFog():addTo(background, 11):pos(0, 1224)
+    -- for i = 1, 1000 do
+    --     emitter:update(0.01)
+    -- end
 end
 function CityLayer:InitWithCity(city)
     city:AddListenOnType(self, city.LISTEN_TYPE.UNLOCK_TILE)
