@@ -147,7 +147,7 @@ end
 
 
 function GameUIHome:CreateTop()
-    local top_bg = display.newSprite("top_bg_768x116.png"):addTo(self)
+    local top_bg = display.newSprite("alliance_home_top_bg_768x116.png"):addTo(self)
         :align(display.TOP_CENTER, display.cx, display.top ):setCascadeOpacityEnabled(true)
     if display.width>640 then
         top_bg:scale(display.width/768)
