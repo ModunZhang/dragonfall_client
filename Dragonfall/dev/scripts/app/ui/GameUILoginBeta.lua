@@ -277,7 +277,7 @@ function GameUILoginBeta:showVersion()
     if CONFIG_IS_NOT_UPDATE or device.platform == 'mac' or device.platform == 'windows' then
         local __debugVer = require("debug_version")
         self.verLabel:setString("测试"..string.format(_("版本%s(%s)"), ext.getAppVersion(), __debugVer))
-        -- app.client_tag = __debugVer
+        app.client_tag = -1
     else
         self:loadLocalJson()
         if not self.m_localJson then
