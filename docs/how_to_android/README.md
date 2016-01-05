@@ -279,13 +279,16 @@ Sender ID:
 * 因为我们项目目录结构比较深,ndk在windows上编译时,如果编译的路径太长就会出错,我们采用取巧的方式 
 
 	* `在windows上开发时把我们项目根目录放到磁盘的根目录,如:D:\`
+	
 	* 将项目的根目录改名为`client`
 
 
 * 如果`eclipse`安装后无法启动,检查
 	
 	* eclipse是否使用的是已安装的jdk/jre
+	
 	* 安装的jdk是否和eclipse都属于同一cpu架构x86/x64 
+	
 ---
 
 By DannyHe 11/11/2015
