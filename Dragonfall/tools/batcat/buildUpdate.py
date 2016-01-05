@@ -56,7 +56,7 @@ def buildFileList():
 	global APP_BUILD_TAG
 	APP_BUILD_TAG = getAppBuildTag()
 	Logging.debug(APP_BUILD_TAG)
-	command = "python %s --appVersion=%s --minVersion=%s --appTag=%s --output=%s" % (UPDATE_TOOL,APP_VERSION,APP_MIN_VERSION,APP_BUILD_TAG,RES_DEST_DIR)
+	command = "python %s --appVersion=%s --minVersion=%s --appTag=%s --output=%s --platform=%s" % (UPDATE_TOOL,APP_VERSION,APP_MIN_VERSION,APP_BUILD_TAG,RES_DEST_DIR,Platform)
 	executeCommand(command,not Logging.DEBUG_MODE)
 
 def commitUpdateFileList():

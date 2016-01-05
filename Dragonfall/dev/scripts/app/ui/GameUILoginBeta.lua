@@ -279,12 +279,11 @@ function GameUILoginBeta:showVersion()
         self.verLabel:setString("测试"..string.format(_("版本%s(%s)"), ext.getAppVersion(), __debugVer))
         -- app.client_tag = __debugVer
     else
-        local jsonPath = cc.FileUtils:getInstance():fullPathForFilename("fileList.json")
-        local file = io.open(jsonPath)
-        local jsonString = file:read("*a")
-        file:close()
-
-        local tag = json.decode(jsonString).tag
+        self:loadLocalJson()
+        if not self.m_localJson then
+            self:loadLocalJson()
+        end
+        local tag = json.decode(self.m_localJson).tag
         local version = string.format(_("版本%s(%s)"), ext.getAppVersion(), tag)
         self.verLabel:setString(version)
         app.client_tag = tag
@@ -295,56 +294,45 @@ end
 --------------------------------------------------------------------------------------------------------------
 function GameUILoginBeta:OnMoveInStage()
     self:showVersion()
-    self:GetServerInfo(function()
-        self:LoadServerInfo()
-    end)
+    self:GetServerInfo()
 end
-function GameUILoginBeta:GetServerInfo(callback)
+function GameUILoginBeta:GetServerInfo()
     self:setProgressText(_("正在获取服务器信息..."))
-    GameUtils:GetServerInfo({env = CONFIG_IS_DEBUG and "development" or "production", version = ext.getAppVersion()}, function(success, content)
-        if success then
-            self:setProgressText(_("获取服务器信息成功"))
-            dump(content)
-            local ip, port = unpack(string.split(content.data.gateServer, ":"))
-            NetManager.m_gateServer.host = ip
-            NetManager.m_gateServer.port = tonumber(port)
-
-            local ip, port = unpack(string.split(content.data.updateServer, ":"))
-            NetManager.m_updateServer.host = ip
-            NetManager.m_updateServer.port = tonumber(port)
-            if callback then
-                callback()
-            end
-        else
-            local SIMULATION_WORKING_TIME = 3
-            self:performWithDelay(function()
-                self:showError(_("获取服务器信息失败!"),function()
-                    self:GetServerInfo(function()
-                        self:LoadServerInfo()
-                    end)
-                end)
-            end, SIMULATION_WORKING_TIME)
-        end
-    end)
-end
-function GameUILoginBeta:LoadServerInfo()
-    if CONFIG_IS_NOT_UPDATE or device.platform == 'mac' or device.platform == 'windows' then
-        if not app.client_tag then
-            NetManager:getUpdateFileList(function(success, msg)
-                if not success then
-                    device.showAlert(_("错误"), _("检查游戏更新失败!"), { _("确定") },function(event)
-                        app:restart(false)
-                    end)
-                    return
-                end
-                local serverFileList = json.decode(msg)
-                app.client_tag = serverFileList.tag
-            end)
-        end
+    if CONFIG_IS_NOT_UPDATE or device.platform == 'mac' or device.platform == 'windows' then --如果是player环境
         self:loadLocalResources()
-    else
-        self:loadLocalJson()
-        self:loadServerJson()
+    else -- 真机环境
+        GameUtils:GetServerInfo({env = CONFIG_IS_DEBUG and "development" or "production", version = ext.getAppVersion()}, function(success, content)
+            if success then
+                self:setProgressText(_("获取服务器信息成功"))
+                dump(content)
+                local ip, port = unpack(string.split(content.data.entry, ":"))
+                NetManager.m_gateServer.host = ip
+                NetManager.m_gateServer.port = tonumber(port)
+                NetManager.m_updateServer.basePath = content.data.basePath -- update server base path
+
+                local localAppVersion = self:GetVersionWeight(ext.getAppVersion())
+                local serverMinAppVersion = self:GetVersionWeight(content.data.appMinVersion)
+                if localAppVersion < serverMinAppVersion then -- 需要强制更新
+                    device.showAlert(_("错误"), _("游戏版本过低,请更新!"), { _("确定") }, function(event)
+                        device.openURL(CONFIG_APP_URL[device.platform])
+                        self:GetServerInfo()
+                    end)
+                elseif app.client_tag  == content.data.tag then -- 如果tag相等 不需要更新操作
+                    self:performWithDelay(function()
+                        self:loadLocalResources()
+                    end, 0.8)
+                else -- 开始更新逻辑
+                    self:loadServerJson()
+                end
+            else
+                local SIMULATION_WORKING_TIME = 3
+                self:performWithDelay(function()
+                    self:showError(_("获取服务器信息失败!"),function()
+                        self:GetServerInfo()
+                    end)
+                end, SIMULATION_WORKING_TIME)
+            end
+        end)
     end
 end
 
@@ -368,7 +356,6 @@ function GameUILoginBeta:loadLocalResources()
     for i,v in ipairs(self.local_resources) do
         self:__loadToTextureCache(v,i == count)
     end
-    -- app:GetAudioManager():PreLoadAudios()
 end
 
 function GameUILoginBeta:__loadToTextureCache(config,shouldLogin)
@@ -529,6 +516,7 @@ end
 -- Auto Update
 --------------------------------------------------------------------------------------------------------------
 function GameUILoginBeta:loadLocalJson()
+    if self.m_localJson then return end
     local jsonPath = cc.FileUtils:getInstance():fullPathForFilename(self.m_jsonFileName)
     local file = io.open(jsonPath)
     local jsonString = file:read("*a")
@@ -570,17 +558,6 @@ function GameUILoginBeta:donwLoadFilesWithFileList()
     self.m_currentSize = 0
     local localFileList = json.decode(self.m_localJson)
     local serverFileList = json.decode(self.m_serverJson)
-    local localAppVersion = self:GetVersionWeight(ext.getAppVersion())
-    local serverMinAppVersion = self:GetVersionWeight(serverFileList.appMinVersion)
-    local serverAppVersion = self:GetVersionWeight(serverFileList.appVersion)
-    if localAppVersion < serverMinAppVersion or
-        (ext.getAppVersion() == '1.01' and serverFileList.appVersion == '1.1.1') then
-        device.showAlert(_("错误"), _("游戏版本过低,请更新!"), { _("确定") }, function(event)
-            device.openURL(CONFIG_APP_URL[device.platform])
-            self:loadServerJson()
-        end)
-        return
-    end
 
     local updateFileList = {}
     for k, v in pairs(serverFileList.files) do

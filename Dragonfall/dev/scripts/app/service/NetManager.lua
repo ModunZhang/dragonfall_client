@@ -336,9 +336,10 @@ function NetManager:init()
     self.m_netService:init()
 
     self.m_updateServer = {
-        host = CONFIG_IS_LOCAL and CONFIG_LOCAL_SERVER.update.host or CONFIG_REMOTE_SERVER.update.host,
-        port = CONFIG_IS_LOCAL and CONFIG_LOCAL_SERVER.update.port or CONFIG_REMOTE_SERVER.update.port,
-        name = CONFIG_IS_LOCAL and CONFIG_LOCAL_SERVER.update.name or CONFIG_REMOTE_SERVER.update.name,
+        host = "http://gate.batcatstudio.com",
+        port = 80,
+        name = "DragonfallAutoUpdateServer",
+        basePath = "",
     }
     self.m_gateServer = {
         host = CONFIG_IS_LOCAL and CONFIG_LOCAL_SERVER.gate.host or CONFIG_REMOTE_SERVER.gate.host,
@@ -716,11 +717,14 @@ end
 -- 获取服务器列表
 function NetManager:getLogicServerInfoPromise()
     local device_id = device.getOpenUDID()
+    local device_tag = app.client_tag
     local platform = ''
     if device.platform == 'windows' then
         platform = 'wp'
+        device_tag = -1
     elseif device.platform == 'mac' then
         platform = 'ios'
+        device_tag = -1
     elseif device.platform == "android" then
         platform = 'ios'
     elseif device.platform == "ios" then
@@ -730,7 +734,6 @@ function NetManager:getLogicServerInfoPromise()
     elseif device.platform == 'wp8' then
         platform = 'wp'
     end
-    local device_tag = app.client_tag
     if not device_tag then -- fix tag nil
         device_tag = self:tryGetAppTag()
         if not device_tag then
@@ -2087,13 +2090,16 @@ end
 
 ----------------------------------------------------------------------------------------------------------------
 function NetManager:getUpdateFileList(cb)
-    local updateServer = self.m_updateServer.host .. ":" .. self.m_updateServer.port .. "/update/res/fileList.json"
-    self.m_netService:get(updateServer, nil, function(success, statusCode, msg)
+    local fileListJsonPath = string.format("%s:%s%s/res/fileList.json",self.m_updateServer.host,self.m_updateServer.port,self.m_updateServer.basePath)
+    -- local fileListJsonPath = self.m_updateServer.host .. ":" .. self.m_updateServer.port .. "/update/res/fileList.json"
+    print("fileListJsonPath:",fileListJsonPath)
+    self.m_netService:get(fileListJsonPath, nil, function(success, statusCode, msg)
         cb(success and statusCode == 200, msg)
     end)
 end
 function NetManager:downloadFile(fileInfo, cb, progressCb)
-    local downloadUrl = self.m_updateServer.host .. ":" .. self.m_updateServer.port .. "/update/" .. fileInfo.path
+    -- local downloadUrl = self.m_updateServer.host .. ":" .. self.m_updateServer.port .. "/update/" .. fileInfo.path
+    local downloadUrl = string.format("%s:%s%s/%s",self.m_updateServer.host,self.m_updateServer.port,self.m_updateServer.basePath,fileInfo.path)
     local filePath = GameUtils:getUpdatePath() .. fileInfo.path
     local docPath = LuaUtils:getDocPathFromFilePath(filePath)
     if not ext.isDirectoryExist(docPath) then
