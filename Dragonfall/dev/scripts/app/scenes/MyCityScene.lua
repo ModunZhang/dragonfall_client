@@ -240,9 +240,9 @@ end
 function MyCityScene:onEnterTransitionFinish()
     MyCityScene.super.onEnterTransitionFinish(self)
     if ext.registereForRemoteNotifications then
-        display.newNode():performWithDelay(function()
+        display.newNode():addTo(self):performWithDelay(function()
             ext.registereForRemoteNotifications()
-        end, 4)
+        end, 1.5)
     end
     app:sendPlayerLanguageCodeIf()
     app:sendApnIdIf()
