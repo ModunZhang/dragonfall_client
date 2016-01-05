@@ -16,9 +16,9 @@ local soldier_config = {
     ["ranger_2"] = {"gongjianshou_2_90", -75, -145, 0.8},
     ["ranger_3"] = {"gongjianshou_3_90", -75, -145, 0.8},
     
-    ["lancer_1"] = {"qibing_1_90", -70, -150, 0.8},
-    ["lancer_2"] = {"qibing_2_90", -70, -150, 0.8},
-    ["lancer_3"] = {"qibing_3_90", -50, -150, 0.8},
+    ["lancer_1"] = {"qibing_1_90", -70, -130, 0.8},
+    ["lancer_2"] = {"qibing_2_90", -70, -130, 0.8},
+    ["lancer_3"] = {"qibing_3_90", -50, -130, 0.8},
     
     ["catapult_1"] = {  "toushiche_90", 30, -80, 1},
     ["catapult_2"] = {"toushiche_2_90", 30, -80, 1},

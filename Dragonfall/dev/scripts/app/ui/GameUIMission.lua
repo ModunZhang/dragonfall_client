@@ -445,7 +445,9 @@ function GameUIMission:GetDailyItem(data,index)
         size = 20,
         color= self.city:GetUser():GetDailyTasksFinishedCountByIndex(index) ~= data.maxCount and 0x403c2f or 0x007c23,
     }):align(display.CENTER, 400, content_height/2):addTo(content)
-    display.newSprite("next_32x38.png"):align(display.RIGHT_CENTER, 510, content_height/2):addTo(content)
+    if index ~= 14 and index ~= 15 and index ~= 12 then
+        display.newSprite("next_32x38.png"):align(display.RIGHT_CENTER, 510, content_height/2):addTo(content)
+    end
 
     item:addContent(content)
     item:setItemSize(520,content_height)
@@ -561,6 +563,7 @@ function GameUIMission:OpenGetDailyRewardDialog(reward_index,flag)
             end
             NetManager:getDailyTaskRewards():done(function ()
                 GameGlobalUI:showTips(_("获得奖励"),string.format(_("获得%s"),show_msg))
+                app:GetAudioManager():PlayeEffectSoundWithKey("BUY_ITEM")
                 dialog:LeftButtonClicked()
             end)
         end)
