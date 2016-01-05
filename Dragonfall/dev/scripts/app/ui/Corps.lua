@@ -18,7 +18,7 @@ local soldier_config = {
     
     ["lancer_1"] = {"qibing_1_90", -70, -130, 0.8},
     ["lancer_2"] = {"qibing_2_90", -70, -130, 0.8},
-    ["lancer_3"] = {"qibing_3_90", -50, -130, 0.8},
+    ["lancer_3"] = {"qibing_3_90", -50, -160, 0.8},
     
     ["catapult_1"] = {  "toushiche_90", 30, -80, 1},
     ["catapult_2"] = {"toushiche_2_90", 30, -80, 1},

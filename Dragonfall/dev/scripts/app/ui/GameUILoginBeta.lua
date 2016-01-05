@@ -303,7 +303,7 @@ function GameUILoginBeta:GetServerInfo()
     else -- 真机环境
         GameUtils:GetServerInfo({env = CONFIG_IS_DEBUG and "development" or "production", version = ext.getAppVersion()}, function(success, content)
             if success then
-                self:setProgressText(_("获取服务器信息成功"))
+                -- self:setProgressText(_("获取服务器信息成功"))
                 dump(content)
                 local ip, port = unpack(string.split(content.data.entry, ":"))
                 NetManager.m_gateServer.host = ip

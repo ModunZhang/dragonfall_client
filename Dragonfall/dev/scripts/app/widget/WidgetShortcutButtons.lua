@@ -24,7 +24,7 @@ end)
 function WidgetShortcutButtons:ctor(city)
     self.city = city
     local order = WidgetAutoOrder.new(WidgetAutoOrder.ORIENTATION.TOP_TO_BOTTOM,50,true)
-                :addTo(self):pos(display.left + 50, display.top-200)
+        :addTo(self):pos(display.left + 50, display.top-200)
     -- BUFF按钮
     local buff_button = WidgetAutoOrderBuffButton.new():scale(0.7)
     order:AddElement(buff_button)
@@ -92,12 +92,21 @@ function WidgetShortcutButtons:ctor(city)
             dragon_img:setTexture(UILib.dragon_head[defenceDragon.type])
             dragon_img:show()
             warning_icon:hide()
+            dragon_defence_btn:stopAllActions()
             -- label:setString(_("已驻防"))
             -- status_bg:size(label:getContentSize().width+4,label:getContentSize().height+4)
             -- label:setPosition(status_bg:getContentSize().width/2,status_bg:getContentSize().height/2)
         else
             dragon_img:hide()
             warning_icon:show()
+            dragon_defence_btn:runAction(
+                cc.RepeatForever:create(
+                    transition.sequence{
+                        cc.ScaleTo:create(0.8, 0.8),
+                        cc.ScaleTo:create(0.8, 0.7),
+                    }
+                )
+            )
             -- label:setString(_("未驻防"))
             -- status_bg:size(label:getContentSize().width+4,label:getContentSize().height+4)
             -- label:setPosition(status_bg:getContentSize().width/2,status_bg:getContentSize().height/2)
@@ -373,6 +382,7 @@ function WidgetShortcutButtons:CheckAllianceRewardCount()
 end
 
 return WidgetShortcutButtons
+
 
 
 

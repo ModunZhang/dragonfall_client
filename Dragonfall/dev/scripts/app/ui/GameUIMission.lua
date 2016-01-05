@@ -615,6 +615,7 @@ function GameUIMission:dailyListviewListener(event)
     local User = city:GetUser()
     local listView = event.listView
     if "clicked" == event.name then
+        app:GetAudioManager():PlayeEffectSoundWithKey("NORMAL_DOWN")
         local pos = event.itemPos
         if pos == 1 then
             UIKit:newGameUI("GameUIHasBeenBuild", city):AddToCurrentScene(true)
