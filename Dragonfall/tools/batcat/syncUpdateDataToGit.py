@@ -32,14 +32,15 @@ def pullAutoUpdateRepositoty():
 
 
 def rsyncAllFiles():
+	command = ""
 	if not isWindows():
-		command = "rsync -ravc --exclude=.DS_Store* %s/* %s --delete-after" % (UPDATE_SOURCE_DIR,TARGET_PATH)
-		Logging.debug(command)
+		command = "rsync -ravc --exclude=.DS_Store* --exclude=.git/ --exclude=.gitignore ./ %s --delete-after" % (TARGET_PATH)
 	else:
-		os.chdir(UPDATE_SOURCE_DIR)
-		command = "rsync -rsvc --exclude=.DS_Store* ./* %s --delete-after" % TARGET_PATH
-		executeCommand(command,not Logging.DEBUG_MODE)
-		os.chdir(CURRENT_DIR)
+		command = "rsync -rsvc --exclude=.DS_Store* --exclude=.git/ --exclude=.gitignore ./ %s --delete-after" % TARGET_PATH
+
+	os.chdir(UPDATE_SOURCE_DIR)
+	executeCommand(command,not Logging.DEBUG_MODE)
+	os.chdir(CURRENT_DIR)
 
 def pushAutoUpdateDataToGit():
 	os.chdir(PATH_OF_GIT_AUTOUPDATE)
