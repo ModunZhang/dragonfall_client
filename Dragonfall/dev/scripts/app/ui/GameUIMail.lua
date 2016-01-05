@@ -1634,8 +1634,14 @@ function GameUIMail:CreateReportContent()
                     elseif report:Type() == "attackShrine" then
                         UIKit:newGameUI("GameUIShrineReportInMail", report,true):AddToCurrentScene(true)
                     end
-                    if report:Type() ~= "collectResource" then
+                    if report:Type() ~= "collectResource" and report:Type() ~= "attackShrine" then
                         if report:GetReportResult() then
+                            app:GetAudioManager():PlayeEffectSoundWithKey("BATTLE_VICTORY")
+                        else
+                            app:GetAudioManager():PlayeEffectSoundWithKey("BATTLE_DEFEATED")
+                        end
+                    elseif report:Type() == "attackShrine" then
+                        if report:GetAttackTarget().isWin then
                             app:GetAudioManager():PlayeEffectSoundWithKey("BATTLE_VICTORY")
                         else
                             app:GetAudioManager():PlayeEffectSoundWithKey("BATTLE_DEFEATED")

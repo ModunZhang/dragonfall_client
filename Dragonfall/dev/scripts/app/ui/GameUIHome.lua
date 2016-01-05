@@ -285,7 +285,7 @@ function GameUIHome:CreateTop()
     self.gem_label = UIKit:CreateNumberImageNode({
         size = 20,
         color = 0xffd200,
-    }):addTo(button):align(display.CENTER, -30, 8)
+    }):addTo(button):align(display.CENTER, -24, 6)
 
 
     -- 任务条
