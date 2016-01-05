@@ -56,10 +56,10 @@ end
 function UtilsForSoldier:GetSoldierConfig(userData, soldier_name)
     return  self:IsSpecial(soldier_name)
         and soldiers_special[soldier_name]
-        or soldiers_normal[soldier_name.."_"..self:SoldierStarByName(userData, soldier_name)]
+         or soldiers_normal[soldier_name.."_"..self:SoldierStarByName(userData, soldier_name)]
 end
 function UtilsForSoldier:SoldierStarByName(userData, soldier_name)
-    return  UtilsForSoldier:IsSpecial(soldier_name)
+    return  self:IsSpecial(soldier_name)
         and soldiers_special[soldier_name].star
-        or userData.soldierStars[soldier_name] or 1
+         or userData.soldierStars[soldier_name] or 1
 end

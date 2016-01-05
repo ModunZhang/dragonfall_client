@@ -364,7 +364,10 @@ function GameUIWall:RefreshListView()
                 row_item:setContentSize(cc.size(546,166))
                 WidgetSoldierBox.new(nil, function()end):addTo(row_item)
                     :alignByPoint(cc.p(0.5, 0.5), 65 + (130 + 9) * (added - 1) , 83)
-                    :SetSoldier(soldier.name, self.city:GetUser():SoldierStarByName(soldier.name))
+                    :SetSoldier(
+                        soldier.name, 
+                        UtilsForSoldier:SoldierStarByName(self.city:GetUser(), soldier.name)
+                    )
                     :SetNumber(soldier.count)
                 added = added + 1
             end

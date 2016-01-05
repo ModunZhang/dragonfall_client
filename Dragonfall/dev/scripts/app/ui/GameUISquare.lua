@@ -61,7 +61,7 @@ function GameUISquare:CreateSoldierUI()
         "skeletonWarrior", "skeletonArcher", "deathKnight", "meatWagon",
     }) do
     
-        local soldier_star = User:SoldierStarByName(soldier_name)
+        local soldier_star = UtilsForSoldier:SoldierStarByName(User, soldier_name)
         local soldier_num =  User.soldiers[soldier_name]
         if soldier_num > 0 then
             self.soldier_map[soldier_name] = WidgetSoldierBox.new(nil, function()

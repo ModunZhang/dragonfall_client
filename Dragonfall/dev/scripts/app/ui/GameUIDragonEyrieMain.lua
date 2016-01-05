@@ -66,39 +66,13 @@ function GameUIDragonEyrieMain:OnUserDataChanged_buildings(userData, deltaData)
         self.hate_button:setButtonEnabled(self.building:CheckIfHateDragon())
     end
 end
--- function GameUIDragonEyrieMain:OnDragonEventChanged()
---     local dragonEvent = self.dragon_manager:GetDragonEventByDragonType(self:GetCurrentDragon():Type())
---     if dragonEvent then
---         self:RefreshUI()
---     end
--- end
-function GameUIDragonEyrieMain:OnDragonDeathEventChanged()
-    local dragonDeathEvent = self.dragon_manager:GetDragonDeathEventByType(self:GetCurrentDragon():Type())
-    if dragonDeathEvent then
+function GameUIDragonEyrieMain:OnUserDataChanged_dragonDeathEvents(userData, deltaData)
+    if deltaData("dragonDeathEvents.add") 
+    or deltaData("dragonDeathEvents.edit")
+    or deltaData("dragonDeathEvents.remove") then
         self:RefreshUI()
     end
 end
-
-function GameUIDragonEyrieMain:OnDragonDeathEventRefresh(dragonDeathEvents)
-    self:RefreshUI()
-end
-
-function GameUIDragonEyrieMain:OnDragonDeathEventTimer(dragonDeathEvent)
-    if self:GetCurrentDragon():Type() == dragonDeathEvent:DragonType()
-        and self.progress_content_death
-        and self.progress_content_death:isVisible()
-    then
-        self.progress_death:setPercentage(dragonDeathEvent:GetPercent())
-        self.dragon_death_label:setString(GameUtils:formatTimeStyleDayHour(dragonDeathEvent:GetTime()))
-    end
-end
-
--- function GameUIDragonEyrieMain:OnDragonEventTimer(dragonEvent)
---     if self:GetCurrentDragon():Type() == dragonEvent:DragonType() and self.hate_event_node then
---         local timer_text = GameUtils:formatTimeStyleDayHour(dragonEvent:GetTime())
---         self.hate_event_node:SetProgressInfo(timer_text,dragonEvent:GetPercent())
---     end
--- end
 
 ------------------------------------------------------------------
 
@@ -110,37 +84,37 @@ end
 
 function GameUIDragonEyrieMain:OnMoveInStage()
     self:CreateUI()
+    GameUIDragonEyrieMain.super.OnMoveInStage(self)
+
     self.dragon_manager:AddListenOnType(self,DragonManager.LISTEN_TYPE.OnHPChanged)
     self.dragon_manager:AddListenOnType(self,DragonManager.LISTEN_TYPE.OnBasicChanged)
     self.dragon_manager:AddListenOnType(self,DragonManager.LISTEN_TYPE.OnDragonHatched)
-    -- self.dragon_manager:AddListenOnType(self,DragonManager.LISTEN_TYPE.OnDragonEventTimer)
-    -- self.dragon_manager:AddListenOnType(self,DragonManager.LISTEN_TYPE.OnDragonEventChanged)
-    self.dragon_manager:AddListenOnType(self,DragonManager.LISTEN_TYPE.OnDragonDeathEventChanged)
-    self.dragon_manager:AddListenOnType(self,DragonManager.LISTEN_TYPE.OnDragonDeathEventRefresh)
-    self.dragon_manager:AddListenOnType(self,DragonManager.LISTEN_TYPE.OnDragonDeathEventTimer)
     User:AddListenOnType(self, "buildings")
-    GameUIDragonEyrieMain.super.OnMoveInStage(self)
+    User:AddListenOnType(self, "dragonDeathEvents")
+
+    scheduleAt(self, function()
+        local event
+        for i,v in ipairs(User.dragonDeathEvents) do
+            if v.dragonType == self:GetCurrentDragon():Type() then
+                event = v
+            end
+        end
+        if event and self.progress_content_death
+        and self.progress_content_death:isVisible()
+        then
+            local time, percent = UtilsForEvent:GetEventInfo(event)
+            self.progress_death:setPercentage(percent)
+            self.dragon_death_label:setString(GameUtils:formatTimeStyleDayHour(time))
+        end
+    end)
 end
-
--- if building:GetType() == self:GetBuilding():GetType() then
---     if self.dragon_hp_recovery_count_label then
---         local dragon_hp_recovery = self:GetBuilding():GetTotalHPRecoveryPerHour(self:GetCurrentDragon():Type())
---         self.dragon_hp_recovery_count_label:setString(string.format("+%s/h",string.formatnumberthousands(dragon_hp_recovery)))
---     end
---     self.hate_button:setButtonEnabled(self.building:CheckIfHateDragon())
--- end
-
 
 function GameUIDragonEyrieMain:OnMoveOutStage()
     self.dragon_manager:RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnHPChanged)
     self.dragon_manager:RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnBasicChanged)
     self.dragon_manager:RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnDragonHatched)
-    -- self.dragon_manager:RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnDragonEventTimer)
-    -- self.dragon_manager:RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnDragonEventChanged)
-    self.dragon_manager:RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnDragonDeathEventChanged)
-    self.dragon_manager:RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnDragonDeathEventRefresh)
-    self.dragon_manager:RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnDragonDeathEventTimer)
     User:RemoveListenerOnType(self, "buildings")
+    User:RemoveListenerOnType(self, "dragonDeathEvents")
     GameUIDragonEyrieMain.super.OnMoveOutStage(self)
 end
 
@@ -201,10 +175,16 @@ function GameUIDragonEyrieMain:RefreshUI()
         self.vitality_val_label:setString(string.formatnumberthousands(dragon:TotalVitality()))
         self.leadership_val_label:setString(string.formatnumberthousands(dragon:TotalLeadership()))
         if dragon:IsDead() then
-            local dragonDeathEvent = self.dragon_manager:GetDragonDeathEventByType(self:GetCurrentDragon():Type())
-            if dragonDeathEvent then
-                self.progress_death:setPercentage(dragonDeathEvent:GetPercent())
-                self.dragon_death_label:setString(GameUtils:formatTimeStyleDayHour(dragonDeathEvent:GetTime()))
+            local event
+            for i,v in ipairs(User.dragonDeathEvents) do
+                if v.dragonType == self:GetCurrentDragon():Type() then
+                    event = v
+                end
+            end
+            if event then
+                local time, percent = UtilsForEvent:GetEventInfo(event)
+                self.progress_death:setPercentage(percent)
+                self.dragon_death_label:setString(GameUtils:formatTimeStyleDayHour(time))
             end
             self.death_speed_button:show()
             self.progress_content_death:show()
@@ -683,7 +663,7 @@ function GameUIDragonEyrieMain:OnDragonExpItemUseButtonClicked()
 end
 
 function GameUIDragonEyrieMain:OnDragonDeathSpeedUpClicked()
-    UIKit:newGameUI("GameUIDragonDeathSpeedUp", self.dragon_manager,self:GetCurrentDragon():Type()):AddToCurrentScene(true)
+    UIKit:newGameUI("GameUIDragonDeathSpeedUp", self:GetCurrentDragon():Type()):AddToCurrentScene(true)
 end
 
 

@@ -16,7 +16,7 @@ function WidgetPromoteSoldier:ctor(soldier_type,building_type)
     WidgetPromoteSoldier.super.ctor(self,780,_("兵种晋级"))
     self.soldier_type = soldier_type
     self.building_type = building_type
-    self.star = User:SoldierStarByName(soldier_type)
+    self.star = UtilsForSoldier:SoldierStarByName(User, soldier_type)
 end
 
 function WidgetPromoteSoldier:onEnter()
@@ -71,7 +71,7 @@ function WidgetPromoteSoldier:CreateSoldierBox(isGray)
         scale = 0.8,
     }):addTo(soldier_star_bg):align(display.CENTER,58, 11)
     function soldier_box:SetSoldierIcon(isNext)
-        local current_star = User:SoldierStarByName(soldier_type)
+        local current_star = UtilsForSoldier:SoldierStarByName(User, soldier_type)
         local star = isNext and current_star+1 or current_star
         self:removeChild(self.soldier_icon, true)
 
@@ -325,8 +325,8 @@ function WidgetPromoteSoldier:IsAbleToUpgradeSecond()
     return results
 end
 function WidgetPromoteSoldier:GetNextLevelConfig()
-
-    return NORMAL[self.soldier_type.."_"..(User:SoldierStarByName(self.soldier_type) + 1)]
+    local star = UtilsForSoldier:SoldierStarByName(User, self.soldier_type)
+    return NORMAL[self.soldier_type.."_"..(star + 1)]
 end
 return WidgetPromoteSoldier
 

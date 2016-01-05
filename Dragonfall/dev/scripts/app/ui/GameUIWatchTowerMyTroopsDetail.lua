@@ -169,7 +169,8 @@ function GameUIWatchTowerMyTroopsDetail:GetItem(ITEM_TYPE,item_data)
             local y = 0
             for i,v in ipairs(item_data.soldiers) do
                 local name = Localize.soldier_name[v.name]
-                self:GetSubItem(ITEM_TYPE,i,{v.name,v.count,v.star or User:SoldierStarByName(v.name)}):addTo(bg):align(display.LEFT_BOTTOM,0, y)
+                local star = UtilsForSoldier:SoldierStarByName(User, v.name)
+                self:GetSubItem(ITEM_TYPE,i,{v.name,v.count,v.star or star}):addTo(bg):align(display.LEFT_BOTTOM,0, y)
                 y = y + 66
             end
         end

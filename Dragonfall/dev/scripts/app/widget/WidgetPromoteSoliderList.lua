@@ -236,7 +236,7 @@ function WidgetPromoteSoliderList:OnUserDataChanged_soldierStarEvents(userData, 
         for _,v in ipairs(value) do
             for _,box in ipairs(self.boxes) do
                 if v.name == box:GetSoldierType() then
-                    box:Refresh(User:SoldierStarByName(v.name))
+                    box:Refresh(UtilsForSoldier:SoldierStarByName(User, v.name))
                 end
             end
         end
@@ -246,7 +246,7 @@ function WidgetPromoteSoliderList:OnUserDataChanged_soldierStarEvents(userData, 
         for _,v in ipairs(value) do
             for _,box in ipairs(self.boxes) do
                 if v.name == box:GetSoldierType() then
-                    box:Refresh(User:SoldierStarByName(v.name))
+                    box:Refresh(UtilsForSoldier:SoldierStarByName(User, v.name))
                 end
             end
         end

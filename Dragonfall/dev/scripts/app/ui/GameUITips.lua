@@ -213,10 +213,6 @@ function GameUITips:CreateUIIf_pve()
     return self.pve_node
 end
 local pve_tips = {
-    _("探索未知的领域,经历种种艰难险阻和奇闻异事,更可藉此获得大量的资源及特殊道具!"),
-    _("地图探索度达到100%之后,即可获得珍贵的金龙币奖励!"),
-    _('找到每层"异界之门",击败凶残的BOSS,即可进击下一层!'),
-    _("探索只神秘的终极关卡,就能获得巨额的奖励以及异常稀有的个人专属头像!"),
 }
 function GameUITips:PveTips()
     return pve_tips

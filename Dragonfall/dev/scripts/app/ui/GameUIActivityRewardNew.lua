@@ -598,7 +598,7 @@ function GameUIActivityRewardNew:ui_FIRST_IN_PURGURE()
         size = 34,
         color = 0xfed36c,
         shadow = true
-    }):addTo(bar):align(display.RIGHT_CENTER,580,622)
+    }):addTo(bar):align(display.CENTER,440,622)
     UIKit:ttfLabel({
         text = _("永久激活第二条建筑队列并可领取下列丰厚奖励"),
         size = 22,

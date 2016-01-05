@@ -39,6 +39,7 @@ User.LISTEN_TYPE = Enum(
     "allianceDonate",
 
     "dragons",
+    "dragonDeathEvents",
     "dragonEquipments",
     "dragonEquipmentEvents",
 
@@ -690,49 +691,42 @@ end
 function User:GetBuildingSoldiersInfo(building)
     if building == "trainingGround" then
         return {
-            { "swordsman_1", self:SoldierStarByName("swordsman_1") },
-            {  "sentinel_1",  self:SoldierStarByName("sentinel_1") },
-            { "swordsman_2", self:SoldierStarByName("swordsman_2") },
-            {  "sentinel_2",  self:SoldierStarByName("sentinel_2") },
-            { "swordsman_3", self:SoldierStarByName("swordsman_3") },
-            {  "sentinel_3",  self:SoldierStarByName("sentinel_3") },
+            { "swordsman_1", UtilsForSoldier:SoldierStarByName(self,"swordsman_1") },
+            {  "sentinel_1",  UtilsForSoldier:SoldierStarByName(self,"sentinel_1") },
+            { "swordsman_2", UtilsForSoldier:SoldierStarByName(self,"swordsman_2") },
+            {  "sentinel_2",  UtilsForSoldier:SoldierStarByName(self,"sentinel_2") },
+            { "swordsman_3", UtilsForSoldier:SoldierStarByName(self,"swordsman_3") },
+            {  "sentinel_3",  UtilsForSoldier:SoldierStarByName(self,"sentinel_3") },
         }
     elseif building == "stable" then
         return {
-            {      "lancer_1",      self:SoldierStarByName("lancer_1") },
-            { "horseArcher_1", self:SoldierStarByName("horseArcher_1") },
-            {      "lancer_2",      self:SoldierStarByName("lancer_2") },
-            { "horseArcher_2", self:SoldierStarByName("horseArcher_2") },
-            {      "lancer_3",      self:SoldierStarByName("lancer_3") },
-            { "horseArcher_3", self:SoldierStarByName("horseArcher_3") },
+            {      "lancer_1",      UtilsForSoldier:SoldierStarByName(self,"lancer_1") },
+            { "horseArcher_1", UtilsForSoldier:SoldierStarByName(self,"horseArcher_1") },
+            {      "lancer_2",      UtilsForSoldier:SoldierStarByName(self,"lancer_2") },
+            { "horseArcher_2", UtilsForSoldier:SoldierStarByName(self,"horseArcher_2") },
+            {      "lancer_3",      UtilsForSoldier:SoldierStarByName(self,"lancer_3") },
+            { "horseArcher_3", UtilsForSoldier:SoldierStarByName(self,"horseArcher_3") },
         }
     elseif building == "hunterHall" then
         return {
-            {      "ranger_1",      self:SoldierStarByName("ranger_1") },
-            { "crossbowman_1", self:SoldierStarByName("crossbowman_1") },
-            {      "ranger_2",      self:SoldierStarByName("ranger_2") },
-            { "crossbowman_2", self:SoldierStarByName("crossbowman_2") },
-            {      "ranger_3",      self:SoldierStarByName("ranger_3") },
-            { "crossbowman_3", self:SoldierStarByName("crossbowman_3") },
+            {      "ranger_1",      UtilsForSoldier:SoldierStarByName(self,"ranger_1") },
+            { "crossbowman_1", UtilsForSoldier:SoldierStarByName(self,"crossbowman_1") },
+            {      "ranger_2",      UtilsForSoldier:SoldierStarByName(self,"ranger_2") },
+            { "crossbowman_2", UtilsForSoldier:SoldierStarByName(self,"crossbowman_2") },
+            {      "ranger_3",      UtilsForSoldier:SoldierStarByName(self,"ranger_3") },
+            { "crossbowman_3", UtilsForSoldier:SoldierStarByName(self,"crossbowman_3") },
         }
     elseif building == "workshop" then
         return {
-            { "catapult_1", self:SoldierStarByName("catapult_1") },
-            { "ballista_1", self:SoldierStarByName("ballista_1") },
-            { "catapult_2", self:SoldierStarByName("catapult_2") },
-            { "ballista_2", self:SoldierStarByName("ballista_2") },
-            { "catapult_3", self:SoldierStarByName("catapult_3") },
-            { "ballista_3", self:SoldierStarByName("ballista_3") },
+            { "catapult_1", UtilsForSoldier:SoldierStarByName(self,"catapult_1") },
+            { "ballista_1", UtilsForSoldier:SoldierStarByName(self,"ballista_1") },
+            { "catapult_2", UtilsForSoldier:SoldierStarByName(self,"catapult_2") },
+            { "ballista_2", UtilsForSoldier:SoldierStarByName(self,"ballista_2") },
+            { "catapult_3", UtilsForSoldier:SoldierStarByName(self,"catapult_3") },
+            { "ballista_3", UtilsForSoldier:SoldierStarByName(self,"ballista_3") },
         }
     end
     assert(false)
-end
-local soldiers_normal = GameDatas.Soldiers.normal
-local soldiers_special = GameDatas.Soldiers.special
-function User:SoldierStarByName(soldier_name)
-    return  UtilsForSoldier:IsSpecial(soldier_name)
-        and soldiers_special[soldier_name].star
-        or self.soldierStars[soldier_name] or 1
 end
 function User:HasAnyWoundedSoldiers()
     for _,count in pairs(self.woundedSoldiers) do
@@ -1203,62 +1197,12 @@ end
 
 
 --[[production begin]]
-local playerCitizenRecoverFullNeedHours_value = GameDatas.
-    PlayerInitData.
-    intInit.
-    playerCitizenRecoverFullNeedHours.value
 function User:RefreshOutput()
-    local production    = UtilsForBuilding:GetHouseProductions(self)
-    local buff_building = UtilsForBuilding:GetBuildingsBuff(self)
-    local buff_terrain  = UtilsForBuilding:GetTerrainResourceBuff(self)
-    local buff_tech     = UtilsForTech:GetBuff(self)
-    local buff_item     = UtilsForItem:GetBuff(self)
-    local buff_vip      = UtilsForVip:GetVipBuff(self)
-
-    local wall_info     = UtilsForBuilding:GetWallInfo(self)
-    production.wallHp   = wall_info.wallRecovery
-
-    production = production * (1 + buff_building + buff_item + buff_tech + buff_vip + buff_terrain)
-
-    local limits = UtilsForBuilding:GetWarehouseLimit(self)
-    local limits_map = setmetatable({
-        coin = math.huge,
-        wood = limits.maxWood,
-        food = limits.maxFood,
-        iron = limits.maxIron,
-        stone= limits.maxStone,
-        wallHp = wall_info.wallHp,
-        citizen= UtilsForBuilding:GetCitizenLimit(self),
-    }, BUFF_META)
-    local buff_limit = UtilsForTech:GetLimitBuff(self)
-    limits_map = limits_map * (1 + buff_limit)
-
-    for k,v in pairs(limits_map) do
-        local res = self.resources_cache[k]
-        if k == "citizen" then
-            res.limit = v - UtilsForBuilding:GetCitizenMap(self).total
-        else
-            res.limit = v
-        end
+    local reses = DataUtils:GetResOutput(self)
+    for k,v in pairs(self.resources_cache) do
+        v.limit = reses[k].limit
+        v.output = reses[k].output
     end
-
-    for k,v in pairs(production) do
-        local res = self.resources_cache[k]
-        if k == "food" then
-            res.output = math.floor(v - UtilsForSoldier:GetSoldierUpkeep(self))
-        else
-            res.output = math.floor(v)
-        end
-    end
-    local citizen = self:GetResProduction("citizen")
-    citizen.output = math.floor(citizen.limit / playerCitizenRecoverFullNeedHours_value)
-    local cart = self:GetResProduction("cart")
-    local tradeGuild_info = UtilsForBuilding:GetTradeGuildInfo(self)
-    cart.limit = tradeGuild_info.maxCart
-    cart.output = tradeGuild_info.cartRecovery
-
-    -- dump(self.resources, "self.user.resources_cache")
-    -- dump(self.resources_cache, "self.user.resources_cache")
 end
 --[[end]]
 
@@ -1527,6 +1471,14 @@ local before_map = {
     end,
 
     dragons = function()end,
+    dragonDeathEvents = function(userData, deltaData)
+        local ok, value = deltaData("dragonDeathEvents.remove")
+        if ok then
+            for k,v in ipairs(value) do
+                GameGlobalUI:showTips(_("提示"),string.format(_("%s已经复活"),Localize.dragon[v.dragonType]))
+            end
+        end
+    end,
     dragonEquipments = function()end,
     dragonEquipmentEvents = function(userData, deltaData)
         local ok, value = deltaData("dragonEquipmentEvents.remove")

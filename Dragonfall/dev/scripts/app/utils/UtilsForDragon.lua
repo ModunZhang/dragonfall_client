@@ -1,5 +1,31 @@
 UtilsForDragon = {}
 
+function UtilsForDragon:GetWeight(dragon)
+	if not self:Ishated(dragon) then
+		return 0
+	else 
+		return self:TotalStrength()
+	end
+end
+function UtilsForDragon:Ishated(dragon)
+	return dragon.star > 0
+end
+function UtilsForDragon:IsDefenced(dragon)
+	return dragon.status == 'defence'
+end
+function UtilsForDragon:IsFree(dragon)
+	return dragon.status == 'free'
+end
+function UtilsForDragon:IsDead(dragon)
+	return math.floor(dragon.hp) == 0
+end
+local dragonStar = GameDatas.Dragons.dragonStar
+local dragonLevel = GameDatas.Dragons.dragonLevel
+function UtilsForDragon:GetLeadership(dragon)
+	return dragonStar[dragon.star].initLeadership 
+		 + dragonLevel[dragon.level].leadership
+end
+
 function UtilsForDragon:GetDefenceDragon(userData)
     for i,v in ipairs(self:GetHatedDragons(userData)) do
     	if v.status == 'defence' then

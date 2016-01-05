@@ -530,7 +530,7 @@ function CityLayer:InitWithCity(city)
 end
 function CityLayer:MoveBarracksSoldiers(soldier_name, is_mark)
     if soldier_name then
-        local star = User:SoldierStarByName(soldier_name)
+        local star = UtilsForSoldier:SoldierStarByName(User, soldier_name)
         local soldier = self:CreateBarracksSoldier(soldier_name, star)
             :addTo(self:GetCityNode(), 0, BARRACKS_SOLDIER_TAG)
         if is_mark then

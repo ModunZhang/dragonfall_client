@@ -1000,7 +1000,7 @@ function WidgetEventTabButtons:TechDescribe(event)
     if User:IsProductionTechEvent(event) then
         str = _("研发").." "..Localize.productiontechnology_name[event.name]
     elseif User:IsSoldierStarEvent(event) then
-        str = UtilsForEvent:GetMilitaryTechEventLocalize(event.name, User:SoldierStarByName(event.name))
+        str = UtilsForEvent:GetMilitaryTechEventLocalize(event.name, UtilsForSoldier:SoldierStarByName(User, event.name))
     elseif User:IsMilitaryTechEvent(event) then
         str = UtilsForEvent:GetMilitaryTechEventLocalize(event.name, User:GetMilitaryTechLevel(event.name))
     else

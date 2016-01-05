@@ -41,8 +41,7 @@ function WidgetRecruitSoldier:ctor(barracks, city, soldier_name, soldier_star)
     self.barracks = barracks
     self.soldier_name = soldier_name
     
-    
-    self.star = soldier_star or city:GetUser():SoldierStarByName(soldier_name)
+    self.star = soldier_star or UtilsForSoldier:SoldierStarByName(city:GetUser(), soldier_name)
     local soldier_config, aaa = self:GetConfigBySoldierTypeAndStar(soldier_name, self.star)
     self.recruit_max = UtilsForBuilding:GetMaxRecruitSoldier(city:GetUser())
 

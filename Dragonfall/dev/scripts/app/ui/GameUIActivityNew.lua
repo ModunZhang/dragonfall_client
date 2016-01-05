@@ -212,7 +212,7 @@ function GameUIActivityNew:GetActivityItem(item_type)
             color= 0xffedae,
             align = cc.TEXT_ALIGNMENT_LEFT,
             shadow= true
-        }):align(display.RIGHT_BOTTOM,sign_bg:getPositionX() - 34,54):addTo(bg)
+        }):align(display.LEFT_BOTTOM,208,54):addTo(bg)
         local content_label = UIKit:ttfLabel({
             text = sign_str,
             size = 20,
