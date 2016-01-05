@@ -60,7 +60,7 @@ function WidgetShortcutButtons:ctor(city)
     -- 龙驻防按钮
     local dragon_defence_btn = cc.ui.UIPushButton.new({normal = 'back_ground_defence_58x74.png'})
         :onButtonClicked(function()
-            UIKit:newGameUI("GameUIDragonEyrieMain", self.city, self.city:GetFirstBuildingByType("dragonEyrie"), "dragon"):AddToCurrentScene(true)
+            UIKit:newGameUI("GameUIDragonEyrieMain", self.city, self.city:GetFirstBuildingByType("dragonEyrie"), "dragon",false,nil,true):AddToCurrentScene(true)
         end):scale(0.7)
     local dragon_img = display.newSprite(UILib.dragon_head.blueDragon)
         :align(display.CENTER, -3,4)

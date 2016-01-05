@@ -493,7 +493,6 @@ end
 function MyApp:EnterViewModelAllianceScene(alliance_id)
     NetManager:getFtechAllianceViewDataPromose(alliance_id):done(function(response)
         local alliance = Alliance_Manager:DecodeAllianceFromJson(response.msg.allianceViewData)
-        -- app:enterScene("OtherAllianceScene", {alliance}, "custom", -1, transition_)
         enter_next_scene("OtherAllianceScene", alliance)
     end)
 end

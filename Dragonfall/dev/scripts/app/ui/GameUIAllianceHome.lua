@@ -260,7 +260,7 @@ function GameUIAllianceHome:ReturnMyCity()
 end
 
 function GameUIAllianceHome:TopBg()
-    local top_bg = display.newSprite("alliance_home_top_bg_768x116.png")
+    local top_bg = display.newSprite("top_bg_768x116.png")
         :align(display.TOP_CENTER, window.cx, window.top)
         :addTo(self)
     if display.width >640 then
