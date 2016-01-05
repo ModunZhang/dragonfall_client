@@ -7,6 +7,7 @@ local UIListView = import(".UIListView")
 local WidgetSlider = import("..widget.WidgetSlider")
 local WidgetSelectDragon = import("..widget.WidgetSelectDragon")
 local WidgetInput = import("..widget.WidgetInput")
+local scheduler = require(cc.PACKAGE_NAME .. ".scheduler")
 
 local Corps = import(".Corps")
 local UILib = import(".UILib")
@@ -593,7 +594,7 @@ function GameUIAllianceSendTroops:SelectSoldiers()
             end
         end
         if soldier_num + defence_soldier_count > 0 then
-            
+
             table.insert(soldiers, {name = name,level = UtilsForSoldier:SoldierStarByName(User, name), max_num = soldier_num + defence_soldier_count})
         end
     end
@@ -831,32 +832,69 @@ function GameUIAllianceSendTroops:CreateTroopsShow()
         -- 更新
         self:SetSoldiers(soldiers)
         self:RemoveAllSoldierCrops()
-        local y  = 110
-        local x = 681
-        local total_power , total_weight, total_citizen =0,0,0
+        self.y  = 110
+        self.x = 681
+        self.total_power , self.total_weight, self.total_citizen =0,0,0
         self.soldier_crops = {}
-        for index,v in pairs(soldiers) do
-            local corp = self:NewCorps(v.soldier_type,v.power,v.soldier_star):addTo(self,2)
-            if not string.find(v.soldier_type , "catapult") and not string.find(v.soldier_type , "ballista") and not string.find(v.soldier_type , "meatWagon") then
-                corp:PlayAnimation("idle_90")
-            else
-                corp:PlayAnimation("move_90")
-            end
-            table.insert(self.soldier_crops,corp)
-            x = x - soldier_ani_width[v.soldier_type]
 
-            corp:pos(x,y)
-            total_power = total_power + v.power
-            total_weight = total_weight + v.soldier_weight
-            total_citizen = total_citizen + v.soldier_citizen
-        end
-        self:RefreshScrollNode(x)
-        info_bg:removeAllChildren()
-        self:SetPower(total_power)
-        self:SetWeight(total_weight)
-        self:SetCitizen(total_citizen)
+        self.addCount = 1
+        self.handle = scheduler.scheduleGlobal(handler(self, self.addSoldiers), 0.01, false)
+
+
+        -- for index,v in pairs(soldiers) do
+        --     local corp = self:NewCorps(v.soldier_type,v.power,v.soldier_star):addTo(self,2)
+        --     if not string.find(v.soldier_type , "catapult") and not string.find(v.soldier_type , "ballista") and not string.find(v.soldier_type , "meatWagon") then
+        --         corp:PlayAnimation("idle_90")
+        --     else
+        --         corp:PlayAnimation("move_90")
+        --     end
+        --     table.insert(self.soldier_crops,corp)
+        --     x = x - soldier_ani_width[v.soldier_type]
+
+        --     corp:pos(x,y)
+        --     total_power = total_power + v.power
+        --     total_weight = total_weight + v.soldier_weight
+        --     total_citizen = total_citizen + v.soldier_citizen
+        -- end
+        -- self:RefreshScrollNode(x)
+        -- info_bg:removeAllChildren()
+        -- self:SetPower(total_power)
+        -- self:SetWeight(total_weight)
+        -- self:SetCitizen(total_citizen)
     end
-
+    function TroopShow:addSoldiers()
+        if self.addCount > #self.soldiers or #self.soldiers == 0 then
+            self:RefreshScrollNode(self.x)
+            info_bg:removeAllChildren()
+            self:SetPower(self.total_power)
+            self:SetWeight(self.total_weight)
+            self:SetCitizen(self.total_citizen)
+            scheduler.unscheduleGlobal(self.handle)
+            return
+        end
+        local x = self.x
+        local y = self.y
+        local v = self.soldiers[self.addCount]
+        if not v then
+            return
+        end
+        -- for index,v in pairs(soldiers) do
+        local corp = self:NewCorps(v.soldier_type,v.power,v.soldier_star):addTo(self,2)
+        if not string.find(v.soldier_type , "catapult") and not string.find(v.soldier_type , "ballista") and not string.find(v.soldier_type , "meatWagon") then
+            corp:PlayAnimation("idle_90")
+        else
+            corp:PlayAnimation("move_90")
+        end
+        table.insert(self.soldier_crops,corp)
+        x = x - soldier_ani_width[v.soldier_type]
+        self.x = x
+        corp:pos(x,y)
+        self.total_power = self.total_power + v.power
+        self.total_weight = self.total_weight + v.soldier_weight
+        self.total_citizen = self.total_citizen + v.soldier_citizen
+        -- end
+        self.addCount = self.addCount + 1
+    end
     return TroopShow
 end
 function GameUIAllianceSendTroops:OnUserDataChanged_soldiers(userData, deltaData)
@@ -890,6 +928,8 @@ function GameUIAllianceSendTroops:onExit()
 end
 
 return GameUIAllianceSendTroops
+
+
 
 
 

@@ -563,6 +563,11 @@ function WorldLayer:CreateFlag(index)
         local ani = sprite:getAnimation()
         ani:playWithIndex(0)
         ani:gotoAndPlay(math.random(71) - 1)
+        if self.current_mapIndex == tonumber(index) and Alliance_Manager:GetMyAlliance().mapIndex ~= self.current_mapIndex then
+            display.newSprite("icon_current_position_1.png")
+            :addTo(node, 0, 2):scale(0.8)
+            :pos(sprite:getPositionX(), sprite:getPositionY() + sprite:getContentSize().height / 2 - 20)
+        end
     end
     self.flagSprites[indexstr] = node
 end

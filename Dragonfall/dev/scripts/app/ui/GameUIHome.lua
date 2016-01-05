@@ -275,8 +275,8 @@ function GameUIHome:CreateTop()
     ):onButtonClicked(function(event)
         UIKit:newGameUI("GameUIStore"):AddToCurrentScene(true)
     end):addTo(top_bg):pos(top_bg:getContentSize().width - 155, -16)
-    local gem_icon = display.newSprite("gem_icon_62x61.png"):addTo(button):pos(60, 3)
-    light_gem():addTo(gem_icon, 1022):pos(62/2, 61/2)
+    local gem_icon = display.newSprite("store_gem_260x116.png"):addTo(button):pos(59, 6):scale(0.5)
+    light_gem():addTo(gem_icon, 1022):pos(260/2, 116/2)
 
     -- self.gem_label = UIKit:ttfLabel({
     --     size = 20,
