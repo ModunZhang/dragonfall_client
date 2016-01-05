@@ -611,10 +611,10 @@ function CommonUpgradeUI:InitUpgradePart()
         font = UIKit:getFontFilePath(),
         size = 20,
         color = UIKit:hex2c3b(0x403c2f)
-    }):align(display.LEFT_CENTER,display.cx - 240,display.top-394):addTo(self.upgrade_layer)
+    }):align(display.LEFT_CENTER,display.cx - 240,display.top-390):addTo(self.upgrade_layer)
     self:SetUpgradeNowNeedGems()
     --升级所需时间
-    display.newSprite("hourglass_30x38.png", display.cx+100, display.top-390):addTo(self.upgrade_layer):setScale(0.6)
+    display.newSprite("hourglass_30x38.png", display.cx+100, display.top-390):addTo(self.upgrade_layer):setScale(0.8)
     self.upgrade_time = cc.ui.UILabel.new({
         UILabelType = cc.ui.UILabel.LABEL_TYPE_TTF,
         font = UIKit:getFontFilePath(),
