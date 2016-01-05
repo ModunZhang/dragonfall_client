@@ -924,6 +924,7 @@ function GameUIAllianceSendTroops:onExit()
     --     end
     --     cc.Director:getInstance():purgeCachedData()
     -- end, 0.1)
+    scheduler.unscheduleGlobal(self.show.handle)
     GameUIAllianceSendTroops.super.onExit(self)
 end
 
