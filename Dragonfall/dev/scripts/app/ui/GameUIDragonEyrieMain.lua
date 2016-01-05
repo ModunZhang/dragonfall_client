@@ -21,10 +21,11 @@ local GameUIDragonDeathSpeedUp = import(".GameUIDragonDeathSpeedUp")
 local UICheckBoxButton = import(".UICheckBoxButton")
 
 -- lockDragon: 是否锁定选择龙的操作,默认不锁定
-function GameUIDragonEyrieMain:ctor(city,building,default_tab,lockDragon,fte_dragon_type)
+function GameUIDragonEyrieMain:ctor(city,building,default_tab,lockDragon,fte_dragon_type,show_setDefence_tip)
     GameUIDragonEyrieMain.super.ctor(self,city,_("龙巢"),building,default_tab)
     self.building = building
     self.city = city
+    self.show_setDefence_tip = show_setDefence_tip
     self.draong_index = 1
     self.dragon_manager = building:GetDragonManager()
     if type(lockDragon) ~= "boolean" then lockDragon = false end
@@ -389,7 +390,8 @@ function GameUIDragonEyrieMain:CreateDragonContentNodeIf()
                     end
                 end
             end)
-        if not self.dragon_manager:GetDefenceDragon() and not GLOBAL_FTE then
+print("self.show_setDefence_tip==",self.show_setDefence_tip)
+        if not self.dragon_manager:GetDefenceDragon() and not GLOBAL_FTE and self.show_setDefence_tip then
             local r = self.garrison_button:getCascadeBoundingBox()
             local arrow = WidgetFteArrow.new(_("点击：驻防"))
                 :addTo(self:GetView()):TurnUp(false):align(display.LEFT_TOP, r.x + 30, r.y - 20)

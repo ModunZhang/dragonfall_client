@@ -118,12 +118,13 @@ function GameUIMission:CreateUIIf_achievement()
         text = _("赛琳娜:"),
         size = 24,
         color= 0x403c2f
-    }):align(display.LEFT_BOTTOM, 28, 112):addTo(recommend_contet_bg)
+    }):align(display.LEFT_BOTTOM, 28, 118):addTo(recommend_contet_bg)
     UIKit:ttfLabel({
         text = _("大人,我们现在应该:"),
         size = 20,
-        color= 0x403c2f
-    }):align(display.LEFT_BOTTOM, 28, 82):addTo(recommend_contet_bg)
+        color= 0x403c2f,
+        dimensions = cc.size(400,0)
+    }):align(display.LEFT_CENTER, 28, 92):addTo(recommend_contet_bg)
     self.recommend_desc_label = UIKit:ttfLabel({
         text = self:GetRecommendMissionDesc(),
         size = 24,
@@ -326,12 +327,13 @@ function GameUIMission:CreateUIIf_daily()
         text = _("克里冈:"),
         size = 24,
         color= 0x403c2f
-    }):align(display.LEFT_BOTTOM, 28, 112):addTo(recommend_contet_bg)
+    }):align(display.LEFT_BOTTOM, 28, 118):addTo(recommend_contet_bg)
     UIKit:ttfLabel({
         text = _("大人,完成任务领取丰厚奖励:"),
         size = 20,
-        color= 0x403c2f
-    }):align(display.LEFT_BOTTOM, 28, 82):addTo(recommend_contet_bg)
+        color= 0x403c2f,
+        dimensions = cc.size(400,0)
+    }):align(display.LEFT_CENTER, 28, 92):addTo(recommend_contet_bg)
     local daily_refresh_label = UIKit:ttfLabel({
         text = string.format(_("%s后刷新"),"00:10:10"),
         size = 24,
