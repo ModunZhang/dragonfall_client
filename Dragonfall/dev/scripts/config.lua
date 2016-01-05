@@ -26,14 +26,15 @@ CONFIG_LOCAL_SERVER = {
         name = "gate-server-1"
     },
 }
+-- 测试服地址
 CONFIG_REMOTE_SERVER = {
     update = {
-        host = "54.223.166.65",
+        host = "54.223.172.65",
         port = 3000,
         name = "update-server-1"
     },
     gate = {
-        host = "54.223.166.65",
+        host = "54.223.172.65",
         port = 13100,
         name = "gate-server-1"
     },
