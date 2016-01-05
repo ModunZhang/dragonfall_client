@@ -13,9 +13,9 @@ CURRENT_DIR = os.getcwd()
 UPDATE_SOURCE_DIR = ""
 
 PATH_OF_GIT_AUTOUPDATE = formatPath(find_environment_variable("GIT_REPOSITOTY_AUTO_UPDATE",not Logging.DEBUG_MODE))
-TARGET_PATH = formatPath("%s/public" % PATH_OF_GIT_AUTOUPDATE)
+TARGET_PATH = formatPath("%s" % PATH_OF_GIT_AUTOUPDATE)
 if isWindows():
-	TARGET_PATH = "%s/public" % find_environment_variable("GIT_REPOSITOTY_AUTO_UPDATE_CYGWIN",not Logging.DEBUG_MODE)
+	TARGET_PATH = "%s" % find_environment_variable("GIT_REPOSITOTY_AUTO_UPDATE_CYGWIN",not Logging.DEBUG_MODE)
 
 
 def pullAutoUpdateRepositoty():
@@ -33,11 +33,11 @@ def pullAutoUpdateRepositoty():
 
 def rsyncAllFiles():
 	if not isWindows():
-		command = "rsync -ravc --exclude=.DS_Store* %s %s --delete-after" % (UPDATE_SOURCE_DIR,TARGET_PATH)
+		command = "rsync -ravc --exclude=.DS_Store* %s/* %s --delete-after" % (UPDATE_SOURCE_DIR,TARGET_PATH)
 		Logging.debug(command)
 	else:
 		os.chdir(UPDATE_SOURCE_DIR)
-		command = "rsync -rsvc --exclude=.DS_Store* . %s --delete-after" % TARGET_PATH
+		command = "rsync -rsvc --exclude=.DS_Store* ./* %s --delete-after" % TARGET_PATH
 		executeCommand(command,not Logging.DEBUG_MODE)
 		os.chdir(CURRENT_DIR)
 
