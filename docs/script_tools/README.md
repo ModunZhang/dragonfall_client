@@ -39,6 +39,28 @@
 ####Mac
 * 安装**TexturePacker bash命令行可执行环境**
 
+* 安装**ImageMagick**命令行工具
+
+	执行以下命令进行安装`ImageMagick`
+	
+	~~~
+	brew install imagemagick
+	~~~
+	
+	验证`ImageMagick`的安装
+
+	~~~
+	convert -version
+	~~~
+	
+	如果验证安装失败报错,类似`dyld: Library not loaded: /opt/local/lib/xxx.dylib`的错误,执行以下命令进行修复后再进行验证安装
+	
+	~~~
+	brew uninstall libtool
+	brew install libtool --universal
+	brew link libtool --force
+	~~~
+	
 ####验证脚本的正确安装
 
 执行脚本`python checkEnv.py`进行验证脚本安装的正确性，如果发生错误请确认上面的配置!

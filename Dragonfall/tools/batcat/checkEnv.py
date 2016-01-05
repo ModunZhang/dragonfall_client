@@ -18,7 +18,7 @@ def checkEnvValue():
 			find_environment_variable("CONVERT_PATH", False)
 			find_environment_variable("GIT_REPOSITOTY_AUTO_UPDATE_CYGWIN", False)
 		else:
-			pass
+			executeCommand("convert -version",False)
 		find_environment_variable("GIT_REPOSITOTY_AUTO_UPDATE", False)
 	except Exception, e:
 		Logging.error("脚本环境就未配置成功!")

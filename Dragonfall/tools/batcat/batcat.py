@@ -222,7 +222,7 @@ def getPVRTexTool():
     else:
         return formatPath("%s/tools/TextureTools/PVRTexToolCLI" % root_dir)
 
-# windows下必须提前安装convert
+# windows/mac 下必须提前安装convert
 # http://www.imagemagick.org/script/binary-releases.php
 
 
@@ -231,8 +231,7 @@ def getConvertTool():
         root_dir = find_environment_variable("CONVERT_PATH")
         return formatPath("%s/convert.exe" % root_dir)
     else:
-        root_dir = getProjDir()
-        return formatPath("%s/tools/TextureTools/convert" % root_dir)
+        return "convert" #mac 需预先安装ImageMagick的命令行工具
 
 
 def getWin32SedPath():
