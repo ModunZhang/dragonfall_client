@@ -355,9 +355,16 @@ function CityLayer:CheckCanUpgrade()
 end
 --
 function CityLayer:InitWeather()
-    local emmiter = UIKit:CreateFog():addTo(self, 11):pos(0, 1224)
-    for i = 1, 100 do
-        emmiter:update(1)
+    local emmiter 
+    if self:Terrain() == "grassLand" then
+        emmiter = UIKit:CreateFog("fog1.png"):addTo(self, 11):pos(0, 1224)
+    elseif self:Terrain() == "iceField" then
+        emmiter = UIKit:CreateFog():addTo(self, 11):pos(0, 1224)
+    end
+    if emmiter then
+        for i = 1, 100 do
+            emmiter:update(1)
+        end
     end
 end
 function CityLayer:ChangeTerrain()
