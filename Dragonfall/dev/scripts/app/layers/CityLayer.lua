@@ -355,9 +355,9 @@ function CityLayer:CheckCanUpgrade()
 end
 --
 function CityLayer:InitWeather()
-    local emitter = UIKit:CreateFog():addTo(self, 11):pos(0, 1224)
+    local emmiter = UIKit:CreateFog():addTo(self, 11):pos(0, 1224)
     for i = 1, 100 do
-        emitter:update(1)
+        emmiter:update(1)
     end
 end
 function CityLayer:ChangeTerrain()
