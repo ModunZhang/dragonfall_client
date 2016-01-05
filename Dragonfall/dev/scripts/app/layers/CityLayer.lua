@@ -356,8 +356,8 @@ end
 --
 function CityLayer:InitWeather()
     local emitter = UIKit:CreateFog():addTo(self, 11):pos(0, 1224)
-    for i = 1, 1000 do
-        emitter:update(0.01)
+    for i = 1, 100 do
+        emitter:update(1)
     end
 end
 function CityLayer:ChangeTerrain()
