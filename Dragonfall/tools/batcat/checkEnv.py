@@ -29,11 +29,20 @@ def checkTools():
 	executeCommand("TexturePacker --version",False)
 	executeCommand("rsync --version",False)
 
+def checkPathInWindows():
+	if not isWindows():
+		return None
+	convet_path = find_environment_variable("CONVERT_PATH", False)
+	sys_path = find_environment_variable("Path", False)
+	if not convet_path in sys_path:
+		die("you need set %CONVERT_PATH% in your 'Path' environment")
+	pass
 
 # main
 if __name__ == "__main__":
 	Logging.info("开始验证脚本的执行环境")
 	checkPythonEnv()
 	checkEnvValue()
+	checkPathInWindows()
 	checkTools()
 	Logging.info("验证脚本的执行环境结束")

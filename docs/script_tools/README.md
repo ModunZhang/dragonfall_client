@@ -105,6 +105,10 @@
 	
 	`python gcm_push.py --message="Bye Bye" --id="APA91bEv6GmHN3q5Swrsu_Lxxw9zds3Q2C2TPwtWIrBDbouo4uyyE5AdaKxFnZ39FYg0dyJcliPBZa_fqrc5figMZ5-M-gMNfWb_VAm6-HQS1QiDbdyBGTnPysaMw4cBsOGaUkPUbkm_"`
 
+14. syncUpdateDataToGit.py **将自动更新的文件同步到远程git仓库**
+	
+	> 参数:1.平台 2.选择执行的环境
+
 ##关于脚本生成的临时垃圾文件
 如果python脚本执行过程中被打断或者发生关键性错误,可能会留下一些处理资源的临时文件,如果python脚本成功执行完成,会自动清理这些临时垃圾文件
 
@@ -152,7 +156,10 @@
 `WindowsPhone`的资源处理只能在Windows环境进行!
 
 ##已知问题
-* `create_android_zip.py`对android的资源压缩会导致java不能进行解压，mac下脚本暂时使用系统命令打包,windows下还未支持
+
+**自动更新上传到git的脚本只能在mac上执行**
+
+> `syncUpdateDataToGit.py`脚本在`windows`上执行时`rsync`命令拷贝时权限有bug
 
 ----
 By Dannyhe 11/11/2015
