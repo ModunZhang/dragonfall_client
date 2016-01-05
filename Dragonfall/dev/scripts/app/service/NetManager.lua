@@ -721,10 +721,8 @@ function NetManager:getLogicServerInfoPromise()
     local platform = ''
     if device.platform == 'windows' then
         platform = 'wp'
-        device_tag = -1
     elseif device.platform == 'mac' then
         platform = 'ios'
-        device_tag = -1
     elseif device.platform == "android" then
         platform = 'ios'
     elseif device.platform == "ios" then
