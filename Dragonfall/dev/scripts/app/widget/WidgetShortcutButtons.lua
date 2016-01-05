@@ -23,7 +23,7 @@ end)
 
 function WidgetShortcutButtons:ctor(city)
     self.city = city
-    local order = WidgetAutoOrder.new(WidgetAutoOrder.ORIENTATION.TOP_TO_BOTTOM,50,true):addTo(self):pos(display.left + 50, display.top-200)
+    local order = WidgetAutoOrder.new(WidgetAutoOrder.ORIENTATION.TOP_TO_BOTTOM,80,true):addTo(self):pos(display.left + 50, display.top-200):scale(0.7)
     -- BUFF按钮
     local buff_button = WidgetAutoOrderBuffButton.new()
     order:AddElement(buff_button)
@@ -127,7 +127,7 @@ function WidgetShortcutButtons:ctor(city)
 
     self.left_order_group = order
 
-    local right_top_order = WidgetAutoOrder.new(WidgetAutoOrder.ORIENTATION.TOP_TO_BOTTOM,50,true):addTo(self):pos(display.right - 50, display.top-200)
+    local right_top_order = WidgetAutoOrder.new(WidgetAutoOrder.ORIENTATION.TOP_TO_BOTTOM,50,true):addTo(self):pos(display.right - 50, display.top-200):scale(0.7)
 
     -- 活动按钮
     local button = cc.ui.UIPushButton.new(
