@@ -36,7 +36,7 @@ def buildGame():
     # command = "python cleanGame.py %s" % Platform
     # executeCommand(command, not Logging.DEBUG_MODE)
     Logging.info("---------------- 编译代码")
-    command = "python buildGame.py %s True True Release" % Platform
+    command = "python scripts.py %s True Release" % Platform
     executeCommand(command, not Logging.DEBUG_MODE)
 
 
