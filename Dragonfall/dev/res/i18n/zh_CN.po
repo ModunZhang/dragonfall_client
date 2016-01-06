@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: dragonfall\n"
-"POT-Creation-Date: 2016-01-06 15:42+0800\n"
-"PO-Revision-Date: 2016-01-06 15:42+0800\n"
+"POT-Creation-Date: 2016-01-06 17:14+0800\n"
+"PO-Revision-Date: 2016-01-06 17:14+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zh_CN\n"
@@ -50,10 +50,10 @@ msgstr "服务器连接断开,请检测你的网络环境后重试!"
 #: ui/CommonUpgradeUI.lua:981 ui/CommonUpgradeUI.lua:1001
 #: ui/CommonUpgradeUI.lua:1039 ui/CommonUpgradeUI.lua:1070
 #: ui/CommonUpgradeUI.lua:1082 ui/GameUIActivityNew.lua:561
-#: ui/GameUIActivityRewardNew.lua:339 ui/GameUIActivityRewardNew.lua:346
-#: ui/GameUIActivityRewardNew.lua:386 ui/GameUIActivityRewardNew.lua:516
-#: ui/GameUIActivityRewardNew.lua:702 ui/GameUIActivityRewardNew.lua:900
-#: ui/GameUIActivityRewardNew.lua:994 ui/GameUIAlliance.lua:375
+#: ui/GameUIActivityRewardNew.lua:342 ui/GameUIActivityRewardNew.lua:349
+#: ui/GameUIActivityRewardNew.lua:389 ui/GameUIActivityRewardNew.lua:519
+#: ui/GameUIActivityRewardNew.lua:705 ui/GameUIActivityRewardNew.lua:903
+#: ui/GameUIActivityRewardNew.lua:997 ui/GameUIAlliance.lua:375
 #: ui/GameUIAlliance.lua:382 ui/GameUIAlliance.lua:742
 #: ui/GameUIAlliance.lua:863 ui/GameUIAlliance.lua:1118
 #: ui/GameUIAlliance.lua:1123 ui/GameUIAlliance.lua:1531
@@ -1711,9 +1711,9 @@ msgid "天"
 msgstr "天"
 
 #: ui/GameUIActivityNew.lua:254 ui/GameUIActivityNew.lua:318
-#: ui/GameUIActivityRewardNew.lua:298 ui/GameUIActivityRewardNew.lua:429
-#: ui/GameUIActivityRewardNew.lua:504 ui/GameUIActivityRewardNew.lua:886
-#: ui/GameUIActivityRewardNew.lua:980 ui/GameUIMail.lua:1487
+#: ui/GameUIActivityRewardNew.lua:300 ui/GameUIActivityRewardNew.lua:432
+#: ui/GameUIActivityRewardNew.lua:507 ui/GameUIActivityRewardNew.lua:889
+#: ui/GameUIActivityRewardNew.lua:983 ui/GameUIMail.lua:1487
 #: ui/GameUIMail.lua:1510 ui/GameUIMission.lua:573 ui/GameUIPveReward.lua:114
 msgid "已领取"
 msgstr "已领取"
@@ -1730,7 +1730,7 @@ msgstr "永久获得第二条建筑队列"
 msgid "活动时间类，升级智慧中心，获得丰厚奖励"
 msgstr "升级主城堡，获得丰厚奖励"
 
-#: ui/GameUIActivityNew.lua:289 ui/GameUIActivityRewardNew.lua:741
+#: ui/GameUIActivityNew.lua:289 ui/GameUIActivityRewardNew.lua:744
 msgid "倒计时:"
 msgstr "倒计时:"
 
@@ -1760,10 +1760,10 @@ msgstr "获得%s"
 msgid "放弃"
 msgstr "放弃"
 
-#: ui/GameUIActivityNew.lua:545 ui/GameUIActivityRewardNew.lua:290
-#: ui/GameUIActivityRewardNew.lua:380 ui/GameUIActivityRewardNew.lua:510
-#: ui/GameUIActivityRewardNew.lua:650 ui/GameUIActivityRewardNew.lua:894
-#: ui/GameUIActivityRewardNew.lua:986 ui/GameUIAllianceJoinTips.lua:52
+#: ui/GameUIActivityNew.lua:545 ui/GameUIActivityRewardNew.lua:292
+#: ui/GameUIActivityRewardNew.lua:383 ui/GameUIActivityRewardNew.lua:513
+#: ui/GameUIActivityRewardNew.lua:653 ui/GameUIActivityRewardNew.lua:897
+#: ui/GameUIActivityRewardNew.lua:989 ui/GameUIAllianceJoinTips.lua:52
 #: ui/GameUIMail.lua:1497 ui/GameUIMission.lua:218 ui/GameUIMission.lua:552
 #: ui/GameUIPveReward.lua:88
 msgid "领取"
@@ -1773,96 +1773,96 @@ msgstr "领取"
 msgid "在线奖励"
 msgstr "在线奖励"
 
-#: ui/GameUIActivityRewardNew.lua:233
+#: ui/GameUIActivityRewardNew.lua:235
 msgid "领取30日奖励后，刷新奖励列表"
 msgstr "领取30日奖励后，刷新奖励列表"
 
-#: ui/GameUIActivityRewardNew.lua:339
+#: ui/GameUIActivityRewardNew.lua:342
 #, lua-format
 msgid "恭喜您获得 %s x %d"
 msgstr "恭喜您获得 %s x %d"
 
-#: ui/GameUIActivityRewardNew.lua:346
+#: ui/GameUIActivityRewardNew.lua:349
 #, lua-format
 msgid "你已领取%s"
 msgstr "你已领取%s"
 
-#: ui/GameUIActivityRewardNew.lua:358
+#: ui/GameUIActivityRewardNew.lua:361
 msgid "第二条行军队列"
 msgstr "第二条行军队列"
 
-#: ui/GameUIActivityRewardNew.lua:363
+#: ui/GameUIActivityRewardNew.lua:366
 msgid "七天后可激活"
 msgstr "七天后可激活"
 
-#: ui/GameUIActivityRewardNew.lua:386 ui/GameUIWatchTower.lua:198
+#: ui/GameUIActivityRewardNew.lua:389 ui/GameUIWatchTower.lua:198
 #: ui/GameUIWathTowerRegion.lua:187
 msgid "永久行军队列+1"
 msgstr "永久行军队列+1"
 
-#: ui/GameUIActivityRewardNew.lua:437 ui/GameUIActivityRewardNew.lua:504
+#: ui/GameUIActivityRewardNew.lua:440 ui/GameUIActivityRewardNew.lua:507
 msgid "明天领取"
 msgstr "明天领取"
 
-#: ui/GameUIActivityRewardNew.lua:563 ui/GameUIActivityRewardNew.lua:591
-#: ui/GameUIActivityRewardNew.lua:596
+#: ui/GameUIActivityRewardNew.lua:566 ui/GameUIActivityRewardNew.lua:594
+#: ui/GameUIActivityRewardNew.lua:599
 #, lua-format
 msgid "第%s天"
 msgstr "第%s天"
 
-#: ui/GameUIActivityRewardNew.lua:618
+#: ui/GameUIActivityRewardNew.lua:621
 msgid "行军队列"
 msgstr "行军队列"
 
-#: ui/GameUIActivityRewardNew.lua:619 ui/GameUIBuild.lua:65
+#: ui/GameUIActivityRewardNew.lua:622 ui/GameUIBuild.lua:65
 #: ui/GameUIHasBeenBuild.lua:434
 msgid "建筑队列"
 msgstr "建筑队列"
 
-#: ui/GameUIActivityRewardNew.lua:630
+#: ui/GameUIActivityRewardNew.lua:633
 msgid "首次储值任意金额"
 msgstr "首次储值任意金额"
 
-#: ui/GameUIActivityRewardNew.lua:636
+#: ui/GameUIActivityRewardNew.lua:639
 msgid "永久激活第二条建筑队列并可领取下列丰厚奖励"
 msgstr "永久激活第二条建筑队列并可领取下列丰厚奖励"
 
-#: ui/GameUIActivityRewardNew.lua:657
+#: ui/GameUIActivityRewardNew.lua:660
 msgid "前往充值"
 msgstr "前往充值"
 
-#: ui/GameUIActivityRewardNew.lua:736
+#: ui/GameUIActivityRewardNew.lua:739
 #, lua-format
 msgid "当前等级：LV %s"
 msgstr "当前等级：Lv%s"
 
-#: ui/GameUIActivityRewardNew.lua:752
+#: ui/GameUIActivityRewardNew.lua:755
 msgid "已失效"
 msgstr "已失效"
 
-#: ui/GameUIActivityRewardNew.lua:766
+#: ui/GameUIActivityRewardNew.lua:769
 msgid "活动期间，升级城堡获得丰厚奖励"
 msgstr "活动期间，升级城堡获得丰厚奖励"
 
-#: ui/GameUIActivityRewardNew.lua:839 ui/GameUIMail.lua:1733
+#: ui/GameUIActivityRewardNew.lua:842 ui/GameUIMail.lua:1733
 #: ui/GameUIMail.lua:2066 ui/GameUIShareReport.lua:60
 #, lua-format
 msgid "等级%s"
 msgstr "等级%s"
 
-#: ui/GameUIActivityRewardNew.lua:927
+#: ui/GameUIActivityRewardNew.lua:930
 msgid "每日在线时间到达，即可领取珍贵的道具和金龙币"
 msgstr "每日在线时间到达，即可领取珍贵的道具和金龙币"
 
-#: ui/GameUIActivityRewardNew.lua:932
+#: ui/GameUIActivityRewardNew.lua:935
 msgid "今日已在线："
 msgstr "今日已在线："
 
-#: ui/GameUIActivityRewardNew.lua:1025 ui/GameUIActivityRewardNew.lua:1095
+#: ui/GameUIActivityRewardNew.lua:1028 ui/GameUIActivityRewardNew.lua:1098
 msgid "还不能领取"
 msgstr "还不能领取"
 
-#: ui/GameUIActivityRewardNew.lua:1118
+#: ui/GameUIActivityRewardNew.lua:1121
 #, lua-format
 msgid "在线%s分钟"
 msgstr "在线%s分钟"
@@ -6683,6 +6683,12 @@ msgstr "瞭望塔"
 #: ui/GameUIWatchTower.lua:50 ui/GameUIWathTowerRegion.lua:58
 msgid "进军"
 msgstr "进军"
+
+#: ui/GameUIWatchTower.lua:160 ui/GameUIWatchTower.lua:224
+#: ui/GameUIWatchTower.lua:265
+#, lua-format
+msgid "行军队列 %d - "
+msgstr "行军队列 %d - "
 
 #: ui/GameUIWatchTower.lua:164 ui/GameUIWathTowerRegion.lua:155
 msgid "签到"
