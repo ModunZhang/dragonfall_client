@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: dragonfall\n"
-"POT-Creation-Date: 2016-01-05 22:01+0800\n"
-"PO-Revision-Date: 2016-01-05 22:01+0800\n"
+"POT-Creation-Date: 2016-01-06 15:42+0800\n"
+"PO-Revision-Date: 2016-01-06 15:42+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -51,29 +51,30 @@ msgstr ""
 #: ui/CommonUpgradeUI.lua:981 ui/CommonUpgradeUI.lua:1001
 #: ui/CommonUpgradeUI.lua:1039 ui/CommonUpgradeUI.lua:1070
 #: ui/CommonUpgradeUI.lua:1082 ui/GameUIActivityNew.lua:561
-#: ui/GameUIActivityRewardNew.lua:338 ui/GameUIActivityRewardNew.lua:345
-#: ui/GameUIActivityRewardNew.lua:483 ui/GameUIActivityRewardNew.lua:669
-#: ui/GameUIActivityRewardNew.lua:867 ui/GameUIActivityRewardNew.lua:961
-#: ui/GameUIAlliance.lua:375 ui/GameUIAlliance.lua:382
-#: ui/GameUIAlliance.lua:742 ui/GameUIAlliance.lua:863
-#: ui/GameUIAlliance.lua:1118 ui/GameUIAlliance.lua:1123
-#: ui/GameUIAlliance.lua:1531 ui/GameUIAlliance.lua:1567
-#: ui/GameUIAlliance.lua:1575 ui/GameUIAlliance.lua:1666
-#: ui/GameUIAlliance.lua:1671 ui/GameUIAlliance.lua:1675
-#: ui/GameUIAlliance.lua:1679 ui/GameUIAlliance.lua:1749
-#: ui/GameUIAlliance.lua:1754 ui/GameUIAllianceBattle.lua:432
-#: ui/GameUIAllianceBattle.lua:436 ui/GameUIAllianceBattle.lua:440
-#: ui/GameUIAllianceCityEnter.lua:137 ui/GameUIAllianceCityEnter.lua:150
-#: ui/GameUIAllianceCityEnter.lua:178 ui/GameUIAllianceCityEnter.lua:222
-#: ui/GameUIAllianceCityEnter.lua:242 ui/GameUIAllianceCityEnter.lua:252
-#: ui/GameUIAllianceCityEnter.lua:273 ui/GameUIAllianceContribute.lua:328
-#: ui/GameUIAllianceContribute.lua:333 ui/GameUIAllianceContribute.lua:344
-#: ui/GameUIAllianceInfo.lua:271 ui/GameUIAllianceInfo.lua:276
-#: ui/GameUIAllianceInfo.lua:283 ui/GameUIAllianceInfo.lua:288
-#: ui/GameUIAllianceJoinTips.lua:145 ui/GameUIAllianceMemberInfo.lua:128
-#: ui/GameUIAllianceMemberInfo.lua:171 ui/GameUIAllianceMemberInfo.lua:180
-#: ui/GameUIAllianceMemberInfo.lua:349 ui/GameUIAllianceMemberInfo.lua:354
-#: ui/GameUIAllianceMosterEnter.lua:160 ui/GameUIAllianceMosterEnter.lua:172
+#: ui/GameUIActivityRewardNew.lua:339 ui/GameUIActivityRewardNew.lua:346
+#: ui/GameUIActivityRewardNew.lua:386 ui/GameUIActivityRewardNew.lua:516
+#: ui/GameUIActivityRewardNew.lua:702 ui/GameUIActivityRewardNew.lua:900
+#: ui/GameUIActivityRewardNew.lua:994 ui/GameUIAlliance.lua:375
+#: ui/GameUIAlliance.lua:382 ui/GameUIAlliance.lua:742
+#: ui/GameUIAlliance.lua:863 ui/GameUIAlliance.lua:1118
+#: ui/GameUIAlliance.lua:1123 ui/GameUIAlliance.lua:1531
+#: ui/GameUIAlliance.lua:1567 ui/GameUIAlliance.lua:1575
+#: ui/GameUIAlliance.lua:1666 ui/GameUIAlliance.lua:1671
+#: ui/GameUIAlliance.lua:1675 ui/GameUIAlliance.lua:1679
+#: ui/GameUIAlliance.lua:1749 ui/GameUIAlliance.lua:1754
+#: ui/GameUIAllianceBattle.lua:432 ui/GameUIAllianceBattle.lua:436
+#: ui/GameUIAllianceBattle.lua:440 ui/GameUIAllianceCityEnter.lua:137
+#: ui/GameUIAllianceCityEnter.lua:150 ui/GameUIAllianceCityEnter.lua:178
+#: ui/GameUIAllianceCityEnter.lua:222 ui/GameUIAllianceCityEnter.lua:242
+#: ui/GameUIAllianceCityEnter.lua:252 ui/GameUIAllianceCityEnter.lua:273
+#: ui/GameUIAllianceContribute.lua:328 ui/GameUIAllianceContribute.lua:333
+#: ui/GameUIAllianceContribute.lua:344 ui/GameUIAllianceInfo.lua:271
+#: ui/GameUIAllianceInfo.lua:276 ui/GameUIAllianceInfo.lua:283
+#: ui/GameUIAllianceInfo.lua:288 ui/GameUIAllianceJoinTips.lua:145
+#: ui/GameUIAllianceMemberInfo.lua:128 ui/GameUIAllianceMemberInfo.lua:171
+#: ui/GameUIAllianceMemberInfo.lua:180 ui/GameUIAllianceMemberInfo.lua:349
+#: ui/GameUIAllianceMemberInfo.lua:354 ui/GameUIAllianceMosterEnter.lua:160
+#: ui/GameUIAllianceMosterEnter.lua:172
 #: ui/GameUIAllianceNoticeOrDescEdit.lua:89
 #: ui/GameUIAllianceNoticeOrDescEdit.lua:95 ui/GameUIAlliancePalace.lua:295
 #: ui/GameUIAlliancePalace.lua:299 ui/GameUIAlliancePalace.lua:455
@@ -1753,9 +1754,9 @@ msgid "天"
 msgstr "day"
 
 #: ui/GameUIActivityNew.lua:254 ui/GameUIActivityNew.lua:318
-#: ui/GameUIActivityRewardNew.lua:297 ui/GameUIActivityRewardNew.lua:396
-#: ui/GameUIActivityRewardNew.lua:471 ui/GameUIActivityRewardNew.lua:853
-#: ui/GameUIActivityRewardNew.lua:947 ui/GameUIMail.lua:1487
+#: ui/GameUIActivityRewardNew.lua:298 ui/GameUIActivityRewardNew.lua:429
+#: ui/GameUIActivityRewardNew.lua:504 ui/GameUIActivityRewardNew.lua:886
+#: ui/GameUIActivityRewardNew.lua:980 ui/GameUIMail.lua:1487
 #: ui/GameUIMail.lua:1510 ui/GameUIMission.lua:573 ui/GameUIPveReward.lua:114
 msgid "已领取"
 msgstr "Got"
@@ -1772,7 +1773,7 @@ msgstr "Get a additional build queue"
 msgid "活动时间类，升级智慧中心，获得丰厚奖励"
 msgstr "Upgrade Castle to get various rewards"
 
-#: ui/GameUIActivityNew.lua:289 ui/GameUIActivityRewardNew.lua:708
+#: ui/GameUIActivityNew.lua:289 ui/GameUIActivityRewardNew.lua:741
 msgid "倒计时:"
 msgstr "Countdown:"
 
@@ -1802,11 +1803,12 @@ msgstr "Got %s"
 msgid "放弃"
 msgstr "Give up"
 
-#: ui/GameUIActivityNew.lua:545 ui/GameUIActivityRewardNew.lua:289
-#: ui/GameUIActivityRewardNew.lua:477 ui/GameUIActivityRewardNew.lua:617
-#: ui/GameUIActivityRewardNew.lua:861 ui/GameUIActivityRewardNew.lua:953
-#: ui/GameUIAllianceJoinTips.lua:52 ui/GameUIMail.lua:1497
-#: ui/GameUIMission.lua:218 ui/GameUIMission.lua:552 ui/GameUIPveReward.lua:88
+#: ui/GameUIActivityNew.lua:545 ui/GameUIActivityRewardNew.lua:290
+#: ui/GameUIActivityRewardNew.lua:380 ui/GameUIActivityRewardNew.lua:510
+#: ui/GameUIActivityRewardNew.lua:650 ui/GameUIActivityRewardNew.lua:894
+#: ui/GameUIActivityRewardNew.lua:986 ui/GameUIAllianceJoinTips.lua:52
+#: ui/GameUIMail.lua:1497 ui/GameUIMission.lua:218 ui/GameUIMission.lua:552
+#: ui/GameUIPveReward.lua:88
 msgid "领取"
 msgstr "Get"
 
@@ -1814,91 +1816,96 @@ msgstr "Get"
 msgid "在线奖励"
 msgstr "Online rewards"
 
-#: ui/GameUIActivityRewardNew.lua:232
+#: ui/GameUIActivityRewardNew.lua:233
 msgid "领取30日奖励后，刷新奖励列表"
 msgstr "The list will be refreshed after you get 30 days' rewards"
 
-#: ui/GameUIActivityRewardNew.lua:338
+#: ui/GameUIActivityRewardNew.lua:339
 #, lua-format
 msgid "恭喜您获得 %s x %d"
 msgstr "You got %s X %d"
 
-#: ui/GameUIActivityRewardNew.lua:345
+#: ui/GameUIActivityRewardNew.lua:346
 #, lua-format
 msgid "你已领取%s"
 msgstr "You've already got %s"
 
-#: ui/GameUIActivityRewardNew.lua:353
-msgid ""
-"在未来的14天连续登陆，每天都会有来自王城的援军前来投奔你，连续登陆14天免费解"
-"锁第二条行军队列！"
-msgstr ""
-"Get reinforcements by logging in for 14 days. And you will unlock the 2nd "
-"Marching Queue at the 7th day !"
+#: ui/GameUIActivityRewardNew.lua:358
+msgid "第二条行军队列"
+msgstr "The 2nd March Queue"
 
-#: ui/GameUIActivityRewardNew.lua:404 ui/GameUIActivityRewardNew.lua:471
+#: ui/GameUIActivityRewardNew.lua:363
+msgid "七天后可激活"
+msgstr "Activating in 7 days"
+
+#: ui/GameUIActivityRewardNew.lua:386 ui/GameUIWatchTower.lua:198
+#: ui/GameUIWathTowerRegion.lua:187
+msgid "永久行军队列+1"
+msgstr "Marching Queue +1"
+
+#: ui/GameUIActivityRewardNew.lua:437 ui/GameUIActivityRewardNew.lua:504
 msgid "明天领取"
 msgstr "Get tommorrow"
 
-#: ui/GameUIActivityRewardNew.lua:530 ui/GameUIActivityRewardNew.lua:558
-#: ui/GameUIActivityRewardNew.lua:563
+#: ui/GameUIActivityRewardNew.lua:563 ui/GameUIActivityRewardNew.lua:591
+#: ui/GameUIActivityRewardNew.lua:596
 #, lua-format
 msgid "第%s天"
 msgstr "Day %s"
 
-#: ui/GameUIActivityRewardNew.lua:585
+#: ui/GameUIActivityRewardNew.lua:618
 msgid "行军队列"
 msgstr "Marching queue"
 
-#: ui/GameUIActivityRewardNew.lua:586 ui/GameUIBuild.lua:65
+#: ui/GameUIActivityRewardNew.lua:619 ui/GameUIBuild.lua:65
 #: ui/GameUIHasBeenBuild.lua:434
 msgid "建筑队列"
 msgstr "Building queue"
 
-#: ui/GameUIActivityRewardNew.lua:597
+#: ui/GameUIActivityRewardNew.lua:630
 msgid "首次储值任意金额"
 msgstr "First Charge"
 
-#: ui/GameUIActivityRewardNew.lua:603
+#: ui/GameUIActivityRewardNew.lua:636
 msgid "永久激活第二条建筑队列并可领取下列丰厚奖励"
 msgstr "Earn an extra build queue and gifts below"
 
-#: ui/GameUIActivityRewardNew.lua:624
+#: ui/GameUIActivityRewardNew.lua:657
 msgid "前往充值"
 msgstr "Go to purchase"
 
-#: ui/GameUIActivityRewardNew.lua:703
+#: ui/GameUIActivityRewardNew.lua:736
 #, lua-format
 msgid "当前等级：LV %s"
 msgstr "Current Level: Lv%s"
 
-#: ui/GameUIActivityRewardNew.lua:719
+#: ui/GameUIActivityRewardNew.lua:752
 msgid "已失效"
 msgstr "Expired"
 
-#: ui/GameUIActivityRewardNew.lua:733
+#: ui/GameUIActivityRewardNew.lua:766
 msgid "活动期间，升级城堡获得丰厚奖励"
 msgstr "Upgrade Castle to get various rewards during the activity"
 
-#: ui/GameUIActivityRewardNew.lua:806 ui/GameUIMail.lua:1733
+#: ui/GameUIActivityRewardNew.lua:839 ui/GameUIMail.lua:1733
 #: ui/GameUIMail.lua:2066 ui/GameUIShareReport.lua:60
 #, lua-format
 msgid "等级%s"
 msgstr "Lv%s"
 
-#: ui/GameUIActivityRewardNew.lua:894
+#: ui/GameUIActivityRewardNew.lua:927
 msgid "每日在线时间到达，即可领取珍贵的道具和金龙币"
 msgstr "Online to get items and Dragon coins !"
 
-#: ui/GameUIActivityRewardNew.lua:899
+#: ui/GameUIActivityRewardNew.lua:932
 msgid "今日已在线："
 msgstr "Online today:"
 
-#: ui/GameUIActivityRewardNew.lua:992 ui/GameUIActivityRewardNew.lua:1062
+#: ui/GameUIActivityRewardNew.lua:1025 ui/GameUIActivityRewardNew.lua:1095
 msgid "还不能领取"
 msgstr "Not yet"
 
-#: ui/GameUIActivityRewardNew.lua:1085
+#: ui/GameUIActivityRewardNew.lua:1118
 #, lua-format
 msgid "在线%s分钟"
 msgstr "Online for %s minutes"
@@ -6762,10 +6769,6 @@ msgstr "Marching"
 #: ui/GameUIWatchTower.lua:164 ui/GameUIWathTowerRegion.lua:155
 msgid "签到"
 msgstr "Sign"
-
-#: ui/GameUIWatchTower.lua:198 ui/GameUIWathTowerRegion.lua:187
-msgid "永久行军队列+1"
-msgstr "Marching Queue +1"
 
 #: ui/GameUIWatchTower.lua:217 ui/GameUIWathTowerRegion.lua:213
 #, lua-format
@@ -12422,6 +12425,3 @@ msgstr "Only the Chief and General can migrate the Alliance !"
 #: widget/WidgetWorldAllianceInfo.lua:466
 msgid "是否确认迁移联盟至该领土？"
 msgstr "Are you sure to migrate Alliance to this terrain ?"
-
-#~ msgid "获取服务器信息成功"
-#~ msgstr "Load server info successfully !"
