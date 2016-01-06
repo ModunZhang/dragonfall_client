@@ -673,6 +673,11 @@ function MyApp:transactionObserver(event)
                     Store.finishTransaction(transaction)
                 end
             end
+            if code == 0 then
+                UIKit:showKeyMessageDialog(_("错误"), _("请求超时"),function()
+                    app:retryConnectServer()
+                end)
+            end
         end)
     elseif transaction_state == 'purchasing' then
         --不作任何处理
