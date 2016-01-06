@@ -157,7 +157,7 @@ function GameUIWatchTower:GetMyEventItemWithIndex(index,isOpen,entity)
         :align(display.LEFT_BOTTOM, 10, 19)
     if not isOpen then
         local countInfo = User.countInfo
-        tile_label:setString(_("未解锁"))
+        tile_label:setString(string.format(_("行军队列 %d - "),index).._("未解锁"))
         WidgetPushButton.new({normal = "yellow_btn_up_148x58.png",pressed = "yellow_btn_down_148x58.png"})
             :setButtonLabel(
                 UIKit:commonButtonLable({
@@ -221,7 +221,7 @@ function GameUIWatchTower:GetMyEventItemWithIndex(index,isOpen,entity)
         display.newSprite(string.format("player_queue_seq_%d_112x112.png",index), 67, 67):addTo(event_bg)
     else
         if not entity then
-            tile_label:setString(_("待命中"))
+            tile_label:setString(string.format(_("行军队列 %d - "),index).._("待命中"))
             WidgetPushButton.new({normal = "yellow_btn_up_148x58.png",pressed = "yellow_btn_down_148x58.png"})
                 :setButtonLabel(
                     UIKit:commonButtonLable({
@@ -262,7 +262,7 @@ function GameUIWatchTower:GetMyEventItemWithIndex(index,isOpen,entity)
                 size = 20,
                 color= 0x403c2f
             }):align(display.RIGHT_TOP,554,115):addTo(bg)
-            tile_label:setString(UtilsForEvent:GetMarchEventPrefix(entity, entity.eventType))
+            tile_label:setString(string.format(_("行军队列 %d - "),index)..UtilsForEvent:GetMarchEventPrefix(entity, entity.eventType))
             if entity.eventType == "helpToTroops" then
                 local button = self:GetYellowRetreatButton():pos(558,15):addTo(bg)
                     :onButtonClicked(function(event)
