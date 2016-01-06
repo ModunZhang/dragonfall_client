@@ -438,7 +438,8 @@ function WorldLayer:CraeteLineWith(from, to)
     p2.x = p2.x + tox
     p2.y = p2.y + toy
     local length = cc.pGetLength(cc.pSub(p1,p2))
-    local unit_count = math.ceil(length / middle_index)
+    local PNG_LENGTH = 17
+    local unit_count = math.ceil(length / png_length)
     local degree = math.deg(cc.pGetAngle(cc.pSub(p1, p2), cc.p(0, 1)))
     local sprite = display.newSprite("fight_line_6x17.png", nil, nil, 
         {class=cc.FilteredSpriteWithOne})
