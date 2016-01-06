@@ -98,7 +98,9 @@ end
 
 function GameUIActivityRewardNew:OnUserDataChanged_countInfo()
     self:RefreshUI()
-    self.march_queue_text:setString(User.countInfo.day14)
+    if self.march_queue_text then
+        self.march_queue_text:setString(User.countInfo.day14)
+    end
 end
 
 function GameUIActivityRewardNew:RefreshUI()
@@ -336,6 +338,7 @@ function GameUIActivityRewardNew:On_EVERY_DAY_LOGIN_GetReward(index,reward)
     local real_index = countInfo.day60 % 30 == 0 and 30 or countInfo.day60 % 30
     if (countInfo.day60 > countInfo.day60RewardsCount and real_index == index) or (countInfo.day60RewardsCount > countInfo.day60 and real_index == index) then
         NetManager:getDay60RewardPromise():done(function()
+            dump(reward,"reward")
             GameGlobalUI:showTips(_("提示"),string.format(_("恭喜您获得 %s x %d"),Localize_item.item_name[reward.reward],reward.count))
             app:GetAudioManager():PlayeEffectSoundWithKey("BUY_ITEM")
             self:LeftButtonClicked()
