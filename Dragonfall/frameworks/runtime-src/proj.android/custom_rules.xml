@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="quick" default="preprocess">
-    
+<project name="Antenna" default="preprocess">
+    <property name="wtk.home" value="tools"/>
+    <taskdef resource="antenna.properties" classpath="tools/antenna-bin-1.0.2.jar"/>
+    <target name="preprocess" description="preprocess java source code">
+       <wtkpreprocess 
+			verbose="false"
+			srcdir="${source.dir}" 
+			destdir="${source.dir}" 
+			printsymbols="true"
+			debuglevel="info"
+			encoding="UTF-8">
+			<symbols_file name="antenna_predefines.txt"/>
+		</wtkpreprocess>
+    </target>
+    <target name="-pre-build" depends="preprocess"/>
     <target name="cleanAll" description="clean native and assets">
         <echo level="info">Start to clean native and assets</echo>
         <exec executable="sh" failonerror="true">

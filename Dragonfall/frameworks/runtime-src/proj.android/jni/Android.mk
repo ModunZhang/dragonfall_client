@@ -18,6 +18,7 @@ hellolua/main.cpp \
 ../../../../extensions/ext/notification/tolua_local_push.cpp \
 ../../../../extensions/ext/io/FileOperation.cpp \
 ../../../../extensions/ext/notification/LocalNotification-android.cpp \
+../../../../extensions/sdk/Facebook/FacebookSDK-android.cpp \
 ../../../../extensions/sdk/MarketSDKTool-android.cpp \
 ../../../../extensions/ext/platform/android/jni_StoreKit.cpp
 
@@ -44,6 +45,7 @@ $(LOCAL_PATH)/../../../cocos2d-x/external \
 $(LOCAL_PATH)/../../../cocos2d-x/tools/simulator/libsimulator/lib \
 $(LOCAL_PATH)/../../../../extensions/ext \
 $(LOCAL_PATH)/../../../../extensions/sdk \
+$(LOCAL_PATH)/../../../../extensions/sdk/Facebook \
 $(LOCAL_PATH)/../../../../extensions/ext/platform/android \
 $(LOCAL_PATH)/../../../../extensions/ext/common \
 $(LOCAL_PATH)/../../../../extensions/ext/io \

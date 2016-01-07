@@ -4,8 +4,11 @@ import android.util.Log;
 public class DebugUtil {
 	private static final boolean isLogErrorOn = true;
 	private static final boolean isLogExceptionOn = true;
-	private static final boolean isLogDebugOn = false;
-	
+//#ifdef _DEBUG
+	private static final boolean isLogDebugOn = true;
+//#else
+//@	private static final boolean isLogDebugOn = false;
+//#endif
 	public static void LogErr(String TAG, String msg) {
 		if (isLogErrorOn)
 			Log.e(TAG, msg);

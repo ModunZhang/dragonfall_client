@@ -37,6 +37,9 @@ import com.batcatstudio.dragonfall.google.billing.StoreKit;
 import com.batcatstudio.dragonfall.google.gcm.GCMIntentService;
 import com.batcatstudio.dragonfall.google.gcm.GCMUtils;
 import com.batcatstudio.dragonfall.notifications.NotificationUtils;
+//#ifdef CC_USE_FACEBOOK
+import com.batcatstudio.dragonfall.sdk.FaceBookSDK;
+//#endif
 import com.batcatstudio.dragonfall.sdk.MarketSDK;
 import com.batcatstudio.dragonfall.utils.CommonUtils;
 import com.batcatstudio.dragonfall.utils.LaunchHelper;
@@ -77,7 +80,7 @@ public class AppActivity extends Cocos2dxActivity{
         //2.Set the format of window
         
         // Check the wifi is opened when the native is debug.
-/** dannyhe 删除debbug功能
+/** dannyhe 鍒犻櫎debbug鍔熻兘
         if(nativeIsDebug())
         {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -108,6 +111,9 @@ public class AppActivity extends Cocos2dxActivity{
 		MarketSDK.initSDK();
 		GCMUtils.registerGCMService(this);
 		StoreKit.init();
+//#ifdef CC_USE_FACEBOOK
+		FaceBookSDK.init();
+//#endif
 		DataHelper.initHelper();
     }
     private boolean isNetworkConnected() {
@@ -146,7 +152,7 @@ public class AppActivity extends Cocos2dxActivity{
     
     /************************Extension Android************************/
     
-    private static native void dispatchGameEvent(String eventName); //发送自定义事件到游戏
+    private static native void dispatchGameEvent(String eventName); //鍙戦�佽嚜瀹氫箟浜嬩欢鍒版父鎴�
 
     @Override
 	protected void onResume() {
@@ -188,18 +194,18 @@ public class AppActivity extends Cocos2dxActivity{
     
     public enum AppActivityDialog {
 		//GCM
-		DIALOG_GCM_ERROR_ACCOUNT_MISSING,//没有绑定账号
-		DIALOG_GCM_ERROR_AUTHENTICATION_FAILED,//账号验证失败
+		DIALOG_GCM_ERROR_ACCOUNT_MISSING,//娌℃湁缁戝畾璐﹀彿
+		DIALOG_GCM_ERROR_AUTHENTICATION_FAILED,//璐﹀彿楠岃瘉澶辫触
 		//IAP
-		DIALOG_PAYMENT_PURCHASED,//购买成功
+		DIALOG_PAYMENT_PURCHASED,//璐拱鎴愬姛
 		//Unzip Resources
-		DIALOG_UNZIP_SPACE_NOT_ENOUGH,//解压空间不足
+		DIALOG_UNZIP_SPACE_NOT_ENOUGH,//瑙ｅ帇绌洪棿涓嶈冻
 		DIALOG_UNZIP_FAILED,
 		DAILOG_EXIT_GAME,
 	}
 	
 	public enum AppActivityMessage {
-		LOADING_UNZIP_SHOW,//解压loading
+		LOADING_UNZIP_SHOW,//瑙ｅ帇loading
 		LOADING_UNZIP_SET_PROGRESS,
 		LOADING_UNZIP_SUCCESS,
 	}
