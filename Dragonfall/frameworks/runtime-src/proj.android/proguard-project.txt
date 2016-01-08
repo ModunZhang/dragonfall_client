@@ -18,6 +18,78 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+# ----------------------------------------------
+# Common config
+# ----------------------------------------------
+-keep class android.webkit.** {*;}
+-dontwarn android.webkit.**
+
+-keep class android.net.http.**{*;}
+-dontwarn android.net.http.**
+-keep class com.google.**{*;}
+-dontwarn com.google.**
+
+-keep class com.android.network.**{*;}
+-dontwarn com.android.network.**
+
+# ---------------- annotations -----------------
+# keep annotations.
+-keepattributes *Annotation*
+
+# ---------------- serializable -----------------
+-keep class * implements java.io.Serializable {
+    <fields>;
+}
+
+# ---------------- enumeration -----------------
+# For enumeration classes, see http://proguard.sourceforge.net/manual/examples.html#enumerations
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+# ---------------- android -----------------
+# android app.
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.ContentProvider
+-keep public class * extends android.app.backup.BackupAgentHelper
+-keep public class * extends android.preference.Preference
+
+# We want to keep methods in Activity that could be used in the XML attribute onClick
+-keepclassmembers class * extends android.app.Activity {
+   public void *(android.view.View);
+}
+
+# android view.
+-keepclasseswithmembers class * extends android.view.View {
+    public <init>(android.content.Context);
+    public <init>(android.content.Context, android.util.AttributeSet);
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+}
+-keepclassmembers public class * extends android.view.View {
+   void set*(***);
+   *** get*();
+}
+-keep public class * extends android.view.View$BaseSavedState{*;}
+
+# android parcelable.
+-keep class * implements android.os.Parcelable {
+  public static final android.os.Parcelable$Creator *;
+}
+
+-keep public class com.nineoldandroids.**
+-keep public class android.support.v4.**
+
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+# ----------------------------------------------
+# Common config End
+# ----------------------------------------------
+
 #================cocos2dx========================
 -keep class org.cocos2dx.lib.** {*;}
 -keep class com.chukong.cocosplay.** {*;}
@@ -29,11 +101,12 @@
 -keep class com.tendcloud.** {*;}
 -dontwarn com.tendcloud.**
 -dontwarn com.talkingdata.**
+-keep public class com.tendcloud.tenddata.** { public protected *;}
+#facebook
+-keep class com.facebook.** { *;}
+-dontwarn com.facebook.**
 
-#================jni========================
--keepclasseswithmembernames class * {
-    native <methods>;
-}
+#================Project========================
 -keep class com.batcatstudio.dragonfall.notifications.NotificationUtils {
 	public static boolean addLocalPush(...);
 	public static void cancelAllLocalPush(...);
@@ -98,6 +171,13 @@
 	public static void updateTransactionStates(...);
 	public static boolean isGMSSupport();
 	public static void getGMSSupport();
+}
+-keep class com.batcatstudio.dragonfall.sdk.FaceBookSDK {
+	public static void Initialize();
+    public static void Login();
+    public static boolean IsAuthenticated();
+    public static java.lang.String GetFBUserName();
+    public static java.lang.String GetFBUserId();
 }
 #================Google Billing========================
 -keep class com.android.vending.billing.**
