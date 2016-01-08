@@ -14,8 +14,8 @@ echo   APP_ANDROID_ROOT    = %APP_ANDROID_ROOT%
 echo - cleanup
 if exist "%APP_ANDROID_ROOT%bin" rmdir /s /q "%APP_ANDROID_ROOT%bin"
 mkdir "%APP_ANDROID_ROOT%bin"
-if exist "%APP_ANDROID_ROOT%assets" rmdir /s /q "%APP_ANDROID_ROOT%assets"
-mkdir "%APP_ANDROID_ROOT%assets"
+::if exist "%APP_ANDROID_ROOT%assets" rmdir /s /q "%APP_ANDROID_ROOT%assets"
+::mkdir "%APP_ANDROID_ROOT%assets"
 echo - copy config
 copy "%APP_ROOT%config.json" "%APP_ANDROID_ROOT%assets\config.json"
 

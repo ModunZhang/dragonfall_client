@@ -189,6 +189,9 @@ public class AppActivity extends Cocos2dxActivity{
 		if(StoreKit.handleActivityResult(requestCode, resultCode, data)) {
 			super.onActivityResult(requestCode, resultCode, data);
 		}
+//#ifdef CC_USE_FACEBOOK
+		FaceBookSDK.onActivityResult(this, requestCode, resultCode, data);
+//#endif
 	}
 	/************************Dialog************************/
     

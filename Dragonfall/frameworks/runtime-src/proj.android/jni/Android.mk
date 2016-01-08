@@ -20,6 +20,7 @@ hellolua/main.cpp \
 ../../../../extensions/ext/notification/LocalNotification-android.cpp \
 ../../../../extensions/sdk/Facebook/FacebookSDK-android.cpp \
 ../../../../extensions/sdk/MarketSDKTool-android.cpp \
+../../../../extensions/sdk/Facebook/tolua_fb_sdk.cpp \
 ../../../../extensions/ext/platform/android/jni_StoreKit.cpp
 
 ifeq ($(CC_USE_POMELO_C_LIB),1)

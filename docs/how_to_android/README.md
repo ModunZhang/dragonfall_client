@@ -13,10 +13,12 @@
 2. 安装Android. Stand-alone SDK Tools,从 [http://developer.android.com/sdk/installing/index.html](http://developer.android.com/sdk/installing/index.html) 下载最新版本的SDK Tools.下载解压缩,不能放在包含中文和空格的目录中.
 
 3. 安装NDK.由于 cocos2d-x 还不支持最新的 NDK r10，所以我们需要从网络上搜索 NDK r9d 下载用于编译.下载解压缩,不能放在包含中文和空格的目录中.
+	~~~
+	如果需要使用cocos2d-x官方提供的编译脚本编译android上的第三方库,cocos2d-x官方提供的编译脚本需要使用NDK r10版本，具体查看它的说明文件
+	~~~
+4. 安装Ant. 从 [http://ant.apache.org](http://ant.apache.org) 下载最新版本的Ant 执行文件.下载解压缩,不能放在包含中文和空格的目录中.
 
-4. 安装Ant. 从 [http://ant.apache.org/](http://ant.apache.org/) 下载最新版本的Ant 执行文件.下载解压缩,不能放在包含中文和空格的目录中.
-
-5. 安装Eclipse Mars(Java Developer版本即可).下载解压缩,不能放在包含中文和空格的目录中. 
+5. 安装Eclipse(Java Developer版本即可).下载解压缩,不能放在包含中文和空格的目录中. 
 
 ## 配置工作
 
@@ -58,11 +60,17 @@
     export PATH=$PATH:${ANDROID_NDK_ROOT}:${ANT_ROOT}:${ANDROID_SDK_ROOT}:${ANDROID_SDK_ROOT}/tools:${ANDROID_SDK_ROOT}/platform-tools
     ~~~
 
+-   Windows 下修改环境变量：
+	
+	**通过系统设置添加以上Mac下的系统变量**	
+
 - SDK配置
 
     1. 终端执行`android`命令,对 SDK 进行更新.至少要安装`android-10`相关sdk
     
     2. 按照[http://developer.android.com/tools/help/adt.html](http://developer.android.com/tools/help/adt.html)的`Installing the Eclipse Plugin`步骤安装ADT到Eclipse.
+    
+	3. 按照[http://antenna.sourceforge.net/wtkpreprocess.php](http://antenna.sourceforge.net/wtkpreprocess.php)安装Eclipse插件`Antenna`
 
 - Android配置文件
   
@@ -116,6 +124,7 @@
   * Dragonfall/frameworks/runtime-src/proj.android
   * Dragonfall/frameworks/cocos2d-x/cocos/platform/android/java
   * external/Android/google-play-services_lib_3225130/google-play-services_lib
+  * external/Android/facebook
   
 - 验证开发环境  
 
@@ -136,9 +145,13 @@
 2.  点击 Browse 按钮, 选择新工程目录中的 `Dragonfall/frameworks/cocos2d-x/cocos/platform/android/java`
 3.  点击 "Finish" 完成操作.
 
-接下来导入 Google Play 的依赖库
+接下来导入 `Google Play` 的依赖库
 
 1. 重复上述步骤，导入 `external/Android/google-play-services_lib_3225130/google-play-services_lib`
+
+接下来导入 `Facebook` 的依赖库
+
+1. 重复上述步骤，导入 `external/Android/facebook`
 
 接下来导入项目的Android 工程：
 
@@ -147,6 +160,12 @@
 3.  检查 `Project Build Target` 是否是Android-10 SDK
 
     ![](res/check-project.png)
+
+~~~
+设置Antenna插件中我们项目控制java编译的宏,具体需要设置的宏定义
+参考文件Dragonfall/frameworks/runtime-src/proj.android/antenna_predefines.txt
+设置方法:http://antenna.sourceforge.net/wtkpreprocess.php
+~~~
 
 
 
@@ -185,53 +204,63 @@ Android 官方文档：http://developer.android.com/tools/device.html
 2. 连接手机，确保手机连接成功.
 3. 在终端中进入项目的脚本工具命令目录,按顺序执行以下命令
    
-   * 如果是开发模式(debug)
+	* 如果是开发模式(debug)
     
-    
-   ~~~
-   python buildGame.py Android False False Debug
-   python create_android_zip.py
-   ~~~
+    ~~~
+   	python buildGame.py Android False False Debug
+   	python create_android_zip.py
+   	~~~
    
-   * 如果是发布模式(release)
-   
-   
-   ~~~
-   python buildGame.py Android True True Release
-   python create_android_zip.py
-   ~~~
+	* 如果是发布模式(release)
+	
+	~~~
+    python buildGame.py Android True True Release
+    python create_android_zip.py
+    ~~~
    
 4. 在终端中进入项目的Android目录`Dragonfall/frameworks/runtime-src/proj.android`,然后执行以下命令(Mac)
 
-    * 如果是开发模式(debug)
+	* 如果是开发模式(debug)
 
-   ~~~
-   sh build_native.sh
-   ant clean
-   ant debug
-   ant installd
-   ant run
-   ~~~
+	   ~~~
+	   sh build_native.sh
+	   ant clean
+	   ant debug
+	   ant installd
+	   ant run
+	   ~~~
    
-   * 如果是发布模式(release)
-   
-   ~~~
-   sh build_native_release.sh
-   ant clean
-   ant release
-   ant installr
-   ant run
-   ~~~
-**注意:**如果是在`windows`上开发,上面的`shell`脚本要改成对应的`bat`脚本，比如像下面，在`windows`下的开发模式(debug)，则执行以下命令
+	* 如果是发布模式(release)
+	   
+	   ~~~
+	   sh build_native_release.sh
+	   ant clean
+	   ant release
+	   ant installr
+	   ant run
+	   ~~~
 
-   ~~~
-   build_native.bat
-   ant clean
-   ant debug
-   ant installd
-   ant run
-   ~~~
+5. 注意:如果是在`windows`上开发,上面的`shell`脚本要改成对应的`bat`脚本，比如像下面，在`windows`下的开发模式(debug)，则执行以下命令
+	
+	* 如果是开发模式(debug)
+	
+	~~~
+	build_native.bat
+	ant clean
+	ant debug
+	ant installd
+	ant run
+	~~~
 
+	* 如果是发布模式(release)
+
+	~~~
+	build_native_release.bat
+	ant clean
+	ant debug
+	ant installd
+	ant run
+	~~~	
 
 ### 其他技巧 ###
 
@@ -280,7 +309,7 @@ Sender ID:
 
 	* `在windows上开发时把我们项目根目录放到磁盘的根目录,如:D:\`
 	
-	* 将项目的根目录改名为`client`
+	* 将项目的根目录`dragonfall_client`改名为`client`
 
 
 * 如果`eclipse`安装后无法启动,检查

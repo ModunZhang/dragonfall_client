@@ -21,6 +21,13 @@
 //MARK:Jni native method
 
 static jclass jcFaceBookSDK = NULL;
+static jmethodID jmInitialize = NULL;
+static jmethodID jmIsAuthenticated = NULL;
+static jmethodID jmLogin = NULL;
+static jmethodID jmGetFBUserName = NULL;
+static jmethodID jmGetFBUserId = NULL;
+
+//method
 static bool initJNI(JNIEnv* env, jclass cls) 
 {
     if (env == NULL) {
@@ -33,6 +40,43 @@ static bool initJNI(JNIEnv* env, jclass cls)
         LOGE("Get jcFaceBookSDK failed");
         return false;
     }
+
+    jmInitialize = env->GetStaticMethodID(jcFaceBookSDK, "Initialize", "()V");
+    if (jmInitialize == NULL)
+    {
+        LOGE("Get jmInitialize failed");
+        return false;
+    }
+    
+    jmIsAuthenticated = env->GetStaticMethodID(jcFaceBookSDK, "IsAuthenticated", "()Z");
+    if(jmIsAuthenticated == NULL)
+    {
+        LOGE("Get jmIsAuthenticated failed");
+        return false;
+    } 
+
+    jmLogin = env->GetStaticMethodID(jcFaceBookSDK, "Login", "()V");
+    if(jmLogin == NULL)
+    {
+        LOGE("Get jmLogin failed");
+        return false;
+    }
+
+    jmGetFBUserName = env->GetStaticMethodID(jcFaceBookSDK, "GetFBUserName", "()Ljava/lang/String;");
+    if(jmGetFBUserName == NULL)
+    {
+        LOGE("Get jmGetFBUserName failed");
+        return false;
+    } 
+
+    jmGetFBUserId = env->GetStaticMethodID(jcFaceBookSDK, "GetFBUserId", "()Ljava/lang/String;");
+    if(jmGetFBUserId == NULL)
+    {
+        LOGE("Get jmGetFBUserId failed");
+        return false;
+    }
+    
+    return true;
 }
 
 extern "C" {
@@ -40,8 +84,17 @@ extern "C" {
     JNIEXPORT void JNICALL FaceBookSDK_NATIVE_FUNCTION(FaceBookSDK_initJNI)(JNIEnv*  env, jclass cls) 
     {
         if (!initJNI(env, cls)) {
-            LOGE("initJNI failed");
+            LOGE("initJNI FacebookSDK failed");
         }
+    }
+    JNIEXPORT void JNICALL FaceBookSDK_NATIVE_FUNCTION(FaceBookSDK_FaceBookEvent)(JNIEnv*  env, jclass cls,jstring eventName,jstring fbUserName,jstring fbUserId) 
+    {
+        LOGD("FaceBookSDK_FaceBookEvent");
+        cocos2d::ValueMap tempMap;
+        tempMap["event"] = cocos2d::JniHelper::jstring2string(eventName);
+        tempMap["username"] = cocos2d::JniHelper::jstring2string(fbUserName);
+        tempMap["userid"] = cocos2d::JniHelper::jstring2string(fbUserId);
+        FacebookSDK::GetInstance()->CallLuaCallback(tempMap);
     }
 }
 
@@ -50,6 +103,8 @@ static FacebookSDK *s_FacebookSDK = NULL; // pointer to singleton
 
 void FacebookSDK::Initialize(std::string appId /* = "" */)
 {
+    JNIEnv* env = cocos2d::JniHelper::getEnv();
+    env->CallStaticVoidMethod(jcFaceBookSDK,jmInitialize);
 }
 
 FacebookSDK::~FacebookSDK()
@@ -74,23 +129,49 @@ FacebookSDK* FacebookSDK::GetInstance()
  */
 bool FacebookSDK::IsAuthenticated()
 {
-    return false;
+    if(NULL == jmIsAuthenticated)
+    {
+        return false;
+    }
+    jboolean ret = JNI_FALSE;
+    JNIEnv* env = cocos2d::JniHelper::getEnv();
+    ret = env->CallStaticBooleanMethod(jcFaceBookSDK,jmIsAuthenticated);
+    return ret;
 }
 
 std::string FacebookSDK::GetFBUserName()
 {
-    return std::string("");
+    std::string ret = "";
+    if (NULL != jmGetFBUserName)
+    {
+        JNIEnv* env = cocos2d::JniHelper::getEnv();
+        jstring jResult = (jstring)env->CallStaticObjectMethod(jcFaceBookSDK, jmGetFBUserName);
+        ret = cocos2d::JniHelper::jstring2string(jResult);
+    }
+    return ret;
 }
 
 std::string FacebookSDK::GetFBUserId()
 {
-    return std::string("");
+    std::string ret = "";
+    if (NULL != jmGetFBUserId)
+    {
+        JNIEnv* env = cocos2d::JniHelper::getEnv();
+        jstring jResult = (jstring)env->CallStaticObjectMethod(jcFaceBookSDK, jmGetFBUserId);
+        ret = cocos2d::JniHelper::jstring2string(jResult);
+    }
+    return ret;
 }
-
 /**
  *  登录facebook
  */
 void FacebookSDK::Login()
 {
+    if(NULL == jmLogin)
+    {
+        return;
+    }
+    JNIEnv* env = cocos2d::JniHelper::getEnv();
+    env->CallStaticVoidMethod(jcFaceBookSDK,jmLogin);
 }
 #endif
