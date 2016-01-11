@@ -350,8 +350,8 @@ function GameUIWall:RefreshListView()
     end
     local soldiers = clone(User.defenceTroop.soldiers)
     table.sort( soldiers, function ( a,b )
-        local total_power_a = User:GetSoldierConfig(a.name).power * a.count
-        local total_power_b = User:GetSoldierConfig(b.name).power * b.count
+        local total_power_a = UtilsForSoldier:GetSoldierConfig(User, a.name).power * a.count
+        local total_power_b = UtilsForSoldier:GetSoldierConfig(User, b.name).power * b.count
         return total_power_a > total_power_b
     end )
     for i=1,#soldiers,4 do
@@ -364,7 +364,10 @@ function GameUIWall:RefreshListView()
                 row_item:setContentSize(cc.size(546,166))
                 WidgetSoldierBox.new(nil, function()end):addTo(row_item)
                     :alignByPoint(cc.p(0.5, 0.5), 65 + (130 + 9) * (added - 1) , 83)
-                    :SetSoldier(soldier.name, self.city:GetUser():SoldierStarByName(soldier.name))
+                    :SetSoldier(
+                        soldier.name, 
+                        UtilsForSoldier:SoldierStarByName(self.city:GetUser(), soldier.name)
+                    )
                     :SetNumber(soldier.count)
                 added = added + 1
             end

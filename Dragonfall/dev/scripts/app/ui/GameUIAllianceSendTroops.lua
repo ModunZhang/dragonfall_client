@@ -593,7 +593,8 @@ function GameUIAllianceSendTroops:SelectSoldiers()
             end
         end
         if soldier_num + defence_soldier_count > 0 then
-            table.insert(soldiers, {name = name,level = User:SoldierStarByName(name), max_num = soldier_num + defence_soldier_count})
+            
+            table.insert(soldiers, {name = name,level = UtilsForSoldier:SoldierStarByName(User, name), max_num = soldier_num + defence_soldier_count})
         end
     end
     for k,v in pairs(soldiers) do

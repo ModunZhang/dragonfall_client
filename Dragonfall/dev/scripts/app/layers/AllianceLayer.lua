@@ -767,7 +767,7 @@ function AllianceLayer:RefreshSpriteInfo(sprite, mapObj, alliance)
 
         info.banner:setTexture(banners[member.helpedByTroopsCount])
         info.level:setString(member.keepLevel)
-        info.name:setString(string.format("[%s]%s", alliance.basicInfo.tag, member.name))
+        info.name:setString(string.format("%s", member.name))
 
         if member.isProtected then
             if sprite:getChildByTag(SMOKE_TAG) then
@@ -1091,9 +1091,11 @@ function AllianceLayer:CreateAllianceObjects(obj_node, terrain, style, index, al
             decorator.is_ani = true
             table.insert(decorators, decorator)
         elseif deco_png then
+            local s = deco_png == "crushed_airship.png" and 2 or 1
             local decorator = display.newSprite(deco_png)
                 :addTo(obj_node, getZorderByXY(x, y))
                 :pos(self:GetInnerMapPosition(x,y))
+                :scale(s)
             decorator.x = v.x
             decorator.y = v.y
             decorator.name = name
@@ -1158,9 +1160,11 @@ function AllianceLayer:CreateNoManLand(obj_node, terrain, index)
                 decorator.is_ani = true
                 table.insert(decorators, decorator)
             elseif deco_png then
+                local s = deco_png == "crushed_airship.png" and 2 or 1
                 local decorator = display.newSprite(deco_png)
-                    :addTo(obj_node, getZorderByXY(x, y))
+                    :addTo(obj_node, getZorderByXY(x,y))
                     :pos(self:GetInnerMapPosition(x,y))
+                    :scale(s)
                 decorator.x = x
                 decorator.y = y
                 decorator.name = name

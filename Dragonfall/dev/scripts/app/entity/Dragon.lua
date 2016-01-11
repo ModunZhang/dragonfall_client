@@ -484,7 +484,8 @@ function Dragon:__getDragonLeadershipBuff()
 	if skill then
 		effect  = effect + skill:GetEffect()
 	end
-	if User:IsItemEventActive("troopSizeBonus") then
+	
+	if UtilsForItem:IsItemEventActive(User, "troopSizeBonus") then
 		effect = effect + UtilsForItem:GetItemBuff("troopSizeBonus")
 	end
 	local eq_buffs = self:GetAllEquipmentBuffEffect()

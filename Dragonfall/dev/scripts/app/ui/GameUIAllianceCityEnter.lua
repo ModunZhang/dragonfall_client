@@ -107,7 +107,7 @@ function GameUIAllianceCityEnter:GetBuildingInfo()
     }
     local player_name = {
         {_("玩家"),0x615b44},
-        {self:GetMember().name,0x403c2f},
+        {"["..self:GetFocusAlliance().basicInfo.tag.."]"..self:GetMember().name,0x403c2f},
     }
 
     local help_count = {

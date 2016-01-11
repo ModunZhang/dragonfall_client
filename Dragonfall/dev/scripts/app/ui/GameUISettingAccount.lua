@@ -338,20 +338,22 @@ function GameUISettingAccount:ExchangeBindAccount()
                         end,function()end)
                     end
                 elseif select_facebook:isButtonSelected() then
-                    ext.facebook.login(function ( data )
-                        if data.event == "login_success" then
-                            local userid,username = data.userid,data.username
-                            if User.gc and User.gc.gcId == userid then
-                                UIKit:showMessageDialog(_("提示"),_("你的Facebook账号绑定了当前游戏账号，请登录其他Facebook账号，再重试"))
+                    UIKit:showMessageDialog(_("提示"),_("是否确认切换至Facebook账号？"),function()
+                        ext.facebook.login(function ( data )
+                            if data.event == "login_success" then
+                                local userid,username = data.userid,data.username
+                                if User.gc and User.gc.gcId == userid then
+                                    UIKit:showMessageDialog(_("提示"),_("你的Facebook账号绑定了当前游戏账号，请登录其他Facebook账号，再重试"))
+                                else
+                                    NetManager:getSwitchGcPromise(userid):done(function (response)
+                                        app:restart(true)
+                                    end)
+                                end
                             else
-                                NetManager:getSwitchGcPromise(userid):done(function (response)
-                                    app:restart(true)
-                                end)
+                                UIKit:showMessageDialog(_("提示"),_("链接失败"))
                             end
-                        else
-                            UIKit:showMessageDialog(_("提示"),_("链接失败"))
-                        end
-                    end)
+                        end)
+                    end,function()end)
                 end
             end
             if not User.gc then
@@ -374,6 +376,7 @@ function GameUISettingAccount:ExchangeBindAccount()
 end
 
 return GameUISettingAccount
+
 
 
 
