@@ -21,10 +21,11 @@ local GameUIDragonDeathSpeedUp = import(".GameUIDragonDeathSpeedUp")
 local UICheckBoxButton = import(".UICheckBoxButton")
 
 -- lockDragon: 是否锁定选择龙的操作,默认不锁定
-function GameUIDragonEyrieMain:ctor(city,building,default_tab,lockDragon,fte_dragon_type)
+function GameUIDragonEyrieMain:ctor(city,building,default_tab,lockDragon,fte_dragon_type,show_setDefence_tip)
     GameUIDragonEyrieMain.super.ctor(self,city,_("龙巢"),building,default_tab)
     self.building = building
     self.city = city
+    self.show_setDefence_tip = show_setDefence_tip
     self.draong_index = 1
     self.dragon_manager = building:GetDragonManager()
     if type(lockDragon) ~= "boolean" then lockDragon = false end
@@ -67,9 +68,9 @@ function GameUIDragonEyrieMain:OnUserDataChanged_buildings(userData, deltaData)
     end
 end
 function GameUIDragonEyrieMain:OnUserDataChanged_dragonDeathEvents(userData, deltaData)
-    if deltaData("dragonDeathEvents.add") 
-    or deltaData("dragonDeathEvents.edit")
-    or deltaData("dragonDeathEvents.remove") then
+    if deltaData("dragonDeathEvents.add")
+        or deltaData("dragonDeathEvents.edit")
+        or deltaData("dragonDeathEvents.remove") then
         self:RefreshUI()
     end
 end
@@ -100,7 +101,7 @@ function GameUIDragonEyrieMain:OnMoveInStage()
             end
         end
         if event and self.progress_content_death
-        and self.progress_content_death:isVisible()
+            and self.progress_content_death:isVisible()
         then
             local time, percent = UtilsForEvent:GetEventInfo(event)
             self.progress_death:setPercentage(percent)
@@ -345,6 +346,7 @@ function GameUIDragonEyrieMain:CreateDragonContentNodeIf()
         --驻防
         local checkbox_image = {on = "draon_garrison_btn_d_82x86.png",off = "draon_garrison_btn_n_82x86.png",}
         local dragon = self:GetCurrentDragon()
+
         self.garrison_button = UICheckBoxButton.new(checkbox_image)
             :addTo(dragonAnimateNode):align(display.LEFT_BOTTOM, 25, 310)
             :setButtonSelected(dragon:IsDefenced())
@@ -371,7 +373,7 @@ function GameUIDragonEyrieMain:CreateDragonContentNodeIf()
                             end
                             NetManager:getSetDefenceTroopPromise(dragonType,soldiers):done(function ()
                                 self.garrison_button:setButtonSelected(true)
-                            end)    
+                            end)
                         end,{isMilitary = true,terrain = Alliance_Manager:GetMyAlliance().basicInfo.terrain,title = _("驻防部队")}):AddToCurrentScene(true)
                     else
                         UIKit:showMessageDialog(nil,_("龙未处于空闲状态"))
@@ -388,6 +390,16 @@ function GameUIDragonEyrieMain:CreateDragonContentNodeIf()
                     end
                 end
             end)
+print("self.show_setDefence_tip==",self.show_setDefence_tip)
+        if not self.dragon_manager:GetDefenceDragon() and not GLOBAL_FTE and self.show_setDefence_tip then
+            local r = self.garrison_button:getCascadeBoundingBox()
+            local arrow = WidgetFteArrow.new(_("点击：驻防"))
+                :addTo(self:GetView()):TurnUp(false):align(display.LEFT_TOP, r.x + 30, r.y - 20)
+            self:performWithDelay(function()
+                self:GetView():removeChild(arrow, true)
+            end, 3)
+        end
+
 
         --
         self.progress_content_hated,self.progress_hated = self:CreateProgressTimer()
@@ -668,6 +680,11 @@ end
 
 
 return GameUIDragonEyrieMain
+
+
+
+
+
 
 
 

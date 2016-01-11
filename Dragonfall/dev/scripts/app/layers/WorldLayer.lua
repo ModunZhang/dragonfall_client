@@ -215,7 +215,7 @@ function WorldLayer:MoveAllianceFromTo(fromIndex, toIndex)
         table.insert(actions, cc.DelayTime:create(step_time))
     end
     local gap, scal, ft, offset = -65, 0.8, 0.5, -40
-    UIKit:CreateMoveSoldiers(degree, {name = "ranger_1", star = 3}, scal)
+    UIKit:CreateMoveSoldiers(degree, {name = "ranger_3", star = 3}, scal)
     :addTo(self.moveLayer)
     :pos(sour.x + normal.x * (2 * gap + offset), sour.y + normal.y * (2 * gap + offset))
     :runAction(transition.sequence{
@@ -226,7 +226,7 @@ function WorldLayer:MoveAllianceFromTo(fromIndex, toIndex)
         cc.RemoveSelf:create(),
     })
 
-    UIKit:CreateMoveSoldiers(degree, {name = "swordsman_1", star = 3}, scal)
+    UIKit:CreateMoveSoldiers(degree, {name = "swordsman_3", star = 3}, scal)
     :addTo(self.moveLayer)
     :pos(sour.x + normal.x * (gap + offset), sour.y + normal.y * (gap + offset))
     :runAction(transition.sequence{
@@ -237,7 +237,7 @@ function WorldLayer:MoveAllianceFromTo(fromIndex, toIndex)
         cc.RemoveSelf:create(),
     })
 
-    UIKit:CreateMoveSoldiers(degree, {name = "lancer_1", star = 3}, scal)
+    UIKit:CreateMoveSoldiers(degree, {name = "lancer_3", star = 3}, scal)
     :addTo(self.moveLayer)
     :pos(sour.x + normal.x * (offset + 10), sour.y + normal.y * (offset + 10))
     :runAction(transition.sequence{
@@ -438,7 +438,8 @@ function WorldLayer:CraeteLineWith(from, to)
     p2.x = p2.x + tox
     p2.y = p2.y + toy
     local length = cc.pGetLength(cc.pSub(p1,p2))
-    local unit_count = math.ceil(length / middle_index)
+    local PNG_LENGTH = 17
+    local unit_count = math.ceil(length / PNG_LENGTH)
     local degree = math.deg(cc.pGetAngle(cc.pSub(p1, p2), cc.p(0, 1)))
     local sprite = display.newSprite("fight_line_6x17.png", nil, nil, 
         {class=cc.FilteredSpriteWithOne})
@@ -563,6 +564,11 @@ function WorldLayer:CreateFlag(index)
         local ani = sprite:getAnimation()
         ani:playWithIndex(0)
         ani:gotoAndPlay(math.random(71) - 1)
+        if self.current_mapIndex == tonumber(index) and Alliance_Manager:GetMyAlliance().mapIndex ~= self.current_mapIndex then
+            display.newSprite("icon_current_position_1.png")
+            :addTo(node, 0, 2):scale(0.8)
+            :pos(sprite:getPositionX(), sprite:getPositionY() + sprite:getContentSize().height / 2 - 20)
+        end
     end
     self.flagSprites[indexstr] = node
 end

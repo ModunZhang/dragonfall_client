@@ -493,7 +493,6 @@ end
 function MyApp:EnterViewModelAllianceScene(alliance_id)
     NetManager:getFtechAllianceViewDataPromose(alliance_id):done(function(response)
         local alliance = Alliance_Manager:DecodeAllianceFromJson(response.msg.allianceViewData)
-        -- app:enterScene("OtherAllianceScene", {alliance}, "custom", -1, transition_)
         enter_next_scene("OtherAllianceScene", alliance)
     end)
 end
@@ -638,7 +637,7 @@ function MyApp:transactionObserver(event)
     local transaction = event.transaction
     local transaction_state = transaction.state
     if transaction_state == 'restored' then
-        device.showAlert("提示","已为你恢复以前的购买",{_("确定")})
+        device.showAlert(_("恭喜"),_("已为你恢复以前的购买"),{_("确定")})
         Store.finishTransaction(transaction)
         device.hideActivityIndicator()
     elseif transaction_state == 'purchased' then
@@ -660,7 +659,7 @@ function MyApp:transactionObserver(event)
                     end
                 end
                 UIKit:showMessageDialog(_("恭喜"),
-                    string.format("您已获得%s,到物品里面查看",
+                    string.format(_("您已获得%s,到物品里面查看"),
                         UIKit:getIapPackageName(transaction.productIdentifier)),
                     openRewardIf)
             end

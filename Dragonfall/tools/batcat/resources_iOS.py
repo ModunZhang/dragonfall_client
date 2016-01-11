@@ -14,7 +14,7 @@ XXTEASign = getXXTEASign()
 TEMP_RES_DIR = getTempDir()
 
 QUIET_MODE = True
-
+Logging.DEBUG_MODE = False
 
 def getAllArgs():
 
@@ -72,14 +72,14 @@ def exportImagesRes(image_dir_path):
                             continue
                         Logging.debug("处理 %s" % image_sourceFile)
                         fileExt = image_sourceFile.split('.')[-1]
-                        if fileExt not in getTempFileExtensions():
+                        if fileExt == 'plist':
+                            shutil.copy(image_sourceFile, outdir)
+                        elif fileExt not in getTempFileExtensions():
                             if NEED_ENCRYPT_RES:
                                 CompileResources(
                                     image_sourceFile, outdir)
                             else:
                                 shutil.copy(image_sourceFile, outdir)
-                        elif fileExt == 'plist':
-                            shutil.copy(image_sourceFile, outdir)
             elif "rgba444_single" == dir_name:  # rgba444_single文件夹
                 for image_file in os.listdir(sourceFile):
                     temp_file = os.path.join(TEMP_RES_DIR, image_file)

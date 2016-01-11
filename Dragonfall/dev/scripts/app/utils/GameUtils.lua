@@ -313,7 +313,7 @@ function GameUtils:GetServerInfo(param, callback)
             callback(false)
         end
     end, 
-    string.format("http://gate.batcatstudio.com/dragonfall/query-entry?env=%s&version=%s&platform=%s", string.urlencode(param.env), string.urlencode(param.version),platform), "GET")
+    string.format("http://gate.batcatstudio.com/dragonfall/check-version?env=%s&version=%s&platform=%s", string.urlencode(param.env), string.urlencode(param.version),platform), "GET")
     request:setTimeout(6.18)
     request:start()
 end
