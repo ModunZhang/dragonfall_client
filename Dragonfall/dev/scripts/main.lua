@@ -14,7 +14,7 @@ function __G__TRACKBACK__(errorMessage)
         print("LUA ERROR: " .. tostring(errorMessage) .. "\n")
         print(debug.traceback("", 2))
         print("----------------------------------------")
-        if device.platform ~= 'winrt' then
+        if device.platform ~= 'winrt' and device.platform ~= 'android' then
             local errDesc = tostring(errorMessage) .. "\n" .. debug.traceback("", 2)
             device.showAlert("☠错误☠",errDesc,{"复制！"},function()
                 ext.copyText(errDesc)
