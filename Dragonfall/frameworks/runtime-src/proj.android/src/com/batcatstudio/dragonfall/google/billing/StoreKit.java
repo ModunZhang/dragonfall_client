@@ -129,7 +129,7 @@ public class StoreKit {
 				@Override
 				public void run() {
 					verifyGPV3Purchase(purchase.getOrderId(), purchase.getOriginalJson(),
-							URLEncoder.encode(purchase.getSignature()));
+							purchase.getSignature());
 				}
 			});
 		}
@@ -241,7 +241,7 @@ public class StoreKit {
 										if (DEBUG)
 											DebugUtil.LogDebug(TAG, URLEncoder.encode(purchase.getSignature()));
 										verifyGPV3Purchase(purchase.getOrderId(), purchase.getOriginalJson(),
-												URLEncoder.encode(purchase.getSignature()));
+												purchase.getSignature());
 									}
 								});
 							}
