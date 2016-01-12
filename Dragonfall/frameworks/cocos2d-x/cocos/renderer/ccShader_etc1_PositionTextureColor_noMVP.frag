@@ -1,8 +1,6 @@
 // u_texture1是etc的alpha数据也可以用ETC1压缩 by dannyhe
 const char* ccShader_etc1_PositionTextureColor_noMVP_frag = STRINGIFY(
-\n#ifdef GL_ES\n
-precision mediump float;
-\n#endif\n
+\n
 varying vec4 v_fragmentColor;
 varying vec2 v_texCoord;
 
