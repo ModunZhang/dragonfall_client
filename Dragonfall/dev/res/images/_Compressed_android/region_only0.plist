@@ -59,15 +59,15 @@
             <key>crushed_airship.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1916,1188},{80,70}}</string>
+                <string>{{1900,1641},{102,89}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{80,70}}</string>
+                <string>{{0,0},{102,89}}</string>
                 <key>sourceSize</key>
-                <string>{80,70}</string>
+                <string>{102,89}</string>
             </dict>
             <key>hill_1_desert_new.png</key>
             <dict>
@@ -225,45 +225,6 @@
                 <key>sourceSize</key>
                 <string>{480,480}</string>
             </dict>
-            <key>my_keep_1.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{484,1896},{150,139}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{150,139}}</string>
-                <key>sourceSize</key>
-                <string>{150,139}</string>
-            </dict>
-            <key>other_keep_1.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{636,1896},{150,139}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{150,139}}</string>
-                <key>sourceSize</key>
-                <string>{150,139}</string>
-            </dict>
-            <key>other_keep_2.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{788,1896},{149,147}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{149,147}}</string>
-                <key>sourceSize</key>
-                <string>{149,147}</string>
-            </dict>
             <key>plus_down1_desert.png</key>
             <dict>
                 <key>frame</key>
@@ -384,11 +345,11 @@
             <key>warriors_tomb_80x72.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1900,1641},{80,72}}</string>
+                <string>{{1916,1188},{80,72}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{80,72}}</string>
                 <key>sourceSize</key>
@@ -404,7 +365,7 @@
             <key>size</key>
             <string>{2048,2048}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:b3d1665666ad3246577e74acaeec45a6:82746f727c0e50570bd0aab62ea6c566:4dcc3a053dc9494de5f339e0ac05a3ac$</string>
+            <string>$TexturePacker:SmartUpdate:6e4fdeec3922d380af9fe64e0149c470:6335e00c39ba3e3dd45fdc84d4bd38ae:4dcc3a053dc9494de5f339e0ac05a3ac$</string>
             <key>textureFileName</key>
             <string>region_only0.png</string>
         </dict>
