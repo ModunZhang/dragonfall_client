@@ -549,7 +549,7 @@ function MyApp:verifyAdeasygoPurchase(transaction)
                 end
             end
             UIKit:showMessageDialog(_("恭喜"),
-                string.format("您已获得%s,到物品里面查看",
+                string.format(_("您已获得%s,到物品里面查看"),
                     UIKit:getIapPackageName(transaction.productIdentifier)),
                 openRewardIf)
         end
@@ -573,7 +573,7 @@ function MyApp:verifyMicrosoftPurchase(transaction)
                 end
             end
             UIKit:showMessageDialog(_("恭喜"),
-                string.format("您已获得%s,到物品里面查看",
+                string.format(_("您已获得%s,到物品里面查看"),
                     UIKit:getIapPackageName(transaction.productIdentifier)),
                 openRewardIf)
         end
