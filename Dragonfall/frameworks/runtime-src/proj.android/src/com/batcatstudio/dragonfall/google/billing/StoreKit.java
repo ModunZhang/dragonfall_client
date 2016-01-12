@@ -179,9 +179,10 @@ public class StoreKit {
 		}
 	};
 
-	// support
+	// can buy ?
 	public static boolean isGMSSupport() {
-		return CommonUtils.hasInstallPackage(GOOGLEPLAYSERVICEPACKAGENAME);
+		//google play service and  billing v3  
+		return mHelper.iapSupported();
 	}
 
 	public static void getGMSSupport() {
