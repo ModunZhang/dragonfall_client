@@ -292,7 +292,25 @@ CC_USE_CCBUILDER | 使用 Cocos Builder 支持模块。
 CC_USE_SPINE | 使用骨骼动画
 CC_USE_ETC1_ZLIB | 打开贴图文件的zlib压缩检查功能,用来压缩etc1文件。需要配合自定义的命令行工具CompressETCTexture用。
 CC_USE_POMELO_C_LIB | 启用pomelo c版本的客户端支持(android会自动添加引用的pomelo库,iOS则需要手动引入到Xcode)
+CC_USE_FACEBOOK | 打开Facebook的功能。这个宏不能控制是否编译facebook二进制到包中。
 
+### Java中的宏定义
+
+> 注意:这里的宏和`使用模块化编译缩小 apk 体积`中的宏可能同名,但是这里的宏是定义在`Eclipse`/`antenna_predefines.txt`中.只会影响`Java`编译的宏。
+
+MACRO        | 功能 
+------------ | ------------- 
+CC_USE_FACEBOOK | 打开Android中的FaceBook在java中的逻辑
+COCOS_DEBUG  | 打开Android下Java的Debug模式,主要用于控制`DebugUtil`类中的打印函数
+
+
+### Jni和Java中的编写约定
+
+* Java中的打印请使用`DebugUtil`类的静态方法，不使用系统提供的`Log`
+
+* Jni中如果需要打印,请确保release模式下不会打印(使用NDEBUG宏定义打印宏无效)
+
+* 如果是可选功能,在Java中使用宏定义开关。比如上面的facebook
 
 ### DragonFall GCM
 
