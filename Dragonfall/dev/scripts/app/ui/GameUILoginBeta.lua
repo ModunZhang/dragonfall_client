@@ -29,6 +29,10 @@ function GameUILoginBeta:ctor()
         {image = "ui_pvr1.pvr.ccz",list = "ui_pvr1.plist"},
         {image = "ui_pvr2.pvr.ccz",list = "ui_pvr2.plist"},
     }
+    if device.platform == 'android' then -- android预先加载未被压缩的图
+        table.insert(self.local_resources,{image = "city_only0.pvr.ccz",list = "city_only0.plist"})
+        table.insert(self.local_resources,{image = "buildings0.pvr.ccz",list = "buildings0.plist"})
+    end
     self.local_resources_percent_per = LOCAL_RESOURCES_PERCENT / #self.local_resources
 end
 
