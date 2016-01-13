@@ -261,7 +261,6 @@ function GameUIActivityRewardNew:ui_EVERY_DAY_LOGIN()
             enable:clearFilter()
             could_get = auto_get_reward == 0 and (i - flag) == 1
         else
-
             if flag == i then
                 if flag > geted or (geted == 30 and flag == 1) then -- can
                     check_bg:hide()
@@ -323,7 +322,7 @@ function GameUIActivityRewardNew:ui_EVERY_DAY_LOGIN()
         x = x + 110
         if i % 5 == 0 then
             x = 3
-            if i - flag < 5 then
+            if i - flag < 5 and i - flag >= 0 then
                 y = y - 222
             else
                 y = y - 108
@@ -392,6 +391,7 @@ function GameUIActivityRewardNew:ui_CONTINUITY()
             end)
         end)
         :setButtonEnabled(User.countInfo.day14==7)
+    button:setVisible(User.basicInfo.marchQueue < 2)   
     self.list_view = UIListView.new{
         viewRect = cc.rect(26,20,556,590),
         direction = cc.ui.UIScrollView.DIRECTION_VERTICAL
