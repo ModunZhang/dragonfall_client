@@ -35,7 +35,7 @@ public class LaunchHelper {
 		}
 	}
 	
-	// -1 - >none ,0 -> sdcard ,1 ->mobile
+	// -1 - >error ,0 -> sdcard ,1 ->mobile
 	private static int getInstallFlag() {
 		int intallFlag = -1; 
 		if(!DataHelper.isExternalStorageMounted() || !DataHelper.isExternalStorageSpaceEnough()) {

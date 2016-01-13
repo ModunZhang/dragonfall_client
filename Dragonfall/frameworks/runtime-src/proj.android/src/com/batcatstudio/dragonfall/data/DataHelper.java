@@ -45,7 +45,7 @@ public class DataHelper {
 	
 	private static String PREFERENCES_NAME = "com.batcatstudio.game.preferences";
 	
-	public static final long ZIP_RESOURCE_SIZE = 53109928;
+	public static final long ZIP_RESOURCE_SIZE = 58260384;
 
 	private static int appVersionCode = -1;
 
@@ -368,7 +368,7 @@ public class DataHelper {
 	}
 	
 	public static String getUnZipRootPath(boolean isSDCard) {
-		return isSDCard?Environment.getExternalStorageDirectory().getAbsolutePath():Environment.getDataDirectory().getAbsolutePath();
+		return isSDCard?Environment.getExternalStorageDirectory().getAbsolutePath():AppActivity.getGameActivity().getFilesDir().getAbsolutePath();
 	}
 	
 	public static boolean hasInstallUnzip() {
