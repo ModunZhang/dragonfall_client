@@ -35,7 +35,6 @@ import com.batcatstudio.dragonfall.R;
 import com.batcatstudio.dragonfall.data.DataHelper;
 import com.batcatstudio.dragonfall.google.billing.StoreKit;
 import com.batcatstudio.dragonfall.google.gcm.GCMIntentService;
-import com.batcatstudio.dragonfall.google.gcm.GCMUtils;
 import com.batcatstudio.dragonfall.notifications.NotificationUtils;
 //#ifdef CC_USE_FACEBOOK
 import com.batcatstudio.dragonfall.sdk.FaceBookSDK;
@@ -60,7 +59,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
 import android.view.KeyEvent;
-import android.view.WindowManager;
 
 
 public class AppActivity extends Cocos2dxActivity{
@@ -109,13 +107,13 @@ public class AppActivity extends Cocos2dxActivity{
         /** Init Java Native **/
         CommonUtils.getInstance();
 		MarketSDK.initSDK();
-		GCMUtils.registerGCMService(this);
 		StoreKit.init();
 //#ifdef CC_USE_FACEBOOK
 		FaceBookSDK.init();
 //#endif
 		DataHelper.initHelper();
     }
+    
     private boolean isNetworkConnected() {
             ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);  
             if (cm != null) {  

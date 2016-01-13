@@ -127,7 +127,7 @@
 
 -keep class com.batcatstudio.dragonfall.utils.CommonUtils {
 	public static java.lang.String getUDID();
-
+    public static void RegistereForRemoteNotifications();
 	public static void copyText(...);
 
 	public static java.lang.String getAppVersion();

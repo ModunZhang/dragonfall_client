@@ -6,7 +6,6 @@ import org.cocos2dx.lua.AppActivity;
 import org.cocos2dx.utils.PSNetwork;
 
 import com.batcatstudio.dragonfall.R;
-import com.batcatstudio.dragonfall.data.DataHelper;
 import com.batcatstudio.dragonfall.google.gcm.GCMUtils;
 
 import android.content.Context;
@@ -172,4 +171,17 @@ public class CommonUtils {
 	public static String GetDeviceToken() {
 		return GCMUtils.getRegisterId();
 	}
+	
+	public static void RegistereForRemoteNotifications() {
+		getInstance().RegisterGCMServiceIf();
+	}
+	
+	// we want to register the GCM service if the device support
+    private void RegisterGCMServiceIf()
+    {
+    	if(hasInstallPackage("com.google.android.gsf"))
+    	{
+    		GCMUtils.registerGCMService(AppActivity.getGameActivity());
+    	}
+    }
 }

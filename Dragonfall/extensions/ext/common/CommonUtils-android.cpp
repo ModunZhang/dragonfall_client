@@ -59,8 +59,16 @@ void DisableIdleTimer(bool disable)
  */
 //CloseKeyboard
 void CloseKeyboard(){}
-//游戏启动就会请求GCM
-void RegistereForRemoteNotifications(){}
+//Register the GCM service
+void RegistereForRemoteNotifications()
+{
+    cocos2d::JniMethodInfo t;
+    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "RegistereForRemoteNotifications", "()V")) 
+    {
+        t.env->CallStaticVoidMethod(t.classID,t.methodID);
+        t.env->DeleteLocalRef(t.classID);
+    }
+}
 //debug方法
 void ClearOpenUdidData(){}
 
