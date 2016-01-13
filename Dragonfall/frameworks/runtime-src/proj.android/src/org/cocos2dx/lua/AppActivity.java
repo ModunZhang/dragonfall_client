@@ -80,7 +80,7 @@ public class AppActivity extends Cocos2dxActivity{
         //2.Set the format of window
         
         // Check the wifi is opened when the native is debug.
-/** dannyhe 鍒犻櫎debbug鍔熻兘
+/** dannyhe comment the debug code
         if(nativeIsDebug())
         {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -152,7 +152,7 @@ public class AppActivity extends Cocos2dxActivity{
     
     /************************Extension Android************************/
     
-    private static native void dispatchGameEvent(String eventName); //鍙戦�佽嚜瀹氫箟浜嬩欢鍒版父鎴�
+    private static native void dispatchGameEvent(String eventName); //dispath the life cycle event to native
 
     @Override
 	protected void onResume() {
@@ -197,18 +197,18 @@ public class AppActivity extends Cocos2dxActivity{
     
     public enum AppActivityDialog {
 		//GCM
-		DIALOG_GCM_ERROR_ACCOUNT_MISSING,//娌℃湁缁戝畾璐﹀彿
-		DIALOG_GCM_ERROR_AUTHENTICATION_FAILED,//璐﹀彿楠岃瘉澶辫触
+		DIALOG_GCM_ERROR_ACCOUNT_MISSING,// There is no Google account on the phone, ask the user to open the account manager and add a Google account
+		DIALOG_GCM_ERROR_AUTHENTICATION_FAILED,// Bad Google Account password. ask user to enter his/her Google Account password, and let the user retry manually later.
 		//IAP
-		DIALOG_PAYMENT_PURCHASED,//璐拱鎴愬姛
+		DIALOG_PAYMENT_PURCHASED,//Iap success
 		//Unzip Resources
-		DIALOG_UNZIP_SPACE_NOT_ENOUGH,//瑙ｅ帇绌洪棿涓嶈冻
+		DIALOG_UNZIP_SPACE_NOT_ENOUGH,//not enough space to unzip the game resources
 		DIALOG_UNZIP_FAILED,
 		DAILOG_EXIT_GAME,
 	}
 	
 	public enum AppActivityMessage {
-		LOADING_UNZIP_SHOW,//瑙ｅ帇loading
+		LOADING_UNZIP_SHOW,//the loading of unzip resources 
 		LOADING_UNZIP_SET_PROGRESS,
 		LOADING_UNZIP_SUCCESS,
 	}
@@ -229,22 +229,26 @@ public class AppActivity extends Cocos2dxActivity{
 	public static Handler gameHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
+			
 			AppActivityMessage msg_type = AppActivityMessage.values()[msg.what];
 			switch (msg_type) {
-			case LOADING_UNZIP_SHOW:
-				gameActivity.showLoadingDialog();
-				break;
-			case LOADING_UNZIP_SET_PROGRESS:
-				gameActivity.setLoadingDialogProgress(msg.arg1);
-				break;
-			case LOADING_UNZIP_SUCCESS:
-				gameActivity.dismissLoadingDialog();
-				System.gc();
-				LaunchHelper.initNativeLuaEngine();
-				break;
-			default:
-				break;
-			}
+				case LOADING_UNZIP_SHOW:
+					gameActivity.showLoadingDialog();
+					break;
+				
+				case LOADING_UNZIP_SET_PROGRESS:
+					gameActivity.setLoadingDialogProgress(msg.arg1);
+					break;
+				
+				case LOADING_UNZIP_SUCCESS:
+					gameActivity.dismissLoadingDialog();
+					System.gc();
+					LaunchHelper.initNativeLuaEngine();
+					break;
+				
+				default:
+					break;
+				}
 			super.handleMessage(msg);
 		}
 	};
@@ -252,26 +256,34 @@ public class AppActivity extends Cocos2dxActivity{
 	/************************Dialog************************/
 	@Override
 	protected Dialog onCreateDialog(int id, Bundle args) {
+		
 		AppActivityDialog dialogEnum = AppActivityDialog.values()[id];
+		
 		switch (dialogEnum) {
-		case DIALOG_PAYMENT_PURCHASED:
-			return new AlertDialog.Builder(this).setMessage(R.string.dialog_msg_payment_purchased).setPositiveButton(R.string.ok, null)
-					.setCancelable(false).create();
-		case DIALOG_GCM_ERROR_ACCOUNT_MISSING:
-			return createGoogleGCMErrorDialog(AppActivityDialog.DIALOG_GCM_ERROR_ACCOUNT_MISSING.ordinal(), R.string.dialog_msg_gcm_error_account_missing);
-		case DIALOG_GCM_ERROR_AUTHENTICATION_FAILED:
-			return createGoogleGCMErrorDialog(AppActivityDialog.DIALOG_GCM_ERROR_AUTHENTICATION_FAILED.ordinal(), R.string.dialog_msg_gcm_error_authentication_failed);
-		case DIALOG_UNZIP_SPACE_NOT_ENOUGH:
-			dismissLoadingDialog();
-			return createUnzipFailedDialog(R.string.dialog_msg_sd_space_not_enough);
-		case DIALOG_UNZIP_FAILED:
-			dismissLoadingDialog();
-			return createUnzipFailedDialog(R.string.dialog_msg_unzip_failed);
-		case DAILOG_EXIT_GAME:
-			return new AlertDialog.Builder(this).setMessage(R.string.exit_game_title)
-					.setPositiveButton(R.string.yes, getFinishGameBtnListener()).setNegativeButton(R.string.no, null).create();
-		default:
-			return super.onCreateDialog(id, args);
+		
+			case DIALOG_PAYMENT_PURCHASED:
+				return new AlertDialog.Builder(this).setMessage(R.string.dialog_msg_payment_purchased).setPositiveButton(R.string.ok, null)
+						.setCancelable(false).create();
+			case DIALOG_GCM_ERROR_ACCOUNT_MISSING:
+				return createGoogleGCMErrorDialog(AppActivityDialog.DIALOG_GCM_ERROR_ACCOUNT_MISSING.ordinal(), R.string.dialog_msg_gcm_error_account_missing);
+			
+			case DIALOG_GCM_ERROR_AUTHENTICATION_FAILED:
+				return createGoogleGCMErrorDialog(AppActivityDialog.DIALOG_GCM_ERROR_AUTHENTICATION_FAILED.ordinal(), R.string.dialog_msg_gcm_error_authentication_failed);
+			
+			case DIALOG_UNZIP_SPACE_NOT_ENOUGH:
+				dismissLoadingDialog();
+				return createUnzipFailedDialog(R.string.dialog_msg_sd_space_not_enough);
+			
+			case DIALOG_UNZIP_FAILED:
+				dismissLoadingDialog();
+				return createUnzipFailedDialog(R.string.dialog_msg_unzip_failed);
+			
+			case DAILOG_EXIT_GAME:
+				return new AlertDialog.Builder(this).setMessage(R.string.exit_game_title)
+						.setPositiveButton(R.string.yes, getFinishGameBtnListener()).setNegativeButton(R.string.no, null).create();
+			
+			default:
+				return super.onCreateDialog(id, args);
 		}
 	}
 	

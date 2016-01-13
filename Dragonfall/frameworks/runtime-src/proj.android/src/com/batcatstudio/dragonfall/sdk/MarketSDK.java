@@ -20,6 +20,9 @@ public class MarketSDK {
 	public static void initSDK() {
 		TalkingDataGA.init(AppActivity.getGameActivity().getApplicationContext(), TD_APP_ID,
 				TD_CHANNEL_ID);
+//#ifndef COCOS_DEBUG
+//@		TalkingDataGA.setVerboseLogDisabled();
+//#endif
 	}
 
 	public static void onPlayerLogin(String playerId, String playerName,
