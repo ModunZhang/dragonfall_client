@@ -11,9 +11,10 @@ if true or device.platform ~= 'winrt' then
             setmetatable(v, {
                 __index = function(t, numberOrString)
                     if type(numberOrString) == "number" then
-                        if numberOrString < 1 then
-                            return rawget(v, 1)
-                        elseif numberOrString > #v then
+                        -- if numberOrString < 0 then
+                        --     return rawget(v, 1)
+                        -- else
+                        if numberOrString > #v then
                             return rawget(v, #v)
                         end
                     elseif type(numberOrString) == "string" then

@@ -572,6 +572,7 @@ function WorldLayer:CreateFlag(index)
         node = display.newNode():addTo(self.allianceLayer):pos(p.x+40, p.y + 50)
         display.newSprite("world_crown.png"):addTo(node)
     else
+        math.randomseed(tonumber(index))
         node = display.newNode():addTo(self.allianceLayer):pos(p.x, p.y)
         local sprite = ccs.Armature:create("daqizi"):addTo(node)
         :scale(0.4):pos(40 - math.random(80), 30 - math.random(60))
