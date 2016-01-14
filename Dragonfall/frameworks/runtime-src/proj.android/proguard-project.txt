@@ -101,9 +101,11 @@
 -keep class com.tendcloud.** {*;}
 -dontwarn com.tendcloud.**
 -dontwarn com.talkingdata.**
+-dontwarn com.gametalkingdata.**
+-keep public class com.gametalkingdata.** {*;}
 -keep public class com.tendcloud.tenddata.** {*;}
 #facebook
--keep class com.facebook.** { *;}
+-keep class com.facebook.** {*;}
 -dontwarn com.facebook.**
 
 #================Project========================
