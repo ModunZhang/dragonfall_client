@@ -185,11 +185,7 @@ local SOLDIER_IMAGES = {
     paladin = "deathKnight.png",
     steamTank = "meatWagon.png",
 
-    wall = {
-        "gate_1.png",
-        "gate_2.png",
-        "gate_3.png",
-    }
+    wall = "gate_1.png",
 }
 local SOLDIER_COLOR_BG_IMAGES = {
     wall = "blue_bg_128x128.png",
@@ -304,11 +300,7 @@ local BLACK_SOLDIER_IMAGES = {
     paladin = "deathKnight.png",
     steamTank = "meatWagon.png",
 
-    wall = {
-        "gate_1.png",
-        "gate_2.png",
-        "gate_3.png",
-    }
+    wall = "gate_1.png",
 }
 local DECORATOR_IMAGE = {
     grassLand = {

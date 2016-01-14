@@ -99,7 +99,7 @@ end
 function GameUIActivityRewardNew:OnUserDataChanged_countInfo()
     self:RefreshUI()
     if self.march_queue_text then
-        self.march_queue_text:setString(User.countInfo.day14)
+        self.march_queue_text:setString(User.countInfo.day14 > 7 and 7 or User.countInfo.day14)
     end
 end
 
@@ -261,7 +261,6 @@ function GameUIActivityRewardNew:ui_EVERY_DAY_LOGIN()
             enable:clearFilter()
             could_get = auto_get_reward == 0 and (i - flag) == 1
         else
-
             if flag == i then
                 if flag > geted or (geted == 30 and flag == 1) then -- can
                     check_bg:hide()
@@ -323,7 +322,7 @@ function GameUIActivityRewardNew:ui_EVERY_DAY_LOGIN()
         x = x + 110
         if i % 5 == 0 then
             x = 3
-            if i - flag < 5 then
+            if i - flag < 5 and i - flag >= 0 then
                 y = y - 222
             else
                 y = y - 108
@@ -368,7 +367,7 @@ function GameUIActivityRewardNew:ui_CONTINUITY()
         color= 0x403c2f,
     }):align(display.LEFT_CENTER,title_bg:getPositionX(),self.height - 90):addTo(self.bg)
     local text_1 = UIKit:ttfLabel({
-        text = User.countInfo.day14,
+        text = User.countInfo.day14 > 7 and 7 or User.countInfo.day14,
         size = 22,
         color= 0x238700,
     }):align(display.LEFT_CENTER,title_bg:getPositionX(),self.height - 130):addTo(self.bg)
@@ -392,6 +391,16 @@ function GameUIActivityRewardNew:ui_CONTINUITY()
             end)
         end)
         :setButtonEnabled(User.countInfo.day14==7)
+        print("User.basicInfo.marchQueue=",User.basicInfo.marchQueue)
+    if User.basicInfo.marchQueue == 2 then
+        button:setVisible(false)
+        local title_label = UIKit:ttfLabel({
+            text = _("已领取"),
+            size = 22,
+            color= 0x514d3e
+        }):addTo(self.bg)
+            :align(display.RIGHT_CENTER,title_bg:getPositionX() + title_bg:getContentSize().width - 30,self.height - 90)
+    end
     self.list_view = UIListView.new{
         viewRect = cc.rect(26,20,556,590),
         direction = cc.ui.UIScrollView.DIRECTION_VERTICAL
@@ -1144,6 +1153,7 @@ function GameUIActivityRewardNew:GetNextOnlineTimePoint()
 end
 
 return GameUIActivityRewardNew
+
 
 
 
