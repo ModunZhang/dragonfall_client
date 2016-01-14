@@ -216,6 +216,18 @@ function GameUIWorldMap:LoadMap()
     if self:IsFingerOn() then
         return
     end
+    local last_middle_pos = self:GetSceneLayer().middle_pos
+    if last_middle_pos then
+        local cur_x,cur_y = self:GetSceneLayer():GetMiddleLogicPosition()
+        if math.abs(last_middle_pos.x - cur_x) > 1 
+        or math.abs(last_middle_pos.y-cur_y) > 1 then
+            self:_LoadMap()
+        end
+    else
+        self:_LoadMap()
+    end
+end
+function GameUIWorldMap:_LoadMap()
     self:ShowLoading()
     self.load_map_node:stopAllActions()
     self.load_map_node:performWithDelay(function()

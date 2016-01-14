@@ -295,6 +295,8 @@ function WorldLayer:LoadAlliance()
         if UIKit:GetUIInstance("GameUIWorldMap") then
             UIKit:GetUIInstance("GameUIWorldMap"):HideLoading()
         end
+        local x,y = self:GetMiddleLogicPosition()
+        self.middle_pos = {x = x, y = y}
     end)
 end
 function WorldLayer:LoadAllianceBy(mapIndex, alliance)
@@ -609,6 +611,10 @@ function WorldLayer:GetAvailableIndex()
 end
 function WorldLayer:GetLeftTopLogicPosition()
     local point = self.map:convertToNodeSpace(cc.p(0, display.height))
+    return self:GetLogicMap():ConvertToLogicPosition(point.x, point.y)
+end
+function WorldLayer:GetMiddleLogicPosition()
+    local point = self.map:convertToNodeSpace(cc.p(display.cy, display.cy))
     return self:GetLogicMap():ConvertToLogicPosition(point.x, point.y)
 end
 function WorldLayer:GetClickedObject(world_x, world_y)
