@@ -131,33 +131,19 @@
 	public static java.lang.String getUDID();
     public static void RegistereForRemoteNotifications();
 	public static void copyText(...);
-
 	public static java.lang.String getAppVersion();
-
 	public static java.lang.String getOSVersion();
-
 	public static java.lang.String getDeviceModel();
-
 	public static java.lang.String getAppBundleVersion();
-
 	public static java.lang.String getDeviceLanguage();
-
 	public static boolean sendMail(...);
-	
 	public static boolean canSendMail();
-
 	public static void checkGameFirstInstall(...);
-
 	public static void disableIdleTimer(...);
-
 	public static float batteryLevel();
-
 	public static java.lang.String getInternetConnectionStatus();
-	
 	public static java.lang.String getAppMinVersion();
-	
 	public static boolean isAppHocMode();
-
 	public static java.lang.String GetDeviceToken();
 }
 
