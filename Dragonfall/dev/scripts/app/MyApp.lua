@@ -185,7 +185,7 @@ end
 
 function MyApp:run()
     cc.Director:getInstance():setProjection(0)
-    if device.platform == 'windows' or device.platform == 'winrt' then
+    if device.platform == 'winrt' then
         self:enterScene('MainScene')
     else
         self:enterScene('LogoScene')
