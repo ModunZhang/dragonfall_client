@@ -528,7 +528,7 @@ function GameUtils:GetGameLanguageFromNative()
     local target_map
     if device.platform == 'ios' or device.platform == 'mac' then
         target_map = apple_language_map
-    elseif device.platform == 'winrt' then
+    elseif device.platform == 'winrt' or device.platform == 'windows' then
         target_map = windowsrt_language_map
     elseif device.platform == 'android' then
         target_map = android_language_map
