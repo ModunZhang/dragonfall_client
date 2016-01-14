@@ -96,12 +96,12 @@
 
 #================sdks========================
 #talkingdata
--libraryjars ./libs/Game_Analytics_SDK_Android_3.1.68.jar
+-libraryjars ./libs/Game_Analytics_SDK_Android_3.2.3.jar
 -keep class com.talkingdata.** {*;}
 -keep class com.tendcloud.** {*;}
 -dontwarn com.tendcloud.**
 -dontwarn com.talkingdata.**
--keep public class com.tendcloud.tenddata.** { public protected *;}
+-keep public class com.tendcloud.tenddata.** {*;}
 #facebook
 -keep class com.facebook.** { *;}
 -dontwarn com.facebook.**
