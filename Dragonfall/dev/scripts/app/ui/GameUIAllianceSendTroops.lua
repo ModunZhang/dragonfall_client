@@ -863,7 +863,7 @@ function GameUIAllianceSendTroops:CreateTroopsShow()
         -- self:SetCitizen(total_citizen)
     end
     function TroopShow:addSoldiers()
-        if self.addCount > #self.soldiers or #self.soldiers == 0 then
+        if self.soldiers and (self.addCount > #self.soldiers or #self.soldiers == 0) then
             self:RefreshScrollNode(self.x)
             info_bg:removeAllChildren()
             self:SetPower(self.total_power)

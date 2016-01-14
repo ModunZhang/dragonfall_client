@@ -481,7 +481,7 @@ end
 function Dragon:__getDragonLeadershipBuff()
 	local effect = 0
 	local skill = self:GetSkillByName('leadership')
-	if skill then
+	if skill and skill:Level()>0 then
 		effect  = effect + skill:GetEffect()
 	end
 	
