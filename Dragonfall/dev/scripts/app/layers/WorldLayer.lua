@@ -41,7 +41,7 @@ function WorldLayer:onEnter()
     self.levelSprites = {}
     self.allainceSprites = {}
     self.flagSprites = {}
-    self:ZoomTo(1.2)
+    self:ZoomTo(1.1)
     local size = self.scene_node:getCascadeBoundingBox()
     self.scene_node:setContentSize(cc.size(size.width, size.height))
     math.randomseed(1)
