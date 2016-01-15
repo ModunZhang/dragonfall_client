@@ -62,16 +62,15 @@ function WidgetHomeBottom:ctor(city)
             self.alliance_btn = button
             self.alliance_btn:setLocalZOrder(9)
             local alliance = Alliance_Manager:GetMyAlliance()
+            self.join_request_count = WidgetNumberTips.new():addTo(self):pos(x+20, first_row+20)
+            self.join_request_count:setLocalZOrder(11)
             if not alliance:IsDefault() and
                 alliance:GetSelf():IsTitleEqualOrGreaterThan("quartermaster") then
-                self.join_request_count = WidgetNumberTips.new():addTo(self):pos(x+20, first_row+20)
-                self.join_request_count:setLocalZOrder(11)
                 self.join_request_count:SetNumber(#Alliance_Manager:GetMyAlliance().joinRequestEvents or 0)
             else
-                self.invite_request_count = WidgetNumberTips.new():addTo(self):pos(x+20, first_row+20)
-                self.invite_request_count:setLocalZOrder(11)
-                self.invite_request_count:SetNumber(#User.inviteToAllianceEvents or 0)
+                self.join_request_count:SetNumber(#alliance.joinRequestEvents or 0)
             end
+
             if not User.countInfo.firstJoinAllianceRewardGeted then
                 fire_var():addTo(self.alliance_btn, -1000, 321)
             end
@@ -139,7 +138,9 @@ function WidgetHomeBottom:OnAllianceDataChanged_joinRequestEvents(alliance,delta
     end
 end
 function WidgetHomeBottom:OnUserDataChanged_inviteToAllianceEvents()
-    self.invite_request_count:SetNumber(#User.inviteToAllianceEvents or 0)
+    if self.join_request_count then
+        self.join_request_count:SetNumber(#User.inviteToAllianceEvents or 0)
+    end
 end
 -- fte
 local WidgetFteArrow = import(".WidgetFteArrow")
@@ -160,6 +161,7 @@ end
 
 
 return WidgetHomeBottom
+
 
 
 
