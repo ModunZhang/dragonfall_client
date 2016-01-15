@@ -1269,12 +1269,8 @@ local ALLIANCE_DECORATE_NAME = {
 }
 
 local SERVER_NAME = {
-    bronze = _("青铜级"),
-    silver = _("白银级"),
-    gold  = _("黄金级"),
-    platinum = _("铂金级"),
-    diamond = _("钻石级"),
-    master = _("大师级"),
+    ["cache-server-1"] = _("世界-1"),
+    ["cache-server-2"] = _("世界-2"),
 }
 
 local PERIOD_TYPE = {
