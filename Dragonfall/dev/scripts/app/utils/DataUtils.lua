@@ -149,7 +149,9 @@ function DataUtils:getBuildingUpgradeRequired(buildingType, buildingLevel)
         }
     elseif house_configs then
         local config = house_configs[buildingLevel]
-        local next_config = house_configs[buildingLevel + 1]
+        local next_level = buildingLevel + 1
+        next_level = next_level > #house_configs and #house_configs or next_level
+        local next_config = house_configs[next_level]
         return {
             resources={
                 wood=config.wood,
@@ -189,7 +191,6 @@ function DataUtils:buyResource(need, has)
                 assert(freeCitizenLimit ~= 0)
                 while required > 0 and freeCitizenLimit ~= 0 do
                     local requiredPercent = required / freeCitizenLimit
-                    print(required, freeCitizenLimit, requiredPercent)
                     for i=#config,1,-1 do
                         item = config[i]
                         if item.min < requiredPercent then
