@@ -53,9 +53,6 @@ function GameUIAllianceHome:ctor(alliance)
     --     :align(display.TOP_CENTER, display.cx, display.height)
     -- local size = sprite:getContentSize()
     -- sprite:setScaleX(display.width / size.width)
-
-    display.newSprite("city_filter.png"):addTo(self):opacity(160)
-    :scale(display.width / 640):pos(display.cx, display.cy)
 end
 function GameUIAllianceHome:onEnter()
     GameUIAllianceHome.super.onEnter(self)
