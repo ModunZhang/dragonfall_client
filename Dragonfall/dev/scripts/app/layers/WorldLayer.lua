@@ -369,8 +369,26 @@ function WorldLayer:CreateAllianceSprite(index, alliance)
     if ismiddle then
         sprite:pos(10, 10)
     elseif index ~= Alliance_Manager:GetMyAlliance().mapIndex then
-        math.randomseed(index + 427928)
-        sprite:pos(30 - math.random(60), 30 - math.random(60))
+        math.randomseed(tonumber(index) + 12345)
+        if tonumber(index) == self:LogicToIndex(middle_index-1, middle_index-1) then
+            sprite:pos(-40, 40)
+        elseif tonumber(index) == self:LogicToIndex(middle_index, middle_index-1) then
+            sprite:pos(0, 40)
+        elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index-1) then
+            sprite:pos(40, 40)
+        elseif tonumber(index) == self:LogicToIndex(middle_index-1, middle_index) then
+            sprite:pos(-40, 0)
+        elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index) then
+            sprite:pos(40, 0)
+        elseif tonumber(index) == self:LogicToIndex(middle_index-1, middle_index+1) then
+            sprite:pos(-40, -40)
+        elseif tonumber(index) == self:LogicToIndex(middle_index, middle_index+1) then
+            sprite:pos(0, -40)
+        elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index+1) then
+            sprite:pos(40, -40)
+        else
+            sprite:pos(30 - math.random(30), 30 - math.random(60))
+        end
     end
     local size = sprite:getContentSize()
     local banner = display.newSprite("alliance_banner.png")
@@ -572,10 +590,28 @@ function WorldLayer:CreateFlag(index)
         node = display.newNode():addTo(self.allianceLayer):pos(p.x+40, p.y + 50)
         display.newSprite("world_crown.png"):addTo(node)
     else
-        math.randomseed(tonumber(index) + 427928)
+        math.randomseed(tonumber(index) + 12345)
         node = display.newNode():addTo(self.allianceLayer):pos(p.x, p.y)
-        local sprite = ccs.Armature:create("daqizi"):addTo(node)
-        :scale(0.4):pos(40 - math.random(80), 30 - math.random(60))
+        local sprite = ccs.Armature:create("daqizi"):addTo(node):scale(0.4)
+        if tonumber(index) == self:LogicToIndex(middle_index-1, middle_index-1) then
+            sprite:pos(-40, 40)
+        elseif tonumber(index) == self:LogicToIndex(middle_index, middle_index-1) then
+            sprite:pos(0, 40)
+        elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index-1) then
+            sprite:pos(40, 40)
+        elseif tonumber(index) == self:LogicToIndex(middle_index-1, middle_index) then
+            sprite:pos(-40, 0)
+        elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index) then
+            sprite:pos(40, 0)
+        elseif tonumber(index) == self:LogicToIndex(middle_index-1, middle_index+1) then
+            sprite:pos(-40, -40)
+        elseif tonumber(index) == self:LogicToIndex(middle_index, middle_index+1) then
+            sprite:pos(0, -40)
+        elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index+1) then
+            sprite:pos(40, -40)
+        else
+            sprite:pos(30 - math.random(30), 30 - math.random(60))
+        end
         local ani = sprite:getAnimation()
         ani:playWithIndex(0)
         ani:gotoAndPlay(math.random(71) - 1)
