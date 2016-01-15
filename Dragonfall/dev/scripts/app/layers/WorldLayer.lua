@@ -369,7 +369,7 @@ function WorldLayer:CreateAllianceSprite(index, alliance)
     if ismiddle then
         sprite:pos(10, 10)
     elseif index ~= Alliance_Manager:GetMyAlliance().mapIndex then
-        math.randomseed(index)
+        math.randomseed(index + 427928)
         sprite:pos(30 - math.random(60), 30 - math.random(60))
     end
     local size = sprite:getContentSize()
@@ -572,7 +572,7 @@ function WorldLayer:CreateFlag(index)
         node = display.newNode():addTo(self.allianceLayer):pos(p.x+40, p.y + 50)
         display.newSprite("world_crown.png"):addTo(node)
     else
-        math.randomseed(tonumber(index))
+        math.randomseed(tonumber(index) + 427928)
         node = display.newNode():addTo(self.allianceLayer):pos(p.x, p.y)
         local sprite = ccs.Armature:create("daqizi"):addTo(node)
         :scale(0.4):pos(40 - math.random(80), 30 - math.random(60))
