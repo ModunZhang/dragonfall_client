@@ -465,9 +465,7 @@ function UtilsForBuilding:GetBuildingEventsBySeq(userData)
     for i,v in ipairs(userData.buildingEvents) do
         table.insert(events, v)
     end
-    table.sort(events, function(a, b)
-        return (a.finishTime - a.startTime) < (b.finishTime - b.startTime)
-    end)
+    table.sort(events, function(a, b) return a.finishTime < b.finishTime end)
     return events
 end
 function UtilsForBuilding:GetBuildingByEvent(userData, event)
