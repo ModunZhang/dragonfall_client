@@ -236,7 +236,7 @@ function UtilsForBuilding:GetBuildingsBuff(userData)
             index = tonumber(index)
             local neighbour_location = index == 15
                 and string.format("location_%d", index - 1)
-                or string.format("location_%d", index + 1)
+                or string.format("location_%d", index + 7)
             local count = 0
             for _,v in pairs(building.houses) do
                 if v.type == house_type then

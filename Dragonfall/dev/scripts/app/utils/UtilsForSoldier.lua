@@ -44,7 +44,8 @@ function UtilsForSoldier:GetSoldierUpkeep(userData)
         total = total + self:GetSoldierConfig(userData, soldier_name).consumeFoodPerHour * count
     end
     local soldiers = {}
-    if defenceTroop == json.null then
+
+    if defenceTroop ~= json.null then
     	local defenceTroop = userData.defenceTroop or {}
     	soldiers = defenceTroop.soldiers or {}
     end
@@ -52,14 +53,18 @@ function UtilsForSoldier:GetSoldierUpkeep(userData)
         total = total + self:GetSoldierConfig(userData, v.name).consumeFoodPerHour * v.count
     end
     -- item效果
+    local itemBuff = 0
+    local vipBuff = 0
     if UtilsForItem:IsItemEventActive(userData, "quarterMaster") then
-        total = math.ceil(total * (1 - UtilsForItem:GetItemBuff("quarterMaster")))
+        itemBuff = UtilsForItem:GetItemBuff("quarterMaster")
     end
     -- vip效果
     if UtilsForVip:IsVipActived(userData) then
-        total = total * (1-UtilsForVip:GetVipBuffByName(userData, "soldierConsumeSub"))
+        vipBuff = UtilsForVip:GetVipBuffByName(userData, "soldierConsumeSub")
     end
-    return total
+
+    total = math.ceil(total * (1 - itemBuff -vipBuff))
+    return total 
 end
 function UtilsForSoldier:GetSoldierConfig(userData, soldier_name)
     return  self:IsSpecial(soldier_name)
