@@ -43,8 +43,11 @@ function UtilsForSoldier:GetSoldierUpkeep(userData)
     for soldier_name,count in pairs(userData.soldiers) do
         total = total + self:GetSoldierConfig(userData, soldier_name).consumeFoodPerHour * count
     end
-    local defenceTroop = userData.defenceTroop or {}
-    local soldiers = defenceTroop.soldiers or {}
+    local soldiers = {}
+    if defenceTroop == json.null then
+    	local defenceTroop = userData.defenceTroop or {}
+    	soldiers = defenceTroop.soldiers or {}
+    end
     for _,v in ipairs(soldiers) do
         total = total + self:GetSoldierConfig(userData, v.name).consumeFoodPerHour * v.count
     end
