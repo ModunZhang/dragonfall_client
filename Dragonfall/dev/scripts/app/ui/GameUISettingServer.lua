@@ -180,7 +180,7 @@ function GameUISettingServer:SortServerData()
 end
 
 function GameUISettingServer:GetServerLocalizeName(server)
-    return server.name
+    return Localize.server_name[server.id]
 end
 
 
