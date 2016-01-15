@@ -106,7 +106,6 @@ local function decode_battle_from_report(report)
     return battle
 end
 local function decode_battle(raw)
-    dump(raw)
     local rounds = {}
     local left_soldier, right_soldier
     for i, dual in ipairs(raw) do
@@ -1301,7 +1300,6 @@ function GameUIReplayNew:SoldierDefeatRight()
     self:RefreshSoldierListView(self.ui_map.list_view_defence, self.copy_soldiers_defence, self.report.IsPveBattle)
 end
 function GameUIReplayNew:TopSoldierLeft()
-    print(debug.traceback("", 2))
     local first_soldier = self.copy_soldiers_attack[1]
     assert(first_soldier.status ~= "defeated")
     return first_soldier
