@@ -80,6 +80,11 @@ end
 function GameUIAlliance:OnAllianceDataChanged_operation(alliance,operation_type)
     self:RefreshMainUI()
 end
+function GameUIAlliance:OnUserDataChanged_inviteToAllianceEvents()
+    if Alliance_Manager:GetMyAlliance():IsDefault() then
+        self.tab_buttons:SetButtonTipNumber("invite",#User.inviteToAllianceEvents or 0)
+    end
+end
 
 function GameUIAlliance:AddListenerOfMyAlliance()
     local myAlliance = Alliance_Manager:GetMyAlliance()
@@ -90,6 +95,8 @@ function GameUIAlliance:AddListenerOfMyAlliance()
     myAlliance:AddListenOnType(self, "members")
     myAlliance:AddListenOnType(self, "events")
     myAlliance:AddListenOnType(self, "joinRequestEvents")
+    User:AddListenOnType(self, "inviteToAllianceEvents")
+
 end
 
 function GameUIAlliance:Reset()
@@ -116,6 +123,9 @@ end
 function GameUIAlliance:RefreshMainUI()
     self:Reset()
     self.main_content:removeAllChildren()
+    if self.tab_buttons then
+        self.tab_buttons:removeFromParent()
+    end
     if Alliance_Manager:GetMyAlliance():IsDefault() then
         self:CreateNoAllianceUI()
     else
@@ -139,6 +149,8 @@ function GameUIAlliance:OnMoveOutStage()
     myAlliance:RemoveListenerOnType(self, "members")
     myAlliance:RemoveListenerOnType(self, "events")
     myAlliance:RemoveListenerOnType(self, "joinRequestEvents")
+    User:RemoveListenerOnType(self, "inviteToAllianceEvents")
+
     GameUIAlliance.super.OnMoveOutStage(self)
 end
 
@@ -182,6 +194,7 @@ function GameUIAlliance:CreateNoAllianceUI()
             end
         end
     ):pos(window.cx, window.bottom + 34)
+    self.tab_buttons:SetButtonTipNumber("invite",#User.inviteToAllianceEvents or 0)
 end
 
 -- TabButtons event

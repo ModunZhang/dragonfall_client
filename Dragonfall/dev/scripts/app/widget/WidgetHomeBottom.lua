@@ -67,6 +67,10 @@ function WidgetHomeBottom:ctor(city)
                 self.join_request_count = WidgetNumberTips.new():addTo(self):pos(x+20, first_row+20)
                 self.join_request_count:setLocalZOrder(11)
                 self.join_request_count:SetNumber(#Alliance_Manager:GetMyAlliance().joinRequestEvents or 0)
+            else
+                self.invite_request_count = WidgetNumberTips.new():addTo(self):pos(x+20, first_row+20)
+                self.invite_request_count:setLocalZOrder(11)
+                self.invite_request_count:SetNumber(#User.inviteToAllianceEvents or 0)
             end
             if not User.countInfo.firstJoinAllianceRewardGeted then
                 fire_var():addTo(self.alliance_btn, -1000, 321)
@@ -82,6 +86,7 @@ function WidgetHomeBottom:onEnter()
     MailManager:AddListenOnType(self,MailManager.LISTEN_TYPE.UNREAD_MAILS_CHANGED)
     user:AddListenOnType(self, "growUpTasks")
     user:AddListenOnType(self, "countInfo")
+    user:AddListenOnType(self, "inviteToAllianceEvents")
     Alliance_Manager:GetMyAlliance():AddListenOnType(self, "joinRequestEvents")
 
     self:OnUserDataChanged_growUpTasks()
@@ -92,6 +97,7 @@ function WidgetHomeBottom:onExit()
     MailManager:RemoveListenerOnType(self,MailManager.LISTEN_TYPE.UNREAD_MAILS_CHANGED)
     user:RemoveListenerOnType(self, "growUpTasks")
     user:RemoveListenerOnType(self, "countInfo")
+    user:RemoveListenerOnType(self, "inviteToAllianceEvents")
     Alliance_Manager:GetMyAlliance():RemoveListenerOnType(self, "joinRequestEvents")
 end
 function WidgetHomeBottom:OnBottomButtonClicked(event)
@@ -131,6 +137,9 @@ function WidgetHomeBottom:OnAllianceDataChanged_joinRequestEvents(alliance,delta
     if self.join_request_count then
         self.join_request_count:SetNumber(#alliance.joinRequestEvents or 0)
     end
+end
+function WidgetHomeBottom:OnUserDataChanged_inviteToAllianceEvents()
+    self.invite_request_count:SetNumber(#User.inviteToAllianceEvents or 0)
 end
 -- fte
 local WidgetFteArrow = import(".WidgetFteArrow")

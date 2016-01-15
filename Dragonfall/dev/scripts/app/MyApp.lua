@@ -6,27 +6,27 @@ require("app.utils.LuaUtils")
 require("app.utils.GameUtils")
 if true or device.platform ~= 'winrt' then
     require("app.datas.GameDatas")
-    for k1,v1 in pairs(GameDatas) do
-        for k,v in pairs(v1) do
-            setmetatable(v, {
-                __index = function(t, numberOrString)
-                    if type(numberOrString) == "number" then
-                        -- if numberOrString < 0 then
-                        --     return rawget(v, 1)
-                        -- else
-                        if numberOrString > #v then
-                            return rawget(v, #v)
-                        end
-                    elseif type(numberOrString) == "string" then
-                        return nil
-                    else
-                        print(debug.traceback("", 2))
-                        assert(false, "错误的key!")
-                    end
-                end
-            })
-        end
-    end
+    -- for k1,v1 in pairs(GameDatas) do
+    --     for k,v in pairs(v1) do
+    --         setmetatable(v, {
+    --             __index = function(t, numberOrString)
+    --                 if type(numberOrString) == "number" then
+    --                     -- if numberOrString < 0 then
+    --                     --     return rawget(v, 1)
+    --                     -- else
+    --                     if numberOrString > #v then
+    --                         return rawget(v, #v)
+    --                     end
+    --                 elseif type(numberOrString) == "string" then
+    --                     return nil
+    --                 else
+    --                     print(debug.traceback("", 2))
+    --                     assert(false, "错误的key!")
+    --                 end
+    --             end
+    --         })
+    --     end
+    -- end
 else
     GameDatas = {}
     setmetatable(GameDatas, {
