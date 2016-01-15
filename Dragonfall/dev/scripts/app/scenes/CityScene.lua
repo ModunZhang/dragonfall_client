@@ -14,7 +14,7 @@ end
 function CityScene:onEnter()
     CityScene.super.onEnter(self)
 
-    display.newSprite("city_filter.png"):addTo(self,10):opacity(120)
+    display.newSprite("city_filter.png"):addTo(self,10):opacity(110)
     :scale(display.width / 640):pos(display.cx, display.cy)
 
     self:GetSceneLayer():AddObserver(self)
