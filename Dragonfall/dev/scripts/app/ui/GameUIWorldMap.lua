@@ -327,10 +327,10 @@ function GameUIWorldMap:LoadRoundInfo(mapIndex)
     local ALLIANCE_WIDTH, ALLIANCE_HEIGHT = intInit.allianceRegionMapWidth.value, intInit.allianceRegionMapHeight.value
     mini_map_button:addNodeEventListener(cc.NODE_TOUCH_EVENT, function(event)
         local map_position = mini_map_button:convertToNodeSpace(cc.p(event.x,event.y))
-        if map_position.x > 124 or map_position.y > 124 or map_position.x < 0 or map_position.y < 0 then
+        if  map_position.x >= 124 or map_position.y >= 124 or map_position.x < 0 or map_position.y < 0 then
             return
         end
-        local x,y = math.floor(map_position.x/124 * bigMapLength * ALLIANCE_WIDTH) , math.floor((1 - map_position.y/124) * bigMapLength * ALLIANCE_HEIGHT)
+        local x,y = math.floor(math.floor(map_position.x)/124 * bigMapLength * ALLIANCE_WIDTH) , math.floor((1 - math.floor(map_position.y)/124) * bigMapLength * ALLIANCE_HEIGHT)
         local mapIndex = DataUtils:GetAlliancePosition(x, y)
         local x,y = self:GetSceneLayer():IndexToLogic(mapIndex)
         self:GotoPosition(x,y)
