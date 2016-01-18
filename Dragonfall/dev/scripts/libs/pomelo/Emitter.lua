@@ -1,7 +1,9 @@
 local Emitter = class("Emitter")
+local PomeloEventPool = require("libs.pomelo.PomeloEventPool")
 
 function Emitter:ctor()
     self._callbacks = {}
+    self._event_pool = PomeloEventPool:new()
 end
 
 -- 调整为只有一个事件回调
@@ -10,6 +12,9 @@ function Emitter:on(event, fn)
     self._callbacks[event] = {}
     -- end
     table.insert(self._callbacks[event],fn)
+    if not self._event_pool:isRunning() then
+        self._event_pool:run()
+    end
 end
 Emitter.addListener = Emitter.on
 
@@ -29,6 +34,7 @@ end
 
 function Emitter:removeAllListener()
     self._callbacks = {}
+    self._event_pool:stop()
     return self
 end
 
@@ -58,12 +64,17 @@ function Emitter:emit(event, args)
     end
     args.__event__ = event
     local callbacks = self._callbacks[event]
-    if callbacks then
-        for i=1,#callbacks do
-            callbacks[i](args)
-        end
-    end
+    -- dannyhe: we add the callback to the PomeloEventPool  rather than call it!
+    local msg = {}
+    msg.callbacks = callbacks
+    msg.args = args
+    self._event_pool:add(msg)
 
+    -- if callbacks then
+    --     for i=1,#callbacks do
+    --         callbacks[i](args)
+    --     end
+    -- end
     return self
 end
 
