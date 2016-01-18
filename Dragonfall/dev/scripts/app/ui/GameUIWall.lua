@@ -181,7 +181,7 @@ function GameUIWall:CreateMilitaryUIIf()
         text = level_str,
         size = 20,
         color= 0x615b44
-    }):align(display.LEFT_BOTTOM,title_bg:getPositionX(), tips_label:getPositionY() + tips_label:getContentSize().height + 20):addTo(military_node)
+    }):align(display.LEFT_BOTTOM,title_bg:getPositionX(), title_bg:getPositionY() - title_bg:getContentSize().height - 40):addTo(military_node)
     self.level_title_label = level_title_label
     self.dragon_level_label = UIKit:ttfLabel({
         text = "",
