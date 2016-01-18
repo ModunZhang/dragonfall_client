@@ -311,7 +311,7 @@ function GameUIActivityRewardNew:ui_EVERY_DAY_LOGIN()
                 text = Localize_item.item_desc[rewards[i].reward],
                 size = 20,
                 color= 0x615b44,
-                dimensions = cc.size(400,0)
+                dimensions = cc.size(380,0)
             }):align(display.LEFT_TOP, 14, -40):addTo(reward_info)
         end
         local num_bg = display.newSprite("activity_num_bg_28x28.png",20,-18 + 118):addTo(button)
@@ -321,14 +321,16 @@ function GameUIActivityRewardNew:ui_EVERY_DAY_LOGIN()
             color= 0xfff9e4
         }):align(display.CENTER, 14, 14):addTo(num_bg)
         x = x + 110
+        local change_flag = auto_get_reward == 0 and (flag + 1) or flag
         if i % 5 == 0 then
             x = 3
-            if i - flag < 5 and i - flag >= 0 then
+            if i - change_flag < 5 and i - change_flag >= 0 then
                 y = y - 222
             else
                 y = y - 108
             end
         end
+
     end
 end
 
@@ -394,7 +396,7 @@ function GameUIActivityRewardNew:ui_CONTINUITY()
             end)
         end)
         :setButtonEnabled(User.countInfo.day14==7)
-        print("User.basicInfo.marchQueue=",User.basicInfo.marchQueue)
+    print("User.basicInfo.marchQueue=",User.basicInfo.marchQueue)
     if User.basicInfo.marchQueue == 2 then
         button:setVisible(false)
         local title_label = UIKit:ttfLabel({
@@ -1156,6 +1158,9 @@ function GameUIActivityRewardNew:GetNextOnlineTimePoint()
 end
 
 return GameUIActivityRewardNew
+
+
+
 
 
 
