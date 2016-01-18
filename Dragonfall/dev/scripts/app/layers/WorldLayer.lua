@@ -310,8 +310,10 @@ function WorldLayer:LoadAlliance()
         if UIKit:GetUIInstance("GameUIWorldMap") then
             UIKit:GetUIInstance("GameUIWorldMap"):HideLoading()
         end
-        local x,y = self:GetMiddleLogicPosition()
-        self.middle_pos = {x = x, y = y}
+        if self.GetMiddleLogicPosition then
+            local x,y = self:GetMiddleLogicPosition()
+            self.middle_pos = {x = x, y = y}
+        end
     end)
 end
 function WorldLayer:LoadAllianceBy(mapIndex, alliance)
