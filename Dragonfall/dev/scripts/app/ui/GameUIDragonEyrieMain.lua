@@ -371,9 +371,21 @@ function GameUIDragonEyrieMain:CreateDragonContentNodeIf()
                                 UIKit:showMessageDialog(nil,_("选择的龙已经死亡"))
                                 return
                             end
-                            NetManager:getSetDefenceTroopPromise(dragonType,soldiers):done(function ()
-                                self.garrison_button:setButtonSelected(true)
-                            end)
+                            if self.dragon_manager:GetDefenceDragon() then
+                                NetManager:getCancelDefenceTroopPromise():done(function()
+                                    NetManager:getSetDefenceTroopPromise(dragonType,soldiers):done(function ()
+                                        if self:GetCurrentDragon():Type() == dragonType then
+                                            self.garrison_button:setButtonSelected(true)
+                                        end
+                                    end)
+                                end)
+                            else
+                                NetManager:getSetDefenceTroopPromise(dragonType,soldiers):done(function ()
+                                    if self:GetCurrentDragon():Type() == dragonType then
+                                        self.garrison_button:setButtonSelected(true)
+                                    end
+                                end)
+                            end
                         end,{dragon = dragon,isMilitary = true,terrain = Alliance_Manager:GetMyAlliance().basicInfo.terrain,title = _("驻防部队")}):AddToCurrentScene(true)
                     else
                         UIKit:showMessageDialog(nil,_("龙未处于空闲状态"))
@@ -679,6 +691,7 @@ end
 
 
 return GameUIDragonEyrieMain
+
 
 
 

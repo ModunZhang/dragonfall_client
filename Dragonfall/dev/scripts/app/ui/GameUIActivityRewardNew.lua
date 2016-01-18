@@ -231,15 +231,16 @@ function GameUIActivityRewardNew:ui_EVERY_DAY_LOGIN()
     local flag = User.countInfo.day60 % 30 == 0 and 30 or User.countInfo.day60 % 30
     local geted = User.countInfo.day60RewardsCount % 30 == 0 and 30 or User.countInfo.day60RewardsCount % 30  -- <= geted
     local auto_get_reward = 0
+    self.every_day_bg = display.newNode():addTo(self.bg):size(self.bg:getContentSize())
     UIKit:ttfLabel({
         text = _("领取30日奖励后，刷新奖励列表"),
         size = 20,
         color= 0x403c2f
-    }):align(display.CENTER_TOP,304,self.height - 20):addTo(self.bg)
+    }):align(display.CENTER_TOP,304,self.height - 20):addTo(self.every_day_bg)
     local content_bg = UIKit:CreateBoxPanelWithBorder({
         width = 556,
         height= 786
-    }):align(display.CENTER_BOTTOM, 304, 16):addTo(self.bg)
+    }):align(display.CENTER_BOTTOM, 304, 16):addTo(self.every_day_bg)
     local x,y = 3,786 - 10
     for i=1,30 do
         local button = display.newSprite('box_118x118.png')
@@ -340,7 +341,9 @@ function GameUIActivityRewardNew:On_EVERY_DAY_LOGIN_GetReward(index,reward)
             dump(reward,"reward")
             GameGlobalUI:showTips(_("提示"),string.format(_("恭喜您获得 %s x %d"),Localize_item.item_name[reward.reward],reward.count))
             app:GetAudioManager():PlayeEffectSoundWithKey("BUY_ITEM")
-            self:LeftButtonClicked()
+            self.every_day_bg:removeAllChildren()
+            self:ui_EVERY_DAY_LOGIN()
+            -- self:LeftButtonClicked()
         end)
     else
         if index > real_index then
