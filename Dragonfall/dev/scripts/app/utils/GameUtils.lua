@@ -15,12 +15,11 @@ local function clamp(a,b,x)
     return x < a and a or (x > b and b or x)
 end
 function GameUtils:GetCurrentProduction(value,refreshTime,limit,output,currentTime)
-    local trv = value + (currentTime - refreshTime) * output * 0.00027777777777778 --[[ 1 / 3600 = 0.00027777777777778]]
-    return floor(clamp(
-        0, 
-        output >= 0 and ((value >= limit and trv >= limit) and value or limit) or math.huge, 
-        trv
-        ))
+    local totalPerSecond = output / 60 / 60
+    local production = floor((currentTime - refreshTime) * totalPerSecond)
+    local limit = output >= 0 and ((value >= limit and production >= limit) and value or limit) or math.huge
+    local total = value + production
+    return clamp(0,limit,total)
 end
 function GameUtils:formatTimeStyle1(time)
     local seconds = floor(time) % 60

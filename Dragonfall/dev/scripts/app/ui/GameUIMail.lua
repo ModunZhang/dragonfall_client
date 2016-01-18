@@ -1434,6 +1434,9 @@ function GameUIMail:ShowRewardMailDetails(mail)
         elseif reward.type == "dragonMaterials" then
             reward_png = UILib.dragon_material_pic_map[reward.name]
             reward_name = Localize.equip_material[reward.name]
+        elseif reward.type == "soldiers" then
+            reward_name = Localize.soldier_name[reward.name]
+            reward_png = UILib.soldier_image[reward.name]
         end
         display.newSprite(reward_png):align(display.CENTER, item_bg:getContentSize().width/2,item_bg:getContentSize().height/2):addTo(item_bg):scale(0.8)
 

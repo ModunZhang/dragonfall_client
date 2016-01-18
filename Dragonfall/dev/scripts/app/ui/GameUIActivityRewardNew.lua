@@ -231,15 +231,16 @@ function GameUIActivityRewardNew:ui_EVERY_DAY_LOGIN()
     local flag = User.countInfo.day60 % 30 == 0 and 30 or User.countInfo.day60 % 30
     local geted = User.countInfo.day60RewardsCount % 30 == 0 and 30 or User.countInfo.day60RewardsCount % 30  -- <= geted
     local auto_get_reward = 0
+    self.every_day_bg = display.newNode():addTo(self.bg):size(self.bg:getContentSize())
     UIKit:ttfLabel({
         text = _("领取30日奖励后，刷新奖励列表"),
         size = 20,
         color= 0x403c2f
-    }):align(display.CENTER_TOP,304,self.height - 20):addTo(self.bg)
+    }):align(display.CENTER_TOP,304,self.height - 20):addTo(self.every_day_bg)
     local content_bg = UIKit:CreateBoxPanelWithBorder({
         width = 556,
         height= 786
-    }):align(display.CENTER_BOTTOM, 304, 16):addTo(self.bg)
+    }):align(display.CENTER_BOTTOM, 304, 16):addTo(self.every_day_bg)
     local x,y = 3,786 - 10
     for i=1,30 do
         local button = display.newSprite('box_118x118.png')
@@ -310,7 +311,7 @@ function GameUIActivityRewardNew:ui_EVERY_DAY_LOGIN()
                 text = Localize_item.item_desc[rewards[i].reward],
                 size = 20,
                 color= 0x615b44,
-                dimensions = cc.size(400,0)
+                dimensions = cc.size(380,0)
             }):align(display.LEFT_TOP, 14, -40):addTo(reward_info)
         end
         local num_bg = display.newSprite("activity_num_bg_28x28.png",20,-18 + 118):addTo(button)
@@ -320,14 +321,16 @@ function GameUIActivityRewardNew:ui_EVERY_DAY_LOGIN()
             color= 0xfff9e4
         }):align(display.CENTER, 14, 14):addTo(num_bg)
         x = x + 110
+        local change_flag = auto_get_reward == 0 and (flag + 1) or flag
         if i % 5 == 0 then
             x = 3
-            if i - flag < 5 and i - flag >= 0 then
+            if i - change_flag < 5 and i - change_flag >= 0 then
                 y = y - 222
             else
                 y = y - 108
             end
         end
+
     end
 end
 
@@ -340,7 +343,9 @@ function GameUIActivityRewardNew:On_EVERY_DAY_LOGIN_GetReward(index,reward)
             dump(reward,"reward")
             GameGlobalUI:showTips(_("提示"),string.format(_("恭喜您获得 %s x %d"),Localize_item.item_name[reward.reward],reward.count))
             app:GetAudioManager():PlayeEffectSoundWithKey("BUY_ITEM")
-            self:LeftButtonClicked()
+            self.every_day_bg:removeAllChildren()
+            self:ui_EVERY_DAY_LOGIN()
+            -- self:LeftButtonClicked()
         end)
     else
         if index > real_index then
@@ -391,7 +396,7 @@ function GameUIActivityRewardNew:ui_CONTINUITY()
             end)
         end)
         :setButtonEnabled(User.countInfo.day14==7)
-        print("User.basicInfo.marchQueue=",User.basicInfo.marchQueue)
+    print("User.basicInfo.marchQueue=",User.basicInfo.marchQueue)
     if User.basicInfo.marchQueue == 2 then
         button:setVisible(false)
         local title_label = UIKit:ttfLabel({
@@ -1153,6 +1158,9 @@ function GameUIActivityRewardNew:GetNextOnlineTimePoint()
 end
 
 return GameUIActivityRewardNew
+
+
+
 
 
 
