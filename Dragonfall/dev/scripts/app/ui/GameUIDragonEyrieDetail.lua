@@ -10,6 +10,8 @@ local DragonSprite = import("..sprites.DragonSprite")
 local GameUIDragonEyrieMain = import(".GameUIDragonEyrieMain")
 local WidgetPushButton = import("..widget.WidgetPushButton")
 local DragonManager = import("..entity.DragonManager")
+local UIPageView = import(".UIPageView")
+
 local WidgetDragonTabButtons = import("..widget.WidgetDragonTabButtons")
 local Dragon = import("..entity.Dragon")
 local UIListView = import(".UIListView")
@@ -47,12 +49,30 @@ end
 
 function GameUIDragonEyrieDetail:CreateBetweenBgAndTitle()
     self.content_node = display.newNode():addTo(self:GetView())
-    local clipNode = display.newClippingRegionNode(cc.rect(0,0,614,519))
-    clipNode:addTo(self.content_node):pos(window.cx - 307,window.top - 519)
-    display.newSprite("dragon_animate_bg_624x606.png"):align(display.LEFT_BOTTOM,-5,0):addTo(clipNode)
-    display.newSprite("eyrie_584x547.png"):align(display.CENTER_TOP,307, 353):addTo(clipNode)
+
+    local clipNode = UIPageView.new {
+        viewRect = cc.rect(0,0,614,519),
+        row = 1,
+        padding = {left = 0, right = 0, top = 10, bottom = 0},
+        gap = 10,
+        speed_limit = 5,
+    }:onTouch(function (event)
+       
+    end):addTo(self.content_node):pos(window.cx - 307,window.top - 519)
+
+    local item = clipNode:newItem()
+    local content = display.newSprite("dragon_animate_bg_624x606.png"):align(display.LEFT_BOTTOM,-5,0)
+    display.newSprite("eyrie_584x547.png"):addTo(content):align(display.CENTER_TOP,307, 353)
+    self:BuildDragonContent(content)
+    item:addChild(content)
+    clipNode:addItem(item)    
+    clipNode:reload()
+    -- local clipNode = display.newClippingRegionNode(cc.rect(0,0,614,519))
+    -- clipNode:addTo(self.content_node):pos(window.cx - 307,window.top - 519)
+    -- display.newSprite("dragon_animate_bg_624x606.png"):align(display.LEFT_BOTTOM,-5,0):addTo(clipNode)
+    -- display.newSprite("eyrie_584x547.png"):align(display.CENTER_TOP,307, 353):addTo(clipNode)
     self.dragon_base = clipNode
-    self:BuildDragonContent()
+    -- self:BuildDragonContent()
     local star_bg = display.newSprite("dragon_title_bg_534x16.png")
         :align(display.CENTER_TOP,window.cx,window.top - 100)
         :addTo(self.content_node)
@@ -141,21 +161,21 @@ function GameUIDragonEyrieDetail:BuildUI()
     self.tab_buttons:SelectButtonByTag("equipment")
 end
 
-function GameUIDragonEyrieDetail:BuildDragonContent()
-    local dragon_content = self.dragon_base:getChildByTag(101)
+function GameUIDragonEyrieDetail:BuildDragonContent(content)
+    local dragon_content = content:getChildByTag(101)
     if dragon_content then dragon_content:removeFromParent() end
     if self:GetDragon():Ishated() then
         local dragon = DragonSprite.new(display.getRunningScene():GetSceneLayer(),self:GetDragon():Type())
-            :addTo(self.dragon_base)
+            :addTo(content)
             :align(display.CENTER, 300,150)
         dragon:setTag(101)
         local bound = dragon:getBoundingBox()
-        local nodePoint = self.dragon_base:convertToWorldSpace(cc.p(bound.x, bound.y))
+        local nodePoint = content:convertToWorldSpace(cc.p(bound.x, bound.y))
         self.dragon_world_point = nodePoint
     else
         local dragon = display.newSprite(string.format("%s_egg_176x174.png",self:GetDragon():Type()))
             :align(display.CENTER, 307,180)
-            :addTo(self.dragon_base)
+            :addTo(content)
         dragon:setTag(101)
     end
 end
