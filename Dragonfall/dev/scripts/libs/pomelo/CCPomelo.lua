@@ -19,6 +19,8 @@ function CCPomelo:getInstance()
 end
 -- cb(success,data)
 function CCPomelo:request(route, msg,cb)
+	print(route,"CCPomelo:request---->")
+	dump(msg,"CCPomelo:request---->")
 	self._pomelo:request(route, msg,function( args )
         cb(true,args)
 	end)
@@ -52,10 +54,6 @@ end
 
 function CCPomelo:cleanup()
 	self._pomelo:removeAllListener()
-end
-
-function CCPomelo:isConnected()
-	return self._pomelo and self._pomelo:_isReady()
 end
 
 return CCPomelo
