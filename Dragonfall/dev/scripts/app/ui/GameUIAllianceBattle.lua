@@ -26,46 +26,13 @@ function GameUIAllianceBattle:OnMoveInStage()
     GameUIAllianceBattle.super.OnMoveInStage(self)
     local tag = self.tag
     if tag == "history" then
-        -- self:InitAllianceInfo()
-        -- self:CreateTabButtons({
-        --     {
-        --         label = _("信息"),
-        --         tag = "info",
-        --         default = true
-        --     },
-        --     {
-        --         label = _("联盟战历史"),
-        --         tag = "history",
-        --     },
-        -- }, function(tag_1)
-        --     if tag_1 == "info" then
-        --         if self.history_listview then
-        --             self.history_listview:hide()
-        --         end
-        --         self.info_layer:show()
-        --     else
-        --         -- 获取历史记录
-        --         if self.alliance.allianceFightReports == nil then
-        --             NetManager:getAllianceFightReportsPromise(self.alliance.id):done(function ()
-        --                 self:InitHistoryRecord()
-        --                 self.history_listview:show()
-        --             end)
-        --         else
-        --             self:InitHistoryRecord()
-        --             self.history_listview:show()
-        --         end
-        --         self.info_layer:hide()
-        --     end
-        -- end):pos(window.cx, window.bottom + 34)
         -- 获取历史记录
         if self.alliance.allianceFightReports == nil then
             NetManager:getAllianceFightReportsPromise(self.alliance._id):done(function ()
                 self:InitHistoryRecord()
-                -- self.history_listview:show()
             end)
         else
             self:InitHistoryRecord()
-            -- self.history_listview:show()
         end
     elseif tag == "fight" then
         self:InitBattleStatistics()
@@ -78,51 +45,6 @@ function GameUIAllianceBattle:OnMoveInStage()
             }):align(display.CENTER, window.cx, window.cy)
             :addTo(self)
     end
-    -- self:CreateTabButtons({
-    --     {
-    --         label = _("战争统计"),
-    --         tag = "statistics",
-    --         default = true
-    --     },
-    --     {
-    --         label = _("历史记录"),
-    --         tag = "history",
-    --     },
-    --     {
-    --         label = _("其他联盟"),
-    --         tag = "other_alliance",
-    --     },
-    -- }, function(tag)
-    --     self.statistics_layer:setVisible(tag == 'statistics')
-    --     if tag == 'history' then
-    --         self.history_layer:setVisible(true)
-    --         if not self.history_listview then
-    --             self:InitHistoryRecord()
-    --         end
-    --     else
-    --         self.history_layer:setVisible(false)
-    --     end
-    --     if tag == 'other_alliance' then
-    --         self.other_alliance_layer:setVisible(true)
-    --         if not self.alliance_listview then
-    --             self:InitOtherAlliance()
-    --             NetManager:getNearedAllianceInfosPromise():done(function(response)
-    --                 if response.msg.allianceInfos then
-    --                     table.sort(response.msg.allianceInfos,function ( a,b )
-    --                         return a.basicInfo.power > b.basicInfo.power
-    --                     end)
-    --                     self:RefreshAllianceListview(response.msg.allianceInfos)
-    --                 end
-    --             end)
-
-    --         end
-    --     else
-    --         self.other_alliance_layer:setVisible(false)
-    --     end
-    -- end):pos(window.cx, window.bottom + 34)
-
-    -- self:InitBattleStatistics()
-
 
     self.alliance:AddListenOnType(self, "basicInfo")
 end
@@ -144,31 +66,6 @@ function GameUIAllianceBattle:onCleanup()
     cc.Director:getInstance():getTextureCache():removeTextureForKey("background_550x170.jpg")
 end
 
--- function GameUIAllianceBattle:OnTimer(current_time)
---     if self.statistics_layer:isVisible() then
---         local status = self.alliance.basicInfo.status
---         if status ~= "peace" then
---             local statusFinishTime = self.alliance.basicInfo.statusFinishTime
---             if math.floor(statusFinishTime/1000)>current_time then
---                 self.time_label:setString(GameUtils:formatTimeStyle1(math.floor(statusFinishTime/1000)-current_time))
---             end
---         else
---             local statusStartTime = self.alliance.basicInfo.statusStartTime
---             if current_time>= math.floor(statusStartTime/1000) then
---                 self.time_label:setString(GameUtils:formatTimeStyle1(current_time-math.floor(statusStartTime/1000)))
---             end
---         end
---     end
---     if self.history_layer:isVisible() then
---         for k,listitem in pairs(self.history_listview:getItems()) do
---             local content = listitem:getContent()
---             if content.RefreshRevengeTime then
---                 listitem:getContent():RefreshRevengeTime(current_time)
---             end
---         end
---     end
--- end
-
 function GameUIAllianceBattle:CreateBetweenBgAndTitle()
     GameUIAllianceBattle.super.CreateBetweenBgAndTitle(self)
 
@@ -179,8 +76,6 @@ function GameUIAllianceBattle:CreateBetweenBgAndTitle()
         -- statistics_layer
         self.statistics_layer = display.newLayer():addTo(self:GetView())
     end
-    -- other_alliance_layer
-    -- self.other_alliance_layer = display.newLayer():addTo(self:GetView())
 
 end
 function GameUIAllianceBattle:InitAllianceInfo()
@@ -508,7 +403,8 @@ function GameUIAllianceBattle:InitBattleStatistics()
             pressed = "button_blue_pressed_232x64.png"})
             :onButtonClicked(function()
                 -- self:OpenAllianceDetails(true)
-                app:EnterMyAllianceScene({mapIndex = alliance.mapIndex})
+                -- app:EnterMyAllianceScene({mapIndex = alliance.mapIndex})
+                UIKit:newGameUI("GameUIAllianceInfo",alliance._id):AddToCurrentScene(true)
             end)
             :align(display.RIGHT_CENTER,t_size.width/2-35, t_size.height/2)
             :addTo(top_bg)
@@ -516,17 +412,20 @@ function GameUIAllianceBattle:InitBattleStatistics()
             pressed = "button_red_pressed_232x64.png"})
             :onButtonClicked(function()
                 -- self:OpenAllianceDetails(false)
-                app:EnterMyAllianceScene({mapIndex = enemy_alliance.mapIndex})
+                -- app:EnterMyAllianceScene({mapIndex = enemy_alliance.mapIndex})
+                UIKit:newGameUI("GameUIAllianceInfo",enemy_alliance.id):AddToCurrentScene(true)
             end)
             :align(display.LEFT_CENTER,t_size.width/2+35, t_size.height/2)
             :addTo(top_bg)
 
-        display.newSprite("icon_goto_30x34.png")
+        display.newSprite("info_16x33.png")
             :align(display.CENTER, 20, t_size.height/2)
             :addTo(top_bg)
-        display.newSprite("icon_goto_30x34.png")
+            :scale(0.6)
+        display.newSprite("info_16x33.png")
             :align(display.CENTER, t_size.width-20, t_size.height/2)
             :addTo(top_bg)
+            :scale(0.6)
         -- 己方联盟名字
         local our_alliance_tag = UIKit:ttfLabel({
             text = "["..alliance.basicInfo.tag.."]",
@@ -747,29 +646,12 @@ function GameUIAllianceBattle:OpenAllianceDetails(isOur)
     end
     local alliance_name = target_alliance.alliance.name
     local alliance_tag = target_alliance.alliance.tag
-    -- local count_data = target_alliance.allianceCountData
-    -- 玩家联盟成员
-    -- local palace_level = alliance:FindAllianceBuildingInfoByName("palace").level
-    -- local memberCount = GameDatas.AllianceBuilding.palace[palace_level].memberCount
-    -- local enemy_memberCount = GameDatas.AllianceBuilding.palace[target_alliance:FindAllianceBuildingInfoByName("palace").level].memberCount
-    -- local alliance_members = isOur and alliance:GetMembersCount().."/"..memberCount or target_alliance:GetMembersCount().."/"..enemy_memberCount
-    -- 联盟语言
-    -- local  language = isOur and alliance.basicInfo.language or target_alliance.basicInfo.language
-    -- 联盟战斗力
-    -- local  alliance_power = isOur and alliance.basicInfo.power or target_alliance.basicInfo.power
-    -- 联盟击杀
-    -- local alliance_kill = count_data.kill
+
     -- 玩家击杀列表
     local player_kill = target_alliance.playerKills
-    -- 联盟旗帜
-    -- local alliance_flag = target_alliance.alliance.flag
-    -- 联盟地形
-    -- local alliance_terrain = isOur and alliance.basicInfo.terrain or target_alliance.basicInfo.terrain
-
 
     local body = UIKit:newWidgetUI("WidgetPopDialog",630,_("击杀排行")):AddToCurrentScene():GetBody()
     local rb_size = body:getContentSize()
-
 
     UIKit:ttfLabel({
         text = "["..alliance_tag.."]  "..alliance_name,
@@ -777,25 +659,6 @@ function GameUIAllianceBattle:OpenAllianceDetails(isOur)
         color = 0x403c2f,
     }):align(display.CENTER, rb_size.width/2,rb_size.height-60)
         :addTo(body)
-
-    -- local function addAttr(title,value,x,y)
-    --     local attr_title = UIKit:ttfLabel({
-    --         text = title,
-    --         size = 20,
-    --         color = 0x615b44,
-    --     }):align(display.LEFT_CENTER, x, y)
-    --         :addTo(body)
-    --     UIKit:ttfLabel({
-    --         text = value,
-    --         size = 20,
-    --         color = 0x403c2f,
-    --     }):align(display.LEFT_CENTER,x + attr_title:getContentSize().width+20,y)
-    --         :addTo(body)
-    -- end
-    -- addAttr(_("成员"),alliance_members,180,rb_size.height-100)
-    -- addAttr(_("语言"),language,180,rb_size.height-140)
-    -- addAttr(_("战斗力"),string.formatnumberthousands(alliance_power),350,rb_size.height-100)
-    -- addAttr(_("击杀"),string.formatnumberthousands(alliance_kill),350,rb_size.height-140)
 
     local clone_player_kill = clone(player_kill)
     table.sort( clone_player_kill, function (a,b)
@@ -1103,9 +966,7 @@ function GameUIAllianceBattle:CreateHistoryContent()
         goto_button:removeEventListenersByEvent("CLICKED_EVENT")
         goto_button:onButtonClicked(function(event)
             if event.name == "CLICKED_EVENT" then
-                -- display.getRunningScene():GotoAllianceByIndex(enemyAlliance.mapIndex)
                 app:EnterMyAllianceScene({mapIndex = enemyAlliance.mapIndex})
-                -- parent:LeftButtonClicked()
             end
         end)
     end
@@ -1228,7 +1089,6 @@ function GameUIAllianceBattle:CreateAllianceItem(alliance,index)
                 shadow= true
             }))
             :onButtonClicked(function(event)
-                -- app:EnterViewModelAllianceScene(alliance._id)
                 UIKit:newGameUI("GameUIAllianceInfo", alliance._id):AddToCurrentScene(true)
             end):align(display.RIGHT_CENTER,w-20,45):addTo(content)
     end
@@ -1331,7 +1191,6 @@ function GameUIAllianceBattle:OpenOtherAllianceDetails(alliance)
             }))
             :onButtonClicked(function(event)
                 if event.name == "CLICKED_EVENT" then
-                    -- app:EnterViewModelAllianceScene(alliance._id)
                     UIKit:newGameUI("GameUIAllianceInfo", alliance._id):AddToCurrentScene(true)
                 end
             end):align(display.RIGHT_CENTER,w-35,h-100):addTo(body)
@@ -1375,36 +1234,4 @@ function GameUIAllianceBattle:GetAlliancePeriod()
     return period
 end
 
-
 return GameUIAllianceBattle
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

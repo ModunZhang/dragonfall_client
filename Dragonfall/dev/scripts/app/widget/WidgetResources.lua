@@ -61,7 +61,6 @@ function WidgetResources:RefreshProtectPercent()
         for k,v in pairs(self.resource_items) do
             if v.protectPro then
                 local p = DataUtils:GetResourceProtectPercent(v.type) * 100
-                v.protectPro:setPercentage(18)
                 v.protectPro:setPercentage(math.min(v.r_percent,p))
             end
         end
