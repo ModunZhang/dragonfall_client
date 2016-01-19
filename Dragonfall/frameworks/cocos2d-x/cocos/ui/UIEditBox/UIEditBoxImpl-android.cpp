@@ -45,8 +45,7 @@ namespace ui {
 static void editBoxEditingDidBegin(int index);
 static void editBoxEditingDidChanged(int index, const std::string& text);
 static void editBoxEditingDidEnd(int index, const std::string& text);
-//dannyhe
-static void editBoxEditingDidReturn(int index);
+
 extern "C"{
     JNIEXPORT void JNICALL Java_org_cocos2dx_lib_Cocos2dxEditBoxHelper_editBoxEditingDidBegin(JNIEnv *env, jclass, jint index) {
         editBoxEditingDidBegin(index);
@@ -60,10 +59,6 @@ extern "C"{
     JNIEXPORT void JNICALL Java_org_cocos2dx_lib_Cocos2dxEditBoxHelper_editBoxEditingDidEnd(JNIEnv *env, jclass, jint index, jstring text) {
         std::string textString = StringUtils::getStringUTFCharsJNI(env,text);
         editBoxEditingDidEnd(index, textString);
-    }
-    //dannyhe
-    JNIEXPORT void JNICALL Java_org_cocos2dx_lib_Cocos2dxEditBoxHelper_editBoxEditingDidReturn(JNIEnv *env, jclass, jint index) {
-        editBoxEditingDidReturn(index);
     }
 }
 
@@ -226,15 +221,6 @@ void editBoxEditingDidEnd(int index, const std::string& text)
     if (it != s_allEditBoxes.end())
     {
         s_allEditBoxes[index]->editBoxEditingDidEnd(text);
-    }
-}
-//dannyhe
-void editBoxEditingDidReturn(int index)
-{
-    auto it = s_allEditBoxes.find(index);
-    if (it != s_allEditBoxes.end())
-    {
-        s_allEditBoxes[index]->editBoxEditingDidReturn();
     }
 }
 
