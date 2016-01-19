@@ -41,7 +41,7 @@
 #include "libwebsockets.h"
 
 #define WS_WRITE_BUFFER_SIZE 2048
-
+#define CHECK_SNED_DATA 1
 NS_CC_BEGIN
 
 namespace network {
@@ -360,7 +360,9 @@ void WebSocket::send(const std::string& message)
 void WebSocket::send(const unsigned char* binaryMsg, unsigned int len)
 {
     CCASSERT(binaryMsg != nullptr && len > 0, "parameter invalid.");
-
+#if CHECK_SNED_DATA
+    if(nullptr == binaryMsg || len <= 0)return;
+#endif
     if (_readyState == State::OPEN)
     {
         // In main thread
