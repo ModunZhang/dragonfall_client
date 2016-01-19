@@ -256,24 +256,53 @@ function GameUIActivityRewardNew:ui_EVERY_DAY_LOGIN()
         button.icon = enable
         button.check_bg = check_bg
         display.newSprite("activity_check_body_55x51.png"):addTo(check_bg):pos(27,17)
-        local could_get = false
         if i > flag then -- other day
             check_bg:hide()
             enable:clearFilter()
-            could_get = auto_get_reward == 0 and (i - flag) == 1
         else
             if flag == i then
                 if flag > geted or (geted == 30 and flag == 1) then -- can
                     check_bg:hide()
                     enable:clearFilter()
                     auto_get_reward = i
-                    could_get = true
                 else
                     check_bg:show()
                     if not enable:getFilter() then
                         enable:setFilter(filter.newFilter("CUSTOM", json.encode({frag = "shaders/ps_discoloration.fs",shaderName = "ps_discoloration"})))
                     end
                 end
+
+                display.newSprite("icon_daily_box_118x118.png"):align(display.LEFT_TOP,0, 118):addTo(button,2)
+                local reward_info = display.newNode()
+                reward_info:setContentSize(cc.size(536,118))
+                reward_info:align(display.LEFT_TOP, 0, y)
+                    :addTo(content_bg)
+                local get_btn = WidgetPushButton.new({normal = "yellow_btn_up_148x58.png",pressed = "yellow_btn_down_148x58.png",disabled = "grey_btn_148x58.png"})
+                    :setButtonLabel(UIKit:commonButtonLable({
+                        text = _("领取"),
+                        color = 0xfff3c7
+                    })):align(display.RIGHT_CENTER,540, -59):onButtonClicked(function(event)
+                    self:On_EVERY_DAY_LOGIN_GetReward(auto_get_reward,rewards[auto_get_reward])
+                    end):addTo(reward_info)
+                get_btn:setVisible(auto_get_reward ~= 0)
+                if auto_get_reward == 0 then
+                    UIKit:ttfLabel({
+                        text = _("已领取"),
+                        size = 22,
+                        color= 0x403c2f
+                    }):align(display.RIGHT_CENTER,520, -59):addTo(reward_info)
+                end
+                UIKit:ttfLabel({
+                    text = Localize_item.item_name[rewards[i].reward],
+                    size = 22,
+                    color= 0x403c2f
+                }):align(display.LEFT_CENTER, 14, -20):addTo(reward_info)
+                UIKit:ttfLabel({
+                    text = Localize_item.item_desc[rewards[i].reward],
+                    size = 20,
+                    color= 0x615b44,
+                    dimensions = cc.size(380,0)
+                }):align(display.LEFT_TOP, 14, -40):addTo(reward_info)
             else
                 check_bg:show()
                 if not enable:getFilter() then
@@ -281,39 +310,7 @@ function GameUIActivityRewardNew:ui_EVERY_DAY_LOGIN()
                 end
             end
         end
-        if could_get then
-            display.newSprite("icon_daily_box_118x118.png"):align(display.LEFT_TOP,0, 118):addTo(button,2)
-            local reward_info = display.newNode()
-            reward_info:setContentSize(cc.size(536,118))
-            reward_info:align(display.LEFT_TOP, 0, y)
-                :addTo(content_bg)
-            local get_btn = WidgetPushButton.new({normal = "yellow_btn_up_148x58.png",pressed = "yellow_btn_down_148x58.png",disabled = "grey_btn_148x58.png"})
-                :setButtonLabel(UIKit:commonButtonLable({
-                    text = _("领取"),
-                    color = 0xfff3c7
-                })):align(display.RIGHT_CENTER,540, -59):onButtonClicked(function(event)
-                self:On_EVERY_DAY_LOGIN_GetReward(auto_get_reward,rewards[auto_get_reward])
-                end):addTo(reward_info)
-            get_btn:setVisible(auto_get_reward ~= 0)
-            if auto_get_reward == 0 then
-                UIKit:ttfLabel({
-                    text = _("已领取"),
-                    size = 22,
-                    color= 0x403c2f
-                }):align(display.RIGHT_CENTER,520, -59):addTo(reward_info)
-            end
-            UIKit:ttfLabel({
-                text = Localize_item.item_name[rewards[i].reward],
-                size = 22,
-                color= 0x403c2f
-            }):align(display.LEFT_CENTER, 14, -20):addTo(reward_info)
-            UIKit:ttfLabel({
-                text = Localize_item.item_desc[rewards[i].reward],
-                size = 20,
-                color= 0x615b44,
-                dimensions = cc.size(380,0)
-            }):align(display.LEFT_TOP, 14, -40):addTo(reward_info)
-        end
+       
         local num_bg = display.newSprite("activity_num_bg_28x28.png",20,-18 + 118):addTo(button)
         UIKit:ttfLabel({
             text = i,
@@ -321,10 +318,9 @@ function GameUIActivityRewardNew:ui_EVERY_DAY_LOGIN()
             color= 0xfff9e4
         }):align(display.CENTER, 14, 14):addTo(num_bg)
         x = x + 110
-        local change_flag = auto_get_reward == 0 and (flag + 1) or flag
         if i % 5 == 0 then
             x = 3
-            if i - change_flag < 5 and i - change_flag >= 0 then
+            if i - flag < 5 and i - flag >= 0 then
                 y = y - 222
             else
                 y = y - 108
@@ -1158,6 +1154,7 @@ function GameUIActivityRewardNew:GetNextOnlineTimePoint()
 end
 
 return GameUIActivityRewardNew
+
 
 
 
