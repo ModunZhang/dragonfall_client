@@ -31,7 +31,22 @@ function WorldLayer:onEnter()
     self.map = self:CreateMap()
 
     local p = self:ConvertLogicPositionToMapPosition(middle_index, middle_index)
-    display.newSprite("world_middle.png"):addTo(self.map):pos(p.x, p.y)
+    display.newSprite("world_middle.png"):addTo(self.map):pos(p.x + 104, p.y+1)
+
+    display.newSprite("world_crown_circle2.png")
+    :addTo(self.map):pos(p.x+10, p.y)
+    local circle = display.newSprite("world_crown_circle1.png")
+    :addTo(self.map):pos(p.x+10, p.y)
+    circle:runAction(cc.RepeatForever:create(transition.sequence({
+        cc.CallFunc:create(function() 
+            circle:opacity(0) 
+            circle:scale(1)
+        end),
+        cc.FadeIn:create(0.5),
+        cc.CallFunc:create(function() circle:fadeOut(2) end),
+        cc.ScaleTo:create(2, 2),
+    })))
+
 
     self.leveLayer = display.newNode():addTo(self.map,1)
     self.lineLayer = display.newNode():addTo(self.map,2)
@@ -41,7 +56,7 @@ function WorldLayer:onEnter()
     self.levelSprites = {}
     self.allainceSprites = {}
     self.flagSprites = {}
-    self:ZoomTo(1.2)
+    self:ZoomTo(1.1)
     local size = self.scene_node:getCascadeBoundingBox()
     self.scene_node:setContentSize(cc.size(size.width, size.height))
     math.randomseed(1)
@@ -295,6 +310,10 @@ function WorldLayer:LoadAlliance()
         if UIKit:GetUIInstance("GameUIWorldMap") then
             UIKit:GetUIInstance("GameUIWorldMap"):HideLoading()
         end
+        if self.GetMiddleLogicPosition then
+            local x,y = self:GetMiddleLogicPosition()
+            self.middle_pos = {x = x, y = y}
+        end
     end)
 end
 function WorldLayer:LoadAllianceBy(mapIndex, alliance)
@@ -333,7 +352,13 @@ local PROTECT_TAG = 110
 function WorldLayer:CreateAllianceSprite(index, alliance)
     local index = tostring(index)
     local p = self:ConvertLogicPositionToMapPosition(self:IndexToLogic(index))
+
+    local ismiddle = tonumber(index) == self:LogicToIndex(middle_index, middle_index)
+
     local node = display.newNode():addTo(self.allianceLayer):pos(p.x, p.y):zorder(index)
+    if ismiddle then
+        node:scale(1.5)
+    end
     node.alliance = alliance
     
     local sprite = display.newSprite(string.format("world_alliance_%s.png", alliance.terrain))
@@ -343,9 +368,29 @@ function WorldLayer:CreateAllianceSprite(index, alliance)
     else
         sprite:scale(1.2)
     end
-    if index ~= Alliance_Manager:GetMyAlliance().mapIndex then
-        math.randomseed(index)
-        sprite:pos(30 - math.random(60), 30 - math.random(60))
+    if ismiddle then
+        sprite:pos(10, 10)
+    elseif index ~= Alliance_Manager:GetMyAlliance().mapIndex then
+        math.randomseed(tonumber(index) + 12345)
+        if tonumber(index) == self:LogicToIndex(middle_index-1, middle_index-1) then
+            sprite:pos(-40, 40)
+        elseif tonumber(index) == self:LogicToIndex(middle_index, middle_index-1) then
+            sprite:pos(0, 40)
+        elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index-1) then
+            sprite:pos(40, 40)
+        elseif tonumber(index) == self:LogicToIndex(middle_index-1, middle_index) then
+            sprite:pos(-40, 0)
+        elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index) then
+            sprite:pos(40, 0)
+        elseif tonumber(index) == self:LogicToIndex(middle_index-1, middle_index+1) then
+            sprite:pos(-40, -40)
+        elseif tonumber(index) == self:LogicToIndex(middle_index, middle_index+1) then
+            sprite:pos(0, -40)
+        elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index+1) then
+            sprite:pos(40, -40)
+        else
+            sprite:pos(30 - math.random(30), 30 - math.random(60))
+        end
     end
     local size = sprite:getContentSize()
     local banner = display.newSprite("alliance_banner.png")
@@ -544,23 +589,31 @@ function WorldLayer:CreateFlag(index)
     local p = self:ConvertLogicPositionToMapPosition(self:IndexToLogic(index))
     local node
     if tonumber(index) == self:LogicToIndex(middle_index, middle_index) then
-        node = display.newNode():addTo(self.allianceLayer):pos(p.x+50, p.y + 50)
-        display.newSprite("world_crown_circle2.png"):addTo(node):pos(-40, -50)
-        local circle = display.newSprite("world_crown_circle1.png"):addTo(node):pos(-40, -50)
-        circle:runAction(cc.RepeatForever:create(transition.sequence({
-            cc.CallFunc:create(function() 
-                circle:opacity(0) 
-                circle:scale(1)
-            end),
-            cc.FadeIn:create(0.5),
-            cc.CallFunc:create(function() circle:fadeOut(2) end),
-            cc.ScaleTo:create(2, 2),
-        })))
+        node = display.newNode():addTo(self.allianceLayer):pos(p.x+40, p.y + 50)
         display.newSprite("world_crown.png"):addTo(node)
     else
+        math.randomseed(tonumber(index) + 12345)
         node = display.newNode():addTo(self.allianceLayer):pos(p.x, p.y)
-        local sprite = ccs.Armature:create("daqizi"):addTo(node)
-        :scale(0.4):pos(40 - math.random(80), 30 - math.random(60))
+        local sprite = ccs.Armature:create("daqizi"):addTo(node):scale(0.4)
+        if tonumber(index) == self:LogicToIndex(middle_index-1, middle_index-1) then
+            sprite:pos(-40, 40)
+        elseif tonumber(index) == self:LogicToIndex(middle_index, middle_index-1) then
+            sprite:pos(0, 40)
+        elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index-1) then
+            sprite:pos(40, 40)
+        elseif tonumber(index) == self:LogicToIndex(middle_index-1, middle_index) then
+            sprite:pos(-40, 0)
+        elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index) then
+            sprite:pos(40, 0)
+        elseif tonumber(index) == self:LogicToIndex(middle_index-1, middle_index+1) then
+            sprite:pos(-40, -40)
+        elseif tonumber(index) == self:LogicToIndex(middle_index, middle_index+1) then
+            sprite:pos(0, -40)
+        elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index+1) then
+            sprite:pos(40, -40)
+        else
+            sprite:pos(30 - math.random(30), 30 - math.random(60))
+        end
         local ani = sprite:getAnimation()
         ani:playWithIndex(0)
         ani:gotoAndPlay(math.random(71) - 1)
@@ -609,6 +662,10 @@ function WorldLayer:GetAvailableIndex()
 end
 function WorldLayer:GetLeftTopLogicPosition()
     local point = self.map:convertToNodeSpace(cc.p(0, display.height))
+    return self:GetLogicMap():ConvertToLogicPosition(point.x, point.y)
+end
+function WorldLayer:GetMiddleLogicPosition()
+    local point = self.map:convertToNodeSpace(cc.p(display.cy, display.cy))
     return self:GetLogicMap():ConvertToLogicPosition(point.x, point.y)
 end
 function WorldLayer:GetClickedObject(world_x, world_y)

@@ -181,7 +181,7 @@ function GameUIWall:CreateMilitaryUIIf()
         text = level_str,
         size = 20,
         color= 0x615b44
-    }):align(display.LEFT_BOTTOM,title_bg:getPositionX(), tips_label:getPositionY() + tips_label:getContentSize().height + 20):addTo(military_node)
+    }):align(display.LEFT_BOTTOM,title_bg:getPositionX(), title_bg:getPositionY() - title_bg:getContentSize().height - 40):addTo(military_node)
     self.level_title_label = level_title_label
     self.dragon_level_label = UIKit:ttfLabel({
         text = "",
@@ -252,7 +252,6 @@ function GameUIWall:CreateMilitaryUIIf()
             end)
         end)
     self.retreat_troop_btn = retreat_btn
-
     local edit_button = WidgetPushButton.new({
         normal = "blue_btn_up_148x58.png",
         pressed = "blue_btn_down_148x58.png",
@@ -276,10 +275,12 @@ function GameUIWall:CreateMilitaryUIIf()
                     )
                     return
                 end
-                NetManager:getSetDefenceTroopPromise(dragonType,soldiers):done(function ()
-                    self:RefreshUIAfterSelectDragon(self.dragon_manager:GetDragon(dragonType),soldiers)
+                NetManager:getCancelDefenceTroopPromise():done(function()
+                    NetManager:getSetDefenceTroopPromise(dragonType,soldiers):done(function ()
+                        self:RefreshUIAfterSelectDragon(self.dragon_manager:GetDragon(dragonType),soldiers)
+                    end)
                 end)
-            end,{isMilitary = true,terrain = not Alliance_Manager:GetMyAlliance():IsDefault() and Alliance_Manager:GetMyAlliance().basicInfo.terrain or User.basicInfo.terrain,title = _("驻防部队"),military_soldiers = User.defenceTroop.soldiers}):AddToCurrentScene(true)
+            end,{dragon = self:GetDragon(), isMilitary = true,terrain = not Alliance_Manager:GetMyAlliance():IsDefault() and Alliance_Manager:GetMyAlliance().basicInfo.terrain or User.basicInfo.terrain,title = _("驻防部队"),military_soldiers = User.defenceTroop.soldiers}):AddToCurrentScene(true)
         end)
     self.edit_troop_btn = edit_button
     if dragon then
@@ -365,7 +366,7 @@ function GameUIWall:RefreshListView()
                 WidgetSoldierBox.new(nil, function()end):addTo(row_item)
                     :alignByPoint(cc.p(0.5, 0.5), 65 + (130 + 9) * (added - 1) , 83)
                     :SetSoldier(
-                        soldier.name, 
+                        soldier.name,
                         UtilsForSoldier:SoldierStarByName(self.city:GetUser(), soldier.name)
                     )
                     :SetNumber(soldier.count)
@@ -433,6 +434,9 @@ function GameUIWall:OnHPChanged()
     end
 end
 return GameUIWall
+
+
+
 
 
 

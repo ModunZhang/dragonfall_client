@@ -596,7 +596,8 @@ function GameUIPVESendTroop:CreateTroopsShow()
                     local star = my_soldiers[i].star
                     -- 士兵头像
                     local soldier_ui_config = UILib.soldier_image[name]
-                    local soldier_color_bg = display.newSprite("blue_bg_128x128.png"):align(display.CENTER,origin_x+ (i-1-(current_page-1)*5)*(box_width+gap_x),origin_y):addTo(self):scale(104/128)
+                    local color_bg = UILib.soldier_color_bg_images[name]
+                    local soldier_color_bg = display.newSprite(color_bg):align(display.CENTER,origin_x+ (i-1-(current_page-1)*5)*(box_width+gap_x),origin_y):addTo(self):scale(104/128)
                     local soldier_head_icon = display.newSprite(soldier_ui_config):align(display.CENTER,origin_x+ (i-1-(current_page-1)*5)*(box_width+gap_x),origin_y):addTo(self):scale(104/128)
                     local soldier_head_bg  = display.newSprite("box_soldier_128x128.png"):addTo(soldier_head_icon):pos(soldier_head_icon:getContentSize().width/2,soldier_head_icon:getContentSize().height/2)
                     table.insert(self.added_my_soldiers,soldier_head_icon)

@@ -216,6 +216,18 @@ function GameUIWorldMap:LoadMap()
     if self:IsFingerOn() then
         return
     end
+    local last_middle_pos = self:GetSceneLayer().middle_pos
+    if last_middle_pos then
+        local cur_x,cur_y = self:GetSceneLayer():GetMiddleLogicPosition()
+        if math.abs(last_middle_pos.x - cur_x) > 1 
+        or math.abs(last_middle_pos.y-cur_y) > 1 then
+            self:_LoadMap()
+        end
+    else
+        self:_LoadMap()
+    end
+end
+function GameUIWorldMap:_LoadMap()
     self:ShowLoading()
     self.load_map_node:stopAllActions()
     self.load_map_node:performWithDelay(function()
@@ -315,10 +327,10 @@ function GameUIWorldMap:LoadRoundInfo(mapIndex)
     local ALLIANCE_WIDTH, ALLIANCE_HEIGHT = intInit.allianceRegionMapWidth.value, intInit.allianceRegionMapHeight.value
     mini_map_button:addNodeEventListener(cc.NODE_TOUCH_EVENT, function(event)
         local map_position = mini_map_button:convertToNodeSpace(cc.p(event.x,event.y))
-        if map_position.x > 124 or map_position.y > 124 or map_position.x < 0 or map_position.y < 0 then
+        if  map_position.x >= 124 or map_position.y >= 124 or map_position.x < 0 or map_position.y < 0 then
             return
         end
-        local x,y = math.floor(map_position.x/124 * bigMapLength * ALLIANCE_WIDTH) , math.floor((1 - map_position.y/124) * bigMapLength * ALLIANCE_HEIGHT)
+        local x,y = math.floor(math.floor(map_position.x)/124 * bigMapLength * ALLIANCE_WIDTH) , math.floor((1 - math.floor(map_position.y)/124) * bigMapLength * ALLIANCE_HEIGHT)
         local mapIndex = DataUtils:GetAlliancePosition(x, y)
         local x,y = self:GetSceneLayer():IndexToLogic(mapIndex)
         self:GotoPosition(x,y)
@@ -401,6 +413,18 @@ function GameUIWorldMap:OnTwoTouch(x1, y1, x2, y2, event_type)
     elseif event_type == "ended" then
         scene:ZoomEnd()
         self.distance = nil
+        self:MakeElastic()
+    end
+end
+function GameUIWorldMap:MakeElastic()
+    local scene = self.scene_layer
+    local min_s, max_s = scene:GetScaleRange()
+    local low = min_s * 1.065
+    local high = max_s * 0.95
+    if scene:getScale() <= low then
+        scene:ZoomToByAnimation(low)
+    elseif scene:getScale() >= high then
+        scene:ZoomToByAnimation(high)
     end
 end
 --

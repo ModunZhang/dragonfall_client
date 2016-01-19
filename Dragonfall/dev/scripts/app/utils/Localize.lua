@@ -214,7 +214,8 @@ local SERVER_ERRORS = {
     [712] = _("您有商品正在出售,不能切换服务器"),
     [713] = _("联盟宫殿等级过低,不能移动联盟"),
     [714] = _("玩家还未绑定GC"),
-    [714] = _("不能迁移到选定的服务器"),
+    [715] = _("不能迁移到选定的服务器"),
+    [716] = _("已有龙驻防在城墙"),
 }
 
 local MATERIALS_DESC_MAP = {
@@ -1268,12 +1269,8 @@ local ALLIANCE_DECORATE_NAME = {
 }
 
 local SERVER_NAME = {
-    bronze = _("青铜级"),
-    silver = _("白银级"),
-    gold  = _("黄金级"),
-    platinum = _("铂金级"),
-    diamond = _("钻石级"),
-    master = _("大师级"),
+    ["cache-server-1"] = _("世界-1"),
+    ["cache-server-2"] = _("世界-2"),
 }
 
 local PERIOD_TYPE = {

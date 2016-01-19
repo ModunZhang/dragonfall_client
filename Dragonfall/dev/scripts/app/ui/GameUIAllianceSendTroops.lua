@@ -130,7 +130,7 @@ function GameUIAllianceSendTroops:ctor(march_callback,params)
     self.march_callback = march_callback
 
     -- 默认选中最强的并且可以出战的龙,如果都不能出战，则默认最强龙
-    self.dragon = self.dragon_manager:GetDragon(self.dragon_manager:GetCanFightPowerfulDragonType()) or self.dragon_manager:GetDragon(self.dragon_manager:GetPowerfulDragonType())
+    self.dragon = params.dragon or self.dragon_manager:GetDragon(self.dragon_manager:GetCanFightPowerfulDragonType()) or self.dragon_manager:GetDragon(self.dragon_manager:GetPowerfulDragonType())
 end
 
 function GameUIAllianceSendTroops:OnMoveInStage()
@@ -257,7 +257,7 @@ function GameUIAllianceSendTroops:OnMoveInStage()
                     end
                     return
                 end
-                if self.dragon:IsDefenced() then
+                if self.dragon:IsDefenced() and not self.military_soldiers then
                     UIKit:showMessageDialog(_("提示"),_("当前选择的龙处于驻防状态，是否取消驻防将这条龙派出")):CreateOKButton(
                         {
                             listener = function ()
@@ -863,7 +863,10 @@ function GameUIAllianceSendTroops:CreateTroopsShow()
         -- self:SetCitizen(total_citizen)
     end
     function TroopShow:addSoldiers()
-        if self.addCount > #self.soldiers or #self.soldiers == 0 then
+        if not self.soldiers then
+            return
+        end
+        if (self.addCount > #self.soldiers or #self.soldiers == 0) then
             self:RefreshScrollNode(self.x)
             info_bg:removeAllChildren()
             self:SetPower(self.total_power)

@@ -49,10 +49,10 @@ function GameUIAllianceHome:ctor(alliance)
     GameUIAllianceHome.super.ctor(self)
     self.alliance = alliance
 
-    local sprite = display.newSprite("blue_tex.png"):addTo(self)
-        :align(display.TOP_CENTER, display.cx, display.height)
-    local size = sprite:getContentSize()
-    sprite:setScaleX(display.width / size.width)
+    -- local sprite = display.newSprite("blue_tex.png"):addTo(self)
+    --     :align(display.TOP_CENTER, display.cx, display.height)
+    -- local size = sprite:getContentSize()
+    -- sprite:setScaleX(display.width / size.width)
 end
 function GameUIAllianceHome:onEnter()
     GameUIAllianceHome.super.onEnter(self)

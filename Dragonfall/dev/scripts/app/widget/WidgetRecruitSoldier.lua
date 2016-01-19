@@ -634,6 +634,7 @@ function WidgetRecruitSoldier:GetCurrentMaxRecruitNum(total_resouce)
     local soldier_config = self.soldier_config
     local total_map = total_resouce
     local max_count = math.huge
+    local effect = UtilsForTech:GetEffect("recruitment", User.productionTechs["recruitment"])
     for k, v in pairs(self.res_map) do
         local total,temp_max
         if soldier_config.specialMaterials then
@@ -647,7 +648,7 @@ function WidgetRecruitSoldier:GetCurrentMaxRecruitNum(total_resouce)
             end
         else
             total = total_map[k] == nil and 0 or total_map[k]
-            temp_max = math.floor(total / soldier_config[k])
+            temp_max = math.floor(total / (soldier_config[k] * (k == "citizen" and 1 or (1 - effect))))
         end
         max_count = math.min(max_count,temp_max)
     end

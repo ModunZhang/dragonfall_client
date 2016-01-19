@@ -331,7 +331,7 @@ end
 function UpgradeBuilding:getUpgradeNowNeedGems()
     return UtilsForBuilding:GetUpgradeNowGems(
             self:BelongCity():GetUser(), 
-            {type = self.building_type , level = self:GetLevel() + 1}
+            {type = self.building_type , level = self:GetNextLevel()}
         )
 end
 

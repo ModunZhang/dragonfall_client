@@ -371,10 +371,22 @@ function GameUIDragonEyrieMain:CreateDragonContentNodeIf()
                                 UIKit:showMessageDialog(nil,_("选择的龙已经死亡"))
                                 return
                             end
-                            NetManager:getSetDefenceTroopPromise(dragonType,soldiers):done(function ()
-                                self.garrison_button:setButtonSelected(true)
-                            end)
-                        end,{isMilitary = true,terrain = Alliance_Manager:GetMyAlliance().basicInfo.terrain,title = _("驻防部队")}):AddToCurrentScene(true)
+                            if self.dragon_manager:GetDefenceDragon() then
+                                NetManager:getCancelDefenceTroopPromise():done(function()
+                                    NetManager:getSetDefenceTroopPromise(dragonType,soldiers):done(function ()
+                                        if self:GetCurrentDragon():Type() == dragonType then
+                                            self.garrison_button:setButtonSelected(true)
+                                        end
+                                    end)
+                                end)
+                            else
+                                NetManager:getSetDefenceTroopPromise(dragonType,soldiers):done(function ()
+                                    if self:GetCurrentDragon():Type() == dragonType then
+                                        self.garrison_button:setButtonSelected(true)
+                                    end
+                                end)
+                            end
+                        end,{dragon = dragon,isMilitary = true,terrain = Alliance_Manager:GetMyAlliance().basicInfo.terrain,title = _("驻防部队")}):AddToCurrentScene(true)
                     else
                         UIKit:showMessageDialog(nil,_("龙未处于空闲状态"))
                         self.garrison_button:setButtonSelected(not target,false)
@@ -390,7 +402,6 @@ function GameUIDragonEyrieMain:CreateDragonContentNodeIf()
                     end
                 end
             end)
-print("self.show_setDefence_tip==",self.show_setDefence_tip)
         if not self.dragon_manager:GetDefenceDragon() and not GLOBAL_FTE and self.show_setDefence_tip then
             local r = self.garrison_button:getCascadeBoundingBox()
             local arrow = WidgetFteArrow.new(_("点击：驻防"))
@@ -680,6 +691,7 @@ end
 
 
 return GameUIDragonEyrieMain
+
 
 
 

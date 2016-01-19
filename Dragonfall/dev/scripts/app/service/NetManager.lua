@@ -2062,7 +2062,7 @@ function NetManager:getPveStageRewardPromise(stageName)
     },"领取奖励失败!"):done(get_player_response_msg)
 end
 function NetManager:getMapAllianceDatasPromise(mapIndexs)
-    return get_blocking_request_promise("logic.allianceHandler.getMapAllianceDatas",{
+    return get_none_blocking_request_promise("logic.allianceHandler.getMapAllianceDatas",{
         mapIndexs = mapIndexs,
     },"获取世界地图信息失败!")
 end

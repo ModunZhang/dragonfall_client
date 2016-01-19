@@ -56,7 +56,8 @@ User.LISTEN_TYPE = Enum(
 
     "dailyTasks",
     "dailyQuests",
-    "dailyQuestEvents")
+    "dailyQuestEvents",
+    "inviteToAllianceEvents")
 
 property(User, "id", 0)
 property(User, "soldierStars", {})
@@ -683,9 +684,7 @@ function User:GetSoldierEventsBySeq()
     for _,v in ipairs(self.soldierEvents) do
         table.insert(events, v)
     end
-    table.sort(events, function(a, b)
-        return (a.finishTime - a.startTime) < (b.finishTime - b.startTime)
-    end)
+    table.sort(events, function(a, b) return a.finishTime < b.finishTime end)
     return events
 end
 function User:GetBuildingSoldiersInfo(building)
@@ -788,49 +787,18 @@ function User:GetMilitaryTechLevel(tech_name)
     return self.militaryTechs[tech_name].level
 end
 function User:GetShortestTechEvent()
-    local shortest_event
-    local time = math.huge
+    local t = {}
     for _,event in ipairs(self.soldierStarEvents) do
-        local l = event.finishTime - event.startTime
-        if l < time then
-            shortest_event = event
-            time = l
-        end
+        table.insert(t, event)
     end
     for _,event in ipairs(self.militaryTechEvents) do
-        local l = event.finishTime - event.startTime
-        if l < time then
-            shortest_event = event
-            time = l
-        end
+        table.insert(t, event)
     end
     for _,event in ipairs(self.productionTechEvents) do
-        local l = event.finishTime - event.startTime
-        if l < time then
-            shortest_event = event
-            time = l
-        end
+        table.insert(t, event)
     end
-    return shortest_event
-end
-function User:GetShortestMilitaryTechEvent()
-    local shortest_event
-    local time = math.huge
-    for _,event in ipairs(self.militaryTechEvents) do
-        local l = event.finishTime - event.startTime
-        if l < time then
-            shortest_event = event
-            time = l
-        end
-    end
-    for _,event in ipairs(self.soldierStarEvents) do
-        local l = event.finishTime - event.startTime
-        if l < time then
-            shortest_event = event
-            time = l
-        end
-    end
-    return shortest_event
+    table.sort(t, function(a,b) return a.finishTime < b.finishTime end)
+    return t[1]
 end
 function User:GetShortMilitaryTechEventBy(building)
     local event1 = self:GetMilitaryTechEventBy(building)
@@ -1033,9 +1001,7 @@ function User:GetMakingMaterialsEventsBySeq()
     for i,v in ipairs(self.dragonEquipmentEvents) do
         table.insert(events, v)
     end
-    table.sort(events, function(a, b)
-        return (a.finishTime - a.startTime) < (b.finishTime - b.startTime)
-    end)
+    table.sort(events, function(a, b) return a.finishTime < b.finishTime end)
     return events
 end
 function User:GetMakingMaterialsEventCount()
@@ -1547,6 +1513,7 @@ local before_map = {
             end
         end
     end,
+    inviteToAllianceEvents = function()end,
     vipEvents = function(userData, deltaData)
         userData:RefreshOutput()
     end,

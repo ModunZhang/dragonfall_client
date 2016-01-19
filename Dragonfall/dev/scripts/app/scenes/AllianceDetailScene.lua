@@ -305,6 +305,9 @@ end
 function AllianceDetailScene:onEnter()
     AllianceDetailScene.super.onEnter(self)
 
+    display.newSprite("city_filter.png"):addTo(self,10):opacity(110)
+    :scale(display.width / 640):pos(display.cx, display.cy)
+
     Alliance_Manager:ClearCache()
     Alliance_Manager:UpdateAllianceBy(Alliance_Manager:GetMyAlliance().mapIndex, Alliance_Manager:GetMyAlliance())
 
@@ -414,7 +417,7 @@ function AllianceDetailScene:StartTimer(index, func)
     end, 0.2)
 end
 function AllianceDetailScene:CreateHomePage()
-    local home_page = GameUIAllianceHome.new(Alliance_Manager:GetMyAlliance()):addTo(self)
+    local home_page = GameUIAllianceHome.new(Alliance_Manager:GetMyAlliance()):addTo(self,10)
     home_page:setTouchSwallowEnabled(false)
     return home_page
 end

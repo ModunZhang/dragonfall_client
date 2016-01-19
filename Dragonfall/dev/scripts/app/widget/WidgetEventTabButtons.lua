@@ -768,18 +768,7 @@ function WidgetEventTabButtons:LoadBuildingEvents()
     self:InsertItem(self:CreateBottom():OnOpenClicked(function(event)
         UIKit:newGameUI('GameUIHasBeenBuild', self.city):AddToCurrentScene(true)
     end):SetLabel(_("查看已拥有的建筑")))
-    local User = self.city:GetUser()
-    local events = {}
-    for _,v in ipairs(User.houseEvents) do
-        table.insert(events, v)
-    end
-    for _,v in ipairs(User.buildingEvents) do
-        table.insert(events, v)
-    end
-    table.sort(events, function(a, b)
-        return a.finishTime > b.finishTime
-    end)
-
+    local events = UtilsForBuilding:GetBuildingEventsBySeq(self.city:GetUser())
     local items = {}
     for _,v in ipairs(events) do
         local event_item = self:CreateItem()
@@ -998,7 +987,8 @@ function WidgetEventTabButtons:TechDescribe(event)
     local User = self.city:GetUser()
     local str
     if User:IsProductionTechEvent(event) then
-        str = _("研发").." "..Localize.productiontechnology_name[event.name]
+        local next_level = User.productionTechs[event.name].level + 1
+        str = _("研发") .. string.format(" %s Lv %d", Localize.productiontechnology_name[event.name], next_level)
     elseif User:IsSoldierStarEvent(event) then
         str = UtilsForEvent:GetMilitaryTechEventLocalize(event.name, UtilsForSoldier:SoldierStarByName(User, event.name))
     elseif User:IsMilitaryTechEvent(event) then
