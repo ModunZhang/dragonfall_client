@@ -390,7 +390,7 @@ function MyApp:onEnterResume()
 end
 
 function MyApp:lockInput(b)
-    cc.Director:getInstance():getEventDispatcher():setEnabled(not b)
+    cc.Director:getInstance():getEventDispatcher():setTouchEventEnabled(not b)
 end
 
 function MyApp:EnterFriendCityScene(id, location)

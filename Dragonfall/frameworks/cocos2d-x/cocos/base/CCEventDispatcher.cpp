@@ -202,6 +202,7 @@ EventDispatcher::EventDispatcher()
 : _inDispatch(0)
 , _isEnabled(false)
 , _nodePriorityIndex(0)
+, _isTouchEventEnable(true)
 {
     _toAddedListeners.reserve(50);
     
@@ -830,6 +831,10 @@ void EventDispatcher::dispatchCustomEvent(const std::string &eventName, void *op
 
 void EventDispatcher::dispatchTouchEvent(EventTouch* event)
 {
+    //dannyhe: we want stop touch event in some time
+    if(!_isTouchEventEnable)
+        return;
+    
     sortEventListeners(EventListenerTouchOneByOne::LISTENER_ID);
     sortEventListeners(EventListenerTouchAllAtOnce::LISTENER_ID);
     
@@ -1418,6 +1423,16 @@ void EventDispatcher::setDirty(const EventListener::ListenerID& listenerID, Dirt
         int ret = (int)flag | (int)iter->second;
         iter->second = (DirtyFlag) ret;
     }
+}
+
+void EventDispatcher::setTouchEventEnabled(bool isEnabled)
+{
+    _isTouchEventEnable = isEnabled;
+}
+
+bool EventDispatcher::isTouchEventEnabled()
+{
+    return _isTouchEventEnable;
 }
 
 NS_CC_END

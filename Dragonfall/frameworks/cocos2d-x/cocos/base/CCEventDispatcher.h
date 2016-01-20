@@ -159,6 +159,11 @@ public:
      * @return True if dispatching events is enabled.
      */
     bool isEnabled() const;
+    
+    //dannyhe
+    void setTouchEventEnabled(bool isEnabled);
+    
+    bool isTouchEventEnabled();
 
     /////////////////////////////////////////////
     
@@ -321,6 +326,9 @@ protected:
     int _nodePriorityIndex;
     
     std::set<std::string> _internalCustomListenerIDs;
+    
+    //dannyhe
+    bool _isTouchEventEnable;
 };
 
 

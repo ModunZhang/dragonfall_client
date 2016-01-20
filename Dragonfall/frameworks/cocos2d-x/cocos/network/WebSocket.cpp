@@ -391,7 +391,7 @@ void WebSocket::close()
 
     _wsHelper->joinSubThread();
     
-//FIXME:dannyhe.We don't send close event to pomelo on android device.Should we do this in other platform?
+//FIXME:dannyhe.We don't send close event to pomelo on android device when we close it manual.Should we do this in other platform?
 #if CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID
 	// onClose callback needs to be invoked at the end of this method
 	// since websocket instance may be deleted in 'onClose'.
