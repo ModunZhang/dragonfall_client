@@ -338,7 +338,7 @@ function MyApp:retryConnectServer(need_disconnect)
     if UIKit:isKeyMessageDialogShow() then return end
     --如果在登录界面并且未进入游戏忽略
     if display.getRunningScene().__cname == 'MainScene' then
-        if not display.getRunningScene().startGame then
+        if not display.getRunningScene().enter_next_scene then
             return
         end
     end
