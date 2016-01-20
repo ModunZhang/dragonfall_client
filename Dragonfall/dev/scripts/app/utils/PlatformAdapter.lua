@@ -329,7 +329,7 @@ function PlatformAdapter:common()
         local printError__ = printError
         printError = function(...)
             printError__(...)
-            if device.platform ~= 'winrt' then
+            if device.platform ~= 'winrt' and device.platform ~= 'android' then
                 local errDesc =   debug.traceback("", 2)
                 device.showAlert("☠Quick Framework错误☠",errDesc,{"复制！"},function()
                     ext.copyText(errDesc)
