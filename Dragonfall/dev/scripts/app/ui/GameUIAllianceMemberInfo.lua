@@ -277,7 +277,6 @@ end
 function GameUIAllianceMemberInfo:OnGetPlayerInfoSuccess(data)
     if data.success then
         self.player_info = data.msg.playerViewData
-        dump(self.player_info)
         self.isMyAlliance = self.player_info.alliance and not Alliance_Manager:GetMyAlliance():IsDefault() and Alliance_Manager:GetMyAlliance().basicInfo.tag == self.player_info.alliance.tag
 
         self:BuildUI()
