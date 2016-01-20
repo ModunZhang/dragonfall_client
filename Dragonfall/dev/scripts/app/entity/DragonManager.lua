@@ -158,6 +158,7 @@ function DragonManager:RefreshDragonData( dragons,resource_refresh_time,hp_recov
                 local dragonIsHated_ = dragon:Ishated()
                 local isDefenced = dragon:IsDefenced()
                 local old_star = dragon:Star()
+                local old_level = dragon:Level()
                 dragon:Update(v) -- include UpdateEquipmetsAndSkills
                 --[[  
                     dannyhe:修复龙血刷新界面bug,如果不是血的字段更新，这里会设置被为最初的值
@@ -167,6 +168,7 @@ function DragonManager:RefreshDragonData( dragons,resource_refresh_time,hp_recov
                 if reallyHp > 0 then dragon:SetHp(reallyHp) end
 
                 local star_chaned =  dragon:Star() > old_star
+                local level_chaned = old_level ~= 0 and dragon:Level() > old_level
                 if not need_notify_defence then
                     need_notify_defence = isDefenced ~= dragon:IsDefenced()
                 end
@@ -182,6 +184,11 @@ function DragonManager:RefreshDragonData( dragons,resource_refresh_time,hp_recov
                     self:NotifyListeneOnType(DragonManager.LISTEN_TYPE.OnBasicChanged,function(listener)
                         listener.OnBasicChanged(listener,dragon,star_chaned)
                     end)
+                end
+                if level_chaned then
+                    if not UIKit:GetUIInstance("GameUIPveSummary") then
+                        UIKit:newGameUI("GameUIShowDragonUpStarAnimation",dragon,true):AddToCurrentScene(true)
+                    end
                 end
             end
         end

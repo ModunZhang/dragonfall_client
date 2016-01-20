@@ -359,16 +359,24 @@ function Dragon:GetMaxLevel()
 	return config_dragonStar[self:Star()] and config_dragonStar[self:Star()].levelMax or 0
 end
 -- 升星后的值变动
-function Dragon:GetPromotionedDifferentVal()
+function Dragon:GetPromotionedOldVal()
 	local old_star = self:Star() - 1
 	local old_max_level = config_dragonStar[old_star].levelMax
 	local old_level_config = config_dragonLevel[old_max_level]
 	local oldStrenth =  old_level_config.strength
 	local oldVitality =  old_level_config.vitality
 	local oldLeadership = old_level_config.leadership
-	return self:Strength() - oldStrenth,self:Vitality() - oldVitality,self:Leadership() - oldLeadership
+	return oldStrenth,oldVitality, oldLeadership
 end
-
+-- 升级后的值变动
+function Dragon:GetLevelPromotionedOldVal()
+	local old_level = self:Level() - 1
+	local old_level_config = config_dragonLevel[old_level]
+	local oldStrenth =  old_level_config.strength
+	local oldVitality =  old_level_config.vitality
+	local oldLeadership = old_level_config.leadership
+	return oldStrenth, oldVitality, oldLeadership
+end
 --是否达到晋级等级
 function Dragon:IsReachPromotionLevel()
 	 return self:Level() >= self:GetPromotionLevel()

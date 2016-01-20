@@ -308,8 +308,8 @@ function GameUIDragonEyrieDetail:RefreshUI()
         self:RefreshInfoListView()
         if dragon and dragon:Ishated() then
             self.info_strenth_label:setString(string.formatnumberthousands(dragon:TotalStrength()))
-            self.info_vitality_label:setString(string.formatnumberthousands(dragon:TotalVitality()))
-            self.info_leadership_label:setString(string.formatnumberthousands(dragon:TotalLeadership()))
+            self.info_vitality_label:setString(string.formatnumberthousands(dragon:TotalVitality() * 4))
+            self.info_leadership_label:setString(string.formatnumberthousands(dragon:TotalLeadership() * 100))
         else
             self.info_strenth_label:setString("0")
             self.info_vitality_label:setString("0")
@@ -738,7 +738,7 @@ function GameUIDragonEyrieDetail:CreateNodeIf_info()
         :align(display.LEFT_BOTTOM,window.left + 45,list_bg:getPositionY() + 232)
         :addTo(info_node)
     UIKit:ttfLabel({
-        text = _("力量"),
+        text = _("攻击力"),
         size = 20,
         color= 0x615b44
     }):align(display.CENTER_TOP,75, 72):addTo(strenth_bg)
@@ -751,12 +751,12 @@ function GameUIDragonEyrieDetail:CreateNodeIf_info()
         :align(display.LEFT_BOTTOM,window.left + 242,list_bg:getPositionY() + 232)
         :addTo(info_node)
     UIKit:ttfLabel({
-        text = _("活力"),
+        text = _("生命值"),
         size = 20,
         color= 0x615b44
     }):align(display.CENTER_TOP,75, 72):addTo(vitality_bg)
     self.info_vitality_label = UIKit:ttfLabel({
-        text = ishated and string.formatnumberthousands(dragon:TotalVitality()) or 0,
+        text = ishated and string.formatnumberthousands(dragon:TotalVitality() * 4) or 0,
         size = 24,
         color=0x117a00
     }):align(display.CENTER_BOTTOM,75, 10):addTo(vitality_bg)
@@ -766,12 +766,12 @@ function GameUIDragonEyrieDetail:CreateNodeIf_info()
         :addTo(info_node)
 
     UIKit:ttfLabel({
-        text = _("领导力"),
+        text = _("带兵量"),
         size = 20,
         color= 0x615b44
     }):align(display.CENTER_TOP,75, 72):addTo(leadership_bg)
     self.info_leadership_label = UIKit:ttfLabel({
-        text = ishated and string.formatnumberthousands(dragon:TotalLeadership()) or 0,
+        text = ishated and string.formatnumberthousands(dragon:TotalLeadership() * 100) or 0,
         size = 24,
         color=0x117a00
     }):align(display.CENTER_BOTTOM,75, 10):addTo(leadership_bg)
@@ -820,7 +820,7 @@ function GameUIDragonEyrieDetail:GetInfoListItem(index,title,val)
     }):align(display.LEFT_CENTER, 10, 24):addTo(bg)
 
     UIKit:ttfLabel({
-        text = val,
+        text = string.formatnumberthousands(val),
         color = 0x403c2f,
         size = 20,
         align = cc.TEXT_ALIGNMENT_RIGHT,
