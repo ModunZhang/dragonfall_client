@@ -82,7 +82,7 @@ function GameUISearchPlayer:playerDelegate(listView, tag, idx)
         content:SetPlayerData(idx)
         local size = content:getContentSize()
         item:setItemSize(size.width, size.height)
-        -- 当取到客户端本地最后一个玩家信息，并且可能还有更多模糊查找到的玩家则获取更多玩家信息
+        -- 当取到客户端本地最后一个玩家信息，并且可能还有更多模糊查找到的玩家则获取更多玩家信息 
         if idx == #self.player_datas and self.canLoadMore then
             NetManager:getSearchPlayerByNamePromise(self.search_key,self.fromIndex):done(function (response)
                 dump(response.msg.playerDatas)
@@ -132,10 +132,10 @@ function GameUISearchPlayer:CreatePlayerContent()
 end
 function GameUISearchPlayer:SearchPlayerAction(search_key)
     if not search_key or search_key == "" then
-        UIKit:showMessageDialog(_("提示"), _("请输入玩家姓名"), function()end)
         return
     end
     self.player_datas = {}
+    self.fromIndex = 0 
     NetManager:getSearchPlayerByNamePromise(search_key,self.fromIndex):done(function (response)
         dump(response.msg.playerDatas)
         local limit = response.msg.limit
