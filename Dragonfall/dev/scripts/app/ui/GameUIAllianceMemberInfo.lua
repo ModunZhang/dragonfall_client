@@ -310,7 +310,7 @@ function GameUIAllianceMemberInfo:WidgetPlayerNode_PlayerCanClickedButton(name,a
     elseif name == 'PlayerTitle' then -- 点击头衔
         return true
     elseif name == 'PlayerIDCopy' then --复制玩家ID
-        return true
+        return false
     elseif name == 'PlayerName' then --修改玩家名
         return false
     end

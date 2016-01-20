@@ -1705,7 +1705,8 @@ function GameUIAlliance:OnInfoButtonClicked(tag)
                 end)
             end)
     elseif tag == 2 then
-        self:CreateInvateUI()
+        UIKit:newGameUI("GameUISearchPlayer",self.city):AddToCurrentScene(true)
+        -- self:CreateInvateUI()
     elseif tag == 3 then
         UIKit:newGameUI("GameAllianceApproval"):AddToCurrentScene(true)
     elseif tag == 4 then -- 邮件

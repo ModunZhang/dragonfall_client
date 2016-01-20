@@ -1350,6 +1350,13 @@ function NetManager:getPlayerInfoPromise(memberId,serverId)
         serverId = serverId
     }, "获取玩家信息失败!"):done(get_player_response_msg)
 end
+-- 模糊查询玩家
+function NetManager:getSearchPlayerByNamePromise(name,fromIndex)
+    return get_blocking_request_promise("logic.playerHandler.searchPlayerByName", {
+        name = name,
+        fromIndex = fromIndex
+    }, "模糊查询玩家信息失败!"):done(get_player_response_msg)
+end
 -- 获取玩家城市信息
 function NetManager:getPlayerCityInfoPromise(targetPlayerId)
     return get_blocking_request_promise("logic.playerHandler.getPlayerViewData", {
