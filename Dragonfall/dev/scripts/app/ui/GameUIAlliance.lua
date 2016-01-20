@@ -75,6 +75,9 @@ function GameUIAlliance:OnAllianceDataChanged_members(alliance)
     if self.tab_buttons:GetSelectedButtonTag() == 'overview' then
         self:RefreshOverViewUI()
     end
+    if self.tab_buttons:GetSelectedButtonTag() == 'members' then
+        self:RefreshMemberList()
+    end
 end
 
 function GameUIAlliance:OnAllianceDataChanged_operation(alliance,operation_type)
