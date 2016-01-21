@@ -25,7 +25,7 @@ end
 
 function GameUIAllianceMemberInfo:OnMoveInStage()
     GameUIAllianceMemberInfo.super.OnMoveInStage(self)
-    local main_height,min_y = 750,window.bottom + 120
+    local main_height,min_y = 745,window.bottom + 120
 
 
     local bg = WidgetUIBackGround.new({height=main_height}):pos(window.left+20,min_y)
@@ -138,7 +138,7 @@ function GameUIAllianceMemberInfo:BuildUI()
         end
     end
     local player_node = WidgetPlayerNode.new(cc.size(564,644),self)
-        :addTo(self.bg):pos(22,82)
+        :addTo(self.bg):pos(22,86)
     self.player_node = player_node
 end
 function GameUIAllianceMemberInfo:AddNormalMailButton()

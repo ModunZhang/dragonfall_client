@@ -1121,6 +1121,7 @@ function NetManager:getSendPersonalMailPromise(memberId, title, content , contac
         content = content,
     }, "发送个人邮件失败!"):done(get_response_msg):done(function ( response )
         GameGlobalUI:showTips(_("提示"),_("发送邮件成功"))
+        app:GetAudioManager():PlayeEffectSoundWithKey("OPEN_MAIL")
         if contacts then
             -- 保存联系人
             contacts.time = app.timer:GetServerTime()
@@ -1192,6 +1193,7 @@ function NetManager:getSendAllianceMailPromise(title, content)
         content = content,
     }, "发送联盟邮件失败!"):done(get_player_response_msg):done(function ( response )
         GameGlobalUI:showTips(_("提示"),_("发送邮件成功"))
+        app:GetAudioManager():PlayeEffectSoundWithKey("OPEN_MAIL")
         return response
     end)
 end

@@ -187,7 +187,7 @@ function GameUIWall:CreateMilitaryUIIf()
         text = "",
         color= 0x514d3e,
         size = 20
-    }):addTo(military_node):align(display.LEFT_BOTTOM,level_title_label:getPositionX()+50, level_title_label:getPositionY())
+    }):addTo(military_node):align(display.LEFT_BOTTOM,level_title_label:getPositionX()+level_title_label:getContentSize().width + 5, level_title_label:getPositionY())
     if dragon then
         self.dragon_level_label:setString(string.formatnumberthousands(dragon:TotalStrength()))
         self.tips_label:hide()
