@@ -17,9 +17,9 @@ end
 function GameUtils:GetCurrentProduction(value,refreshTime,limit,output,currentTime)
     local totalPerSecond = output / 60 / 60
     local production = floor((currentTime - refreshTime) * totalPerSecond)
-    local limit = output >= 0 and ((value >= limit and production >= limit) and value or limit) or math.huge
     local total = value + production
-    return clamp(0,limit,total)
+    local limit = output >= 0 and ((value >= limit and total >= limit) and value or limit) or math.huge
+    return floor(clamp(0,limit,total))
 end
 function GameUtils:formatTimeStyle1(time)
     local seconds = floor(time) % 60

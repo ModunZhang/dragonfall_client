@@ -107,14 +107,14 @@ function WidgetMakeEquip:ctor(equip_type, black_smith, city)
     for i = 1,3 do
         local desc,value
         if i == 1 and equip_attr.strength > 0 then
-            desc = _("力量")
+            desc = _("攻击力")
             value = equip_attr.strength
         elseif i == 2 and equip_attr.vitality > 0 then
-            desc = _("活力")
-            value = equip_attr.vitality
+            desc = _("生命值")
+            value = equip_attr.vitality * 4
         elseif i == 3 and equip_attr.leadership > 0 then
-            desc = _("领导力")
-            value = equip_attr.leadership
+            desc = _("带兵量")
+            value = equip_attr.leadership * 100
         end
         if desc then
             UIKit:ttfLabel({

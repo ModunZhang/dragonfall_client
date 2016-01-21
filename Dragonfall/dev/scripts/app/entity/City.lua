@@ -1102,6 +1102,20 @@ function City:OnUserDataChanged(userData, current_time, deltaData)
         end
     end)
     self.need_update_buildings = need_update_buildings
+    if deltaData then
+        local ok_1 = deltaData("buildingEvents.add")
+        local ok_2 = deltaData("buildingEvents.remove")
+        local ok_3 = deltaData("houseEvents.add")
+        local ok_4 = deltaData("houseEvents.remove")
+        local ok_5 = deltaData("productionTechEvents.remove")
+
+        if ok_1 or ok_3 then
+            app:GetAudioManager():PlayeEffectSoundWithKey("UI_BUILDING_UPGRADE_START")
+        end
+        if ok_2 or ok_4 or ok_5 then
+            app:GetAudioManager():PlayeEffectSoundWithKey("COMPLETE")
+        end
+    end
     return self
 end
 local function find_building_info_by_location(houses, location_id)

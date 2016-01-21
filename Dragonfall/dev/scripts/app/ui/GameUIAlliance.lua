@@ -75,6 +75,9 @@ function GameUIAlliance:OnAllianceDataChanged_members(alliance)
     if self.tab_buttons:GetSelectedButtonTag() == 'overview' then
         self:RefreshOverViewUI()
     end
+    if self.tab_buttons:GetSelectedButtonTag() == 'members' then
+        self:RefreshMemberList()
+    end
 end
 
 function GameUIAlliance:OnAllianceDataChanged_operation(alliance,operation_type)
@@ -1702,7 +1705,8 @@ function GameUIAlliance:OnInfoButtonClicked(tag)
                 end)
             end)
     elseif tag == 2 then
-        self:CreateInvateUI()
+        UIKit:newGameUI("GameUISearchPlayer",self.city):AddToCurrentScene(true)
+        -- self:CreateInvateUI()
     elseif tag == 3 then
         UIKit:newGameUI("GameAllianceApproval"):AddToCurrentScene(true)
     elseif tag == 4 then -- 邮件

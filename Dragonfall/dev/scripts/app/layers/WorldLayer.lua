@@ -13,7 +13,7 @@ local MAX_INDEX = WIDTH * HEIGHT - 1
 local width, height = WIDTH * TILE_LENGTH, HEIGHT * TILE_LENGTH
 local SCENE_OFFSET = {x = 15, y = 70}
 local worldsize = {
-    width = width + CORNER_LENGTH * 2 + SCENE_OFFSET.x * 2, 
+    width = width + CORNER_LENGTH * 2 + SCENE_OFFSET.x * 2,
     height = height + CORNER_LENGTH * 2 + SCENE_OFFSET.y * 2 + 45,
 }
 
@@ -25,7 +25,7 @@ end
 function WorldLayer:onEnter()
     self:CreateBg()
     self.scene_node = display.newNode():addTo(self)
-                      :align(display.LEFT_BOTTOM, SCENE_OFFSET.x, SCENE_OFFSET.y)
+        :align(display.LEFT_BOTTOM, SCENE_OFFSET.x, SCENE_OFFSET.y)
     self:CreateCorner()
     self:CreateEdge()
     self.map = self:CreateMap()
@@ -34,12 +34,12 @@ function WorldLayer:onEnter()
     display.newSprite("world_middle.png"):addTo(self.map):pos(p.x + 104, p.y+1)
 
     display.newSprite("world_crown_circle2.png")
-    :addTo(self.map):pos(p.x+10, p.y)
+        :addTo(self.map):pos(p.x+10, p.y)
     local circle = display.newSprite("world_crown_circle1.png")
-    :addTo(self.map):pos(p.x+10, p.y)
+        :addTo(self.map):pos(p.x+10, p.y)
     circle:runAction(cc.RepeatForever:create(transition.sequence({
-        cc.CallFunc:create(function() 
-            circle:opacity(0) 
+        cc.CallFunc:create(function()
+            circle:opacity(0)
             circle:scale(1)
         end),
         cc.FadeIn:create(0.5),
@@ -87,7 +87,7 @@ function WorldLayer:CreateBg()
     })):addTo(self):align(display.LEFT_TOP,0,worldsize.height):setScaleX(sx)
 
     display.newSprite("world_title1.png")
-    :addTo(self):align(display.LEFT_TOP,0,worldsize.height):scale(0.7)
+        :addTo(self):align(display.LEFT_TOP,0,worldsize.height):scale(0.7)
 end
 function WorldLayer:CreateCorner()
     display.newSprite("world_tile.png"):pos(CORNER_LENGTH/2 + 2, CORNER_LENGTH/2 + 2)
@@ -140,13 +140,13 @@ function WorldLayer:CreateEdge()
 end
 function WorldLayer:CreateMap()
     local clip = display.newNode():addTo(self.scene_node)
-                 :align(display.LEFT_BOTTOM,CORNER_LENGTH,CORNER_LENGTH)
+        :align(display.LEFT_BOTTOM,CORNER_LENGTH,CORNER_LENGTH)
 
     local map = display.newFilteredSprite("world_terrain.png", "CUSTOM", json.encode({
         frag = "shaders/maptex.fs",
         shaderName = "maptex",
         size = {
-            WIDTH/2, -- 
+            WIDTH/2, --
             HEIGHT,
             0.5/(WIDTH/4),
             1/HEIGHT,
@@ -173,15 +173,15 @@ function WorldLayer:LoadLevelBg(index)
     local x,y = self:IndexToLogic(index)
     local mx, my = middle_index, middle_index
     if x >= 0
-    and x < bigMapLength_value
-    and y >= 0
-    and y < bigMapLength_value
-    and not self.levelSprites[index]
-    and (math.abs(x - mx) + math.abs(y - my)) % 2 == 0
+        and x < bigMapLength_value
+        and y >= 0
+        and y < bigMapLength_value
+        and not self.levelSprites[index]
+        and (math.abs(x - mx) + math.abs(y - my)) % 2 == 0
     then
         local p = self:ConvertLogicPositionToMapPosition(x,y)
         local sp= display.newSprite("world_level_bg.png")
-                   :addTo(self.leveLayer):pos(p.x + 20, p.y - 70)
+            :addTo(self.leveLayer):pos(p.x + 20, p.y - 70)
         local size = sp:getContentSize()
         UIKit:ttfLabel({
             text = math.max(math.abs(x - mx), math.abs(y - my)) + 1,
@@ -211,13 +211,13 @@ function WorldLayer:MoveAllianceFromTo(fromIndex, toIndex)
         local x = dest.x - normal.x * length
         local y = dest.y - normal.y * length
         if length >= distance or
-            not cc.rectContainsPoint(screen_rect, self.map:convertToWorldSpace(cc.p(x, y))) 
+            not cc.rectContainsPoint(screen_rect, self.map:convertToWorldSpace(cc.p(x, y)))
         then
             break
         end
         sour.x, sour.y = x, y
         local sprite = display.newSprite("pve_road_point.png")
-        :addTo(self.moveLayer):pos(x, y):rotation(degree):hide()
+            :addTo(self.moveLayer):pos(x, y):rotation(degree):hide()
         table.insert(roads, 1, sprite)
     end
 
@@ -231,37 +231,37 @@ function WorldLayer:MoveAllianceFromTo(fromIndex, toIndex)
     end
     local gap, scal, ft, offset = -65, 0.8, 0.5, -40
     UIKit:CreateMoveSoldiers(degree, {name = "ranger_3", star = 3}, scal)
-    :addTo(self.moveLayer)
-    :pos(sour.x + normal.x * (2 * gap + offset), sour.y + normal.y * (2 * gap + offset))
-    :runAction(transition.sequence{
-        cc.MoveTo:create(#roads * step_time, {
-            x = dest.x + normal.x * (2 * gap + offset), y = dest.y + normal.y * (2 * gap + offset)
-        }),
-        cc.FadeOut:create(ft),
-        cc.RemoveSelf:create(),
-    })
+        :addTo(self.moveLayer)
+        :pos(sour.x + normal.x * (2 * gap + offset), sour.y + normal.y * (2 * gap + offset))
+        :runAction(transition.sequence{
+            cc.MoveTo:create(#roads * step_time, {
+                x = dest.x + normal.x * (2 * gap + offset), y = dest.y + normal.y * (2 * gap + offset)
+            }),
+            cc.FadeOut:create(ft),
+            cc.RemoveSelf:create(),
+        })
 
     UIKit:CreateMoveSoldiers(degree, {name = "swordsman_3", star = 3}, scal)
-    :addTo(self.moveLayer)
-    :pos(sour.x + normal.x * (gap + offset), sour.y + normal.y * (gap + offset))
-    :runAction(transition.sequence{
-        cc.MoveTo:create(#roads * step_time, {
-            x = dest.x + normal.x * (gap + offset), y = dest.y + normal.y * (gap + offset)
-        }),
-        cc.FadeOut:create(ft),
-        cc.RemoveSelf:create(),
-    })
+        :addTo(self.moveLayer)
+        :pos(sour.x + normal.x * (gap + offset), sour.y + normal.y * (gap + offset))
+        :runAction(transition.sequence{
+            cc.MoveTo:create(#roads * step_time, {
+                x = dest.x + normal.x * (gap + offset), y = dest.y + normal.y * (gap + offset)
+            }),
+            cc.FadeOut:create(ft),
+            cc.RemoveSelf:create(),
+        })
 
     UIKit:CreateMoveSoldiers(degree, {name = "lancer_3", star = 3}, scal)
-    :addTo(self.moveLayer)
-    :pos(sour.x + normal.x * (offset + 10), sour.y + normal.y * (offset + 10))
-    :runAction(transition.sequence{
-        cc.MoveTo:create(#roads * step_time, {
-            x = dest.x + normal.x * (offset + 10), y = dest.y + normal.y * (offset + 10)
-        }),
-        cc.FadeOut:create(ft),
-        cc.RemoveSelf:create(),
-    })
+        :addTo(self.moveLayer)
+        :pos(sour.x + normal.x * (offset + 10), sour.y + normal.y * (offset + 10))
+        :runAction(transition.sequence{
+            cc.MoveTo:create(#roads * step_time, {
+                x = dest.x + normal.x * (offset + 10), y = dest.y + normal.y * (offset + 10)
+            }),
+            cc.FadeOut:create(ft),
+            cc.RemoveSelf:create(),
+        })
 
     table.insert(actions, cc.CallFunc:create(function()
         for i,v in ipairs(roads) do
@@ -291,11 +291,11 @@ function WorldLayer:LoadAlliance()
     for i,v in ipairs(indexes) do
         key_map[tostring(v)] = json.null
     end
-    if not next(indexes) then 
+    if not next(indexes) then
         if UIKit:GetUIInstance("GameUIWorldMap") then
             UIKit:GetUIInstance("GameUIWorldMap"):HideLoading()
         end
-        return 
+        return
     end
     NetManager:getMapAllianceDatasPromise(self:GetAvailableIndex()):done(function(response)
         dump(response.msg.datas)
@@ -360,9 +360,9 @@ function WorldLayer:CreateAllianceSprite(index, alliance)
         node:scale(1.5)
     end
     node.alliance = alliance
-    
+
     local sprite = display.newSprite(string.format("world_alliance_%s.png", alliance.terrain))
-    :addTo(node, 0, 1)
+        :addTo(node, 0, 1)
     if device.platform ~= 'winrt' then
         sprite:scale(0.8)
     else
@@ -372,29 +372,31 @@ function WorldLayer:CreateAllianceSprite(index, alliance)
         sprite:pos(10, 10)
     elseif index ~= Alliance_Manager:GetMyAlliance().mapIndex then
         math.randomseed(tonumber(index) + 12345)
-        if tonumber(index) == self:LogicToIndex(middle_index-1, middle_index-1) then
-            sprite:pos(-40, 40)
-        elseif tonumber(index) == self:LogicToIndex(middle_index, middle_index-1) then
-            sprite:pos(0, 40)
-        elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index-1) then
-            sprite:pos(40, 40)
-        elseif tonumber(index) == self:LogicToIndex(middle_index-1, middle_index) then
-            sprite:pos(-40, 0)
-        elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index) then
-            sprite:pos(40, 0)
-        elseif tonumber(index) == self:LogicToIndex(middle_index-1, middle_index+1) then
-            sprite:pos(-40, -40)
-        elseif tonumber(index) == self:LogicToIndex(middle_index, middle_index+1) then
-            sprite:pos(0, -40)
-        elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index+1) then
-            sprite:pos(40, -40)
-        else
-            sprite:pos(30 - math.random(30), 30 - math.random(60))
-        end
+        local s_x,s_y = self:Offset(index)
+        sprite:pos(s_x,s_y)
+        -- if tonumber(index) == self:LogicToIndex(middle_index-1, middle_index-1) then
+        --     sprite:pos(-40, 40)
+        -- elseif tonumber(index) == self:LogicToIndex(middle_index, middle_index-1) then
+        --     sprite:pos(0, 40)
+        -- elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index-1) then
+        --     sprite:pos(40, 40)
+        -- elseif tonumber(index) == self:LogicToIndex(middle_index-1, middle_index) then
+        --     sprite:pos(-40, 0)
+        -- elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index) then
+        --     sprite:pos(40, 0)
+        -- elseif tonumber(index) == self:LogicToIndex(middle_index-1, middle_index+1) then
+        --     sprite:pos(-40, -40)
+        -- elseif tonumber(index) == self:LogicToIndex(middle_index, middle_index+1) then
+        --     sprite:pos(0, -40)
+        -- elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index+1) then
+        --     sprite:pos(40, -40)
+        -- else
+        --     sprite:pos(30 - math.random(30), 30 - math.random(60))
+        -- end
     end
     local size = sprite:getContentSize()
     local banner = display.newSprite("alliance_banner.png")
-                   :addTo(sprite):pos(size.width/2, 0)
+        :addTo(sprite):pos(size.width/2, 0)
     sprite.name = UIKit:ttfLabel({
         size = 24,
         color = 0xffedae,
@@ -406,7 +408,7 @@ function WorldLayer:CreateAllianceSprite(index, alliance)
     if round <= 3 then
         local half = sprite.name:getContentSize().width / 4
         sprite.round = display.newSprite(string.format("world_icon%d.png", round))
-        :addTo(sprite):pos(size.width/2 - half - 14, 2):scale(28/40)
+            :addTo(sprite):pos(size.width/2 - half - 14, 2):scale(28/40)
     end
 
 
@@ -415,20 +417,20 @@ function WorldLayer:CreateAllianceSprite(index, alliance)
         :addTo(sprite, 10):align(display.CENTER, 100, 90):scale(0.4)
     if Alliance_Manager:GetMyAlliance().mapIndex == tonumber(index) then
         display.newSprite("icon_current_position.png")
-        :addTo(node, 0, 2):scale(0.8)
-        :pos(sprite:getPositionX(), sprite:getPositionY() + sprite:getContentSize().height / 2)
+            :addTo(node, 0, 2):scale(0.8)
+            :pos(sprite:getPositionX(), sprite:getPositionY() + sprite:getContentSize().height / 2)
     end
     if self.current_mapIndex == tonumber(index) and Alliance_Manager:GetMyAlliance().mapIndex ~= self.current_mapIndex then
         display.newSprite("icon_current_position_1.png")
-        :addTo(node, 0, 2):scale(0.8)
-        :pos(sprite:getPositionX(), sprite:getPositionY() + sprite:getContentSize().height / 2)
+            :addTo(node, 0, 2):scale(0.8)
+            :pos(sprite:getPositionX(), sprite:getPositionY() + sprite:getContentSize().height / 2)
     end
     local isFight, from, to = self:IsFightWithOtherAlliance(alliance, index)
     if isFight then
         ccs.Armature:create("duizhan")
-        :addTo(sprite, 1, ANI_TAG)
-        :pos(size.width/2, size.height/2 + 80)
-        :getAnimation():playWithIndex(0)
+            :addTo(sprite, 1, ANI_TAG)
+            :pos(size.width/2, size.height/2 + 80)
+            :getAnimation():playWithIndex(0)
 
         self:CraeteLineWith(from, to)
     else
@@ -437,7 +439,7 @@ function WorldLayer:CreateAllianceSprite(index, alliance)
 
     if self:IsProtect(alliance) then
         self:CreateProtect():addTo(sprite, 1, PROTECT_TAG)
-        :pos(size.width/2, size.height/2 + 40)
+            :pos(size.width/2, size.height/2 + 40)
     end
 
     self.allainceSprites[index] = node
@@ -456,29 +458,29 @@ function WorldLayer:CreateProtect()
     local protect = display.newSprite("protect_1.png"):scale(0.8)
     protect:runAction(cc.RepeatForever:create(
         transition.sequence{
-        cc.FadeTo:create(1, 255 * 0.7),
-        cc.FadeTo:create(1, 255 * 1.0),
-    }))
+            cc.FadeTo:create(1, 255 * 0.7),
+            cc.FadeTo:create(1, 255 * 1.0),
+        }))
     local size = protect:getContentSize()
     display.newSprite("protect_2.png")
-    :addTo(protect):pos(size.width/2, size.height/2)
-    :opacity(255 * 0.7):runAction(cc.RepeatForever:create(
+        :addTo(protect):pos(size.width/2, size.height/2)
+        :opacity(255 * 0.7):runAction(cc.RepeatForever:create(
         transition.sequence{
-        cc.FadeTo:create(1, 255 * 1.0),
-        cc.FadeTo:create(1, 255 * 0.7),
-    }))
+            cc.FadeTo:create(1, 255 * 1.0),
+            cc.FadeTo:create(1, 255 * 0.7),
+        }))
     return protect
 end
 function WorldLayer:CraeteLineWith(from, to)
     local line_key = string.format("%d_%d", from, to)
     if self.lineSprites[line_key] then return end
-    math.randomseed(from)
-    local fromx, fromy = 30 - math.random(60), 30 - math.random(60)
+    math.randomseed(tonumber(from) + 12345)
+    local fromx,fromy = self:Offset(from)
     local p1 = self:ConvertLogicPositionToMapPosition(self:IndexToLogic(from))
     p1.x = p1.x + fromx
     p1.y = p1.y + fromy
-    math.randomseed(to)
-    local tox, toy = 30 - math.random(60), 30 - math.random(60)
+    math.randomseed(tonumber(to) + 12345)
+    local tox,toy = self:Offset(to)
     local p2 = self:ConvertLogicPositionToMapPosition(self:IndexToLogic(to))
     p2.x = p2.x + tox
     p2.y = p2.y + toy
@@ -486,11 +488,11 @@ function WorldLayer:CraeteLineWith(from, to)
     local PNG_LENGTH = 17
     local unit_count = math.ceil(length / PNG_LENGTH)
     local degree = math.deg(cc.pGetAngle(cc.pSub(p1, p2), cc.p(0, 1)))
-    local sprite = display.newSprite("fight_line_6x17.png", nil, nil, 
+    local sprite = display.newSprite("fight_line_6x17.png", nil, nil,
         {class=cc.FilteredSpriteWithOne})
-    :addTo(self.lineLayer)
-    :pos((p1.x + p2.x) * 0.5, (p1.y + p2.y) * 0.5)
-    :rotation(degree)
+        :addTo(self.lineLayer)
+        :pos((p1.x + p2.x) * 0.5, (p1.y + p2.y) * 0.5)
+        :rotation(degree)
 
     sprite:setScaleY(unit_count)
     sprite:setFilter(filter.newFilter("CUSTOM",
@@ -508,9 +510,9 @@ end
 function WorldLayer:DeleteLineWith(mapIndex)
     for k,v in pairs(self.lineSprites) do
         local fromstr, tostr = unpack(string.split(k, "_"))
-        if tonumber(fromstr) == tonumber(mapIndex) or 
+        if tonumber(fromstr) == tonumber(mapIndex) or
             tonumber(tostr) == tonumber(mapIndex)
-            then
+        then
             self.lineSprites[k]:removeFromParent()
             self.lineSprites[k] = nil
             return
@@ -552,16 +554,16 @@ function WorldLayer:UpdateAllianceSprite(index, alliance)
     else
         if not sprite:getChildByTag(ANI_TAG) then
             ccs.Armature:create("duizhan")
-            :addTo(sprite, 1, ANI_TAG)
-            :pos(size.width/2, size.height/2 + 80)
-            :getAnimation():playWithIndex(0)
+                :addTo(sprite, 1, ANI_TAG)
+                :pos(size.width/2, size.height/2 + 80)
+                :getAnimation():playWithIndex(0)
         end
         self:CraeteLineWith(from, to)
     end
     if self:IsProtect(alliance) then
         if not sprite:getChildByTag(PROTECT_TAG) then
             self:CreateProtect():addTo(sprite, 1, PROTECT_TAG)
-            :pos(size.width/2, size.height/2 + 40)
+                :pos(size.width/2, size.height/2 + 40)
         end
     elseif sprite:getChildByTag(PROTECT_TAG) then
         sprite:removeChildByTag(PROTECT_TAG)
@@ -569,14 +571,14 @@ function WorldLayer:UpdateAllianceSprite(index, alliance)
 end
 function WorldLayer:IsFightWithOtherAlliance(aln, index)
     local my_aln = Alliance_Manager:GetMyAlliance()
-    if my_aln:GetEnemyAllianceId() 
-   and (aln.id == my_aln._id
-    or aln.id == my_aln:GetEnemyAllianceId()) then
+    if my_aln:GetEnemyAllianceId()
+        and (aln.id == my_aln._id
+        or aln.id == my_aln:GetEnemyAllianceId()) then
         local mindx = my_aln.mapIndex
         local eindx = my_aln:GetEnemyAllianceMapIndex()
-        return (my_aln.basicInfo.status == "fight" 
+        return (my_aln.basicInfo.status == "fight"
             or my_aln.basicInfo.status == "prepare")
-        ,math.min(mindx, eindx), math.max(mindx, eindx)
+            ,math.min(mindx, eindx), math.max(mindx, eindx)
     end
 
     local status, mapIndex = self:GetAllianceStatus(aln)
@@ -595,35 +597,39 @@ function WorldLayer:CreateFlag(index)
         math.randomseed(tonumber(index) + 12345)
         node = display.newNode():addTo(self.allianceLayer):pos(p.x, p.y)
         local sprite = ccs.Armature:create("daqizi"):addTo(node):scale(0.4)
-        if tonumber(index) == self:LogicToIndex(middle_index-1, middle_index-1) then
-            sprite:pos(-40, 40)
-        elseif tonumber(index) == self:LogicToIndex(middle_index, middle_index-1) then
-            sprite:pos(0, 40)
-        elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index-1) then
-            sprite:pos(40, 40)
-        elseif tonumber(index) == self:LogicToIndex(middle_index-1, middle_index) then
-            sprite:pos(-40, 0)
-        elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index) then
-            sprite:pos(40, 0)
-        elseif tonumber(index) == self:LogicToIndex(middle_index-1, middle_index+1) then
-            sprite:pos(-40, -40)
-        elseif tonumber(index) == self:LogicToIndex(middle_index, middle_index+1) then
-            sprite:pos(0, -40)
-        elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index+1) then
-            sprite:pos(40, -40)
-        else
-            sprite:pos(30 - math.random(30), 30 - math.random(60))
-        end
+        local s_x,s_y = self:Offset(index)
+        sprite:pos(s_x,s_y)
         local ani = sprite:getAnimation()
         ani:playWithIndex(0)
         ani:gotoAndPlay(math.random(71) - 1)
         if self.current_mapIndex == tonumber(index) and Alliance_Manager:GetMyAlliance().mapIndex ~= self.current_mapIndex then
             display.newSprite("icon_current_position_1.png")
-            :addTo(node, 0, 2):scale(0.8)
-            :pos(sprite:getPositionX(), sprite:getPositionY() + sprite:getContentSize().height / 2 - 20)
+                :addTo(node, 0, 2):scale(0.8)
+                :pos(sprite:getPositionX(), sprite:getPositionY() + sprite:getContentSize().height / 2 - 20)
         end
     end
     self.flagSprites[indexstr] = node
+end
+function WorldLayer:Offset(index)
+    local x,y = 30 - math.random(60), 30 - math.random(60)
+    if tonumber(index) == self:LogicToIndex(middle_index-1, middle_index-1) then
+        x,y =-40, 40
+    elseif tonumber(index) == self:LogicToIndex(middle_index, middle_index-1) then
+        x,y =0, 40
+    elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index-1) then
+        x,y =40, 40
+    elseif tonumber(index) == self:LogicToIndex(middle_index-1, middle_index) then
+        x,y =-40, 0
+    elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index) then
+        x,y =40, 0
+    elseif tonumber(index) == self:LogicToIndex(middle_index-1, middle_index+1) then
+        x,y =-40, -40
+    elseif tonumber(index) == self:LogicToIndex(middle_index, middle_index+1) then
+        x,y =0, -40
+    elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index+1) then
+        x,y =40, -40
+    end
+    return x,y
 end
 function WorldLayer:IndexToLogic(index)
     local index = tonumber(index)
@@ -683,6 +689,8 @@ end
 
 
 return WorldLayer
+
+
 
 
 

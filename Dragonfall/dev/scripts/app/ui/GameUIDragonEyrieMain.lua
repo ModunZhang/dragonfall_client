@@ -173,8 +173,8 @@ function GameUIDragonEyrieMain:RefreshUI()
         self.garrison_button:setButtonSelected(dragon:IsDefenced())
         self.info_panel:show()
         self.strength_val_label:setString(string.formatnumberthousands(dragon:TotalStrength()))
-        self.vitality_val_label:setString(string.formatnumberthousands(dragon:TotalVitality()))
-        self.leadership_val_label:setString(string.formatnumberthousands(dragon:TotalLeadership()))
+        self.vitality_val_label:setString(string.formatnumberthousands(dragon:GetMaxHP()))
+        self.leadership_val_label:setString(string.formatnumberthousands(dragon:LeadCitizen()))
         if dragon:IsDead() then
             local event
             for i,v in ipairs(User.dragonDeathEvents) do
@@ -431,7 +431,7 @@ function GameUIDragonEyrieMain:CreateDragonContentNodeIf()
             :align(display.CENTER_TOP,window.cx,self.progress_content_hated:getPositionY() - self.progress_content_hated:getContentSize().height - 32)
         self.info_panel = info_panel
         local strength_title_label =  UIKit:ttfLabel({
-            text = _("力量"),
+            text = _("攻击力"),
             color = 0x615b44,
             size  = 20
         }):addTo(info_panel):align(display.LEFT_BOTTOM,10,80)--  10 45
@@ -442,7 +442,7 @@ function GameUIDragonEyrieMain:CreateDragonContentNodeIf()
         }):addTo(info_panel):align(display.LEFT_BOTTOM, 114, 80) -- 活力
 
         local vitality_title_label =  UIKit:ttfLabel({
-            text = _("活力"),
+            text = _("生命值"),
             color = 0x615b44,
             size  = 20
         }):addTo(info_panel):align(display.LEFT_BOTTOM,10,45) -- 领导力 10
@@ -454,7 +454,7 @@ function GameUIDragonEyrieMain:CreateDragonContentNodeIf()
         }):addTo(info_panel):align(display.LEFT_BOTTOM, 114, 45)
 
         local leadership_title_label =  UIKit:ttfLabel({
-            text = _("领导力"),
+            text = _("带兵量"),
             color = 0x615b44,
             size  = 20
         }):addTo(info_panel):align(display.LEFT_BOTTOM,10,10) -- 力量

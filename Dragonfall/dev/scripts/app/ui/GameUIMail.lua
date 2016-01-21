@@ -8,6 +8,7 @@ local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local WidgetAllianceHelper = import("..widget.WidgetAllianceHelper")
 local StarBar = import(".StarBar")
 local WidgetRoundTabButtons = import("..widget.WidgetRoundTabButtons")
+local WidgetPushTransparentButton = import("..widget.WidgetPushTransparentButton")
 local WidgetPopDialog = import("..widget.WidgetPopDialog")
 local UILib = import(".UILib")
 local Localize = import("..utils.Localize")
@@ -1222,6 +1223,9 @@ function GameUIMail:ShowMailDetails(mail)
     -- player head icon
     UIKit:GetPlayerCommonIcon(mail.fromIcon):align(display.CENTER, 76, size.height - 80):addTo(body)
 
+    WidgetPushTransparentButton.new(cc.rect(0,0,114,114)):addTo(body):align(display.CENTER, 76, size.height - 80):onButtonClicked(function()
+        UIKit:newGameUI("GameUIAllianceMemberInfo",false,mail.fromId,nil,User.serverId):AddToCurrentScene(true)
+    end)
     -- 主题
     local subject_label = cc.ui.UILabel.new(
         {cc.ui.UILabel.LABEL_TYPE_TTF,

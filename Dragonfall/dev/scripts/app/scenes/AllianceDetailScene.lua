@@ -575,7 +575,7 @@ function AllianceDetailScene:EnterNotAllianceBuilding(alliance,mapObj)
 
 end
 function AllianceDetailScene:TwinkleShrine()
-    local mapObject = self:GetSceneLayer():FindMapObject(Alliance_Manager:GetMyAlliance().mapIndex, 13, 17)
+    local mapObject = self:GetSceneLayer():FindMapObject(Alliance_Manager:GetMyAlliance().mapIndex, 8, 12)
     self:performWithDelay(function()
         Sprite:PromiseOfFlash(mapObject.obj):next(function()
             Sprite:PromiseOfFlash(mapObject.obj):next(function()
