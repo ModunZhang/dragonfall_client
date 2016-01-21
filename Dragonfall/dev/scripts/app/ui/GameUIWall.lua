@@ -85,7 +85,8 @@ function GameUIWall:CreateMilitaryUIIf()
     self.wall_hp_recovery_label = UIKit:ttfLabel({
         text = "+" .. res.output .. "/h",
         size = 22,
-        color= 0xfff3c7
+        color= 0xfff3c7,
+        shadow = true
     }):align(display.RIGHT_CENTER, 480, 20):addTo(process_wall_bg)
 
     WidgetPushButton.new({normal = "add_btn_up_50x50.png",pressed = "add_btn_down_50x50.png"})
