@@ -20,11 +20,10 @@ function GameUIShowDragonUpStarAnimation:ctor(dragon,isLevelUp)
     else
         old_strenth,old_vitality,old_leadershiip = dragon:GetPromotionedOldVal()
     end
-    print("·old_strenth,old_vitality,old_leadershiip·",old_strenth,old_vitality,old_leadershiip)
     self.buff_value = {
         {dragon:Strength(),old_strenth},
-        {dragon:Vitality(),old_vitality},
-        {dragon:Leadership(),old_leadershiip},
+        {dragon:GetBasicMaxHP() ,old_vitality},
+        {dragon:LeadBasicCitizen() ,old_leadershiip},
     }
     self.dragon_iamge = UILib.dragon_head[dragon:Type()]
     self:setNodeEventEnabled(true)
@@ -57,28 +56,28 @@ function GameUIShowDragonUpStarAnimation:onEnter()
     end):hide()
 
     self.strength_title_label = UIKit:ttfLabel({
-        text = _("力量"),
+        text = _("攻击力"),
         size = 20,
         color= 0xffedae
     }):addTo(header):align(display.LEFT_CENTER, -200, 15):hide()
 
-    self.strength_val_label = self:CreateValueNode(self.buff_value[1]):addTo(header):align(display.LEFT_CENTER, 100, 25):hide()
+    self.strength_val_label = self:CreateValueNode(self.buff_value[1]):addTo(header):align(display.CENTER, 130, 15):hide()
 
     self.vitality_title_label = UIKit:ttfLabel({
-        text = _("活力"),
+        text = _("生命值"),
         size = 20,
         color= 0xffedae
     }):addTo(header):align(display.LEFT_CENTER, -200, -35):hide()
 
-    self.vitality_val_label =self:CreateValueNode(self.buff_value[2]):addTo(header):align(display.LEFT_CENTER, 100, -25):hide()
+    self.vitality_val_label =self:CreateValueNode(self.buff_value[2]):addTo(header):align(display.CENTER, 130, -35):hide()
 
     self.leadship_title_label = UIKit:ttfLabel({
-        text = _("领导力"),
+        text = _("带兵量"),
         size = 20,
         color= 0xffedae
     }):addTo(header):align(display.LEFT_CENTER, -200, -85):hide()
 
-    self.leadship_val_label = self:CreateValueNode(self.buff_value[3]):addTo(header):align(display.LEFT_CENTER, 100, -75):hide()
+    self.leadship_val_label = self:CreateValueNode(self.buff_value[3]):addTo(header):align(display.CENTER, 130, -85):hide()
     -- 开始播放
     juhua:getAnimation():play("ceng_2", -1, -1)
     self:PlayAnimationWithFrameEventCallFunc(header,"ceng_1",301):next(function() -- 301 时出现龙头
@@ -107,14 +106,18 @@ function GameUIShowDragonUpStarAnimation:CreateValueNode(values)
         text = string.formatnumberthousands(values[2]),
         size = 22,
         color= 0xffedae
-    }):addTo(node):align(display.LEFT_CENTER, 0, 0)
-    local green_icon = display.newSprite("upgrade_icon_14x16.png"):align(display.CENTER, old_value:getPositionX() + old_value:getContentSize().width + 20 , old_value:getPositionY()):addTo(node)
+    }):addTo(node)
+    local green_icon = display.newSprite("upgrade_icon_14x16.png"):addTo(node)
     local cur_value = UIKit:ttfLabel({
         text = string.formatnumberthousands(values[1]),
         size = 22,
         color= 0x7eff00
-    }):addTo(node):align(display.LEFT_CENTER, green_icon:getPositionX() + 20, 0)
+    }):addTo(node)
     node:setContentSize(cc.size(old_value:getContentSize().width + cur_value:getContentSize().width + green_icon:getContentSize().width + 13,22))
+    local n_size = node:getContentSize()
+    green_icon:align(display.CENTER, n_size.width/2, n_size.height/2)
+    old_value:align(display.RIGHT_CENTER, green_icon:getPositionX() - 20, n_size.height/2)
+    cur_value:align(display.LEFT_CENTER, green_icon:getPositionX() + 20, n_size.height/2)
     return node
 end
 

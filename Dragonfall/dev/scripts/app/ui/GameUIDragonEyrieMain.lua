@@ -173,8 +173,8 @@ function GameUIDragonEyrieMain:RefreshUI()
         self.garrison_button:setButtonSelected(dragon:IsDefenced())
         self.info_panel:show()
         self.strength_val_label:setString(string.formatnumberthousands(dragon:TotalStrength()))
-        self.vitality_val_label:setString(string.formatnumberthousands(dragon:TotalVitality() * 4))
-        self.leadership_val_label:setString(string.formatnumberthousands(dragon:TotalLeadership() * 100))
+        self.vitality_val_label:setString(string.formatnumberthousands(dragon:GetMaxHP()))
+        self.leadership_val_label:setString(string.formatnumberthousands(dragon:LeadCitizen()))
         if dragon:IsDead() then
             local event
             for i,v in ipairs(User.dragonDeathEvents) do

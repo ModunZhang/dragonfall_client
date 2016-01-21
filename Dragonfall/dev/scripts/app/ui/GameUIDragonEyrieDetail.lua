@@ -308,8 +308,8 @@ function GameUIDragonEyrieDetail:RefreshUI()
         self:RefreshInfoListView()
         if dragon and dragon:Ishated() then
             self.info_strenth_label:setString(string.formatnumberthousands(dragon:TotalStrength()))
-            self.info_vitality_label:setString(string.formatnumberthousands(dragon:TotalVitality() * 4))
-            self.info_leadership_label:setString(string.formatnumberthousands(dragon:TotalLeadership() * 100))
+            self.info_vitality_label:setString(string.formatnumberthousands(dragon:GetMaxHP()))
+            self.info_leadership_label:setString(string.formatnumberthousands(dragon:LeadCitizen()))
         else
             self.info_strenth_label:setString("0")
             self.info_vitality_label:setString("0")
@@ -756,7 +756,7 @@ function GameUIDragonEyrieDetail:CreateNodeIf_info()
         color= 0x615b44
     }):align(display.CENTER_TOP,75, 72):addTo(vitality_bg)
     self.info_vitality_label = UIKit:ttfLabel({
-        text = ishated and string.formatnumberthousands(dragon:TotalVitality() * 4) or 0,
+        text = ishated and string.formatnumberthousands(dragon:GetMaxHP()) or 0,
         size = 24,
         color=0x117a00
     }):align(display.CENTER_BOTTOM,75, 10):addTo(vitality_bg)
@@ -771,7 +771,7 @@ function GameUIDragonEyrieDetail:CreateNodeIf_info()
         color= 0x615b44
     }):align(display.CENTER_TOP,75, 72):addTo(leadership_bg)
     self.info_leadership_label = UIKit:ttfLabel({
-        text = ishated and string.formatnumberthousands(dragon:TotalLeadership() * 100) or 0,
+        text = ishated and string.formatnumberthousands(dragon:LeadCitizen()) or 0,
         size = 24,
         color=0x117a00
     }):align(display.CENTER_BOTTOM,75, 10):addTo(leadership_bg)

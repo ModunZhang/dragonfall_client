@@ -241,6 +241,7 @@ function GameUIPVESendTroop:SelectDragon()
                             for k,item in pairs(self.soldiers_table) do
                                 item:SetSoldierCount(0)
                             end
+                            self:AdapterMaxButton(false)
                         end
                         self:RefreashDragon(selectDragon)
                     end,

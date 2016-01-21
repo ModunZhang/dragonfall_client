@@ -148,7 +148,7 @@ function GameUIWatchTowerMyTroopsDetail:GetItem(ITEM_TYPE,item_data)
         self:GetSubItem(ITEM_TYPE,1,{_("生命值"),dragon_hp}):addTo(bg):align(display.RIGHT_BOTTOM, 547, y)
         y = y + 38
         local dragon_strength = dragon:TotalStrength()
-        self:GetSubItem(ITEM_TYPE,2,{_("力量"),dragon_strength}):addTo(bg):align(display.RIGHT_BOTTOM, 547, y)
+        self:GetSubItem(ITEM_TYPE,2,{_("攻击力"),dragon_strength}):addTo(bg):align(display.RIGHT_BOTTOM, 547, y)
         y = y + 38
         local dragon_level = dragon:Level()
         self:GetSubItem(ITEM_TYPE,3,{_("等级"),dragon_level}):addTo(bg):align(display.RIGHT_BOTTOM, 547, y)

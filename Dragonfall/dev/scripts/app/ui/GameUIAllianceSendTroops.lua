@@ -376,10 +376,18 @@ function GameUIAllianceSendTroops:RefreashDragon(dragon)
     self.dragon_img:setTexture(UILib.dragon_head[dragon:Type()])
     self.dragon_name:setString(Localize.dragon[dragon:Type()].."（LV "..dragon:Level().."）")
     self.dragon_vitality:setString(_("生命值")..string.formatnumberthousands(dragon:Hp()).."/"..string.formatnumberthousands(dragon:GetMaxHP()))
+    if self.dragon:Type() ~= dragon:Type() then
+        self:Reset()
+    end
     self.dragon = dragon
-    self:RefreashSoldierShow()
 end
-
+function GameUIAllianceSendTroops:Reset()
+    for k,item in pairs(self.soldiers_table) do
+        item:SetSoldierCount(0)
+    end
+    self:AdapterMaxButton(false)
+    self.show:ShowOrRefreasTroops({})
+end
 function GameUIAllianceSendTroops:SelectDragon()
     WidgetSelectDragon.new(
         {
@@ -777,7 +785,7 @@ function GameUIAllianceSendTroops:CreateTroopsShow()
         return self
     end
     function TroopShow:SetCitizen(citizen)
-        local citizen_item = createInfoItem(_("部队容量"),citizen.."/"..parent.dragon:LeadCitizen())
+        local citizen_item = createInfoItem(_("带兵量"),citizen.."/"..parent.dragon:LeadCitizen())
         citizen_item:align(display.CENTER,310-citizen_item:getContentSize().width/2,0)
             :addTo(info_bg)
         self.exceed_lead = citizen > parent.dragon:LeadCitizen()
@@ -934,6 +942,9 @@ function GameUIAllianceSendTroops:onExit()
 end
 
 return GameUIAllianceSendTroops
+
+
+
 
 
 

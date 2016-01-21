@@ -291,7 +291,7 @@ function GameUIDragonEquipment:WidgetDragonEquipIntensifyEvent(widgetDragonEquip
         if percent >= 100 then
             local config =  equipment:GetNextStarDetailConfig()
             local current_config = equipment:GetDetailConfig()
-            self:RefreshIntensifyListViewBuffVal(config.vitality - current_config.vitality,config.strength - current_config.strength,config.leadership - current_config.leadership)
+            self:RefreshIntensifyListViewBuffVal((config.vitality - current_config.vitality) * 4,config.strength - current_config.strength,(config.leadership - current_config.leadership) * 100)
         else
             self:RefreshIntensifyListViewBuffVal(0,0,0)
         end
@@ -478,9 +478,9 @@ function GameUIDragonEquipment:GetEquipmentEffect(needBuff)
     local equipment = self:GetEquipment()
     local vitality,strength = equipment:GetVitalityAndStrengh()
     local leadership = equipment:GetLeadership()
-    table.insert(r,{_("活力"),vitality})
-    table.insert(r,{_("力量"),strength})
-    table.insert(r,{_("领导力"),leadership})
+    table.insert(r,{_("生命值"),vitality})
+    table.insert(r,{_("攻击力"),strength})
+    table.insert(r,{_("带兵量"),leadership})
     if needBuff then
         local buffers = equipment:GetBufferAndEffect()
         for __,v in ipairs(buffers) do
@@ -508,12 +508,12 @@ function GameUIDragonEquipment:RefreshIntensifyListView()
     self.intensify_list:removeAllItems()
     local equipment = self:GetEquipment()
     local vitality,strength = equipment:GetVitalityAndStrengh()
-    local item = self:GetIntensifyListItem(1,_("活力"),vitality)
+    local item = self:GetIntensifyListItem(1,_("生命值"),vitality)
     self.intensify_list:addItem(item)
-    item = self:GetIntensifyListItem(2,_("力量"),strength)
+    item = self:GetIntensifyListItem(2,_("攻击力"),strength)
     self.intensify_list:addItem(item)
     local leadership = equipment:GetLeadership()
-    item = self:GetIntensifyListItem(3,_("领导力"),leadership)
+    item = self:GetIntensifyListItem(3,_("带兵量"),leadership)
     self.intensify_list:addItem(item)
     self.intensify_list:reload()
 end
@@ -563,7 +563,7 @@ function GameUIDragonEquipment:RefreshIntensifyListViewBuffVal(vitality_add,stre
         vitality_item.buff_label:setString("+" .. vitality_add)
         vitality_item.val_label:setPositionX(vitality_item.buff_label:getPositionX() - vitality_item.buff_label:getContentSize().width - 10)
         vitality_item.buff_label:show()
-        tips_global = tips_global .. _("活力") .. "+" .. vitality_add
+        tips_global = tips_global .. _("生命值") .. "+" .. vitality_add
     end
 
     local strength_item = items[2]
@@ -576,7 +576,7 @@ function GameUIDragonEquipment:RefreshIntensifyListViewBuffVal(vitality_add,stre
         strength_item.buff_label:setString("+" .. strength_add)
         strength_item.val_label:setPositionX(strength_item.buff_label:getPositionX() - strength_item.buff_label:getContentSize().width - 10)
         strength_item.buff_label:show()
-        tips_global = tips_global .. "," ..  _("力量") .. "+" .. strength_add
+        tips_global = tips_global .. "," ..  _("攻击力") .. "+" .. strength_add
     end
 
     local leadership_item = items[3]
@@ -588,7 +588,7 @@ function GameUIDragonEquipment:RefreshIntensifyListViewBuffVal(vitality_add,stre
         leadership_item.buff_label:setString("+" .. leadership_add)
         leadership_item.val_label:setPositionX(leadership_item.buff_label:getPositionX() - leadership_item.buff_label:getContentSize().width - 10)
         leadership_item.buff_label:show()
-        tips_global = tips_global .. "," ..  _("领导力") .. "+" .. leadership_add
+        tips_global = tips_global .. "," ..  _("带兵量") .. "+" .. leadership_add
     end
     self.intensify_tips = tips_global
 end

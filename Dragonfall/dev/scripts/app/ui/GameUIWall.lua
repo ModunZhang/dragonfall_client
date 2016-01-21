@@ -165,7 +165,7 @@ function GameUIWall:CreateMilitaryUIIf()
     local level_str = string.format(_("当前联盟地形:%s"),Alliance_Manager:GetMyAlliance():IsDefault() and _("无") or Localize.terrain[Alliance_Manager:GetMyAlliance().basicInfo.terrain])
     if dragon then
         name_str = dragon:GetLocalizedName()
-        level_str=  _("力量")
+        level_str=  _("攻击力")
     end
     local title_bg = display.newScale9Sprite("title_blue_430x30.png",0, 0, cc.size(416,30), cc.rect(10,10,410,10)):addTo(military_node)
         :align(display.LEFT_TOP, tips_label:getPositionX(), draogn_box:getPositionY() + draogn_box:getContentSize().height)
@@ -189,7 +189,7 @@ function GameUIWall:CreateMilitaryUIIf()
         size = 20
     }):addTo(military_node):align(display.LEFT_BOTTOM,level_title_label:getPositionX()+50, level_title_label:getPositionY())
     if dragon then
-        self.dragon_level_label:setString(string.formatnumberthousands(dragon:Strength()))
+        self.dragon_level_label:setString(string.formatnumberthousands(dragon:TotalStrength()))
         self.tips_label:hide()
     else
         self.dragon_level_label:hide()
@@ -394,8 +394,8 @@ function GameUIWall:RefreshUIAfterSelectDragon(dragon,soldiers)
         self.edit_troop_btn:show()
         self.dragon_info_panel:show()
         self.tips_panel:hide()
-        self.level_title_label:setString(_("力量"))
-        self.dragon_level_label:setString(string.formatnumberthousands(dragon:Strength()))
+        self.level_title_label:setString(_("攻击力"))
+        self.dragon_level_label:setString(string.formatnumberthousands(dragon:TotalStrength()))
         self.dragon_level_label:show()
         self.tips_label:hide()
         self.progressTimer_bg:show()
