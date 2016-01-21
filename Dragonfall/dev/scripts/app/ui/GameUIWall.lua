@@ -10,7 +10,6 @@ local WidgetSoldierBox = import("..widget.WidgetSoldierBox")
 local WidgetSelectDragon = import("..widget.WidgetSelectDragon")
 local timer = app.timer
 local WidgetUseItems = import("..widget.WidgetUseItems")
-local WidgetSelectWallDragon = import("..widget.WidgetSelectWallDragon")
 
 function GameUIWall:ctor(city,building,default_tab)
     self.city = city

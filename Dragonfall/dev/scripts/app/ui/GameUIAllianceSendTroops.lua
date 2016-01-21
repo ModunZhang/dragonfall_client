@@ -385,7 +385,7 @@ function GameUIAllianceSendTroops:Reset()
     for k,item in pairs(self.soldiers_table) do
         item:SetSoldierCount(0)
     end
-    self:AdapterMaxButton(false)
+    self:AdapterMaxButton(true)
     self.show:ShowOrRefreasTroops({})
 end
 function GameUIAllianceSendTroops:SelectDragon()
