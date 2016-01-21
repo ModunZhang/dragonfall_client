@@ -14,6 +14,7 @@ function GameUIShowDragonUpStarAnimation:ctor(dragon,isLevelUp)
     self:DisableAutoClose()
     self.isLevelUp = isLevelUp
     GameUIShowDragonUpStarAnimation.super.ctor(self)
+    app:GetAudioManager():PlayeEffectSoundWithKey("HOORAY")
     local old_strenth,old_vitality,old_leadershiip
     if isLevelUp then
         old_strenth,old_vitality,old_leadershiip = dragon:GetLevelPromotionedOldVal()
