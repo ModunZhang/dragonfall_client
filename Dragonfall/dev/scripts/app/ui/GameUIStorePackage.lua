@@ -147,6 +147,10 @@ function GameUIStorePackage:CreateBuyButton()
 end
 
 function GameUIStorePackage:OnBuyButtonClicked()
+	if device.platform == 'android' and not app:getStore().canMakePurchases() then
+		UIKit:showMessageDialog(_("错误"),_("Google Play商店暂时不能购买,请检查手机Google Play商店的相关设置"))
+		return
+	end
 	app:getStore().purchaseWithProductId(self:GetData().productId,1)
 	device.showActivityIndicator()
 end
