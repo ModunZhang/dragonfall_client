@@ -608,25 +608,38 @@ function MyApp:verifyGooglePlayPurchase(orderId,purchaseData,signature)
     local transaction = Store.getTransactionDataWithPurchaseData(purchaseData)
     local info = DataUtils:getIapInfo(transaction.productIdentifier)
     ext.market_sdk.onPlayerChargeRequst(transaction.transactionIdentifier,transaction.productIdentifier,info.price,info.gem,"USD")
-    device.hideActivityIndicator()
-    if true then --TODO: verify v3 in server
-        local openRewardIf = function()
-            local GameUIActivityRewardNew_instance = UIKit:GetUIInstance("GameUIActivityRewardNew")
-            if User and not GameUIActivityRewardNew_instance then
-                local countInfo = User:GetCountInfo()
-                if countInfo.iapCount > 0 and not countInfo.isFirstIAPRewardsGeted then
-                    UIKit:newGameUI("GameUIActivityRewardNew",4):AddToCurrentScene(true) -- 如果首充 弹出奖励界面
+    NetManager:getVerifyGooglePlayIAPPromise(purchaseData,signature):next(function( response )
+        device.hideActivityIndicator()
+        local msg = response.msg
+        if msg.transactionId then
+            Store.finishTransaction(transaction) --close this billing
+            local openRewardIf = function()
+                local GameUIActivityRewardNew_instance = UIKit:GetUIInstance("GameUIActivityRewardNew")
+                if User and not GameUIActivityRewardNew_instance then
+                    local countInfo = User:GetCountInfo()
+                    if countInfo.iapCount > 0 and not countInfo.isFirstIAPRewardsGeted then
+                        UIKit:newGameUI("GameUIActivityRewardNew",4):AddToCurrentScene(true) -- 如果首充 弹出奖励界面
+                    end
                 end
             end
+            UIKit:showMessageDialog(_("恭喜"),
+                string.format("您已获得%s,到物品里面查看",
+                    UIKit:getIapPackageName(transaction.productIdentifier)),
+                openRewardIf)
+            
+            ext.market_sdk.onPlayerChargeSuccess(transaction.transactionIdentifier)
         end
-        UIKit:showMessageDialog(_("恭喜"),
-            string.format("您已获得%s,到物品里面查看",
-                UIKit:getIapPackageName(transaction.productIdentifier)),
-            openRewardIf)
-        Store.finishTransaction(transaction)
-        ext.market_sdk.onPlayerChargeSuccess(transaction.transactionIdentifier)
-    end
-
+    end):catch(function( err )
+        device.hideActivityIndicator()
+        local msg,code_type = err:reason()
+        local code = msg.code
+        if code_type ~= "syntaxError" then
+            local code_key = UIKit:getErrorCodeKey(code)
+            if code_key == 'duplicateIAPTransactionId' or code_key == 'iapProductNotExist' or code_key == 'iapValidateFaild' then
+                Store.finishTransaction(transaction)
+            end
+        end
+    end)
 end
 function MyApp:transitionFailedInGooglePlay()
     print("transitionFailedInGooglePlay---->")

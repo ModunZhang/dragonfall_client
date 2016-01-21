@@ -1878,6 +1878,16 @@ function NetManager:getVerifyMicrosoftIAPPromise( transactionIdentifier )
         }
         ,"玩家内购失败", true):next(get_player_response_msg)
 end
+-- Android google play v3 内购
+function NetManager:getVerifyGooglePlayIAPPromise(receiptData,receiptSignature)
+    print("fuck ---- getVerifyGooglePlayIAPPromise",receiptData,receiptSignature)
+    return get_none_blocking_request_promise("logic.playerHandler.addAndroidOfficialPlayerBillingData",
+        {
+            receiptData=receiptData,
+            receiptSignature=receiptSignature,
+        }
+        ,"玩家内购失败", true):next(get_player_response_msg)
+end
 --获得每日登陆奖励
 function NetManager:getDay60RewardPromise()
     return get_blocking_request_promise("logic.playerHandler.getDay60Reward",
