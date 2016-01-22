@@ -82,6 +82,28 @@ public:
      */
     static int callLuaGlobalFunction(const char *functionName, const char *arg);
 
+    //FIXME:dannyhe fix lua javabridge by PSJNIHelper
+
+    static jobject checkHashMap(lua_State *L);
+    static jobject checkArrayList(lua_State *L);
+    static jobject checkVector(lua_State *L);
+    static string checkObj(lua_State *L);
+
+    class PSJNIHelper{
+        public:
+        static void createHashMap();
+        static jobject getHashMap();
+        static void pushHashMapElement(string key, string value);
+        
+        static void createVector();
+        static jobject getVector();
+        static void pushVectorElement(string value);
+        
+        static void createArrayList();
+        static jobject getArrayList();
+        static void pushArrayListElement(string value);
+    };
+
 private:
     typedef enum
     {
@@ -93,6 +115,8 @@ private:
         TypeString  = 4,
         TypeVector  = 5,
         TypeFunction= 6,
+        TypeMap     = 7,
+        TypeArrayList = 8,
     } ValueType;
 
     typedef vector<ValueType> ValueTypes;
@@ -103,6 +127,7 @@ private:
         float   floatValue;
         int     boolValue;
         string *stringValue;
+        jobject objectValue;
     } ReturnValue;
 
     class CallInfo
