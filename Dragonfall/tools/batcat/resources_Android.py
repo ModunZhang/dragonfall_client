@@ -20,12 +20,12 @@ IMAGEQUALITY = "etcfast"
 PVRTOOL = getPVRTexTool()
 CONVERTTOOL = getConvertTool()
 
-QUIET_MODE = False
+QUIET_MODE = True
 
 ALPHA_USE_ETC = True  # alpha纹理使用etc格式压缩
 COMPRESS_ETC_FILE = True  # etc格式纹理通过自定义压缩工具再压缩
 
-Logging.DEBUG_MODE = True
+Logging.DEBUG_MODE = False
 
 def getAllArgs():
 
@@ -268,7 +268,6 @@ def exportRes(sourceDir,  targetDir):
             elif dir_name == 'animations':
                 Logging.warning("不处理animations文件夹")
             elif dir_name == 'animations_mac':
-                Logging.warning("animations_mac")
                 exportAnimationRes(sourceFile)
             else:
                 exportRes(sourceFile, targetFile)

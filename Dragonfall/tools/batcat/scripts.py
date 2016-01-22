@@ -21,7 +21,7 @@ QUIET_MODE = True  # 安静模式
 VERSION_FILE = formatPath("%s/dev/scripts/debug_version.lua" % ProjDir)
 CONFIGURATION = ""
 
-Logging.DEBUG_MODE = True #debug日志的输出
+Logging.DEBUG_MODE = False #debug日志的输出
 
 def preBuild():
     command = "python build_format_map.py -r rgba4444.lua"
