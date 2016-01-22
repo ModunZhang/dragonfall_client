@@ -91,6 +91,7 @@
 # ----------------------------------------------
 
 #================cocos2dx========================
+-keep class org.cocos2dx.utils.** {*;}
 -keep class org.cocos2dx.lib.** {*;}
 -keep class com.chukong.cocosplay.** {*;}
 
