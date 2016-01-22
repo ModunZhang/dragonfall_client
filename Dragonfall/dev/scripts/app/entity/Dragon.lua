@@ -469,7 +469,7 @@ function Dragon:TotalVitality()
 	for __,equipment in pairs(self:Equipments()) do
 		if equipment:IsLoaded() then
 			local vitality_add,___ = equipment:GetVitalityAndStrengh()
-			vitality = vitality + vitality_add
+			vitality = vitality + vitality_add / 4
 		end
 	end
 	return vitality
@@ -486,7 +486,7 @@ function Dragon:TotalLeadership()
 	leadership = leadership + math.floor(leadership * buff)
 	for __,equipment in pairs(self:Equipments()) do
 		if equipment:IsLoaded() then
-			local leadership_add = equipment:GetLeadership()
+			local leadership_add = equipment:GetLeadership() / config_alliance_initData_int.citizenPerLeadership.value
 			leadership = leadership + leadership_add
 		end
 	end

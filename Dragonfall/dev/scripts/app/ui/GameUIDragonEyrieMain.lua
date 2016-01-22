@@ -479,6 +479,7 @@ function GameUIDragonEyrieMain:CreateDragonContentNodeIf()
             shadow = true
         })):addTo(info_panel):align(display.RIGHT_BOTTOM,540,5):onButtonClicked(function()
             UIKit:newGameUI("GameUIDragonEyrieDetail",self.city,self.building,self:GetCurrentDragon():Type()):AddToCurrentScene(false)
+            self:LeftButtonClicked()
         end)
         self.detailButton = detailButton
         self.draongContentNode:OnEnterIndex(math.abs(0))

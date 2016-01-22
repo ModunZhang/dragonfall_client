@@ -27,16 +27,6 @@ function GameUIDragonEyrieDetail:ctor(city,building,dragon_type)
     self.dragon_type = dragon_type
     self.draong_index = 1
     self.dragon_manager = building:GetDragonManager()
-    local arr = {"redDragon","greenDragon","blueDragon"}
-    table.sort( arr, function(a,b)
-        return a == dragon_type
-    end)
-    local dragons = {}
-    for i,v in ipairs(arr) do
-        table.insert(dragons, self.dragon_manager:GetDragon(v))
-    end
-    self.dragons = dragons
-    self.dragon = self.dragon_manager:GetDragon(dragon_type)
 end
 
 
@@ -569,6 +559,7 @@ end
 
 function GameUIDragonEyrieDetail:OnTabButtonClicked(tag)
     if tag == 'back' then
+        UIKit:newGameUI("GameUIDragonEyrieMain", self.city, self.city:GetFirstBuildingByType("dragonEyrie"), "dragon",false,self:GetCurrentDragon():Type()):AddToCurrentScene(false)
         self:LeftButtonClicked()
         return
     end
