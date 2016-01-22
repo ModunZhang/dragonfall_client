@@ -167,8 +167,11 @@ def exportRes(sourceDir,  targetDir):
                     continue
                 if not os.path.exists(outdir):
                     os.makedirs(outdir)
-                shutil.copy(sourceFile,  outdir)
-                Logging.debug("拷贝 %s" % sourceFile)
+                if fileExt in ('png','jpg') and NEED_ENCRYPT_RES:
+                    CompileResources(sourceFile, outdir)
+                else:
+                    shutil.copy(sourceFile,  outdir)
+                    Logging.debug("拷贝 %s" % sourceFile)
         elif os.path.isdir(sourceFile):
             dir_name = os.path.basename(sourceFile)
             if dir_name == 'images':
