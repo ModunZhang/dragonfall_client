@@ -18507,7 +18507,7 @@ int lua_register_cocos2dx_EventDispatcher(lua_State* tolua_S)
         tolua_function(tolua_S,"removeCustomEventListeners",lua_cocos2dx_EventDispatcher_removeCustomEventListeners);
         tolua_function(tolua_S,"isEnabled",lua_cocos2dx_EventDispatcher_isEnabled);
         //dannyhe:we want to disable touch event in lua
-        tolua_function(tolua_S,"isEnabled",lua_cocos2dx_EventDispatcher_isTouchEventEnabled);
+        tolua_function(tolua_S,"isTouchEventEnabled",lua_cocos2dx_EventDispatcher_isTouchEventEnabled);
         tolua_function(tolua_S,"setTouchEventEnabled", lua_cocos2dx_EventDispatcher_setTouchEventEnabled);
         //end
         tolua_function(tolua_S,"removeEventListenersForType",lua_cocos2dx_EventDispatcher_removeEventListenersForType);
