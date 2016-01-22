@@ -8,7 +8,6 @@
 	pip install requests
 	pip install colorama
 	pip install biplist
-	pip install poxls
 
 ###平台部分 
 ####所有系统
