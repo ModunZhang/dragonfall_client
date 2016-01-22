@@ -636,6 +636,19 @@ function GameUIChatChannel:listviewListener(event)
         if string.lower(chat.id) == 'system' then
             return
         end
+        local button = content.chat_icon
+        local bound = button:getBoundingBox()
+        bound.width = button:getContentSize().width
+        bound.height = button:getContentSize().height
+        local nodePoint = content:convertToWorldSpace(cc.p(bound.x, bound.y))
+        nodePoint = listView:getScrollNode():convertToNodeSpace(nodePoint)
+        bound.x = nodePoint.x
+        bound.y = nodePoint.y
+        local isTouchChatIcon = cc.rectContainsPoint(bound,event.point)
+        if isTouchChatIcon then
+            UIKit:newGameUI("GameUIAllianceMemberInfo",false,chat.id,nil,chat.serverId):AddToCurrentScene(true)
+            return
+        end
         self:CreatePlayerMenu(event,chat)
     end
 end

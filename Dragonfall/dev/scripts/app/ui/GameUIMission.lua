@@ -649,7 +649,7 @@ function GameUIMission:dailyListviewListener(event)
             if Alliance_Manager:GetMyAlliance():IsDefault() then
                 UIKit:showMessageDialog(_("提示"),_("你必须加入联盟后，才能参加圣地战"))
             else
-                app:EnterMyAllianceScene({mapIndex = Alliance_Manager:GetMyAlliance().mapIndex,x = 13,y = 17,callback = function ( alliance_scene )
+                app:EnterMyAllianceScene({mapIndex = Alliance_Manager:GetMyAlliance().mapIndex,x = 8,y = 12,callback = function ( alliance_scene )
                     alliance_scene:TwinkleShrine()
                 end})
             end

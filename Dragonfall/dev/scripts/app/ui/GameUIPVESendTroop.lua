@@ -241,6 +241,7 @@ function GameUIPVESendTroop:SelectDragon()
                             for k,item in pairs(self.soldiers_table) do
                                 item:SetSoldierCount(0)
                             end
+                            self:AdapterMaxButton(false)
                         end
                         self:RefreashDragon(selectDragon)
                     end,
@@ -525,7 +526,7 @@ function GameUIPVESendTroop:CreateTroopsShow()
     end
     function TroopsShow:SetCitizen(citizen)
         local info_bg =self.info_bg
-        local citizen_item = createInfoItem(_("部队容量"),string.formatnumberthousands(citizen).."/"..string.formatnumberthousands(parent.dragon:LeadCitizen()))
+        local citizen_item = createInfoItem(_("带兵量"),string.formatnumberthousands(citizen).."/"..string.formatnumberthousands(parent.dragon:LeadCitizen()))
         citizen_item:align(display.CENTER,320,26)
             :addTo(info_bg)
         return self

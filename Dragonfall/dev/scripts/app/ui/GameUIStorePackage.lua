@@ -44,12 +44,12 @@ function GameUIStorePackage:CreateItemLogo()
 	}):align(display.CENTER_TOP, 294, 182):addTo(content)
 	local clip_rect = display.newClippingRegionNode(cc.rect(0,0,549,138)):addTo(content)
 	local logo = display.newSprite(data.config.logo)
-	light_gem():addTo(logo, 1022):pos(data.config.light_position.x + 50 , data.config.light_position.y):scale(1.2)
 	local logo_box = display.newSprite("store_logo_box_592x141.png",296,69):addTo(logo):zorder(5)
 	local bg = display.newScale9Sprite(data.config.desc):size(335,92)
 	bg:align(display.RIGHT_CENTER, 592, 69):addTo(logo)
 	local gem_box = display.newSprite("store_gem_box_260x116.png"):align(display.CENTER, 0, 46):addTo(bg)
-	display.newSprite("store_gem_260x116.png", 130, 58):addTo(gem_box)
+	local gem_icon = display.newSprite("store_gem_260x116.png", 130, 58):addTo(gem_box)
+	light_gem():addTo(gem_icon, 1022):pos(gem_icon:getContentSize().width/2,gem_icon:getContentSize().height/2):scale(1.2)
 	UIKit:ttfLabel({
 		text = data.gem,
 		size = 30,

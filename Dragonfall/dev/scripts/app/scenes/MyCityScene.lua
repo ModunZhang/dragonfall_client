@@ -339,17 +339,14 @@ end
 function MyCityScene:OnUserDataChanged_houseEvents(userData, deltaData)
     if deltaData("houseEvents.add") then
         self:GetSceneLayer():CheckCanUpgrade()
-        app:GetAudioManager():PlayeEffectSoundWithKey("UI_BUILDING_UPGRADE_START")
     end
     if deltaData("houseEvents.remove") then
         self:GetSceneLayer():CheckCanUpgrade()
-        app:GetAudioManager():PlayeEffectSoundWithKey("COMPLETE")
     end
 end
 function MyCityScene:OnUserDataChanged_buildingEvents(userData, deltaData)
     if deltaData("buildingEvents.add") then
         self:GetSceneLayer():CheckCanUpgrade()
-        app:GetAudioManager():PlayeEffectSoundWithKey("UI_BUILDING_UPGRADE_START")
     end
     local ok, value = deltaData("buildingEvents.remove")
     if ok then
@@ -359,7 +356,6 @@ function MyCityScene:OnUserDataChanged_buildingEvents(userData, deltaData)
             end
         end
         self:GetSceneLayer():CheckCanUpgrade()
-        app:GetAudioManager():PlayeEffectSoundWithKey("COMPLETE")
     end
 end
 function MyCityScene:OnUserDataChanged_soldierEvents(userData, deltaData)

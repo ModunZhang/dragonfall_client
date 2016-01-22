@@ -132,12 +132,12 @@ end
 
 function DragonEquipment:GetVitalityAndStrengh()
   	local config_category = self:GetDetailConfig()
-  	return config_category.vitality,config_category.strength
+  	return config_category.vitality * 4 ,config_category.strength
 end
 
 function DragonEquipment:GetLeadership()
 	local config_category = self:GetDetailConfig()
-	return config_category.leadership
+	return config_category.leadership * config_alliance_initData_int.citizenPerLeadership.value
 end
 
 function DragonEquipment:GetBufferAndEffect()
@@ -173,7 +173,11 @@ function Dragon:LeadCitizen()
 	local leadCitizen = self:TotalLeadership() * config_alliance_initData_int.citizenPerLeadership.value
 	return leadCitizen
 end
-
+--基础总带兵量（不算装备，buff等）
+function Dragon:LeadBasicCitizen()
+	local leadCitizen = self:Leadership() * config_alliance_initData_int.citizenPerLeadership.value
+	return leadCitizen
+end
 --自身的力量
 function Dragon:Strength()
   	return config_dragonLevel[self:Level()].strength + config_dragonStar[self:Star()].initStrength
@@ -345,7 +349,10 @@ end
 function Dragon:GetMaxHP()
 	return self:TotalVitality() * 4
 end
-
+-- 基础血量（不算装备，buff等）
+function Dragon:GetBasicMaxHP()
+	return self:Vitality() * 4
+end
 --升级需要的经验值
 function Dragon:GetMaxExp()	
 	-- if self:Level() == self:GetMaxLevel() then
@@ -358,17 +365,25 @@ end
 function Dragon:GetMaxLevel()
 	return config_dragonStar[self:Star()] and config_dragonStar[self:Star()].levelMax or 0
 end
--- 升星后的值变动
-function Dragon:GetPromotionedDifferentVal()
+-- 升星后的值
+function Dragon:GetPromotionedOldVal()
 	local old_star = self:Star() - 1
 	local old_max_level = config_dragonStar[old_star].levelMax
 	local old_level_config = config_dragonLevel[old_max_level]
 	local oldStrenth =  old_level_config.strength
 	local oldVitality =  old_level_config.vitality
 	local oldLeadership = old_level_config.leadership
-	return self:Strength() - oldStrenth,self:Vitality() - oldVitality,self:Leadership() - oldLeadership
+	return oldStrenth,(oldVitality + config_dragonStar[old_star].initVitality) * 4,(oldLeadership + config_dragonStar[old_star].initLeadership) * config_alliance_initData_int.citizenPerLeadership.value
 end
-
+-- 升级后的值变动
+function Dragon:GetLevelPromotionedOldVal()
+	local old_level = self:Level() - 1
+	local old_level_config = config_dragonLevel[old_level]
+	local oldStrenth =  old_level_config.strength
+	local oldVitality =  old_level_config.vitality
+	local oldLeadership = old_level_config.leadership
+	return oldStrenth, (oldVitality + config_dragonStar[self:Star()].initVitality) * 4,(oldLeadership + config_dragonStar[self:Star()].initLeadership) * config_alliance_initData_int.citizenPerLeadership.value
+end
 --是否达到晋级等级
 function Dragon:IsReachPromotionLevel()
 	 return self:Level() >= self:GetPromotionLevel()
@@ -454,7 +469,7 @@ function Dragon:TotalVitality()
 	for __,equipment in pairs(self:Equipments()) do
 		if equipment:IsLoaded() then
 			local vitality_add,___ = equipment:GetVitalityAndStrengh()
-			vitality = vitality + vitality_add
+			vitality = vitality + vitality_add / 4
 		end
 	end
 	return vitality
@@ -471,7 +486,7 @@ function Dragon:TotalLeadership()
 	leadership = leadership + math.floor(leadership * buff)
 	for __,equipment in pairs(self:Equipments()) do
 		if equipment:IsLoaded() then
-			local leadership_add = equipment:GetLeadership()
+			local leadership_add = equipment:GetLeadership() / config_alliance_initData_int.citizenPerLeadership.value
 			leadership = leadership + leadership_add
 		end
 	end

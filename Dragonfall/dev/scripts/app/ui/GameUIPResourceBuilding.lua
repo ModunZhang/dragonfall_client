@@ -78,7 +78,7 @@ function GameUIPResourceBuilding:ProduceIncreasePart()
             house_count>2 and "yes_40x40.png" or "no_40x40.png"
         },
         {
-            _("达到")..first_count.."/6",string.format(_("+5%%%s"),
+            _("达到")..house_count.."/6",string.format(_("+5%%%s"),
                 P_RESOURCE_BUILDING_TYPE_TO_RESOURCE[self.building:GetType()]),
             house_count>5 and "yes_40x40.png" or "no_40x40.png"
         },

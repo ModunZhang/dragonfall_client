@@ -315,7 +315,7 @@ function GameUIHelpDefence:DragonPart()
 
     -- 龙力量
     UIKit:ttfLabel({
-        text = _("力量"),
+        text = _("攻击力"),
         size = 20,
         color = 0x615b44,
     }):align(display.LEFT_CENTER,10,30)
