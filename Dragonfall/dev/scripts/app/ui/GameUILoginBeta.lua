@@ -24,7 +24,7 @@ function GameUILoginBeta:ctor()
         -- {image = "animations/ui_animation_2.pvr.ccz",list = "animations/ui_animation_2.plist"},
         {image = "ui_png0.pvr.ccz",list = "ui_png0.plist"},
         {image = "ui_png1.pvr.ccz",list = "ui_png1.plist"},
-        
+
         {image = "ui_pvr0.pvr.ccz",list = "ui_pvr0.plist"},
         {image = "ui_pvr1.pvr.ccz",list = "ui_pvr1.plist"},
         {image = "ui_pvr2.pvr.ccz",list = "ui_pvr2.plist"},
@@ -87,7 +87,7 @@ function GameUILoginBeta:createTips()
         _("登录提示帮助7"),
         _("登录提示帮助8"),
         _("登录提示帮助9"),
-        -- _("登录提示帮助10"),
+    -- _("登录提示帮助10"),
     }
     math.randomseed(tostring(os.time()):reverse():sub(1, 6))
     local random = math.random(1,#LOGIN_TIPS)
@@ -173,15 +173,15 @@ function GameUILoginBeta:startGame()
 end
 function GameUILoginBeta:AddSkip()
     cc.ui.UIPushButton.new({normal = "skip.png",pressed = "skip.png"})
-    :addTo(self, 1000000):align(display.RIGHT_TOP, display.width, display.height)
-    :onButtonClicked(function(event)
-        event.target:setButtonEnabled(false)
-        UIKit:showMessageDialog(_("提示"),_("是否跳过开头动画?"),function()
-            self:Skip()
-        end, function()
-            event.target:setButtonEnabled(true)
-        end, false)
-    end):opacity(0):fadeIn(0.5)
+        :addTo(self, 1000000):align(display.RIGHT_TOP, display.width, display.height)
+        :onButtonClicked(function(event)
+            event.target:setButtonEnabled(false)
+            UIKit:showMessageDialog(_("提示"),_("是否跳过开头动画?"),function()
+                self:Skip()
+            end, function()
+                event.target:setButtonEnabled(true)
+            end, false)
+        end):opacity(0):fadeIn(0.5)
 end
 function GameUILoginBeta:Skip()
     self.animation_node:stopAllActions()
@@ -254,11 +254,67 @@ function GameUILoginBeta:OpenUserAgreement()
             end
         end):align(display.LEFT_CENTER, 20, 44):addTo(body)
 end
+function GameUILoginBeta:createGameNotice()
+    local request = network.createHTTPRequest(function(event)
+        local ok = (event.name == "completed")
+        local request = event.request
 
+        if not ok then
+            -- 请求失败，显示错误代码和错误消息
+            -- print(request:getErrorCode(), request:getErrorMessage())
+            return
+        end
+
+        local code = request:getResponseStatusCode()
+        if code ~= 200 then
+            -- 请求结束，但没有返回 200 响应代码
+            -- print(code)
+            return
+        end
+
+        -- 请求成功，显示服务端返回的内容
+        local response = request:getResponseString()
+
+        local dialog = UIKit:newWidgetUI("WidgetPopDialog",570,_("公告"),display.top-130):addTo(self.ui_layer,2)
+        local body = dialog:GetBody()
+        local size = body:getContentSize()
+        local bg = WidgetUIBackGround.new({width = 580 , height = 426},WidgetUIBackGround.STYLE_TYPE.STYLE_5):align(display.CENTER_BOTTOM, size.width/2, 100):addTo(body)
+        local results = json.decode(response)
+        local user_agreement_label = UIKit:ttfLabel({
+            text = results.data,
+            size = 20,
+            color = 0x403c2f,
+            align = cc.ui.UILabel.TEXT_ALIGN_CENTER,
+            dimensions = cc.size(555, 0),
+        })
+        local w,h =  user_agreement_label:getContentSize().width,user_agreement_label:getContentSize().height
+        -- 提示内容
+        local  listview = UIListView.new{
+            viewRect = cc.rect(10,10, w, 406),
+            direction = cc.ui.UIScrollView.DIRECTION_VERTICAL
+        }:addTo(bg)
+        local item = listview:newItem()
+        item:setItemSize(w,h)
+        item:addContent(user_agreement_label)
+        listview:addItem(item)
+        listview:reload()
+
+        cc.ui.UIPushButton.new(btn_images or {normal = "yellow_btn_up_148x58.png",pressed = "yellow_btn_down_148x58.png"})
+            :setButtonLabel(UIKit:ttfLabel({text =_("明白"), size = 24, color = 0xffedae,shadow=true}))
+            :onButtonClicked(function(event)
+                if event.name == "CLICKED_EVENT" then
+                    dialog:LeftButtonClicked()
+                end
+            end):align(display.CENTER, size.width / 2, 44):addTo(body)
+    end, "http://gate.batcatstudio.com/dragonfall/get-notice", "GET")
+    request:setTimeout(10)
+    request:start()
+end
 
 function GameUILoginBeta:showStartState()
     self.star_game_sprite:show()
     self.start_button:show()
+    self:createGameNotice()
 end
 
 function GameUILoginBeta:createVerLabel()
@@ -749,6 +805,7 @@ end
 
 
 return GameUILoginBeta
+
 
 
 
