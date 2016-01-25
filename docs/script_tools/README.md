@@ -9,6 +9,8 @@
 	pip install colorama
 	pip install biplist
 
+> poxls插件的安装,参考文档i18n_texture中的安装办法
+
 ###平台部分 
 ####所有系统
 
