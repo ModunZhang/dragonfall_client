@@ -2,7 +2,7 @@
 #Android 工程说明
 ================
 
-> 我们项目不使用Android Studio开发，使用Eclipse+ADT+Ant进行Android开发。
+> 我们项目暂时无法使用Android Studio开发，而是使用Eclipse+ADT+Ant进行Android开发。
 
 要编译 Android 功能，必须使用最新版本的 Android SDK 和`指定的 r9d 版本` Android NDK.
 
@@ -62,7 +62,7 @@
 
 -   Windows 下修改环境变量：
 	
-	**通过系统设置添加以上Mac下的系统变量**	
+	**通过Windows的系统设置添加以上Mac下的系统变量**	
 
 - SDK配置
 
@@ -272,7 +272,7 @@ Android 官方文档：http://developer.android.com/tools/device.html
     * 执行命令`monitor`启动Android Monitor
     * 执行命令`adb logcat`通过终端查看
     
-### 使用模块化编译缩小 apk 体积 ###
+### 使用模块化编译缩小 apk 体积（Cpp模块） ###
 
 从quick 3.5开始,官方不再提供模块化编译的功能，我们项目参考3.3的编译宏定义提供部分模块化编译的功能
 
@@ -296,13 +296,13 @@ CC_USE_FACEBOOK | 打开Facebook的功能。这个宏不能控制是否编译fac
 
 ### Java中的宏定义
 
-> 注意:这里的宏和`使用模块化编译缩小 apk 体积`中的宏可能同名,但是这里的宏是定义在`Eclipse`/`antenna_predefines.txt`中.只会影响`Java`编译的宏。
+注意:这里的宏和`使用模块化编译缩小 apk 体积`中的宏可能同名,但是这里的宏是定义在`Eclipse`/`antenna_predefines.txt`中.只会影响`Java`代码变动的宏。
 
 MACRO        | 功能 
 ------------ | ------------- 
 CC_USE_FACEBOOK | 打开Android中的FaceBook在java中的逻辑
 COCOS_DEBUG  | 打开Android下Java的Debug模式,主要用于控制`DebugUtil`类中的打印函数
-
+CC_USE_TALKING_DATA| 控制java中使用TalkingData的sdk，如果没有定义这个宏，可以移除libs文件下的相关jar文件
 
 ### Jni和Java中的编写约定
 
@@ -312,7 +312,7 @@ COCOS_DEBUG  | 打开Android下Java的Debug模式,主要用于控制`DebugUtil`�
 
 * 如果是可选功能,在Java中使用宏定义开关。比如上面的facebook
 
-### DragonFall GCM
+### DragonFall Google Cloud Message
 
 ~~~
 Server API Key:
@@ -325,9 +325,9 @@ Sender ID:
 
 * 因为我们项目目录结构比较深,ndk在windows上编译时,如果编译的路径太长就会出错,我们采用取巧的方式 
 
-	* `在windows上开发时把我们项目根目录放到磁盘的根目录,如:D:\`
+	* `在windows上开发时把我们项目根目录放到磁盘的根目录,如:D:\dragonfall_client`
 	
-	* 将项目的根目录`dragonfall_client`改名为`client`
+	* 然后将项目的根目录`dragonfall_client`改名为`client`(或者更短的名字)
 
 
 * 如果`eclipse`安装后无法启动,检查
