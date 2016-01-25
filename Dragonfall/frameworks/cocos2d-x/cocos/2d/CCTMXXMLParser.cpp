@@ -388,7 +388,10 @@ void TMXMapInfo::startElement(void *ctx, const char *name, const char **atts)
         {
             tileset->_sourceImage = _resources + (_resources.size() ? "/" : "") + imagename;
         }*/
-		//FIXME:fix the tmxmap read images from cocos2dx search path. dannyhe
+#if COCOS2D_DEBUG > 0
+        cocos2d::log("we fixed the TMXMapInfo init images from cocos2dx!");
+#endif
+        //FIXME:fix the tmxmap read images from cocos2dx search path. dannyhe
 		if (_TMXFileName.find_last_of("/") != string::npos)
 		{
 			string dir = _TMXFileName.substr(0, _TMXFileName.find_last_of("/") + 1);
@@ -409,9 +412,8 @@ void TMXMapInfo::startElement(void *ctx, const char *name, const char **atts)
 		{
 			tileset->_sourceImage = _resources + (_resources.size() ? "/" : "") + imagename;
 		}
+        
 		std::string tmp = FileUtils::getInstance()->fullPathForFilename(imagename);
-		cocos2d::log("fuck path--_TMXFileName:%s,imagename:%s,_sourceImage:%s", _TMXFileName.c_str(), imagename.c_str(), tileset->_sourceImage.c_str());
-		cocos2d::log("right path--:%s--_resources:%s", FileUtils::getInstance()->fullPathForFilename("res/tmxmaps/terrain1.png").c_str(), _resources.c_str());
     } 
     else if (elementName == "data")
     {
