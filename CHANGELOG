@@ -2,11 +2,18 @@
 
 1.1.3
 
+修复CCFontAtlasCache可能会意外crash的bug
 添加锁定触摸事件的api
 iOS的openUDID被缓存到UserDefaults中
-更新2dx的websocket为最新的源码
-Android上2dx的websocket主动关闭连接时不再回调close事件,其他平台测试后再修改
+更新2dx的websocket源码为最新
 脚本支持所有图片资源的加密
-Android上完善CCLuaJavaBridge的功能,支持java特殊参数的传入及返回(ArrayList,HashMap,Vector)
-修改瓦块地图贴图文件路径从2dx的searchpath中获取(修复自动更新bug)
-其他Android项目上修改
+修改瓦块地图贴图文件路径从2dx的searchpath中获取(自动更新bug)
+android的websocket主动关闭连接时不再回调close事件,其他平台测试后再修改
+
+android完善CCLuaJavaBridge的功能,支持java特殊参数的传入及返回(ArrayList,HashMap,Vector)
+android重构etc shader及添加新的etcshader到2dx sprite添加更多方法支持
+android修改2dx片段作色器使用高精度浮点数(后面可能需要修改成只针对etc1的shader使用高精度浮点数)
+android添加google play是否可用的判断
+android修改jni脚本可能导致脚本间互相影响的bug
+android移除掉所有输入框点击确定后的事件回调
+android上其他地方的修改
