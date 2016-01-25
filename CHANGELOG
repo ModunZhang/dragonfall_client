@@ -10,8 +10,8 @@ iOS的openUDID被缓存到UserDefaults中
 修改瓦块地图贴图文件路径从2dx的searchpath中获取(自动更新bug)
 android的websocket主动关闭连接时不再回调close事件,其他平台测试后再修改
 
-android完善CCLuaJavaBridge的功能,支持java特殊参数的传入及返回(ArrayList,HashMap,Vector)
-android重构etc shader及添加新的etcshader到2dx sprite添加更多方法支持
+android完善CCLuaJavaBridge的功能,支持java特殊参数的传入及返回(ArrayList,HashMap,Vector),修复了android上系统提示框crash的bug
+android重构etc shader及添加新的etcshader,sprite添加更多方法支持
 android修改2dx片段作色器使用高精度浮点数(后面可能需要修改成只针对etc1的shader使用高精度浮点数)
 android添加google play是否可用的判断
 android修改jni脚本可能导致脚本间互相影响的bug
