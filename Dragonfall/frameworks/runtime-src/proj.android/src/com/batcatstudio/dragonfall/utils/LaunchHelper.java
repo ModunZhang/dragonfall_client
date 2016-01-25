@@ -4,7 +4,7 @@ import org.cocos2dx.lib.Cocos2dxHelper;
 import org.cocos2dx.lua.AppActivity;
 
 import com.batcatstudio.dragonfall.data.DataHelper;
-
+@SuppressWarnings("deprecation")
 public class LaunchHelper {
 	
 	private static String TAG = "LaunchHelper";

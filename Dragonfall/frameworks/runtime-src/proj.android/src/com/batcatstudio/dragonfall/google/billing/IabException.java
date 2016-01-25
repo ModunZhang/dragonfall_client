@@ -23,7 +23,8 @@ package com.batcatstudio.dragonfall.google.billing;
  * call {@link #getResult()}.
  */
 public class IabException extends Exception {
-    IabResult mResult;
+	private static final long serialVersionUID = 1L;
+	IabResult mResult;
 
     public IabException(IabResult r) {
         this(r, null);

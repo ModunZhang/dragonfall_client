@@ -9,6 +9,7 @@ import org.cocos2dx.lua.AppActivity;
 import com.batcatstudio.dragonfall.R;
 import com.batcatstudio.dragonfall.utils.DebugUtil;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -100,14 +101,26 @@ public class LocalNotificationService extends Service {
             }
         };
     }
-
+    @SuppressLint("NewApi")
     private Notification getNotification(String content, long notifyTime) {
-        Notification notify = new Notification(R.drawable.icon, content, notifyTime);
-        notify.defaults = Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE;
-        notify.flags |= Notification.FLAG_AUTO_CANCEL;
-        notify.flags |= Notification.FLAG_SHOW_LIGHTS;
-        notify.setLatestEventInfo(this, notifyTitle, content, getPendingIntent());
-        return notify;
+//        Notification notify = new Notification(R.drawable.icon, content, notifyTime);
+//        notify.defaults = Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE;
+//        notify.flags |= Notification.FLAG_AUTO_CANCEL;
+//        notify.flags |= Notification.FLAG_SHOW_LIGHTS;
+//        notify.setLatestEventInfo(this, notifyTitle, content, getPendingIntent());
+//        return notify;
+    	Notification.Builder builder = new Notification.Builder(this)  
+	            .setContentTitle(notifyTitle)  
+	            .setContentText(content)  
+	            .setContentIntent(getPendingIntent())  
+	            .setSmallIcon(R.drawable.icon)  
+	            .setWhen(notifyTime);
+    	Notification notification = builder.getNotification();  
+		
+    	notification.defaults = Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE;
+		notification.flags |= Notification.FLAG_AUTO_CANCEL;
+		notification.flags |= Notification.FLAG_SHOW_LIGHTS;
+		return notification;
     }
 
     private PendingIntent getPendingIntent() {

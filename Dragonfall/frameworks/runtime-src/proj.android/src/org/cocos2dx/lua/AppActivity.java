@@ -60,7 +60,6 @@ import android.os.Message;
 import android.provider.Settings;
 import android.view.KeyEvent;
 
-
 public class AppActivity extends Cocos2dxActivity{
 
     static String hostIPAdress = "0.0.0.0";
@@ -114,11 +113,13 @@ public class AppActivity extends Cocos2dxActivity{
 		DataHelper.initHelper();
     }
     
-    private boolean isNetworkConnected() {
+    @SuppressWarnings("unchecked")
+	private boolean isNetworkConnected() {
             ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);  
             if (cm != null) {  
                 NetworkInfo networkInfo = cm.getActiveNetworkInfo();  
-            ArrayList networkTypes = new ArrayList();
+            @SuppressWarnings("rawtypes")
+			ArrayList networkTypes = new ArrayList();
             networkTypes.add(ConnectivityManager.TYPE_WIFI);
             try {
                 networkTypes.add(ConnectivityManager.class.getDeclaredField("TYPE_ETHERNET").getInt(null));
@@ -252,6 +253,7 @@ public class AppActivity extends Cocos2dxActivity{
 	};
 	
 	/************************Dialog************************/
+	@SuppressWarnings("deprecation")
 	@Override
 	protected Dialog onCreateDialog(int id, Bundle args) {
 		
@@ -363,7 +365,8 @@ public class AppActivity extends Cocos2dxActivity{
 	
 	/************************Back Button************************/
     
-	@Override  
+	@SuppressWarnings("deprecation")
+	@Override
 	public boolean dispatchKeyEvent(KeyEvent event) {  
 	  if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {  
 	    if (event.getAction() == KeyEvent.ACTION_DOWN && event.getRepeatCount() == 0) {  

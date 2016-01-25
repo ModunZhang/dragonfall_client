@@ -1,22 +1,19 @@
 package com.batcatstudio.dragonfall.notifications;
 
 import java.util.HashMap;
-import java.util.List;
 
 import org.cocos2dx.lua.AppActivity;
 
 import com.batcatstudio.dragonfall.R;
 import com.batcatstudio.dragonfall.utils.DebugUtil;
 
-import android.app.ActivityManager;
-import android.app.ActivityManager.RunningAppProcessInfo;
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
-import android.util.Log;
 
 /**
  * Created by dannyhe on 7/27/15.
@@ -85,26 +82,42 @@ public class NotificationUtils {
         }
          return false;
     }
-    
+    @SuppressLint("NewApi")
     public static void generalGCMNotification(Context context,String msg){
     	if(AppActivity.getGameActivity() != null)return;
     	int icon = R.drawable.icon;
 		long when = System.currentTimeMillis();
 		CharSequence message = msg;
 		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		Notification notification = new Notification(icon, message, when);
 		String title = context.getString(R.string.app_name);
-
 		Intent gameIntent = new Intent(context, AppActivity.class);
-		
 		PendingIntent intent = PendingIntent.getActivity(context, 0, gameIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		
+//		Notification notification = new Notification(icon, message, when);
+//		notification.defaults = Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE;
+//		notification.flags |= Notification.FLAG_AUTO_CANCEL;
+//		notification.flags |= Notification.FLAG_SHOW_LIGHTS;
+//		notification.ledARGB = 0xFFFF0000;
+//		notification.ledOnMS = 1000;
+//		notification.ledOffMS = 500;
+//		notification.setLatestEventInfo(context, title, message, intent);
+//		notificationManager.notify((int) SystemClock.elapsedRealtime(), notification);
+		
+		Notification.Builder builder = new Notification.Builder(context)  
+		            .setContentTitle(title)  
+		            .setContentText(message)  
+		            .setContentIntent(intent)  
+		            .setSmallIcon(icon)  
+		            .setWhen(when);
+		Notification notification = builder.getNotification();  
+			
 		notification.defaults = Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE;
 		notification.flags |= Notification.FLAG_AUTO_CANCEL;
 		notification.flags |= Notification.FLAG_SHOW_LIGHTS;
 		notification.ledARGB = 0xFFFF0000;
 		notification.ledOnMS = 1000;
 		notification.ledOffMS = 500;
-		notification.setLatestEventInfo(context, title, message, intent);
+		
 		notificationManager.notify((int) SystemClock.elapsedRealtime(), notification);
     }
 

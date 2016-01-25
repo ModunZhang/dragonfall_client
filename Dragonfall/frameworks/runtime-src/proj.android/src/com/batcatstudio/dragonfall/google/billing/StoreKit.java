@@ -14,7 +14,7 @@ import com.batcatstudio.dragonfall.utils.CommonUtils;
 import com.batcatstudio.dragonfall.utils.DebugUtil;
 
 import android.content.Intent;
-
+@SuppressWarnings("deprecation")
 public class StoreKit {
 
 	private static String GOOGLEPLAYSERVICEPACKAGENAME = "com.google.android.gms";

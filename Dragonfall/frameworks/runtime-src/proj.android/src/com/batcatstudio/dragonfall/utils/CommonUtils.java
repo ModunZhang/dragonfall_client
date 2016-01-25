@@ -8,6 +8,8 @@ import org.cocos2dx.utils.PSNetwork;
 import com.batcatstudio.dragonfall.R;
 import com.batcatstudio.dragonfall.google.gcm.GCMUtils;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -16,7 +18,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.text.ClipboardManager;
 
 public class CommonUtils {
 	private static String TAG = "CommonUtils";
@@ -58,7 +59,7 @@ public class CommonUtils {
 
 	public static void copyText(String str) {
 		try {
-			getInstance().getClipManager().setText(str);
+			getInstance().getClipManager().setPrimaryClip(ClipData.newPlainText(null, str));  
 		} catch (Exception e) {
 			DebugUtil.LogException(TAG, e);
 		}

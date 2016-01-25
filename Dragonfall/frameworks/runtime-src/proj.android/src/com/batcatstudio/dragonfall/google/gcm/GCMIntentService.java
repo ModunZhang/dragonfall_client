@@ -10,7 +10,7 @@ import com.google.android.gcm.GCMRegistrar;
 
 import android.content.Context;
 import android.content.Intent;
-
+@SuppressWarnings("deprecation")
 public class GCMIntentService extends GCMBaseIntentService {
 	private static final String TAG = "GCMIntentService";
 	private static final boolean DEBUG = true;

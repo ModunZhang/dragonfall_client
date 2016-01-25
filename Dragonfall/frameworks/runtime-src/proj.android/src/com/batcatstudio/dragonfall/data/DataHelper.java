@@ -18,7 +18,7 @@ import org.cocos2dx.lib.Cocos2dxHelper;
 import org.cocos2dx.lua.AppActivity;
 
 import com.batcatstudio.dragonfall.utils.DebugUtil;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -27,7 +27,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Environment;
 import android.os.StatFs;
-
+@SuppressWarnings("deprecation")
 public class DataHelper {
 
 
@@ -75,6 +75,7 @@ public class DataHelper {
 		saveBooleanValue(KEY_HAS_INSTALL_GAME, false);
 		final String rootPath = getUnZipRootPath(installToSDCard);
 		new Thread() {
+			@SuppressWarnings("static-access")
 			@Override
 			public void run() {
 				try {
@@ -168,6 +169,7 @@ public class DataHelper {
 	 *            
 	 * @throws IOException
 	 */
+	@SuppressWarnings("static-access")
 	public static void unzipAssetFile(Context context, String assetName, String outputDirectory, boolean isReWrite) throws IOException {
 		File file = new File(outputDirectory);
 		if (!file.exists()) {
@@ -294,6 +296,7 @@ public class DataHelper {
 		return formatSize(number, false);
 	}
 
+	@SuppressLint("DefaultLocale")
 	public static String formatSize(long number, boolean shorter) {
 		float result = number;
 		String suffix = "B";
