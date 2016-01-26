@@ -306,6 +306,7 @@ function GameUILoginBeta:createGameNotice()
                     dialog:LeftButtonClicked()
                 end
             end):align(display.CENTER, size.width / 2, 44):addTo(body)
+        self:showStartState()
     end, "http://gate.batcatstudio.com/dragonfall/get-notice", "GET")
     request:setTimeout(10)
     request:start()
@@ -314,7 +315,6 @@ end
 function GameUILoginBeta:showStartState()
     self.star_game_sprite:show()
     self.start_button:show()
-    self:createGameNotice()
 end
 
 function GameUILoginBeta:createVerLabel()
@@ -422,7 +422,7 @@ function GameUILoginBeta:__loadToTextureCache(config,shouldLogin)
             self:performWithDelay(function()
                 self.progress_bar:hide()
                 self.tips_ui:hide()
-                self:showStartState()
+                self:createGameNotice()
             end, 0.5)
         end
     end)
