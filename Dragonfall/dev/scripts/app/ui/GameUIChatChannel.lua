@@ -197,11 +197,11 @@ function GameUIChatChannel:CreateTabButtons()
             tag = "alliance",
             default = self.default_tag == "alliance",
         },
-        {
-            label = _("对战"),
-            tag = "allianceFight",
-            default = self.default_tag == "allianceFight",
-        },
+        -- {
+        --     label = _("对战"),
+        --     tag = "allianceFight",
+        --     default = self.default_tag == "allianceFight",
+        -- },
     },
     function(tag)
         self._channelType = tag
@@ -216,8 +216,8 @@ function GameUIChatChannel:CreateTabButtons()
             pageIdx = 1
         elseif tag == "alliance" then
             pageIdx = 2
-        else
-            pageIdx = 3
+        -- else
+        --     pageIdx = 3
         end
         app:GetChatManager():setChannelReadStatus(tag,false)
         app:GetGameDefautlt():setStringForKey("LAST_CHAT_CHANNEL",""..pageIdx)

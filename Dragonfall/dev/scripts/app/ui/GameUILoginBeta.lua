@@ -275,22 +275,22 @@ function GameUILoginBeta:createGameNotice()
         -- 请求成功，显示服务端返回的内容
         local response = request:getResponseString()
 
-        local dialog = UIKit:newWidgetUI("WidgetPopDialog",570,_("公告"),display.top-130):addTo(self.ui_layer,2)
+        local dialog = UIKit:newWidgetUI("WidgetPopDialog",460,_("公告"),display.top-130):addTo(self.ui_layer,2)
         local body = dialog:GetBody()
         local size = body:getContentSize()
-        local bg = WidgetUIBackGround.new({width = 580 , height = 426},WidgetUIBackGround.STYLE_TYPE.STYLE_5):align(display.CENTER_BOTTOM, size.width/2, 100):addTo(body)
+        local bg = WidgetUIBackGround.new({width = 556 , height = 400},WidgetUIBackGround.STYLE_TYPE.STYLE_5):align(display.CENTER_BOTTOM, size.width/2, 25):addTo(body)
         local results = json.decode(response)
         local user_agreement_label = UIKit:ttfLabel({
             text = results.data,
             size = 20,
             color = 0x403c2f,
             align = cc.ui.UILabel.TEXT_ALIGN_CENTER,
-            dimensions = cc.size(555, 0),
+            dimensions = cc.size(526, 0),
         })
         local w,h =  user_agreement_label:getContentSize().width,user_agreement_label:getContentSize().height
         -- 提示内容
         local  listview = UIListView.new{
-            viewRect = cc.rect(10,10, w, 406),
+            viewRect = cc.rect(15,10, w, 376),
             direction = cc.ui.UIScrollView.DIRECTION_VERTICAL
         }:addTo(bg)
         local item = listview:newItem()
@@ -298,14 +298,6 @@ function GameUILoginBeta:createGameNotice()
         item:addContent(user_agreement_label)
         listview:addItem(item)
         listview:reload()
-
-        cc.ui.UIPushButton.new(btn_images or {normal = "yellow_btn_up_148x58.png",pressed = "yellow_btn_down_148x58.png"})
-            :setButtonLabel(UIKit:ttfLabel({text =_("明白"), size = 24, color = 0xffedae,shadow=true}))
-            :onButtonClicked(function(event)
-                if event.name == "CLICKED_EVENT" then
-                    dialog:LeftButtonClicked()
-                end
-            end):align(display.CENTER, size.width / 2, 44):addTo(body)
         self:showStartState()
     end, "http://gate.batcatstudio.com/dragonfall/get-notice", "GET")
     request:setTimeout(10)
