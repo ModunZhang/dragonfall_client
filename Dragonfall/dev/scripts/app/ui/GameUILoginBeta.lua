@@ -293,7 +293,6 @@ function GameUILoginBeta:createGameNotice()
             -- 请求失败，显示错误代码和错误消息
             -- print(request:getErrorCode(), request:getErrorMessage())
             if request:getErrorCode() ~= 0 and request:getErrorMessage() then
-                self:showError(_("公告获取失败!"))
                 self:showStartState()
             end
             return
@@ -303,7 +302,6 @@ function GameUILoginBeta:createGameNotice()
         if code ~= 200 then
             -- 请求结束，但没有返回 200 响应代码
             -- print("code===",code)
-            self:showError(_("公告获取失败!"))
             self:showStartState()
             return
         end
