@@ -435,7 +435,7 @@ function GameUIAllianceInfo:LoadMembers()
         :addTo(layer)
         :align(display.LEFT_TOP, 154, 664)
     local title_label = UIKit:ttfLabel({
-        text = archon_data.name.." Lv"..User:GetPlayerLevelByExp(levelExp),
+        text = archon_data.name.." Lv"..User:GetPlayerLevelByExp(archon_data.levelExp),
         size = 22,
         color= 0xffedae,
         align = cc.TEXT_ALIGNMENT_LEFT,
@@ -664,6 +664,7 @@ function GameUIAllianceInfo:listviewListener(event)
         if list_data.data_type == 2 and list_data.data ~= '__empty' then
             local data = list_data.data
             UIKit:newGameUI("GameUIAllianceMemberInfo",false,data.id,nil,self.serverId):AddToCurrentScene(true)
+            app:GetAudioManager():PlayeEffectSoundWithKey("NORMAL_DOWN")
         end
     end
 end

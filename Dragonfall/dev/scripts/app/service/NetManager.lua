@@ -1603,7 +1603,7 @@ end
 
 --设置驻防使用的龙
 function NetManager:getSetDefenceTroopPromise(dragonType,soldiers)
-    return get_none_blocking_request_promise("logic.playerHandler.setDefenceTroop",
+    return get_blocking_request_promise("logic.playerHandler.setDefenceTroop",
         {dragonType=dragonType,soldiers=soldiers},
         "设置驻防使用的龙失败!"):done(get_player_response_msg):done(function()
             GameGlobalUI:showTips(_("提示"),_("驻防成功"))
@@ -1612,7 +1612,7 @@ function NetManager:getSetDefenceTroopPromise(dragonType,soldiers)
 end
 --取消龙驻防
 function NetManager:getCancelDefenceTroopPromise()
-    return get_none_blocking_request_promise("logic.playerHandler.cancelDefenceTroop",
+    return get_blocking_request_promise("logic.playerHandler.cancelDefenceTroop",
         nil,
         "取消龙驻防失败!"):done(get_player_response_msg)
 end
@@ -1982,7 +1982,7 @@ function NetManager:getAllianceRankPromise(rankType, fromRank)
 end
 -- 设置gc
 function NetManager:getBindGcPromise(type,gcId,gcName)
-    return get_none_blocking_request_promise("logic.playerHandler.bindGc",{
+    return get_blocking_request_promise("logic.playerHandler.bindGc",{
         type=type,
         gcId=gcId,
         gcName=gcName,
@@ -1991,12 +1991,12 @@ function NetManager:getBindGcPromise(type,gcId,gcName)
 end
 -- 更新GcName
 function NetManager:getUpdateGcNamePromise(gcName)
-    return get_none_blocking_request_promise("logic.playerHandler.updateGcName",{gcName=gcName},
+    return get_blocking_request_promise("logic.playerHandler.updateGcName",{gcName=gcName},
         "更新GcName失败"):done(get_player_response_msg)
 end
 -- 切换GC账号
 function NetManager:getSwitchGcPromise(gcId)
-    return get_none_blocking_request_promise("logic.playerHandler.switchGc",{gcId=gcId},
+    return get_blocking_request_promise("logic.playerHandler.switchGc",{gcId=gcId},
         "切换GC账号失败")
 end
 

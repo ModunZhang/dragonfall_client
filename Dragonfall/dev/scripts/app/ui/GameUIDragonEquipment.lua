@@ -199,6 +199,7 @@ function GameUIDragonEquipment:TabButtonEvent_intensify()
             :onButtonClicked(function()
                 -- self:IntensifyButtonClicked()
                 UIKit:newGameUI("GameUIIntensifyEquipment",self.building,self.dragon,self.equipment):AddToCurrentScene(false)
+                self:LeftButtonClicked()
             end)
         self.intensify_button = intensify_button
 
@@ -212,6 +213,7 @@ function GameUIDragonEquipment:TabButtonEvent_intensify()
             :onButtonClicked(function()
                 -- self:IntensifyButtonClicked()
                 UIKit:newGameUI("GameUIResetEquipment",self.building,self.dragon,self.equipment):AddToCurrentScene(false)
+                self:LeftButtonClicked()
             end)
         self.reset_button = reset_button
 

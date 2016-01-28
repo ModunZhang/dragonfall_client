@@ -23,7 +23,7 @@ function GameUIIntensifyEquipment:ctor(building,dragon,equipment_obj)
     self.equipment = equipment_obj
     self.building = building
     self.dragon_manager = building:GetDragonManager()
- 	self.dragon_manager:AddListenOnType(self,DragonManager.LISTEN_TYPE.OnBasicChanged)
+    self.dragon_manager:AddListenOnType(self,DragonManager.LISTEN_TYPE.OnBasicChanged)
     User:AddListenOnType(self, "dragonEquipments")
 end
 function GameUIIntensifyEquipment:onEnter()
@@ -73,34 +73,34 @@ function GameUIIntensifyEquipment:onEnter()
     }:addTo(node)
 
     local intensify_button = WidgetPushButton.new({normal = "yellow_btn_up_148x58.png",pressed = "yellow_btn_down_148x58.png",disabled = "grey_btn_148x58.png"})
-            :addTo(node)
-            :align(display.RIGHT_BOTTOM,BODY_WIDTH - 40,30)
-            :setButtonLabel("normal", UIKit:commonButtonLable({
-                text = _("强化"),
-                size = 22,
-            }))
-            :onButtonClicked(function()
-                self:IntensifyButtonClicked()
-            end)
+        :addTo(node)
+        :align(display.RIGHT_BOTTOM,BODY_WIDTH - 40,30)
+        :setButtonLabel("normal", UIKit:commonButtonLable({
+            text = _("强化"),
+            size = 22,
+        }))
+        :onButtonClicked(function()
+            self:IntensifyButtonClicked()
+        end)
     self.intensify_button = intensify_button
 
     WidgetPushButton.new({normal = "red_btn_up_148x58.png",pressed = "red_btn_down_148x58.png",disabled = "grey_btn_148x58.png"})
-            :addTo(node)
-            :align(display.LEFT_BOTTOM,40,30)
-            :setButtonLabel("normal", UIKit:commonButtonLable({
-                text = _("取消"),
-                size = 22,
-            }))
-            :onButtonClicked(function()
-                self:LeftButtonClicked()
-            end)
+        :addTo(node)
+        :align(display.LEFT_BOTTOM,40,30)
+        :setButtonLabel("normal", UIKit:commonButtonLable({
+            text = _("取消"),
+            size = 22,
+        }))
+        :onButtonClicked(function()
+            self:LeftButtonClicked()
+        end)
 
     self:RefreshIntensifyUI()
 
 end
 
 function GameUIIntensifyEquipment:onExit()
-	User:RemoveListenerOnType(self, "dragonEquipments")
+    User:RemoveListenerOnType(self, "dragonEquipments")
     self.dragon_manager:RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnBasicChanged)
     GameUIIntensifyEquipment.super.onExit(self)
 end
@@ -118,6 +118,11 @@ function GameUIIntensifyEquipment:RefreshIntensifyUI(isAnimationyellowProcess)
         self.exp_label:setString(equipment.exp .. "/" .. equipment:GetNextStarDetailConfig().enhanceExp)
         self.greenProgress:setPercentage((equipment:Exp() or 0)/equipment:GetNextStarDetailConfig().enhanceExp * 100)
         if isAnimationyellowProcess then
+            local current_percent = self.yellowProgress:getPercentage()
+            local percent = (equipment:Exp() or 0)/equipment:GetNextStarDetailConfig().enhanceExp * 100
+            if current_percent > percent then
+                self.yellowProgress:setPercentage(0)
+            end
             local action = cc.ProgressTo:create(0.5, (equipment:Exp() or 0)/equipment:GetNextStarDetailConfig().enhanceExp * 100)
             self.yellowProgress:runAction(action)
         else
@@ -213,11 +218,15 @@ function GameUIIntensifyEquipment:IntensifyButtonClicked()
         return
     end
     local equipment = self:GetEquipment()
+    app:GetAudioManager():PlayeEffectSoundWithKey("UI_BLACKSMITH_FORGE")
     NetManager:getEnhanceDragonEquipmentPromise(self.dragon:Type(),equipment:Body(),equipments):done(function()
-        if string.len(self.intensify_tips) > 0 then
+        if self.intensify_tips and string.len(self.intensify_tips) > 0 then
             GameGlobalUI:showTips(_("装备强化成功"),self.intensify_tips)
             app:GetAudioManager():PlayeEffectSoundWithKey("COMPLETE")
             self.intensify_desc_label:setString(self:GetEquipmentDesc())
+            self.intensify_tips = nil
+        else
+            GameGlobalUI:showTips(_("提示"),_("装备强化成功"))
         end
     end)
 end
@@ -249,32 +258,33 @@ function GameUIIntensifyEquipment:WidgetDragonEquipIntensifyEvent(widgetDragonEq
         if percent >= 100 then
             local config =  equipment:GetNextStarDetailConfig()
             local current_config = equipment:GetDetailConfig()
-    		local tips_global = ""
-    		 
-    		local vitality_add = (config.vitality - current_config.vitality) * 4
-			local strength_add = config.strength - current_config.strength
-			local leadership_add = (config.leadership - current_config.leadership) * 100
-			if vitality_add > 0 then
-        		tips_global = tips_global .. _("生命值") .. "+" .. string.formatnumberthousands(vitality_add)
-			end
-			if strength_add > 0 then
-       			tips_global = tips_global .. (tips_global ~= "" and  "," or "") ..  _("攻击力") .. "+" .. string.formatnumberthousands(strength_add)
-			end
-			if leadership_add > 0 then
-        		tips_global = tips_global .. (tips_global ~= "" and  "," or "") ..  _("带兵量") .. "+" .. string.formatnumberthousands(leadership_add)
-			end
-    		self.intensify_tips = tips_global
+            local tips_global = ""
+
+            local vitality_add = (config.vitality - current_config.vitality) * 4
+            local strength_add = config.strength - current_config.strength
+            local leadership_add = (config.leadership - current_config.leadership) * 100
+            if vitality_add > 0 then
+                tips_global = tips_global .. _("生命值") .. "+" .. string.formatnumberthousands(vitality_add)
+            end
+            if strength_add > 0 then
+                tips_global = tips_global .. (tips_global ~= "" and  "," or "") ..  _("攻击力") .. "+" .. string.formatnumberthousands(strength_add)
+            end
+            if leadership_add > 0 then
+                tips_global = tips_global .. (tips_global ~= "" and  "," or "") ..  _("带兵量") .. "+" .. string.formatnumberthousands(leadership_add)
+            end
+            self.intensify_tips = tips_global
         end
         self.greenProgress:setPercentage(percent)
     end
 end
 function GameUIIntensifyEquipment:OnUserDataChanged_dragonEquipments()
-     self:RefreshIntensifyUI()
+    self:RefreshIntensifyUI(true)
 end
 function GameUIIntensifyEquipment:OnBasicChanged()
     self.equipment = self.dragon_manager:GetDragon(self.equipment:Type()):GetEquipmentByBody(self.equipment:Body())
-    self:RefreshIntensifyUI()
+    self:RefreshIntensifyUI(true)
 end
 return GameUIIntensifyEquipment
+
 
 
