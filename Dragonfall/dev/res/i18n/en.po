@@ -1,4 +1,4 @@
-# This file was generated from D:\client\Dragonfall\tools\batcat\i18n.xlsx
+# This file was generated from /Users/kennydai/Downloads/i18n.xlsx
 msgid ""
 msgstr ""
 "Project-Id-Version: dragonfall\n"
@@ -7,14 +7,14 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: _\n"
 "X-Poedit-Basepath: ../../scripts/app/\n"
-"PO-Revision-Date: 2016-01-21 17:28+0800\n"
+"PO-Revision-Date: 2016-01-28 18:27+0800\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: xls-to-po 1.0\n"
 "POT-Creation-Date: \n"
 "Last-Translator: \n"
 "MIME-Version: 1.0\n"
-"X-Generator: Poedit 1.7.7\n"
+"X-Generator: Poedit 1.8\n"
 "X-Poedit-SearchPath-0: .\n"
 
 msgid "错误"
@@ -1010,7 +1010,7 @@ msgid "倒计时:"
 msgstr "Countdown:"
 
 msgid "盟友"
-msgstr "From Ally:"
+msgstr "From Ally"
 
 msgid "赠送!"
 msgstr "."
@@ -1024,8 +1024,8 @@ msgstr "Expired，please get it ASAP"
 msgid "获得%s"
 msgstr "Got %s"
 
-msgid "放弃"
-msgstr "Give up"
+msgid "移除"
+msgstr "Remove"
 
 msgid "领取"
 msgstr "Get"
@@ -2279,9 +2279,6 @@ msgstr "No content"
 msgid "世界"
 msgstr "World"
 
-msgid "对战"
-msgstr "Battle"
-
 msgid "官方"
 msgstr "Official"
 
@@ -2471,32 +2468,8 @@ msgstr "Enhance"
 msgid "重置"
 msgstr "Reset"
 
-msgid "龙装备未装备上不能强化"
-msgstr "You need to put on a equipment first"
-
-msgid "装备"
-msgstr "Equip"
-
-msgid "消耗相同一个装备，重新随机装备的加成属性"
-msgstr "Consume one same equipment to random the attributions"
-
-msgid "选择多余的装备进行强化"
-msgstr "Choose equipment to enhance"
-
-msgid "请选择用来强化的装备"
-msgstr "Please choose the equipment for enhancing"
-
-msgid "装备强化成功"
-msgstr "Enhanced Successfully"
-
-msgid "装备已达到最大星级"
-msgstr "Max Star Level!"
-
-msgid "可强化等级:%d/%d"
-msgstr "Level:%d/%d"
-
-msgid "当前数量"
-msgstr "Current Amount"
+msgid "属性"
+msgstr "Attribution"
 
 msgid "巨龙%d星装备"
 msgstr "Star %s equipment"
@@ -2527,6 +2500,9 @@ msgstr "Promotion required:Lv%d Dragon,raise all equipments to Star %d"
 
 msgid "龙巢%d级时可孵化新的巨龙"
 msgstr "You can incubate a new dragon when your Dragon Nest reachs Lv%d"
+
+msgid "装备"
+msgstr "Equip"
 
 msgid "龙未达到晋级等级"
 msgstr "You've not reached the Dragon level for Promotion"
@@ -2788,6 +2764,21 @@ msgstr "Healing"
 msgid "正在治愈%d人口的伤兵"
 msgstr "Healing %d wounded soldiers"
 
+msgid "选择多余的装备进行强化"
+msgstr "Choose equipment to enhance"
+
+msgid "可强化等级:%d/%d"
+msgstr "Level:%d/%d"
+
+msgid "装备已达到最大星级"
+msgstr "Max Star Level!"
+
+msgid "请选择用来强化的装备"
+msgstr "Please choose the equipment for enhancing"
+
+msgid "装备强化成功"
+msgstr "Enhanced Successfully"
+
 msgid "道具"
 msgstr "Items"
 
@@ -2923,6 +2914,15 @@ msgstr "Read"
 msgid "是否跳过开头动画?"
 msgstr "Are you sure to skip ?"
 
+msgid "[联系我们]"
+msgstr "[Contact us]"
+
+msgid "登陆问题"
+msgstr "Login problem"
+
+msgid "您尚未设置邮件：请前往IOS系统“设置”-“邮件、通讯录、日历”-“添加账户”处设置"
+msgstr "You've not set your mailbox,iOS-Settings-Mail,Contacts,Calendars-Add Account"
+
 msgid "[用户协议]"
 msgstr "[User Agreement]"
 
@@ -2932,8 +2932,11 @@ msgstr "User Agreement"
 msgid "不同意"
 msgstr "Disagree"
 
-msgid "版本%s(%s)"
-msgstr "Version%s(%s)"
+msgid "公告获取失败!"
+msgstr "Get notice failed!"
+
+msgid "公告"
+msgstr "Notice"
 
 msgid "正在获取服务器信息..."
 msgstr "Loading server info…"
@@ -2970,6 +2973,9 @@ msgstr "Connect game server failed!"
 
 msgid "玩家已经登录"
 msgstr "You have already logged in"
+
+msgid "重试"
+msgstr "Retry"
 
 msgid "检查游戏更新...."
 msgstr "Check version…"
@@ -3432,6 +3438,12 @@ msgstr "Skip"
 msgid "点击关闭"
 msgstr "Tap \"Close\""
 
+msgid "消耗相同一个装备，重新随机装备的加成属性"
+msgstr "Consume one same equipment to random the attributions"
+
+msgid "装备重置成功"
+msgstr "Your equipment has been reset"
+
 msgid "拆除这个建筑"
 msgstr "Destroy"
 
@@ -3653,9 +3665,6 @@ msgstr "Other Issues"
 
 msgid "写邮件"
 msgstr "Contact"
-
-msgid "您尚未设置邮件：请前往IOS系统“设置”-“邮件、通讯录、日历”-“添加账户”处设置"
-msgstr "You've not set your mailbox,iOS-Settings-Mail,Contacts,Calendars-Add Account"
 
 msgid "描述你的问题"
 msgstr "Describe your issue"
@@ -7980,6 +7989,9 @@ msgstr "Civilians"
 
 msgid "维护费用"
 msgstr "Upkeep"
+
+msgid "当前数量"
+msgstr "Current Amount"
 
 msgid "选择头像"
 msgstr "Avatar"

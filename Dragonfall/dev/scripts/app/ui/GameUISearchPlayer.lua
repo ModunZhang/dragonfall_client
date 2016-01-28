@@ -56,7 +56,7 @@ function GameUISearchPlayer:onEnter()
         viewRect = cc.rect(0, 0,568,760),
         async = true,
     })
-    list_node:addTo(view):align(display.BOTTOM_CENTER,window.cx,30)
+    list_node:addTo(view):align(display.BOTTOM_CENTER,window.cx,window.bottom+30)
     list:onTouch(handler(self, self.listviewListener))
     list:setDelegate(handler(self, self.playerDelegate))
     NetManager:getPlayerRankPromise("power"):done(function(response)

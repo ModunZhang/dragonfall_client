@@ -641,15 +641,18 @@ function UIKit:isMessageDialogShowWithUserData(userData)
     return self.messageDialogs[userData] ~= nil
 end
 
-function UIKit:showKeyMessageDialog(title,tips,ok_callback,cancel_callback)
+function UIKit:showKeyMessageDialog(title,tips,ok_callback,cancel_callback,ok_button_string,visible_x_button)
     if self:isKeyMessageDialogShow() then
         print("忽略了一次关键性弹窗")
         return
     end
-    local dialog =  UIKit:showMessageDialog(title,tips,ok_callback,cancel_callback,false,nil,"__key__dialog")
+    if(type(visible_x_button) ~= 'boolean') then visible_x_button = false end
+    local dialog =  UIKit:showMessageDialog(title,tips,ok_callback,cancel_callback,visible_x_button,nil,"__key__dialog",ok_button_string)
+    -- 关键性的弹窗即使是显示关闭按钮也屏蔽自动关闭的属性!
+    dialog:DisableAutoClose()
 end
 
-function UIKit:showMessageDialog(title,tips,ok_callback,cancel_callback,visible_x_button,x_button_callback,user_data)
+function UIKit:showMessageDialog(title,tips,ok_callback,cancel_callback,visible_x_button,x_button_callback,user_data,ok_button_string)
     title = title or _("提示")
     tips = tips or ""
     if type(visible_x_button) ~= 'boolean' then visible_x_button = true end
@@ -660,7 +663,8 @@ function UIKit:showMessageDialog(title,tips,ok_callback,cancel_callback,visible_
                 if ok_callback then
                     ok_callback()
                 end
-            end
+            end,
+            btn_name = ok_button_string
         })
     end
 

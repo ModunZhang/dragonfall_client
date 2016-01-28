@@ -411,6 +411,16 @@ function User:GetResValueByType(type_)
         app.timer:GetServerTime()
     )
 end
+function User:GetDelayTimeResValueByType(type_,delay_time)
+    local res = self.resources_cache[type_]
+    return GameUtils:GetCurrentProduction(
+        self.resources[type_],
+        self.resources.refreshTime / 1000,
+        res.limit,
+        res.output,
+        app.timer:GetServerTime() + delay_time
+    )
+end
 function User:IsResOverLimit(type_)
     return self.resources[type_] > self.resources_cache[type_].limit
 end

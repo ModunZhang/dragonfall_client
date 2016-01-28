@@ -24,7 +24,7 @@ function GameUILoginBeta:ctor()
         -- {image = "animations/ui_animation_2.pvr.ccz",list = "animations/ui_animation_2.plist"},
         {image = "ui_png0.pvr.ccz",list = "ui_png0.plist"},
         {image = "ui_png1.pvr.ccz",list = "ui_png1.plist"},
-        
+
         {image = "ui_pvr0.pvr.ccz",list = "ui_pvr0.plist"},
         {image = "ui_pvr1.pvr.ccz",list = "ui_pvr1.plist"},
         {image = "ui_pvr2.pvr.ccz",list = "ui_pvr2.plist"},
@@ -38,6 +38,7 @@ function GameUILoginBeta:onEnter()
     self:createProgressBar()
     self:createTips()
     self:createStartGame()
+    self:createContactUs()
     self:createVerLabel()
     self:createUserAgreement()
 end
@@ -87,7 +88,7 @@ function GameUILoginBeta:createTips()
         _("登录提示帮助7"),
         _("登录提示帮助8"),
         _("登录提示帮助9"),
-        -- _("登录提示帮助10"),
+    -- _("登录提示帮助10"),
     }
     math.randomseed(tostring(os.time()):reverse():sub(1, 6))
     local random = math.random(1,#LOGIN_TIPS)
@@ -173,19 +174,48 @@ function GameUILoginBeta:startGame()
 end
 function GameUILoginBeta:AddSkip()
     cc.ui.UIPushButton.new({normal = "skip.png",pressed = "skip.png"})
-    :addTo(self, 1000000):align(display.RIGHT_TOP, display.width, display.height)
-    :onButtonClicked(function(event)
-        event.target:setButtonEnabled(false)
-        UIKit:showMessageDialog(_("提示"),_("是否跳过开头动画?"),function()
-            self:Skip()
-        end, function()
-            event.target:setButtonEnabled(true)
-        end, false)
-    end):opacity(0):fadeIn(0.5)
+        :addTo(self, 1000000):align(display.RIGHT_TOP, display.width, display.height)
+        :onButtonClicked(function(event)
+            event.target:setButtonEnabled(false)
+            UIKit:showMessageDialog(_("提示"),_("是否跳过开头动画?"),function()
+                self:Skip()
+            end, function()
+                event.target:setButtonEnabled(true)
+            end, false)
+        end):opacity(0):fadeIn(0.5)
 end
 function GameUILoginBeta:Skip()
     self.animation_node:stopAllActions()
     self:loginAction()
+end
+function GameUILoginBeta:createContactUs()
+    local contact_us_label = cc.ui.UILabel.new({
+        UILabelType = cc.ui.UILabel.LABEL_TYPE_TTF,
+        text = _("[联系我们]"),
+        font = UIKit:getFontFilePath(),
+        size = 18,
+        align = cc.ui.UILabel.TEXT_ALIGN_CENTER,
+        color = UIKit:hex2c3b(0x2a575d),
+    }):addTo(self.ui_layer,2)
+        :align(display.RIGHT_BOTTOM,display.right-2,display.bottom)
+    self.contact_us_label = contact_us_label
+    local button = WidgetPushButton.new()
+        :addTo(self.ui_layer,2):align(display.RIGHT_BOTTOM, display.right-2,display.bottom)
+        :onButtonClicked(function(event)
+            if event.name == "CLICKED_EVENT" then
+                local seq = transition.sequence({cc.ScaleTo:create(0.1,1.3),cc.ScaleTo:create(0.1,1),cc.CallFunc:create(function()
+                    local subject,body = GameUtils:getLoginErrorMailFormat(_("登陆问题"))
+                    local canSendMail = ext.sysmail.sendMail('support@batcatstudio.com',subject,body,function()end)
+                    if not canSendMail then
+                        UIKit:showMessageDialog(_("错误"),_("您尚未设置邮件：请前往IOS系统“设置”-“邮件、通讯录、日历”-“添加账户”处设置"),function()end)
+                    end
+                end)})
+                contact_us_label:runAction(seq)
+            end
+        end)
+    button:setContentSize(contact_us_label:getContentSize())
+    button:setTouchSwallowEnabled(true)
+    self.contact_us_button = button
 end
 function GameUILoginBeta:createUserAgreement()
     local user_agreement_label = cc.ui.UILabel.new({
@@ -254,11 +284,75 @@ function GameUILoginBeta:OpenUserAgreement()
             end
         end):align(display.LEFT_CENTER, 20, 44):addTo(body)
 end
+function GameUILoginBeta:createGameNotice()
+    local request = network.createHTTPRequest(function(event)
+        local ok = (event.name == "completed")
+        local request = event.request
 
+        if not ok then
+            -- 请求失败，显示错误代码和错误消息
+            -- print(request:getErrorCode(), request:getErrorMessage())
+            if request:getErrorCode() ~= 0 and request:getErrorMessage() then
+                self:showStartState()
+            end
+            return
+        end
+
+        local code = request:getResponseStatusCode()
+        if code ~= 200 then
+            -- 请求结束，但没有返回 200 响应代码
+            -- print("code===",code)
+            self:showStartState()
+            return
+        end
+
+        -- 请求成功，显示服务端返回的内容
+        local response = request:getResponseString()
+
+        local results = json.decode(response)
+        if string.trim(results.data) ~= "" then
+            local dialog = UIKit:newWidgetUI("WidgetPopDialog",460,_("公告"),display.top-130):addTo(self.ui_layer,2)
+            local body = dialog:GetBody()
+            local size = body:getContentSize()
+            local bg = WidgetUIBackGround.new({width = 556 , height = 400},WidgetUIBackGround.STYLE_TYPE.STYLE_5):align(display.CENTER_BOTTOM, size.width/2, 25):addTo(body)
+            local user_agreement_label = UIKit:ttfLabel({
+                text = results.data,
+                size = 20,
+                color = 0x403c2f,
+                align = cc.ui.UILabel.TEXT_ALIGN_CENTER,
+                dimensions = cc.size(526, 0),
+            })
+            local w,h =  user_agreement_label:getContentSize().width,user_agreement_label:getContentSize().height
+            -- 提示内容
+            local  listview = UIListView.new{
+                viewRect = cc.rect(15,10, w, 376),
+                direction = cc.ui.UIScrollView.DIRECTION_VERTICAL
+            }:addTo(bg)
+            local item = listview:newItem()
+            item:setItemSize(w,h)
+            item:addContent(user_agreement_label)
+            listview:addItem(item)
+            listview:reload()
+        end
+        self:showStartState()
+    end, "http://gate.batcatstudio.com/dragonfall/get-notice", "GET")
+    request:setTimeout(10)
+    request:start()
+end
 
 function GameUILoginBeta:showStartState()
     self.star_game_sprite:show()
     self.start_button:show()
+    self.star_game_sprite:opacity(0)
+    self.start_button:opacity(0)
+    transition.fadeTo(self.star_game_sprite, {
+        time = 1,
+        opacity = 255
+    })
+    transition.fadeIn(self.start_button, {
+        time = 1,
+        opacity = 255
+    })
 end
 
 function GameUILoginBeta:createVerLabel()
@@ -270,13 +364,13 @@ function GameUILoginBeta:createVerLabel()
         align = cc.ui.UILabel.TEXT_ALIGN_CENTER,
         color = UIKit:hex2c3b(0x2a575d),
     }):addTo(self.ui_layer,2)
-        :align(display.RIGHT_BOTTOM,display.right-2,display.bottom)
+        :align(display.RIGHT_BOTTOM,self.contact_us_label:getPositionX() - self.contact_us_label:getContentSize().width -5,display.bottom)
 end
 
 function GameUILoginBeta:showVersion()
     if CONFIG_IS_NOT_UPDATE or device.platform == 'mac' or device.platform == 'windows' then
         local __debugVer = require("debug_version")
-        self.verLabel:setString("测试"..string.format(_("版本%s(%s)"), ext.getAppVersion(), __debugVer))
+        self.verLabel:setString("测试"..string.format("%s(%s)", ext.getAppVersion(), __debugVer))
         app.client_tag = -1
     else
         self:loadLocalJson()
@@ -284,7 +378,7 @@ function GameUILoginBeta:showVersion()
             self:loadLocalJson()
         end
         local tag = json.decode(self.m_localJson).tag
-        local version = string.format(_("版本%s(%s)"), ext.getAppVersion(), tag)
+        local version = string.format("%s(%s)", ext.getAppVersion(), tag)
         self.verLabel:setString(version)
         app.client_tag = tag
     end
@@ -327,7 +421,7 @@ function GameUILoginBeta:GetServerInfo()
             else
                 local SIMULATION_WORKING_TIME = 3
                 self:performWithDelay(function()
-                    self:showError(_("获取服务器信息失败!"),function()
+                    self:showErrorForReTry(_("获取服务器信息失败!"),function()
                         self:GetServerInfo()
                     end)
                 end, SIMULATION_WORKING_TIME)
@@ -366,7 +460,7 @@ function GameUILoginBeta:__loadToTextureCache(config,shouldLogin)
             self:performWithDelay(function()
                 self.progress_bar:hide()
                 self.tips_ui:hide()
-                self:showStartState()
+                self:createGameNotice()
             end, 0.5)
         end
     end)
@@ -399,7 +493,7 @@ function GameUILoginBeta:connectGateServer()
         self:getLogicServerInfo()
     end):catch(function(err)
         GameUtils:PingBaidu(function(success)
-            self:showError(success and _("服务器维护中") or _("连接网关服务器失败!"),function()
+            self:showErrorForReTry(success and _("服务器维护中") or _("连接网关服务器失败!"),function()
                 self:performWithDelay(function()
                     self:loginAction()
                 end, 1)
@@ -432,13 +526,22 @@ function GameUILoginBeta:getLogicServerInfo()
             end
         end
         dump(err:reason())
-        self:showError(content,function()
-            if need_restart then
+        if(need_restart) then
+            self:showError(content,function()
                 app:restart(false)
-            else
+            end)
+        else
+            self:showErrorForReTry(content, function()
                 self:connectGateServer()
-            end
-        end)
+            end)
+        end
+        -- self:showError(content,function()
+        --     if need_restart then
+        --         app:restart(false)
+        --     else
+        --         self:connectGateServer()
+        --     end
+        -- end)
     end)
 end
 
@@ -447,7 +550,7 @@ function GameUILoginBeta:connectLogicServer()
     NetManager:getConnectLogicServerPromise():done(function()
         self:login()
     end):catch(function(err)
-        self:showError(_("连接游戏服务器失败!"),function()
+        self:showErrorForReTry(_("连接游戏服务器失败!"),function()
             self:performWithDelay(function()
                 self:connectLogicServer()
             end,1)
@@ -498,7 +601,7 @@ function GameUILoginBeta:login()
                 content = UIKit:getErrorCodeData(code).message
             end
         end
-        self:showError(content,function()
+        self:showErrorForReTry(content,function()
             self:connectLogicServer()
         end)
     end):always(function()
@@ -512,6 +615,13 @@ function GameUILoginBeta:showError(msg,cb)
     UIKit:showKeyMessageDialog(_("提示"),msg, function()
         if cb then cb() end
     end)
+end
+function GameUILoginBeta:showErrorForReTry(msg,cb)
+    UIKit:NoWaitForNet()
+    msg = msg or ""
+    UIKit:showKeyMessageDialog(_("提示"),msg, function()
+        if cb then cb() end
+    end,nil,_("重试"),true)
 end
 -- Auto Update
 --------------------------------------------------------------------------------------------------------------
@@ -749,6 +859,8 @@ end
 
 
 return GameUILoginBeta
+
+
 
 
 
