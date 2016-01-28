@@ -927,7 +927,7 @@ function GameUIAllianceBattle:CreateHistoryContent()
 
         enemy_alliance_name:setString(enemyAlliance.name)
         enemy_alliance_tag:setString("["..enemyAlliance.tag.."]")
-        fight_time:setString(GameUtils:formatTimeStyle2(report.fightTime))
+        fight_time:setString(GameUtils:formatTimeStyle2(report.fightTime/1000))
         if self.self_flag then
             self.self_flag:SetFlag(ourAlliance.flag)
         else
