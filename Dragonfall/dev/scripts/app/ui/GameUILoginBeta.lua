@@ -327,7 +327,7 @@ function GameUILoginBeta:GetServerInfo()
             else
                 local SIMULATION_WORKING_TIME = 3
                 self:performWithDelay(function()
-                    self:showError(_("获取服务器信息失败!"),function()
+                    self:showErrorForReTry(_("获取服务器信息失败!"),function()
                         self:GetServerInfo()
                     end)
                 end, SIMULATION_WORKING_TIME)
@@ -399,7 +399,7 @@ function GameUILoginBeta:connectGateServer()
         self:getLogicServerInfo()
     end):catch(function(err)
         GameUtils:PingBaidu(function(success)
-            self:showError(success and _("服务器维护中") or _("连接网关服务器失败!"),function()
+            self:showErrorForReTry(success and _("服务器维护中") or _("连接网关服务器失败!"),function()
                 self:performWithDelay(function()
                     self:loginAction()
                 end, 1)
@@ -432,13 +432,22 @@ function GameUILoginBeta:getLogicServerInfo()
             end
         end
         dump(err:reason())
-        self:showError(content,function()
-            if need_restart then
+        if(need_restart) then
+            self:showError(content,function()
                 app:restart(false)
-            else
+            end)
+        else
+            self:showErrorForReTry(content, function()
                 self:connectGateServer()
-            end
-        end)
+            end)
+        end
+        -- self:showError(content,function()
+        --     if need_restart then
+        --         app:restart(false)
+        --     else
+        --         self:connectGateServer()
+        --     end
+        -- end)
     end)
 end
 
@@ -447,7 +456,7 @@ function GameUILoginBeta:connectLogicServer()
     NetManager:getConnectLogicServerPromise():done(function()
         self:login()
     end):catch(function(err)
-        self:showError(_("连接游戏服务器失败!"),function()
+        self:showErrorForReTry(_("连接游戏服务器失败!"),function()
             self:performWithDelay(function()
                 self:connectLogicServer()
             end,1)
@@ -498,7 +507,7 @@ function GameUILoginBeta:login()
                 content = UIKit:getErrorCodeData(code).message
             end
         end
-        self:showError(content,function()
+        self:showErrorForReTry(content,function()
             self:connectLogicServer()
         end)
     end):always(function()
@@ -512,6 +521,13 @@ function GameUILoginBeta:showError(msg,cb)
     UIKit:showKeyMessageDialog(_("提示"),msg, function()
         if cb then cb() end
     end)
+end
+function GameUILoginBeta:showErrorForReTry(msg,cb)
+    UIKit:NoWaitForNet()
+    msg = msg or ""
+    UIKit:showKeyMessageDialog(_("提示"),msg, function()
+        if cb then cb() end
+    end,nil,_("重试"),true)
 end
 -- Auto Update
 --------------------------------------------------------------------------------------------------------------
