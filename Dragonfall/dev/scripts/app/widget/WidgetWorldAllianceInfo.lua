@@ -65,6 +65,9 @@ function WidgetWorldAllianceInfo:onExit()
 end
 local function EnterIn(mapIndex)
     local worldmap = UIKit:GetUIInstance("GameUIWorldMap")
+    if not worldmap then
+        return
+    end
     local scenelayer = worldmap:GetSceneLayer()
     local sprite = scenelayer.allainceSprites[tostring(mapIndex)]
     local wp

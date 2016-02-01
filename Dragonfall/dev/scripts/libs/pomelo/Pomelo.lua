@@ -519,6 +519,9 @@ function Pomelo:_deCompose(msg)
         protos = self.data.protos.server
     end
     local abbrs = self.data.abbrs
+    if not abbrs then
+        return
+    end
     local route = msg.route
 
     --Decompose route from dict
