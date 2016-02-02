@@ -545,6 +545,10 @@ local ITEM = {
     restoreWall_2 = "restoreWall_2_128x128.png",
     restoreWall_3 = "restoreWall_3_128x128.png",
     sweepScroll = "sweep_128x128.png",
+
+    redbag_1 = "red_packet_1_128x128.png",
+    redbag_2 = "red_packet_2_128x128.png",
+    redbag_3 = "red_packet_3_128x128.png",
 }
 
 local ALLIANCE_BUILDING = {
