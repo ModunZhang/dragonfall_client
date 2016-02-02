@@ -959,9 +959,9 @@ function UIKit:PlayUseItemAni(item_name,awards,message)
         or string.find(item_name,"chest") or string.find(item_name,"redbag") then
         local ani
         if item_name == "dragonChest_1" then
-            ani = "lanse"
-        elseif item_name == "dragonChest_2" then
             ani = "lvse_box"
+        elseif item_name == "dragonChest_2" then
+            ani = "lanse"
         elseif item_name == "dragonChest_3" then
             ani = "zise_box"
         elseif item_name == "chest_1" then

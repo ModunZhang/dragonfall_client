@@ -419,8 +419,8 @@ local ITEM = {
     warSpeedupClass_1 = "warSpeedup_1_128x128.png",
     warSpeedupClass_2 = "warSpeedup_2_128x128.png",
 
-    dragonChest_1 = "dragonChest_1_128x128.png",
-    dragonChest_2 = "dragonChest_2_128x128.png",
+    dragonChest_1 = "dragonChest_2_128x128.png",
+    dragonChest_2 = "dragonChest_1_128x128.png",
     dragonChest_3 = "dragonChest_3_128x128.png",
     chest_1 = "chest_1_128x128.png",
     chest_2 = "chest_2_128x128.png",
