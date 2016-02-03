@@ -434,8 +434,7 @@ bool GLProgram::compileShader(GLuint * shader, GLenum type, const GLchar* source
     const GLchar *sources[] = {
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
         (type == GL_VERTEX_SHADER ? "precision mediump float;\n precision mediump int;\n" : "precision mediump float;\n precision mediump int;\n"),
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-        (type == GL_VERTEX_SHADER ? "precision highp float;\n precision highp int;\n" : "#ifdef GL_ES\nprecision highp float;\n precision highp int;\n#else\nprecision mediump float;\n precision mediump int;\n#endif"),
+//dannyhe: GL_FRAGMENT_PRECISION_HIGH to  highp precision?
 #elif (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32 && CC_TARGET_PLATFORM != CC_PLATFORM_LINUX && CC_TARGET_PLATFORM != CC_PLATFORM_MAC)
         (type == GL_VERTEX_SHADER ? "precision highp float;\n precision highp int;\n" : "precision mediump float;\n precision mediump int;\n"),
 #endif
