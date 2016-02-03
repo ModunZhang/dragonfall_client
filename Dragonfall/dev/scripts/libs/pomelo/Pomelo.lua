@@ -500,6 +500,9 @@ function Pomelo:_onData(data)
             return
         end
     end
+    if not self.data then
+        return
+    end
     msg.body = self:_deCompose(msg)
     self:_processMessage(msg)
 end

@@ -299,6 +299,9 @@ function GameUtils:getPlatformForServer()
     if platform == 'android' then
         platform = 'ios'
     end
+    if platform == 'mac' then
+        platform = 'ios'
+    end
     return platform
 end
 

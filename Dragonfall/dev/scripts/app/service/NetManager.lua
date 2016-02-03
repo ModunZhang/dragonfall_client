@@ -1799,7 +1799,7 @@ function NetManager:getUseItemPromise(itemName,params,need_tips)
         itemName = itemName,
         params = params,
     }, "使用道具失败!"):done(get_player_response_msg):done(function ()
-        if not (string.find(itemName,"dragonChest") or string.find(itemName,"chest")) and itemName ~= "sweepScroll" and need_tips ~= false then
+        if not (string.find(itemName,"dragonChest") or string.find(itemName,"chest") or string.find(itemName,"redbag")) and itemName ~= "sweepScroll" and need_tips ~= false then
             if params[itemName] and params[itemName].count then
                 GameGlobalUI:showTips(_("提示"),string.format(_("使用%s道具X %d成功"),Localize_item.item_name[itemName],params[itemName].count))
             else

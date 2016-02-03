@@ -310,6 +310,10 @@ function GameUILoginBeta:createGameNotice()
         local response = request:getResponseString()
 
         local results = json.decode(response)
+        if results.code ~= 200 then
+            self:showStartState()
+            return
+        end
         if string.trim(results.data) ~= "" then
             local dialog = UIKit:newWidgetUI("WidgetPopDialog",460,_("公告"),display.top-130):addTo(self.ui_layer,2)
             local body = dialog:GetBody()
@@ -335,7 +339,7 @@ function GameUILoginBeta:createGameNotice()
             listview:reload()
         end
         self:showStartState()
-    end, "http://gate.batcatstudio.com/dragonfall/get-notice", "GET")
+    end, string.format("http://gate.batcatstudio.com/dragonfall/get-notice?env=%s&platform=%s", string.urlencode(CONFIG_IS_DEBUG and "development" or "production"),string.urlencode(GameUtils:getPlatformForServer())), "GET")
     request:setTimeout(10)
     request:start()
 end
@@ -859,6 +863,7 @@ end
 
 
 return GameUILoginBeta
+
 
 
 

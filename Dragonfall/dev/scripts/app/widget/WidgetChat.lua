@@ -187,8 +187,8 @@ function WidgetChat:RefreshNewChatAni()
     -- 新消息动画提示
     local size = self:getContentSize()
     local pos_ani = {
-        global = {x = size.width/2-21, y = size.height-5},
-        alliance = {x = size.width/2 , y = size.height-5},
+        global = {x = size.width/2-10, y = size.height-5},
+        alliance = {x = size.width/2 + 11 , y = size.height-5},
         -- allianceFight = {x = size.width/2+21, y = size.height-5}
     }
     local channel = self:GetCurrentChannel()

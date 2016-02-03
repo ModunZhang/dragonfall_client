@@ -1,6 +1,7 @@
 local EventManager = import("..layers.EventManager")
 local TouchJudgment = import("..layers.TouchJudgment")
 local WorldLayer = import("..layers.WorldLayer")
+local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local WidgetPushButton = import("..widget.WidgetPushButton")
 local GameUIWorldMap = UIKit:createUIClass('GameUIWorldMap')
 local alliancemap_buff = GameDatas.AllianceMap.buff
@@ -37,6 +38,8 @@ function GameUIWorldMap:onEnter()
 
     -- bottom 所在位置信息
     self.round_info = self:LoadRoundInfo(mapIndex)
+    -- 图例
+    self:LoadImageIntro()
     -- 返回按钮
     local world_map_btn_bg = display.newSprite("background_86x86.png")
     :addTo(self):align(display.LEFT_BOTTOM,display.left + 7,display.bottom + 253)
@@ -367,6 +370,35 @@ function GameUIWorldMap:LoadRoundInfo(mapIndex)
     end,0.5)
 
     return node
+end
+function GameUIWorldMap:LoadImageIntro()
+    local image_intro_bg = display.newSprite("pve_summary_bg4.png")
+        :align(display.BOTTOM_RIGHT, display.right - 10, self.round_info:getPositionY() + self.round_info:getContentSize().height + 10)
+        :addTo(self)
+        :scale(0.5)
+    local current = display.newSprite("icon_current_position_1.png")
+            :addTo(image_intro_bg)
+            :scale(0.8)
+            :pos(image_intro_bg:getContentSize().width/2 - 70, image_intro_bg:getContentSize().height/2 - 30)
+    local self_pos = display.newSprite("icon_current_position.png")
+            :addTo(image_intro_bg)
+            :scale(0.8)
+            :pos(image_intro_bg:getContentSize().width/2 - 70, image_intro_bg:getContentSize().height/2 + 30)
+    UIKit:ttfLabel({
+        text = _("当前位置"),
+        size = 32,
+        color = 0xffedae,
+    }):align(display.LEFT_CENTER, current:getPositionX() + 30, current:getPositionY())
+        :addTo(image_intro_bg)
+    UIKit:ttfLabel({
+        text = _("己方联盟位置"),
+        size = 32,
+        color = 0xffedae,
+    }):align(display.LEFT_CENTER, self_pos:getPositionX() + 30, self_pos:getPositionY())
+        :addTo(image_intro_bg)
+    image_intro_bg:performWithDelay(function()
+                image_intro_bg:fadeTo(1, 0)
+            end, 5)
 end
 function GameUIWorldMap:GetSceneLayer()
     return self.scene_layer

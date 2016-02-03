@@ -7,7 +7,7 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: _\n"
 "X-Poedit-Basepath: ../../scripts/app/\n"
-"PO-Revision-Date: 2016-01-28 18:27+0800\n"
+"PO-Revision-Date: 2016-02-03 09:31+0800\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: xls-to-po 1.0\n"
@@ -1283,7 +1283,7 @@ msgid "即将开放"
 msgstr "Coming Soon"
 
 msgid "当前位置"
-msgstr "Location"
+msgstr "Current Location"
 
 msgid "第%d圈"
 msgstr "Round %d"
@@ -2088,7 +2088,7 @@ msgid "%s遭到进攻"
 msgstr "%s is under attack"
 
 msgid "%s后到达"
-msgstr "Arrive at %s"
+msgstr "Arriving in %s"
 
 msgid "突袭%s"
 msgstr "Scout %s"
@@ -2931,9 +2931,6 @@ msgstr "User Agreement"
 
 msgid "不同意"
 msgstr "Disagree"
-
-msgid "公告获取失败!"
-msgstr "Get notice failed!"
 
 msgid "公告"
 msgstr "Notice"
@@ -4368,6 +4365,9 @@ msgstr "Buff"
 
 msgid "%d 圈"
 msgstr "Round %d"
+
+msgid "己方联盟位置"
+msgstr "My Alliance"
 
 msgid "发邮件"
 msgstr "Mail"
@@ -6433,9 +6433,6 @@ msgstr "Alliance Mail"
 msgid "升级联盟建筑"
 msgstr "Upgrade Alliance Building"
 
-msgid "移动联盟中的树林/山脉/湖泊"
-msgstr "Move forest/mountain/lake "
-
 msgid "激活圣地联盟危机"
 msgstr "Activate the Shrine event"
 
@@ -6456,9 +6453,6 @@ msgstr "Modify the Alliance name/tag"
 
 msgid "移交盟主职位"
 msgstr "Transfer the Chief Position"
-
-msgid "更改职位名称"
-msgstr "Modify the Position Name"
 
 msgid "木材村落"
 msgstr "Wood Village"
@@ -7325,6 +7319,15 @@ msgstr "%s VIP Points"
 
 msgid "扫荡卷"
 msgstr "Sweep Ticket"
+
+msgid "红包(小)"
+msgstr "Lucky Envolpe(Small)"
+
+msgid "红包(中)"
+msgstr "Lucky Envolpe(Middle)"
+
+msgid "红包(大)"
+msgstr "Lucky Envolpe(Large)"
 
 msgid "%s加速"
 msgstr "%s Speedup"

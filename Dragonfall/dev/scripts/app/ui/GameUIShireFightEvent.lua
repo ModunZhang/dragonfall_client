@@ -30,7 +30,7 @@ function GameUIShireFightEvent:onEnter()
             local event = v.event
             if event then
                 local time = UtilsForEvent:GetEventInfo(event)
-                v.time_label:setString(GameUtils:formatTimeStyle1(time) .. "后到达")
+                v.time_label:setString(string.format(_("%s后到达"),GameUtils:formatTimeStyle1(time)))
             end
         end
     end)
@@ -183,7 +183,7 @@ function GameUIShireFightEvent:GetListItem(arrived,obj)
     local time_label_text = ""
     if not arrived then
         local time = UtilsForEvent:GetEventInfo(obj)
-        time_label_text = string.format("%s后到达",GameUtils:formatTimeStyle1(time))
+        time_label_text = string.format(_("%s后到达"),GameUtils:formatTimeStyle1(time))
     else
         time_label_text = _("驻扎中")
     end
