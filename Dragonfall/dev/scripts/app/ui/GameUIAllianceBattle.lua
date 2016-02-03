@@ -78,61 +78,6 @@ function GameUIAllianceBattle:CreateBetweenBgAndTitle()
     end
 
 end
-function GameUIAllianceBattle:InitAllianceInfo()
-    local layer = self.info_layer
-    local alliance = self.alliance
-
-    local background_550x170 = device.platform == 'winrt' and "background_550x170.png" or "background_550x170.jpg" 
-    local bg_jpg = display.newSprite(background_550x170):align(display.CENTER, window.cx, window.top_bottom - 80):addTo(layer)
-
-    local shadow_layer = UIKit:shadowLayer():size(548,44):pos(1,110):addTo(bg_jpg)
-    WidgetPushButton.new()
-        :onButtonClicked(function(event)
-            if event.name == "CLICKED_EVENT" then
-                self:OpenAllianceBuffDetails()
-            end
-        end)
-        :align(display.LEFT_BOTTOM, 0,0)
-        :addTo(shadow_layer):setContentSize(cc.size(548,44))
-    local a_helper = self.a_helper
-    local flag_sprite = a_helper:CreateFlagContentSprite(alliance.basicInfo.flag)
-    flag_sprite:align(display.LEFT_CENTER, 30, -10)
-        :addTo(shadow_layer)
-        :scale(0.46)
-
-    local alliance_name = UIKit:ttfLabel(
-        {
-            text = alliance.basicInfo.name,
-            size = 30,
-            color = 0xffedae,
-        }):align(display.LEFT_CENTER, 100, 22)
-        :addTo(shadow_layer)
-    display.newSprite("info_16x33.png"):align(display.LEFT_CENTER,alliance_name:getPositionX() + alliance_name:getContentSize().width + 20, 22):addTo(shadow_layer)
-
-    local current_position = WidgetUIBackGround.new({
-        width = 548,
-        height = 50,
-    },WidgetUIBackGround.STYLE_TYPE.STYLE_3):align(display.TOP_CENTER,window.cx, bg_jpg:getPositionY() - 100):addTo(layer)
-    UIKit:ttfLabel(
-        {
-            text = _("当前位置"),
-            size = 20,
-            color = 0x615b44,
-        }):align(display.LEFT_CENTER, 16, 25)
-        :addTo(current_position)
-    UIKit:ttfLabel(
-        {
-            text = string.format(_("第%d圈"),DataUtils:getMapRoundByMapIndex(alliance.mapIndex) + 1) ,
-            size = 22,
-            color = 0x403c2f,
-        }):align(display.RIGHT_CENTER, 548 - 16, 25)
-        :addTo(current_position)
-
-    local bg = WidgetInfoWithTitle.new({
-        title = _("联盟地图BUFF"),
-        h = 386,
-        info = DataUtils:GetAllianceMapBuffByRound(DataUtils:getMapRoundByMapIndex(alliance.mapIndex))
-    }):align(display.TOP_CENTER, window.cx, current_position:getPositionY() - 120):addTo(layer)
 
 end
 function GameUIAllianceBattle:OpenAllianceBuffDetails()
