@@ -79,7 +79,6 @@ function GameUIAllianceBattle:CreateBetweenBgAndTitle()
 
 end
 
-end
 function GameUIAllianceBattle:OpenAllianceBuffDetails()
     UIKit:newWidgetUI("WidgetAllianceMapBuff",self.alliance.mapIndex):AddToCurrentScene()
 end
@@ -89,7 +88,7 @@ function GameUIAllianceBattle:InitBattleStatistics()
     local other_alliance = self.other_alliance
     layer:removeAllChildren()
     self.request_num_label = nil
-    local alliance_battle_bg_612x886 = device.platform == 'winrt' and "alliance_battle_bg_612x886.png" or "alliance_battle_bg_612x886.jpg" 
+    local alliance_battle_bg_612x886 = device.platform == 'winrt' and "alliance_battle_bg_612x886.png" or "alliance_battle_bg_612x886.jpg"
     display.newSprite(alliance_battle_bg_612x886):addTo(layer):align(display.TOP_CENTER,window.cx,window.top_bottom+28)
     local status = alliance.basicInfo.status
     -- local status = ""
@@ -276,7 +275,7 @@ function GameUIAllianceBattle:InitBattleStatistics()
                             UIKit:showMessageDialog(_("提示"),_("联盟正在战争准备期或战争期"))
                             return
                         end
-                         if other_alliance.basicInfo.status ~= "peace" then
+                        if other_alliance.basicInfo.status ~= "peace" then
                             UIKit:showMessageDialog(_("提示"),_("目标联盟未处于和平期，不能宣战"))
                             return
                         end
@@ -542,11 +541,11 @@ function GameUIAllianceBattle:RefreshFightInfoList(info_bg_y)
             if i == 2 then
                 local layer = display.newColorLayer(UIKit:hex2c4b(0x19ffffff)):align(display.CENTER, 0, origin_y - (i-1) * 60 - 58)
                     :addTo(fight_list_node):size(612,58):hide()
-               local button = WidgetPushButton.new()
+                local button = WidgetPushButton.new()
                     :onButtonPressed(function(event)
                         layer:show()
                     end):onButtonRelease(function(event)
-                        layer:hide()
+                    layer:hide()
                     end)
                     :align(display.CENTER, fight_list_node:getContentSize().width/2, origin_y - (i-1) * 60 - 29)
                     :addTo(fight_list_node):setContentSize(cc.size(612,58))
@@ -1180,3 +1179,4 @@ function GameUIAllianceBattle:GetAlliancePeriod()
 end
 
 return GameUIAllianceBattle
+
