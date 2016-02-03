@@ -868,7 +868,7 @@ function GameUITradeGuild:OpenSellDialog()
                     goods_type = MARTIAL_MATERIAL_TYPE
                 end
                 local selected = options.currentSelectedIndex_
-                if tag == 'resource' and User:GetResValueByType(goods_type[selected]) < (self.sell_num_item:GetValue() * 1000) then
+                if tag == 'resource' and User:GetDelayTimeResValueByType(goods_type[selected],10) < (self.sell_num_item:GetValue() * 1000) then
                     UIKit:showMessageDialog(_("提示"),_("你所出售的商品已不足"),function()end)
                     return
                 end
@@ -892,7 +892,6 @@ function GameUITradeGuild:OpenSellDialog()
         local options = tradeGuildUI:CreateOptions(goods_details)
             :pos(26, h-120):addTo(layer)
             :onButtonSelectChanged(function(event)
-                dump(event)
                 local max_num,min_num,min_unit_price,max_unit_price,unit = self:GetPriceAndNum(goods_type,event.selected)
                 self:CreateOrRefreshSliders(
                     {
@@ -905,8 +904,22 @@ function GameUITradeGuild:OpenSellDialog()
                     }
                 )
                 self:SetTotalPriceAndCartNum( self.sell_num_item:GetValue(),self.sell_price_item:GetValue())
+                
             end)
-
+        if goods_type == RESOURCE_TYPE then
+            scheduleAt(self, function()
+                if self.sell_num_item then
+                    if options.getSelectedIndex then
+                        local index = options:getSelectedIndex()
+                        local checkBox = options:getButtonAtIndex(index)
+                        if checkBox then
+                            checkBox:SetValue(User:GetDelayTimeResValueByType(goods_type[index],10))
+                            self.sell_num_item:SetMax(math.floor(User:GetDelayTimeResValueByType(goods_type[index],10)/1000))
+                        end
+                    end
+                end
+            end)
+        end
         return layer,options
     end
     function body:GetPriceAndNum(goods_type,index)
@@ -1024,6 +1037,9 @@ function GameUITradeGuild:OpenSellDialog()
         end
         function item:GetValue()
             return slider:GetValue()
+        end
+        function item:SetMax(max)
+            slider:SetMax(max)
         end
         function item:GetCount()
             local unit =  parms.unit == "K" and 1000 or 1

@@ -204,6 +204,10 @@ function Pomelo:_initWebSocket(host, port)
     end
 
     local onclose = function(event)
+        if self.initCallback then
+            self.initCallback(false)
+            self.initCallback = nil
+        end
         self:emit('close',event)
         self:disconnect()
     end
@@ -495,6 +499,9 @@ function Pomelo:_onData(data)
         if not msg.route then
             return
         end
+    end
+    if not self.data then
+        return
     end
     msg.body = self:_deCompose(msg)
     self:_processMessage(msg)

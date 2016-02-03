@@ -41,7 +41,7 @@ function WidgetWorldAllianceInfo:ctor(object,mapIndex,need_goto_btn)
         NetManager:getAllianceBasicInfoPromise(id, User.serverId):done(function(response)
             if response.success
                 and response.msg.allianceData
-                and self.SetAllianceData then
+                and self.SetAllianceData and self.LoadInfo then
                 self:SetAllianceData(response.msg.allianceData)
                 self:LoadInfo(response.msg.allianceData)
             end
@@ -65,6 +65,9 @@ function WidgetWorldAllianceInfo:onExit()
 end
 local function EnterIn(mapIndex)
     local worldmap = UIKit:GetUIInstance("GameUIWorldMap")
+    if not worldmap then
+        return
+    end
     local scenelayer = worldmap:GetSceneLayer()
     local sprite = scenelayer.allainceSprites[tostring(mapIndex)]
     local wp

@@ -347,12 +347,9 @@ function WidgetMakeEquip:RefreshUI()
 end
 -- 装备数量监听
 function WidgetMakeEquip:OnUserDataChanged_dragonMaterials(userData, deltaData)
-    local ok, value = deltaData("dragonEquipments")
+    local ok, value = deltaData("dragonMaterials")
     if ok then
-        local current = value[self.equip_type]
-        if current then
-            self.number:setString(current)
-        end
+        self:UpdateMaterials()
     end
 end
 -- 建造队列监听
@@ -446,7 +443,17 @@ function WidgetMakeEquip:IsAbleToMakeEqui(isFinishNow)
         for m_name,m_count in pairs(User.dragonMaterials) do
             if m_name == v[1] then
                 if tonumber(v[2]) > m_count then
-                    UIKit:showMessageDialog(_("提示"),_("材料不足"),function()end)
+                    UIKit:showMessageDialogWithParams({
+                        title = _("提示"),
+                        content = _("材料不足"),
+                        ok_callback = function ()
+                            UIKit:newGameUI("GameUIItems", self.city,"shop"):AddToCurrentScene(true)
+                        end,
+                        ok_btn_images = {normal = "yellow_btn_up_148x58.png",pressed = "yellow_btn_down_148x58.png"},
+                        ok_string = _("购买"),
+                        cancel_callback = function ()
+                        end
+                    })
                     is_material_enough = false
                 end
             end
@@ -507,6 +514,7 @@ function WidgetMakeEquip:IsAbleToMakeEqui(isFinishNow)
 end
 
 return WidgetMakeEquip
+
 
 
 

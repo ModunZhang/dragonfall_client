@@ -299,6 +299,9 @@ function GameUtils:getPlatformForServer()
     if platform == 'android' then
         platform = 'android'
     end
+    if platform == 'mac' then
+        platform = 'ios'
+    end
     return platform
 end
 
@@ -583,7 +586,24 @@ function GameUtils:getSupportMailFormat(category,logMsg)
     end
     return "[Dragonfall]" .. category ,result_str
 end
+function GameUtils:getLoginErrorMailFormat(category)
+    local UTCTime    = "UTC Time:" .. os.date('!%Y-%m-%d %H:%M:%S', app.timer:GetServerTime())
+    local GameName   = "Game:" .. "Dragonfall"
+    local Version    = "Version:" .. ext.getAppVersion()
+    local OpenUDID   = "Open UDID:" .. device.getOpenUDID()
+    local Category   = "Category:" .. category or ""
+    local Language   = "Language:" .. GameUtils:GetGameLanguage()
+    local DeviceType = "Device Type:" ..ext.getDeviceModel()
+    local OSVersion  = "OS Version:" .. ext.getOSVersion()
+    print("....---",UTCTime,GameName,Version,OpenUDID,Category,Language,DeviceType,OSVersion)
 
+    local format_str = "\n\n\n\n\n---------------%s---------------\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s"
+    local result_str = string.format(format_str,_("不能删除"),UTCTime,GameName,Version,OpenUDID,Category,Language,DeviceType,OSVersion)
+    if logMsg then
+        result_str = string.format("%s\n---------------Log---------------\n%s",result_str,logMsg)
+    end
+    return "[Dragonfall]" .. category ,result_str
+end
 function GameUtils:SetGameLanguage(lang)
     cc.UserDefault:getInstance():setStringForKey("GAME_LANGUAGE", lang)
     cc.UserDefault:getInstance():flush()

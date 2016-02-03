@@ -76,8 +76,8 @@ function WidgetSliderWithInput:ctor(params)
         if e_value>=1000 then
             local f_value = GameUtils:formatNumber(e_value)
             -- if change_unit == 1000 then
-                btn_value = string.sub(f_value,1,-2)
-                btn_unit = string.sub(f_value,-1,-1)
+            btn_value = string.sub(f_value,1,-2)
+            btn_unit = string.sub(f_value,-1,-1)
             -- else
             --     btn_value = string.sub(f_value,1,-2)
             -- end
@@ -89,7 +89,7 @@ function WidgetSliderWithInput:ctor(params)
         else
             self.btn_text:setString(tonumber(btn_value))
         end
-        self.soldier_total_count:setString(string.format(btn_unit.."/ %s", GameUtils:formatNumber(self.max)))
+        self.soldier_total_count:setString(string.format(btn_unit.."/ %s", GameUtils:formatNumber(unit == "K" and math.floor(self.max/1000) or self.max)))
         if self.valueChangedFunc then
             self.valueChangedFunc(event)
         end
@@ -107,6 +107,40 @@ function WidgetSliderWithInput:ctor(params)
 end
 function WidgetSliderWithInput:SetValue(value)
     self.slider:setSliderValue(value)
+end
+function WidgetSliderWithInput:SetMax(max)
+    self.slider:SetMax(max)
+    self.max = max
+
+    local change_unit
+    if self.unit == "K" then
+        change_unit = 1000
+    else
+        change_unit = 1
+    end
+    local current_value = self:GetValue()
+    local e_value = math.floor(current_value*change_unit)
+    local btn_value
+    local btn_unit  = ""
+    if e_value >= 1000 then
+        local f_value = GameUtils:formatNumber(e_value)
+        btn_value = string.sub(f_value,1,-2)
+        btn_unit = string.sub(f_value,-1,-1)
+    else
+        btn_value = e_value
+    end
+    local btn_final_value
+    if unit == "K" then
+        btn_final_value = math.floor(tonumber(btn_value))
+    else
+        btn_final_value = tonumber(btn_value)
+    end
+    self.btn_text:setString(btn_final_value)
+    if btn_final_value > self.max then
+        self.btn_text:setColor(UIKit:hex2c4b(0x7e0000))
+    end
+    self.soldier_total_count:setString(string.format(btn_unit.."/ %s", GameUtils:formatNumber(self.max)))
+
 end
 function WidgetSliderWithInput:GetValue()
     return tonumber(math.floor(self.slider:getSliderValue()))
@@ -141,6 +175,8 @@ function WidgetSliderWithInput:GetEditBoxPostion()
 end
 
 return WidgetSliderWithInput
+
+
 
 
 

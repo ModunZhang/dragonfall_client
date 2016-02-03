@@ -54,7 +54,7 @@ function GameUIDragonEyrieDetail:CreateBetweenBgAndTitle()
     self.draongContentNode = draongContentNode
     dragonAnimateNode:addTo(self.content_node):pos(window.cx - 307,window.top - 519)
     -- 阻挡滑动龙超出的区域
-    display.newLayer():addTo(self.content_node):pos(window.cx - 310,window.top_bottom - 530):size(620,100)
+    display.newLayer():addTo(self.content_node):pos(window.cx - 310,window.top_bottom - 680):size(620,254)
 
     -- local clipNode = display.newClippingRegionNode(cc.rect(0,0,614,519))
     -- clipNode:addTo(self.content_node):pos(window.cx - 307,window.top - 519)

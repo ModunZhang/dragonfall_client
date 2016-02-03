@@ -5,7 +5,6 @@
 local GameUIDragonEquipmentMake = UIKit:createUIClass("GameUIDragonEquipmentMake","UIAutoClose")
 local StarBar = import(".StarBar")
 local UIListView = import(".UIListView")
-local WidgetDragonEquipIntensify = import("..widget.WidgetDragonEquipIntensify")
 local BODY_HEIGHT = 578
 local BODY_WIDTH = 608
 local LISTVIEW_WIDTH = 548

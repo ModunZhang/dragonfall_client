@@ -641,15 +641,18 @@ function UIKit:isMessageDialogShowWithUserData(userData)
     return self.messageDialogs[userData] ~= nil
 end
 
-function UIKit:showKeyMessageDialog(title,tips,ok_callback,cancel_callback)
+function UIKit:showKeyMessageDialog(title,tips,ok_callback,cancel_callback,ok_button_string,visible_x_button)
     if self:isKeyMessageDialogShow() then
         print("忽略了一次关键性弹窗")
         return
     end
-    local dialog =  UIKit:showMessageDialog(title,tips,ok_callback,cancel_callback,false,nil,"__key__dialog")
+    if(type(visible_x_button) ~= 'boolean') then visible_x_button = false end
+    local dialog =  UIKit:showMessageDialog(title,tips,ok_callback,cancel_callback,visible_x_button,nil,"__key__dialog",ok_button_string)
+    -- 关键性的弹窗即使是显示关闭按钮也屏蔽自动关闭的属性!
+    dialog:DisableAutoClose()
 end
 
-function UIKit:showMessageDialog(title,tips,ok_callback,cancel_callback,visible_x_button,x_button_callback,user_data)
+function UIKit:showMessageDialog(title,tips,ok_callback,cancel_callback,visible_x_button,x_button_callback,user_data,ok_button_string)
     title = title or _("提示")
     tips = tips or ""
     if type(visible_x_button) ~= 'boolean' then visible_x_button = true end
@@ -660,7 +663,8 @@ function UIKit:showMessageDialog(title,tips,ok_callback,cancel_callback,visible_
                 if ok_callback then
                     ok_callback()
                 end
-            end
+            end,
+            btn_name = ok_button_string
         })
     end
 
@@ -949,15 +953,15 @@ function UIKit:GotoPreconditionBuilding(jump_building)
         end
     end)
 end
--- 暂时只有宝箱
+-- 宝箱,红包
 function UIKit:PlayUseItemAni(item_name,awards,message)
     if string.find(item_name,"dragonChest")
-        or string.find(item_name,"chest") then
-        local ani = ""
+        or string.find(item_name,"chest") or string.find(item_name,"redbag") then
+        local ani
         if item_name == "dragonChest_1" then
-            ani = "lanse"
-        elseif item_name == "dragonChest_2" then
             ani = "lvse_box"
+        elseif item_name == "dragonChest_2" then
+            ani = "lanse"
         elseif item_name == "dragonChest_3" then
             ani = "zise_box"
         elseif item_name == "chest_1" then
@@ -971,6 +975,8 @@ function UIKit:PlayUseItemAni(item_name,awards,message)
         end
         if ani then
             self:newGameUI("GameUIChest",awards,message,ani):AddToCurrentScene():setLocalZOrder(10000)
+        else
+            GameGlobalUI:showTips(_("提示"),message)
         end
     end
 end

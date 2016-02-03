@@ -298,7 +298,6 @@ function WorldLayer:LoadAlliance()
         return
     end
     NetManager:getMapAllianceDatasPromise(self:GetAvailableIndex()):done(function(response)
-        dump(response.msg.datas)
         for k,v in pairs(response.msg.datas) do
             key_map[k] = v
         end

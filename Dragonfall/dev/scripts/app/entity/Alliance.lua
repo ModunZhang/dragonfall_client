@@ -268,6 +268,9 @@ end
 
 local function IsCanbeHelpedByMe(event)
     local _id = User:Id()
+    if not event or not event.eventData then
+        return false
+    end
     for k,id in pairs(event.eventData.helpedMembers) do
         if id == _id then
             return false
@@ -711,7 +714,6 @@ local before_map = {
     villageEvents = function()end,
 }
 function Alliance:OnAllianceDataChanged(allianceData,refresh_time,deltaData)
-    dump(allianceData.allianceFight,"allianceFight")
     local is_join, is_quit
     if self._id ~= allianceData._id then
         if (self._id == nil or self._id == json.null) and allianceData._id ~= nil and allianceData._id ~= json.null then
