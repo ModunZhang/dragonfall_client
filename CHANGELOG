@@ -7,6 +7,7 @@
 iOS的openUDID被缓存到UserDefaults中
 更新2dx的websocket源码为最新
 脚本支持所有图片资源的加密
+脚本自动更新修复bug,支持对所有平台生成版本信息文件。添加平台信息到生成的版本信息文件中。
 修改瓦块地图贴图文件路径从2dx的searchpath中获取(自动更新bug)
 android的websocket主动关闭连接时不再回调close事件,其他平台测试后再修改
 
