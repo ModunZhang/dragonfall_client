@@ -18,11 +18,16 @@
 
 #pragma once
 
-#include "OpenGLES.h"
-#include "OpenGLESPage.g.h"
-#include <memory>
 
+#include "OpenGLESPage.g.h"
+
+#include "DeviceResources.h"
+#include "DirectXMain.h"
+#if DIRECTX_ENABLED == 0
+#include "OpenGLES.h"
+#include <memory>
 #include "Cocos2dRenderer.h"
+#endif
 
 namespace cocos2d
 {
@@ -36,17 +41,49 @@ namespace cocos2d
 		void HardwareButtons_BackPressed(Platform::Object^ sender, Windows::Phone::UI::Input::BackPressedEventArgs^ e);
 #endif
     internal:
+#if DIRECTX_ENABLED == 0
         OpenGLESPage(OpenGLES* openGLES);
+#endif
 
     private:
-        void OnPageLoaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void OnPageLoaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		// XAML 低级渲染事件处理程序。
+		//void OnRendering(Platform::Object^ sender, Platform::Object^ args);
+        
+		// 窗口事件处理程序。
         void OnVisibilityChanged(Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::VisibilityChangedEventArgs^ args);
-        void OnSwapChainPanelSizeChanged(Platform::Object^ sender, Windows::UI::Xaml::SizeChangedEventArgs^ e);
+        
+		// DisplayInformation 事件处理程序。
+		void OnDpiChanged(Windows::Graphics::Display::DisplayInformation^ sender, Platform::Object^ args);
+		void OnOrientationChanged(Windows::Graphics::Display::DisplayInformation^ sender, Platform::Object^ args);
+		void OnDisplayContentsInvalidated(Windows::Graphics::Display::DisplayInformation^ sender, Platform::Object^ args);
+
+		// 其他事件处理程序。
+		//void AppBarButton_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void OnCompositionScaleChanged(Windows::UI::Xaml::Controls::SwapChainPanel^ sender, Object^ args);
+		void OnSwapChainPanelSizeChanged(Platform::Object^ sender, Windows::UI::Xaml::SizeChangedEventArgs^ e);
+
+		// 在后台工作线程上跟踪我们的独立输入。
+		Windows::Foundation::IAsyncAction^ m_inputLoopWorker;
+		Windows::UI::Core::CoreIndependentInputSource^ m_coreInput;
+
+		// 独立输入处理函数。
+		void OnPointerPressed(Platform::Object^ sender, Windows::UI::Core::PointerEventArgs^ e);
+		void OnPointerMoved(Platform::Object^ sender, Windows::UI::Core::PointerEventArgs^ e);
+		void OnPointerReleased(Platform::Object^ sender, Windows::UI::Core::PointerEventArgs^ e);
+
+		// 用于在 XAML 页面背景中呈现 DirectX 内容的资源。
+		std::shared_ptr<DX::DeviceResources> m_deviceResources;
+		std::unique_ptr<DirectXMain> m_main;
+		bool m_windowVisible;
+
+		void TerminateApp();
+#if DIRECTX_ENABLED == 0
         void GetSwapChainPanelSize(GLsizei* width, GLsizei* height);
         void CreateRenderSurface();
         void DestroyRenderSurface();
         void RecoverFromLostDevice();
-		void TerminateApp();
+		
         void StartRenderLoop();
         void StopRenderLoop();
 
@@ -63,19 +100,9 @@ namespace cocos2d
         Concurrency::critical_section mRenderSurfaceCriticalSection;
         Windows::Foundation::IAsyncAction^ mRenderLoopWorker;
 
-        // Track user input on a background worker thread.
-        Windows::Foundation::IAsyncAction^ m_inputLoopWorker;
-        Windows::UI::Core::CoreIndependentInputSource^ m_coreInput;
-
-        // Independent input handling functions.
-        void OnPointerPressed(Platform::Object^ sender, Windows::UI::Core::PointerEventArgs^ e);
-        void OnPointerMoved(Platform::Object^ sender, Windows::UI::Core::PointerEventArgs^ e);
-        void OnPointerReleased(Platform::Object^ sender, Windows::UI::Core::PointerEventArgs^ e);
-
-        void OnOrientationChanged(Windows::Graphics::Display::DisplayInformation^ sender, Platform::Object^ args);
-
         float m_dpi;
         bool m_deviceLost;
         Windows::Graphics::Display::DisplayOrientations m_orientation;
+#endif
     };
 }

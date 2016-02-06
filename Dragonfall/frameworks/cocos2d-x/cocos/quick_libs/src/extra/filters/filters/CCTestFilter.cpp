@@ -72,13 +72,15 @@ void TestFilter::setUniforms(GLProgram* $cgp)
 	CCLOG("TestFilter::setUniforms u_mask:%d, u_texture1:%d, CC_Texture0:%d", u_mask, u_texture1, u_cctexture);
 	$cgp->setUniformLocationWith1i(u_mask, 2);
 	$cgp->setUniformLocationWith1i(u_texture1, 1);
-
+#if DIRECTX_ENABLED == 0
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, __maskTex->getName());
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, __tex1->getName());
 	glActiveTexture(GL_TEXTURE0);
-
+#else
+	NOT_SUPPORTED();
+#endif
 	CCLOG("TestFilter::setUniforms _textureWidth:%.5f,_textureHeight:%.5f",
 		_textureWidth, _textureHeight);
 }

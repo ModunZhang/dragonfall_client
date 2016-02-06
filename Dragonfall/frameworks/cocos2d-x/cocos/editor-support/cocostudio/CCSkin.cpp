@@ -231,8 +231,10 @@ void Skin::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
     auto mv = Director::getInstance()->getMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
 
     //TODO: implement z order
+#if DIRECTX_ENABLED == 0
     _quadCommand.init(_globalZOrder, _texture->getName(), getGLProgramState(), _blendFunc, &_quad, 1, mv, flags);
     renderer->addCommand(&_quadCommand);
+#endif
 }
 
 void Skin::setBone(Bone *bone)

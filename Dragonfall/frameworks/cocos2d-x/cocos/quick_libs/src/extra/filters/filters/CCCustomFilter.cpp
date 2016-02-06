@@ -27,6 +27,7 @@ CustomFilter::CustomFilter()
 
 GLProgram* CustomFilter::loadShader()
 {
+#if DIRECTX_ENABLED == 0
     const GLchar* vertShader = nullptr;
     const GLchar* fragShader = nullptr;
     auto fileUtiles = FileUtils::getInstance();
@@ -46,6 +47,9 @@ GLProgram* CustomFilter::loadShader()
     GLProgram* __p = GLProgram::createWithByteArrays(vertShader, fragShader);
 
 	return __p;
+#else
+    return nullptr;
+#endif
 }
 
 void CustomFilter::setParameter(const char* paramsStr)

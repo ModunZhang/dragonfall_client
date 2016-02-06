@@ -616,8 +616,12 @@ void Sprite::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
     if(_insideBounds)
 #endif
     {
+#if DIRECTX_ENABLED == 0
         _quadCommand.init(_globalZOrder, _texture->getName(), getGLProgramState(), _blendFunc, &_quad, 1, transform, flags);
-        renderer->addCommand(&_quadCommand);
+#else
+		_quadCommand.init(_globalZOrder, _texture, getGLProgramState(), _blendFunc, &_quad, 1, transform, flags);
+#endif
+		renderer->addCommand(&_quadCommand);
         
 #if CC_SPRITE_DEBUG_DRAW
         _debugDrawNode->clear();

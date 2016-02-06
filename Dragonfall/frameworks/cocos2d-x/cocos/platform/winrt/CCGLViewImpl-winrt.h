@@ -37,8 +37,12 @@ THE SOFTWARE.
 #include <string>
 #include <memory>
 #include <wrl/client.h>
+#include <d3d11_1.h>
 #include <Keyboard-winrt.h>
+#include <DirectXMath.h>
 
+#include "platform/wp8-xaml/cpp/IWP8Win.h"
+#include "platform/winrt/DirectXHelper.h"
 NS_CC_BEGIN
 
 class GLViewImpl;
@@ -110,8 +114,12 @@ public:
     */
 	static GLViewImpl* sharedOpenGLView();
 
-    void ProcessEvents();
+	void SetWP8Win(IWP8Win* win8)
+	{
+		m_wp8windows = win8;
+	}
 
+    void ProcessEvents();
 protected:
     GLViewImpl();
     virtual ~GLViewImpl();
@@ -167,6 +175,28 @@ private:
     Platform::Agile<Windows::UI::Core::CoreDispatcher> m_dispatcher;
     Platform::Agile<Windows::UI::Xaml::Controls::Panel> m_panel;
     KeyBoardWinRT^ m_keyboard;
+
+	IWP8Win* m_wp8windows;
+public:
+	ID3D11Device2* GetDevice()
+	{
+		return m_wp8windows->GetDevice();
+	}
+
+	ID3D11DeviceContext2* GetContext()
+	{
+		return m_wp8windows->GetContext();
+	}
+
+	ID3D11DepthStencilView* GetDepthStencilView()
+	{
+		return m_wp8windows->GetDepthStencilView();
+	}
+
+	ID3D11RenderTargetView* const* GetRenderTargetView() const
+	{
+		return m_wp8windows->GetRenderTargetView();
+	}
 };
 
 NS_CC_END

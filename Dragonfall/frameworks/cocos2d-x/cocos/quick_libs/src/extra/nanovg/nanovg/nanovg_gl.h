@@ -270,6 +270,7 @@ static unsigned int glnvg__nearestPow2(unsigned int num)
 
 static void glnvg__bindTexture(GLNVGcontext* gl, GLuint tex)
 {
+#if DIRECTX_ENABLED == 0
 #if NANOVG_GL_USE_STATE_FILTER
 	if (gl->boundTexture != tex) {
 		gl->boundTexture = tex;
@@ -278,23 +279,32 @@ static void glnvg__bindTexture(GLNVGcontext* gl, GLuint tex)
 #else
 	glBindTexture(GL_TEXTURE_2D, tex);
 #endif
+#else
+	NOT_SUPPORTED();
+#endif
 }
 
 static void glnvg__stencilMask(GLNVGcontext* gl, GLuint mask)
 {
-#if NANOVG_GL_USE_STATE_FILTER
+#if DIRECTX_ENABLED == 0
+	#if NANOVG_GL_USE_STATE_FILTER
 	if (gl->stencilMask != mask) {
 		gl->stencilMask = mask;
 		glStencilMask(mask);
 	}
 #else
 	glStencilMask(mask);
+#endif		
+#else
+	NOT_SUPPORTED();
 #endif
+
 }
 
 static void glnvg__stencilFunc(GLNVGcontext* gl, GLenum func, GLint ref, GLuint mask)
 {
-#if NANOVG_GL_USE_STATE_FILTER
+#if DIRECTX_ENABLED == 0
+	#if NANOVG_GL_USE_STATE_FILTER
 	if ((gl->stencilFunc != func) ||
 		(gl->stencilFuncRef != ref) ||
 		(gl->stencilFuncMask != mask)) {
@@ -306,7 +316,11 @@ static void glnvg__stencilFunc(GLNVGcontext* gl, GLenum func, GLint ref, GLuint 
 	}
 #else
 	glStencilFunc(func, ref, mask);
+#endif	
+#else
+	NOT_SUPPORTED();
 #endif
+
 }
 
 static GLNVGtexture* glnvg__allocTexture(GLNVGcontext* gl)
@@ -349,6 +363,7 @@ static GLNVGtexture* glnvg__findTexture(GLNVGcontext* gl, int id)
 
 static int glnvg__deleteTexture(GLNVGcontext* gl, int id)
 {
+#if DIRECTX_ENABLED == 0
 	int i;
 	for (i = 0; i < gl->ntextures; i++) {
 		if (gl->textures[i].id == id) {
@@ -358,42 +373,61 @@ static int glnvg__deleteTexture(GLNVGcontext* gl, int id)
 			return 1;
 		}
 	}
+#else
+	NOT_SUPPORTED();
+#endif
 	return 0;
 }
 
 static void glnvg__dumpShaderError(GLuint shader, const char* name, const char* type)
 {
+#if DIRECTX_ENABLED == 0
 	char str[512+1];
 	int len = 0;
 	glGetShaderInfoLog(shader, 512, &len, str);
 	if (len > 512) len = 512;
 	str[len] = '\0';
-	printf("Shader %s/%s error:\n%s\n", name, type, str);
+	printf("Shader %s/%s error:\n%s\n", name, type, str);	
+#else
+	NOT_SUPPORTED();
+#endif
+	
 }
 
 static void glnvg__dumpProgramError(GLuint prog, const char* name)
 {
+#if DIRECTX_ENABLED == 0
 	char str[512+1];
 	int len = 0;
 	glGetProgramInfoLog(prog, 512, &len, str);
 	if (len > 512) len = 512;
 	str[len] = '\0';
-	printf("Program %s error:\n%s\n", name, str);
+	printf("Program %s error:\n%s\n", name, str);	
+#else
+	NOT_SUPPORTED();
+#endif
+	
 }
 
 static void glnvg__checkError(GLNVGcontext* gl, const char* str)
 {
+#if DIRECTX_ENABLED == 0
 	GLenum err;
 	if ((gl->flags & NVG_DEBUG) == 0) return;
 	err = glGetError();
 	if (err != GL_NO_ERROR) {
 		printf("Error %08x after %s\n", err, str);
 		return;
-	}
+	}	
+#else
+	NOT_SUPPORTED();
+#endif
+	
 }
 
 static int glnvg__createShader(GLNVGshader* shader, const char* name, const char* header, const char* opts, const char* vshader, const char* fshader)
 {
+#if DIRECTX_ENABLED == 0
 	GLint status;
 	GLuint prog, vert, frag;
 	const char* str[3];
@@ -439,23 +473,33 @@ static int glnvg__createShader(GLNVGshader* shader, const char* name, const char
 
 	shader->prog = prog;
 	shader->vert = vert;
-	shader->frag = frag;
+	shader->frag = frag;	
+#else
+	NOT_SUPPORTED();
+#endif
+	
 
 	return 1;
 }
 
 static void glnvg__deleteShader(GLNVGshader* shader)
 {
+#if DIRECTX_ENABLED == 0
 	if (shader->prog != 0)
 		glDeleteProgram(shader->prog);
 	if (shader->vert != 0)
 		glDeleteShader(shader->vert);
 	if (shader->frag != 0)
-		glDeleteShader(shader->frag);
+		glDeleteShader(shader->frag);	
+#else
+	NOT_SUPPORTED();
+#endif
+	
 }
 
 static void glnvg__getUniforms(GLNVGshader* shader)
 {
+#if DIRECTX_ENABLED == 0
 	shader->loc[GLNVG_LOC_VIEWSIZE] = glGetUniformLocation(shader->prog, "viewSize");
 	shader->loc[GLNVG_LOC_TEX] = glGetUniformLocation(shader->prog, "tex");
 
@@ -463,11 +507,16 @@ static void glnvg__getUniforms(GLNVGshader* shader)
 	shader->loc[GLNVG_LOC_FRAG] = glGetUniformBlockIndex(shader->prog, "frag");
 #else
 	shader->loc[GLNVG_LOC_FRAG] = glGetUniformLocation(shader->prog, "frag");
+#endif	
+#else
+	NOT_SUPPORTED();
 #endif
+
 }
 
 static int glnvg__renderCreate(void* uptr)
 {
+#if DIRECTX_ENABLED == 0
 	GLNVGcontext* gl = (GLNVGcontext*)uptr;
 	int align = 4;
 
@@ -671,12 +720,17 @@ static int glnvg__renderCreate(void* uptr)
 	glnvg__checkError(gl, "create done");
 
 	glFinish();
+#else
+	NOT_SUPPORTED();
+#endif
+	
 
 	return 1;
 }
 
 static int glnvg__renderCreateTexture(void* uptr, int type, int w, int h, int imageFlags, const unsigned char* data)
 {
+#if DIRECTX_ENABLED == 0
 	GLNVGcontext* gl = (GLNVGcontext*)uptr;
 	GLNVGtexture* tex = glnvg__allocTexture(gl);
 
@@ -764,7 +818,11 @@ static int glnvg__renderCreateTexture(void* uptr, int type, int w, int h, int im
 	glnvg__checkError(gl, "create tex");
 	glnvg__bindTexture(gl, 0);
 
-	return tex->id;
+	return tex->id;	
+#else
+	NOT_SUPPORTED();
+#endif
+	return 0;
 }
 
 
@@ -776,6 +834,7 @@ static int glnvg__renderDeleteTexture(void* uptr, int image)
 
 static int glnvg__renderUpdateTexture(void* uptr, int image, int x, int y, int w, int h, const unsigned char* data)
 {
+#if DIRECTX_ENABLED == 0
 	GLNVGcontext* gl = (GLNVGcontext*)uptr;
 	GLNVGtexture* tex = glnvg__findTexture(gl, image);
 
@@ -814,7 +873,11 @@ static int glnvg__renderUpdateTexture(void* uptr, int image, int x, int y, int w
 	glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
 #endif
 
-	glnvg__bindTexture(gl, 0);
+	glnvg__bindTexture(gl, 0);	
+#else
+	NOT_SUPPORTED();
+#endif
+	
 
 	return 1;
 }
@@ -942,6 +1005,7 @@ static void glnvg__renderViewport(void* uptr, int width, int height)
 
 static void glnvg__fill(GLNVGcontext* gl, GLNVGcall* call)
 {
+#if DIRECTX_ENABLED == 0
 	GLNVGpath* paths = &gl->paths[call->pathOffset];
 	int i, npaths = call->pathCount;
 
@@ -982,10 +1046,15 @@ static void glnvg__fill(GLNVGcontext* gl, GLNVGcall* call)
 	glDrawArrays(GL_TRIANGLES, call->triangleOffset, call->triangleCount);
 
 	glDisable(GL_STENCIL_TEST);
+#else
+	NOT_SUPPORTED();
+#endif
+	
 }
 
 static void glnvg__convexFill(GLNVGcontext* gl, GLNVGcall* call)
 {
+#if DIRECTX_ENABLED == 0
 	GLNVGpath* paths = &gl->paths[call->pathOffset];
 	int i, npaths = call->pathCount;
 
@@ -998,11 +1067,16 @@ static void glnvg__convexFill(GLNVGcontext* gl, GLNVGcall* call)
 		// Draw fringes
 		for (i = 0; i < npaths; i++)
 			glDrawArrays(GL_TRIANGLE_STRIP, paths[i].strokeOffset, paths[i].strokeCount);
-	}
+	}	
+#else
+	NOT_SUPPORTED();
+#endif
+	
 }
 
 static void glnvg__stroke(GLNVGcontext* gl, GLNVGcall* call)
 {
+#if DIRECTX_ENABLED == 0
 	GLNVGpath* paths = &gl->paths[call->pathOffset];
 	int npaths = call->pathCount, i;
 
@@ -1045,15 +1119,23 @@ static void glnvg__stroke(GLNVGcontext* gl, GLNVGcall* call)
 		// Draw Strokes
 		for (i = 0; i < npaths; i++)
 			glDrawArrays(GL_TRIANGLE_STRIP, paths[i].strokeOffset, paths[i].strokeCount);
-	}
+	}	
+#else
+	NOT_SUPPORTED();
+#endif
+	
 }
 
 static void glnvg__triangles(GLNVGcontext* gl, GLNVGcall* call)
 {
+#if DIRECTX_ENABLED == 0
 	glnvg__setUniforms(gl, call->uniformOffset, call->image);
 	glnvg__checkError(gl, "triangles fill");
 
 	glDrawArrays(GL_TRIANGLES, call->triangleOffset, call->triangleCount);
+#else
+	NOT_SUPPORTED();
+#endif
 }
 
 static void glnvg__renderCancel(void* uptr) {
@@ -1066,6 +1148,7 @@ static void glnvg__renderCancel(void* uptr) {
 
 static void glnvg__renderFlush(void* uptr)
 {
+#if DIRECTX_ENABLED == 0
 	GLNVGcontext* gl = (GLNVGcontext*)uptr;
 	int i;
 
@@ -1147,7 +1230,11 @@ static void glnvg__renderFlush(void* uptr)
 	gl->nverts = 0;
 	gl->npaths = 0;
 	gl->ncalls = 0;
-	gl->nuniforms = 0;
+	gl->nuniforms = 0;	
+#else
+	NOT_SUPPORTED();
+#endif
+	
 }
 
 static int glnvg__maxVertCount(const NVGpath* paths, int npaths)
@@ -1409,6 +1496,7 @@ error:
 
 static void glnvg__renderDelete(void* uptr)
 {
+#if DIRECTX_ENABLED == 0
 	GLNVGcontext* gl = (GLNVGcontext*)uptr;
 	int i;
 	if (gl == NULL) return;
@@ -1438,6 +1526,10 @@ static void glnvg__renderDelete(void* uptr)
 	free(gl->calls);
 
 	free(gl);
+#else
+	NOT_SUPPORTED();
+#endif
+	
 }
 
 

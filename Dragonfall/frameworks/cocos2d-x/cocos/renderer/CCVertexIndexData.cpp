@@ -115,22 +115,26 @@ VertexData::~VertexData()
 
 void VertexData::use()
 {
+#if DIRECTX_ENABLED == 0
     uint32_t flags(0);
     for(auto& element : _vertexStreams)
     {
-        flags = flags | (1 << element.second._stream._semantic);
+       flags = flags | (1 << element.second._stream._semantic);
     }
     
     GL::enableVertexAttribs(flags);
     
     for(auto& element : _vertexStreams)
     {
-        //glEnableVertexAttribArray((GLint)element.second._stream._semantic);
-        glBindBuffer(GL_ARRAY_BUFFER, element.second._buffer->getVBO());
-        size_t offet = element.second._stream._offset;
-        glVertexAttribPointer(GLint(element.second._stream._semantic),element.second._stream._size,
-                              element.second._stream._type,element.second._stream._normalize, element.second._buffer->getSizePerVertex(), (GLvoid*)offet);
+       //glEnableVertexAttribArray((GLint)element.second._stream._semantic);
+       glBindBuffer(GL_ARRAY_BUFFER, element.second._buffer->getVBO());
+       size_t offet = element.second._stream._offset;
+       glVertexAttribPointer(GLint(element.second._stream._semantic),element.second._stream._size,
+                             element.second._stream._type,element.second._stream._normalize, element.second._buffer->getSizePerVertex(), (GLvoid*)offet);
     }
+#else
+	CCASSERT(false, "notspported");
+#endif
 }
 
 NS_CC_END

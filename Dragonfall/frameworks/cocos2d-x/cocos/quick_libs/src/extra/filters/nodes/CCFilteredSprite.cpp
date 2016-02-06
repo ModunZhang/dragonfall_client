@@ -50,8 +50,10 @@ void FilteredSprite::draw(Renderer *renderer, const Mat4 &transform, uint32_t fl
     if(_insideBounds)
     {
         // normal effect: order == 0
+#if DIRECTX_ENABLED == 0
         _quadCommand.init(_globalZOrder, _texture->getName(), getGLProgramState(), _blendFunc, &_quad, 1, transform);
         renderer->addCommand(&_quadCommand);
+#endif
 
 //        for(auto &command : _pCommand) {
 //            QuadCommand &q = std::get<2>(command);

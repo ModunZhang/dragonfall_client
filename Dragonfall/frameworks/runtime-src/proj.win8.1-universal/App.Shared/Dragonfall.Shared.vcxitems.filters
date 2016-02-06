@@ -9,7 +9,6 @@
       <Filter>Classes</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Cocos2dRenderer.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)OpenGLES.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)OpenGLESPage.xaml.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LuaExtension.cpp">
       <Filter>Classes\ext</Filter>
@@ -56,6 +55,11 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\sdk\Facebook\tolua_fb_sdk.cpp">
       <Filter>Classes\Facebook</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)DirectXMain.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DeviceResources.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Sample3DSceneRenderer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SampleFpsTextRenderer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)OpenGLES.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="$(MSBuildThisFileDirectory)App.xaml" />
@@ -108,7 +112,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\Classes\AppDelegate.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)OpenGLES.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)OpenGLESPage.xaml.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LuaExtension.h">
       <Filter>Classes\ext</Filter>
@@ -152,6 +155,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\sdk\Facebook\tolua_fb_sdk.h">
       <Filter>Classes\Facebook</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DirectXMain.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SampleFpsTextRenderer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ShaderStructures.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Sample3DSceneRenderer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DeviceResources.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)OpenGLES.h" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="$(MSBuildThisFileDirectory)OpenGLESPage.xaml" />
@@ -166,5 +175,9 @@
     <PRIResource Include="$(MSBuildThisFileDirectory)Strings\zh-Hant-TW\Resources.resw">
       <Filter>Strings\zh-Hant-TW</Filter>
     </PRIResource>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="$(MSBuildThisFileDirectory)SamplePixelShader.hlsl" />
+    <FxCompile Include="$(MSBuildThisFileDirectory)SampleVertexShader.hlsl" />
   </ItemGroup>
 </Project>

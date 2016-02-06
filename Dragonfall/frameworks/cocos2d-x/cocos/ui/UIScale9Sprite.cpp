@@ -905,12 +905,16 @@ namespace ui {
                 glState = GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR_NO_MVP);
             }
                 break;
+            #if DIRECTX_ENABLED == 0
             case State::GRAY:
             {
                 auto program = GLProgram::createWithByteArrays(ccPositionTextureColor_noMVP_vert,
                                                                ccUIGrayScale_frag);
                 glState = GLProgramState::getOrCreateWithGLProgram(program);
             }
+            #else
+                CCASSERT(false, "notspported");
+            #endif
             default:
                 break;
         }

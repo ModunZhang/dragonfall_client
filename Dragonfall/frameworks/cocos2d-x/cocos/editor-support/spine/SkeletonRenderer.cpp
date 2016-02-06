@@ -139,6 +139,7 @@ void SkeletonRenderer::draw (Renderer* renderer, const Mat4& transform, uint32_t
 }
 
 void SkeletonRenderer::drawSkeleton (const Mat4 &transform, uint32_t transformFlags) {
+#if DIRECTX_ENABLED == 0
 	getGLProgramState()->apply(transform);
 
 	Color3B nodeColor = getColor();
@@ -263,6 +264,9 @@ void SkeletonRenderer::drawSkeleton (const Mat4 &transform, uint32_t transformFl
 		}
 		director->popMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
 	}
+#else
+	CCASSERT(false, "notspported");
+#endif
 }
 
 Texture2D* SkeletonRenderer::getTexture (spRegionAttachment* attachment) const {

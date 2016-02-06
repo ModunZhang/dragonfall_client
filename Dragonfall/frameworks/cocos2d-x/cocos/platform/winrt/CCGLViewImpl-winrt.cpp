@@ -91,6 +91,7 @@ GLViewImpl::GLViewImpl()
     , m_width(0)
     , m_height(0)
     , m_orientation(DisplayOrientations::Landscape)
+	, m_wp8windows(nullptr)
 {
 	s_pEglView = this;
     _viewName =  "cocos2dx";
@@ -202,7 +203,11 @@ void GLViewImpl::swapBuffers()
 
 bool GLViewImpl::isOpenGLReady()
 {
+#if DIRECTX_ENABLED == 1
+	return (m_wp8windows && m_wp8windows->GetDevice() && m_orientation != DisplayOrientations::None);
+#else
     return true;
+#endif
 }
 
 void GLViewImpl::end()
@@ -479,18 +484,26 @@ Vec2 GLViewImpl::GetPoint(PointerEventArgs^ args) {
 
 void GLViewImpl::setViewPortInPoints(float x , float y , float w , float h)
 {
+#if DIRECTX_ENABLED == 0
     glViewport((GLint) (x * _scaleX + _viewPortRect.origin.x),
         (GLint) (y * _scaleY + _viewPortRect.origin.y),
         (GLsizei) (w * _scaleX),
         (GLsizei) (h * _scaleY));
+#else
+	DXStateCache::getInstance().setViewport(x * _scaleX + _viewPortRect.origin.x, y * _scaleY + _viewPortRect.origin.y, w * _scaleX, h * _scaleY);
+#endif
 }
 
 void GLViewImpl::setScissorInPoints(float x , float y , float w , float h)
 {
+#if DIRECTX_ENABLED == 0
     glScissor((GLint) (x * _scaleX + _viewPortRect.origin.x),
         (GLint) (y * _scaleY + _viewPortRect.origin.y),
         (GLsizei) (w * _scaleX),
         (GLsizei) (h * _scaleY));
+#else
+	DXStateCache::getInstance().setScissor(x * _scaleX + _viewPortRect.origin.x, (_designResolutionSize.height - y - h) * _scaleY + _viewPortRect.origin.y, w * _scaleX, h * _scaleY);
+#endif
 }
 
 void GLViewImpl::QueueBackKeyPress()

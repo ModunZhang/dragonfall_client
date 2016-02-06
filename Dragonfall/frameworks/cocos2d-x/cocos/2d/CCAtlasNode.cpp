@@ -132,8 +132,11 @@ void AtlasNode::updateAtlasValues()
 // AtlasNode - draw
 void AtlasNode::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
 {
+#if DIRECTX_ENABLED == 0
     _quadCommand.init(_globalZOrder, _textureAtlas->getTexture()->getName(), getGLProgramState(), _blendFunc, _textureAtlas->getQuads(), _quadsToDraw, transform, flags);
-    
+#else
+	_quadCommand.init(_globalZOrder, _textureAtlas->getTexture(), getGLProgramState(), _blendFunc, _textureAtlas->getQuads(), _quadsToDraw, transform, flags);
+#endif
     renderer->addCommand(&_quadCommand);
 
 }

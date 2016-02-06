@@ -73,10 +73,14 @@ void GrayFilter::setParameter(float $r, float $g, float $b, float $a)
 
 GLProgram* GrayFilter::loadShader()
 {
-    GLProgram* __p = GLProgram::createWithByteArrays(ccPositionTextureColor_noMVP_vert, ccFilterShader_gray_frag);
+#if DIRECTX_ENABLED == 0
+   GLProgram* __p = GLProgram::createWithByteArrays(ccPositionTextureColor_noMVP_vert, ccFilterShader_gray_frag);
 //	GLProgram* __p = new GLProgram();
 //	__p->initWithByteArrays(ccPositionTextureColor_noMVP_vert, ccFilterShader_gray_frag);
 	return __p;
+#else
+	return nullptr;
+#endif
 }
 
 void GrayFilter::setAttributes(GLProgram* $cgp)

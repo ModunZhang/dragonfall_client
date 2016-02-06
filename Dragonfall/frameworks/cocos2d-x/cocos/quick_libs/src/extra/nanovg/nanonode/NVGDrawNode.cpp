@@ -41,6 +41,7 @@ NVGDrawNode* NVGDrawNode::create() {
 
 
 void NVGDrawNode::onDraw(const Mat4 &transform, uint32_t flags) {
+#if DIRECTX_ENABLED == 0
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto bStroke = false;
     NVGcontext *nvg = getNVGCtx();
@@ -145,6 +146,7 @@ void NVGDrawNode::onDraw(const Mat4 &transform, uint32_t flags) {
     GL::bindTexture2D(0);
     GL::enableVertexAttribs(GL::VERTEX_ATTRIB_FLAG_NONE);
     GL::useProgram(0);
+#endif
 }
 
 void NVGDrawNode::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags) {

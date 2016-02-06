@@ -1207,10 +1207,14 @@ GLProgramState* Widget::getNormalGLProgramState()const
 
 GLProgramState* Widget::getGrayGLProgramState()const
 {
+#if DIRECTX_ENABLED == 0
     auto program = GLProgram::createWithByteArrays(ccPositionTextureColor_noMVP_vert,
-                                                           ccUIGrayScale_frag);
+                                                          ccUIGrayScale_frag);
     GLProgramState *glState  = GLProgramState::getOrCreateWithGLProgram(program);
     return glState;
+#else
+	return nullptr;
+#endif
 }
 
 void Widget::copySpecialProperties(Widget* model)

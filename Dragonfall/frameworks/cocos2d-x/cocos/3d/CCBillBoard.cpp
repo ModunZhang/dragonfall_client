@@ -230,10 +230,12 @@ void BillBoard::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
 {
     //FIXME: frustum culling here
     flags |= Node::FLAGS_RENDER_AS_3D;
+#if DIRECTX_ENABLED == 0
     _quadCommand.init(0, _texture->getName(), getGLProgramState(), _blendFunc, &_quad, 1, _modelViewTransform, flags);
     _quadCommand.setTransparent(true);
     _quadCommand.set3D(true);
     renderer->addCommand(&_quadCommand);
+#endif
 }
 
 void BillBoard::setMode( Mode mode )

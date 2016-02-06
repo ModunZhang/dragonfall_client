@@ -37,7 +37,9 @@ THE SOFTWARE.
 #include "base/ccTypes.h"
 #include "platform/CCGL.h"
 #include "math/CCMath.h"
-
+#if (DIRECTX_ENABLED == 1)
+#include "DirectXMath.h"
+#endif
 NS_CC_BEGIN
 
 class GLProgram;
@@ -70,6 +72,43 @@ struct Uniform
     /**String of the uniform name.*/
     std::string name;
 };
+
+
+
+#if (DIRECTX_ENABLED == 1)
+
+struct ShaderConstantBuffer
+{
+	DirectX::XMFLOAT4X4 MPV;
+};
+
+struct ShaderDescriptor
+{
+	std::string name;
+	std::vector<D3D11_INPUT_ELEMENT_DESC> inputLayout;
+	std::vector<Uniform> uniformValues;
+
+	ShaderDescriptor(const std::string n) : name(n)
+	{
+	}
+
+	ShaderDescriptor& Input(LPCSTR SemanticName, UINT SemanticIndex, DXGI_FORMAT Format, UINT InputSlot, UINT AlignedByteOffset, D3D11_INPUT_CLASSIFICATION InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA, UINT InstanceDataStepRate = 0)
+	{
+		const D3D11_INPUT_ELEMENT_DESC desc = { SemanticName, SemanticIndex, Format, InputSlot, AlignedByteOffset, InputSlotClass, InstanceDataStepRate };
+		inputLayout.push_back(desc);
+		return *this;
+	}
+
+	ShaderDescriptor& Const(const std::string& name, GLint size, GLint type)
+	{
+		const Uniform u = { 0, size, type, name };
+		uniformValues.push_back(u);
+		return *this;
+	}
+};
+
+#endif
+
 
 /** GLProgram
  Class that implements a glProgram
@@ -323,6 +362,7 @@ public:
     */
     
     /**@{ Get the uniform or vertex attribute by string name in shader, return null if it does not exist.*/
+	const Uniform* GLProgram::getUniform(const std::string &name) const;
     Uniform* getUniform(const std::string& name);
     VertexAttrib* getVertexAttrib(const std::string& name);
     /**@}*/
@@ -340,6 +380,8 @@ public:
     bool link();
     /** it will call glUseProgram() */
     void use();
+	/** Only for DX, settings constant buffers */
+	void set();
 /** It will create 4 uniforms:
     - kUniformPMatrix
     - kUniformMVMatrix
@@ -446,6 +488,11 @@ public:
     when opengl context lost, so don't call it.
     */
     void reset();
+
+#if (DIRECTX_ENABLED == 1)
+	void initWithHLSL(const ShaderDescriptor& vertexShader, const ShaderDescriptor& pixelShader);
+#endif
+
     /*Get the built in openGL handle of the program.*/
     inline const GLuint getProgram() const { return _program; }
 
@@ -479,6 +526,26 @@ protected:
     
     /**OpenGL handle for program.*/
     GLuint            _program;
+
+#if (DIRECTX_ENABLED == 1)
+	ID3D11InputLayout*	_inputLayout;
+	ID3D11VertexShader* _vertexShader;
+	ID3D11PixelShader*	_pixelShader;
+	ID3D11Buffer*		_constantBufferVS;
+	ID3D11Buffer*		_constantBufferPS;
+
+	static const int UNIFORM_BUFFER_SIZE = 128;
+	unsigned char _uniformBufferVS[UNIFORM_BUFFER_SIZE];
+	unsigned char _uniformBufferPS[UNIFORM_BUFFER_SIZE];
+	std::unordered_map<std::string, Uniform> _uniformsDescription;
+	bool _uniformDirtyVS, _uniformDirtyPS;
+	int _uniformPSStart;
+
+	void updateUniform(int location, unsigned char* input, int size);
+
+	static int s_programCount;
+	std::string       _shaderId;
+#else   
     /**OpenGL handle for vertex shader.*/
     GLuint            _vertShader;
     /**OpenGL handle for fragment shader.*/
@@ -510,6 +577,7 @@ protected:
     std::unordered_map<std::string, VertexAttrib> _vertexAttribs;
     /**Hash value of uniforms for quick access.*/
     std::unordered_map<GLint, std::pair<GLvoid*, unsigned int>> _hashForUniforms;
+#endif
     //cached director pointer for calling
     Director* _director;
 };
