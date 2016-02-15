@@ -296,7 +296,7 @@ CC_USE_FACEBOOK | 打开Facebook的功能。这个宏不能控制是否编译fac
 
 ### Java中的宏定义
 
-注意:这里的宏和`使用模块化编译缩小 apk 体积`中的宏可能同名,但是这里的宏是定义在`Eclipse`/`antenna_predefines.txt`中.只会影响`Java`代码变动的宏。
+注意:这里的宏和`使用模块化编译缩小 apk 体积`中的宏可能同名,但是这里的宏是定义在`Eclipse`中,或者`antenna_predefines.txt`中.只会影响`Java`代码变动的宏。
 
 MACRO        | 功能 
 ------------ | ------------- 
