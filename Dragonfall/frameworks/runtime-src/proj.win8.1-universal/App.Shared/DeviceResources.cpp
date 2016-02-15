@@ -133,13 +133,13 @@ void DX::DeviceResources::CreateDeviceResources()
 	// 最低功能级别。除非另行说明，否则假定所有应用程序均支持 9.1。
 	D3D_FEATURE_LEVEL featureLevels[] = 
 	{
-		//D3D_FEATURE_LEVEL_11_1,
-		//D3D_FEATURE_LEVEL_11_0,
-		//D3D_FEATURE_LEVEL_10_1,
-		//D3D_FEATURE_LEVEL_10_0,
+		D3D_FEATURE_LEVEL_11_1,
+		D3D_FEATURE_LEVEL_11_0,
+		D3D_FEATURE_LEVEL_10_1,
+		D3D_FEATURE_LEVEL_10_0,
 		D3D_FEATURE_LEVEL_9_3,
-		//D3D_FEATURE_LEVEL_9_2,
-		//D3D_FEATURE_LEVEL_9_1,
+		D3D_FEATURE_LEVEL_9_2,
+		D3D_FEATURE_LEVEL_9_1,
 	};
 
 	// 创建 Direct3D 11 API 设备对象和对应的上下文。
