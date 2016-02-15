@@ -7,51 +7,34 @@ import sys,getopt
 # global m_currentDir
 # global app_version
 def getFileTag( fullPath ):
-	if sys.platform != 'win32':
-		bashCommand = "git log -1 --pretty=format:%h -- path " + fullPath
-		process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
-		output = process.communicate()[0].rstrip()
-		return output
-	else:
-		args = ['git', 'log','-1','--pretty=format:%h','--','path',os.path.normpath(fullPath)]
-		process = subprocess.Popen(args,stdout=subprocess.PIPE)
-		output = process.communicate()[0].rstrip()
-		return output
+
+	args = ['git', 'log','-1','--pretty=format:%h','--','path',r'%s' % os.path.normpath(fullPath)]
+	process = subprocess.Popen(args,stdout=subprocess.PIPE)
+	output = process.communicate()[0].rstrip()
+	return output
 
 def getFileGitPath( fullPath ):
-	if sys.platform != 'win32':
-		bashCommand = "git ls-tree --name-only --full-name HEAD " + fullPath
-		process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
-		output = process.communicate()[0].rstrip()
-		index = output.find(file_path_identity)
-		if index > 0:
-			output = output[index + len(file_path_identity) + 1:]
-		if not output.strip():
-			print bashCommand
-			print "get path failed:" + fullPath
-			sys.exit(1)
-		return output
-	else:
-		args = ['git', 'ls-tree','--name-only','--full-name','HEAD',os.path.normpath(fullPath)]
-		process = subprocess.Popen(args,stdout=subprocess.PIPE)
-		process.wait()
-		output = process.communicate()[0].rstrip()
-		if not output.strip():
-			print bashCommand
-			print "get path failed:" + fullPath
-			sys.exit(1)
-		index = output.find(file_path_identity)
-		if index > 0:
-			output = output[index + len(file_path_identity) + 1:]
-		return output
+
+	args = ['git', 'ls-tree','--name-only','--full-name','HEAD',r'%s' % os.path.normpath(fullPath)]
+	process = subprocess.Popen(args,stdout=subprocess.PIPE)
+	process.wait()
+	output = process.communicate()[0].rstrip()
+	if not output.strip():
+		print bashCommand
+		print "get path failed:" + fullPath
+		sys.exit(1)
+	index = output.find(file_path_identity)
+	if index > 0:
+		output = output[index + len(file_path_identity) + 1:]
+	return output
 
 def getFileSize( fullPath ):
 	return os.path.getsize(fullPath)
 
 def getFileCrc32( fullPath ):
 	if sys.platform != 'win32':
-		bashCommand = m_currentDir + "/crc32 " + fullPath
-		process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+		# bashCommand = m_currentDir + "/crc32 " + r'%s' % fullPath
+		process = subprocess.Popen([m_currentDir + '/crc32',r'%s' % fullPath], stdout=subprocess.PIPE)
 		output = process.communicate()[0].rstrip()
 		return output
 	else:
@@ -138,6 +121,7 @@ if __name__=="__main__":
 		"appVersion":app_version,
 		"tag":app_build_tag,
 		"appMinVersion":app_min_version,
+		"platform":platform,
 		"files":{},
 	}
 	browseFolder(app_export_dir_name+"/res", fileList)
@@ -148,5 +132,6 @@ if __name__=="__main__":
 		"appVersion":app_version,
 		"tag":app_build_tag,
 		"appMinVersion":app_min_version,
+		"platform":platform,
 	}
 	writeTagJsonFile(versionList)
