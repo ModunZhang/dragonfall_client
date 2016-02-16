@@ -24,14 +24,11 @@
 
  
 	Windows上必须多添加一个系统变量`GIT_REPOSITOTY_AUTO_UPDATE_CYGWIN`,值必须为`cygwin`风格的路径字符串。指向自动更新仓库的本地绝对路径,如`GIT_REPOSITOTY_AUTO_UPDATE_CYGWIN = /cygdrive/d/Project/kod_update_server`
+
 	
-
-
-
 ####Windows
 
-* 安装**ImageMagick** [http://www.imagemagick.org/script/binary-releases.php](http://www.imagemagick.org/script/binary-releases.php "http://www.imagemagick.org/script/binary-releases.php")
->**配置系统的环境变量`CONVERT_PATH`指向`ImageMagick命令行工具的目录`,python脚本会自动查找命令行工具`convert`**
+* 直接运行`ImageMagick_6.9.3-4Q16`下的`ImageMagick-6.9.3-4-Q16-x64-dll.exe`安装即可,**配置系统的环境变量`CONVERT_PATH`指向`ImageMagick命令行工具的目录`,python脚本会自动查找命令行工具`convert`**
 
 * 安装**TexturePacker cmd命令行可执行环境**
 
@@ -42,25 +39,19 @@
 
 * 安装**ImageMagick**命令行工具
 
-	执行以下命令进行安装`ImageMagick`
+	1. 首先安装Homebrew [http://brew.sh](http://brew.sh/)
+	2. 将`ImageMagick_6.9.3-4Q16`目录下的`imagemagick-6.9.3-4.tar.xz`拷贝到`/Library/Caches/Homebrew`下
+	3. 将`ImageMagick_6.9.3-4Q16`目录下的`imagemagick.rb`拷贝到`/usr/local/Library/Formula/`下
+	4. 执行安装命令
 	
-	~~~
-	brew install imagemagick
-	~~~
+		~~~
+		brew install imagemagick
+		~~~
+	5. 验证是否安装成功
 	
-	验证`ImageMagick`的安装
-
-	~~~
-	convert -version
-	~~~
-	
-	如果验证安装失败报错,类似`dyld: Library not loaded: /opt/local/lib/xxx.dylib`的错误,执行以下命令进行修复后再进行验证安装
-	
-	~~~
-	brew uninstall libtool
-	brew install libtool --universal
-	brew link libtool --force
-	~~~
+		~~~
+		convert -version
+		~~~
 	
 ####验证脚本的正确安装
 
