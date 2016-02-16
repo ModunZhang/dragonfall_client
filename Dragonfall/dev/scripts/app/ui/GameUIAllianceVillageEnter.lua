@@ -22,7 +22,11 @@ function GameUIAllianceVillageEnter:IsRuins()
 end
 
 function GameUIAllianceVillageEnter:GetVillageInfo()
-    return self:GetFocusAlliance():GetAllianceVillageInfosById(self:GetBuilding().id)
+    local info = self:GetFocusAlliance():GetAllianceVillageInfosById(self:GetBuilding().id)
+    if not info then
+        self:LeftButtonClicked()
+    end
+    return info
 end
 
 function GameUIAllianceVillageEnter:GetProcessIconConfig()
@@ -373,7 +377,9 @@ function GameUIAllianceVillageEnter:GetEnterButtons()
                         UIKit:newGameUI('GameUIAllianceSendTroops',function(dragonType,soldiers,total_march_time,gameuialliancesendtroops)
                             NetManager:getAttackVillagePromise(dragonType,soldiers,alliance_id,village_id):done(function()
                                 app:GetAudioManager():PlayeEffectSoundWithKey("TROOP_SENDOUT")
-                                gameuialliancesendtroops:LeftButtonClicked()
+                                if gameuialliancesendtroops.LeftButtonClicked then
+                                    gameuialliancesendtroops:LeftButtonClicked()
+                                end
                             end)
                         end,{targetAlliance = focus_alliance,toLocation = toLocation,returnCloseAction = true}):AddToCurrentScene(true)
                     end

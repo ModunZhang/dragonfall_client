@@ -20,7 +20,9 @@ function GameUIWarSummary:onEnter()
     local alliance = Alliance_Manager:GetMyAlliance()
       if alliance.allianceFightReports == nil then
             NetManager:getAllianceFightReportsPromise(alliance._id):done(function ()
-                self:InitWarSummary(alliance:GetLastAllianceFightReports())
+                if self.InitWarSummary then
+                    self:InitWarSummary(alliance:GetLastAllianceFightReports())
+                end
             end)
         else
             self:InitWarSummary(alliance:GetLastAllianceFightReports())
