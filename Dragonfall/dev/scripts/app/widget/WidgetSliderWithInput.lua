@@ -109,6 +109,9 @@ function WidgetSliderWithInput:SetValue(value)
     self.slider:setSliderValue(value)
 end
 function WidgetSliderWithInput:SetMax(max)
+    if max <= 1 then
+        self.slider:SetMin(0)
+    end
     self.slider:SetMax(max)
     self.max = max
 
@@ -140,7 +143,6 @@ function WidgetSliderWithInput:SetMax(max)
     self.slider:setSliderValue(btn_final_value)
 
     self.soldier_total_count:setString(string.format(btn_unit.."/ %s", GameUtils:formatNumber(self.max)))
-
 end
 function WidgetSliderWithInput:GetValue()
     return tonumber(math.floor(self.slider:getSliderValue()))
