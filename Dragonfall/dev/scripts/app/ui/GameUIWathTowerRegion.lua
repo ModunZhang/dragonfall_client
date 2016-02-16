@@ -227,7 +227,7 @@ function GameUIWathTowerRegion:GetMyEventItemWithIndex(index,isOpen,entity)
                 :align(display.RIGHT_BOTTOM,555,10)
                 :onButtonClicked(function(event)
                     local current_scene = display.getRunningScene().__cname
-                    if current_scene == 'AllianceScene' or current_scene == 'AllianceBattleScene' then
+                    if current_scene == 'AllianceScene' then
                         self:LeftButtonClicked()
                     else
                         app:EnterMyAllianceScene()

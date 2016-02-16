@@ -476,7 +476,7 @@ function WidgetRecruitSoldier:onEnter()
         local res_map = {}
         if not self.soldier_config.specialMaterials then
             res_map.wood = User:GetResValueByType("wood")
-            res_map.food = User:GetResValueByType("food")
+            res_map.food = User:GetDelayTimeResValueByType("food",5)
             res_map.iron = User:GetResValueByType("iron")
             res_map.stone = User:GetResValueByType("stone")
             res_map.citizen = User:GetResValueByType("citizen")

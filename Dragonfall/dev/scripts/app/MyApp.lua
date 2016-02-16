@@ -438,20 +438,6 @@ function MyApp:EnterMyAllianceScene(location)
     -- app:enterScene(alliance_name, {location}, "custom", -1, transition_)
     enter_next_scene(alliance_name, location)
 end
-function MyApp:EnterMyAllianceSceneOrMyCityScene(location)
-    if not Alliance_Manager:GetMyAlliance():IsDefault() then
-        local my_status = Alliance_Manager:GetMyAlliance().basicInfo.status
-        local alliance_name = "AllianceScene"
-        if my_status == "prepare" or  my_status == "fight" then
-            alliance_name = "AllianceBattleScene"
-        end
-        -- app:enterScene(alliance_name, {location}, "custom", -1, transition_)
-        enter_next_scene(alliance_name, location)
-    else
-        -- app:enterScene("MyCityScene", {City}, "custom", -1, transition_)
-        enter_next_scene("MyCityScene", City)
-    end
-end
 function MyApp:EnterPVEScene(level)
     enter_next_scene("PVESceneNew", User, level)
 end
