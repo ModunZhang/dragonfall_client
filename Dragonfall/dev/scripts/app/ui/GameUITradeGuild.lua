@@ -868,7 +868,7 @@ function GameUITradeGuild:OpenSellDialog()
                     goods_type = MARTIAL_MATERIAL_TYPE
                 end
                 local selected = options.currentSelectedIndex_
-                if tag == 'resource' and User:GetDelayTimeResValueByType(goods_type[selected],10) < (self.sell_num_item:GetValue() * 1000) then
+                if tag == 'resource' and User:GetResValueByType(goods_type[selected]) < (self.sell_num_item:GetValue() * 1000) then
                     UIKit:showMessageDialog(_("提示"),_("你所出售的商品已不足"),function()end)
                     return
                 end
@@ -913,8 +913,9 @@ function GameUITradeGuild:OpenSellDialog()
                         local index = options:getSelectedIndex()
                         local checkBox = options:getButtonAtIndex(index)
                         if checkBox then
-                            checkBox:SetValue(User:GetDelayTimeResValueByType(goods_type[index],10))
-                            self.sell_num_item:SetMax(math.floor(User:GetDelayTimeResValueByType(goods_type[index],10)/1000))
+                            checkBox:SetValue(User:GetResValueByType(goods_type[index]))
+                            self.sell_num_item:SetMax(math.floor(User:GetResValueByType(goods_type[index])/1000))
+                            self:SetTotalPriceAndCartNum( self.sell_num_item:GetValue(),self.sell_price_item:GetValue())
                         end
                     end
                 end

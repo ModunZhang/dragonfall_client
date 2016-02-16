@@ -135,10 +135,10 @@ function WidgetSliderWithInput:SetMax(max)
     else
         btn_final_value = tonumber(btn_value)
     end
+    btn_final_value = btn_final_value > self.max and self.max or btn_final_value
     self.btn_text:setString(btn_final_value)
-    if btn_final_value > self.max then
-        self.btn_text:setColor(UIKit:hex2c4b(0x7e0000))
-    end
+    self.slider:setSliderValue(btn_final_value)
+
     self.soldier_total_count:setString(string.format(btn_unit.."/ %s", GameUtils:formatNumber(self.max)))
 
 end

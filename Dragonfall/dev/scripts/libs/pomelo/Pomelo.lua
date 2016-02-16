@@ -522,7 +522,7 @@ function Pomelo:_deCompose(msg)
     local route = msg.route
 
     --Decompose route from dict
-    if msg.compressRoute ~= 0 and not abbrs then
+    if msg.compressRoute ~= 0 then
         if not abbrs[route] then
             return {}
         end
