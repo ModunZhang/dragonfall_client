@@ -7,7 +7,7 @@
             <key>+.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2020,1699},{25,25}}</string>
+                <string>{{2016,1444},{25,25}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -498,19 +498,6 @@
                 <key>sourceSize</key>
                 <string>{640,56}</string>
             </dict>
-            <key>chat_system_flag_42x20.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2020,1852},{42,20}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{42,20}}</string>
-                <key>sourceSize</key>
-                <string>{42,20}</string>
-            </dict>
             <key>common_bg_center.png</key>
             <dict>
                 <key>frame</key>
@@ -787,11 +774,11 @@
             <key>icon_lock_14x18.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2020,1898},{14,18}}</string>
+                <string>{{2016,2016},{14,18}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{14,18}}</string>
                 <key>sourceSize</key>
@@ -1044,19 +1031,6 @@
                 <key>sourceSize</key>
                 <string>{590,136}</string>
             </dict>
-            <key>rhombus_iceField_83x61.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{1982,1612},{83,61}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{83,61}}</string>
-                <key>sourceSize</key>
-                <string>{83,61}</string>
-            </dict>
             <key>shrie_power_bg_146x26.png</key>
             <dict>
                 <key>frame</key>
@@ -1083,6 +1057,19 @@
                 <key>sourceSize</key>
                 <string>{76,84}</string>
             </dict>
+            <key>soldier_title_attack.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2016,1612},{276,26}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{276,26}}</string>
+                <key>sourceSize</key>
+                <string>{276,26}</string>
+            </dict>
             <key>soldier_title_defence.png</key>
             <dict>
                 <key>frame</key>
@@ -1099,7 +1086,7 @@
             <key>tab_background_40x24.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2020,1728},{40,24}}</string>
+                <string>{{2016,1892},{40,24}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -1121,6 +1108,19 @@
                 <string>{{0,0},{578,50}}</string>
                 <key>sourceSize</key>
                 <string>{578,50}</string>
+            </dict>
+            <key>title_blue_430x30.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{1982,1612},{430,30}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{430,30}}</string>
+                <key>sourceSize</key>
+                <string>{430,30}</string>
             </dict>
             <key>tmp_blue_btn_down_64x56.png</key>
             <dict>
@@ -1151,7 +1151,7 @@
             <key>tmp_brown_btn_down_36x24.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2020,1772},{36,24}}</string>
+                <string>{{2016,1936},{36,24}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -1164,7 +1164,7 @@
             <key>tmp_brown_btn_up_36x24.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2020,1812},{36,24}}</string>
+                <string>{{2016,1976},{36,24}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -1186,19 +1186,6 @@
                 <string>{{0,0},{84,56}}</string>
                 <key>sourceSize</key>
                 <string>{84,56}</string>
-            </dict>
-            <key>tmp_progress_green_bar_348x40_2.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{1982,1699},{344,34}}</string>
-                <key>offset</key>
-                <string>{0,-1}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{2,4},{344,34}}</string>
-                <key>sourceSize</key>
-                <string>{348,40}</string>
             </dict>
             <key>torch_101x101.png</key>
             <dict>
@@ -1249,7 +1236,7 @@
             <key>size</key>
             <string>{2048,2048}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:06bceb1f1bb4596066e5554562275253:1/3$</string>
+            <string>$TexturePacker:SmartUpdate:ec4c56d3e872f92120c4a01a6f50e006:1/3$</string>
             <key>textureFileName</key>
             <string>ui_pvr0.png</string>
         </dict>
