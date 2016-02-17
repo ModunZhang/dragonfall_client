@@ -3805,5 +3805,41 @@
     <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_Label_df_glow_PS.hlsl">
       <Filter>renderer\shaders</Filter>
     </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_flash_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_mask_layer_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_banner_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_bannerpve_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_customer_color_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_mask_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_multi_tex_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_nolimittex_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_plane_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_ps_discoloration_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_warning_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_ccFilterShader_gray_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

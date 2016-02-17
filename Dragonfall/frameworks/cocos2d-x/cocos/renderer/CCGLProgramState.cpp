@@ -324,8 +324,15 @@ bool GLProgramState::init(GLProgram* glprogram)
         _uniforms[uniform.second.location] = value;
         _uniformsByName[uniform.first] = uniform.second.location;
     }
+#else
+	for (auto &uniform : _glprogram->_uniformsDescription) {
+		if (uniform.second.userDefine){
+			UniformValue value(&uniform.second, _glprogram);
+			_uniforms[uniform.second.location] = value;
+			_uniformsByName[uniform.first] = uniform.second.location;
+		}
+	}
 #endif
-
     return true;
 }
 
@@ -371,6 +378,16 @@ void GLProgramState::updateUniformsAndAttributes()
         _uniformAttributeValueDirty = false;
         
     }
+#else
+	if (_uniformAttributeValueDirty)
+	{
+		for (auto& uniformLocation : _uniformsByName)
+		{
+			_uniforms[uniformLocation.second]._uniform = _glprogram->getUniform(uniformLocation.first);
+		}
+		_uniformAttributeValueDirty = false;
+	}
+
 #endif
 }
 

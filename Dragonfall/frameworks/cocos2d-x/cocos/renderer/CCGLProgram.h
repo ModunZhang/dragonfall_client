@@ -71,6 +71,9 @@ struct Uniform
     GLenum type;
     /**String of the uniform name.*/
     std::string name;
+#if (DIRECTX_ENABLED == 1)
+	bool userDefine;
+#endif
 };
 
 
@@ -82,7 +85,7 @@ struct ShaderConstantBuffer
 	DirectX::XMFLOAT4X4 MPV;
 };
 
-struct ShaderDescriptor
+struct CC_DLL ShaderDescriptor
 {
 	std::string name;
 	std::vector<D3D11_INPUT_ELEMENT_DESC> inputLayout;
@@ -99,9 +102,9 @@ struct ShaderDescriptor
 		return *this;
 	}
 
-	ShaderDescriptor& Const(const std::string& name, GLint size, GLint type)
+	ShaderDescriptor& Const(const std::string& name, GLint size, GLint type, bool userDefine = false)
 	{
-		const Uniform u = { 0, size, type, name };
+		const Uniform u = { 0, size, type, name, userDefine };
 		uniformValues.push_back(u);
 		return *this;
 	}
@@ -490,7 +493,8 @@ public:
     void reset();
 
 #if (DIRECTX_ENABLED == 1)
-	void initWithHLSL(const ShaderDescriptor& vertexShader, const ShaderDescriptor& pixelShader);
+	static GLProgram* createWithHLSL(const ShaderDescriptor& vertexShader, const ShaderDescriptor& pixelShader);
+	bool initWithHLSL(const ShaderDescriptor& vertexShader, const ShaderDescriptor& pixelShader);
 #endif
 
     /*Get the built in openGL handle of the program.*/

@@ -411,16 +411,16 @@ void DXStateCache::setBlend(GLint GLsrc, GLint GLdst)
 	bool change = src != _blendDesc.RenderTarget[0].SrcBlend || dst != _blendDesc.RenderTarget[0].DestBlend;
 	if (change || _blendState == nullptr)
 	{
-		//DXResourceManager::getInstance().remove(&_blendState);
-		//_blendDesc = CD3D11_BLEND_DESC(CD3D11_DEFAULT());
-		//_blendDesc.RenderTarget[0].BlendEnable = true;
-		//_blendDesc.RenderTarget[0].SrcBlend = src;
-		//_blendDesc.RenderTarget[0].DestBlend = dst;
-		//_blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ZERO;
-		//_blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
-		//DX::ThrowIfFailed(_view->GetDevice()->CreateBlendState(&_blendDesc, &_blendState));
-		//_view->GetContext()->OMSetBlendState(_blendState, nullptr, 0xffffffff);
-		//DXResourceManager::getInstance().add(&_blendState);
+		DXResourceManager::getInstance().remove(&_blendState);
+		_blendDesc = CD3D11_BLEND_DESC(CD3D11_DEFAULT());
+		_blendDesc.RenderTarget[0].BlendEnable = true;
+		_blendDesc.RenderTarget[0].SrcBlend = src;
+		_blendDesc.RenderTarget[0].DestBlend = dst;
+		_blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ZERO;
+		_blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
+		DX::ThrowIfFailed(_view->GetDevice()->CreateBlendState(&_blendDesc, &_blendState));
+		_view->GetContext()->OMSetBlendState(_blendState, nullptr, 0xffffffff);
+		DXResourceManager::getInstance().add(&_blendState);
 	}
 
 	setRasterizer();

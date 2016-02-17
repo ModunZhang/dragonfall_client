@@ -201,7 +201,21 @@ GLProgram::~GLProgram()
 }
 
 #if (DIRECTX_ENABLED == 1)
-void GLProgram::initWithHLSL(const ShaderDescriptor& vertexShader, const ShaderDescriptor& pixelShader)
+GLProgram* GLProgram::createWithHLSL(const ShaderDescriptor& vShaderByteArray, const ShaderDescriptor& fShaderByteArray)
+{
+	auto ret = new (std::nothrow) GLProgram();
+	if (ret && ret->initWithHLSL(vShaderByteArray, fShaderByteArray)) {
+		ret->link();
+		ret->updateUniforms();
+		ret->autorelease();
+		return ret;
+	}
+
+	CC_SAFE_DELETE(ret);
+	return nullptr;
+}
+
+bool GLProgram::initWithHLSL(const ShaderDescriptor& vertexShader, const ShaderDescriptor& pixelShader)
 {
 #if (DIRECTX_ENABLED == 1)
 	DXResourceManager::getInstance().remove(&_inputLayout);
@@ -294,6 +308,7 @@ void GLProgram::initWithHLSL(const ShaderDescriptor& vertexShader, const ShaderD
 	DXResourceManager::getInstance().add(&_constantBufferPS);
 	_uniformDirtyPS = _uniformDirtyVS = true;
 #endif
+	return true;
 }
 #endif
 
