@@ -28,7 +28,7 @@ function PlatformAdapter:android()
     device.getOpenUDID = ext.getOpenUDID
     
     DEBUG_GET_ANIMATION_PATH = function(filePath)
-        filePath = string.gsub(filePath,".pvr.ccz",".png")
+        filePath = string.gsub(filePath,"%.pvr%.ccz",".png")
         return filePath
     end
 
@@ -89,7 +89,7 @@ function PlatformAdapter:winrt()
     audio = require("app.utils.audio-WP")
 
     DEBUG_GET_ANIMATION_PATH = function(filePath)
-        filePath = string.gsub(filePath,".pvr.ccz",".png")
+        filePath = string.gsub(filePath,"%.pvr%.ccz",".png")
         return filePath
     end
 
@@ -176,7 +176,7 @@ function PlatformAdapter:mac()
     end
 
     DEBUG_GET_ANIMATION_PATH = function(filePath)
-        filePath = string.gsub(filePath,".pvr.ccz",".png")
+        filePath = string.gsub(filePath,"%.pvr%.ccz",".png")
         filePath = string.gsub(filePath,"animations/","animations_mac/")
         return filePath
     end
@@ -313,7 +313,7 @@ function PlatformAdapter:windows()
     end
 
     DEBUG_GET_ANIMATION_PATH = function(filePath)
-        filePath = string.gsub(filePath,".pvr.ccz",".png")
+        filePath = string.gsub(filePath,"%.pvr%.ccz",".png")
         filePath = string.gsub(filePath,"animations/","animations_mac/")
         return filePath
     end
