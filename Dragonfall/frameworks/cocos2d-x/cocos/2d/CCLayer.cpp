@@ -603,7 +603,9 @@ void LayerColor::onDraw(const Mat4& transform, uint32_t flags)
 {
     getGLProgram()->use();
     getGLProgram()->setUniformsForBuiltins(transform);
+#if DIRECTX_ENABLED == 1
 	getGLProgram()->set();
+#endif
 #if DIRECTX_ENABLED == 0
     GL::enableVertexAttribs( GL::VERTEX_ATTRIB_FLAG_POSITION | GL::VERTEX_ATTRIB_FLAG_COLOR );
     
