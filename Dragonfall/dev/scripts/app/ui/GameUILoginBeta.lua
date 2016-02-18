@@ -328,7 +328,7 @@ function GameUILoginBeta:createGameNotice()
                     dialog:LeftButtonClicked()
                 end)
                 :setButtonSize(188,66)
-            local bg = display.newScale9Sprite("background_notice_128x128_2.png", 0, 0,cc.size(612,390),cc.rect(15,15,98,98))
+            local bg = display.newScale9Sprite("background_notice_128x128_2.png", 0, 0,cc.size(568,390),cc.rect(15,15,98,98))
                 :align(display.CENTER_BOTTOM,size.width/2,96)
                 :addTo(body)
             local user_agreement_label = UIKit:ttfLabel({
@@ -336,7 +336,7 @@ function GameUILoginBeta:createGameNotice()
                 size = 22,
                 color = 0xffedae,
                 align = cc.ui.UILabel.TEXT_ALIGN_CENTER,
-                dimensions = cc.size(566, 0),
+                dimensions = cc.size(526, 0),
             })
             local w,h =  user_agreement_label:getContentSize().width,user_agreement_label:getContentSize().height
             -- 提示内容

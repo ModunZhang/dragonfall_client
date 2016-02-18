@@ -8,7 +8,7 @@ local WidgetNoticePopDialog = UIKit:createUIClass("WidgetNoticePopDialog", "UIAu
 
 function WidgetNoticePopDialog:ctor(height,title_text,y,title_bg, param)
     WidgetNoticePopDialog.super.ctor(self, param)
-    self.body = display.newScale9Sprite("background_notice_128x128_1.png", 0, 0,cc.size(652,height),cc.rect(30,30,68,68))
+    self.body = display.newScale9Sprite("background_notice_128x128_1.png", 0, 0,cc.size(608,height),cc.rect(30,30,68,68))
             :align(display.TOP_CENTER,display.cx,y or display.top-140)
     local body = self.body
     self:addTouchAbleChild(body)
