@@ -173,6 +173,11 @@ public class CommonUtils {
 		return GCMUtils.getRegisterId();
 	}
 	
+	public static boolean isLowMemoryDevice()
+	{
+		return getInstance().getDeviceInfo().isLowMemoryDevice();
+	}
+	
 	public static void RegistereForRemoteNotifications() {
 		getInstance().RegisterGCMServiceIf();
 	}

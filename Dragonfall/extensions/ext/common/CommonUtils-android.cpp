@@ -233,7 +233,14 @@ const bool IsAppAdHocMode()
 }
 bool isLowMemoryDevice()
 {
-    return false;
+    cocos2d::JniMethodInfo t;
+    bool ret = false;
+    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "isLowMemoryDevice", "()Z")) 
+    {
+        ret = t.env->CallStaticBooleanMethod(t.classID, t.methodID);
+        t.env->DeleteLocalRef(t.classID);
+    }
+    return ret;
 }
 
 long getAppMemoryUsage()

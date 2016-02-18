@@ -97,7 +97,7 @@
 
 #================sdks========================
 #talkingdata
--libraryjars ./libs/Game_Analytics_SDK_Android_3.2.3.jar
+#-libraryjars ./libs/Game_Analytics_SDK_Android_3.2.3.jar
 -keep class com.talkingdata.** {*;}
 -keep class com.tendcloud.** {*;}
 -dontwarn com.tendcloud.**
@@ -145,6 +145,7 @@
 	public static java.lang.String getInternetConnectionStatus();
 	public static java.lang.String getAppMinVersion();
 	public static boolean isAppHocMode();
+	public static boolean isLowMemoryDevice();
 	public static java.lang.String GetDeviceToken();
 }
 
