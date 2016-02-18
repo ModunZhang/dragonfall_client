@@ -504,6 +504,46 @@ static void convertI8ToBGRA8888(const unsigned char* data, ssize_t dataLen, unsi
 //////////////////////////////////////////////////////////////////////////
 #if (DIRECTX_ENABLED == 1)
 int Texture2D::s_TextureCount = 0;
+void Texture2D::UpdateSamplerState()
+{
+	DXResourceManager::getInstance().remove(&_samplerState);
+	D3D11_SAMPLER_DESC samplerDesc;
+	samplerDesc.Filter = _antialiasEnabled ? D3D11_FILTER_MIN_MAG_MIP_LINEAR : D3D11_FILTER_MIN_MAG_MIP_POINT;
+	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+	samplerDesc.MipLODBias = 0;
+	samplerDesc.MaxAnisotropy = 1;
+	samplerDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+	samplerDesc.BorderColor[0] = 1.0f;
+	samplerDesc.BorderColor[1] = 1.0f;
+	samplerDesc.BorderColor[2] = 1.0f;
+	samplerDesc.BorderColor[3] = 1.0f;
+	samplerDesc.MinLOD = -3.402823466e+38F; // -FLT_MAX
+	samplerDesc.MaxLOD = 3.402823466e+38F; // FLT_MAX
+
+	DX::ThrowIfFailed(
+		GLViewImpl::sharedOpenGLView()->GetDevice()->CreateSamplerState(
+		&samplerDesc,
+		&_samplerState
+		)
+		);
+
+	DXResourceManager::getInstance().add(&_samplerState);
+
+#if CC_ENABLE_CACHE_TEXTURE_DATA
+	if (_antialiasEnabled)
+	{
+		TexParams texParams = { (GLuint)(_hasMipmaps ? D3D11_FILTER_MIN_MAG_MIP_POINT : D3D11_FILTER_MIN_MAG_MIP_LINEAR), D3D11_FILTER_MIN_MAG_MIP_LINEAR, D3D11_TEXTURE_ADDRESS_CLAMP, D3D11_TEXTURE_ADDRESS_CLAMP };
+		VolatileTextureMgr::setTexParameters(this, texParams);
+	}
+	else
+	{
+		TexParams texParams = { (GLuint)(_hasMipmaps ? D3D11_FILTER_MIN_MAG_MIP_POINT : D3D11_FILTER_MIN_MAG_MIP_POINT), D3D11_FILTER_MIN_MAG_MIP_POINT, D3D11_TEXTURE_ADDRESS_CLAMP, D3D11_TEXTURE_ADDRESS_CLAMP };
+		VolatileTextureMgr::setTexParameters(this, texParams);
+	}
+#endif
+}
 #endif
 Texture2D::Texture2D()
 : _pixelFormat(Texture2D::PixelFormat::DEFAULT)
@@ -673,7 +713,6 @@ bool Texture2D::initWithMipmaps(MipmapInfo* mipmaps, int mipmapsNum, PixelFormat
 #if (DIRECTX_ENABLED == 1)
 	DXResourceManager::getInstance().remove(&_texture);
 	DXResourceManager::getInstance().remove(&_textureView);
-	DXResourceManager::getInstance().remove(&_samplerState);
 
 	auto view = GLViewImpl::sharedOpenGLView();
 	bool compressed = false;
@@ -702,32 +741,9 @@ bool Texture2D::initWithMipmaps(MipmapInfo* mipmaps, int mipmapsNum, PixelFormat
 	else if (pixelFormat == PixelFormat::S3TC_DXT5 || pixelFormat == PixelFormat::S3TC_DXT3 || pixelFormat == PixelFormat::S3TC_DXT1)
 	{
 		DX::ThrowIfFailed(DirectX::CreateDDSTextureFromMemory(view->GetDevice(), (uint8_t*)mipmaps->address, mipmaps->len, (ID3D11Resource**)&_texture, &_textureView));
-
-		D3D11_SAMPLER_DESC samplerDesc;
-		samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-		samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-		samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-		samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-		samplerDesc.MipLODBias = 0;
-		samplerDesc.MaxAnisotropy = 1;
-		samplerDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
-		samplerDesc.BorderColor[0] = 1.0f;
-		samplerDesc.BorderColor[1] = 1.0f;
-		samplerDesc.BorderColor[2] = 1.0f;
-		samplerDesc.BorderColor[3] = 1.0f;
-		samplerDesc.MinLOD = -3.402823466e+38F; // -FLT_MAX
-		samplerDesc.MaxLOD = 3.402823466e+38F; // FLT_MAX
-
-		DX::ThrowIfFailed(
-			view->GetDevice()->CreateSamplerState(
-			&samplerDesc,
-			&_samplerState
-			)
-			);
-
 		DXResourceManager::getInstance().add(&_texture);
 		DXResourceManager::getInstance().add(&_textureView);
-		DXResourceManager::getInstance().add(&_samplerState);
+		UpdateSamplerState();
 
 		compressed = true;
 	}
@@ -782,28 +798,6 @@ bool Texture2D::initWithMipmaps(MipmapInfo* mipmaps, int mipmapsNum, PixelFormat
 				_texture = nullptr;
 			}
 
-			D3D11_SAMPLER_DESC samplerDesc;
-			samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-			samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-			samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-			samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-			samplerDesc.MipLODBias = 0;
-			samplerDesc.MaxAnisotropy = 1;
-			samplerDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
-			samplerDesc.BorderColor[0] = 1.0f;
-			samplerDesc.BorderColor[1] = 1.0f;
-			samplerDesc.BorderColor[2] = 1.0f;
-			samplerDesc.BorderColor[3] = 1.0f;
-			samplerDesc.MinLOD = -3.402823466e+38F; // -FLT_MAX
-			samplerDesc.MaxLOD = 3.402823466e+38F; // FLT_MAX
-
-			DX::ThrowIfFailed(
-				view->GetDevice()->CreateSamplerState(
-				&samplerDesc,
-				&_samplerState
-				)
-			);
-
 			if (mipmapsNum > 1)
 			{
 				view->GetContext()->UpdateSubresource(_texture, 0, nullptr, mipmaps->address, static_cast<UINT>(rowPitch), static_cast<UINT>(mipmaps->len));
@@ -812,7 +806,7 @@ bool Texture2D::initWithMipmaps(MipmapInfo* mipmaps, int mipmapsNum, PixelFormat
 
 			DXResourceManager::getInstance().add(&_texture);
 			DXResourceManager::getInstance().add(&_textureView);
-			DXResourceManager::getInstance().add(&_samplerState);
+			UpdateSamplerState();
 
 #if defined(_DEBUG) || defined(PROFILE)
 			_texture->SetPrivateData(WKPDID_D3DDebugObjectName,
@@ -1551,7 +1545,6 @@ void Texture2D::setTexParameters(const TexParams &texParams)
 
 void Texture2D::setAliasTexParameters()
 {
-#if (DIRECTX_ENABLED == 0)
     if (! _antialiasEnabled)
     {
         return;
@@ -1563,7 +1556,7 @@ void Texture2D::setAliasTexParameters()
     {
         return;
     }
-
+#if (DIRECTX_ENABLED == 0)
     GL::bindTexture2D( _name );
 
     if( ! _hasMipmaps )
@@ -1580,12 +1573,13 @@ void Texture2D::setAliasTexParameters()
     TexParams texParams = {(GLuint)(_hasMipmaps?GL_NEAREST_MIPMAP_NEAREST:GL_NEAREST),GL_NEAREST,GL_NONE,GL_NONE};
     VolatileTextureMgr::setTexParameters(this, texParams);
 #endif
+#else
+	UpdateSamplerState();
 #endif
 }
 
 void Texture2D::setAntiAliasTexParameters()
 {
-#if (DIRECTX_ENABLED == 0)
     if ( _antialiasEnabled )
     {
         return;
@@ -1597,7 +1591,7 @@ void Texture2D::setAntiAliasTexParameters()
     {
         return;
     }
-
+#if (DIRECTX_ENABLED == 0)
     GL::bindTexture2D( _name );
 
     if( ! _hasMipmaps )
@@ -1614,6 +1608,8 @@ void Texture2D::setAntiAliasTexParameters()
     TexParams texParams = {(GLuint)(_hasMipmaps?GL_LINEAR_MIPMAP_NEAREST:GL_LINEAR),GL_LINEAR,GL_NONE,GL_NONE};
     VolatileTextureMgr::setTexParameters(this, texParams);
 #endif
+#else
+	UpdateSamplerState();
 #endif
 }
 

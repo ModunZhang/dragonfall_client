@@ -506,6 +506,8 @@ protected:
 	bool _renderTargetTexture;
 
 	static int s_TextureCount;
+
+	void UpdateSamplerState();
 public:
 		ID3D11ShaderResourceView* const * getView() const
 		{
