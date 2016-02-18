@@ -21,7 +21,6 @@ local scheduler = require(cc.PACKAGE_NAME .. ".scheduler")
 local light_gem = import("..particles.light_gem")
 local loginDays = GameDatas.Vip.loginDays
 local VIP_LEVEL = GameDatas.Vip.level
-local config_store = GameDatas.StoreItems.items
 
 local GameUIVipNew = UIKit:createUIClass('GameUIVipNew',"GameUIWithCommonHeader")
 

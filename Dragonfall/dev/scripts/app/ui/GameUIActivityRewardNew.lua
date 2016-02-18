@@ -619,6 +619,7 @@ end
 
 function GameUIActivityRewardNew:GetRewardName(reward_type,reward_key)
     if reward_type == 'resource'
+        or reward_type == 'items'
         or reward_type == 'special'
         or reward_type == 'speedup'
         or reward_type == 'buff'
