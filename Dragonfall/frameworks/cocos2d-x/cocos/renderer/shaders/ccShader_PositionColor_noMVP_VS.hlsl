@@ -26,7 +26,7 @@ PixelShaderInput main(VertexShaderInput input)
 	float4 pos = float4(input.pos, 1.0f);
 		
 	// Transform the vertex position into projected space.			
-	output.pos = mul(pos, projection);
+	output.pos = mul(projection, pos);
 
 	// Pass the color through without modification.
 	output.color = input.color;

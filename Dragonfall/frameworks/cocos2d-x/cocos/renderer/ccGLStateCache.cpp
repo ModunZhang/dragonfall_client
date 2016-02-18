@@ -297,7 +297,7 @@ void DXStateCache::invalidateStateCache()
 
 	_blendDesc = CD3D11_BLEND_DESC(CD3D11_DEFAULT());
 	_rasterizerDesc = CD3D11_RASTERIZER_DESC(CD3D11_DEFAULT());
-	_rasterizerDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_BACK;
+	_rasterizerDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_NONE;
 	_rasterizerDesc.FrontCounterClockwise = true;
 	_primitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_UNDEFINED;
 	memset(_constantBufferVS, 0, sizeof(_constantBufferVS));

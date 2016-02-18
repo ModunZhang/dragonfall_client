@@ -35,7 +35,8 @@ NS_CC_BEGIN
 const ShaderDescriptor ccPosition_uColor_frag = ShaderDescriptor("Position_uColor");
 const ShaderDescriptor ccPosition_uColor_vert = ShaderDescriptor("Position_uColor")
 .Input("POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0)
-.Input("COLOR", 0, DXGI_FORMAT_R8G8B8A8_UNORM, 0, 12);
+.Input("COLOR", 0, DXGI_FORMAT_R8G8B8A8_UNORM, 0, 12)
+.Const(GLProgram::UNIFORM_NAME_MVP_MATRIX, sizeof(Mat4), GL_FLOAT_MAT4);
 
 const ShaderDescriptor ccPositionColor_frag = ShaderDescriptor("PositionColor");
 const ShaderDescriptor ccPositionColor_vert = ShaderDescriptor("PositionColor")
@@ -52,12 +53,14 @@ const ShaderDescriptor ccPositionColor_noMVP_vert = ShaderDescriptor("PositionCo
 const ShaderDescriptor ccPositionTexture_frag = ShaderDescriptor("PositionTexture");
 const ShaderDescriptor ccPositionTexture_vert = ShaderDescriptor("PositionTexture")
 .Input("POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0)
-.Input("COLOR", 0, DXGI_FORMAT_R8G8B8A8_UNORM, 0, 12);
+.Input("COLOR", 0, DXGI_FORMAT_R8G8B8A8_UNORM, 0, 12)
+.Const(GLProgram::UNIFORM_NAME_MVP_MATRIX, sizeof(Mat4), GL_FLOAT_MAT4);
 
 const ShaderDescriptor ccPositionTextureA8Color_frag = ShaderDescriptor("PositionTextureA8Color");
 const ShaderDescriptor ccPositionTextureA8Color_vert = ShaderDescriptor("PositionTextureA8Color")
 .Input("POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0)
-.Input("COLOR", 0, DXGI_FORMAT_R8G8B8A8_UNORM, 0, 12);
+.Input("COLOR", 0, DXGI_FORMAT_R8G8B8A8_UNORM, 0, 12)
+.Const(GLProgram::UNIFORM_NAME_MVP_MATRIX, sizeof(Mat4), GL_FLOAT_MAT4);
 
 const ShaderDescriptor ccPositionTextureColor_frag = ShaderDescriptor("PositionTextureColor");
 const ShaderDescriptor ccPositionTextureColor_vert = ShaderDescriptor("PositionTextureColor")
@@ -78,12 +81,14 @@ const ShaderDescriptor ccPositionTextureColorAlphaTest_frag = ShaderDescriptor("
 const ShaderDescriptor ccPositionTexture_uColor_frag = ShaderDescriptor("PositionTexture_uColor");
 const ShaderDescriptor ccPositionTexture_uColor_vert = ShaderDescriptor("PositionTexture_uColor")
 .Input("POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0)
-.Input("COLOR", 0, DXGI_FORMAT_R8G8B8A8_UNORM, 0, 12);
+.Input("COLOR", 0, DXGI_FORMAT_R8G8B8A8_UNORM, 0, 12)
+.Const(GLProgram::UNIFORM_NAME_MVP_MATRIX, sizeof(Mat4), GL_FLOAT_MAT4);
 
 const ShaderDescriptor ccPositionColorLengthTexture_frag = ShaderDescriptor("PositionColorLengthTexture");
 const ShaderDescriptor ccPositionColorLengthTexture_vert = ShaderDescriptor("PositionColorLengthTexture")
 .Input("POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0)
-.Input("COLOR", 0, DXGI_FORMAT_R8G8B8A8_UNORM, 0, 12);
+.Input("COLOR", 0, DXGI_FORMAT_R8G8B8A8_UNORM, 0, 12)
+.Const(GLProgram::UNIFORM_NAME_MVP_MATRIX, sizeof(Mat4), GL_FLOAT_MAT4);
 
 const ShaderDescriptor ccLabelDistanceFieldNormal_frag = ShaderDescriptor("Label_df_Normal")
 .Const("u_textColor", sizeof(float) * 4, GL_FLOAT_VEC4);
@@ -105,10 +110,14 @@ const ShaderDescriptor ccLabel_vert = ShaderDescriptor("Label")
 
 const ShaderDescriptor cc3D_PositionTex_vert = ShaderDescriptor("3D_PositionTex")
 .Input("POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0)
-.Input("COLOR", 0, DXGI_FORMAT_R8G8B8A8_UNORM, 0, 12);
+.Input("COLOR", 0, DXGI_FORMAT_R8G8B8A8_UNORM, 0, 12)
+.Const(GLProgram::UNIFORM_NAME_MVP_MATRIX, sizeof(Mat4), GL_FLOAT_MAT4);
+
 const ShaderDescriptor cc3D_SkinPositionTex_vert = ShaderDescriptor("3D_PositionTex")
 .Input("POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0)
-.Input("COLOR", 0, DXGI_FORMAT_R8G8B8A8_UNORM, 0, 12);
+.Input("COLOR", 0, DXGI_FORMAT_R8G8B8A8_UNORM, 0, 12)
+.Const(GLProgram::UNIFORM_NAME_MVP_MATRIX, sizeof(Mat4), GL_FLOAT_MAT4);
+
 const ShaderDescriptor cc3D_ColorTex_frag = ShaderDescriptor("3D_ColorTex");
 const ShaderDescriptor cc3D_Color_frag = ShaderDescriptor("3D_Color");
 #else
