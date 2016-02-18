@@ -895,15 +895,17 @@ void Label::onDraw(const Mat4& transform, bool transformUpdated)
              _effectColorF.r,_effectColorF.g,_effectColorF.b,_effectColorF.a);
     }
 
+#if (DIRECTX_ENABLED == 1)
+	glprogram->set();
+#endif
+
     if(_shadowEnabled && _shadowBlurRadius <= 0)
     {
         drawShadowWithoutBlur();
     }
 
     glprogram->setUniformsForBuiltins(transform);
-#if (DIRECTX_ENABLED == 1)
-	glprogram->set();
-#endif
+
 
     for(const auto &child: _children)
     {
