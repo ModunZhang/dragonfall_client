@@ -257,7 +257,7 @@ function GameUIVipNew:InitVipTop()
     local vip_level,percent,exp = User:GetVipLevel()
     progressTimer_vip_exp:setPercentage(percent)
     self.vip_exp_label = UIKit:ttfLabel({
-        text = string.formatnumberthousands(exp - User:GetSpecialVipLevelExp(vip_level)).."/"..string.formatnumberthousands(User:GetSpecialVipLevelExpTo(vip_level)),
+        text = string.formatnumberthousands(exp).."/"..string.formatnumberthousands(User:GetSpecialVipLevelExpTo(vip_level)),
         size = 20,
         color = 0xfff3c7,
         shadow = true
