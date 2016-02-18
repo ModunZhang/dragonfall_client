@@ -121,8 +121,8 @@ void DirectXMain::StartRenderLoop()
 				auto context = m_deviceResources->GetD3DDeviceContext();
 
 				// 将视区重置为针对整个屏幕。
-				auto viewport = m_deviceResources->GetScreenViewport();
-				context->RSSetViewports(1, &viewport);
+				//auto viewport = m_deviceResources->GetScreenViewport();
+				//context->RSSetViewports(1, &viewport);
 
 				// 将呈现目标重置为屏幕。
 				ID3D11RenderTargetView *const targets[1] = { m_deviceResources->GetBackBufferRenderTargetView() };
@@ -253,8 +253,12 @@ void DirectXMain::OnDeviceRestored()
 void DirectXMain::GetSwapChainPanelSize(GLsizei* width, GLsizei* height)
 {
 	critical_section::scoped_lock lock(GetCriticalSection());
-	*width = static_cast<GLsizei>(mSwapChainPanelSize.Width);
-	*height = static_cast<GLsizei>(mSwapChainPanelSize.Height);
+	//*width = static_cast<GLsizei>(mSwapChainPanelSize.Width);
+	//*height = static_cast<GLsizei>(mSwapChainPanelSize.Height);
+
+	auto rect = m_deviceResources->GetScreenViewport();
+	*width = rect.Width;
+	*height = rect.Height;
 }
 void DirectXMain::CreateRenderSurface()
 {

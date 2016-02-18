@@ -294,6 +294,7 @@ public:
 public:
 	DX_MANAGER_PROPERTY_DEF(ID3D11Buffer*, buffer);
 	DX_MANAGER_PROPERTY_DEF(ID3D11Texture2D*, texture);
+	DX_MANAGER_PROPERTY_DEF(ID3D11SamplerState*, samplerState);
 	DX_MANAGER_PROPERTY_DEF(ID3D11VertexShader*, vs);
 	DX_MANAGER_PROPERTY_DEF(ID3D11PixelShader*, ps);
 	DX_MANAGER_PROPERTY_DEF(ID3D11ShaderResourceView*, shaderView);

@@ -25,6 +25,15 @@ namespace DX
 		void Trim();
 		void Present();
 
+		float GetCompositionScaleX()
+		{
+			return m_compositionScaleX;
+		}
+		float GetCompositionScaleY()
+		{
+			return m_compositionScaleY;
+		}
+
 		// 设备访问器。
 		Windows::Foundation::Size GetOutputSize() const					{ return m_outputSize; }
 		Windows::Foundation::Size GetLogicalSize() const				{ return m_logicalSize; }

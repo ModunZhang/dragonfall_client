@@ -114,6 +114,8 @@ public:
     */
 	static GLViewImpl* sharedOpenGLView();
 
+	void SetCompositionScale(float compositionScaleX, float compositionScaleY);
+
 	void SetWP8Win(IWP8Win* win8)
 	{
 		m_wp8windows = win8;
@@ -155,6 +157,8 @@ private:
     float m_width;
     float m_height;
     float m_dpi;
+	float											m_compositionScaleX;
+	float											m_compositionScaleY;
 
     Windows::Graphics::Display::DisplayOrientations m_orientation;
 	Windows::Foundation::Rect m_keyboardRect;

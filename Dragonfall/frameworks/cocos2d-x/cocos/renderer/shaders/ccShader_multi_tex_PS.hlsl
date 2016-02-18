@@ -1,11 +1,6 @@
-Texture2D g_Texture0;
+Texture2D g_Texture0 : register(t0);
 
-SamplerState TextureSampler
-{
-	Filter = MIN_MAG_MIP_LINEAR;
-	AddressU = Wrap;
-	AddressV = Wrap;
-};
+SamplerState TextureSampler : register(s0);
 
 // A constant buffer that stores the three basic column-major matrices for composing geometry.
 cbuffer ConstantBuffer : register(b0)

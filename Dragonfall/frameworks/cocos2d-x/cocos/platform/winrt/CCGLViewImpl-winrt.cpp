@@ -136,6 +136,11 @@ void GLViewImpl::setPanel(Windows::UI::Xaml::Controls::Panel^ panel)
 {
     m_panel = panel;
 }
+void GLViewImpl::SetCompositionScale(float compositionScaleX, float compositionScaleY)
+{
+	m_compositionScaleX = compositionScaleX;
+	m_compositionScaleY = compositionScaleY;
+}
 
 
 
@@ -442,8 +447,8 @@ cocos2d::Vec2 GLViewImpl::TransformToOrientation(Windows::Foundation::Point p)
 {
     cocos2d::Vec2 returnValue;
 
-    float x = p.X;
-    float y = p.Y;  
+	float x = p.X * m_compositionScaleX;
+	float y = p.Y * m_compositionScaleY;
     returnValue = Vec2(x, y);
 
 #if 0

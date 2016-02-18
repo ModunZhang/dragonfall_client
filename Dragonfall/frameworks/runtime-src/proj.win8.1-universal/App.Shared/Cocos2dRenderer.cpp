@@ -82,6 +82,7 @@ void Cocos2dRenderer::Resume()
     {
         GLViewImpl* glview = GLViewImpl::create("Test Cpp");
 		glview->SetWP8Win(m_wp8window);
+		glview->SetCompositionScale(m_deviceResources->GetCompositionScaleX(), m_deviceResources->GetCompositionScaleY());
         glview->setDispatcher(m_dispatcher.Get());
         glview->setPanel(m_panel.Get());
         glview->Create(static_cast<float>(m_width), static_cast<float>(m_height), m_dpi, m_orientation);

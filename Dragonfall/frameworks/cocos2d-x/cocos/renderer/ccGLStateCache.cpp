@@ -438,7 +438,11 @@ void DXStateCache::setViewport(float x, float y, float w, float h)
 
 void DXStateCache::setScissor(float x, float y, float w, float h)
 {
-	CD3D11_RECT rect(x, y, x + w, y + h);
+	float left = x < 0 ? 0 : x;
+	float top = y < 0 ? 0 : y;
+	float right = x + w < 0 ? 0 : x + w;
+	float bottom = y + h < 0 ? 0 : y + h;
+	CD3D11_RECT rect(left, top, right, bottom);
 	if (rect != _scissorRect)
 	{
 		_view->GetContext()->RSSetScissorRects(1, &rect);
