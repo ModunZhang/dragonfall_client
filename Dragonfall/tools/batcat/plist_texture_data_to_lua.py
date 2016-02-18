@@ -55,7 +55,7 @@ if __name__ == "__main__":
     plistFiles = []
     for root, dirs, files in os.walk(m_plist_dir):
         for fileName in files:
-            if fileName.endswith((".plist")) and not "~$" in fileName:
+            if fileName.endswith((".plist")) and not "~$" in fileName and not "_low_ram" in fileName:
                 plistFiles.append(os.path.join(root, fileName))
     plistFiles.sort()
     file = open(m_out_path, "w")
