@@ -253,12 +253,15 @@ void DirectXMain::OnDeviceRestored()
 void DirectXMain::GetSwapChainPanelSize(GLsizei* width, GLsizei* height)
 {
 	critical_section::scoped_lock lock(GetCriticalSection());
-	//*width = static_cast<GLsizei>(mSwapChainPanelSize.Width);
-	//*height = static_cast<GLsizei>(mSwapChainPanelSize.Height);
+#if DIRECTX_ENABLED == 0
+	*width = static_cast<GLsizei>(mSwapChainPanelSize.Width);
+	*height = static_cast<GLsizei>(mSwapChainPanelSize.Height);
+#else
 
 	auto rect = m_deviceResources->GetScreenViewport();
 	*width = rect.Width;
 	*height = rect.Height;
+#endif
 }
 void DirectXMain::CreateRenderSurface()
 {

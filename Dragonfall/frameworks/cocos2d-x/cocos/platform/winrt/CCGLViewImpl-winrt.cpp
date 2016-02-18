@@ -446,10 +446,15 @@ void GLViewImpl::UpdateWindowSize()
 cocos2d::Vec2 GLViewImpl::TransformToOrientation(Windows::Foundation::Point p)
 {
     cocos2d::Vec2 returnValue;
-
+#if DIRECTX_ENABLED == 0
+	float x = p.X;
+	float y = p.Y;
+	returnValue = Vec2(x, y);
+#else
 	float x = p.X * m_compositionScaleX;
 	float y = p.Y * m_compositionScaleY;
-    returnValue = Vec2(x, y);
+	returnValue = Vec2(x, y);
+#endif
 
 #if 0
     switch (m_orientation)

@@ -70,8 +70,10 @@ void GrayFilter::setParameter(float $r, float $g, float $b, float $a)
 {
 	setParameter(Color4F($r, $g, $b, $a));
 }
+#if DIRECTX_ENABLED == 1
 const ShaderDescriptor ccFilterShader_gray = ShaderDescriptor("ccFilterShader_gray")
 .Const("u_grayParam", sizeof(float) * 4, GL_FLOAT_VEC4, true);
+#endif
 GLProgram* GrayFilter::loadShader()
 {
 #if DIRECTX_ENABLED == 0
