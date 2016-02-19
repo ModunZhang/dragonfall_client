@@ -285,7 +285,7 @@ function GameUIVipNew:InitVipTop()
     local current_level = display.newSprite(btn_pic):align(display.CENTER, bg_size.width/2,bg_size.height - 55):addTo(top_bg)
 
     self.vip_level_pic = display.newSprite("VIP_"..vip_level.."_46x32.png"):addTo(current_level)
-        :align(display.CENTER,52,45)
+        :align(display.CENTER,48,45)
     self.vip_level_bg = current_level
 
     -- 连续登陆，明日登陆

@@ -310,6 +310,10 @@ function GameUIKeep:CreateCanBeUnlockedBuildingListView()
                 :addTo(title_bg)
             if canUnlock then
                 display.newSprite("next_32x38.png"):align(display.CENTER, 260, 0):addTo(content, 10)
+                    :runAction(
+                        cc.RepeatForever:create(transition.sequence{cc.ScaleTo:create(1/2, 1.5),
+                            cc.ScaleTo:create(1/2, 1.0),})
+                    )
             end
 
             UIKit:ttfLabel({
@@ -608,6 +612,7 @@ end
 
 
 return GameUIKeep
+
 
 
 
