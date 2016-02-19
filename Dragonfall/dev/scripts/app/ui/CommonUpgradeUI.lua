@@ -7,7 +7,7 @@ local WidgetRequirementListview = import("..widget.WidgetRequirementListview")
 local WidgetPushButton = import("..widget.WidgetPushButton")
 local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local WidgetAccelerateGroup = import("..widget.WidgetAccelerateGroup")
-
+local intInit = GameDatas.PlayerInitData.intInit
 
 local SpriteConfig = import("..sprites.SpriteConfig")
 
@@ -343,6 +343,7 @@ function CommonUpgradeUI:SetUpgradeEfficiency()
         local limit = UtilsForBuilding:GetWarehouseLimit(User).maxWood
         local next_limit = UtilsForBuilding:GetWarehouseLimit(User, 1).maxWood
         eff_node:AddItem(bd.warehouse_max, formatNumber(limit), formatNumber(next_limit - limit))
+        eff_node:AddItem(_("暗仓基础保护"), formatNumber(limit*(intInit.playerResourceProtectPercent.value/100)), formatNumber((next_limit - limit)*(intInit.playerResourceProtectPercent.value/100)))
     elseif self.building:GetType()=="toolShop" then
         local production = UtilsForBuilding:GetPropertyBy(User, "toolShop", "production")
         local next_production = UtilsForBuilding:GetPropertyBy(User, "toolShop", "production", 1)
@@ -375,6 +376,10 @@ function CommonUpgradeUI:SetUpgradeEfficiency()
         eff_node:AddItem( bd.foundry_miner, formatNumber(next_houseAdd), formatNumber(next_houseAdd - houseAdd) )
         local added = next_protection - protection
         eff_node:AddItem( bd.foundry_protection, (protection*100).."%", added > 0 and added * 100 .. "%" or "" )
+        local warehouse = self.city:GetFirstBuildingByType("warehouse")
+        local w_level = warehouse:GetLevel()
+        local max_resource = warehouse:GetFunctionConfig()["warehouse"][w_level].maxIron
+        eff_node:AddItem( _("暗仓保护"), formatNumber(max_resource * DataUtils:GetResourceProtectPercent("iron") ),"")
     elseif self.building:GetType()=="lumbermill" then
 
         local houseAdd = UtilsForBuilding:GetPropertyBy(User, location, "houseAdd")
@@ -386,6 +391,10 @@ function CommonUpgradeUI:SetUpgradeEfficiency()
         eff_node:AddItem( bd.lumbermill_woodcutter, formatNumber(houseAdd), formatNumber(next_houseAdd - houseAdd) )
         local added = next_protection - protection
         eff_node:AddItem( bd.lumbermill_protection, (protection*100).."%",  added > 0 and added * 100 .. "%" or "")
+        local warehouse = self.city:GetFirstBuildingByType("warehouse")
+        local w_level = warehouse:GetLevel()
+        local max_resource = warehouse:GetFunctionConfig()["warehouse"][w_level].maxWood
+        eff_node:AddItem( _("暗仓保护"), formatNumber(max_resource * DataUtils:GetResourceProtectPercent("wood") ),"")
     elseif self.building:GetType()=="mill" then
         local houseAdd = UtilsForBuilding:GetPropertyBy(User, location, "houseAdd")
         local next_houseAdd = UtilsForBuilding:GetPropertyBy(User, location, "houseAdd", 1)
@@ -396,6 +405,10 @@ function CommonUpgradeUI:SetUpgradeEfficiency()
         eff_node:AddItem( bd.mill_farmer, formatNumber(houseAdd), formatNumber(next_houseAdd - houseAdd) )
         local added = next_protection - protection
         eff_node:AddItem( bd.mill_protection, (protection*100).."%", added > 0 and added * 100 .. "%" or "")
+        local warehouse = self.city:GetFirstBuildingByType("warehouse")
+        local w_level = warehouse:GetLevel()
+        local max_resource = warehouse:GetFunctionConfig()["warehouse"][w_level].maxFood
+        eff_node:AddItem( _("暗仓保护"), formatNumber(max_resource * DataUtils:GetResourceProtectPercent("food") ),"")
     elseif self.building:GetType()=="stoneMason" then
 
         local houseAdd = UtilsForBuilding:GetPropertyBy(User, location, "houseAdd")
@@ -407,6 +420,10 @@ function CommonUpgradeUI:SetUpgradeEfficiency()
         eff_node:AddItem( bd.stoneMason_quarrier, formatNumber(houseAdd), formatNumber(next_houseAdd - houseAdd) )
         local added = next_protection - protection
         eff_node:AddItem( bd.stoneMason_protection, (protection*100).."%", added > 0 and added * 100 .. "%" or "" )
+        local warehouse = self.city:GetFirstBuildingByType("warehouse")
+        local w_level = warehouse:GetLevel()
+        local max_resource = warehouse:GetFunctionConfig()["warehouse"][w_level].maxStone
+        eff_node:AddItem( _("暗仓保护"), formatNumber(max_resource * DataUtils:GetResourceProtectPercent("stone") ),"")
     elseif self.building:GetType()=="hospital" then
         local maxcasualty = UtilsForBuilding:GetMaxCasualty(User)
         local nextmaxcasualty = UtilsForBuilding:GetMaxCasualty(User, 1)
