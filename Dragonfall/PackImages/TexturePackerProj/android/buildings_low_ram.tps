@@ -8,23 +8,7 @@
         <key>verbose</key>
         <false/>
         <key>autoSDSettings</key>
-        <array>
-            <struct type="AutoSDSettings">
-                <key>scale</key>
-                <double>1</double>
-                <key>extension</key>
-                <string></string>
-                <key>acceptFractionalValues</key>
-                <false/>
-                <key>maxTextureSize</key>
-                <QSize>
-                    <key>width</key>
-                    <int>-1</int>
-                    <key>height</key>
-                    <int>-1</int>
-                </QSize>
-            </struct>
-        </array>
+        <array/>
         <key>allowRotation</key>
         <true/>
         <key>quiet</key>
@@ -115,7 +99,7 @@
             <key>packageName</key>
             <string>Texture</string>
             <key>javaFileName</key>
-            <filename>../../../dev/res/images/_Compressed_android/buildings{n}.java</filename>
+            <filename>../export/city_prv_{n}.java</filename>
             <key>wrap</key>
             <struct type="AndEngineWrap">
                 <key>s</key>
