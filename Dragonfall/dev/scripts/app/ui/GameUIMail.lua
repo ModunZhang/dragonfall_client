@@ -1772,7 +1772,7 @@ function GameUIMail:CreateReportContent()
             local attackTarget = report:GetAttackTarget()
             UIKit:ttfLabel(
                 {
-                    text = string.gsub(attackTarget.stageName,"_","-")..Localize.shrine_desc[attackTarget.stageName][1],
+                    text = Localize.shrine_desc[attackTarget.stageName][1],
                     size = 18,
                     color = 0x403c2f
                 }):align(display.LEFT_CENTER, report_content_bg:getContentSize().width/2-20, 60)
@@ -2100,7 +2100,7 @@ function GameUIMail:CreateSavedReportContent()
             local attackTarget = report:GetAttackTarget()
             UIKit:ttfLabel(
                 {
-                    text = string.gsub(attackTarget.stageName,"_","-")..Localize.shrine_desc[attackTarget.stageName][1],
+                    text = Localize.shrine_desc[attackTarget.stageName][1],
                     size = 18,
                     color = 0x403c2f
                 }):align(display.LEFT_CENTER, report_content_bg:getContentSize().width/2-20, 60)
