@@ -718,6 +718,7 @@ bool Texture2D::initWithMipmaps(MipmapInfo* mipmaps, int mipmapsNum, PixelFormat
 	bool compressed = false;
 
 	// Defalt 32-bit RGBA
+	bool staticTex = true;
 	auto format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	const auto bpp = getBitsPerPixelForFormat(pixelFormat);
 	if (pixelFormat == PixelFormat::RGBA4444)
@@ -733,10 +734,12 @@ bool Texture2D::initWithMipmaps(MipmapInfo* mipmaps, int mipmapsNum, PixelFormat
 	else if (pixelFormat == PixelFormat::A8)
 	{
 		format = DXGI_FORMAT_R8_UNORM;
+		staticTex = false;
 	}
 	else if (pixelFormat == PixelFormat::AI88)
 	{
 		format = DXGI_FORMAT_R8G8_UNORM;
+		staticTex = false;
 	}
 	else if (pixelFormat == PixelFormat::S3TC_DXT5 || pixelFormat == PixelFormat::S3TC_DXT3 || pixelFormat == PixelFormat::S3TC_DXT1)
 	{
@@ -773,7 +776,7 @@ bool Texture2D::initWithMipmaps(MipmapInfo* mipmaps, int mipmapsNum, PixelFormat
 		desc.Format = format;
 		desc.SampleDesc.Count = 1;
 		desc.SampleDesc.Quality = 0;
-		desc.Usage = D3D11_USAGE_DEFAULT;
+		desc.Usage = staticTex ? D3D11_USAGE_IMMUTABLE : D3D11_USAGE_DEFAULT;
 		desc.BindFlags = _renderTargetTexture ? (D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET) : (D3D11_BIND_SHADER_RESOURCE);
 		desc.CPUAccessFlags = 0;
 		desc.MiscFlags = (mipmapsNum > 1) ? D3D11_RESOURCE_MISC_GENERATE_MIPS : 0;
