@@ -171,7 +171,7 @@ function GameUIMail:CreateMailControlBox()
                                 local hasReward = false
                                 for k,v in pairs(select_map) do
                                     table.insert(ids, v.id)
-                                    if not v.rewardGetted then
+                                    if self:IsRewardNotGetted(v) then
                                        hasReward = true 
                                     end
                                 end
@@ -1309,7 +1309,7 @@ function GameUIMail:ShowMailDetails(mail)
             :addTo(body):align(display.CENTER, 92, 42)
             :onButtonClicked(function(event)
                 if event.name == "CLICKED_EVENT" then
-                    if not mail.rewardGetted then
+                    if self:IsRewardNotGetted(mail) then
                         UIKit:showMessageDialog(_("提示"),_("邮件中有未领取的奖励，不能删除!"),function()end)
                         return
                     end
@@ -1497,7 +1497,7 @@ function GameUIMail:ShowRewardMailDetails(mail)
         :addTo(body):align(display.CENTER, 92, 42)
         :onButtonClicked(function(event)
             if event.name == "CLICKED_EVENT" then
-                if not mail.rewardGetted then
+                if self:IsRewardNotGetted(mail) then
                     UIKit:showMessageDialog(_("提示"),_("邮件中有未领取的奖励，不能删除!"),function()end)
                     return
                 end
@@ -2415,7 +2415,15 @@ function GameUIMail:SaveOrUnsaveReport(report,target)
     end
 end
 
-
+function GameUIMail:IsRewardNotGetted(mail)
+    local rewardGetted = mail.rewardGetted
+    local rewards = mail.rewards
+    if LuaUtils:table_empty(rewards) then
+        return false
+    else
+        return not rewardGetted
+    end
+end
 function GameUIMail:GetMyName(report)
     local data = report:GetData()
     if report:Type() == "strikeCity" or report:Type()== "cityBeStriked" then

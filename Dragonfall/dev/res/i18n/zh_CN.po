@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: dragonfall\n"
-"POT-Creation-Date: 2016-02-24 14:59+0800\n"
-"PO-Revision-Date: 2016-02-24 14:59+0800\n"
+"POT-Creation-Date: 2016-02-24 17:59+0800\n"
+"PO-Revision-Date: 2016-02-24 17:59+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zh_CN\n"
@@ -21,7 +21,7 @@ msgstr ""
 #: MyApp.lua:304 MyApp.lua:312 service/NetManager.lua:386
 #: ui/GameUIAllianceCityEnter.lua:171 ui/GameUIChatChannel.lua:115
 #: ui/GameUIChatChannel.lua:159 ui/GameUILoginBeta.lua:210
-#: ui/GameUILoginBeta.lua:426 ui/GameUILoginBeta.lua:658
+#: ui/GameUILoginBeta.lua:435 ui/GameUILoginBeta.lua:667
 #: ui/GameUISettingContactUs.lua:96 ui/GameUISettingServer.lua:57
 #: ui/GameUISettingServer.lua:71 ui/GameUISettingServer.lua:75
 #: ui/GameUIWathTowerRegion.lua:443 ui/GameUIWathTowerRegion.lua:455
@@ -110,7 +110,7 @@ msgstr "服务器连接断开,请检测你的网络环境后重试!"
 #: ui/GameUIIntensifyEquipment.lua:229 ui/GameUIItems.lua:227
 #: ui/GameUIItems.lua:238 ui/GameUIKeep.lua:527 ui/GameUIKeep.lua:547
 #: ui/GameUILoginBeta.lua:123 ui/GameUILoginBeta.lua:180
-#: ui/GameUILoginBeta.lua:631 ui/GameUILoginBeta.lua:638
+#: ui/GameUILoginBeta.lua:640 ui/GameUILoginBeta.lua:647
 #: ui/GameUIMail.lua:181 ui/GameUIMail.lua:1313 ui/GameUIMail.lua:1501
 #: ui/GameUIMail.lua:1533 ui/GameUIMail.lua:2334 ui/GameUIMail.lua:2337
 #: ui/GameUIMail.lua:2340 ui/GameUIMail.lua:2343 ui/GameUIMission.lua:556
@@ -204,8 +204,8 @@ msgstr "已为你恢复之前的购买"
 #: MyApp.lua:627 ui/FullScreenPopDialogUI.lua:103
 #: ui/FullScreenPopDialogUI.lua:124 ui/GameUIAllianceNoticeOrDescEdit.lua:72
 #: ui/GameUIAllianceSendTroops.lua:397 ui/GameUIAllianceTitle.lua:244
-#: ui/GameUILoginBeta.lua:323 ui/GameUILoginBeta.lua:426
-#: ui/GameUILoginBeta.lua:658 ui/GameUIPVESendTroop.lua:237
+#: ui/GameUILoginBeta.lua:330 ui/GameUILoginBeta.lua:435
+#: ui/GameUILoginBeta.lua:667 ui/GameUIPVESendTroop.lua:237
 #: ui/GameUIPveSummary.lua:261 ui/GameUIPveSummary.lua:346
 #: ui/GameUIPveSweep.lua:23 ui/GameUIShop.lua:64 ui/GameUIShop.lua:673
 #: ui/GameUIShop.lua:691 ui/GameUIShop.lua:742 ui/GameUIShop.lua:760
@@ -1625,7 +1625,7 @@ msgid "拒绝"
 msgstr "拒绝"
 
 #: ui/GameAllianceApproval.lua:87 ui/GameUIAlliance.lua:686
-#: ui/GameUILoginBeta.lua:130 ui/GameUILoginBeta.lua:270
+#: ui/GameUILoginBeta.lua:130 ui/GameUILoginBeta.lua:275
 msgid "同意"
 msgstr "同意"
 
@@ -4697,85 +4697,85 @@ msgstr ""
 msgid "[用户协议]"
 msgstr "[用户协议]"
 
-#: ui/GameUILoginBeta.lua:246
+#: ui/GameUILoginBeta.lua:251
 msgid "用户协议"
 msgstr "用户协议"
 
-#: ui/GameUILoginBeta.lua:279
+#: ui/GameUILoginBeta.lua:286
 msgid "不同意"
 msgstr "不同意"
 
-#: ui/GameUILoginBeta.lua:318
+#: ui/GameUILoginBeta.lua:325
 msgid "公告"
 msgstr "公告"
 
-#: ui/GameUILoginBeta.lua:410
+#: ui/GameUILoginBeta.lua:419
 msgid "正在获取服务器信息..."
 msgstr "正在获取服务器信息..."
 
-#: ui/GameUILoginBeta.lua:426
+#: ui/GameUILoginBeta.lua:435
 msgid "游戏版本过低,请更新!"
 msgstr "游戏版本过低,请更新!"
 
-#: ui/GameUILoginBeta.lua:440
+#: ui/GameUILoginBeta.lua:449
 msgid "获取服务器信息失败!"
 msgstr "获取服务器信息失败！"
 
-#: ui/GameUILoginBeta.lua:463
+#: ui/GameUILoginBeta.lua:472
 msgid "正在加载游戏资源..."
 msgstr "正在加载游戏资源…"
 
-#: ui/GameUILoginBeta.lua:512 ui/GameUILoginBeta.lua:531
+#: ui/GameUILoginBeta.lua:521 ui/GameUILoginBeta.lua:540
 #: utils/Localize.lua:10
 msgid "服务器维护中"
 msgstr "服务器维护中"
 
-#: ui/GameUILoginBeta.lua:512
+#: ui/GameUILoginBeta.lua:521
 msgid "连接网关服务器失败!"
 msgstr "连接网关服务器失败!"
 
-#: ui/GameUILoginBeta.lua:527 ui/GameUILoginBeta.lua:608
+#: ui/GameUILoginBeta.lua:536 ui/GameUILoginBeta.lua:617
 #: utils/cocos_promise.lua:51
 msgid "请求超时"
 msgstr "请求超时"
 
-#: ui/GameUILoginBeta.lua:534
+#: ui/GameUILoginBeta.lua:543
 msgid "游戏版本验证失败"
 msgstr "游戏版本验证失败"
 
-#: ui/GameUILoginBeta.lua:537
+#: ui/GameUILoginBeta.lua:546
 msgid "游戏版本不匹配"
 msgstr "游戏版本不匹配"
 
-#: ui/GameUILoginBeta.lua:540
+#: ui/GameUILoginBeta.lua:549
 msgid "获取游戏服务器信息失败!"
 msgstr "获取游戏服务器信息失败!"
 
-#: ui/GameUILoginBeta.lua:569
+#: ui/GameUILoginBeta.lua:578
 msgid "连接游戏服务器失败!"
 msgstr "连接游戏服务器失败!"
 
-#: ui/GameUILoginBeta.lua:612 utils/Localize.lua:8
+#: ui/GameUILoginBeta.lua:621 utils/Localize.lua:8
 msgid "玩家已经登录"
 msgstr "玩家已经登录"
 
-#: ui/GameUILoginBeta.lua:640
+#: ui/GameUILoginBeta.lua:649
 msgid "重试"
 msgstr "重试"
 
-#: ui/GameUILoginBeta.lua:654
+#: ui/GameUILoginBeta.lua:663
 msgid "检查游戏更新...."
 msgstr "检查游戏版本…"
 
-#: ui/GameUILoginBeta.lua:658
+#: ui/GameUILoginBeta.lua:667
 msgid "检查游戏更新失败!"
 msgstr "检查游戏版本失败!"
 
-#: ui/GameUILoginBeta.lua:721 ui/GameUILoginBeta.lua:749
+#: ui/GameUILoginBeta.lua:730 ui/GameUILoginBeta.lua:758
 msgid "文件下载失败!"
 msgstr "文件下载失败!"
 
-#: ui/GameUILoginBeta.lua:735
+#: ui/GameUILoginBeta.lua:744
 #, lua-format
 msgid "更新进度:%d%%"
 msgstr "更新进度:%d%%"
