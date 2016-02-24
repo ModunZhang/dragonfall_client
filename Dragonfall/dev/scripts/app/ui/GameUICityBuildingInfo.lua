@@ -8,6 +8,7 @@ local Localize = import("..utils.Localize")
 local Localize_item = import("..utils.Localize_item")
 local UIListView = import(".UIListView")
 local GameUICityBuildingInfo = class("GameUICityBuildingInfo", WidgetPopDialog)
+local intInit = GameDatas.PlayerInitData.intInit
 
 local AllianceBuilding = GameDatas.AllianceBuilding
 
@@ -25,7 +26,7 @@ local building_details_map = {
     },
     ["warehouse"] = {
         {90,        100,        200,            130       },
-        {_("等级"), _("战斗力"),_("资源存储上限"),_("暗仓保护") },
+        {_("等级"), _("战斗力"),_("资源存储上限"),_("暗仓基础保护") },
         {"level",   "power",    "maxWood"},
     },
     ["dragonEyrie"] = {
@@ -294,7 +295,7 @@ function GameUICityBuildingInfo:CreateDetails()
             local watchTower = GameDatas.ClientInitGame.watchTower
             table.insert(details, Localize.building_description["watchTower_"..idx])
         elseif parent.building_name == "warehouse" then
-            local value = parent.config[idx][parent.attrs[3]]/10
+            local value = parent.config[idx][parent.attrs[3]]*(intInit.playerResourceProtectPercent.value/100)
             if tolua.type(value) == "number" then
                 value = string.formatnumberthousands(value)
             end

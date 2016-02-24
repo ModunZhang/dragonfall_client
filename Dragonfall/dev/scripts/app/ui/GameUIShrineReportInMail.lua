@@ -548,7 +548,7 @@ function GameUIShrineReportInMail:CreateShrineItem(shrine)
 
     -- 圣地关卡
     UIKit:ttfLabel({
-        text = string.gsub(attackTarget.stageName,"_","-")..Localize.shrine_desc[attackTarget.stageName][1],
+        text = Localize.shrine_desc[attackTarget.stageName][1],
         size = 20,
         color = 0x403c2f,
     }):align(display.CENTER,170, height-25)

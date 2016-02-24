@@ -168,11 +168,19 @@ function GameUIMail:CreateMailControlBox()
                             listener =function ()
                                 local select_map = self:GetSelectMailsOrReports()
                                 local ids = {}
+                                local hasReward = false
                                 for k,v in pairs(select_map) do
                                     table.insert(ids, v.id)
+                                    if not v.rewardGetted then
+                                       hasReward = true 
+                                    end
                                 end
                                 self.is_deleting = true
                                 if control_type == "mail" then
+                                    if hasReward then
+                                        UIKit:showMessageDialog(_("提示"),_("邮件中有未领取的奖励，不能删除!"),function()end)
+                                        return
+                                    end
                                     MailManager:DecreaseUnReadMailsNumByIds(ids)
                                     NetManager:getDeleteMailsPromise(ids):done(function ()
                                         self:SelectAllMailsOrReports(false)
@@ -1301,8 +1309,14 @@ function GameUIMail:ShowMailDetails(mail)
             :addTo(body):align(display.CENTER, 92, 42)
             :onButtonClicked(function(event)
                 if event.name == "CLICKED_EVENT" then
+                    if not mail.rewardGetted then
+                        UIKit:showMessageDialog(_("提示"),_("邮件中有未领取的奖励，不能删除!"),function()end)
+                        return
+                    end
                     NetManager:getDeleteMailsPromise({mail.id}):done(function ()
-                        dialog:LeftButtonClicked()
+                        if dialog then
+                            dialog:LeftButtonClicked()
+                        end
                     end)
                 end
             end)
@@ -1483,6 +1497,10 @@ function GameUIMail:ShowRewardMailDetails(mail)
         :addTo(body):align(display.CENTER, 92, 42)
         :onButtonClicked(function(event)
             if event.name == "CLICKED_EVENT" then
+                if not mail.rewardGetted then
+                    UIKit:showMessageDialog(_("提示"),_("邮件中有未领取的奖励，不能删除!"),function()end)
+                    return
+                end
                 NetManager:getDeleteMailsPromise({mail.id}):done(function ()
                     dialog:LeftButtonClicked()
                 end)
@@ -1754,7 +1772,7 @@ function GameUIMail:CreateReportContent()
             local attackTarget = report:GetAttackTarget()
             UIKit:ttfLabel(
                 {
-                    text = string.gsub(attackTarget.stageName,"_","-")..Localize.shrine_desc[attackTarget.stageName][1],
+                    text = Localize.shrine_desc[attackTarget.stageName][1],
                     size = 18,
                     color = 0x403c2f
                 }):align(display.LEFT_CENTER, report_content_bg:getContentSize().width/2-20, 60)
@@ -2082,7 +2100,7 @@ function GameUIMail:CreateSavedReportContent()
             local attackTarget = report:GetAttackTarget()
             UIKit:ttfLabel(
                 {
-                    text = string.gsub(attackTarget.stageName,"_","-")..Localize.shrine_desc[attackTarget.stageName][1],
+                    text = Localize.shrine_desc[attackTarget.stageName][1],
                     size = 18,
                     color = 0x403c2f
                 }):align(display.LEFT_CENTER, report_content_bg:getContentSize().width/2-20, 60)

@@ -315,14 +315,26 @@ function GameUILoginBeta:createGameNotice()
             return
         end
         if string.trim(results.data) ~= "" then
-            local dialog = UIKit:newWidgetUI("WidgetPopDialog",460,_("公告"),display.top-130):addTo(self.ui_layer,2)
+            local dialog = UIKit:newWidgetUI("WidgetNoticePopDialog",550,_("公告"),display.top-130):addTo(self.ui_layer,2)
             local body = dialog:GetBody()
             local size = body:getContentSize()
-            local bg = WidgetUIBackGround.new({width = 556 , height = 400},WidgetUIBackGround.STYLE_TYPE.STYLE_5):align(display.CENTER_BOTTOM, size.width/2, 25):addTo(body)
+            WidgetPushButton.new({normal = 'tmp_button_battle_up_234x82.png',pressed = 'tmp_button_battle_down_234x82.png'},{scale9 = true})
+                :setButtonLabel("normal", UIKit:commonButtonLable({
+                    text = _("确定")
+                }))
+                :addTo(body)
+                :pos(size.width/2,54)
+                :onButtonClicked(function()
+                    dialog:LeftButtonClicked()
+                end)
+                :setButtonSize(188,66)
+            local bg = display.newScale9Sprite("background_notice_128x128_2.png", 0, 0,cc.size(568,390),cc.rect(15,15,98,98))
+                :align(display.CENTER_BOTTOM,size.width/2,96)
+                :addTo(body)
             local user_agreement_label = UIKit:ttfLabel({
                 text = results.data,
-                size = 20,
-                color = 0x403c2f,
+                size = 22,
+                color = 0xffedae,
                 align = cc.ui.UILabel.TEXT_ALIGN_CENTER,
                 dimensions = cc.size(526, 0),
             })
@@ -863,6 +875,8 @@ end
 
 
 return GameUILoginBeta
+
+
 
 
 

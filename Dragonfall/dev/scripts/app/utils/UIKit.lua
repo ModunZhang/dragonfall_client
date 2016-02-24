@@ -9,6 +9,7 @@ local promise = import(".promise")
 local Enum = import("..utils.Enum")
 local WidgetPushButton = import("..widget.WidgetPushButton")
 local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
+local RichText = import("..widget.RichText")
 local UILib = import("..ui.UILib")
 local UIListView = import("..ui.UIListView")
 local CURRENT_MODULE_NAME = ...
@@ -784,12 +785,12 @@ function UIKit:showSendTroopMessageDialog(attack_func,material_name,effect_str,i
         local body = dialog:GetBody()
         local hospital_bg = WidgetUIBackGround.new({width = 332 ,height = 96},WidgetUIBackGround.STYLE_TYPE.STYLE_5):addTo(body):pos(236,220)
         display.newSprite("hospital.png"):addTo(hospital_bg):align(display.LEFT_CENTER, 16, hospital_bg:getContentSize().height/2):scale(0.35)
-        self:ttfLabel({
-            text = _("医院"),
-            size = 20,
-            color = 0x403c2f
-        }):align(display.LEFT_CENTER, 110, 65)
-            :addTo(hospital_bg)
+        -- self:ttfLabel({
+        --     text = _("医院"),
+        --     size = 20,
+        --     color = 0x403c2f
+        -- }):align(display.LEFT_CENTER, 110, 72)
+        --     :addTo(hospital_bg)
         local label_1
         if is_hospital_overhead then
             display.newSprite("icon_warning_22x42.png"):addTo(hospital_bg):align(display.CENTER, 75, hospital_bg:getContentSize().height/2 + 15)
@@ -797,19 +798,26 @@ function UIKit:showSendTroopMessageDialog(attack_func,material_name,effect_str,i
         else
             label_1 = _("正常")
         end
-        self:ttfLabel({
-            text = label_1,
-            size = 18,
-            color = is_hospital_overhead and 0x7e0000 or 0x007c23
-        }):align(display.LEFT_CENTER, 110, 30)
-            :addTo(hospital_bg)
+        -- self:ttfLabel({
+        --     text = label_1,
+        --     size = 18,
+        --     color = is_hospital_overhead and 0x7e0000 or 0x007c23,
+        --     dimensions = cc.size(220,0)
+        -- }):align(display.LEFT_CENTER, 110, 37)
+        --     :addTo(hospital_bg)
+        local color = is_hospital_overhead and 0x7e0000 or 0x007c23
+        local contenet_label = RichText.new({width = 180,size = 20,color = 0x403c2f})
+        local str = "[{\"type\":\"text\", \"value\":\"%s\n\"},{\"type\":\"text\", \"size\":\"%d\", \"color\":\"%d\", \"value\":\"%s\"}]"
+        str = string.format(str,_("医院"),18,color,label_1)
+        contenet_label:Text(str):align(display.LEFT_CENTER,115,48):addTo(hospital_bg)
+
         local materialDepot_bg = WidgetUIBackGround.new({width = 332 ,height = 96},WidgetUIBackGround.STYLE_TYPE.STYLE_5):addTo(body):pos(236,100)
         display.newSprite("materialDepot.png"):addTo(materialDepot_bg):align(display.LEFT_CENTER, 16, materialDepot_bg:getContentSize().height/2):scale(0.35)
         self:ttfLabel({
             text = _("材料库房"),
             size = 20,
             color = 0x403c2f
-        }):align(display.LEFT_CENTER, 110, 65)
+        }):align(display.LEFT_CENTER, 110, 72)
             :addTo(materialDepot_bg)
         local label_1
         if is_material_overhead then
@@ -821,8 +829,8 @@ function UIKit:showSendTroopMessageDialog(attack_func,material_name,effect_str,i
         self:ttfLabel({
             text = label_1,
             size = 18,
-            color = is_material_overhead and 0x7e0000 or 0x007c23
-        }):align(display.LEFT_CENTER, 110, 30)
+            color = is_material_overhead and 0x7e0000 or 0x007c23,
+        }):align(display.LEFT_CENTER, 110, 37)
             :addTo(materialDepot_bg)
     else
         attack_func()
@@ -1079,6 +1087,7 @@ function UIKit:GetItemImage(reward_type,item_key)
     if reward_type == 'soldiers' then
         return UILib.soldier_image[item_key]
     elseif reward_type == 'resource'
+        or reward_type == 'items'
         or reward_type == 'special'
         or reward_type == 'speedup'
         or reward_type == 'buff'
