@@ -211,6 +211,7 @@ function WidgetRequirementListview:listviewListener(event)
         if not pos then
             return
         end
+        app:GetAudioManager():PlayeEffectSoundWithKey("NORMAL_DOWN")
         local item = event.item
         if not item.content.isSatisfy then
             local resource_type = item.content.resource_type
