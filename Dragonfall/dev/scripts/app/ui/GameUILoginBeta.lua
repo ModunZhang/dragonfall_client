@@ -378,7 +378,7 @@ function GameUILoginBeta:showStartState()
     })
 end
 function GameUILoginBeta:CouldStartGame()
-    return self.start_button:isVisible()
+    return self.start_button:isVisible() and not self.progress_bar:isVisible()
 end
 function GameUILoginBeta:createVerLabel()
     self.verLabel = cc.ui.UILabel.new({
