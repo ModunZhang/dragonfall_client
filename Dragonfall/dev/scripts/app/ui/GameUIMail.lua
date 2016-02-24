@@ -2418,7 +2418,7 @@ end
 function GameUIMail:IsRewardNotGetted(mail)
     local rewardGetted = mail.rewardGetted
     local rewards = mail.rewards
-    if LuaUtils:table_empty(rewards) then
+    if rewards and LuaUtils:table_empty(rewards) then
         return false
     else
         return not rewardGetted
