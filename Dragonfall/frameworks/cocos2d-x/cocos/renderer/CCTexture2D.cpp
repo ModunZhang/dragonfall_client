@@ -580,6 +580,12 @@ Texture2D::~Texture2D()
 	releaseGLTexture();
 }
 
+bool Texture2D::isSDTex()
+{
+	return _texName.find("-sd") != std::string::npos;
+}
+
+
 void Texture2D::releaseGLTexture()
 {
 #if (DIRECTX_ENABLED == 1)

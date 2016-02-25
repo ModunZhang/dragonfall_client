@@ -394,7 +394,7 @@ function CityLayer:ReloadSceneBackground()
         self.background:removeFromParent()
     end
     self.background = display.newNode():addTo(self, SCENE_ZORDER.SCENE_BACKGROUND)
-    local suffix = device.platform == "winrt" and "png" or "jpg"
+    local suffix = "jpg"
     local s = suffix == "png" and (1316 / 1024) or 1
     local terrain = self:Terrain()
     local left_1 = string.format("left_background_1_%s.%s", terrain, suffix)

@@ -203,6 +203,12 @@ public:
      * @js ctor
      */
     Texture2D();
+	Texture2D(const std::string& name) : Texture2D(){ _texName = name; }
+	bool isSDTex();
+	const std::string& getTexName()
+	{
+		return _texName;
+	}
     /**
      * @js NA
      * @lua NA
@@ -498,6 +504,8 @@ protected:
     static const PixelFormatInfoMap _pixelFormatInfoTables;
 
     bool _antialiasEnabled;
+
+	std::string _texName;
 
 #if (DIRECTX_ENABLED == 1)
 	ID3D11Texture2D* _texture;
