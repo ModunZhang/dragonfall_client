@@ -973,7 +973,9 @@ function GameUIMail:SelectAllMailsOrReports(isSelect)
         for i,v in ipairs(self.manager:GetReports()) do
             self:SelectItems(v,isSelect)
         end
-        self.report_listview:asyncLoadWithCurrentPosition_()
+        if #self.manager:GetReports() > 0 then
+            self.report_listview:asyncLoadWithCurrentPosition_()
+        end
     elseif self.saved_layer:isVisible() then
         if self.save_mails_listview and self.save_mails_listview:isVisible() then
             for i,v in ipairs(self.manager:GetSavedMails()) do
@@ -1575,8 +1577,9 @@ function GameUIMail:InitReport()
                 return response
             end)
         end
+    else
+        self.report_listview:reload()
     end
-    self.report_listview:reload()
 end
 
 function GameUIMail:DelegateReport( listView, tag, idx )
@@ -2418,7 +2421,7 @@ end
 function GameUIMail:IsRewardNotGetted(mail)
     local rewardGetted = mail.rewardGetted
     local rewards = mail.rewards
-    if LuaUtils:table_empty(rewards) then
+    if rewards and LuaUtils:table_empty(rewards) then
         return false
     else
         return not rewardGetted
