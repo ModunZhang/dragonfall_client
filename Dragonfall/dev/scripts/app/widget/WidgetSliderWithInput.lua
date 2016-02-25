@@ -24,7 +24,8 @@ function WidgetSliderWithInput:ctor(params)
     else
         slider_max = max
     end
-    min = slider_max == 0 and 0 or min
+    min = slider_max <= 1 and 0 or min
+    print("min=",min,slider_max)
     self.slider = WidgetSlider.new(display.LEFT_TO_RIGHT,  {bar = bar,
         progress = progress,
         button = "slider_btn_66x66.png"}, {max = slider_max,min = min,scale9=true}):addTo(self)
@@ -52,7 +53,7 @@ function WidgetSliderWithInput:ctor(params)
                 }
                 UIKit:newWidgetUI("WidgetInput",p):AddToCurrentScene()
             end
-        end):align(display.CENTER, slider:getCascadeBoundingBox().size.width,30):addTo(self)
+        end)
 
 
 
@@ -89,14 +90,14 @@ function WidgetSliderWithInput:ctor(params)
         else
             self.btn_text:setString(tonumber(btn_value))
         end
-        self.soldier_total_count:setString(string.format(btn_unit.."/ %s", GameUtils:formatNumber(unit == "K" and math.floor(self.max/1000) or self.max)))
+        self.soldier_total_count:setString(string.format(btn_unit.."/ %s", GameUtils:formatNumber(self.max)))
         if self.valueChangedFunc then
             self.valueChangedFunc(event)
         end
     end)
 
     local soldier_total_count = UIKit:ttfLabel({
-        text = string.format(unit.."/ %s", GameUtils:formatNumber(max)),
+        text = string.format((slider_max ~=0 and unit or "").."/ %s", GameUtils:formatNumber(max)),
         size = 20,
         color = 0x403c2f
     }):addTo(slider)
@@ -104,15 +105,22 @@ function WidgetSliderWithInput:ctor(params)
     self:setContentSize(cc.size(slider:getCascadeBoundingBox().size.width,slider:getCascadeBoundingBox().size.height))
     self.soldier_total_count = soldier_total_count
     slider:setSliderValue(slider_max > 0 and (min < 1) and 1 or min)
+    self.text_btn:align(display.CENTER, self.soldier_total_count:getPositionX() - self.soldier_total_count:getContentSize().width - 10 - self.text_btn:getCascadeBoundingBox().size.width/2,30):addTo(self)
 end
 function WidgetSliderWithInput:SetValue(value)
     self.slider:setSliderValue(value)
 end
 function WidgetSliderWithInput:SetMax(max)
-    if max <= 1 then
+    local slider_max
+    if self.unit == "K" then
+        slider_max = math.floor(max/1000)
+    else
+        slider_max = max
+    end
+    if slider_max <= 1 then
         self.slider:SetMin(0)
     end
-    self.slider:SetMax(max)
+    self.slider:SetMax(slider_max)
     self.max = max
 
     local change_unit
@@ -132,15 +140,9 @@ function WidgetSliderWithInput:SetMax(max)
     else
         btn_value = e_value
     end
-    local btn_final_value
-    if unit == "K" then
-        btn_final_value = math.floor(tonumber(btn_value))
-    else
-        btn_final_value = tonumber(btn_value)
-    end
-    btn_final_value = btn_final_value > self.max and self.max or btn_final_value
-    self.btn_text:setString(btn_final_value)
-    self.slider:setSliderValue(btn_final_value)
+    current_value = current_value > slider_max and slider_max or current_value
+    self.btn_text:setString(btn_value)
+    self.slider:setSliderValue(current_value)
 
     self.soldier_total_count:setString(string.format(btn_unit.."/ %s", GameUtils:formatNumber(self.max)))
 end

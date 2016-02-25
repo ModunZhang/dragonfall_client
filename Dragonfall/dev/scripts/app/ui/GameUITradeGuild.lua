@@ -914,7 +914,7 @@ function GameUITradeGuild:OpenSellDialog()
                         local checkBox = options:getButtonAtIndex(index)
                         if checkBox then
                             checkBox:SetValue(User:GetResValueByType(goods_type[index]))
-                            self.sell_num_item:SetMax(math.floor(User:GetResValueByType(goods_type[index])/1000))
+                            self.sell_num_item:SetMax(User:GetResValueByType(goods_type[index]))
                             self:SetTotalPriceAndCartNum( self.sell_num_item:GetValue(),self.sell_price_item:GetValue())
                         end
                     end
