@@ -7,7 +7,7 @@ git tag -l | xargs git tag -d
 git fetch -p
 
 #Delete remote tags.
-#git tag -l | xargs -n 1 git push --delete origin
+#git tag -l | xargs -n 1 git push --delete origin tag
 
 #Delete local tags.
 #git tag -l | xargs git tag -d
