@@ -173,7 +173,7 @@ function WidgetPromoteSoliderList:CreateSoliderBox(soldier_type,index,star)
         if status == "toUnlock" then
 
             if User:GetPromotionName(parent.building:GetType()) == soldier_type then
-                label:setString("正在晋级")
+                label:setString(_("正在晋级"))
                 label:setColor(UIKit:hex2c4b(0x007c23))
                 if self.button then
                     self:removeChild(self.button, true)

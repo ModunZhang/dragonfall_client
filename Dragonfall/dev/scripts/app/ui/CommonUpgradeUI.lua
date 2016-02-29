@@ -1043,7 +1043,7 @@ function CommonUpgradeUI:PopNotSatisfyDialog(listener,can_not_update_type)
     elseif can_not_update_type==UpgradeBuilding.NOT_ABLE_TO_UPGRADE.PRE_CONDITION then
         local jump_building = self.building:GetPreConditionBuilding()
         if tolua.type(jump_building) == "string" then
-            dialog:SetTitle("提示")
+            dialog:SetTitle(_("提示"))
                 :SetPopMessage(string.format(_("请首先建造%s"),Localize.building_name[jump_building]))
                 :CreateOKButton()
         else
@@ -1063,7 +1063,7 @@ function CommonUpgradeUI:PopNotSatisfyDialog(listener,can_not_update_type)
 
         local jump_building = highest_level_building or city:GetRuinsNotBeenOccupied()[1] or preName
 
-        dialog:SetTitle("提示")
+        dialog:SetTitle(_("提示"))
             :SetPopMessage(can_not_update_type)
         if tolua.type(jump_building) ~= "string" then
             dialog:CreateOKButton(
