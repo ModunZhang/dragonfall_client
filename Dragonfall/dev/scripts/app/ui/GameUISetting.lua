@@ -102,9 +102,7 @@ end
 function GameUISetting:OnButtonClicked(button)
 	local tag = button:getTag()
 	if tag == 1 then
-		 device.showAlert("测试","在测试自动更新", { _("确定") }, function(event)
-		 end)
-		-- UIKit:newGameUI("GameUISettingAccount"):AddToCurrentScene(true)
+		UIKit:newGameUI("GameUISettingAccount"):AddToCurrentScene(true)
 	elseif tag == 2 then
 		UIKit:newGameUI("GameUISettingServer"):AddToCurrentScene(true)
 	elseif tag == 3 then
