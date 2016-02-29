@@ -21,7 +21,6 @@ local scheduler = require(cc.PACKAGE_NAME .. ".scheduler")
 local light_gem = import("..particles.light_gem")
 local loginDays = GameDatas.Vip.loginDays
 local VIP_LEVEL = GameDatas.Vip.level
-local config_store = GameDatas.StoreItems.items
 
 local GameUIVipNew = UIKit:createUIClass('GameUIVipNew',"GameUIWithCommonHeader")
 
@@ -258,7 +257,7 @@ function GameUIVipNew:InitVipTop()
     local vip_level,percent,exp = User:GetVipLevel()
     progressTimer_vip_exp:setPercentage(percent)
     self.vip_exp_label = UIKit:ttfLabel({
-        text = string.formatnumberthousands(exp - User:GetSpecialVipLevelExp(vip_level)).."/"..string.formatnumberthousands(User:GetSpecialVipLevelExpTo(vip_level)),
+        text = string.formatnumberthousands(exp).."/"..string.formatnumberthousands(User:GetSpecialVipLevelExpTo(vip_level)),
         size = 20,
         color = 0xfff3c7,
         shadow = true
@@ -286,7 +285,7 @@ function GameUIVipNew:InitVipTop()
     local current_level = display.newSprite(btn_pic):align(display.CENTER, bg_size.width/2,bg_size.height - 55):addTo(top_bg)
 
     self.vip_level_pic = display.newSprite("VIP_"..vip_level.."_46x32.png"):addTo(current_level)
-        :align(display.CENTER,52,45)
+        :align(display.CENTER,48,45)
     self.vip_level_bg = current_level
 
     -- 连续登陆，明日登陆

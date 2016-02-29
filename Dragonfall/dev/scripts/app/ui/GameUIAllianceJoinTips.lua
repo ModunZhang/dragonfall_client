@@ -32,9 +32,10 @@ function GameUIAllianceJoinTips:onEnter()
 		color= 0xffd200,
 		shadow= true
 	}):align(display.LEFT_CENTER,60, 33):addTo(tips_bg)
+	local firstJoinAllianceRewards = string.split(GameDatas.PlayerInitData.stringInit.firstJoinAllianceRewards.value,":")
 
 	UIKit:ttfLabel({
-		text = "200",
+		text = firstJoinAllianceRewards[3],
 		size = 40,
 		color= 0xffd200,
 		shadow= true

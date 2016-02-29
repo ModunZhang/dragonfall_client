@@ -217,7 +217,7 @@ function GameUILoginBeta:createContactUs()
                 contact_us_label:runAction(seq)
             end
         end)
-    button:setContentSize(contact_us_label:getContentSize())
+    button:setContentSize(cc.size(contact_us_label:getContentSize().width + 30,contact_us_label:getContentSize().height + 25))
     button:setTouchSwallowEnabled(true)
     self.contact_us_button = button
 end
@@ -232,17 +232,22 @@ function GameUILoginBeta:createUserAgreement()
     }):addTo(self.ui_layer,2)
         :align(display.LEFT_BOTTOM,display.left+2,display.bottom)
     self.user_agreement_label = user_agreement_label
+    local clicked = false
     local button = WidgetPushButton.new()
         :addTo(self.ui_layer,2):align(display.LEFT_BOTTOM, display.left+2,display.bottom)
         :onButtonClicked(function(event)
             if event.name == "CLICKED_EVENT" then
-                local seq = transition.sequence({cc.ScaleTo:create(0.1,1.3),cc.ScaleTo:create(0.1,1),cc.CallFunc:create(function()
-                    self:OpenUserAgreement()
-                end)})
-                user_agreement_label:runAction(seq)
+                if not clicked then
+                    clicked = true
+                    local seq = transition.sequence({cc.ScaleTo:create(0.1,1.3),cc.ScaleTo:create(0.1,1),cc.CallFunc:create(function()
+                        self:OpenUserAgreement()
+                        clicked = false
+                    end)})
+                    user_agreement_label:runAction(seq)
+                end
             end
         end)
-    button:setContentSize(user_agreement_label:getContentSize())
+    button:setContentSize(cc.size(user_agreement_label:getContentSize().width + 30,user_agreement_label:getContentSize().height + 25))
     button:setTouchSwallowEnabled(true)
     self.user_agreement_button = button
 end
@@ -275,7 +280,9 @@ function GameUILoginBeta:OpenUserAgreement()
         :onButtonClicked(function(event)
             if event.name == "CLICKED_EVENT" then
                 self:SetAgreeAgreement()
-                self:startGame()
+                if self:CouldStartGame() then
+                    self:startGame()
+                end
                 dialog:LeftButtonClicked()
             end
         end):align(display.RIGHT_CENTER, size.width - 20, 44):addTo(body)
@@ -319,14 +326,26 @@ function GameUILoginBeta:createGameNotice()
             return
         end
         if string.trim(results.data) ~= "" then
-            local dialog = UIKit:newWidgetUI("WidgetPopDialog",460,_("公告"),display.top-130):addTo(self.ui_layer,2)
+            local dialog = UIKit:newWidgetUI("WidgetNoticePopDialog",550,_("公告"),display.top-130):addTo(self.ui_layer,2)
             local body = dialog:GetBody()
             local size = body:getContentSize()
-            local bg = WidgetUIBackGround.new({width = 556 , height = 400},WidgetUIBackGround.STYLE_TYPE.STYLE_5):align(display.CENTER_BOTTOM, size.width/2, 25):addTo(body)
+            WidgetPushButton.new({normal = 'tmp_button_battle_up_234x82.png',pressed = 'tmp_button_battle_down_234x82.png'},{scale9 = true})
+                :setButtonLabel("normal", UIKit:commonButtonLable({
+                    text = _("确定")
+                }))
+                :addTo(body)
+                :pos(size.width/2,54)
+                :onButtonClicked(function()
+                    dialog:LeftButtonClicked()
+                end)
+                :setButtonSize(188,66)
+            local bg = display.newScale9Sprite("background_notice_128x128_2.png", 0, 0,cc.size(568,390),cc.rect(15,15,98,98))
+                :align(display.CENTER_BOTTOM,size.width/2,96)
+                :addTo(body)
             local user_agreement_label = UIKit:ttfLabel({
                 text = results.data,
-                size = 20,
-                color = 0x403c2f,
+                size = 22,
+                color = 0xffedae,
                 align = cc.ui.UILabel.TEXT_ALIGN_CENTER,
                 dimensions = cc.size(526, 0),
             })
@@ -362,7 +381,9 @@ function GameUILoginBeta:showStartState()
         opacity = 255
     })
 end
-
+function GameUILoginBeta:CouldStartGame()
+    return self.start_button:isVisible() and not self.progress_bar:isVisible()
+end
 function GameUILoginBeta:createVerLabel()
     self.verLabel = cc.ui.UILabel.new({
         UILabelType = cc.ui.UILabel.LABEL_TYPE_TTF,
@@ -867,6 +888,8 @@ end
 
 
 return GameUILoginBeta
+
+
 
 
 

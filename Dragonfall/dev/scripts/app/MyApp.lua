@@ -442,20 +442,6 @@ function MyApp:EnterMyAllianceScene(location)
     -- app:enterScene(alliance_name, {location}, "custom", -1, transition_)
     enter_next_scene(alliance_name, location)
 end
-function MyApp:EnterMyAllianceSceneOrMyCityScene(location)
-    if not Alliance_Manager:GetMyAlliance():IsDefault() then
-        local my_status = Alliance_Manager:GetMyAlliance().basicInfo.status
-        local alliance_name = "AllianceScene"
-        if my_status == "prepare" or  my_status == "fight" then
-            alliance_name = "AllianceBattleScene"
-        end
-        -- app:enterScene(alliance_name, {location}, "custom", -1, transition_)
-        enter_next_scene(alliance_name, location)
-    else
-        -- app:enterScene("MyCityScene", {City}, "custom", -1, transition_)
-        enter_next_scene("MyCityScene", City)
-    end
-end
 function MyApp:EnterPVEScene(level)
     enter_next_scene("PVESceneNew", User, level)
 end
@@ -690,6 +676,11 @@ function MyApp:transactionObserver(event)
                 if code_key == 'duplicateIAPTransactionId' or code_key == 'iapProductNotExist' or code_key == 'iapValidateFaild' then
                     Store.finishTransaction(transaction)
                 end
+            end
+            if code == 0 then
+                UIKit:showKeyMessageDialog(_("错误"), _("请求超时"),function()
+                    app:retryConnectServer()
+                end)
             end
         end)
     elseif transaction_state == 'purchasing' then

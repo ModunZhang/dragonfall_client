@@ -37,22 +37,21 @@ function WidgetGachaItemBox:SetOrginStatus()
         self:removeChild(self.light_box, true)
         self.light_box = nil
     else
-        local patten , size
+        local patten
         if self.isSenior then
             patten = "box_gacha_senior_136x136_%d.png"
-            size = 136
         else
             patten = "box_gacha_112x112_%d.png"
-            size= 112
         end
         local light_box = display.newSprite(img_1)
         self:addChild(light_box)
-
+        self.light_box = light_box
         local frames = display.newFrames(patten, 1, 2)
+        if not frames then
+            return
+        end
         local animation = display.newAnimation(frames, 0.2)
         light_box:playAnimationForever(animation)
-        self.light_box = light_box
-
     end
 end
 -- 设置选中点或取消选中点状态 ，针对3连抽
@@ -62,22 +61,22 @@ function WidgetGachaItemBox:SetSelectedStatus()
         self:removeChild(self.select_box, true)
         self.select_box = nil
     else
-        local patten , size
+        local patten 
         if self.isSenior then
             patten = "box_gacha_senior_136x136_%d.png"
-            size = 136
         else
             patten = "box_gacha_112x112_%d.png"
-            size= 112
         end
         local select_box = display.newSprite(img_1)
         self:addChild(select_box)
 
         local frames = display.newFrames(patten, 1, 2)
+        self.select_box = select_box
+        if not frames then
+            return
+        end
         local animation = display.newAnimation(frames, 0.2)
         select_box:playAnimationForever(animation)
-        self.select_box = select_box
-
     end
 end
 -- 设置经过状态或取消经过状态
