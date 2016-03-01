@@ -10,11 +10,11 @@ local TILE_LENGTH = 207
 local CORNER_LENGTH = 47
 local WIDTH, HEIGHT = bigMapLength_value, bigMapLength_value
 local MAX_INDEX = WIDTH * HEIGHT - 1
-local width, height = WIDTH * TILE_LENGTH, HEIGHT * TILE_LENGTH
+local WORLD_WIDTH, WORLD_HEIGHT = WIDTH * TILE_LENGTH, HEIGHT * TILE_LENGTH
 local SCENE_OFFSET = {x = 15, y = 70}
 local worldsize = {
-    width = width + CORNER_LENGTH * 2 + SCENE_OFFSET.x * 2,
-    height = height + CORNER_LENGTH * 2 + SCENE_OFFSET.y * 2 + 45,
+    width = WORLD_WIDTH + CORNER_LENGTH * 2 + SCENE_OFFSET.x * 2,
+    height = WORLD_HEIGHT + CORNER_LENGTH * 2 + SCENE_OFFSET.y * 2 + 45,
 }
 
 
@@ -139,25 +139,32 @@ function WorldLayer:CreateEdge()
         :addTo(self.scene_node):setScaleY(WIDTH):rotation(-90)
 end
 function WorldLayer:CreateMap()
-    local clip = display.newNode():addTo(self.scene_node)
-        :align(display.LEFT_BOTTOM,CORNER_LENGTH,CORNER_LENGTH)
+    -- local clip = display.newNode():addTo(self.scene_node)
+    --     :align(display.LEFT_BOTTOM,CORNER_LENGTH,CORNER_LENGTH)
+    local clip = display.newClippingRegionNode(cc.rect(0, 0, WORLD_WIDTH, WORLD_HEIGHT))
+                    :addTo(self.scene_node)
+                    :align(display.LEFT_BOTTOM,CORNER_LENGTH,CORNER_LENGTH)
+    -- local map = display.newFilteredSprite("world_terrain.png", "CUSTOM", json.encode({
+    --     frag = "shaders/maptex.fs",
+    --     shaderName = "maptex",
+    --     size = {
+    --         WIDTH/2, --
+    --         HEIGHT,
+    --         0.5/(WIDTH/4),
+    --         1/HEIGHT,
+    --     },
+    --     width = bigMapLength_value,
+    -- })):align(display.LEFT_BOTTOM, 0, 0):addTo(clip)
+    -- local cache = cc.Director:getInstance():getTextureCache()
+    -- cache:addImage("world_map.png"):setAliasTexParameters()
+    -- map:getGLProgramState():setUniformTexture("terrain", cache:getTextureForKey("world_map.png"):getName())
+    -- map:setScaleX(WIDTH/4)
+    -- map:setScaleY(HEIGHT/2)
 
-    local map = display.newFilteredSprite("world_terrain.png", "CUSTOM", json.encode({
-        frag = "shaders/maptex.fs",
-        shaderName = "maptex",
-        size = {
-            WIDTH/2, --
-            HEIGHT,
-            0.5/(WIDTH/4),
-            1/HEIGHT,
-        },
-        width = bigMapLength_value,
-    })):align(display.LEFT_BOTTOM, 0, 0):addTo(clip)
-    local cache = cc.Director:getInstance():getTextureCache()
-    cache:addImage("world_map.png"):setAliasTexParameters()
-    map:getGLProgramState():setUniformTexture("terrain", cache:getTextureForKey("world_map.png"):getName())
-    map:setScaleX(WIDTH/4)
-    map:setScaleY(HEIGHT/2)
+    GameUtils:LoadImagesWithFormat(function()
+        cc.TMXTiledMap:create("tmxmaps/worldlayer.tmx")
+        :align(display.LEFT_BOTTOM, 0, 0):addTo(clip)
+    end, cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565)
 
     self.normal_map = NormalMapAnchorBottomLeftReverseY.new{
         tile_w = TILE_LENGTH,
