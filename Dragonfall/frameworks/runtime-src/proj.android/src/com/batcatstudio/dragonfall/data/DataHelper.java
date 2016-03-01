@@ -45,7 +45,7 @@ public class DataHelper {
 	
 	private static String PREFERENCES_NAME = "com.batcatstudio.game.preferences";
 	
-	public static final long ZIP_RESOURCE_SIZE = 69013924;
+	public static final long ZIP_RESOURCE_SIZE = 75801685;
 
 	private static int appVersionCode = -1;
 
