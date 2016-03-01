@@ -151,9 +151,6 @@ function Sprite:setTexture(arg)
                 display.addSpriteFrames(plistName,found_data_in_plist)
             end
             self:setSpriteFrame(arg)
-            if isSd and self.UpdateVertexRect then
-                self:UpdateVertexRect()
-            end
         else
             if openSD then
                 local prename, suffix = unpack(string.split(arg, "."))
@@ -164,6 +161,9 @@ function Sprite:setTexture(arg)
                 end 
             end
             old_setTexture(self,arg)
+        end
+        if isSd and self.UpdateVertexRect then
+            self:UpdateVertexRect()
         end
     else
         old_setTexture(self,arg)
