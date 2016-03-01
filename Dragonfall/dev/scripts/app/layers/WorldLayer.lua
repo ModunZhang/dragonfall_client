@@ -62,16 +62,11 @@ function WorldLayer:onEnter()
     math.randomseed(1)
 end
 function WorldLayer:onExit()
-    local cache = cc.Director:getInstance():getTextureCache()
-    cache:removeTextureForKey("world_bg.png")
-    cache:removeTextureForKey("world_title2.png")
-    cache:removeTextureForKey("world_title1.png")
-    cache:removeTextureForKey("world_terrain.png")
 end
 function WorldLayer:CreateBg()
     local sx, sy = math.ceil(worldsize.width / 634), math.ceil(worldsize.height / 1130)
     local offsetY = 0
-    local sprite = display.newFilteredSprite("world_bg.png", "CUSTOM", json.encode({
+    local sprite = display.newFilteredSprite("world_bg.jpg", "CUSTOM", json.encode({
         frag = "shaders/plane.fs",
         shaderName = "plane1",
         param = {1/sx, 1/sy, sx, sy}
@@ -80,13 +75,13 @@ function WorldLayer:CreateBg()
     sprite:setScaleX(sx)
     sprite:setScaleY(sy)
 
-    display.newFilteredSprite("world_title2.png", "CUSTOM", json.encode({
+    display.newFilteredSprite("world_title2.jpg", "CUSTOM", json.encode({
         frag = "shaders/plane.fs",
         shaderName = "plane2",
         param = {1/sx, 1, sx, 1}
     })):addTo(self):align(display.LEFT_TOP,0,worldsize.height):setScaleX(sx)
 
-    display.newSprite("world_title1.png")
+    display.newSprite("world_title1.jpg")
         :addTo(self):align(display.LEFT_TOP,0,worldsize.height):scale(0.7)
 end
 function WorldLayer:CreateCorner()
