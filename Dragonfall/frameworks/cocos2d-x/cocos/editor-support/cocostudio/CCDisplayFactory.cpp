@@ -160,10 +160,6 @@ void DisplayFactory::createSpriteDisplay(Bone *bone, DecorativeDisplay *decoDisp
         skin = Skin::createWithSpriteFrameName((textureName + ".png").c_str());
 		if (skin && bone->getArmature()->getName().find("-sd") != std::string::npos)
 		{
-			auto size = skin->getContentSize();
-			size.width = size.width * 2;
-			size.height = size.height * 2;
-			skin->setContentSize(size);
 			skin->UpdateVertexRect();
 		}
     }
