@@ -77,6 +77,16 @@ m_coreInput(nullptr)
 	this->Loaded +=
 		        ref new Windows::UI::Xaml::RoutedEventHandler(this, &OpenGLESPage::OnPageLoaded);
 
+	#if (WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP)
+	    Windows::UI::ViewManagement::StatusBar::GetForCurrentView()->HideAsync();
+	#else
+	    // Disable all pointer visual feedback for better performance when touching.
+	    // This is not supported on Windows Phone applications.
+	    auto pointerVisualizationSettings = Windows::UI::Input::PointerVisualizationSettings::GetForCurrentView();
+	    pointerVisualizationSettings->IsContactFeedbackEnabled = false;
+	    pointerVisualizationSettings->IsBarrelButtonFeedbackEnabled = false;
+	#endif
+
 	// 此时，我们具有访问设备的权限。
 	// 我们可创建与设备相关的资源。
 	m_deviceResources = std::make_shared<DX::DeviceResources>();
