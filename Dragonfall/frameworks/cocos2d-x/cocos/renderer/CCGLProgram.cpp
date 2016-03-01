@@ -228,11 +228,11 @@ bool GLProgram::initWithHLSL(const ShaderDescriptor& vertexShader, const ShaderD
 	// Load shaders asynchronously.
 #if WINRT
 	auto vspath = "ccShader_" + vertexShader.name + "_VS.cso";
-	auto avspath = FileUtils::getInstance()->fullPathForFilename("res/shaders/" + vspath);
+	auto avspath = FileUtils::getInstance()->fullPathForFilename(vspath);
 	auto vsData = FileUtils::getInstance()->getDataFromFile(avspath);
 	
 	auto pspath = "ccShader_" + pixelShader.name + "_PS.cso";
-	auto apspath = FileUtils::getInstance()->fullPathForFilename("res/shaders/" + pspath);
+	auto apspath = FileUtils::getInstance()->fullPathForFilename(pspath);
 	auto psData = FileUtils::getInstance()->getDataFromFile(apspath);
 #else
 	auto vsData = FileUtils::getInstance()->getDataFromFile("ccShader_" + vertexShader.name + "_VS.cso");
