@@ -12,7 +12,7 @@ import android.app.Activity;
 public class MarketSDK {
 	
 //#ifdef CC_USE_TALKING_DATA
-//@	private static String TD_APP_ID = "13842425C091E33B40189A1C9BB6B433"; // test
+//@	private static String TD_APP_ID = "A96439345EE4F59AEF4CBF1DEFF21DEA"; // test
 //@	private static String TD_CHANNEL_ID = "All";
 //@	private static TDGAAccount tdga_account = null;
 //#endif
