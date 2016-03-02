@@ -108,7 +108,8 @@
 #facebook
 -keep class com.facebook.** {*;}
 -dontwarn com.facebook.**
-
+#AppsFlyer
+-libraryjars ./libs/AF-Android-SDK-v3.3.0.jar
 #================Project========================
 -keep class com.batcatstudio.dragonfall.notifications.NotificationUtils {
 	public static boolean addLocalPush(...);
