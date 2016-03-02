@@ -37,7 +37,7 @@ const ShaderDescriptor flash_frag = ShaderDescriptor("flash")
 .Const("ratio", sizeof(float), GL_FLOAT, true);
 
 const ShaderDescriptor mask_frag = ShaderDescriptor("mask")
-.Const("rect", sizeof(float), GL_FLOAT_VEC4, true)
+.Const("rect", sizeof(float) * 4, GL_FLOAT_VEC4, true)
 .Const("enable", sizeof(float), GL_FLOAT, true);
 
 const ShaderDescriptor mask_layer_frag = ShaderDescriptor("mask_layer")
