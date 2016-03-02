@@ -187,7 +187,7 @@ function GameUIAllianceBattle:InitAllianceInfo()
     local layer = self.info_layer
     local alliance = self.alliance
 
-    local background_550x170 = device.platform == 'winrt' and "background_550x170.png" or "background_550x170.jpg" 
+    local background_550x170 = "background_550x170.jpg"
     local bg_jpg = display.newSprite(background_550x170):align(display.CENTER, window.cx, window.top_bottom - 80):addTo(layer)
 
     local shadow_layer = UIKit:shadowLayer():size(548,44):pos(1,110):addTo(bg_jpg)
@@ -249,7 +249,7 @@ function GameUIAllianceBattle:InitBattleStatistics()
     local other_alliance = self.other_alliance
     layer:removeAllChildren()
     self.request_num_label = nil
-    local alliance_battle_bg_612x886 = device.platform == 'winrt' and "alliance_battle_bg_612x886.png" or "alliance_battle_bg_612x886.jpg" 
+    local alliance_battle_bg_612x886 = "alliance_battle_bg_612x886.jpg" 
     display.newSprite(alliance_battle_bg_612x886):addTo(layer):align(display.TOP_CENTER,window.cx,window.top_bottom+28)
     local status = alliance.basicInfo.status
     -- local status = ""
