@@ -25,7 +25,7 @@ m_deviceResources(deviceResources)
 	m_deviceResources->RegisterDeviceNotify(this);
 
 	// TODO: 将此替换为应用程序内容的初始化。
-	m_sceneRenderer = std::unique_ptr<Sample3DSceneRenderer>(new Sample3DSceneRenderer(m_deviceResources));
+	//m_sceneRenderer = std::unique_ptr<Sample3DSceneRenderer>(new Sample3DSceneRenderer(m_deviceResources));
 
 	//m_fpsTextRenderer = std::unique_ptr<SampleFpsTextRenderer>(new SampleFpsTextRenderer(m_deviceResources));
 
@@ -47,7 +47,7 @@ DirectXMain::~DirectXMain()
 void DirectXMain::CreateWindowSizeDependentResources()
 {
 	// TODO: 将此替换为应用程序内容的与大小相关的初始化。
-	m_sceneRenderer->CreateWindowSizeDependentResources();
+	//m_sceneRenderer->CreateWindowSizeDependentResources();
 }
 
 void DirectXMain::StartRenderLoop()
@@ -202,7 +202,7 @@ bool DirectXMain::Render()
 
 	// 呈现场景对象。
 	// TODO: 将此替换为应用程序内容的渲染函数。
-	m_sceneRenderer->Render();
+	//m_sceneRenderer->Render();
 	//m_fpsTextRenderer->Render();
 
 	return true;
@@ -237,14 +237,14 @@ void DirectXMain::OnPointerReleased(Platform::Object^ sender, Windows::UI::Core:
 // 通知呈现器，需要释放设备资源。
 void DirectXMain::OnDeviceLost()
 {
-	m_sceneRenderer->ReleaseDeviceDependentResources();
+	//m_sceneRenderer->ReleaseDeviceDependentResources();
 	//m_fpsTextRenderer->ReleaseDeviceDependentResources();
 }
 
 // 通知呈现器，现在可重新创建设备资源。
 void DirectXMain::OnDeviceRestored()
 {
-	m_sceneRenderer->CreateDeviceDependentResources();
+	//m_sceneRenderer->CreateDeviceDependentResources();
 	//m_fpsTextRenderer->CreateDeviceDependentResources();
 	CreateWindowSizeDependentResources();
 }
