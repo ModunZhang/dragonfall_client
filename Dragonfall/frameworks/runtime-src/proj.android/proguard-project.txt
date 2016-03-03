@@ -82,6 +82,7 @@
 
 -keep public class com.nineoldandroids.**
 -keep public class android.support.v4.**
+-dontnote android.support.v4.**
 
 -keepclasseswithmembernames class * {
     native <methods>;
@@ -106,8 +107,13 @@
 -keep public class com.gametalkingdata.** {*;}
 -keep public class com.tendcloud.tenddata.** {*;}
 #facebook
--keep class com.facebook.** {*;}
--dontwarn com.facebook.**
+-keepattributes Signature
+-keep class com.facebook.android.*
+-keep class android.webkit.WebViewClient
+-keep class * extends android.webkit.WebViewClient
+-keepclassmembers class * extends android.webkit.WebViewClient { 
+    <methods>; 
+}
 #AppsFlyer
 -libraryjars ./libs/AF-Android-SDK-v3.3.0.jar
 #================Project========================
