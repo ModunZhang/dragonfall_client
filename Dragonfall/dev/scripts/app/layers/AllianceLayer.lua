@@ -495,7 +495,11 @@ function AllianceLayer:FindMapObject(index, x, y)
     if alliance_object then
         if alliance_object.isCrown then
             for k,v in pairs(alliance_object.tower1) do
-                if v.x == x and v.y == y then
+                -- 点击到中心
+                if (v.x == x and v.y == y) 
+                -- 点击到王座周围
+                or (v.name == "crown" and math.abs(x - v.x) < 2 and math.abs(y - v.y) < 2)
+                then
                     return {index = index, x = v.x, y = v.y, name = v.name, obj = v}
                 end
             end
@@ -664,10 +668,12 @@ function AllianceLayer:AddMapObject(objects_node, mapObj, alliance)
         return 
     end
 
-    local node = self:CreateClickableObject():AddSprite(sprite)
+    local node = self:CreateClickableObject()
+                :addTo(objects_node)
+                :AddSprite(sprite)
     node.info = self:CreateInfoBanner()
     node.name = mapObj.name
-    objects_node.mapObjects[mapObj.id] = node:addTo(objects_node)
+    objects_node.mapObjects[mapObj.id] = node
     self:RefreshMapObjectPosition(node, mapObj)
     return node
 end
@@ -696,8 +702,13 @@ local function beginFlash(sprite, lastTime)
     sprite:scheduleUpdate()
 end
 function AllianceLayer:CreateClickableObject()
+    local layer = self
     local node = display.newNode()
     local SPRITE_TAG = 112
+    function node:SetAlliancePos(x, y)
+        return self:zorder(getZorderByXY(x,y))
+                :pos(layer:GetInnerMapPosition(x,y))
+    end
     function node:AddSprite(sprite)
         sprite:addTo(self, 0, SPRITE_TAG)
         return self
@@ -1100,11 +1111,9 @@ function AllianceLayer:CreateAllianceObjects(obj_node, terrain, style, index, al
             decorator.name = name
             table.insert(decorators, decorator)
         elseif building_png then
-            local node = self:CreateClickableObject()
-                        :addTo(obj_node, getZorderByXY(x, y))
-                        :pos(self:GetInnerMapPosition(x,y))
-                        :AddSprite(createEffectSprite(building_png))
-            local sprite = node:GetSprite()
+            local sprite = createEffectSprite(building_png)
+            local node = self:CreateClickableObject():addTo(obj_node)
+                        :SetAlliancePos(x,y):AddSprite(sprite)
             if name == "palace" then
                 sprite:setAnchorPoint(cc.p(0.5, 0.4))
             elseif name == "shop" then
@@ -1205,14 +1214,19 @@ function AllianceLayer:CreateMiddleCrown(obj_node)
                 decorator.y = y
                 decorator.name = name
             end
-        else -- 没有找到就是他
+        else -- 没有找到就是tower
             size = {width = 1, height = 1}
             local x,y = (2 * v.x - size.width + 1) / 2, (2 * v.y - size.height + 1) / 2
-            
-            local node = self:CreateClickableObject()
-                        :addTo(obj_node, getZorderByXY(x,y))
-                        :pos(self:GetInnerMapPosition(x,y))
-                        :AddSprite(createEffectSprite("watchTower.png"))
+            local sprite
+            if name == "tower1" then
+                sprite = createEffectSprite("guardTower.png")
+            elseif name == "tower2" then
+                sprite = createEffectSprite("crystalTower.png")
+            elseif name == "crown" then
+                sprite = createEffectSprite("crystalThrone.png")
+            end
+            local node = self:CreateClickableObject():addTo(obj_node)
+                        :SetAlliancePos(x,y):AddSprite(sprite)
             node.x = x
             node.y = y
             node.name = name
