@@ -904,15 +904,20 @@ function AllianceLayer:LoadObjects(index, alliance, func)
             func(new_obj)
         end
     else
-        if alliance and (alliance_obj.nomanland or alliance_obj.style ~= style) then
+        -- 联盟领地
+        if (alliance_obj.nomanland or alliance_obj.style ~= style) 
+        and alliance then
             self:FreeObjects(alliance_obj)
             self.alliance_objects[index] = nil
             return self:LoadObjects(index, alliance, func)
-        elseif not alliance and not alliance_obj.nomanland then
+        -- 无主之地
+        elseif  not alliance 
+            and not alliance_obj.nomanland 
+            and not self:IsCrown(index) then
             self:FreeObjects(alliance_obj)
             self.alliance_objects[index] = nil
             return self:LoadObjects(index, alliance, func)
-        elseif alliance_obj.terrain ~= terrain then
+        elseif alliance_obj.terrain ~= terrain then -- 地形不符
             self:ReloadObjectsByTerrain(alliance_obj, terrain)
         end
         if type(func) == "function" then
@@ -1219,9 +1224,9 @@ function AllianceLayer:CreateMiddleCrown(obj_node)
             local x,y = (2 * v.x - size.width + 1) / 2, (2 * v.y - size.height + 1) / 2
             local sprite
             if name == "tower1" then
-                sprite = createEffectSprite("guardTower.png")
-            elseif name == "tower2" then
                 sprite = createEffectSprite("crystalTower.png")
+            elseif name == "tower2" then
+                sprite = createEffectSprite("guardTower.png")
             elseif name == "crown" then
                 sprite = createEffectSprite("crystalThrone.png")
             end
@@ -1462,9 +1467,9 @@ function AllianceLayer:GetMapInfoByIndex(index, alliance)
     style = style == nil and math.random(6) or style
     return terrain, style
 end
-local CLICK_EMPTY_TAG = 911
 function AllianceLayer:PromiseOfFlashEmptyGround(mapIndex, x, y)
-    self:RemoveClickNode()
+    local CLICK_EMPTY_TAG = 911
+    self.empty_node:removeChildByTag(CLICK_EMPTY_TAG)
     local point = self:RealPosition(mapIndex, x, y)
     local p = promise.new()
     display.newSprite("click_empty.png")
@@ -1476,14 +1481,11 @@ function AllianceLayer:PromiseOfFlashEmptyGround(mapIndex, x, y)
                 cc.FadeTo:create(0.15, 0),
                 cc.CallFunc:create(function()
                     p:resolve()
-                    self:RemoveClickNode()
+                    self.empty_node:removeChildByTag(CLICK_EMPTY_TAG)
                 end)
             }
         )
     return p
-end
-function AllianceLayer:RemoveClickNode()
-    self.empty_node:removeChildByTag(CLICK_EMPTY_TAG)
 end
 function AllianceLayer:TrackCorpsById(id)
     if self.track_id then
