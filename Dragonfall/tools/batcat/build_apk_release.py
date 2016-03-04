@@ -22,10 +22,12 @@ def checkObjs():
 		executeCommand("sh build_native_release.sh",not Logging.DEBUG_MODE)
 		os.chdir(CURRENT_DIR)
 		Logging.info("二进制文件构建结束")
+		logInfo['latest_bin_hash'] = getFileHash(formatPath("%s/libs/armeabi/libcocos2dlua.so" % PROJECT_EXECUTE_DIR_PATH))
 		backupBin()
 	else:
-		Logging.info("检测项目二进制文件结束")
-	logInfo['latest_bin_hash'] = getFileHash(formatPath("%s/libs/armeabi/libcocos2dlua.so" % PROJECT_EXECUTE_DIR_PATH))
+		logInfo['latest_bin_hash'] = getFileHash(formatPath("%s/libs/armeabi/libcocos2dlua.so" % PROJECT_EXECUTE_DIR_PATH))
+	Logging.info("检测项目二进制文件结束")
+		
 
 def checkRes():
 	global logInfo
