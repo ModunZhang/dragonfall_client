@@ -5,9 +5,9 @@ public class DebugUtil {
 	private static final boolean isLogErrorOn = true;
 	private static final boolean isLogExceptionOn = true;
 //#ifdef COCOS_DEBUG
-//@	private static final boolean isLogDebugOn = true;
+	private static final boolean isLogDebugOn = true;
 //#else
-	private static final boolean isLogDebugOn = false;
+//@	private static final boolean isLogDebugOn = false;
 //#endif
 	public static void LogErr(String TAG, String msg) {
 		if (isLogErrorOn)

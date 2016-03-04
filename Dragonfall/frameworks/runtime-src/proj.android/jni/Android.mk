@@ -21,6 +21,10 @@ hellolua/main.cpp \
 ../../../../extensions/sdk/MarketSDKTool-android.cpp \
 ../../../../extensions/ext/platform/android/jni_StoreKit.cpp
 
+ifeq ($(CC_USE_SDK_PAYPAL),1)
+LOCAL_SRC_FILES += ../../../../extensions/sdk/PayPal/PayPalSDK-android.cpp
+endif
+
 ifeq ($(CC_USE_FACEBOOK),1)
 LOCAL_SRC_FILES += ../../../../extensions/sdk/Facebook/FacebookSDK-android.cpp \
 ../../../../extensions/sdk/Facebook/tolua_fb_sdk.cpp
@@ -50,6 +54,7 @@ $(LOCAL_PATH)/../../../cocos2d-x/tools/simulator/libsimulator/lib \
 $(LOCAL_PATH)/../../../../extensions/ext \
 $(LOCAL_PATH)/../../../../extensions/sdk \
 $(LOCAL_PATH)/../../../../extensions/sdk/Facebook \
+$(LOCAL_PATH)/../../../../extensions/sdk/PayPal \
 $(LOCAL_PATH)/../../../../extensions/ext/platform/android \
 $(LOCAL_PATH)/../../../../extensions/ext/common \
 $(LOCAL_PATH)/../../../../extensions/ext/io \

@@ -84,7 +84,7 @@ public class DataHelper {
 					}
 				
 					AppActivity.getGameActivity().gameHandler.sendEmptyMessage(AppActivity.AppActivityMessage.LOADING_UNZIP_SHOW.ordinal());
-					deleteExistingAssetFile(installToSDCard,false);
+					deleteExistingAssetFile(installToSDCard,true);
 					unzipAssetFile(AppActivity.getGameActivity(), ZIP_FILE_NAME, rootPath,
 							true);
 				} catch (Exception e) {

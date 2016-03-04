@@ -176,9 +176,22 @@
     public static java.lang.String GetFBUserName();
     public static java.lang.String GetFBUserId();
 }
+-keep class com.batcatstudio.dragonfall.sdk.PayPalSDK {
+	public static void paypalBuy(...);
+	public static boolean isPayPalSupport();
+}
 #================Google Billing========================
 -keep class com.android.vending.billing.**
 
 #================Google Play========================
 -keep class com.google.android.gms.** {*;}
 -dontwarn com.google.android.gms.**
+#Paypal
+-libraryjars ./libs/PayPalAndroidSDK-2.13.1.jar
+-libraryjars ./libs/okhttp-3.0.1.jar
+-libraryjars ./libs/okio-1.6.0.jar
+-dontwarn okhttp3.internal.**
+-dontwarn okio.*
+-keep class com.paypal.android.sdk.payments.* {*;}
+-dontwarn com.paypal.android.sdk.payments.**
+-dontwarn com.paypal.android.sdk.**

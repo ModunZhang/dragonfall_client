@@ -40,6 +40,7 @@ import com.batcatstudio.dragonfall.notifications.NotificationUtils;
 import com.batcatstudio.dragonfall.sdk.FaceBookSDK;
 //#endif
 import com.batcatstudio.dragonfall.sdk.MarketSDK;
+import com.batcatstudio.dragonfall.sdk.PayPalSDK;
 import com.batcatstudio.dragonfall.utils.CommonUtils;
 import com.batcatstudio.dragonfall.utils.LaunchHelper;
 
@@ -107,6 +108,7 @@ public class AppActivity extends Cocos2dxActivity{
         CommonUtils.getInstance();
 		MarketSDK.initSDK();
 		StoreKit.init();
+		PayPalSDK.getInstance().init(this);
 //#ifdef CC_USE_FACEBOOK
 		FaceBookSDK.init();
 //#endif
@@ -180,6 +182,7 @@ public class AppActivity extends Cocos2dxActivity{
 	@Override
 	protected void onDestroy() {
 		StoreKit.purge();
+		PayPalSDK.getInstance().destroy(this);
 		super.onDestroy();
 	}
 	
@@ -188,6 +191,7 @@ public class AppActivity extends Cocos2dxActivity{
 		if(StoreKit.handleActivityResult(requestCode, resultCode, data)) {
 			super.onActivityResult(requestCode, resultCode, data);
 		}
+		PayPalSDK.getInstance().onActivityResult(requestCode, resultCode, data);
 //#ifdef CC_USE_FACEBOOK
 		FaceBookSDK.onActivityResult(this, requestCode, resultCode, data);
 //#endif
