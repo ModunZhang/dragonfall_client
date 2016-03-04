@@ -19,7 +19,6 @@ def checkObjs():
 	if not os.path.exists(formatPath("%s/libs/armeabi/libcocos2dlua.so" % PROJECT_EXECUTE_DIR_PATH)):
 		Logging.warning("项目二进制文件不存在,重新构建...")
 		os.chdir(PROJECT_EXECUTE_DIR_PATH)
-		executeCommand("sh clean.sh",not Logging.DEBUG_MODE)
 		executeCommand("sh build_native_release.sh",not Logging.DEBUG_MODE)
 		os.chdir(CURRENT_DIR)
 		Logging.info("二进制文件构建结束")
@@ -81,6 +80,9 @@ def backupBin():
 
 def initLogData():
 	global logInfo
+	zip_file_path = formatPath("%s/bin_bak" % PROJECT_EXECUTE_DIR_PATH)
+	if not os.path.exists(zip_file_path):
+		os.mkdir(zip_file_path)
 	logFile = formatPath("%s/bin_bak/log.json" % PROJECT_EXECUTE_DIR_PATH)
 	if os.path.exists(logFile):
 		file_object = open(logFile)
