@@ -72,6 +72,7 @@ function WidgetManufactureNew:onEnter()
     User:AddListenOnType(self, "materialEvents")
     scheduleAt(self, function()
         self:UpdateCurrentEvent()
+        self:RefreshRequirements(self.material_tab:GetSelectedButtonTag())
     end)
 end
 function WidgetManufactureNew:onExit()
@@ -294,7 +295,7 @@ function WidgetManufactureNew:ReloadMaterials(materials, materials_map)
 end
 function WidgetManufactureNew:UpdateCurrentEvent()
     local event_name = self.material_tab:GetSelectedButtonTag()
-    self:UpdateByEvent(User:GetMakingMaterialsEvent(event_name) 
+    self:UpdateByEvent(User:GetMakingMaterialsEvent(event_name)
         or User:GetStoreMaterialsEvent(event_name))
 end
 function WidgetManufactureNew:UpdateByEvent(event)
@@ -429,6 +430,7 @@ end
 
 
 return WidgetManufactureNew
+
 
 
 

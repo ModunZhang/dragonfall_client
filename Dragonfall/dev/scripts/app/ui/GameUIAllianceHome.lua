@@ -419,7 +419,6 @@ function GameUIAllianceHome:RefreshTop(force_refresh)
 
         local our_kill = alliance.allianceFight.attacker.alliance.id == alliance._id and alliance.allianceFight.attacker.allianceCountData.kill or alliance.allianceFight.defencer.allianceCountData.kill
         local enemy_kill = alliance.allianceFight.attacker.alliance.id == alliance._id and alliance.allianceFight.defencer.allianceCountData.kill or alliance.allianceFight.attacker.allianceCountData.kill
-        print("our_kill=",our_kill,"enemy_kill=",enemy_kill)
         -- 己方击杀
         local self_power_bg = display.newSprite("power_background_146x26.png")
             :align(display.LEFT_CENTER, 40, -65):addTo(top_self_bg)
@@ -531,7 +530,7 @@ function GameUIAllianceHome:RefreshTop(force_refresh)
                     end
                 end
             else
-                local time = intInit.allianceMoveColdMinutes.value * 60 + self.alliance.basicInfo.allianceMoveTime/1000.0 - app.timer:GetServerTime()
+                local time = intInit.allianceMoveColdMinutes.value * 60 + Alliance_Manager:GetMyAlliance().basicInfo.allianceMoveTime/1000.0 - app.timer:GetServerTime()
                 local canMove = Alliance_Manager:GetMyAlliance().basicInfo.allianceMoveTime == 0 or time <= 0
                 period_time_label:setString(canMove and _("准备就绪") or GameUtils:formatTimeStyle1(time))
                 period_time_label:setColor(canMove and UIKit:hex2c4b(0xa1dd00) or UIKit:hex2c4b(0xe34724))

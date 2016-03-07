@@ -78,33 +78,9 @@ local rgba4444 = import(".rgba4444")
 local jpg_rgb888 = import(".jpg_rgb888")
 
 jpg_rgb888["tmxmaps/terrain1.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
-jpg_rgb888["world_bg.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
-jpg_rgb888["world_title1.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
-jpg_rgb888["world_title2.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
-jpg_rgb888["world_terrain.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
 
 
-local auto_cleanup = {
-    ["jpg_png0.png"] = 1,
-    ["jpg_png1.png"] = 1,
-    ["jpg_png2.png"] = 1,
-    ["jpg_png3.png"] = 1,
-    ["jpg_png4.png"] = 1,
-    ["jpg_png5.png"] = 1,
-    ["jpg_png6.png"] = 1,
-    ["jpg_png7.png"] = 1,
-    ["jpg_png8.png"] = 1,
-    ["jpg_png9.png"] = 1,
-    ["jpg_png10.png"] = 1,
-    ["jpg_png11.png"] = 1,
-    ["jpg_png12.png"] = 1,
-    ["jpg_png13.png"] = 1,
-    ["jpg_png14.png"] = 1,
-    ["jpg_png15.png"] = 1,
-    ["jpg_png16.png"] = 1,
-    ["start_game_292x28.png"] = 1,
-    ["background_608x678.png"] = 1,
-}
+local auto_cleanup = {}
 for k,v in pairs(jpg_rgb888) do
     auto_cleanup[k] = true
 end
