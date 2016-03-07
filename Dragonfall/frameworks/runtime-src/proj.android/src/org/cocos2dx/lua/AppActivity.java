@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import org.cocos2dx.lib.Cocos2dxActivity;
 import org.cocos2dx.lib.Cocos2dxHelper;
 
-import com.batcatstudio.dragonfall.R;
 import com.batcatstudio.dragonfall.data.DataHelper;
 import com.batcatstudio.dragonfall.google.billing.StoreKit;
 import com.batcatstudio.dragonfall.google.gcm.GCMIntentService;
@@ -44,6 +43,7 @@ import com.batcatstudio.dragonfall.sdk.MarketSDK;
 import com.batcatstudio.dragonfall.sdk.PayPalSDK;
 import com.batcatstudio.dragonfall.utils.CommonUtils;
 import com.batcatstudio.dragonfall.utils.LaunchHelper;
+import com.xapcn.dragonfall.R;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
