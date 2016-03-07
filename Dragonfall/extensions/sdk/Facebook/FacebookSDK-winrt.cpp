@@ -156,4 +156,9 @@ void FacebookSDK::CallLuaCallback(cocos2d::ValueMap valMap)
 	}
 }
 
+void FacebookSDK::AppInvite(std::string title,std::string message)
+{
+    //TODO:windows phone
+}
+
 #endif // CC_TARGET_PLATFORM == CC_PLATFORM_WINRT

@@ -175,6 +175,7 @@
     public static boolean IsAuthenticated();
     public static java.lang.String GetFBUserName();
     public static java.lang.String GetFBUserId();
+    public static void AppInvite(...);
 }
 -keep class com.batcatstudio.dragonfall.sdk.PayPalSDK {
 	public static void paypalBuy(...);

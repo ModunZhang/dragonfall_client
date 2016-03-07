@@ -65,6 +65,11 @@ std::string FacebookSDK::GetFBUserId()
     return std::string("");
 }
 
+void FacebookSDK::AppInvite(std::string title,std::string message)
+{
+    //TODO:iOS
+}
+
 /**
  *  登录facebook,每次调用都会弹出登录框,并请求新的的FBSDKAccessToken
  */

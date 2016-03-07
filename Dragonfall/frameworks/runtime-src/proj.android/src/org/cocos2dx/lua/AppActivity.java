@@ -36,6 +36,7 @@ import com.batcatstudio.dragonfall.data.DataHelper;
 import com.batcatstudio.dragonfall.google.billing.StoreKit;
 import com.batcatstudio.dragonfall.google.gcm.GCMIntentService;
 import com.batcatstudio.dragonfall.notifications.NotificationUtils;
+import com.batcatstudio.dragonfall.sdk.FaceBookSDK;
 //#ifdef CC_USE_FACEBOOK
 import com.batcatstudio.dragonfall.sdk.FaceBookSDK;
 //#endif
@@ -183,6 +184,7 @@ public class AppActivity extends Cocos2dxActivity{
 	protected void onDestroy() {
 		StoreKit.purge();
 		PayPalSDK.getInstance().destroy(this);
+		FaceBookSDK.onDestroy();
 		super.onDestroy();
 	}
 	

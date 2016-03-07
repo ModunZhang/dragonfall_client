@@ -26,7 +26,7 @@ static jmethodID jmIsAuthenticated = NULL;
 static jmethodID jmLogin = NULL;
 static jmethodID jmGetFBUserName = NULL;
 static jmethodID jmGetFBUserId = NULL;
-
+static jmethodID jmAppInvite = NULL;
 //method
 static bool initJNI(JNIEnv* env, jclass cls) 
 {
@@ -73,6 +73,12 @@ static bool initJNI(JNIEnv* env, jclass cls)
     if(jmGetFBUserId == NULL)
     {
         LOGE("Get jmGetFBUserId failed");
+        return false;
+    }
+    jmAppInvite = env->GetStaticMethodID(jcFaceBookSDK, "AppInvite", "(Ljava/lang/String;Ljava/lang/String;)V");
+    if(jmAppInvite == NULL)
+    {
+        LOGE("Get jmAppInvite failed");
         return false;
     }
     
@@ -161,6 +167,18 @@ std::string FacebookSDK::GetFBUserId()
         ret = cocos2d::JniHelper::jstring2string(jResult);
     }
     return ret;
+}
+void FacebookSDK::AppInvite(std::string title,std::string message)
+{
+    if (NULL != jmAppInvite)
+    {
+        JNIEnv* env = cocos2d::JniHelper::getEnv();
+        jstring jtitle = env->NewStringUTF(title.c_str());
+        jstring jmessage = env->NewStringUTF(message.c_str());
+        env->CallStaticVoidMethod(jcFaceBookSDK, jmAppInvite,jtitle,jmessage);
+        env->DeleteLocalRef(jtitle);
+        env->DeleteLocalRef(jmessage);
+    }
 }
 /**
  *  登录facebook

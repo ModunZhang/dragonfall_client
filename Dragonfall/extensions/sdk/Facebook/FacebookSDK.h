@@ -42,6 +42,8 @@ public:
     
     std::string GetFBUserId();
     
+    void AppInvite(std::string title,std::string message);
+
 private:
 
 	int m_handId;
