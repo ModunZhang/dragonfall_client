@@ -4,6 +4,8 @@
 #if CC_USE_FACEBOOK
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import <FBSDKShareKit/FBSDKGameRequestContent.h>
+#import <FBSDKShareKit/FBSDKGameRequestDialog.h>
 #endif
 
 static FacebookSDK *s_FacebookSDK = NULL; // pointer to singleton
@@ -67,7 +69,14 @@ std::string FacebookSDK::GetFBUserId()
 
 void FacebookSDK::AppInvite(std::string title,std::string message)
 {
-    //TODO:iOS
+    FBSDKGameRequestContent *gameRequestContent = [[FBSDKGameRequestContent alloc] init];
+    
+    // Look at FBSDKGameRequestContent for futher optional properties
+    gameRequestContent.message = [NSString stringWithUTF8String:title.c_str()];
+    gameRequestContent.title = [NSString stringWithUTF8String:message.c_str()];
+    
+    // Assuming self implements <FBSDKGameRequestDialogDelegate>
+    [FBSDKGameRequestDialog showWithContent:gameRequestContent delegate:nil];
 }
 
 /**
