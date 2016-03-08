@@ -25,7 +25,6 @@ function WidgetSliderWithInput:ctor(params)
         slider_max = max
     end
     min = slider_max <= 1 and 0 or min
-    print("min=",min,slider_max)
     self.slider = WidgetSlider.new(display.LEFT_TO_RIGHT,  {bar = bar,
         progress = progress,
         button = "slider_btn_66x66.png"}, {max = slider_max,min = min,scale9=true}):addTo(self)
@@ -104,7 +103,7 @@ function WidgetSliderWithInput:ctor(params)
         :align(display.RIGHT_CENTER, slider:getCascadeBoundingBox().size.width,0)
     self:setContentSize(cc.size(slider:getCascadeBoundingBox().size.width,slider:getCascadeBoundingBox().size.height))
     self.soldier_total_count = soldier_total_count
-    slider:setSliderValue(slider_max > 0 and (min < 1) and 1 or min)
+    -- slider:setSliderValue(slider_max > 0 and (min < 1) and 1 or min)
     self.text_btn:align(display.CENTER, self.soldier_total_count:getPositionX() - self.soldier_total_count:getContentSize().width - 10 - self.text_btn:getCascadeBoundingBox().size.width/2,30):addTo(self)
 end
 function WidgetSliderWithInput:SetValue(value)

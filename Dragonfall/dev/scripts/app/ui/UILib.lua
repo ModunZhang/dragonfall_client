@@ -712,27 +712,30 @@ local DRAGON_SKILL_ICON = {
         greenDragon = "greedy_128x128.png",
         blueDragon = "greedy_128x128.png",
     },
-    frenzied = {
-        redDragon = "frenzied_128x128.png",
-        greenDragon = "frenzied_128x128.png",
-        blueDragon = "frenzied_128x128.png",
-    },
-    recover = {
-        redDragon = "recover_128x128.png",
-        greenDragon = "recover_128x128.png",
-        blueDragon = "recover_128x128.png",
-    },
-    insensitive = {
-        redDragon = "insensitive_128x128.png",
-        greenDragon = "insensitive_128x128.png",
-        blueDragon = "insensitive_128x128.png",
-    },
     earthquake = {
         redDragon = "earthquake_128x128.png",
         greenDragon = "earthquake_128x128.png",
         blueDragon = "earthquake_128x128.png",
     },
-    battleHunger = {
+    hellFire = {
+        redDragon = "battleHunger_128x128.png",
+        greenDragon = "battleHunger_128x128.png",
+        blueDragon = "battleHunger_128x128.png",
+    }
+    ,
+    lightningStorm = {
+        redDragon = "battleHunger_128x128.png",
+        greenDragon = "battleHunger_128x128.png",
+        blueDragon = "battleHunger_128x128.png",
+    }
+    ,
+    poisonNova = {
+        redDragon = "battleHunger_128x128.png",
+        greenDragon = "battleHunger_128x128.png",
+        blueDragon = "battleHunger_128x128.png",
+    }
+    ,
+    surge = {
         redDragon = "battleHunger_128x128.png",
         greenDragon = "battleHunger_128x128.png",
         blueDragon = "battleHunger_128x128.png",

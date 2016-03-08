@@ -262,9 +262,9 @@ function GameUIShrineReportInMail:FightReportsData(round,data)
 
     local right_player_dragon = data.defenceTroopData.dragon
     -- RoundDatas
-    local left_round = data.fightWithDefenceTroopReports.attackPlayerSoldierRoundDatas
+    local left_round = data.fightWithDefenceTroopReports.soldierRoundDatas
 
-    local right_round =data.fightWithDefenceTroopReports.defenceTroopSoldierRoundDatas
+    local right_round =data.fightWithDefenceTroopReports.soldierRoundDatas
     if left_player_troop then
         self:CreateArmyGroup(left_player_troop,right_player_troop,left_player_dragon,right_player_dragon,left_round,right_round)
     end
@@ -278,34 +278,39 @@ function GameUIShrineReportInMail:FightReportsData(round,data)
     end
 end
 function GameUIShrineReportInMail:IsRoundWin(data)
-    local my_round = data.fightWithDefenceTroopReports.attackPlayerSoldierRoundDatas
-    local defence_round = data.fightWithDefenceTroopReports.defenceTroopSoldierRoundDatas
-    -- 判定是否双方所有士兵都参加了战斗
-    local my_soldiers = data.attackPlayerData.soldiers
-    local defence_soldiers = data.defenceTroopData.soldiers
-    for i,s in ipairs(my_soldiers) do
-        local isFight = false
-        for i,r in ipairs(my_round) do
-            if s.name == r.soldierName then
-                isFight = true
-            end
-        end
-        if not isFight then
-            return true
-        end
+    local my_round = data.fightWithDefenceTroopReports.soldierRoundDatas
+    local isWin = true
+    for i,v in ipairs(my_round[#my_round].attackResults) do
+        isWin = isWin and v.isWin
     end
-    for i,s in ipairs(defence_soldiers) do
-        local isFight = false
-        for i,r in ipairs(defence_round) do
-            if s.name == r.soldierName then
-                isFight = true
-            end
-        end
-        if not isFight then
-            return false
-        end
-    end
-    return my_round[#my_round].isWin
+    return isWin
+        -- local defence_round = data.fightWithDefenceTroopReports.defenceTroopSoldierRoundDatas
+        -- -- 判定是否双方所有士兵都参加了战斗
+        -- local my_soldiers = data.attackPlayerData.soldiers
+        -- local defence_soldiers = data.defenceTroopData.soldiers
+        -- for i,s in ipairs(my_soldiers) do
+        --     local isFight = false
+        --     for i,r in ipairs(my_round) do
+        --         if s.name == r.soldierName then
+        --             isFight = true
+        --         end
+        --     end
+        --     if not isFight then
+        --         return true
+        --     end
+        -- end
+        -- for i,s in ipairs(defence_soldiers) do
+        --     local isFight = false
+        --     for i,r in ipairs(defence_round) do
+        --         if s.name == r.soldierName then
+        --             isFight = true
+        --         end
+        --     end
+        --     if not isFight then
+        --         return false
+        --     end
+        -- end
+        -- return my_round[#my_round].isWin
 end
 function GameUIShrineReportInMail:CreateReplay(round,data)
     local player_item = self:CreateSmallBackGround({width = 540,height=60})
@@ -314,7 +319,6 @@ function GameUIShrineReportInMail:CreateReplay(round,data)
         size = 22,
         color = 0x403c2f
     }):align(display.LEFT_CENTER,10, 30):addTo(player_item)
-
 
     local isWin = self:IsRoundWin(data)
 
@@ -405,14 +409,18 @@ function GameUIShrineReportInMail:CreateArmyItem(title,troop,dragon,enemy_troop,
         local troopTotal,totalDamaged,killed,totalWounded = 0,0,0,0
 
         for k,v in pairs(troop) do
-            troopTotal=troopTotal+v.count
+            troopTotal = troopTotal + v.count
         end
-        for k,v in pairs(enemy_round_datas) do
-            killed = killed+v.soldierDamagedCount
+        for k,v in ipairs(enemy_round_datas) do
+            for i,v in ipairs(v.defenceResults) do
+                killed = killed + v.soldierDamagedCount
+            end
         end
-        for k,v in pairs(round_datas) do
-            totalDamaged = totalDamaged+v.soldierDamagedCount
-            totalWounded = totalWounded+v.soldierWoundedCount
+        for k,v in ipairs(round_datas) do
+            for i,v in ipairs(v.attackResults) do
+                totalDamaged = totalDamaged + v.soldierDamagedCount
+                totalWounded = totalWounded + v.soldierWoundedCount
+            end
         end
 
         army_info = {
@@ -610,7 +618,7 @@ function GameUIShrineReportInMail:CreateSoldierInfo(soldiers,isSelf)
         local origin_x = -4
         local count = 0
         for j=i,i+3 do
-            if soldiers[j] then
+            if soldiers[j] and soldiers[j].countDecreased >0 then
                 self:CreateSoldiersInfo(soldiers[j],isSelf):align(display.CENTER, origin_x+count*gap_x,25):addTo(page_item)
                 count = count + 1
             end
@@ -809,6 +817,8 @@ function ShrinePlayFightReport:GetDefenceDragonLevel()
 end
 
 return GameUIShrineReportInMail
+
+
 
 
 

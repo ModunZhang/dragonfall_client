@@ -20,9 +20,9 @@ function GameUIDragonSkill:ctor(building,skill)
     self.dragon_manager = building:GetDragonManager()
     self.dragon_manager:AddListenOnType(self,DragonManager.LISTEN_TYPE.OnBasicChanged)
     if self:SkillIsMaxLevel() then
-        BODY_HEIGHT = 180
+        BODY_HEIGHT = 220
     else
-        BODY_HEIGHT = 450
+        BODY_HEIGHT = 520
     end
 end
 
@@ -78,15 +78,15 @@ function GameUIDragonSkill:onEnter()
         size = 24,
         color= 0x403c2f,
         align = cc.ui.UILabel.TEXT_ALIGN_LEFT
-    }):addTo(self.backgroundImage):align(display.LEFT_TOP,skillBg:getPositionX()+skillBg:getContentSize().width+5,skillBg:getPositionY()-10)
+    }):addTo(self.backgroundImage):align(display.LEFT_TOP,skillBg:getPositionX()+skillBg:getContentSize().width+5,skillBg:getPositionY())
     self.titleLabel = titleLabel
     local descLabel = UIKit:ttfLabel({
         text = self:GetSkillEffection(),
         size = 20,
         color=0x403c2f,
         align = cc.ui.UILabel.TEXT_ALIGN_LEFT,
-        dimensions = cc.size(220,0)
-    }):addTo(self.backgroundImage):align(display.LEFT_TOP, skillBg:getPositionX()+skillBg:getContentSize().width+5, titleLabel:getPositionY()- titleLabel:getContentSize().height - 10)
+        dimensions = cc.size(400,0)
+    }):addTo(self.backgroundImage):align(display.LEFT_TOP, skillBg:getPositionX()+skillBg:getContentSize().width+5, titleLabel:getPositionY()- titleLabel:getContentSize().height )
     self.descLabel = descLabel
     if not self:SkillIsMaxLevel() then
         local upgradeButton = WidgetPushButton.new({
@@ -100,7 +100,7 @@ function GameUIDragonSkill:onEnter()
                 size = 24,
             }))
             :addTo(self.backgroundImage)
-            :align(display.LEFT_TOP,skillBg:getPositionX()+skillBg:getContentSize().width+260,titleBar:getPositionY() - 20)
+            :align(display.CNETER_BOTTOM,self.backgroundImage:getContentSize().width/2,50)
             :onButtonClicked(function(event)
                 self:UpgradeButtonClicked()
             end)
@@ -112,7 +112,7 @@ function GameUIDragonSkill:onEnter()
             title = _("学习条件"),
             height = 188,
             contents = requirements,
-        }):addTo(self.backgroundImage):pos(35,60)
+        }):addTo(self.backgroundImage):pos(35,95)
         scheduleAt(self, function()
             self.listView:RefreshListView(self:GetRequirements())
         end)

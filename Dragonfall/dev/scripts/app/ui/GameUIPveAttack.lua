@@ -365,11 +365,11 @@ end
 function GameUIPveAttack:Attack()
     local enemies = string.split(sections[self.pve_name].troops, ",")
     table.remove(enemies, 1)
-    UIKit:newGameUI('GameUIPVESendTroop',
-        LuaUtils:table_map(enemies, function(k,v)
-            local name,star = unpack(string.split(v, ":"))
-            return k, {name = name, star = tonumber(star)}
-        end),
+    UIKit:newGameUI('GameUISendTroopNew',
+        -- LuaUtils:table_map(enemies, function(k,v)
+        --     local name,star = unpack(string.split(v, ":"))
+        --     return k, {name = name, star = tonumber(star)}
+        -- end),
         function(dragonType, soldiers)
             local dragon = City:GetFirstBuildingByType("dragonEyrie"):GetDragonManager():GetDragon(dragonType)
             local param = {
@@ -483,7 +483,7 @@ function GameUIPveAttack:Attack()
                     end
                 end):AddToCurrentScene(true)
             end)
-        end):AddToCurrentScene(true)
+        end,{isPVE = true}):AddToCurrentScene(true)
 end
 function GameUIPveAttack:BuyAndUseSweepScroll(count)
     local User = self.user

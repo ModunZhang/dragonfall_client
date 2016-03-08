@@ -25,6 +25,7 @@ function Report:OnPropertyChange(property_name, old_value, new_value)
 
 end
 function Report:DecodeFromJsonData(json_data)
+    LuaUtils:outputTable("json_data",json_data)
     local report = Report.new(json_data.id, json_data.type, json_data.createTime, json_data.isRead, json_data.isSaved,json_data.index)
     report:SetData(json_data[json_data.type])
     return report
@@ -203,58 +204,99 @@ end
 function Report:GetMyRoundDatas()
     local data = self:GetData()
     local round_datas = {}
+    local soldierRoundDatas, wallRoundDatas
     if self.player_id == data.attackPlayerData.id then
+        LuaUtils:outputTable("data",data)
         if data.fightWithHelpDefencePlayerReports then
-            table.insert(round_datas, data.fightWithHelpDefencePlayerReports.attackPlayerSoldierRoundDatas)
+            soldierRoundDatas = data.fightWithHelpDefencePlayerReports.soldierRoundDatas
         end
         if data.fightWithDefencePlayerReports then
-            table.insert(round_datas, data.fightWithDefencePlayerReports.attackPlayerSoldierRoundDatas)
+            soldierRoundDatas = data.fightWithDefencePlayerReports.soldierRoundDatas
             if data.fightWithDefencePlayerReports.attackPlayerWallRoundDatas then
-                table.insert(round_datas, data.fightWithDefencePlayerReports.attackPlayerWallRoundDatas)
+                wallRoundDatas = data.fightWithDefencePlayerReports.attackPlayerWallRoundDatas
             end
         end
         if data.fightWithDefenceVillageReports then
-            table.insert(round_datas, data.fightWithDefenceVillageReports.attackPlayerSoldierRoundDatas)
+            soldierRoundDatas = data.fightWithDefenceVillageReports.soldierRoundDatas
         end
         if data.fightWithDefenceMonsterReports then
-            table.insert(round_datas, data.fightWithDefenceMonsterReports.attackPlayerSoldierRoundDatas)
+            soldierRoundDatas = data.fightWithDefenceMonsterReports.soldierRoundDatas
+        end
+        if soldierRoundDatas then
+            for i,round in ipairs(soldierRoundDatas) do
+                for i,attack in ipairs(round.attackResults) do
+                    table.insert(round_datas, attack)
+                end
+            end
+        end
+        if wallRoundDatas then
+            for i,attack in ipairs(wallRoundDatas) do
+                table.insert(round_datas, attack)
+            end
         end
     else
         if data.fightWithHelpDefencePlayerReports then
-            table.insert(round_datas, data.fightWithHelpDefencePlayerReports.defencePlayerSoldierRoundDatas)
+            soldierRoundDatas = data.fightWithHelpDefencePlayerReports.soldierRoundDatas
         end
         if data.fightWithDefencePlayerReports then
-            table.insert(round_datas, data.fightWithDefencePlayerReports.defencePlayerSoldierRoundDatas)
+            soldierRoundDatas = data.fightWithDefencePlayerReports.soldierRoundDatas
+        end
+        if soldierRoundDatas then
+            for i,round in ipairs(soldierRoundDatas) do
+                for i,defence in ipairs(round.defenceResults) do
+                    table.insert(round_datas, defence)
+                end
+            end
         end
     end
+
     return round_datas
 end
 function Report:GetEnemyRoundDatas()
     local data = self:GetData()
     local round_datas = {}
-    -- LuaUtils:outputTable("data", data)
+    local soldierRoundDatas, wallRoundDatas
     if self.player_id == data.attackPlayerData.id then
         if data.fightWithHelpDefencePlayerReports then
-            table.insert(round_datas, data.fightWithHelpDefencePlayerReports.defencePlayerSoldierRoundDatas)
+            soldierRoundDatas = data.fightWithHelpDefencePlayerReports.soldierRoundDatas
         end
         if data.fightWithDefencePlayerReports then
-            table.insert(round_datas, data.fightWithDefencePlayerReports.defencePlayerSoldierRoundDatas)
+            soldierRoundDatas = data.fightWithDefencePlayerReports.soldierRoundDatas
         end
         if data.fightWithDefenceMonsterReports then
-            table.insert(round_datas, data.fightWithDefenceMonsterReports.defenceMonsterSoldierRoundDatas)
+            soldierRoundDatas = data.fightWithDefenceMonsterReports.soldierRoundDatas
+        end
+        if soldierRoundDatas then
+            for i,round in ipairs(soldierRoundDatas) do
+                for i,defence in ipairs(round.defenceResults) do
+                    table.insert(round_datas, defence)
+                end
+            end
         end
     else
         if data.fightWithHelpDefencePlayerReports then
-            table.insert(round_datas, data.fightWithHelpDefencePlayerReports.attackPlayerSoldierRoundDatas)
+            soldierRoundDatas = data.fightWithHelpDefencePlayerReports.soldierRoundDatas
         end
         if data.fightWithDefencePlayerReports then
-            table.insert(round_datas, data.fightWithDefencePlayerReports.attackPlayerSoldierRoundDatas)
+            soldierRoundDatas = data.fightWithDefencePlayerReports.soldierRoundDatas
             if data.fightWithDefencePlayerReports.attackPlayerWallRoundDatas then
-                table.insert(round_datas, data.fightWithDefencePlayerReports.attackPlayerWallRoundDatas)
+                wallRoundDatas = data.fightWithDefencePlayerReports.attackPlayerWallRoundDatas
             end
         end
         if data.fightWithDefenceVillageReports then
-            table.insert(round_datas, data.fightWithDefenceVillageReports.attackPlayerSoldierRoundDatas)
+            soldierRoundDatas = data.fightWithDefenceVillageReports.soldierRoundDatas
+        end
+        if soldierRoundDatas then
+            for i,round in ipairs(soldierRoundDatas) do
+                for i,attack in ipairs(round.attackResults) do
+                    table.insert(round_datas, attack)
+                end
+            end
+        end
+        if wallRoundDatas then
+            for i,attack in ipairs(wallRoundDatas) do
+                table.insert(round_datas, attack)
+            end
         end
     end
     return round_datas
@@ -556,97 +598,112 @@ function Report:GetReportResult()
     local data = self.data
     if data.attackPlayerData.id == self.player_id then
         if data.fightWithHelpDefencePlayerReports then
-            local my_round = data.fightWithHelpDefencePlayerReports.attackPlayerSoldierRoundDatas
-            local defence_round = data.fightWithHelpDefencePlayerReports.defencePlayerSoldierRoundDatas
-            -- 判定是否双方所有士兵都参加了战斗
-            local my_soldiers = self:GetOrderedAttackSoldiers()
-            local defence_soldiers = self:GetOrderedDefenceSoldiers()
-            for i,s in ipairs(my_soldiers) do
-                local isFight = false
-                for i,r in ipairs(my_round) do
-                    if s.name == r.soldierName then
-                        isFight = true
-                    end
-                end
-                if not isFight then
-                    return true
-                end
+            local my_round = data.fightWithHelpDefencePlayerReports.soldierRoundDatas
+            local isWin = true
+            for i,v in ipairs(my_round[#my_round].attackResults) do
+                isWin = isWin and v.isWin
             end
-            for i,s in ipairs(defence_soldiers) do
-                local isFight = false
-                for i,r in ipairs(defence_round) do
-                    if s.name == r.soldierName then
-                        isFight = true
-                    end
-                end
-                if not isFight then
-                    return false
-                end
-            end
-            return my_round[#my_round].isWin
+            return isWin
+                -- local defence_round = data.fightWithHelpDefencePlayerReports.defencePlayerSoldierRoundDatas
+                -- -- 判定是否双方所有士兵都参加了战斗
+                -- local my_soldiers = self:GetOrderedAttackSoldiers()
+                -- local defence_soldiers = self:GetOrderedDefenceSoldiers()
+                -- for i,s in ipairs(my_soldiers) do
+                --     local isFight = false
+                --     for i,r in ipairs(my_round) do
+                --         if s.name == r.soldierName then
+                --             isFight = true
+                --         end
+                --     end
+                --     if not isFight then
+                --         return true
+                --     end
+                -- end
+                -- for i,s in ipairs(defence_soldiers) do
+                --     local isFight = false
+                --     for i,r in ipairs(defence_round) do
+                --         if s.name == r.soldierName then
+                --             isFight = true
+                --         end
+                --     end
+                --     if not isFight then
+                --         return false
+                --     end
+                -- end
+                -- return my_round[#my_round].isWin
         elseif data.fightWithDefencePlayerReports then
             -- 打到城墙，直接算赢
             local wall_round = data.fightWithDefencePlayerReports.attackPlayerWallRoundDatas
             if wall_round then
                 return true
             end
-            local my_round = data.fightWithDefencePlayerReports.attackPlayerSoldierRoundDatas
-            local defence_round = data.fightWithDefencePlayerReports.defencePlayerSoldierRoundDatas
-            -- 判定是否双方所有士兵都参加了战斗
-            local my_soldiers = self:GetOrderedAttackSoldiers()
-            local defence_soldiers = self:GetOrderedDefenceSoldiers()
-            for i,s in ipairs(my_soldiers) do
-                local isFight = false
-                for i,r in ipairs(my_round) do
-                    if s.name == r.soldierName then
-                        isFight = true
-                    end
-                end
-                if not isFight then
-                    return true
-                end
+            local my_round = data.fightWithDefencePlayerReports.soldierRoundDatas
+            local isWin = true
+            for i,v in ipairs(my_round[#my_round].attackResults) do
+                isWin = isWin and v.isWin
             end
-            for i,s in ipairs(defence_soldiers) do
-                local isFight = false
-                for i,r in ipairs(defence_round) do
-                    if s.name == r.soldierName then
-                        isFight = true
-                    end
-                end
-                if not isFight then
-                    return false
-                end
-            end
-            return my_round[#my_round].isWin
+            return isWin
+                -- local defence_round = data.fightWithDefencePlayerReports.defencePlayerSoldierRoundDatas
+                -- -- 判定是否双方所有士兵都参加了战斗
+                -- local my_soldiers = self:GetOrderedAttackSoldiers()
+                -- local defence_soldiers = self:GetOrderedDefenceSoldiers()
+                -- for i,s in ipairs(my_soldiers) do
+                --     local isFight = false
+                --     for i,r in ipairs(my_round) do
+                --         if s.name == r.soldierName then
+                --             isFight = true
+                --         end
+                --     end
+                --     if not isFight then
+                --         return true
+                --     end
+                -- end
+                -- for i,s in ipairs(defence_soldiers) do
+                --     local isFight = false
+                --     for i,r in ipairs(defence_round) do
+                --         if s.name == r.soldierName then
+                --             isFight = true
+                --         end
+                --     end
+                --     if not isFight then
+                --         return false
+                --     end
+                -- end
+                -- return my_round[#my_round].isWin
         elseif data.fightWithDefenceMonsterReports then
-            local my_round = data.fightWithDefenceMonsterReports.attackPlayerSoldierRoundDatas
-            local defence_round = data.fightWithDefenceMonsterReports.defenceMonsterSoldierRoundDatas
-            -- 判定是否双方所有士兵都参加了战斗
-            local my_soldiers = self:GetOrderedAttackSoldiers()
-            local defence_soldiers = self:GetOrderedDefenceSoldiers()
-            for i,s in ipairs(my_soldiers) do
-                local isFight = false
-                for i,r in ipairs(my_round) do
-                    if s.name == r.soldierName then
-                        isFight = true
-                    end
-                end
-                if not isFight then
-                    return true
-                end
+            local my_round = data.fightWithDefenceMonsterReports.soldierRoundDatas
+            local isWin = true
+            for i,v in ipairs(my_round[#my_round].attackResults) do
+                isWin = isWin and v.isWin
             end
-            for i,s in ipairs(defence_soldiers) do
-                local isFight = false
-                for i,r in ipairs(defence_round) do
-                    if s.name == r.soldierName then
-                        isFight = true
-                    end
-                end
-                if not isFight then
-                    return false
-                end
-            end
-            return my_round[#my_round].isWin
+            return isWin
+                -- local defence_round = data.fightWithDefenceMonsterReports.defenceMonsterSoldierRoundDatas
+                -- -- 判定是否双方所有士兵都参加了战斗
+                -- local my_soldiers = self:GetOrderedAttackSoldiers()
+                -- local defence_soldiers = self:GetOrderedDefenceSoldiers()
+                -- for i,s in ipairs(my_soldiers) do
+                --     local isFight = false
+                --     for i,r in ipairs(my_round) do
+                --         if s.name == r.soldierName then
+                --             isFight = true
+                --         end
+                --     end
+                --     if not isFight then
+                --         return true
+                --     end
+                -- end
+                -- for i,s in ipairs(defence_soldiers) do
+                --     local isFight = false
+                --     for i,r in ipairs(defence_round) do
+                --         if s.name == r.soldierName then
+                --             isFight = true
+                --         end
+                --     end
+                --     if not isFight then
+                --         return false
+                --     end
+                -- end
+                -- return my_round[#my_round].isWin
         else
             return true
         end
@@ -660,64 +717,74 @@ function Report:GetReportResult()
         if wall_round then
             return false
         end
-        local my_round = data.fightWithDefencePlayerReports.defencePlayerSoldierRoundDatas
-        local attact_round = data.fightWithDefencePlayerReports.attackPlayerSoldierRoundDatas
-        -- 判定是否双方所有士兵都参加了战斗
-        local attack_soldiers = self:GetOrderedAttackSoldiers()
-        local my_soldiers = self:GetOrderedDefenceSoldiers()
-        for i,s in ipairs(my_soldiers) do
-            local isFight = false
-            for i,r in ipairs(my_round) do
-                if s.name == r.soldierName then
-                    isFight = true
-                end
-            end
-            if not isFight then
-                return true
-            end
+        local my_round = data.fightWithDefencePlayerReports.soldierRoundDatas
+        local isWin = true
+        for i,v in ipairs(my_round[#my_round].defenceResults) do
+            isWin = isWin and v.isWin
         end
-        for i,s in ipairs(attack_soldiers) do
-            local isFight = false
-            for i,r in ipairs(attact_round) do
-                if s.name == r.soldierName then
-                    isFight = true
-                end
-            end
-            if not isFight then
-                return false
-            end
-        end
-        return my_round[#my_round].isWin
+        return isWin
+            -- local attact_round = data.fightWithDefencePlayerReports.attackPlayerSoldierRoundDatas
+            -- -- 判定是否双方所有士兵都参加了战斗
+            -- local attack_soldiers = self:GetOrderedAttackSoldiers()
+            -- local my_soldiers = self:GetOrderedDefenceSoldiers()
+            -- for i,s in ipairs(my_soldiers) do
+            --     local isFight = false
+            --     for i,r in ipairs(my_round) do
+            --         if s.name == r.soldierName then
+            --             isFight = true
+            --         end
+            --     end
+            --     if not isFight then
+            --         return true
+            --     end
+            -- end
+            -- for i,s in ipairs(attack_soldiers) do
+            --     local isFight = false
+            --     for i,r in ipairs(attact_round) do
+            --         if s.name == r.soldierName then
+            --             isFight = true
+            --         end
+            --     end
+            --     if not isFight then
+            --         return false
+            --     end
+            -- end
+            -- return my_round[#my_round].isWin
     elseif data.helpDefencePlayerData and
         data.helpDefencePlayerData.id == self.player_id then
-        local my_round = data.fightWithHelpDefencePlayerReports.defencePlayerSoldierRoundDatas
-        local attact_round = data.fightWithHelpDefencePlayerReports.attackPlayerSoldierRoundDatas
-        -- 判定是否双方所有士兵都参加了战斗
-        local attack_soldiers = self:GetOrderedAttackSoldiers()
-        local my_soldiers = self:GetOrderedDefenceSoldiers()
-        for i,s in ipairs(my_soldiers) do
-            local isFight = false
-            for i,r in ipairs(my_round) do
-                if s.name == r.soldierName then
-                    isFight = true
-                end
-            end
-            if not isFight then
-                return true
-            end
+        local my_round = data.fightWithHelpDefencePlayerReports.soldierRoundDatas
+        local isWin = true
+        for i,v in ipairs(my_round[#my_round].defenceResults) do
+            isWin = isWin and v.isWin
         end
-        for i,s in ipairs(attack_soldiers) do
-            local isFight = false
-            for i,r in ipairs(attact_round) do
-                if s.name == r.soldierName then
-                    isFight = true
-                end
-            end
-            if not isFight then
-                return false
-            end
-        end
-        return my_round[#my_round].isWin
+        return isWin
+            -- local attact_round = data.fightWithHelpDefencePlayerReports.attackPlayerSoldierRoundDatas
+            -- -- 判定是否双方所有士兵都参加了战斗
+            -- local attack_soldiers = self:GetOrderedAttackSoldiers()
+            -- local my_soldiers = self:GetOrderedDefenceSoldiers()
+            -- for i,s in ipairs(my_soldiers) do
+            --     local isFight = false
+            --     for i,r in ipairs(my_round) do
+            --         if s.name == r.soldierName then
+            --             isFight = true
+            --         end
+            --     end
+            --     if not isFight then
+            --         return true
+            --     end
+            -- end
+            -- for i,s in ipairs(attack_soldiers) do
+            --     local isFight = false
+            --     for i,r in ipairs(attact_round) do
+            --         if s.name == r.soldierName then
+            --             isFight = true
+            --         end
+            --     end
+            --     if not isFight then
+            --         return false
+            --     end
+            -- end
+            -- return my_round[#my_round].isWin
     end
 end
 function Report:GetAttackDragonLevel()
@@ -742,6 +809,12 @@ function Report:GetAttackTargetTerrain()
     return data.attackTarget.terrain
 end
 return Report
+
+
+
+
+
+
 
 
 

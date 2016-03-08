@@ -154,7 +154,7 @@ function GameUIAllianceMosterEnter:onEnter()
         }):onButtonClicked(function()
             local final_func = function ()
                 local attack_monster_func = function ()
-                    UIKit:newGameUI('GameUIAllianceSendTroops',function(dragonType,soldiers,total_march_time,gameuialliancesendtroops)
+                    UIKit:newGameUI('GameUISendTroopNew',function(dragonType,soldiers,total_march_time,GameUISendTroopNew)
                         local scene_name = display.getRunningScene().__cname
                         if not alliance:FindAllianceMonsterInfoByObject(mapObj) then
                             UIKit:showMessageDialog(_("提示"),_("敌人已经消失了"))

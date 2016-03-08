@@ -419,15 +419,11 @@ function GameUIWarReport:CreateArmyItem(title,troop,dragon,enemy_troop,round_dat
             troopTotal=troopTotal+v.count
         end
         for k,v in pairs(enemy_round_datas) do
-            for _,data in pairs(v) do
-                killed = killed+data.soldierDamagedCount
-            end
+            killed = killed + v.soldierDamagedCount
         end
         for k,v in pairs(round_datas) do
-            for _,data in pairs(v) do
-                totalDamaged = totalDamaged+data.soldierDamagedCount
-                totalWounded = totalWounded+data.soldierWoundedCount
-            end
+            totalDamaged = totalDamaged + v.soldierDamagedCount
+            totalWounded = totalWounded + v.soldierWoundedCount
         end
 
         army_info = {
@@ -584,7 +580,7 @@ function GameUIWarReport:CreateSoldierInfo(soldiers)
         local origin_x = -4
         local count = 0
         for j=i,i+3 do
-            if soldiers[j] then
+            if soldiers[j] and soldiers[j].countDecreased > 0 then
                 self:CreateSoldiersInfo(soldiers[j]):align(display.CENTER, origin_x+count*gap_x,25):addTo(page_item)
                 count = count + 1
             end
@@ -741,6 +737,8 @@ function GameUIWarReport:GetRewards()
     return  self.report:GetMyRewards()
 end
 return GameUIWarReport
+
+
 
 
 

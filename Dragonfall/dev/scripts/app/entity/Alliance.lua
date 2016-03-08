@@ -611,6 +611,19 @@ function Alliance:IsSubStageUnlock(stageName)
     end
     return false
 end
+function Alliance:IsSubStagePassed(stageName)
+    local index = shrineStage[stageName].index 
+    local next_stage_name
+    for k,v in pairs(shrineStage) do
+        if v.index == index + 1 then
+            next_stage_name = v.stageName
+        end
+    end
+    if not next_stage_name then
+        return false
+    end
+    return self:IsSubStageUnlock(next_stage_name)
+end
 function Alliance:GetSubStageStar(stageName)
     for i,v in ipairs(self.shrineDatas) do
         if v.stageName == stageName then
