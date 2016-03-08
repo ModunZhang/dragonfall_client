@@ -7,12 +7,28 @@
 //
 
 #include "MarketSDKTool.h"
-#import "TalkingDataGA.h"
-#include "tolua_fix.h"
 //MARK:定义宏
-#define USE_TAKING_DATA true
+#define USE_TAKING_DATA 1
+#define CC_USE_APPSFLYER 1
+
+//force unuse appsflyer on iOS Simulator
+#if TARGET_IPHONE_SIMULATOR
+#undef CC_USE_APPSFLYER
+#endif
+
+#include "tolua_fix.h"
+#if USE_TAKING_DATA
+#import "TalkingDataGA.h"
+#endif
+#if CC_USE_APPSFLYER
+#include "AppsFlyerTracker.h"
+#endif
+
+
 #define TD_APP_ID @"3309C905801D8D028876DB821ADB0123"
 #define TD_CHANNEL_ID @"All"
+#define APPSFLYER_DEV_KEY @"ZP4ME9pKgfnjPDPobDyt" //xapcn
+#define APPSFLYER_DEV_APP_ID @""
 
 static MarketSDKTool *s_MarketSDKTool = NULL; // pointer to singleton
 #ifdef USE_TAKING_DATA
@@ -41,6 +57,11 @@ void MarketSDKTool::initSDK()
 #ifdef USE_TAKING_DATA
     [TalkingDataGA onStart:TD_APP_ID withChannelId:TD_CHANNEL_ID];
     [TalkingDataGA setVerboseLogDisabled];
+#endif
+#if CC_USE_APPSFLYER
+    [AppsFlyerTracker sharedTracker].appsFlyerDevKey = APPSFLYER_DEV_KEY;
+    [AppsFlyerTracker sharedTracker].appleAppID = @"REPLACE THIS WITH YOUR App_ID";
+    [[AppsFlyerTracker sharedTracker] trackAppLaunch];
 #endif
 }
 

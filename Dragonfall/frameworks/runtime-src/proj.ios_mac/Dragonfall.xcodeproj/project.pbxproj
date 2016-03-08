@@ -32,6 +32,8 @@
 		3FA641DB1BB13186002107DC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3FA641DD1BB13186002107DC /* InfoPlist.strings */; };
 		3FABD26E1B9C3BF300C71BEB /* Droid Sans Fallback.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3FABD26D1B9C3BF300C71BEB /* Droid Sans Fallback.ttf */; };
 		3FABD29B1B9C72F300C71BEB /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FABD29A1B9C72F300C71BEB /* StoreKit.framework */; };
+		3FD7CAB11C8E7A0E00338869 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FD7CAB01C8E7A0E00338869 /* FBSDKShareKit.framework */; };
+		3FD7CAB51C8E7A5F00338869 /* AppsFlyerLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FD7CAB31C8E7A5F00338869 /* AppsFlyerLib.a */; };
 		3FDC687E1BB0F03300F29DE2 /* libcocos2d.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FDC687B1BB0EFF400F29DE2 /* libcocos2d.a */; };
 		3FDC69481BB0F08600F29DE2 /* libluacocos2d.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FDC69451BB0F07000F29DE2 /* libluacocos2d.a */; };
 		3FDC69F51BB0F0C700F29DE2 /* libquick_libs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FDC69F41BB0F0C000F29DE2 /* libquick_libs.a */; };
@@ -200,6 +202,9 @@
 		3FA641E01BB1318E002107DC /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		3FABD26D1B9C3BF300C71BEB /* Droid Sans Fallback.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Droid Sans Fallback.ttf"; path = "../../../dev/res/fonts/Droid Sans Fallback.ttf"; sourceTree = "<group>"; };
 		3FABD29A1B9C72F300C71BEB /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.4.sdk/System/Library/Frameworks/StoreKit.framework; sourceTree = DEVELOPER_DIR; };
+		3FD7CAB01C8E7A0E00338869 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = "../../../../external/iOS/FacebookSDKs-iOS-20151111/FBSDKShareKit.framework"; sourceTree = "<group>"; };
+		3FD7CAB31C8E7A5F00338869 /* AppsFlyerLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = AppsFlyerLib.a; sourceTree = "<group>"; };
+		3FD7CAB41C8E7A5F00338869 /* AppsFlyerTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppsFlyerTracker.h; sourceTree = "<group>"; };
 		3FDC6A051BB12D5300F29DE2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Dragonfall/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		5023810717EBBCAC00990C9B /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		5023810817EBBCAC00990C9B /* AppController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppController.mm; sourceTree = "<group>"; };
@@ -260,6 +265,7 @@
 				3F0840FC1B9BE33200A52544 /* MessageUI.framework in Frameworks */,
 				3F0840FA1B9BE31F00A52544 /* GameKit.framework in Frameworks */,
 				3F0840F81B9BE31800A52544 /* CoreTelephony.framework in Frameworks */,
+				3FD7CAB11C8E7A0E00338869 /* FBSDKShareKit.framework in Frameworks */,
 				FF32CF701C2D32910095EA2E /* FBSDKLoginKit.framework in Frameworks */,
 				5200BECA1A53D9A500AC45E4 /* Security.framework in Frameworks */,
 				DABC99511A8214A100BF5CC4 /* SystemConfiguration.framework in Frameworks */,
@@ -269,6 +275,7 @@
 				50805AAF17EBBEAA004CFAD3 /* UIKit.framework in Frameworks */,
 				5023817A17EBBE8300990C9B /* OpenGLES.framework in Frameworks */,
 				F293B3CD15EB7BE500256477 /* QuartzCore.framework in Frameworks */,
+				3FD7CAB51C8E7A5F00338869 /* AppsFlyerLib.a in Frameworks */,
 				F293B3D115EB7BE500256477 /* OpenAL.framework in Frameworks */,
 				F293B3D315EB7BE500256477 /* AudioToolbox.framework in Frameworks */,
 				F293B3D515EB7BE500256477 /* AVFoundation.framework in Frameworks */,
@@ -325,6 +332,7 @@
 		3F08403B1B9BDFC300A52544 /* sdk */ = {
 			isa = PBXGroup;
 			children = (
+				3FD7CAB21C8E7A5F00338869 /* AppsFlyer */,
 				3F2DC6EA1BFAD06600D562F9 /* Facebook */,
 				3F08407C1B9BDFC300A52544 /* MarketSDKTool-ios.mm */,
 				3F08407D1B9BDFC300A52544 /* MarketSDKTool.h */,
@@ -404,6 +412,16 @@
 			);
 			name = UICKeyChainStore;
 			path = ../../../extensions/ext/platform/apple/UICKeyChainStore;
+			sourceTree = "<group>";
+		};
+		3FD7CAB21C8E7A5F00338869 /* AppsFlyer */ = {
+			isa = PBXGroup;
+			children = (
+				3FD7CAB31C8E7A5F00338869 /* AppsFlyerLib.a */,
+				3FD7CAB41C8E7A5F00338869 /* AppsFlyerTracker.h */,
+			);
+			name = AppsFlyer;
+			path = ../../../external/iOS/AppsFlyer;
 			sourceTree = "<group>";
 		};
 		5023810617EBBCAC00990C9B /* ios */ = {
@@ -505,6 +523,7 @@
 		F293B3CB15EB7BE500256477 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3FD7CAB01C8E7A0E00338869 /* FBSDKShareKit.framework */,
 				3F2DC7031BFAD67400D562F9 /* FBSDKCoreKit.framework */,
 				3F2DC7041BFAD67400D562F9 /* FBSDKLoginKit.framework */,
 				3FABD29A1B9C72F300C71BEB /* StoreKit.framework */,
@@ -903,7 +922,10 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Alan Cooper (37X43D5H4Z)";
 				COMPRESS_PNG_FILES = NO;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../../../../external/iOS/FacebookSDKs-iOS-20151111/";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/../../../../external/iOS/FacebookSDKs-iOS-20151111/",
+					"$(PROJECT_DIR)",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ios/Prefix.pch;
@@ -963,7 +985,10 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Alan Cooper (B484Q6X8P4)";
 				COMPRESS_PNG_FILES = NO;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../../../../external/iOS/FacebookSDKs-iOS-20151111/";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/../../../../external/iOS/FacebookSDKs-iOS-20151111/",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ios/Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
