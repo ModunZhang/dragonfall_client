@@ -227,12 +227,13 @@ function WidgetSelectSoldiers:DelegateValue(target)
     end
 end
 function WidgetSelectSoldiers:GetSettingSoldierCountByName(name)
+    local settingCount = 0
     for i,soldier in ipairs(self.settingSoldiers) do
         if soldier.name == name and self.index_soldiers.name ~= name then
-            return soldier.count
+            settingCount = settingCount + soldier.count
         end
     end
-    return 0
+    return settingCount
 end
 -- 根据一格最大带兵量获取按战斗力排序的士兵列表
 function WidgetSelectSoldiers:GetSortSoldierMax()
@@ -286,7 +287,6 @@ function WidgetSelectSoldiers:MaxBtnClicked()
             end
         end
     end
-    -- self.isMax = not self.isMax
 end
 return WidgetSelectSoldiers
 
