@@ -451,6 +451,7 @@ function GameUIAllianceHome:RefreshTop(force_refresh)
             :addTo(enemy_power_bg)
         -- end
     else
+        local isKing = DataUtils:getMapRoundByMapIndex(current_map_index) == 0 -- 是否在王座
         local name_bg = display.newSprite("title_red_266x32.png"):align(display.LEFT_CENTER, 10,- 28):addTo(top_self_bg)
         local flag_bg = display.newSprite(isMyAlliance and "background_flag_mine_100x86.png" or "background_flag_enemy_100x86.png"):align(display.LEFT_CENTER, -10, -top_self_size.height/2 - 4):addTo(top_self_bg)
         -- 联盟旗帜
@@ -463,7 +464,7 @@ function GameUIAllianceHome:RefreshTop(force_refresh)
         end
         local alliance_name_label = UIKit:ttfLabel(
             {
-                text = current_alliance and current_alliance.basicInfo.name or _("无主之地"),
+                text = current_alliance and current_alliance.basicInfo.name or (isKing and _("水晶王座") or _("无主之地")),
                 size = 18,
                 color = 0xffedae,
                 dimensions = cc.size(160,18),
@@ -479,7 +480,7 @@ function GameUIAllianceHome:RefreshTop(force_refresh)
                 isAddAction = true
             end
         else
-            text_1 = _("迁移联盟")
+            text_1 = isKing and _("宣战") or _("迁移联盟")
             isAddAction = true
         end
         local action_label = UIKit:ttfLabel(
@@ -500,6 +501,7 @@ function GameUIAllianceHome:RefreshTop(force_refresh)
         end
 
         local period_bg = display.newSprite("background_98x70.png"):align(display.LEFT_CENTER, name_bg:getPositionX() + name_bg:getContentSize().width + 10,-top_self_size.height/2 - 4):addTo(top_self_bg)
+        period_bg:setVisible(not isKing)
         UIKit:ttfLabel({
             text = current_alliance and Localize.period_type[current_alliance.basicInfo.status] or _("迁移冷却"),
             size = 16,
@@ -599,7 +601,11 @@ function GameUIAllianceHome:OnTopLeftButtonClicked(event)
                 if current_alliance then
                     UIKit:newGameUI("GameUIAllianceBattle", self.city , "fight" ,current_alliance):AddToCurrentScene(true)
                 else
-                    UIKit:newWidgetUI("WidgetWorldAllianceInfo",nil,current_allinace_index):AddToCurrentScene()
+                    if DataUtils:getMapRoundByMapIndex(current_allinace_index) == 0 then -- 王座
+                        UIKit:newGameUI("GameUIThroneMain"):AddToCurrentScene()
+                    else
+                        UIKit:newWidgetUI("WidgetWorldAllianceInfo",nil,current_allinace_index):AddToCurrentScene()
+                    end
                 end
             else
                 UIKit:newGameUI("GameUIAllianceBattle", self.city , "history"):AddToCurrentScene(true)
@@ -609,15 +615,6 @@ function GameUIAllianceHome:OnTopLeftButtonClicked(event)
 end
 function GameUIAllianceHome:OnTopRightButtonClicked(event)
     if event.name == "CLICKED_EVENT" then
-        -- local status = self.alliance.basicInfo.status
-        -- local other_alliance = Alliance_Manager:GetAllianceByCache(self.current_allinace_index)
-        -- local tag
-        -- if other_alliance and self.current_allinace_index ~= self.alliance:MapIndex() or status == "prepare" or status == "fight" then
-        --     tag = "fight"
-        -- else
-        --     tag = "capture"
-        -- end
-        -- UIKit:newGameUI("GameUIAllianceBattle", self.city , tag ,other_alliance):AddToCurrentScene(true)
         if self.alliance.basicInfo.status == "fight" or self.alliance.basicInfo.status == "prepare" then
             UIKit:newGameUI("GameUIAllianceBattle", self.city , "fight"):AddToCurrentScene(true)
         else

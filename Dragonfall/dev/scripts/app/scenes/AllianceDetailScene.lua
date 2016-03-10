@@ -450,9 +450,9 @@ function AllianceDetailScene:OnTouchClicked(pre_x, pre_y, x, y)
     local mapObj = self:GetSceneLayer():GetClickedObject(x, y)
     if mapObj then
         local alliance = Alliance_Manager:GetAllianceByCache(mapObj.index)
+        local type_ = Alliance:GetMapObjectType(mapObj)
         if alliance then
             app:GetAudioManager():PlayeEffectSoundWithKey("HOME_PAGE")
-            local type_ = Alliance:GetMapObjectType(mapObj)
             if type_ == "member"
                 or type_ == "village"
                 or type_ == "building" then
@@ -486,7 +486,11 @@ function AllianceDetailScene:OnTouchClicked(pre_x, pre_y, x, y)
         else
             self.util_node:performWithDelay(function()app:lockInput(false)end,0.5)
             Sprite:PromiseOfFlash(mapObj.obj):next(function()
-                -- self:OpenUI(alliance, mapObj)
+                if type_ == "crown" then
+                    UIKit:newGameUI("GameUIThroneMain"):AddToCurrentScene()
+                else
+                    UIKit:showMessageDialog(_("提示"), _("即将开放"))
+                end
             end)
         end
     else
