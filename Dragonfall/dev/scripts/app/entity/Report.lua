@@ -555,6 +555,14 @@ function Report:IsDragonFight()
     end
     return isFight
 end
+function Report:CouldAttackDragonUseSkill()
+    local dragonData = self:GetFightAttackDragonRoundData()
+    return dragonData.hp - dragonData.hpDecreased > 0
+end
+function Report:CouldDefenceDragonUseSkill()
+    local dragonData = self:GetFightDefenceDragonRoundData()
+    return dragonData.hp - dragonData.hpDecreased > 0
+end
 function Report:GetFightAttackDragonRoundData()
     local data = self:GetFightReports()
     if not self:IsDragonFight() then
