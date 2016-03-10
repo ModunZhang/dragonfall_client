@@ -545,7 +545,7 @@ function Report:GetFightDefenceName()
         or data.defenceMonsterData and Localize.soldier_name[data.defenceMonsterData.soldiers[1].name]
 end
 function Report:IsDragonFight()
-    local data = self:GetFightReports()
+    local data = self:GetData()
     local dragonFightData = data.fightWithHelpDefencePlayerReports or
         data.fightWithDefencePlayerReports or
         data.fightWithDefenceMonsterReports
@@ -564,27 +564,27 @@ function Report:CouldDefenceDragonUseSkill()
     return dragonData.hp - dragonData.hpDecreased > 0
 end
 function Report:GetFightAttackDragonRoundData()
-    local data = self:GetFightReports()
+    local data = self:GetData()
     if not self:IsDragonFight() then
         return {}
     end
-    local dragonFightData = data.fightWithHelpDefencePlayerReports.attackPlayerDragonFightData or
-        data.fightWithDefencePlayerReports.attackPlayerDragonFightData or
-        data.fightWithDefenceMonsterReports.defenceMonsterDragonFightData
-    return dragonFightData
+    local dragonFightData = data.fightWithHelpDefencePlayerReports or
+        data.fightWithDefencePlayerReports or
+        data.fightWithDefenceMonsterReports
+    return dragonFightData.attackPlayerDragonFightData or dragonFightData.defenceMonsterDragonFightData
 end
 function Report:GetFightDefenceDragonRoundData()
-    local data = self:GetFightReports()
+    local data = self:GetData()
     if not self:IsDragonFight() then
         return {}
     end
-    local dragonFightData = data.fightWithHelpDefencePlayerReports.defencePlayerDragonFightData or
-        data.fightWithDefencePlayerReports.defencePlayerDragonFightData or
-        data.fightWithDefenceMonsterReports.attackPlayerDragonFightData
-    return dragonFightData
+    local dragonFightData = data.fightWithHelpDefencePlayerReports or
+        data.fightWithDefencePlayerReports or
+        data.fightWithDefenceMonsterReports
+    return dragonFightData.attackPlayerDragonFightData or dragonFightData.defenceMonsterDragonFightData
 end
 function Report:IsSoldierFight()
-    local data = self:GetFightReports()
+    local data = self:GetData()
     local fightReports = data.fightWithHelpDefencePlayerReports or
         data.fightWithDefencePlayerReports or
         data.fightWithDefenceMonsterReports
@@ -609,14 +609,15 @@ function Report:GetSoldierRoundData()
     if not self:IsSoldierFight() then
         return {}
     end
-    local data = self:GetFightReports()
-    return data.fightWithHelpDefencePlayerReports.soldierRoundDatas or
-        data.fightWithDefencePlayerReports.soldierRoundDatas or
-        data.fightWithDefenceMonsterReports.soldierRoundDatas
+    local data = self:GetData()
+    local fightData = data.fightWithHelpDefencePlayerReports or
+        data.fightWithDefencePlayerReports or
+        data.fightWithDefenceMonsterReports
+    return fightData.soldierRoundDatas
 end
 
 function Report:IsFightWall()
-    local data = self:GetFightReports()
+    local data = self:GetData()
     local isFight = false
     if data.fightWithDefencePlayerReports and data.fightWithDefencePlayerReports.attackPlayerWallRoundDatas and #data.fightWithDefencePlayerReports.attackPlayerWallRoundDatas > 0 then
         isFight = true
@@ -627,14 +628,14 @@ function Report:GetFightAttackWallRoundData()
     if not self:IsFightWall() then
         return {}
     end
-    local data = self:GetFightReports()
+    local data = self:GetData()
     return data.fightWithDefencePlayerReports.attackPlayerWallRoundDatas
 end
 function Report:GetFightDefenceWallRoundData()
     if not self:IsFightWall() then
         return {}
     end
-    local data = self:GetFightReports()
+    local data = self:GetData()
     return data.fightWithDefencePlayerReports.defencePlayerWallRoundDatas
 end
 
