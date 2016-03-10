@@ -546,11 +546,11 @@ function Report:GetFightDefenceName()
 end
 function Report:IsDragonFight()
     local data = self:GetFightReports()
-    local dragonFightData = data.fightWithHelpDefencePlayerReports.attackPlayerDragonFightData or
-        data.fightWithDefencePlayerReports.attackPlayerDragonFightData or
-        data.fightWithDefenceMonsterReports.attackPlayerDragonFightData
+    local dragonFightData = data.fightWithHelpDefencePlayerReports or
+        data.fightWithDefencePlayerReports or
+        data.fightWithDefenceMonsterReports
     local isFight = false
-    if dragonFightData and dragonFightData ~= json.null then
+    if dragonFightData and dragonFightData.attackPlayerDragonFightData and dragonFightData.attackPlayerDragonFightData ~= json.null then
         isFight = true
     end
     return isFight
@@ -585,10 +585,13 @@ function Report:GetFightDefenceDragonRoundData()
 end
 function Report:IsSoldierFight()
     local data = self:GetFightReports()
-    local soldierRoundDatas = data.fightWithHelpDefencePlayerReports.soldierRoundDatas or
-        data.fightWithDefencePlayerReports.soldierRoundDatas or
-        data.fightWithDefenceMonsterReports.soldierRoundDatas
-    return not LuaUtils:table_empty(soldierRoundDatas)
+    local fightReports = data.fightWithHelpDefencePlayerReports or
+        data.fightWithDefencePlayerReports or
+        data.fightWithDefenceMonsterReports
+    if not fightReports then
+        return
+    end
+    return not LuaUtils:table_empty(fightReports.soldierRoundDatas)
 end
 function Report:GetOrderedAttackSoldiers()
     local attackPlayerData = self:GetData().attackPlayerData
@@ -720,6 +723,7 @@ function Report:GetAttackTargetTerrain()
     return data.attackTarget.terrain
 end
 return Report
+
 
 
 
