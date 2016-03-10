@@ -44,7 +44,7 @@ function GameUISearchPlayer:onEnter()
 
     editbox_tag_search:setPlaceHolder(_("请填写本服玩家姓名"))
     editbox_tag_search:setPlaceholderFontColor(UIKit:hex2c3b(0xccc49e))
-    editbox_tag_search:setMaxLength(3)
+    editbox_tag_search:setMaxLength(12)
     editbox_tag_search:setFont(UIKit:getEditBoxFont(),18)
     editbox_tag_search:setFontColor(cc.c3b(0,0,0))
     editbox_tag_search:setReturnType(cc.KEYBOARD_RETURNTYPE_SEARCH)
