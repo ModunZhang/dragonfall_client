@@ -387,6 +387,10 @@ function User:IsBindFacebook()
     local gc = self.gc
     return gc and gc.type == "facebook" and gc.gcId ~= "" and gc.gcId ~= json.null
 end
+function User:IsBindGoogle()
+    local gc = self.gc
+    return gc and gc.type == "facebook" and gc.gcId ~= "" and gc.gcId ~= json.null
+end
 --[[end]]
 
 function User:Loyalty()

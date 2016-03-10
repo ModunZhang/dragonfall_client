@@ -14,7 +14,6 @@ end
 
 function GameUISettingAccount:onEnter()
     GameUISettingAccount.super.onEnter(self)
-    dump(User.gc,"gc===")
     self:UpdateGcName()
     self:CheckGameCenter()
 end
@@ -22,7 +21,7 @@ function GameUISettingAccount:onExit()
     GameUISettingAccount.super.onExit(self)
 end
 function GameUISettingAccount:IsBinded()
-    return User:IsBindGameCenter() or User:IsBindFacebook()
+    return User:IsBindGameCenter() or User:IsBindFacebook() or User:IsBindFacebook()
 end
 function GameUISettingAccount:CheckGameCenter()
     self:CreateUI()
@@ -44,22 +43,30 @@ function GameUISettingAccount:UpdateGcName()
 end
 function GameUISettingAccount:CreateUI()
     self:CreateAccountPanel()
-    if self:IsBinded() then
-        if User:IsBindGameCenter() then
-            if device.platform == 'ios' then
-                self:CreateGameCenterPanel()
-            end
-        end
+    -- if self:IsBinded() then
+    --     if User:IsBindGameCenter() then
+    --         if device.platform == 'ios' then
+    --             self:CreateGameCenterPanel()
+    --         end
+    --     end
 
-        if User:IsBindFacebook() then
-            self:CreateFacebookPanel()
-        end
-    else
-        if device.platform == 'ios' then
-            self:CreateGameCenterPanel()
-        end
-        self:CreateFacebookPanel()
+    --     if User:IsBindFacebook() then
+    --         self:CreateFacebookPanel()
+    --     end
+    --     if device.platform == 'android' then
+    --         if User:IsBindGoogle() then
+    --             self:CreateGooglePanel()
+    --         end
+    --     end
+    -- else
+    if device.platform == 'ios' then
+        self:CreateGameCenterPanel()
     end
+    self:CreateFacebookPanel()
+    if device.platform == 'android' then
+        self:CreateGooglePanel()
+    end
+    -- end
 
     -- 切换账号按钮
     cc.ui.UIPushButton.new({
@@ -161,6 +168,53 @@ function GameUISettingAccount:CreateFacebookPanel()
         end
         end)
 end
+function GameUISettingAccount:CreateGooglePanel()
+    local bg_width,bg_height = 568,122
+    self.google_panel = WidgetUIBackGround.new({width = bg_width,height=bg_height},WidgetUIBackGround.STYLE_TYPE.STYLE_2)
+        :align(display.TOP_CENTER, 304, self.facebook_panel and (self.facebook_panel:getPositionY() - 130) or (self.account_warn_label:getPositionY() - 50))
+        :addTo(self:GetBody())
+    display.newSprite("icon_facebook_104x104.png"):align(display.LEFT_CENTER, 12, bg_height/2)
+        :addTo(self.google_panel)
+    self.google_bind_state_label = UIKit:ttfLabel({
+        text = "",
+        size = 20,
+        color= 0x403c2f,
+        dimensions = cc.size(260,0)
+    }):align(display.LEFT_CENTER, 130, bg_height/2):addTo(self.google_panel)
+    self.google_bind_button = cc.ui.UIPushButton.new({
+        normal = "yellow_btn_up_148x58.png",
+        pressed="yellow_btn_down_148x58.png"
+    })
+        :align(display.RIGHT_CENTER, bg_width - 10,  bg_height/2)
+        :addTo(self.google_panel)
+        :setButtonLabel("normal", UIKit:commonButtonLable({
+            text = _("绑定")
+        })):onButtonClicked(function()
+        if ext.google.isAuthenticated() then -- 是否登录了Facebook
+            local gcName,gcId = ext.google.getPlayerNameAndId()
+            UIKit:showMessageDialog(_("提示"),string.format(_("是否确认将账号绑定到Google %s"),gcName),function()
+                NetManager:getBindGcPromise("google",gcId,gcName):done(function (response)
+                    User.gc = response.msg.playerData[1][2]
+                    GameGlobalUI:showTips(_("提示"),_("绑定账号成功"))
+                    self:LeftButtonClicked()
+                end)
+            end,function()end)
+        else
+            ext.google.login(function ( data )
+                if data.event == "login_success" then
+                    local userid,username = data.userid,data.username
+                    NetManager:getBindGcPromise("google",userid,username):done(function (response)
+                        User.gc = response.msg.playerData[1][2]
+                        GameGlobalUI:showTips(_("提示"),_("绑定账号成功"))
+                        self:LeftButtonClicked()
+                    end)
+                else
+                    UIKit:showMessageDialog(_("提示"),_("链接失败"))
+                end
+            end)
+        end
+        end)
+end
 function GameUISettingAccount:CreateAccountPanel()
     local bg_width = 568
     local bg_height = 148
@@ -235,6 +289,12 @@ function GameUISettingAccount:RefreshUI()
             self.facebook_bind_state_label:setString(string.format(_("%s(已绑定)"),User.gc.gcName))
             self.facebook_bind_button:hide()
         end
+        if User:IsBindGoogle() then
+            self.account_warn_label:setString(_("你的账号已经和Google绑定"))
+            self.account_warn_label:setColor(UIKit:hex2c3b(0x008b0a))
+            self.google_bind_state_label:setString(string.format(_("%s(已绑定)"),User.gc.gcName))
+            self.google_bind_button:hide()
+        end
     else
         if self.gamecenter_bind_state_label then
             self.gamecenter_bind_state_label:setString(_("与当前的Game Center账号进行绑定"))
@@ -242,6 +302,10 @@ function GameUISettingAccount:RefreshUI()
         end
         self.facebook_bind_state_label:setString(_("使用Facebook绑定账号"))
         self.facebook_bind_button:show()
+        if self.google_bind_state_label then
+            self.google_bind_state_label:setString(_("与当前的Google账号进行绑定"))
+            self.google_bind_button:show()
+        end
         self.account_state_label:setString(_("未绑定"))
         self.account_warn_label:setString(_("你的账号尚未进行绑定，存在丢失风险。绑定账号后你可以在不同设备上登录游戏。"))
         self.account_warn_label:setColor(UIKit:hex2c3b(0x7e0000))
@@ -376,6 +440,8 @@ function GameUISettingAccount:ExchangeBindAccount()
 end
 
 return GameUISettingAccount
+
+
 
 
 
