@@ -6,8 +6,8 @@ import java.util.TimerTask;
 
 import org.cocos2dx.lua.AppActivity;
 
+import com.batcatstudio.dragonfall.R;
 import com.batcatstudio.dragonfall.utils.DebugUtil;
-import com.xapcn.dragonfall.R;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;

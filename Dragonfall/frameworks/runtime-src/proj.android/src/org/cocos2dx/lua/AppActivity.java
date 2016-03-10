@@ -31,19 +31,19 @@ import java.util.ArrayList;
 import org.cocos2dx.lib.Cocos2dxActivity;
 import org.cocos2dx.lib.Cocos2dxHelper;
 
+import com.batcatstudio.dragonfall.R;
 import com.batcatstudio.dragonfall.data.DataHelper;
 import com.batcatstudio.dragonfall.google.billing.StoreKit;
 import com.batcatstudio.dragonfall.google.gcm.GCMIntentService;
 import com.batcatstudio.dragonfall.notifications.NotificationUtils;
-import com.batcatstudio.dragonfall.sdk.FaceBookSDK;
 //#ifdef CC_USE_FACEBOOK
 import com.batcatstudio.dragonfall.sdk.FaceBookSDK;
+import com.batcatstudio.dragonfall.sdk.GoogleSignSDK;
 //#endif
 import com.batcatstudio.dragonfall.sdk.MarketSDK;
 import com.batcatstudio.dragonfall.sdk.PayPalSDK;
 import com.batcatstudio.dragonfall.utils.CommonUtils;
 import com.batcatstudio.dragonfall.utils.LaunchHelper;
-import com.xapcn.dragonfall.R;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -62,50 +62,30 @@ import android.os.Message;
 import android.provider.Settings;
 import android.view.KeyEvent;
 
-public class AppActivity extends Cocos2dxActivity{
+public class AppActivity extends Cocos2dxActivity
+{
 
     static String hostIPAdress = "0.0.0.0";
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(GoogleSignSDK.KEY_IS_RESOLVING, GoogleSignSDK.getInstance().isResolving());
+		outState.putBoolean(GoogleSignSDK.KEY_SHOULD_RESOLVE, GoogleSignSDK.getInstance().isShouldResolve());
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         gameActivity = this;
-        
+      
         if(nativeIsLandScape()) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         }
-        
-        //2.Set the format of window
-        
-        // Check the wifi is opened when the native is debug.
-/** dannyhe comment the debug code
-        if(nativeIsDebug())
-        {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            if(!isNetworkConnected())
-            {
-                AlertDialog.Builder builder=new AlertDialog.Builder(this);
-                builder.setTitle("Warning");
-                builder.setMessage("Please open WIFI for debuging...");
-                builder.setPositiveButton("OK",new DialogInterface.OnClickListener() {
-                    
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
-                        finish();
-                        System.exit(0);
-                    }
-                });
-
-                builder.setNegativeButton("Cancel", null);
-                builder.setCancelable(true);
-                builder.show();
-            }
-            hostIPAdress = getHostIpAddress();
-        }
-**/
         /** Init Java Native **/
+        GoogleSignSDK.getInstance().Initialize(savedInstanceState);
         CommonUtils.getInstance();
 		MarketSDK.initSDK();
 		StoreKit.init();
@@ -171,10 +151,17 @@ public class AppActivity extends Cocos2dxActivity{
 	}
 
 	@Override
+	protected void onStart() {
+		super.onStart();
+		GoogleSignSDK.getInstance().onActivityStart(this);
+	}
+	@Override
 	protected void onStop() {
+		GoogleSignSDK.getInstance().onActivityStop(this);
 		NotificationUtils.startLocalPushService();
 		onEnterBackground();
 		super.onStop();
+		
 	}
 	@Override
 	protected void onRestart() {
@@ -193,6 +180,7 @@ public class AppActivity extends Cocos2dxActivity{
 		if(StoreKit.handleActivityResult(requestCode, resultCode, data)) {
 			super.onActivityResult(requestCode, resultCode, data);
 		}
+		GoogleSignSDK.getInstance().onActivityResult(requestCode, resultCode, data);
 		PayPalSDK.getInstance().onActivityResult(requestCode, resultCode, data);
 //#ifdef CC_USE_FACEBOOK
 		FaceBookSDK.onActivityResult(this, requestCode, resultCode, data);

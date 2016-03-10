@@ -34,6 +34,10 @@ ifeq ($(CC_USE_POMELO_C_LIB),1)
 LOCAL_SRC_FILES += ../../../../extensions/sdk/libpomelo/CCPomelo.cpp
 endif
 
+ifeq ($(CC_USE_GOOGLE_LOGIN),1)
+LOCAL_SRC_FILES += ../../../../extensions/sdk/GoogleSign/GoogleSignSDK-android.cpp
+endif
+
 #MY_FILES_PATH  :=  $(LOCAL_PATH)/../../../../extensions/ext/platform/android
 
 #MY_FILES_SUFFIX := %.cpp 
@@ -53,6 +57,7 @@ $(LOCAL_PATH)/../../../cocos2d-x/external \
 $(LOCAL_PATH)/../../../cocos2d-x/tools/simulator/libsimulator/lib \
 $(LOCAL_PATH)/../../../../extensions/ext \
 $(LOCAL_PATH)/../../../../extensions/sdk \
+$(LOCAL_PATH)/../../../../extensions/sdk/GoogleSign \
 $(LOCAL_PATH)/../../../../extensions/sdk/Facebook \
 $(LOCAL_PATH)/../../../../extensions/sdk/PayPal \
 $(LOCAL_PATH)/../../../../extensions/ext/platform/android \

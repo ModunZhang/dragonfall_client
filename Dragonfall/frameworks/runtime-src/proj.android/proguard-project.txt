@@ -181,13 +181,38 @@
 	public static void paypalBuy(...);
 	public static boolean isPayPalSupport();
 }
+
+-keep class com.batcatstudio.dragonfall.sdk.GoogleSignSDK {
+	public static void Login();
+	public static boolean IsAuthenticated();
+	public static String GetGoogleUserName();
+	public static String GetGoogleId();
+}
+
 #================Google Billing========================
 -keep class com.android.vending.billing.**
 
 #================Google Play========================
 -keep class com.google.android.gms.** {*;}
 -dontwarn com.google.android.gms.**
-#Paypal
+
+-keep class * extends java.util.ListResourceBundle {
+    protected Object[][] getContents();
+}
+
+-keep public class com.google.android.gms.common.internal.safeparcel.SafeParcelable {
+    public static final *** NULL;
+}
+
+-keepnames @com.google.android.gms.common.annotation.KeepName class *
+-keepclassmembernames class * {
+    @com.google.android.gms.common.annotation.KeepName *;
+}
+
+-keepnames class * implements android.os.Parcelable {
+    public static final ** CREATOR;
+}
+#================Paypal========================
 -libraryjars ./libs/PayPalAndroidSDK-2.13.1.jar
 -libraryjars ./libs/okhttp-3.0.1.jar
 -libraryjars ./libs/okio-1.6.0.jar

@@ -49,6 +49,9 @@ extern "C" {
 #if CC_USE_SDK_PAYPAL
 #include "PayPalSDK.h"
 #endif
+#if CC_USE_GOOGLE_LOGIN
+#include "GoogleSignSDK.h"
+#endif
 #define KODLOG(format, ...) CCLOG(format, ##__VA_ARGS__);
 //MARK:iOS
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_IOS
@@ -953,6 +956,9 @@ static void RegisterExtModules(lua_State* tolua_S)
 	 tolua_ext_module_market(tolua_S);
 #if CC_USE_SDK_PAYPAL
      tolua_ext_module_paypal(tolua_S);
+#endif
+#if CC_USE_GOOGLE_LOGIN
+     tolua_ext_module_google(tolua_S);
 #endif
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 	tolua_ext_module_audio(tolua_S);
