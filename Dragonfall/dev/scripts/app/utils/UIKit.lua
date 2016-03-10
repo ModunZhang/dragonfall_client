@@ -7,6 +7,7 @@ import(".bit")
 local cocos_promise = import(".cocos_promise")
 local promise = import(".promise")
 local Enum = import("..utils.Enum")
+local window = import("..utils.window")
 local WidgetPushButton = import("..widget.WidgetPushButton")
 local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local RichText = import("..widget.RichText")
@@ -2377,3 +2378,53 @@ function UIKit:CreateNumberImageNode(params)
 end
 
 
+function UIKit:CreateUITerrainNode(terrain)
+    local clip = display.newClippingRegionNode(cc.rect(16, 10, 612, 900))
+        :align(display.LEFT_BOTTOM,window.left,window.bottom)
+    local city_terrain = terrain or User.basicInfo.terrain 
+    GameUtils:LoadImagesWithFormat(function()
+        cc.TMXTiledMap:create(string.format("tmxmaps/alliance_%s1.tmx",city_terrain))
+            :align(display.LEFT_BOTTOM, 0, 0):addTo(clip)
+    end, cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565)
+
+    local unlock_position = {
+        {100,180},
+        {100,720},
+        {300,600},
+        {250,350},
+    }
+    for i=1,4 do
+        display.newSprite(string.format("unlock_tile_surface_%d_%s.png",i,city_terrain))
+            :align(display.LEFT_CENTER, unlock_position[i][1], unlock_position[i][2])
+            :addTo(clip)
+    end
+    -- 顶部和底部的树木
+    local tree_width = 0 -- 已经填充了的宽度
+    local count = 1
+    -- 顶部
+    while tree_width < 608 do
+        count = count > 4 and 1 or count
+        local tree = display.newSprite(string.format("tree_%d_%s.png",count,city_terrain))
+            :align(display.LEFT_BOTTOM, tree_width,800)
+            :addTo(clip)
+        tree_width = tree_width + tree:getContentSize().width
+        count = count + 1
+    end
+    -- 底部
+    tree_width = 0
+    count = 1
+    while tree_width < 608 do
+        count = count > 4 and 1 or count
+        local tree = display.newSprite(string.format("tree_%d_%s.png",count,city_terrain))
+            :align(display.LEFT_TOP, tree_width,100)
+            :addTo(clip)
+        tree_width = tree_width + tree:getContentSize().width
+        count = count + 1
+    end
+    -- 两边的黑条
+    display.newSprite("line_send_trop_612x2.png")
+        :align(display.CENTER_TOP, 612/2 + 15, 900)
+        :addTo(clip)
+        :setScaleY(900/2)
+    return clip
+end
