@@ -1121,7 +1121,23 @@ function GameUIReplay:BuildUI()
 
     ui_map.soldierBattleNode = display.newClippingRegionNode(cc.rect(15, 85, 608-15*2, 910 - 85*2))
         :addTo(bg)
-    ui_map.battleBg = display.newSprite("splash_beta_bg_3987x1136.jpg"):addTo(ui_map.soldierBattleNode):align(display.LEFT_CENTER, 0, display.cy)
+
+    -- 左右黑边
+    local line1 = display.newSprite("line_send_trop_612x2.png")
+        :align(display.CENTER_TOP, 608/2, 910 - 85)
+        :addTo(bg)
+    line1:setScaleX((608-15*2)/612)
+    line1:setScaleY((910-85*2)/2)
+
+    -- 上下黑边
+    local line1 = display.newSprite("line_send_trop_612x2.png")
+        :align(display.CENTER, 608 / 2, 910 / 2)
+        :addTo(bg):rotation(90)
+    line1:setScaleX((910 - 85*2)/612)
+    line1:setScaleY((608-15*2)  /2)
+
+    ui_map.battleBg = self:CreateBattleBg()
+    :addTo(ui_map.soldierBattleNode):align(display.LEFT_BOTTOM, 0, 0)
     ui_map.dragonBattleNode = display.newNode():addTo(bg)
     
     display.newSprite("replay_title_bg.png"):addTo(self)
@@ -1218,6 +1234,50 @@ function GameUIReplay:BuildUI()
     end)
 
     self.ui_map = ui_map
+end
+function GameUIReplay:CreateBattleBg()
+    local terrain = "grassLand"
+    local bg_node = display.newNode()
+    GameUtils:LoadImagesWithFormat(function()
+        cc.TMXTiledMap:create(string.format("tmxmaps/alliance_%s1.tmx",terrain))
+            :align(display.LEFT_BOTTOM, 0, 0):addTo(bg_node)
+    end, cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565)
+
+    local unlock_position = {
+        {100,180},
+        {100,720},
+        {300,600},
+        {250,350},
+    }
+    for i=1,4 do
+        display.newSprite(string.format("unlock_tile_surface_%d_%s.png",i,terrain))
+            :align(display.LEFT_CENTER, unlock_position[i][1], unlock_position[i][2])
+            :addTo(bg_node)
+    end
+    -- 顶部和底部的树木
+    local tree_width = 0 -- 已经填充了的宽度
+    local count = 1
+    -- 顶部
+    while tree_width < 608 do
+        count = count > 4 and 1 or count
+        local tree = display.newSprite(string.format("tree_%d_%s.png",count,terrain))
+            :align(display.LEFT_BOTTOM, tree_width,750)
+            :addTo(bg_node)
+        tree_width = tree_width + tree:getContentSize().width
+        count = count + 1
+    end
+    -- 底部
+    tree_width = 0
+    count = 1
+    while tree_width < 608 do
+        count = count > 4 and 1 or count
+        local tree = display.newSprite(string.format("tree_%d_%s.png",count,terrain))
+            :align(display.LEFT_TOP, tree_width,150)
+            :addTo(bg_node)
+        tree_width = tree_width + tree:getContentSize().width
+        count = count + 1
+    end
+    return bg_node
 end
 
 return GameUIReplay
