@@ -442,7 +442,7 @@ local report = {
                     ["soldierWoundedCount"] = 0,
                     ["soldierStar"] = 1,
                     ["isWin"] = false,
-                    ["soldierDamagedCount"] = 1,
+                    ["soldierDamagedCount"] = 55,
                     ["soldierCount"] = 55,
                 }
 ,
@@ -562,21 +562,27 @@ end
 function GameUIReplay:ctor()
     self.speed = 1
     self:BuildUI()
-    self:Setup()
-    self:Start()
 end
+function GameUIReplay:onEnter()
+    self:StartReplay()
+end
+local BATTLE_OBJECT_TAG = 137
+local RESULT_TAG = 112
 function GameUIReplay:RefreshSpeed()
-    for i,v in ipairs(self.attackTroops or {}) do
-        v:RefreshSpeed()
+    for _,v in ipairs(self.ui_map.soldierBattleNode:getChildren()) do
+        if v:getTag() == BATTLE_OBJECT_TAG then
+            v:RefreshSpeed()
+        end
     end
-    for i,v in ipairs(self.defenceTroops or {}) do
-        v:RefreshSpeed()
+    for _,v in ipairs(self.ui_map.dragonSkillNode:getChildren()) do
+        if v:getTag() == BATTLE_OBJECT_TAG then
+            v:RefreshSpeed()
+        end
     end
-    if self.attackDragon then
-        self.attackDragon:RefreshSpeed()
-    end
-    if self.defenceDragon then
-        self.defenceDragon:RefreshSpeed()
+    for _,v in ipairs(self.ui_map.dragonBattleNode:getChildren()) do
+        if v:getTag() == BATTLE_OBJECT_TAG then
+            v:RefreshSpeed()
+        end
     end
 end
 function GameUIReplay:MovingTimeForAttack()
@@ -610,7 +616,7 @@ function GameUIReplay:Setup()
     if type(report.attackPlayerData.fightWithDefenceTroop) == "table" then
         local attackDragonType = report.attackPlayerData.fightWithDefenceTroop.dragon.type
         self.attackDragon = UIKit:CreateSkillDragon(attackDragonType, 90, self)
-        :addTo(self.ui_map.dragonBattleNode):pos(-400, display.cy)
+        :addTo(self.ui_map.dragonSkillNode,0,BATTLE_OBJECT_TAG):pos(-400, display.cy)
 
         self.ui_map.attackDragonLabel:setString(Localize.dragon[attackDragonType])
         self.ui_map.attackDragonIcon:setTexture(DRAGON_HEAD[attackDragonType])
@@ -618,7 +624,7 @@ function GameUIReplay:Setup()
     if type(report.defencePlayerData.dragon) == "table" then
         local defenceDragonType = report.defencePlayerData.dragon.type
         self.defenceDragon = UIKit:CreateSkillDragon(defenceDragonType, 360, self)
-        :addTo(self.ui_map.dragonBattleNode):pos(display.width + 400, display.cy)
+        :addTo(self.ui_map.dragonSkillNode,0,BATTLE_OBJECT_TAG):pos(display.width + 400, display.cy)
 
         self.ui_map.defenceDragonLabel:setString(Localize.dragon[defenceDragonType])
         self.ui_map.defenceDragonIcon:setTexture(DRAGON_HEAD[defenceDragonType])
@@ -634,7 +640,7 @@ function GameUIReplay:Setup()
     end
     for i,v in ipairs(attackSoldiers) do
             self.attackTroops[i] = UIKit:CreateFightTroops(v.name, {isleft = true,},self)
-            :addTo(self.ui_map.soldierBattleNode) 
+            :addTo(self.ui_map.soldierBattleNode,0,BATTLE_OBJECT_TAG)
         end
     for i,v in ipairs(self.attackTroops) do
         v:pos(self:AttackPosition(), self:TopPositionByRow(i)):FaceCorrect():Idle()
@@ -645,14 +651,14 @@ function GameUIReplay:Setup()
     if type(report.defencePlayerData.soldiers) == "table" then
         for i,v in ipairs(report.defencePlayerData.soldiers) do
             self.defenceTroops[i] = UIKit:CreateFightTroops(v.name, {isleft = false,},self)
-            :addTo(self.ui_map.soldierBattleNode) 
+            :addTo(self.ui_map.soldierBattleNode,0,BATTLE_OBJECT_TAG) 
         end
         for i,v in ipairs(self.defenceTroops) do
             v:pos(self:DefencePosition(), self:TopPositionByRow(i)):FaceCorrect():Idle()
         end
     else
         self.defenceTroops[1] = UIKit:CreateFightTroops("wall", {isleft = false,},self)
-                                :addTo(self.ui_map.soldierBattleNode)
+                                :addTo(self.ui_map.soldierBattleNode,0,BATTLE_OBJECT_TAG)
                                 :pos(self:WallPosition()):FaceCorrect()
     end
 end
@@ -685,10 +691,9 @@ function GameUIReplay:Start()
         hpDecreased = defenceRoundDragon.hpDecreased,
         isWin = false,
         increase = 12,
-    }, self):addTo(self):pos(display.cx, display.height - 300)
-    self.dragonBattle = dragonBattle
+    }, self):addTo(self.ui_map.dragonBattleNode, 0, BATTLE_OBJECT_TAG):pos(display.cx, display.height - 300)
 
-    local time_per_hundred_percent = 1 / 100
+    local TIME_PER_HUNDRED_PERCENT = 1 / 100
 
     local attackToPercent = (attackRoundDragon.hp - attackRoundDragon.hpDecreased) / attackRoundDragon.hpMax * 100
     local attackStepPercent = attackToPercent - dragonBattle:GetAttackDragon():GetPercent()
@@ -700,9 +705,9 @@ function GameUIReplay:Start()
     :next(function()
         return promise.all(
         	dragonBattle:GetAttackDragon()
-        	:PromiseOfProgressTo(time_per_hundred_percent * attackStepPercent, attackToPercent), 
+        	:PromiseOfProgressTo(TIME_PER_HUNDRED_PERCENT * attackStepPercent, attackToPercent), 
         	dragonBattle:GetDefenceDragon()
-        	:PromiseOfProgressTo(time_per_hundred_percent * defenceStepPercent, defenceToPercent))
+        	:PromiseOfProgressTo(TIME_PER_HUNDRED_PERCENT * defenceStepPercent, defenceToPercent))
     end)
     :next(function()
     	return dragonBattle:PromiseOfShowBuff()
@@ -752,10 +757,12 @@ function GameUIReplay:OnFinishRound()
     elseif #self.attackTroops > 0 and not self.isFightWall
     and type(report.attackPlayerData.fightWithDefenceWall) == "table" then
         self.defenceTroops[1] = UIKit:CreateFightTroops("wall", {isleft = false,},self)
-            :addTo(self.ui_map.soldierBattleNode)
+            :addTo(self.ui_map.soldierBattleNode,0,BATTLE_OBJECT_TAG)
             :pos(self:WallPosition())
             :FaceCorrect()
         self:OnStartMoveToWall()
+    else
+        self:FinishReplay()
     end
 end
 -- 打城墙
@@ -978,10 +985,10 @@ function GameUIReplay:OnStartDual()
         self:OnFight(self.attackTroops[self.dualCount], self.defenceTroops[self.dualCount])
     end
 end
-function GameUIReplay:OnAttackFinished(attackTroops)
-    attackTroops:Idle()
-    assert(attackTroops.properties.target)
-    local target = attackTroops.properties.target
+function GameUIReplay:OnAttackFinished(attackTroop)
+    attackTroop:Idle()
+    assert(attackTroop.properties.target)
+    local target = attackTroop.properties.target
 
     if self.isFightWall then
         self.fightWallCount = self.fightWallCount + 1
@@ -1001,44 +1008,45 @@ function GameUIReplay:OnAttackFinished(attackTroops)
             end)
         end
     end
-    attackTroops.properties.target = nil
+    attackTroop.properties.target = nil
 end
-function GameUIReplay:OnHurtFinished(hurtTroops)
+function GameUIReplay:OnHurtFinished(hurtTroop)
     self.hurtCount = self.hurtCount + 1
-    hurtTroops:Idle()
+    hurtTroop:Idle()
 
     if not self.isFightWall then
         if self.hurtCount == 1 then -- 反击
-            hurtTroops:Hold(0.2, function()
-                self:OnFight(hurtTroops, hurtTroops.properties.target)
+            hurtTroop:Hold(0.2, function()
+                self:OnFight(hurtTroop, hurtTroop.properties.target)
             end)
         else -- 死亡
-            local attackTroops = hurtTroops.properties.target
+            local attackTroops = hurtTroop.properties.target
             if attackTroops:IsMelee() and self:IsMoved(attackTroops) then
-                hurtTroops:Death()
+                hurtTroop:Death()
                 local x,y = self:GetOriginPoint(attackTroops)
                 attackTroops:Return(x,y, self:MovingTimeForAttack(), function()
                     attackTroops:FaceCorrect()
                     self:OnFinishDual()
                 end)
             else
-                hurtTroops:Death(function()
+                hurtTroop:Death(function()
                     self:OnFinishDual()
                 end)
             end
             attackTroops.properties.target = nil
-            hurtTroops.properties.target = nil
+            hurtTroop.properties.target = nil
         end
     else
-        if hurtTroops:IsWall() then
-            self:OnAttacking(hurtTroops, self.attackTroops)
+        if hurtTroop:IsWall() then
+            self:OnAttacking(hurtTroop, self.attackTroops)
         end
         if self.hurtCount == #self.attackTroops then
             local attackPlayerWallRoundDatas = report.fightWithDefencePlayerReports.attackPlayerWallRoundDatas
+            local pps = {}
             for i,v in pairs(self.attackTroops) do
                 local roundData = attackPlayerWallRoundDatas[i]
                 if roundData and roundData.soldierCount - roundData.soldierDamagedCount <= 0 then
-                    v:Death()
+                    table.insert(pps, v:PromiseOfDeath())
                 end
             end
 
@@ -1053,42 +1061,50 @@ function GameUIReplay:OnHurtFinished(hurtTroops)
             if wallHp - wallDamagedHp <= 0 then
                 self.defenceTroops[1]:Death()
             end
+
+            if #pps > 0 then
+                promise.all(unpack(pps)):next(function() self:FinishReplay() end)
+            else
+                self:performWithDelay(function()
+                    self:FinishReplay()
+                end, 0.1)
+            end
         end
     end
 end
-function GameUIReplay:OnFight(attackTroops, defenceTroops)
-    if attackTroops:IsMelee() then
-        local point = cc.p(defenceTroops:getPosition())
-        local wp = defenceTroops:getParent():convertToWorldSpace(point)
-        if attackTroops:IsLeft() then
+function GameUIReplay:OnFight(attackTroop, defenceTroop)
+    if attackTroop:IsMelee() then
+        local point = cc.p(defenceTroop:getPosition())
+        local wp = defenceTroop:getParent():convertToWorldSpace(point)
+        if attackTroop:IsLeft() then
             wp.x = wp.x - 100
         else
             wp.x = wp.x + 100
         end
-        local np = attackTroops:getParent():convertToNodeSpace(wp)
-        local attack_x, attack_y = attackTroops:getPosition()
+        local np = attackTroop:getParent():convertToNodeSpace(wp)
+        local attack_x, attack_y = attackTroop:getPosition()
         if np.x ~= attack_x or attack_y ~= np.y then
-            attackTroops:Move(np.x, np.y, self:MovingTimeForAttack(), function(isend)
+            attackTroop:Move(np.x, np.y, self:MovingTimeForAttack(), function(isend)
                 if isend then
-                    self:OnAttacking(attackTroops, defenceTroops)
+                    self:OnAttacking(attackTroop, defenceTroop)
                 end
             end)
             return
         end
     end
-    self:OnAttacking(attackTroops, defenceTroops)
+    self:OnAttacking(attackTroop, defenceTroop)
 end
-function GameUIReplay:OnAttacking(attackTroops, defenceTroops)
-    attackTroops.properties.target = defenceTroops
-    if isTroops(defenceTroops) then
-        defenceTroops.properties.target = attackTroops
+function GameUIReplay:OnAttacking(attackTroop, defenceTroop)
+    attackTroop.properties.target = defenceTroop
+    if isTroops(defenceTroop) then
+        defenceTroop.properties.target = attackTroop
     else
-        for _,v in pairs(defenceTroops) do
-            v.properties.target = attackTroops
+        for _,v in pairs(defenceTroop) do
+            v.properties.target = attackTroop
         end
     end
-    attackTroops:PromiseOfAttack():next(function()
-    	self:OnAttackFinished(attackTroops)
+    attackTroop:PromiseOfAttack():next(function()
+    	self:OnAttackFinished(attackTroop)
     end)
 end
 function GameUIReplay:IsMoved(troops)
@@ -1101,26 +1117,75 @@ function GameUIReplay:GetOriginPoint(troops)
     local x,y = troops:IsLeft() and self:AttackPosition() or self:DefencePosition(), pos_y
     return x, y
 end
-function GameUIReplay:Stop()
-
+function GameUIReplay:Pause()
+    for _,v in ipairs(self.ui_map.soldierBattleNode:getChildren()) do
+        if v:getTag() == BATTLE_OBJECT_TAG then
+            v:Pause()
+        end
+    end
+    for _,v in ipairs(self.ui_map.dragonSkillNode:getChildren()) do
+        if v:getTag() == BATTLE_OBJECT_TAG then
+            v:Pause()
+        end
+    end
+    for _,v in ipairs(self.ui_map.dragonBattleNode:getChildren()) do
+        if v:getTag() == BATTLE_OBJECT_TAG then
+            v:Pause()
+        end
+    end
 end
-function GameUIReplay:CleanUp()
-
+function GameUIReplay:StartReplay()
+    self.ui_map.battleBg:pos(0,0)
+    self.ui_map.speedup:show()
+    self.ui_map.replay:hide()
+    self.ui_map.pass:show()
+    self.ui_map.close:hide()
+    self:ChangeSpeed(0)
+    self:removeChildByTag(RESULT_TAG)
+    self.ui_map.soldierBattleNode:removeAllChildren()
+    self.ui_map.dragonSkillNode:removeAllChildren()
+    self.ui_map.dragonBattleNode:removeAllChildren()
+    self:Setup()
+    self:Start()
 end
-function GameUIReplay:Speed()
-    return 4
-end
+function GameUIReplay:FinishReplay()
+    ccs.Armature:create("win"):addTo(self, 10, RESULT_TAG)
+    :align(display.CENTER, window.cx, window.cy + 250)
+    :getAnimation():play("Victory", -1, 0)
 
+    self.ui_map.speedup:hide()
+    self.ui_map.replay:show()
+    self.ui_map.pass:hide()
+    self.ui_map.close:show()
+    self:Pause()
+end
+function GameUIReplay:ChangeSpeed(speed)
+    if speed == 0 then
+        self.speed = 1
+        self.ui_map.speedup:setButtonLabelString(_("加速"))
+    elseif self.speed == 1 then
+        self.speed = 2
+        self.ui_map.speedup:setButtonLabelString(_("x2"))
+    elseif self.speed == 2 then
+        self.speed = 4
+        self.ui_map.speedup:setButtonLabelString(_("x4"))
+    elseif self.speed == 4 then
+        self.speed = 1
+        self.ui_map.speedup:setButtonLabelString(_("加速"))
+    end
+    self:RefreshSpeed()
+end
 function GameUIReplay:BuildUI()
     local ui_map = {}
 
     cc.LayerGradient:create(cc.c4b(0,255,0,255), cc.c4b(255,0,0,255), cc.p(1, 1)):addTo(self)
+    ui_map.dragonBattleNode = display.newNode():addTo(self, 10)
     local bg = WidgetUIBackGround.new({width = 608,height = 910},
                     WidgetUIBackGround.STYLE_TYPE.STYLE_1):addTo(self)
                     :align(display.TOP_CENTER, display.cx, display.height - 10)
 
-    ui_map.soldierBattleNode = display.newClippingRegionNode(cc.rect(15, 85, 608-15*2, 910 - 85*2))
-        :addTo(bg)
+    local clip = display.newClippingRegionNode(cc.rect(15, 85, 608-15*2, 910 - 85*2)):addTo(bg)
+    ui_map.soldierBattleNode = display.newNode():addTo(clip,1)
 
     -- 左右黑边
     local line1 = display.newSprite("line_send_trop_612x2.png")
@@ -1137,8 +1202,8 @@ function GameUIReplay:BuildUI()
     line1:setScaleY((608-15*2)  /2)
 
     ui_map.battleBg = self:CreateBattleBg()
-    :addTo(ui_map.soldierBattleNode):align(display.LEFT_BOTTOM, 0, 0)
-    ui_map.dragonBattleNode = display.newNode():addTo(bg)
+    :addTo(clip,0):align(display.LEFT_BOTTOM, 0, 0)
+    ui_map.dragonSkillNode = display.newNode():addTo(bg)
     
     display.newSprite("replay_title_bg.png"):addTo(self)
     :align(display.TOP_CENTER, display.cx, display.height - 10)
@@ -1192,6 +1257,20 @@ function GameUIReplay:BuildUI()
     :align(display.CENTER, display.cx + 256, display.height - 48)
     ui_map.defenceDragonIcon:flipX(true)
 
+    ui_map.replay = cc.ui.UIPushButton.new(
+        {normal = "yellow_btn_up_148x58.png",pressed = "yellow_btn_down_148x58.png"},
+        {scale9 = false}
+    ):setButtonLabel(
+        UIKit:ttfLabel({
+            text = _("回放"),
+            color = 0xfff3c7,
+            size = 24,
+            shadow = true,
+        })
+    ):addTo(bg):align(display.CENTER, 110, 45)
+    :onButtonClicked(function()
+        self:StartReplay()
+    end):hide()
 
     ui_map.speedup = cc.ui.UIPushButton.new(
         {normal = "yellow_btn_up_148x58.png",pressed = "yellow_btn_down_148x58.png"},
@@ -1204,6 +1283,10 @@ function GameUIReplay:BuildUI()
             shadow = true,
         })
     ):addTo(bg):align(display.CENTER, 110, 45)
+    :onButtonClicked(function()
+        self:ChangeSpeed()
+    end):hide()
+
 
     ui_map.close = cc.ui.UIPushButton.new(
         {normal = "red_btn_up_148x58.png",pressed = "red_btn_down_148x58.png"},
@@ -1216,22 +1299,24 @@ function GameUIReplay:BuildUI()
             shadow = true,
         })
     ):addTo(bg):align(display.CENTER, 608 - 110, 45)
+    :onButtonClicked(function()
+        self:LeftButtonClicked()
+    end):hide()
 
-
-
-    ui_map.speedup:onButtonClicked(function()
-        if self.speed == 1 then
-            self.speed = 2
-            ui_map.speedup:setButtonLabelString(_("x2"))
-        elseif self.speed == 2 then
-            self.speed = 4
-            ui_map.speedup:setButtonLabelString(_("x4"))
-        elseif self.speed == 4 then
-            self.speed = 1
-            ui_map.speedup:setButtonLabelString(_("加速"))
-        end
-        self:RefreshSpeed()
-    end)
+    ui_map.pass = cc.ui.UIPushButton.new(
+        {normal = "red_btn_up_148x58.png",pressed = "red_btn_down_148x58.png", disabled = 'gray_btn_148x58.png'},
+        {scale9 = false}
+    ):setButtonLabel(
+        UIKit:ttfLabel({
+            text = _("跳过"),
+            color = 0xfff3c7,
+            size = 24,
+            shadow = true,
+        })
+    ):addTo(bg):align(display.CENTER, 608 - 110, 45)
+    :onButtonClicked(function()
+        self:FinishReplay()
+    end):hide()
 
     self.ui_map = ui_map
 end
