@@ -5,8 +5,8 @@ import java.util.Locale;
 import org.cocos2dx.lua.AppActivity;
 import org.cocos2dx.utils.PSNetwork;
 
-import com.batcatstudio.dragonfall.R;
 import com.batcatstudio.dragonfall.google.gcm.GCMUtils;
+import com.xapcn.dragonfall.R;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;

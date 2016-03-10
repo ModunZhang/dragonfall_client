@@ -10,7 +10,7 @@ public class GCMUtils {
 	private static final String TAG = "GCMUtils";
 	private static final boolean DEBUG = true;
 	private static final boolean DEBUG_CHECK_MANIFEST = true;
-	public static final String SENDER_ID = "841456299792";
+	public static final String SENDER_ID = "135027733466";
 	
 
 	public static String getRegisterId() {

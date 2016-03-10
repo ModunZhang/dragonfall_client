@@ -8,7 +8,7 @@ import java.util.UUID;
 
 import org.cocos2dx.lua.AppActivity;
 
-import com.batcatstudio.dragonfall.R;
+import com.xapcn.dragonfall.R;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
