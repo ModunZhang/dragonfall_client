@@ -10,6 +10,31 @@ local isTroops = function(troops)
     return troops.IsTroops
 end
 function GameUIReplay:ctor(report, callback, skipcallback)
+    assert(report.GetAttackTargetTerrain)
+    
+    assert(report.GetFightAttackName)
+    assert(report.GetFightDefenceName)
+
+    assert(report.IsDragonFight)
+    assert(report.GetAttackDragonLevel)
+    assert(report.GetDefenceDragonLevel)
+    assert(report.GetFightAttackDragonRoundData)
+    assert(report.GetFightDefenceDragonRoundData)
+    assert(report.CouldAttackDragonUseSkill)
+    assert(report.CouldDefenceDragonUseSkill)
+
+    assert(report.IsSoldierFight)
+    assert(report.GetOrderedAttackSoldiers)
+    assert(report.GetOrderedDefenceSoldiers)
+    assert(report.GetSoldierRoundData)
+    
+    assert(report.IsFightWall)
+    if report:IsFightWall() then
+        assert(report.GetFightAttackWallRoundData)
+        assert(report.GetFightDefenceWallRoundData)
+    end
+
+    assert(report.GetReportResult)
     self.report = report
     self.callback = callback
     self.skipcallback = skipcallback
@@ -787,7 +812,7 @@ function GameUIReplay:BuildUI()
     self.ui_map = ui_map
 end
 function GameUIReplay:CreateBattleBg()
-    local terrain = "grassLand"
+    local terrain = self.report:GetAttackTargetTerrain()
     local bg_node = display.newNode()
     GameUtils:LoadImagesWithFormat(function()
         cc.TMXTiledMap:create(string.format("tmxmaps/alliance_%s1.tmx",terrain))
