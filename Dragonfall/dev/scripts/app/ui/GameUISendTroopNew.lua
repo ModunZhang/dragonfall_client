@@ -120,8 +120,10 @@ function GameUISendTroopNew:onExit()
 end
 -- 创建城市地形背景
 function GameUISendTroopNew:CreateTerrainBackground()
-    local clip = UIKit:CreateUITerrainNode()
+    local clip = display.newClippingRegionNode(cc.rect(16, 10, 612, 900))
+        :align(display.LEFT_BOTTOM,window.left,window.bottom)
         :addTo(self:GetView())
+    UIKit:CreateTerrainForNode(clip)
 end
 function GameUISendTroopNew:SelectDragonPart()
     if not self.dragon then return end
@@ -631,6 +633,7 @@ function GameUISendTroopNew:CallFuncMarch_Callback(dragonType,soldiers)
     end
 end
 return GameUISendTroopNew
+
 
 
 

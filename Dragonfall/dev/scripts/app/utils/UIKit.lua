@@ -1859,9 +1859,7 @@ function UIKit:CreateNumberImageNode(params)
 end
 
 
-function UIKit:CreateUITerrainNode(terrain)
-    local clip = display.newClippingRegionNode(cc.rect(16, 10, 612, 900))
-        :align(display.LEFT_BOTTOM,window.left,window.bottom)
+function UIKit:CreateTerrainForNode(clip,terrain)
     local city_terrain = terrain or User.basicInfo.terrain 
     GameUtils:LoadImagesWithFormat(function()
         cc.TMXTiledMap:create(string.format("tmxmaps/alliance_%s1.tmx",city_terrain))
