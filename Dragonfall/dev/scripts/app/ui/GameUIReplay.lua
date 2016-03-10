@@ -60,7 +60,7 @@ function GameUIReplay:DefencePosition()
     return 608 - 100
 end
 function GameUIReplay:TopPositionByRow(row)
-    return display.height - 250 - (row-1) * 100
+    return display.height - 260 - (row-1) * 105
 end
 function GameUIReplay:Setup()
     self.isFightWall = false
@@ -130,7 +130,7 @@ function GameUIReplay:Start()
         hpMax = attackRoundDragon.hpMax,
         hp = attackRoundDragon.hp,
         hpDecreased = attackRoundDragon.hpDecreased,
-        isWin = true,
+        isWin = attackRoundDragon.isWin,
         increase = 40,
     }, {
         isleft = false,
@@ -139,7 +139,7 @@ function GameUIReplay:Start()
         hpMax = defenceRoundDragon.hpMax,
         hp = defenceRoundDragon.hp,
         hpDecreased = defenceRoundDragon.hpDecreased,
-        isWin = false,
+        isWin = defenceRoundDragon.isWin,
         increase = 12,
     }, self):addTo(self.ui_map.dragonBattleNode, 0, BATTLE_OBJECT_TAG):pos(display.cx, display.height - 300)
 
@@ -244,11 +244,11 @@ function GameUIReplay:OnStartMoveToWall()
             self:OnFinishMoveToWall()
         end
     end)
-    local originx = self.ui_map.battleBg:getPositionX()
+    local originx = self.ui_map.battleBgNode:getPositionX()
     wall:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
         local ox = self:WallPosition()
         local x  = wall:getPosition()
-        self.ui_map.battleBg:setPositionX(originx + x - ox)
+        self.ui_map.battleBgNode:setPositionX(originx + x - ox)
     end)
     wall:scheduleUpdate()
 end
@@ -585,7 +585,7 @@ function GameUIReplay:Pause()
     end
 end
 function GameUIReplay:StartReplay()
-    self.ui_map.battleBg:pos(0,0)
+    self.ui_map.battleBgNode:pos(0,0)
     self.ui_map.speedup:show()
     self.ui_map.replay:hide()
     self.ui_map.pass:show()
@@ -603,10 +603,15 @@ function GameUIReplay:FinishReplay()
         self.skipcallback(self)
         return
     end
-
-    ccs.Armature:create("win"):addTo(self, 10, RESULT_TAG)
-    :align(display.CENTER, window.cx, window.cy + 250)
-    :getAnimation():play("Victory", -1, 0)
+    local isWin = self.report:GetReportResult()
+    local result = ccs.Armature:create("win"):addTo(self, 10, RESULT_TAG)
+    result:align(display.CENTER, window.cx, window.cy + 150)
+    if isWin then
+        result:setAnchorPoint(cc.p(0.48, 0.5))
+    else
+        result:setAnchorPoint(cc.p(0.5, 0.5))
+    end
+    result:getAnimation():play(isWin and "Victory" or "Defeat", -1, 0)
 
     self.ui_map.speedup:hide()
     self.ui_map.replay:show()
@@ -638,8 +643,9 @@ function GameUIReplay:BuildUI()
                     :align(display.TOP_CENTER, display.cx, display.height - 10)
 
     local clip = display.newClippingRegionNode(cc.rect(15, 85, 608-15*2, 910 - 85*2)):addTo(bg)
+    ui_map.battleBgNode = self:CreateBattleBg():addTo(clip):align(display.LEFT_BOTTOM)
     ui_map.soldierBattleNode = display.newNode():addTo(clip,1)
-
+    ui_map.dragonSkillNode = display.newNode():addTo(clip,2)
     -- 左右黑边
     local line1 = display.newSprite("line_send_trop_612x2.png")
         :align(display.CENTER_TOP, 608/2, 910 - 85)
@@ -653,10 +659,6 @@ function GameUIReplay:BuildUI()
         :addTo(bg):rotation(90)
     line1:setScaleX((910 - 85*2)/612)
     line1:setScaleY((608-15*2)  /2)
-
-    ui_map.battleBg = self:CreateBattleBg()
-    :addTo(clip,0):align(display.LEFT_BOTTOM, 0, 0)
-    ui_map.dragonSkillNode = display.newNode():addTo(bg)
     
     display.newSprite("replay_title_bg.png"):addTo(self)
     :align(display.TOP_CENTER, display.cx, display.height - 10)
@@ -810,7 +812,7 @@ function GameUIReplay:CreateBattleBg()
     while tree_width < 608 do
         count = count > 4 and 1 or count
         local tree = display.newSprite(string.format("tree_%d_%s.png",count,terrain))
-            :align(display.LEFT_TOP, tree_width,150)
+            :align(display.LEFT_TOP, tree_width,140)
             :addTo(bg_node)
         tree_width = tree_width + tree:getContentSize().width
         count = count + 1

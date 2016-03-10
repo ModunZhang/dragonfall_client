@@ -1858,12 +1858,13 @@ function UIKit:CreateSkillDragon(dragonType, degree, gameController)
 end
 local SOLDIER_NODE = 1
 local EFFECT_TAG = 2
+local INFO_TAG = 3
 function UIKit:CreateFightTroops(soldierName, properties, gameController)
     gameController = gameController or empty_gameController
     local troopsNode = display.newNode()
-    local soldiersNode = display.newNode():addTo(troopsNode, 0, SOLDIER_NODE)
-    local effectsNode = display.newNode():addTo(troopsNode, 1, EFFECT_TAG)
-    troopsNode.effectsNode = effectsNode
+    local soldiersNode = display.newNode():addTo(troopsNode, 0, SOLDIER_NODE):scale(0.9)
+    troopsNode.infoNode = display.newNode():addTo(troopsNode, 1, INFO_TAG)
+    troopsNode.effectsNode = display.newNode():addTo(troopsNode, 2, EFFECT_TAG)
     troopsNode.properties = properties or {}
     local _,_,count = unpack(soldier_fight_map[soldierName])
     local soldiers = {}
@@ -1873,17 +1874,15 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
     end
     troopsNode.soldiers = soldiers
     function troopsNode:IsTroops() return soldierName ~= "wall" end
-    function troopsNode:Stop()
+    function troopsNode:StopAni()
          for _,v in pairs(self.soldiers) do
-            v:getAnimation():stop()
+            v:getAnimation():pause()
          end
          return self
      end
     function troopsNode:Pause()
         self:stopAllActions()
-        for _, v in pairs(self.soldiers) do
-            v:getAnimation():pause()
-        end
+        self:StopAni()
         return self
     end
     function troopsNode:RefreshSpeed()
@@ -1993,9 +1992,9 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         if not not animationData:getMovement("idle_90") then
             self:Play("idle_90", -1)
         elseif not not animationData:getMovement("move_90") then
-            self:Play("move_90", -1):Stop()
+            self:Play("move_90", -1):StopAni()
         else
-            self:Play("attack", -1):Stop()
+            self:Play("attack", -1):StopAni()
         end
         return self
     end
@@ -2021,12 +2020,6 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         for _,v in pairs(self.soldiers) do
             v:getAnimation():play(aniName, 0, aniTimes or 0)
             v:getAnimation():setSpeedScale(self:Speed())
-        end
-        return self
-    end
-    function troopsNode:Pause()
-        for _,v in pairs(self.soldiers) do
-            v:getAnimation():pause()
         end
         return self
     end
