@@ -22,7 +22,11 @@ local buildings_map = {
     "decorate_tree_6",
     "decorate_tree_7",
     "decorate_tree_8",
-	"decorate_tree_9",
+    "decorate_tree_9",
+    "not_use",
+    "crown",
+    "tower1",
+	"tower2",
 }
 
 
