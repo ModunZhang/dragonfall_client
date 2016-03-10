@@ -581,6 +581,7 @@ function GameUISendTroopNew:SetMaxSoldier()
     local isMax = self.isMax
     if isMax then
         self:ResetSoldierNode()
+        self:RefreshSoldierNodes()
     else
         local sort_soldiers = self:GetSortSoldierMax()
         for i,soldier_node in ipairs(self.soldier_node_table) do
