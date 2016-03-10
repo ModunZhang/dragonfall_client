@@ -618,7 +618,7 @@ end
 function Report:IsFightWall()
     local data = self:GetFightReports()
     local isFight = false
-    if data.fightWithDefencePlayerReports.attackPlayerWallRoundDatas and #data.fightWithDefencePlayerReports.attackPlayerWallRoundDatas > 0 then
+    if data.fightWithDefencePlayerReports and data.fightWithDefencePlayerReports.attackPlayerWallRoundDatas and #data.fightWithDefencePlayerReports.attackPlayerWallRoundDatas > 0 then
         isFight = true
     end
     return isFight
