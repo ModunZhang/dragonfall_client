@@ -115,7 +115,7 @@ function GameUIMonsterReport:onEnter()
         :onButtonClicked(function(event)
             local c_report = clone(report)
             c_report.IsPveBattle = true
-            UIKit:newGameUI("GameUIReplayNew",c_report):AddToCurrentScene(true)
+            UIKit:newGameUI("GameUIReplay",c_report):AddToCurrentScene(true)
         end)
     -- 分享战报按钮
     if self.can_share then

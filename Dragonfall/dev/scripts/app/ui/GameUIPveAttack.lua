@@ -468,7 +468,7 @@ function GameUIPveAttack:Attack()
                     end
                 end
                 local is_show = false
-                UIKit:newGameUI("GameUIReplayNew", self:DecodeReport(response.msg.fightReport, dragon, soldiers), function(replayui)
+                UIKit:newGameUI("GameUIReplay", self:DecodeReport(response.msg.fightReport, dragon, soldiers), function(replayui)
                     if not is_show then
                         is_show = true
                         UIKit:newGameUI("GameUIPveSummary", param):AddToCurrentScene(true)

@@ -340,7 +340,7 @@ function GameUIShrineReportInMail:CreateReplay(round,data)
     ):setButtonLabel(replay_label)
         :addTo(player_item):align(display.RIGHT_CENTER, player_item:getContentSize().width-2, 30)
         :onButtonClicked(function(event)
-            UIKit:newGameUI("GameUIReplayNew",self:GetFightReportObjectWithJson(data)):AddToCurrentScene(true)
+            UIKit:newGameUI("GameUIReplay",self:GetFightReportObjectWithJson(data)):AddToCurrentScene(true)
         end)
 
     local item = self.details_view:newItem()

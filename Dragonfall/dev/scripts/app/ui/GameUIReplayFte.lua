@@ -1,5 +1,5 @@
-local GameUIReplayNew = import(".GameUIReplayNew")
-local GameUIReplayFte = class("GameUIReplayFte", GameUIReplayNew)
+local GameUIReplay = import(".GameUIReplay")
+local GameUIReplayFte = class("GameUIReplayFte", GameUIReplay)
 
 
 

@@ -114,7 +114,7 @@ function GameUIWarReport:onEnter()
         ):setButtonLabel(replay_label)
             :addTo(report_body):align(display.CENTER, report_body:getContentSize().width-100, rb_size.height-186)
             :onButtonClicked(function(event)
-                UIKit:newGameUI("GameUIReplayNew",clone(report)):AddToCurrentScene(true)
+                UIKit:newGameUI("GameUIReplay",clone(report)):AddToCurrentScene(true)
             end)
     end
     if self.can_share then
