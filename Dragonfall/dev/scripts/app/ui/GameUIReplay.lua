@@ -1,560 +1,10 @@
+local UILib = import(".UILib")
 local window = import("..utils.window")
 local promise = import("..utils.promise")
 local Localize = import("..utils.Localize")
 local cocos_promise = import("..utils.cocos_promise")
 local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local GameUIReplay = UIKit:createUIClass('GameUIReplay')
-
-userdata = json.null
-local report = {
-        ["attackPlayerData"] = {
-            ["alliance"] = {
-                ["name"] = "Crius and Hebe",
-                ["id"] = "E1XMoXLne",
-                ["mapIndex"] = 294,
-                ["flag"] = "2,4,5,9,4",
-                ["tag"] = "CnH",
-            }
-,
-            ["name"] = "ewr",
-            ["fightWithDefenceTroop"] = {
-                ["dragon"] = {
-                    ["type"] = "greenDragon",
-                    ["hpDecreased"] = 16,
-                    ["level"] = 3,
-                    ["hp"] = 180,
-                    ["expAdd"] = 86,
-                }
-,
-                ["soldiers"] = {
-                    [1] = {
-                        ["count"] = 60,
-                        ["star"] = 1,
-                        ["countDecreased"] = 5,
-                        ["name"] = "sentinel_3",
-                    }
-,
-                    [2] = {
-                        ["count"] = 30,
-                        ["star"] = 1,
-                        ["countDecreased"] = 4,
-                        ["name"] = "horseArcher_3",
-                    }
-,
-                    [3] = {
-                        ["count"] = 30,
-                        ["star"] = 1,
-                        ["countDecreased"] = 3,
-                        ["name"] = "lancer_3",
-                    }
-,
-                    [4] = {
-                        ["count"] = 60,
-                        ["star"] = 1,
-                        ["countDecreased"] = 3,
-                        ["name"] = "swordsman_3",
-                    }
-,
-                    [5] = {
-                        ["count"] = 30,
-                        ["star"] = 1,
-                        ["countDecreased"] = 3,
-                        ["name"] = "ballista_3",
-                    }
-,
-                    [6] = {
-                        ["count"] = 30,
-                        ["star"] = 1,
-                        ["countDecreased"] = 2,
-                        ["name"] = "catapult_3",
-                    }
-,
-                }
-,
-            }
-,
-            ["id"] = "VJPCpM83g",
-            ["rewards"] = {
-                [1] = {
-                    ["type"] = "resources",
-                    ["name"] = "blood",
-                    ["count"] = 309,
-                }
-,
-                [2] = {
-                    ["type"] = "resources",
-                    ["name"] = "coin",
-                    ["count"] = 415,
-                }
-,
-                [3] = {
-                    ["type"] = "resources",
-                    ["name"] = "wood",
-                    ["count"] = 4800,
-                }
-,
-                [4] = {
-                    ["type"] = "resources",
-                    ["name"] = "stone",
-                    ["count"] = 4783,
-                }
-,
-                [5] = {
-                    ["type"] = "resources",
-                    ["name"] = "iron",
-                    ["count"] = 4783,
-                }
-,
-                [6] = {
-                    ["type"] = "resources",
-                    ["name"] = "food",
-                    ["count"] = 0,
-                }
-,
-                [7] = {
-                    ["type"] = "dragonMaterials",
-                    ["name"] = "redSoul_2",
-                    ["count"] = 3,
-                }
-,
-            }
-,
-            ["icon"] = 4,
-            ["fightWithDefenceWall"] = {
-                ["soldiers"] = {
-                    [1] = {
-                        ["count"] = 55,
-                        ["star"] = 1,
-                        ["countDecreased"] = 1,
-                        ["name"] = "sentinel_3",
-                    }
-,
-                    [2] = {
-                        ["count"] = 26,
-                        ["star"] = 1,
-                        ["countDecreased"] = 1,
-                        ["name"] = "horseArcher_3",
-                    }
-,
-                    [3] = {
-                        ["count"] = 27,
-                        ["star"] = 1,
-                        ["countDecreased"] = 1,
-                        ["name"] = "lancer_3",
-                    }
-,
-                    [4] = {
-                        ["count"] = 57,
-                        ["star"] = 1,
-                        ["countDecreased"] = 1,
-                        ["name"] = "swordsman_3",
-                    }
-,
-                    [5] = {
-                        ["count"] = 27,
-                        ["star"] = 1,
-                        ["countDecreased"] = 1,
-                        ["name"] = "ballista_3",
-                    }
-,
-                    [6] = {
-                        ["count"] = 28,
-                        ["star"] = 1,
-                        ["countDecreased"] = 1,
-                        ["name"] = "catapult_3",
-                    }
-,
-                }
-,
-            }
-,
-        }
-,
-        ["attackTarget"] = {
-            ["alliance"] = {
-                ["name"] = "Freyr",
-                ["id"] = "412b0DLnl",
-                ["mapIndex"] = 252,
-                ["flag"] = "2,11,7,19,6",
-                ["tag"] = "Fre",
-            }
-,
-            ["name"] = "ppo",
-            ["terrain"] = "desert",
-            ["id"] = "4yVyRvLhg",
-            ["location"] = {
-                ["y"] = 9,
-                ["x"] = 15,
-            }
-,
-        }
-,
-        ["defencePlayerData"] = {
-            ["id"] = "4yVyRvLhg",
-            ["rewards"] = {
-                [1] = {
-                    ["type"] = "resources",
-                    ["name"] = "blood",
-                    ["count"] = 320,
-                }
-,
-                [2] = {
-                    ["type"] = "resources",
-                    ["name"] = "coin",
-                    ["count"] = -415,
-                }
-,
-                [3] = {
-                    ["type"] = "resources",
-                    ["name"] = "wood",
-                    ["count"] = -4800,
-                }
-,
-                [4] = {
-                    ["type"] = "resources",
-                    ["name"] = "stone",
-                    ["count"] = -4783,
-                }
-,
-                [5] = {
-                    ["type"] = "resources",
-                    ["name"] = "iron",
-                    ["count"] = -4783,
-                }
-,
-                [6] = {
-                    ["type"] = "resources",
-                    ["name"] = "food",
-                    ["count"] = 0,
-                }
-,
-                [7] = {
-                    ["type"] = "dragonMaterials",
-                    ["name"] = "ingo_2",
-                    ["count"] = 1,
-                }
-,
-            }
-,
-            ["soldiers"] = {
-                [1] = {
-                    ["count"] = 46,
-                    ["star"] = 1,
-                    ["countDecreased"] = 7,
-                    ["name"] = "sentinel_3",
-                }
-,
-                [2] = {
-                    ["count"] = 23,
-                    ["star"] = 1,
-                    ["countDecreased"] = 5,
-                    ["name"] = "horseArcher_3",
-                }
-,
-                [3] = {
-                    ["count"] = 23,
-                    ["star"] = 1,
-                    ["countDecreased"] = 4,
-                    ["name"] = "lancer_3",
-                }
-,
-                [4] = {
-                    ["count"] = 46,
-                    ["star"] = 1,
-                    ["countDecreased"] = 4,
-                    ["name"] = "swordsman_3",
-                }
-,
-                [5] = {
-                    ["count"] = 23,
-                    ["star"] = 1,
-                    ["countDecreased"] = 4,
-                    ["name"] = "ballista_3",
-                }
-,
-                [6] = {
-                    ["count"] = 23,
-                    ["star"] = 1,
-                    ["countDecreased"] = 3,
-                    ["name"] = "catapult_3",
-                }
-,
-            }
-,
-            ["dragon"] = {
-                ["type"] = "greenDragon",
-                ["hpDecreased"] = 27,
-                ["level"] = 2,
-                ["hp"] = 148,
-                ["expAdd"] = 64,
-            }
-,
-            ["alliance"] = {
-                ["name"] = "Freyr",
-                ["id"] = "412b0DLnl",
-                ["mapIndex"] = 252,
-                ["flag"] = "2,11,7,19,6",
-                ["tag"] = "Fre",
-            }
-,
-            ["name"] = "ppo",
-            ["masterOfDefender"] = false,
-            ["wall"] = {
-                ["hp"] = 124,
-                ["hpDecreased"] = 116,
-            }
-,
-            ["icon"] = 2,
-        }
-,
-        ["fightWithDefencePlayerReports"] = {
-            ["soldierRoundDatas"] = {
-                [1] = {
-                    ["attackResults"] = {
-                        [1] = {
-                            ["soldierName"] = "sentinel_3",
-                            ["soldierWoundedCount"] = 2,
-                            ["soldierStar"] = 1,
-                            ["isWin"] = true,
-                            ["soldierDamagedCount"] = 5,
-                            ["soldierCount"] = 60,
-                        }
-,
-                        [2] = {
-                            ["soldierName"] = "horseArcher_3",
-                            ["soldierWoundedCount"] = 1,
-                            ["soldierStar"] = 1,
-                            ["isWin"] = true,
-                            ["soldierDamagedCount"] = 4,
-                            ["soldierCount"] = 30,
-                        }
-,
-                        [3] = {
-                            ["soldierName"] = "lancer_3",
-                            ["soldierWoundedCount"] = 1,
-                            ["soldierStar"] = 1,
-                            ["isWin"] = true,
-                            ["soldierDamagedCount"] = 3,
-                            ["soldierCount"] = 30,
-                        }
-,
-                        [4] = {
-                            ["soldierName"] = "swordsman_3",
-                            ["soldierWoundedCount"] = 1,
-                            ["soldierStar"] = 1,
-                            ["isWin"] = true,
-                            ["soldierDamagedCount"] = 3,
-                            ["soldierCount"] = 60,
-                        }
-,
-                        [5] = {
-                            ["soldierName"] = "ballista_3",
-                            ["soldierWoundedCount"] = 1,
-                            ["soldierStar"] = 1,
-                            ["isWin"] = true,
-                            ["soldierDamagedCount"] = 3,
-                            ["soldierCount"] = 30,
-                        }
-,
-                        [6] = {
-                            ["soldierName"] = "catapult_3",
-                            ["soldierWoundedCount"] = 0,
-                            ["soldierStar"] = 1,
-                            ["isWin"] = true,
-                            ["soldierDamagedCount"] = 2,
-                            ["soldierCount"] = 30,
-                        }
-,
-                    }
-,
-                    ["defenceResults"] = {
-                        [1] = {
-                            ["soldierName"] = "sentinel_3",
-                            ["soldierWoundedCount"] = 2,
-                            ["soldierStar"] = 1,
-                            ["isWin"] = false,
-                            ["soldierDamagedCount"] = 7,
-                            ["soldierCount"] = 46,
-                        }
-,
-                        [2] = {
-                            ["soldierName"] = "horseArcher_3",
-                            ["soldierWoundedCount"] = 1,
-                            ["soldierStar"] = 1,
-                            ["isWin"] = false,
-                            ["soldierDamagedCount"] = 5,
-                            ["soldierCount"] = 23,
-                        }
-,
-                        [3] = {
-                            ["soldierName"] = "lancer_3",
-                            ["soldierWoundedCount"] = 1,
-                            ["soldierStar"] = 1,
-                            ["isWin"] = false,
-                            ["soldierDamagedCount"] = 4,
-                            ["soldierCount"] = 23,
-                        }
-,
-                        [4] = {
-                            ["soldierName"] = "swordsman_3",
-                            ["soldierWoundedCount"] = 1,
-                            ["soldierStar"] = 1,
-                            ["isWin"] = false,
-                            ["soldierDamagedCount"] = 4,
-                            ["soldierCount"] = 46,
-                        }
-,
-                        [5] = {
-                            ["soldierName"] = "ballista_3",
-                            ["soldierWoundedCount"] = 1,
-                            ["soldierStar"] = 1,
-                            ["isWin"] = false,
-                            ["soldierDamagedCount"] = 4,
-                            ["soldierCount"] = 23,
-                        }
-,
-                        [6] = {
-                            ["soldierName"] = "catapult_3",
-                            ["soldierWoundedCount"] = 0,
-                            ["soldierStar"] = 1,
-                            ["isWin"] = false,
-                            ["soldierDamagedCount"] = 3,
-                            ["soldierCount"] = 23,
-                        }
-,
-                    }
-,
-                }
-,
-            }
-,
-            ["defencePlayerDragonFightData"] = {
-                ["hpMax"] = 148,
-                ["type"] = "greenDragon",
-                ["hpDecreased"] = 27,
-                ["hp"] = 148,
-                ["isWin"] = false,
-            }
-,
-            ["attackPlayerWallRoundDatas"] = {
-                [1] = {
-                    ["soldierName"] = "sentinel_3",
-                    ["soldierWoundedCount"] = 0,
-                    ["soldierStar"] = 1,
-                    ["isWin"] = false,
-                    ["soldierDamagedCount"] = 55,
-                    ["soldierCount"] = 55,
-                }
-,
-                [2] = {
-                    ["soldierName"] = "horseArcher_3",
-                    ["soldierWoundedCount"] = 0,
-                    ["soldierStar"] = 1,
-                    ["isWin"] = false,
-                    ["soldierDamagedCount"] = 1,
-                    ["soldierCount"] = 26,
-                }
-,
-                [3] = {
-                    ["soldierName"] = "lancer_3",
-                    ["soldierWoundedCount"] = 0,
-                    ["soldierStar"] = 1,
-                    ["isWin"] = false,
-                    ["soldierDamagedCount"] = 1,
-                    ["soldierCount"] = 27,
-                }
-,
-                [4] = {
-                    ["soldierName"] = "swordsman_3",
-                    ["soldierWoundedCount"] = 0,
-                    ["soldierStar"] = 1,
-                    ["isWin"] = false,
-                    ["soldierDamagedCount"] = 1,
-                    ["soldierCount"] = 57,
-                }
-,
-                [5] = {
-                    ["soldierName"] = "ballista_3",
-                    ["soldierWoundedCount"] = 0,
-                    ["soldierStar"] = 1,
-                    ["isWin"] = false,
-                    ["soldierDamagedCount"] = 1,
-                    ["soldierCount"] = 27,
-                }
-,
-                [6] = {
-                    ["soldierName"] = "catapult_3",
-                    ["soldierWoundedCount"] = 0,
-                    ["soldierStar"] = 1,
-                    ["isWin"] = false,
-                    ["soldierDamagedCount"] = 1,
-                    ["soldierCount"] = 28,
-                }
-,
-            }
-,
-            ["attackPlayerDragonFightData"] = {
-                ["hpMax"] = 180,
-                ["type"] = "greenDragon",
-                ["hpDecreased"] = 16,
-                ["hp"] = 180,
-                ["isWin"] = true,
-            }
-,
-            ["defencePlayerWallRoundDatas"] = {
-                [1] = {
-                    ["wallHp"] = 124,
-                    ["wallDamagedHp"] = 28,
-                    ["wallMaxHp"] = 124,
-                    ["isWin"] = true,
-                }
-,
-                [2] = {
-                    ["wallHp"] = 96,
-                    ["wallDamagedHp"] = 25,
-                    ["wallMaxHp"] = 124,
-                    ["isWin"] = true,
-                }
-,
-                [3] = {
-                    ["wallHp"] = 71,
-                    ["wallDamagedHp"] = 20,
-                    ["wallMaxHp"] = 124,
-                    ["isWin"] = true,
-                }
-,
-                [4] = {
-                    ["wallHp"] = 51,
-                    ["wallDamagedHp"] = 16,
-                    ["wallMaxHp"] = 124,
-                    ["isWin"] = true,
-                }
-,
-                [5] = {
-                    ["wallHp"] = 35,
-                    ["wallDamagedHp"] = 16,
-                    ["wallMaxHp"] = 124,
-                    ["isWin"] = true,
-                }
-,
-                [6] = {
-                    ["wallHp"] = 19,
-                    ["wallDamagedHp"] = 11,
-                    ["wallMaxHp"] = 124,
-                    ["isWin"] = true,
-                }
-,
-            }
-,
-        }
-,
-    }
-
-local DRAGON_HEAD = {
-    blueDragon = "Dragon_blue_113x128.png",
-    redDragon = "redDragon.png",
-    greenDragon = "greenDragon.png"
-}
 local isTroops = function(troops)
     assert(troops)
     return troops.IsTroops
@@ -619,51 +69,42 @@ function GameUIReplay:Setup()
     self.hurtCount = 0
     self.fightWallCount = 0
 
-    self.ui_map.attackName:setString(report.attackPlayerData.name)
-    self.ui_map.defenceName:setString(report.defencePlayerData.name)
+    self.ui_map.attackName:setString(self.report:GetFightAttackName())
+    self.ui_map.defenceName:setString(self.report:GetFightDefenceName())
 
-    if type(report.attackPlayerData.fightWithDefenceTroop) == "table" then
-        local attackDragonType = report.attackPlayerData.fightWithDefenceTroop.dragon.type
+    if self.report:IsDragonFight() then
+        local attackDragonType = self.report:GetFightAttackDragonRoundData().type
         self.attackDragon = UIKit:CreateSkillDragon(attackDragonType, 90, self)
         :addTo(self.ui_map.dragonSkillNode,0,BATTLE_OBJECT_TAG):pos(-400, display.cy)
 
         self.ui_map.attackDragonLabel:setString(Localize.dragon[attackDragonType])
-        self.ui_map.attackDragonIcon:setTexture(DRAGON_HEAD[attackDragonType])
-    end
-    if type(report.defencePlayerData.dragon) == "table" then
-        local defenceDragonType = report.defencePlayerData.dragon.type
+        self.ui_map.attackDragonIcon:setTexture(UILib.dragon_head[attackDragonType])
+
+        local defenceDragonType = self.report:GetFightDefenceDragonRoundData().type
         self.defenceDragon = UIKit:CreateSkillDragon(defenceDragonType, 360, self)
         :addTo(self.ui_map.dragonSkillNode,0,BATTLE_OBJECT_TAG):pos(display.width + 400, display.cy)
 
         self.ui_map.defenceDragonLabel:setString(Localize.dragon[defenceDragonType])
-        self.ui_map.defenceDragonIcon:setTexture(DRAGON_HEAD[defenceDragonType])
+        self.ui_map.defenceDragonIcon:setTexture(UILib.dragon_head[defenceDragonType])
     end
 
-
-    local attackSoldiers = {}
     self.attackTroops = {}
-    if type(report.attackPlayerData.fightWithDefenceTroop) == "table" then
-        attackSoldiers = report.attackPlayerData.fightWithDefenceTroop.soldiers
-    elseif type(report.attackPlayerData.fightWithDefenceWall.soldiers) == "table" then
-        attackSoldiers = report.attackPlayerData.fightWithDefenceWall.soldiers
+    for i,v in ipairs(self.report:GetOrderedAttackSoldiers()) do
+        self.attackTroops[i] = UIKit:CreateFightTroops(v.name, {
+            isleft = true,
+        },self):addTo(self.ui_map.soldierBattleNode,0,BATTLE_OBJECT_TAG)
+        :pos(self:AttackPosition(), self:TopPositionByRow(i))
+        :FaceCorrect():Idle()
     end
-    for i,v in ipairs(attackSoldiers) do
-            self.attackTroops[i] = UIKit:CreateFightTroops(v.name, {isleft = true,},self)
-            :addTo(self.ui_map.soldierBattleNode,0,BATTLE_OBJECT_TAG)
-        end
-    for i,v in ipairs(self.attackTroops) do
-        v:pos(self:AttackPosition(), self:TopPositionByRow(i)):FaceCorrect():Idle()
-    end
-
 
     self.defenceTroops = {}
-    if type(report.defencePlayerData.soldiers) == "table" then
-        for i,v in ipairs(report.defencePlayerData.soldiers) do
-            self.defenceTroops[i] = UIKit:CreateFightTroops(v.name, {isleft = false,},self)
-            :addTo(self.ui_map.soldierBattleNode,0,BATTLE_OBJECT_TAG) 
-        end
-        for i,v in ipairs(self.defenceTroops) do
-            v:pos(self:DefencePosition(), self:TopPositionByRow(i)):FaceCorrect():Idle()
+    if self.report:IsSoldierFight() then
+        for i,v in ipairs(self.report:GetOrderedDefenceSoldiers()) do
+            self.defenceTroops[i] = UIKit:CreateFightTroops(v.name, {
+                isleft = false,
+            },self):addTo(self.ui_map.soldierBattleNode,0,BATTLE_OBJECT_TAG) 
+            :pos(self:DefencePosition(), self:TopPositionByRow(i))
+            :FaceCorrect():Idle()
         end
     else
         self.defenceTroops[1] = UIKit:CreateFightTroops("wall", {isleft = false,},self)
@@ -672,15 +113,15 @@ function GameUIReplay:Setup()
     end
 end
 function GameUIReplay:Start()
-    if type(report.attackPlayerData.fightWithDefenceTroop) ~= "table" then
+    if not self.report:IsSoldierFight() then
         self:OnStartRound()
         return
     end
-	local attackLevel = report.attackPlayerData.fightWithDefenceTroop.dragon.level
-	local attackRoundDragon = report.fightWithDefencePlayerReports.attackPlayerDragonFightData
+	local attackLevel = self.report:GetAttackDragonLevel()
+	local attackRoundDragon = self.report:GetFightAttackDragonRoundData()
 
-	local defenceLevel = report.defencePlayerData.dragon.level
-	local defenceRoundDragon = report.fightWithDefencePlayerReports.defencePlayerDragonFightData
+	local defenceLevel = self.report:GetDefenceDragonLevel()
+	local defenceRoundDragon = self.report:GetFightDefenceDragonRoundData()
 
     local dragonBattle = UIKit:CreateDragonBattle({
         isleft = true,
@@ -764,7 +205,7 @@ function GameUIReplay:OnFinishRound()
     if #self.attackTroops > 0 and #self.defenceTroops > 0 then
         self:OnStartRound()
     elseif #self.attackTroops > 0 and not self.isFightWall
-    and type(report.attackPlayerData.fightWithDefenceWall) == "table" then
+    and self.report:IsFightWall() then
         self.defenceTroops[1] = UIKit:CreateFightTroops("wall", {isleft = false,},self)
             :addTo(self.ui_map.soldierBattleNode,0,BATTLE_OBJECT_TAG)
             :pos(self:WallPosition())
@@ -893,21 +334,18 @@ function GameUIReplay:OnStartSoldierBattle()
     end
 end
 function GameUIReplay:OnFinishAdjustPosition()
-    if type(report.fightWithDefencePlayerReports.attackPlayerDragonFightData) == "table" then
-        -- math.randomseed(tostring(os.time()):reverse():sub(1, 6))
-        -- local select_action = math.random(3)
-        -- if select_action == 1 then -- only left
-        --     self:OnLeftDragonAttackTroops()
-        -- elseif select_action == 2 then -- only right
-        --     self:OnRightDragonAttackTroops()
-        -- elseif select_action == 3 then -- both
+    if self.report:CouldAttackDragonUseSkill() 
+    and self.report:CouldDefenceDragonUseSkill() then
         self:OnBothDragonAttackTroops()
-        -- end
+    elseif self.report:CouldAttackDragonUseSkill()  then
+        self:OnAttackDragonAttackTroops()
+    elseif self.report:CouldDefenceDragonUseSkill()  then
+        self:OnDefenceDragonAttackTroops()
     else
         self:OnStartDual()
     end
 end
-function GameUIReplay:OnLeftDragonAttackTroops()
+function GameUIReplay:OnAttackDragonAttackTroops()
     self.attackDragon:pos(-400, display.cy)
         :Move(display.width + 400, display.cy, self:MovingTimeForAttack(), function(isend)
             if isend then
@@ -917,7 +355,7 @@ function GameUIReplay:OnLeftDragonAttackTroops()
             end
         end)
 end
-function GameUIReplay:OnRightDragonAttackTroops()
+function GameUIReplay:OnDefenceDragonAttackTroops()
     self.defenceDragon:pos(display.width + 400, display.cy)
         :Move(-400, display.cy, self:MovingTimeForAttack(), function(isend)
             if isend then
@@ -974,8 +412,9 @@ function GameUIReplay:OnDragonAttackTroops(dragon, allTroops)
 end
 function GameUIReplay:OnFinishDual()
     self.dualCount = self.dualCount + 1
-    local attackResults = report.fightWithDefencePlayerReports.soldierRoundDatas[self.roundCount].attackResults
-    local defenceResults = report.fightWithDefencePlayerReports.soldierRoundDatas[self.roundCount].defenceResults
+    local roundData = self.report:GetSoldierRoundData()
+    local attackResults = roundData[self.roundCount].attackResults
+    local defenceResults = roundData[self.roundCount].defenceResults
 
     if self.dualCount <= #attackResults 
     and self.dualCount <= #defenceResults then
@@ -986,8 +425,9 @@ function GameUIReplay:OnFinishDual()
 end
 function GameUIReplay:OnStartDual()
     self.hurtCount = 0
-    local attackResults = report.fightWithDefencePlayerReports.soldierRoundDatas[self.roundCount].attackResults
-    local defenceResults = report.fightWithDefencePlayerReports.soldierRoundDatas[self.roundCount].defenceResults
+    local roundData = self.report:GetSoldierRoundData()
+    local attackResults = roundData[self.roundCount].attackResults
+    local defenceResults = roundData[self.roundCount].defenceResults
     if attackResults[self.dualCount].isWin then
         self:OnFight(self.defenceTroops[self.dualCount], self.attackTroops[self.dualCount])
     else
@@ -1050,20 +490,21 @@ function GameUIReplay:OnHurtFinished(hurtTroop)
             self:OnAttacking(hurtTroop, self.attackTroops)
         end
         if self.hurtCount == #self.attackTroops then
-            local attackPlayerWallRoundDatas = report.fightWithDefencePlayerReports.attackPlayerWallRoundDatas
+            local attackRoundData = self.report:GetFightAttackWallRoundData()
             local pps = {}
             for i,v in pairs(self.attackTroops) do
-                local roundData = attackPlayerWallRoundDatas[i]
+                local roundData = attackRoundData[i]
                 if roundData and roundData.soldierCount - roundData.soldierDamagedCount <= 0 then
                     table.insert(pps, v:PromiseOfDeath())
                 end
             end
 
-            local wall = report.fightWithDefencePlayerReports.defencePlayerWallRoundDatas[1]
+            local defenceRoundData = self.report:GetFightDefenceWallRoundData()
+            local wall = defenceRoundData[1]
             local wallHp = wall.wallHp
             local wallMaxHp = wall.wallMaxHp
             local wallDamagedHp = 0,0,0
-            for i,v in ipairs(report.fightWithDefencePlayerReports.defencePlayerWallRoundDatas) do
+            for i,v in ipairs(defenceRoundData) do
                 wallDamagedHp = wallDamagedHp + v.wallDamagedHp
             end
 
@@ -1191,8 +632,6 @@ function GameUIReplay:ChangeSpeed(speed)
 end
 function GameUIReplay:BuildUI()
     local ui_map = {}
-
-    cc.LayerGradient:create(cc.c4b(0,255,0,255), cc.c4b(255,0,0,255), cc.p(1, 1)):addTo(self)
     ui_map.dragonBattleNode = display.newNode():addTo(self, 10)
     local bg = WidgetUIBackGround.new({width = 608,height = 910},
                     WidgetUIBackGround.STYLE_TYPE.STYLE_1):addTo(self)
@@ -1262,11 +701,11 @@ function GameUIReplay:BuildUI()
     :align(display.CENTER, display.cx + 125, display.height - 75)
 
 
-    ui_map.attackDragonIcon = display.newSprite(DRAGON_HEAD.redDragon)
+    ui_map.attackDragonIcon = display.newSprite(UILib.dragon_head.redDragon)
     :addTo(self):scale(0.8)
     :align(display.CENTER, display.cx - 256, display.height - 48)
 
-    ui_map.defenceDragonIcon = display.newSprite(DRAGON_HEAD.redDragon)
+    ui_map.defenceDragonIcon = display.newSprite(UILib.dragon_head.redDragon)
     :addTo(self):scale(0.8)
     :align(display.CENTER, display.cx + 256, display.height - 48)
     ui_map.defenceDragonIcon:flipX(true)
