@@ -559,12 +559,21 @@ local isTroops = function(troops)
     assert(troops)
     return troops.IsTroops
 end
-function GameUIReplay:ctor()
+function GameUIReplay:ctor(report, callback, skipcallback)
+    self.report = report
+    self.callback = callback
+    self.skipcallback = skipcallback
     self.speed = 1
     self:BuildUI()
 end
 function GameUIReplay:onEnter()
     self:StartReplay()
+end
+function GameUIReplay:onExit()
+    GameUIReplay.super.onExit(self)
+    if type(self.callback) == "function" then
+        self.callback(self)
+    end
 end
 local BATTLE_OBJECT_TAG = 137
 local RESULT_TAG = 112
@@ -1149,6 +1158,11 @@ function GameUIReplay:StartReplay()
     self:Start()
 end
 function GameUIReplay:FinishReplay()
+    if type(self.skipcallback) == "function" then
+        self.skipcallback(self)
+        return
+    end
+
     ccs.Armature:create("win"):addTo(self, 10, RESULT_TAG)
     :align(display.CENTER, window.cx, window.cy + 250)
     :getAnimation():play("Victory", -1, 0)

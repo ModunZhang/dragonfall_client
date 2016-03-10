@@ -329,7 +329,7 @@ function GameUIPveAttackFte:PormiseOfFte()
                 mockData.FightWithNpc(self.pve_name)
                 display.getRunningScene():GetSceneLayer():RefreshPve()
                 report.playerDragonFightData.type = dragonType
-                -- UIKit:newGameUI("GameUIReplayNew", self:DecodeReport(report, dragon, soldiers), function()
+                -- UIKit:newGameUI("GameUIReplay", self:DecodeReport(report, dragon, soldiers), function()
                 --     self:performWithDelay(function()
                 --         self:LeftButtonClicked()
                 --         display.getRunningScene():GetSceneLayer():MoveAirship(true)
@@ -344,7 +344,7 @@ function GameUIPveAttackFte:PormiseOfFte()
                     display.getRunningScene():GetSceneLayer():MoveAirship(true)
                 end
                 local is_show = false
-                UIKit:newGameUI(self.pve_name == "1_1" and "GameUIReplayFte" or "GameUIReplayNew", self:DecodeReport(report, dragon, soldiers), function()
+                UIKit:newGameUI(self.pve_name == "1_1" and "GameUIReplayFte" or "GameUIReplay", self:DecodeReport(report, dragon, soldiers), function()
                     if not is_show then
                         is_show = true
                         UIKit:newGameUI("GameUIPveSummary", param):AddToCurrentScene(true)

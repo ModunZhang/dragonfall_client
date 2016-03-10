@@ -252,7 +252,7 @@ function GameUIShrineReport:OnRePlayClicked(idx)
     local list_data = self.data_source[idx]
     if list_data and list_data.type == 2 then
         local roundData = list_data.data
-        UIKit:newGameUI("GameUIReplayNew", UtilsForShrine:GetFightReport(roundData)):AddToCurrentScene(true)
+        UIKit:newGameUI("GameUIReplay", UtilsForShrine:GetFightReport(roundData)):AddToCurrentScene(true)
     end
 end
 
