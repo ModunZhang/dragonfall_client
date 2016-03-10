@@ -50,11 +50,13 @@ GameDatas.NoManMap = {
 	["noManMap_2"] = {},
 	["noManMap_3"] = {},
 	["noManMap_4"] = {},
+	["middle_map"] = {},
 }
 require("app.datas.NoManMap_noManMap_1")
 require("app.datas.NoManMap_noManMap_2")
 require("app.datas.NoManMap_noManMap_3")
 require("app.datas.NoManMap_noManMap_4")
+require("app.datas.NoManMap_middle_map")
 
 GameDatas.Activities = {
 	["day60"] = {},
