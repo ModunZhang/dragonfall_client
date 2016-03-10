@@ -483,6 +483,11 @@ function AllianceDetailScene:OnTouchClicked(pre_x, pre_y, x, y)
             else
                 self:OpenUI(alliance, mapObj)
             end
+        else
+            self.util_node:performWithDelay(function()app:lockInput(false)end,0.5)
+            Sprite:PromiseOfFlash(mapObj.obj):next(function()
+                -- self:OpenUI(alliance, mapObj)
+            end)
         end
     else
         app:GetAudioManager():PlayeEffectSoundWithKey("NORMAL_DOWN")
