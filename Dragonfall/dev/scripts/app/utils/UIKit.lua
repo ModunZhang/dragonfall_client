@@ -1563,11 +1563,12 @@ local function getColorByPercent(percent)
 end
 function UIKit:CreateDragonBattle(attackDragon, defenceDragon, gameController)
     local TIMER_TAG = 120
+    local RESULT_TAG = 121
     gameController = gameController or empty_gameController
     local dragonBattleNode = display.newNode()
     display.newNode():addTo(dragonBattleNode,0,TIMER_TAG)
     local dragonBattle = ccs.Armature:create("paizi"):addTo(dragonBattleNode)
-    dragonBattleNode.result = ccs.Armature:create("paizi"):addTo(dragonBattle, 100):hide()
+    ccs.Armature:create("paizi"):addTo(dragonBattleNode, 100, RESULT_TAG):hide()
 
     local left_bone = dragonBattle:getBone("Layer4")
     local left_dragon = UIKit:CreateFightDragon(attackDragon, gameController)
@@ -1627,8 +1628,9 @@ function UIKit:CreateDragonBattle(attackDragon, defenceDragon, gameController)
         end)
     end
     function dragonBattleNode:RefreshSpeed()
-        self:GetAni():setSpeedScale(self:Speed())
-        self.result:getAnimation():setSpeedScale(self:Speed())
+        local speed = self:Speed()
+        self:GetAni():setSpeedScale(speed)
+        self:getChildByTag(RESULT_TAG):getAnimation():setSpeedScale(speed)
         left_dragon:RefreshSpeed()
         right_dragon:RefreshSpeed()
         return self
@@ -1648,31 +1650,37 @@ function UIKit:CreateDragonBattle(attackDragon, defenceDragon, gameController)
         self:getChildByTag(TIMER_TAG):runAction(speed)
         return p
     end
-    function dragonBattleNode:Stop()
-        -- self:GetAni():stop()
-        -- self.result:getAnimation():stop()
-        -- left_dragon:stopAllActions()
-        -- right_dragon:stopAllActions()
+    function dragonBattleNode:Pause()
+        self:GetAni():pause()
+        self:getChildByTag(TIMER_TAG):stopAllActions()
+        self:getChildByTag(RESULT_TAG):getAnimation():pause()
+        left_dragon:Pause()
+        right_dragon:Pause()
+        return self
     end
     function dragonBattleNode:PromiseOfVictory()
-        self.result:show():getAnimation():playWithIndex(2, -1, 0)
+        local reuslt = self:getChildByTag(RESULT_TAG)
+        reuslt:show():getAnimation():playWithIndex(2, -1, 0)
         self:RefreshSpeed()
-        return self:PromiseOfAnimationFinished(self.result:getAnimation())
+        return self:PromiseOfAnimationFinished(reuslt:getAnimation())
     end
     function dragonBattleNode:PromiseOfDefeat()
-        self.result:show():GetAni():playWithIndex(3, -1, 0)
+        local reuslt = self:getChildByTag(RESULT_TAG)
+        reuslt:show():GetAni():playWithIndex(3, -1, 0)
         self:RefreshSpeed()
-        return self:PromiseOfAnimationFinished(self.result:getAnimation())
+        return self:PromiseOfAnimationFinished(reuslt:getAnimation())
     end
     function dragonBattleNode:PromiseOfVictoryHide()
-        self.result:show():getAnimation():playWithIndex(4, -1, 0)
+        local reuslt = self:getChildByTag(RESULT_TAG)
+        reuslt:show():getAnimation():playWithIndex(4, -1, 0)
         self:RefreshSpeed()
-        return self:PromiseOfAnimationFinished(self.result:getAnimation())
+        return self:PromiseOfAnimationFinished(reuslt:getAnimation())
     end
     function dragonBattleNode:PromiseOfDefeatHide()
-        self.result:show():getAnimation():playWithIndex(5, -1, 0)
+        local reuslt = self:getChildByTag(RESULT_TAG)
+        reuslt:show():getAnimation():playWithIndex(5, -1, 0)
         self:RefreshSpeed()
-        return self:PromiseOfAnimationFinished(self.result:getAnimation())
+        return self:PromiseOfAnimationFinished(reuslt:getAnimation())
     end
     function dragonBattleNode:PromiseOfShowBuff()
         for i,v in ipairs({"步兵强化", "弓手强化","骑兵强化","攻城强化",}) do
@@ -1769,6 +1777,11 @@ function UIKit:CreateFightDragon(param, gameController)
     function fightDragonNode:Speed()
         return gameController.speed or 1
     end
+    function fightDragonNode:Pause()
+        self.progress:stopAllActions()
+        self.dragon:getChildByTag(1):getAnimation():pause()
+        return self
+    end
     function fightDragonNode:RefreshSpeed()
         local speed = self:Speed()
         local action = self.progress:getActionByTag(SPEED_TAG)
@@ -1804,6 +1817,11 @@ function UIKit:CreateSkillDragon(dragonType, degree, gameController)
     local dragonNode = self:CreateDragonByDegree(degree or 90, 3, dragonType or "redDragon")
     dragonNode.dragonType = dragonType
     function dragonNode:IsDragon()end
+    function dragonNode:Pause()
+        self:stopAllActions()
+        self.dragonAni:getAnimation():pause()
+        return self
+    end
     function dragonNode:Speed()
         return gameController.speed or 1
     end
@@ -1855,6 +1873,19 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
     end
     troopsNode.soldiers = soldiers
     function troopsNode:IsTroops() return soldierName ~= "wall" end
+    function troopsNode:Stop()
+         for _,v in pairs(self.soldiers) do
+            v:getAnimation():stop()
+         end
+         return self
+     end
+    function troopsNode:Pause()
+        self:stopAllActions()
+        for _, v in pairs(self.soldiers) do
+            v:getAnimation():pause()
+        end
+        return self
+    end
     function troopsNode:RefreshSpeed()
         local speed = self:Speed()
         local action = self:getActionByTag(SPEED_TAG)
@@ -1935,6 +1966,13 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         self:runAction(speed)
         return self
     end
+    function troopsNode:PromiseOfDeath()
+        local p = promise.new()
+        self:Death(function()
+            p:resolve()
+        end)
+        return p
+    end
     function troopsNode:Death(func)
         local acts = transition.sequence({
             cc.FadeOut:create(0.5),
@@ -1986,9 +2024,9 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         end
         return self
     end
-    function troopsNode:Stop()
+    function troopsNode:Pause()
         for _,v in pairs(self.soldiers) do
-            v:getAnimation():stop()
+            v:getAnimation():pause()
         end
         return self
     end
