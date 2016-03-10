@@ -1571,32 +1571,32 @@ function UIKit:CreateDragonBattle(attackDragon, defenceDragon, gameController)
     ccs.Armature:create("paizi"):addTo(dragonBattleNode, 100, RESULT_TAG):hide()
 
     local left_bone = dragonBattle:getBone("Layer4")
-    local left_dragon = UIKit:CreateFightDragon(attackDragon, gameController)
+    local leftDragon = UIKit:CreateFightDragon(attackDragon, gameController)
     :SetPercent(attackDragon.hp/attackDragon.hpMax)
     :addTo(left_bone):pos(-360, -50)
     
-    left_bone:addDisplay(left_dragon, 0)
+    left_bone:addDisplay(leftDragon, 0)
     left_bone:changeDisplayWithIndex(0, true)
 
     dragonBattleNode.leftBuff = display.newSprite("background_replay.png")
-    :addTo(left_dragon):pos(51,-155)
+    :addTo(leftDragon):pos(51,-155)
 
     local right_bone = dragonBattle:getBone("Layer5")
-    local right_dragon = UIKit:CreateFightDragon(defenceDragon, gameController)
+    local rightDragon = UIKit:CreateFightDragon(defenceDragon, gameController)
     :SetPercent(defenceDragon.hp/defenceDragon.hpMax)
     :addTo(right_bone):pos(238, -82)
     
-    right_bone:addDisplay(right_dragon, 0)
+    right_bone:addDisplay(rightDragon, 0)
     right_bone:changeDisplayWithIndex(0, true)
 
     dragonBattleNode.rightBuff = display.newSprite("background_replay.png")
-    :addTo(right_dragon):pos(34,-153)
+    :addTo(rightDragon):pos(34,-153)
 
     function dragonBattleNode:GetAttackDragon()
-        return left_dragon
+        return leftDragon
     end
     function dragonBattleNode:GetDefenceDragon()
-        return right_dragon
+        return rightDragon
     end
     function dragonBattleNode:Speed()
         return gameController.speed or 1
@@ -1631,8 +1631,8 @@ function UIKit:CreateDragonBattle(attackDragon, defenceDragon, gameController)
         local speed = self:Speed()
         self:GetAni():setSpeedScale(speed)
         self:getChildByTag(RESULT_TAG):getAnimation():setSpeedScale(speed)
-        left_dragon:RefreshSpeed()
-        right_dragon:RefreshSpeed()
+        leftDragon:RefreshSpeed()
+        rightDragon:RefreshSpeed()
         return self
     end
     function dragonBattleNode:Delay(time)
@@ -1654,8 +1654,8 @@ function UIKit:CreateDragonBattle(attackDragon, defenceDragon, gameController)
         self:GetAni():pause()
         self:getChildByTag(TIMER_TAG):stopAllActions()
         self:getChildByTag(RESULT_TAG):getAnimation():pause()
-        left_dragon:Pause()
-        right_dragon:Pause()
+        leftDragon:Pause()
+        rightDragon:Pause()
         return self
     end
     function dragonBattleNode:PromiseOfVictory()
@@ -1691,13 +1691,13 @@ function UIKit:CreateDragonBattle(attackDragon, defenceDragon, gameController)
             shadow = true,
             }):addTo(self.leftBuff):align(display.LEFT_CENTER, 30, 128 - (i-1) * 32)
             UIKit:ttfLabel({
-                text = "+12%",
+                text = string.format("+%d%%", attackDragon.increase),
                 size = 20,
-                color = getColorByPercent(left_dragon:GetPercent()),
+                color = getColorByPercent(leftDragon:GetPercent()),
                 shadow = true,
             }):addTo(self.leftBuff):align(display.RIGHT_CENTER, 275, 128 - (i-1) * 32)
-        end
-        for i,v in ipairs({"步兵强化", "弓手强化","骑兵强化","攻城强化",}) do
+
+
             UIKit:ttfLabel({
             text = v,
             size = 20,
@@ -1705,9 +1705,9 @@ function UIKit:CreateDragonBattle(attackDragon, defenceDragon, gameController)
             shadow = true,
             }):addTo(self.rightBuff):align(display.LEFT_CENTER, 30, 128 - (i-1) * 32)
             UIKit:ttfLabel({
-                text = "+12%",
+                text = string.format("+%d%%", defenceDragon.increase),
                 size = 20,
-                color = getColorByPercent(right_dragon:GetPercent()),
+                color = getColorByPercent(rightDragon:GetPercent()),
                 shadow = true,
             }):addTo(self.rightBuff):align(display.RIGHT_CENTER, 275, 128 - (i-1) * 32)
         end

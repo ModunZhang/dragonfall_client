@@ -62,6 +62,15 @@ end
 function GameUIReplay:TopPositionByRow(row)
     return display.height - 260 - (row-1) * 105
 end
+function GameUIReplay:GetDragonBuff(hp, hpMax)
+    local hpPercent = hp / hpMax * 100
+    for i,buff in ipairs(GameDatas.Dragons.dragonBuff) do
+        if hpPercent >= buff.hpFrom then
+            return buff.buffPercent * 100
+        end
+    end
+    return 0
+end
 function GameUIReplay:Setup()
     self.isFightWall = false
     self.roundCount = 1
@@ -119,9 +128,11 @@ function GameUIReplay:Start()
     end
 	local attackLevel = self.report:GetAttackDragonLevel()
 	local attackRoundDragon = self.report:GetFightAttackDragonRoundData()
+    local attackIncrease = self:GetDragonBuff(attackRoundDragon.hp - attackRoundDragon.hpDecreased, attackRoundDragon.hpMax)
 
-	local defenceLevel = self.report:GetDefenceDragonLevel()
-	local defenceRoundDragon = self.report:GetFightDefenceDragonRoundData()
+    local defenceLevel = self.report:GetDefenceDragonLevel()
+    local defenceRoundDragon = self.report:GetFightDefenceDragonRoundData()
+    local defenceIncrease = self:GetDragonBuff(defenceRoundDragon.hp - defenceRoundDragon.hpDecreased, defenceRoundDragon.hpMax)
 
     local dragonBattle = UIKit:CreateDragonBattle({
         isleft = true,
@@ -131,7 +142,7 @@ function GameUIReplay:Start()
         hp = attackRoundDragon.hp,
         hpDecreased = attackRoundDragon.hpDecreased,
         isWin = attackRoundDragon.isWin,
-        increase = 40,
+        increase = attackIncrease,
     }, {
         isleft = false,
         dragonType = defenceRoundDragon.type,
@@ -140,7 +151,7 @@ function GameUIReplay:Start()
         hp = defenceRoundDragon.hp,
         hpDecreased = defenceRoundDragon.hpDecreased,
         isWin = defenceRoundDragon.isWin,
-        increase = 12,
+        increase = defenceIncrease,
     }, self):addTo(self.ui_map.dragonBattleNode, 0, BATTLE_OBJECT_TAG):pos(display.cx, display.height - 300)
 
     local TIME_PER_HUNDRED_PERCENT = 1 / 100
