@@ -235,7 +235,8 @@ function UIKit:ttfLabel( params )
     end
     params.font = UIKit:getFontFilePath()
     params.UILabelType = cc.ui.UILabel.LABEL_TYPE_TTF
-    if type(params.color) == "number" then
+    if params.color and 
+        (type(params.color) == "number" or type(params.color) == "string") then
         params.color = self:hex2c3b(params.color)
     end
     local label = cc.ui.UILabel.new(params)
