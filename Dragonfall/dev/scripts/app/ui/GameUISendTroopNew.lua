@@ -120,55 +120,8 @@ function GameUISendTroopNew:onExit()
 end
 -- 创建城市地形背景
 function GameUISendTroopNew:CreateTerrainBackground()
-    local clip = display.newClippingRegionNode(cc.rect(16, 10, 612, 900))
+    local clip = UIKit:CreateUITerrainNode()
         :addTo(self:GetView())
-        :align(display.LEFT_BOTTOM,window.left,window.bottom)
-    local city_terrain = User.basicInfo.terrain
-    GameUtils:LoadImagesWithFormat(function()
-        cc.TMXTiledMap:create(string.format("tmxmaps/alliance_%s1.tmx",city_terrain))
-            :align(display.LEFT_BOTTOM, 0, 0):addTo(clip)
-    end, cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565)
-
-    local unlock_position = {
-        {100,180},
-        {100,720},
-        {300,600},
-        {250,350},
-    }
-    for i=1,4 do
-        display.newSprite(string.format("unlock_tile_surface_%d_%s.png",i,city_terrain))
-            :align(display.LEFT_CENTER, unlock_position[i][1], unlock_position[i][2])
-            :addTo(clip)
-    end
-    -- 顶部和底部的树木
-    local tree_width = 0 -- 已经填充了的宽度
-    local count = 1
-    -- 顶部
-    while tree_width < 608 do
-        count = count > 4 and 1 or count
-        local tree = display.newSprite(string.format("tree_%d_%s.png",count,city_terrain))
-            :align(display.LEFT_BOTTOM, tree_width,800)
-            :addTo(clip)
-        tree_width = tree_width + tree:getContentSize().width
-        count = count + 1
-    end
-    -- 底部
-    tree_width = 0
-    count = 1
-    while tree_width < 608 do
-        count = count > 4 and 1 or count
-        local tree = display.newSprite(string.format("tree_%d_%s.png",count,city_terrain))
-            :align(display.LEFT_TOP, tree_width,100)
-            :addTo(clip)
-        tree_width = tree_width + tree:getContentSize().width
-        count = count + 1
-    end
-    -- 两边的黑条
-    display.newSprite("line_send_trop_612x2.png")
-        :align(display.CENTER_TOP, 612/2 + 15, 900)
-        :addTo(clip)
-        :setScaleY(900/2)
-
 end
 function GameUISendTroopNew:SelectDragonPart()
     if not self.dragon then return end
