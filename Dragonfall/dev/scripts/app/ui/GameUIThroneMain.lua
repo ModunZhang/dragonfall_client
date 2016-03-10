@@ -10,7 +10,7 @@ local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local WidgetAllianceHelper = import("..widget.WidgetAllianceHelper")
 local UIListView = import(".UIListView")
 local Localize = import("..utils.Localize")
-local fight_period = true
+local fight_period = false
 local BODY_HEIGHT = fight_period and 740 or 656
 local BODY_WIDTH = 608
 local LISTVIEW_WIDTH = 548
@@ -40,7 +40,7 @@ function GameUIThroneMain:onEnter()
         {
             width = 388,
             text_1 = _("联盟"),
-            text_2 = "daidai",
+            text_2 = _("无"),
         }
     ):align(display.LEFT_TOP,flag_box:getPositionX() + flag_box:getContentSize().width + 20 , flag_box:getPositionY() - 30)
         :addTo(body)
@@ -49,7 +49,7 @@ function GameUIThroneMain:onEnter()
         {
             width = 388,
             text_1 = _("国王"),
-            text_2 = "daidai",
+            text_2 = _("无"),
         }
     ):align(display.LEFT_TOP,flag_box:getPositionX() + flag_box:getContentSize().width + 20 , flag_box:getPositionY() - 80 )
         :addTo(body)
@@ -58,7 +58,7 @@ function GameUIThroneMain:onEnter()
         {
             width = 388,
             text_1 = _("国家"),
-            text_2 = "daidai",
+            text_2 = _("无"),
         }
     ):align(display.LEFT_TOP,flag_box:getPositionX() + flag_box:getContentSize().width + 20 , flag_box:getPositionY() - 130 )
         :addTo(body)
@@ -88,6 +88,7 @@ function GameUIThroneMain:onEnter()
             color = 0xfff3c7
         })):align(display.LEFT_TOP,flag_box:getPositionX(),flag_box:getPositionY() - flag_box:getContentSize().height - 90):addTo(body)
         :onButtonClicked(function(event)
+            UIKit:showMessageDialog(_("提示"), _("权限不足"))
             end)
     local mail_button = WidgetPushButton.new({normal = "blue_btn_up_148x58.png",pressed = "blue_btn_down_148x58.png"})
         :setButtonLabel(UIKit:ttfLabel({text = _("全服邮件"),
@@ -96,6 +97,7 @@ function GameUIThroneMain:onEnter()
             color = 0xfff3c7
         })):align(display.RIGHT_TOP,BODY_WIDTH - 30,flag_box:getPositionY() - flag_box:getContentSize().height - 90):addTo(body)
         :onButtonClicked(function(event)
+            UIKit:showMessageDialog(_("提示"), _("权限不足"))
             end)
 
     local content = WidgetUIBackGround.new({width = 556,height= 164},WidgetUIBackGround.STYLE_TYPE.STYLE_5)
@@ -120,19 +122,19 @@ function GameUIThroneMain:onEnter()
     }:addTo(content)
     listview:reload()
 
-    local period_label =  UIKit:ttfLabel({text = string.format(_("战争期 %s"),"00:20:18"),
+    local period_label =  UIKit:ttfLabel({text = _("和平期").." ".."00:00:00",
         size = 22,
-        color = 0x7e0000
+        color = 0x007c23
     }):align(display.CENTER,BODY_WIDTH/2,content:getPositionY() - content:getContentSize().height - 25):addTo(body)
     display.newSprite("info_26x26.png"):addTo(body):align(display.RIGHT_CENTER, period_label:getPositionX() - period_label:getContentSize().width/2 - 5, period_label:getPositionY())
-    local button = WidgetPushButton.new()
-        :addTo(body,2):align(display.CENTER, period_label:getPositionX(),period_label:getPositionY())
-        :onButtonClicked(function(event)
-            if event.name == "CLICKED_EVENT" then
-                UIKit:newWidgetUI("WidgetKingWarRule"):addTo(self)
-            end
-        end)
-    button:setContentSize(period_label:getContentSize())
+    -- local button = WidgetPushButton.new()
+    --     :addTo(body,2):align(display.CENTER, period_label:getPositionX(),period_label:getPositionY())
+    --     :onButtonClicked(function(event)
+    --         if event.name == "CLICKED_EVENT" then
+    --             UIKit:newWidgetUI("WidgetKingWarRule"):addTo(self)
+    --         end
+    --     end)
+    -- button:setContentSize(period_label:getContentSize())
     if fight_period then
         -- 声望排行榜
         local rank_bg = WidgetUIBackGround.new({width = 568,height= 168},WidgetUIBackGround.STYLE_TYPE.STYLE_6)
@@ -162,7 +164,7 @@ function GameUIThroneMain:onEnter()
         }):align(display.LEFT_CENTER, 150,info_bg:getContentSize().height/2-14):addTo(info_bg)
 
         local icon_prestige = display.newSprite("icon_prestige_40x40.png"):align(display.CENTER,  380,info_bg:getContentSize().height/2):addTo(info_bg)
-        UIKit:ttfLabel({text = string.formatnumberthousands(89889),
+        UIKit:ttfLabel({text = _("即将开放"),
             size = 22,
             color = 0x403c2f
         }):align(display.LEFT_CENTER, icon_prestige:getPositionX()+icon_prestige:getContentSize().width/2 + 10,info_bg:getContentSize().height/2):addTo(info_bg)
@@ -189,7 +191,7 @@ function GameUIThroneMain:onEnter()
         local icon_bg = display.newSprite("background_172x28.png"):addTo(fight_button):align(display.CENTER,0, fight_button:getCascadeBoundingBox().size.height/2 - 20)
         display.newSprite("honour_128x128.png"):align(display.CENTER, 10, 18):addTo(icon_bg):scale(42/128)
 
-        UIKit:ttfLabel({text = string.formatnumberthousands(89889),
+        UIKit:ttfLabel({text = _("即将开放"),
             size = 20,
             shadow = true,
             color = 0xffd200

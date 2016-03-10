@@ -16,7 +16,7 @@ end
 function GameUIAbjectAlliance:onEnter()
     GameUIAbjectAlliance.super.onEnter(self)
     local view = self:GetView()
-    local abject_icon = display.newSprite("icon_abject_118x118.png"):align(display.LEFT_TOP, window.left + 50,window.top_bottom):addTo(view)
+    local abject_icon = display.newSprite("icon_abject_128x128.png"):align(display.LEFT_TOP, window.left + 50,window.top_bottom):addTo(view)
     local title_bar =  display.newScale9Sprite("title_blue_430x30.png",0,0, cc.size(428,30), cc.rect(10,10,410,10))
         :addTo(view)
         :align(display.LEFT_TOP, abject_icon:getPositionX() + abject_icon:getContentSize().width + 5, abject_icon:getPositionY() - 4)
@@ -36,7 +36,7 @@ function GameUIAbjectAlliance:onEnter()
     }):addTo(view):align(display.LEFT_CENTER,title_bar:getPositionX() + 15, title_bar:getPositionY() - 70)
 
     local period_label = UIKit:ttfLabel({
-        text = "00:00:10",
+        text = "00:00:00",
         size = 22,
         color= 0x7e0000,
         align = cc.TEXT_ALIGNMENT_LEFT,
@@ -77,7 +77,7 @@ function GameUIAbjectAlliance:onEnter()
     editbox:align(display.CENTER_TOP,window.cx,content:getPositionY() - content:getContentSize().height - 20):addTo(view)
 
     
-    local abject_btn = WidgetPushButton.new({normal = "red_btn_up_186x66.png",pressed = "red_btn_down_186x66.png"})
+    local abject_btn = WidgetPushButton.new({normal = "red_btn_up_186x66.png",pressed = "red_btn_down_186x66.png",disabled = "grey_btn_186x66.png"})
         :setButtonLabel(UIKit:ttfLabel({text = _("驱逐"),
             size = 20,
             shadow = true,
@@ -85,6 +85,7 @@ function GameUIAbjectAlliance:onEnter()
         })):align(display.CNETER_TOP,window.cx,editbox:getPositionY() - editbox:getCascadeBoundingBox().size.height - 60):addTo(view)
         :onButtonClicked(function(event)
             end)
+        :setButtonEnabled(false)
     UIKit:ttfLabel({
         text = _("只有成为国王之后才能使用驱逐"),
         size = 20,
