@@ -131,6 +131,14 @@ function GameUISendTroopNew:SelectDragonPart()
     local dragon_box = display.newSprite("box_send_troop_204x192.png")
         :align(display.CENTER, window.cx + 120,window.top - 300)
         :addTo(self:GetView())
+
+    WidgetPushButton.new()
+        :addTo(self:GetView()):align(display.CENTER, window.cx + 120,window.top - 300)
+        :onButtonClicked(function(event)
+            if event.name == "CLICKED_EVENT" then
+                self:SelectDragon()
+            end
+        end):setContentSize(cc.size(204,192))
     -- 龙动画
     self.dragon_armature = DragonSprite.new(display.getRunningScene():GetSceneLayer(),dragon:Type())
         :addTo(dragon_box)
