@@ -106,11 +106,11 @@ function GameUISendTroopNew:ctor(march_callback,params)
 end
 
 function GameUISendTroopNew:OnMoveInStage()
-    GameUISendTroopNew.super.OnMoveInStage(self)
     self:CreateTerrainBackground()
     self:SelectDragonPart()
     self:SelectSoldiersPart()
     self:CreateBottomPart()
+    GameUISendTroopNew.super.OnMoveInStage(self)
 end
 function GameUISendTroopNew:CreateBetweenBgAndTitle()
     GameUISendTroopNew.super.CreateBetweenBgAndTitle(self)
@@ -559,6 +559,7 @@ function GameUISendTroopNew:CreateBottomPart()
             end
 
         end):align(display.RIGHT_CENTER,bottom_bg:getContentSize().width-30,bottom_bg:getContentSize().height/2):addTo(bottom_bg)
+    self.march_btn = march_btn
     if not self.isPVE and not self.isMilitary then
         --行军所需时间
         self.march_time = UIKit:ttfLabel({
@@ -633,6 +634,43 @@ function GameUISendTroopNew:CallFuncMarch_Callback(dragonType,soldiers)
         self.march_callback(dragonType,soldiers,self.total_march_time,self)
     end
 end
+
+
+
+-- fte
+local promise = import("..utils.promise")
+local WidgetFteArrow = import("..widget.WidgetFteArrow")
+function GameUISendTroopNew:PormiseOfFte()
+    return self:PromiseOfMax():next(function()
+        return self:PromiseOfAttack()
+    end)
+end
+function GameUISendTroopNew:PromiseOfMax()
+    local r = self.max_btn:getCascadeBoundingBox()
+    self:GetFteLayer():SetTouchObject(self.max_btn)
+
+    WidgetFteArrow.new(_("点击最大")):addTo(self:GetFteLayer()):TurnLeft()
+        :align(display.LEFT_CENTER, r.x + r.width, r.y + r.height/2)
+
+    local p = promise.new()
+    self.max_btn:onButtonClicked(function()
+        self:GetFteLayer():removeFromParent()
+        p:resolve()
+    end)
+    return p
+end
+function GameUISendTroopNew:PromiseOfAttack()
+    local r = self.march_btn:getCascadeBoundingBox()
+    self:GetFteLayer():SetTouchObject(self.march_btn)
+
+    WidgetFteArrow.new(_("点击进攻")):addTo(self:GetFteLayer()):TurnRight()
+        :align(display.RIGHT_CENTER, r.x - 20, r.y + r.height/2)
+
+    return UIKit:PromiseOfOpen("GameUIReplay")
+end
+
+
+
 return GameUISendTroopNew
 
 
