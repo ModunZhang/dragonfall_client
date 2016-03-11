@@ -38,7 +38,6 @@ function GameUIReplay:ctor(report, callback, skipcallback)
     self.report = report
     self.callback = callback
     self.skipcallback = skipcallback
-    self.speed = 1
     self:BuildUI()
 end
 function GameUIReplay:onEnter()
@@ -129,6 +128,9 @@ function GameUIReplay:Setup()
         },self):addTo(self.ui_map.soldierBattleNode,0,BATTLE_OBJECT_TAG)
         :pos(self:AttackPosition(), self:TopPositionByRow(i))
         :FaceCorrect():Idle()
+
+        self:CreateSoldierCountBox(self.attackTroops[i].infoNode)
+        :pos(-30, -20):SetSoldierCount(self:GetSoldierCount(true, 1, i, false))
     end
 
     self.defenceTroops = {}
@@ -139,11 +141,50 @@ function GameUIReplay:Setup()
             },self):addTo(self.ui_map.soldierBattleNode,0,BATTLE_OBJECT_TAG) 
             :pos(self:DefencePosition(), self:TopPositionByRow(i))
             :FaceCorrect():Idle()
+
+            self:CreateSoldierCountBox(self.defenceTroops[i].infoNode)
+            :pos(30, -20):SetSoldierCount(self:GetSoldierCount(false, 1, i, false))
         end
     else
         self.defenceTroops[1] = UIKit:CreateFightTroops("wall", {isleft = false,},self)
                                 :addTo(self.ui_map.soldierBattleNode,0,BATTLE_OBJECT_TAG)
                                 :pos(self:WallPosition()):FaceCorrect()
+    end
+end
+function GameUIReplay:CreateSoldierCountBox(infoNode)
+    local box = display.newSprite("replay_attack_number_bg.png")
+    :addTo(infoNode)
+    
+    local point = box:getAnchorPointInPoints()
+    local size = box:getContentSize()
+    box.count = UIKit:ttfLabel({
+        size = 16,
+        color = 0xffedae,
+    }):addTo(box):align(display.CENTER,point.x,point.y)
+    
+
+    function box:SetSoldierCount(soldierCount)
+        self.count:setString(GameUtils:formatNumber(soldierCount))
+        return self
+    end
+    
+    infoNode.count = box
+    return box
+end
+function GameUIReplay:GetSoldierCount(isattack, round, dualCount, ishurt)
+    local roundData = self.report:GetSoldierRoundData()
+    local results = isattack 
+                    and roundData[round].attackResults 
+                    or roundData[round].defenceResults
+    if results[dualCount] then
+        return ishurt 
+            and (results[dualCount].soldierCount - results[dualCount].soldierDamagedCount) 
+            or results[dualCount].soldierCount
+    else
+        local soldiers = isattack
+                        and self.report:GetOrderedAttackSoldiers()
+                        or self.report:GetOrderedDefenceSoldiers() 
+        return soldiers[dualCount].count
     end
 end
 function GameUIReplay:Start()
@@ -500,6 +541,13 @@ function GameUIReplay:OnHurtFinished(hurtTroop)
     hurtTroop:Idle()
 
     if not self.isFightWall then
+        local isattack = hurtTroop:IsLeft()
+        local round = self.roundCount
+        local dual = self.dualCount
+        hurtTroop.infoNode.count:SetSoldierCount(
+            self:GetSoldierCount(isattack,round,dual,true)
+        )
+
         if self.hurtCount == 1 then -- 反击
             hurtTroop:Hold(0.2, function()
                 self:OnFight(hurtTroop, hurtTroop.properties.target)
@@ -657,16 +705,16 @@ function GameUIReplay:FinishReplay()
 end
 function GameUIReplay:ChangeSpeed(speed)
     if speed == 0 then
-        self.speed = 1
+        self.speed = 1.2
         self.ui_map.speedup:setButtonLabelString(_("加速"))
-    elseif self.speed == 1 then
-        self.speed = 2
+    elseif self.speed == 1.2 then
+        self.speed = 2.4
         self.ui_map.speedup:setButtonLabelString(_("x2"))
-    elseif self.speed == 2 then
-        self.speed = 4
+    elseif self.speed == 2.4 then
+        self.speed = 4.8
         self.ui_map.speedup:setButtonLabelString(_("x4"))
-    elseif self.speed == 4 then
-        self.speed = 1
+    elseif self.speed == 4.8 then
+        self.speed = 1.2
         self.ui_map.speedup:setButtonLabelString(_("加速"))
     end
     self:RefreshSpeed()

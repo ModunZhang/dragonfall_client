@@ -1862,7 +1862,7 @@ local INFO_TAG = 3
 function UIKit:CreateFightTroops(soldierName, properties, gameController)
     gameController = gameController or empty_gameController
     local troopsNode = display.newNode()
-    local soldiersNode = display.newNode():addTo(troopsNode, 0, SOLDIER_NODE):scale(0.9)
+    local soldiersNode = display.newNode():addTo(troopsNode, 0, SOLDIER_NODE):scale(0.8)
     troopsNode.infoNode = display.newNode():addTo(troopsNode, 1, INFO_TAG)
     troopsNode.effectsNode = display.newNode():addTo(troopsNode, 2, EFFECT_TAG)
     troopsNode.properties = properties or {}
@@ -1924,6 +1924,7 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         return self
     end
     function troopsNode:Return(x, y, time, func)
+        self.infoNode:hide()
         self:Play("move_90", -1)
         local acts = transition.sequence({
             cc.MoveTo:create(time, cc.p(x, y)),
@@ -1942,6 +1943,7 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         return self
     end
     function troopsNode:Move(x, y, time, func, delayTime)
+        self.infoNode:hide()
         if not self:IsWall() then
             self:Play("move_90", -1)
         end
@@ -1988,6 +1990,7 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         return self
     end
     function troopsNode:Idle()
+        self.infoNode:show()
         local animationData = self.soldiers[1]:getAnimation():getAnimationData()
         if not not animationData:getMovement("idle_90") then
             self:Play("idle_90", -1)
