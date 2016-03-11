@@ -366,10 +366,6 @@ function GameUIPveAttack:Attack()
     local enemies = string.split(sections[self.pve_name].troops, ",")
     table.remove(enemies, 1)
     UIKit:newGameUI('GameUISendTroopNew',
-        -- LuaUtils:table_map(enemies, function(k,v)
-        --     local name,star = unpack(string.split(v, ":"))
-        --     return k, {name = name, star = tonumber(star)}
-        -- end),
         function(dragonType, soldiers)
             local dragon = City:GetFirstBuildingByType("dragonEyrie"):GetDragonManager():GetDragon(dragonType)
             local dragonParam = {
@@ -434,6 +430,7 @@ function GameUIPveAttack:Attack()
                         display.getRunningScene():GetSceneLayer():MoveAirship(true)
                     end
                 end
+                
                 local is_show = false
                 UIKit:newGameUI("GameUIReplay", report, function(replayui)
                     if not is_show then

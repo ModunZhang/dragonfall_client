@@ -913,6 +913,15 @@ function GameUIReplay:CreateBattleBg()
     return bg_node
 end
 
+
+
+local WidgetFteArrow = import("..widget.WidgetFteArrow")
+function GameUIReplay:DoFte()
+    local r = self.ui_map.close:getCascadeBoundingBox()
+    WidgetFteArrow.new(_("点击关闭")):addTo(self.ui_map.close)
+    :TurnDown():align(display.CENTER_BOTTOM, 0, r.height - 20)
+end
+
 return GameUIReplay
 
 

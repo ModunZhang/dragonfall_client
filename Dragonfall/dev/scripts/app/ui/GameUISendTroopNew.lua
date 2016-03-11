@@ -468,7 +468,7 @@ function GameUISendTroopNew:GetTotalSoldierInfo()
 end
 function GameUISendTroopNew:CreateBottomPart()
     local bottom_bg = display.newScale9Sprite("back_ground_619x52.png", 0, 0,cc.size(620,80),cc.rect(30,20,559,12))
-        :align(display.BOTTOM_CNETER, window.cx,window.bottom+50)
+        :align(display.BOTTOM_CENTER, window.cx,window.bottom+50)
         :addTo(self:GetView())
     self.isMax = self.military_soldiers ~= nil
     local max_btn = WidgetPushButton.new({normal = "yellow_btn_up_148x58.png",pressed = "yellow_btn_down_148x58.png"})
@@ -659,14 +659,27 @@ function GameUISendTroopNew:PromiseOfMax()
     end)
     return p
 end
-function GameUISendTroopNew:PromiseOfAttack()
+function GameUISendTroopNew:PromiseOfAttack(need_fte)
     local r = self.march_btn:getCascadeBoundingBox()
     self:GetFteLayer():SetTouchObject(self.march_btn)
 
-    WidgetFteArrow.new(_("点击进攻")):addTo(self:GetFteLayer()):TurnRight()
-        :align(display.RIGHT_CENTER, r.x - 20, r.y + r.height/2)
+    self.march_btn:removeEventListenersByEvent("CLICKED_EVENT")
+    self.march_btn:onButtonClicked(function(event)
+        if event.name == "CLICKED_EVENT" then
+            assert(tolua.type(self.march_callback)=="function")
+            self.march_callback(self.dragon:Type(), self:GetSettingSoldiers())
+            self:LeftButtonClicked()
+        end
+    end)
 
-    return UIKit:PromiseOfOpen("GameUIReplay")
+    WidgetFteArrow.new(_("点击进攻")):addTo(self:GetFteLayer())
+        :TurnDown():align(display.CENTER_BOTTOM, r.x + r.width/2, r.y + 70)
+
+    return UIKit:PromiseOfOpen(need_fte and "GameUIReplayFte" or "GameUIReplay"):next(function(ui)
+        ui:DestroyFteLayer()
+        ui:DoFte()
+        return UIKit:PromiseOfClose(need_fte and "GameUIReplayFte" or "GameUIReplay")
+    end)
 end
 
 
