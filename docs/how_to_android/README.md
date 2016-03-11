@@ -123,8 +123,8 @@
   
   * Dragonfall/frameworks/runtime-src/proj.android
   * Dragonfall/frameworks/cocos2d-x/cocos/platform/android/java
-  * external/Android/google-play-services_lib_3225130/google-play-services_lib
-  * external/Android/facebook
+  * external/Android/google-play-services_lib_8115000/google-play-services_lib
+  * external/Android/facebook_4_0_0
   
 - 验证开发环境  
 
@@ -147,11 +147,11 @@
 
 接下来导入 `Google Play` 的依赖库
 
-1. 重复上述步骤，导入 `external/Android/google-play-services_lib_3225130/google-play-services_lib`
+1. 重复上述步骤，导入 `external/Android/google-play-services_lib_8115000/google-play-services_lib`
 
-接下来导入 `Facebook` 的依赖库
+接下来导入 `facebook_4_0_0` 的依赖库
 
-1. 重复上述步骤，导入 `external/Android/facebook`
+1. 重复上述步骤，导入 `external/Android/facebook_4_0_0`
 
 接下来导入项目的Android 工程：
 
@@ -292,7 +292,7 @@ CC_USE_CCBUILDER | 使用 Cocos Builder 支持模块。
 CC_USE_SPINE | 使用骨骼动画
 CC_USE_ETC1_ZLIB | 打开贴图文件的zlib压缩检查功能,用来压缩etc1文件。需要配合自定义的命令行工具CompressETCTexture用。
 CC_USE_POMELO_C_LIB | 启用pomelo c版本的客户端支持(android会自动添加引用的pomelo库,iOS则需要手动引入到Xcode)
-CC_USE_FACEBOOK | 打开Facebook的功能。这个宏不能控制是否编译facebook二进制到包中。
+CC_USE_facebook_4_0_0 | 打开facebook_4_0_0的功能。这个宏不能控制是否编译facebook_4_0_0二进制到包中。
 CC_USE_SDK_PAYPAL|打开PayPal支付的sdk功能(Android)
 CC_USE_GOOGLE_LOGIN|打开google账号登录接口的功能(Android)
 
@@ -304,7 +304,7 @@ MACRO        | 功能           | 依赖库
 ------------ | ------------- | -------------
 COCOS_DEBUG  | 打开Android下Java的Debug模式,主要用于控制`DebugUtil`类中的打印函数 | None
 CC_USE_TALKING_DATA| 控制java中使用TalkingData的sdk，如果没有定义这个宏，可以移除libso文件下的相关jar文件 | Game_Analytics_SDK_Android_3.2.3.jar
-CC_USE_FACEBOOK | 打开FaceBook的接口 | facebook lib
+CC_USE_facebook_4_0_0 | 打开facebook_4_0_0的接口 | facebook_4_0_0 lib
 CC_USE_APPSFLYER | 打开Appsflyer的功能 | AF-Android-SDK-v3.3.0.jar
 CC_USE_GOOGLE_PLAY_BILLING_V3 | 打开google play的内购功能和接口 | Google Play Services lib
 CC_USE_GOOGLE_LOGIN | 打开使用Google账号登录的接口  | Google Play Services lib
@@ -315,7 +315,7 @@ CC_USE_SDK_PAYPAL | 打开Paypal支付的接口 | okhttp-3.0.1.jar,okio-1.6.0.ja
 
 * Jni中如果需要打印,请确保release模式下不会打印(使用NDEBUG宏定义打印宏无效)
 
-* 如果是可选功能,在Java中使用宏定义开关。比如上面的facebook
+* 如果是可选功能,在Java中使用宏定义开关。比如上面的facebook_4_0_0
 
 ### DragonFall Google Cloud Message
 
