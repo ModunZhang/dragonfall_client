@@ -764,7 +764,7 @@ function GameUIReplay:BuildUI()
     :addTo(self, 11):align(display.TOP_CENTER, display.cx, display.height - 140)
 
     local size = ui_map.soldierBattleWhite:getContentSize()
-    ui_map.soldierBattleWhite:show()
+    ui_map.soldierBattleWhite:hide()
     :opacity(255):setColor(cc.c3b(255,0,0))
     ui_map.soldierBattleWhite:setScaleX(608/size.width)
     ui_map.soldierBattleWhite:setScaleY(0.75)
