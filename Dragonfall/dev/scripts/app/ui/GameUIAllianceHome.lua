@@ -15,7 +15,6 @@ local Alliance_Manager = Alliance_Manager
 local cc = cc
 
 
-
 function GameUIAllianceHome:DisplayOn()
     self.visible_count = self.visible_count + 1
     self:FadeToSelf(self.visible_count > 0)
@@ -48,11 +47,6 @@ end
 function GameUIAllianceHome:ctor(alliance)
     GameUIAllianceHome.super.ctor(self)
     self.alliance = alliance
-
-    -- local sprite = display.newSprite("blue_tex.png"):addTo(self)
-    --     :align(display.TOP_CENTER, display.cx, display.height)
-    -- local size = sprite:getContentSize()
-    -- sprite:setScaleX(display.width / size.width)
 end
 function GameUIAllianceHome:onEnter()
     GameUIAllianceHome.super.onEnter(self)
@@ -139,37 +133,20 @@ function GameUIAllianceHome:OnAllianceDataChanged_basicInfo(alliance,deltaData)
         else
             self:RefreshTop()
         end
-        -- self.operation_button_order:RefreshOrder()
     elseif ok_name or ok_tag then
         self:RefreshTop(true)
-        -- self.self_name_label:setString("["..alliance.basicInfo.tag.."] ".. alliance.basicInfo.name)
     elseif ok_flag then
-        -- self.self_flag:removeFromParent(true)
-        -- -- 己方联盟旗帜
-        -- local ui_helper = WidgetAllianceHelper.new()
-        -- local self_flag = ui_helper:CreateFlagContentSprite(alliance.basicInfo.flag):scale(0.5)
-        -- self_flag:align(display.CENTER, self.self_name_bg:getContentSize().width-100, -30):addTo(self.self_name_bg)
-        -- self.self_flag = self_flag
         self:RefreshTop(true)
     end
 
     if deltaData("basicInfo.status", "fight") then
-        -- self.top:SetOurPowerOrKill(0)
-        -- self.top:SetEnemyPowerOrKill(0)
         self:RefreshTop()
     end
 end
 function GameUIAllianceHome:OnAllianceDataChanged_allianceFight(alliance,deltaData)
-    print("GameUIAllianceHome:OnAllianceDataChanged_allianceFight")
     self:RefreshTop(true)
 end
 function GameUIAllianceHome:Schedule()
-    -- local alliance = self.alliance
-    -- display.newNode():addTo(self):schedule(function()
-    --     if alliance:IsDefault() then return end
-    --     local lx,ly,view = self.multialliancelayer:GetAllianceCoordWithPoint(display.cx, display.cy)
-    --     self:UpdateCoordinate(lx, ly, view)
-    -- end, 0.5)
     scheduleAt(self, function()
         if self.alliance:IsDefault() then return end
         self:UpdateMyCityArrows(self.alliance)
@@ -189,17 +166,6 @@ function GameUIAllianceHome:Schedule()
 end
 
 function GameUIAllianceHome:InitArrow()
-    -- my alliance building
-    -- self.alliance_building_arrows = {}
-    -- for i = 1, 5 do
-    --     self.alliance_building_arrows[i] = display.newSprite("arrow_blue-hd.png")
-    --         :addTo(self, -2):align(display.TOP_CENTER):hide()
-    -- end
-    -- self.allince_arrow_index = 1
-    -- -- friends
-    -- self.friends_arrows = {}
-    -- self.friends_arrow_index = 1
-    -- enemys
     self.enemy_arrows = {}
     for i = 1, 5 do
         self.enemy_arrows[i] =
@@ -240,11 +206,6 @@ function GameUIAllianceHome:InitArrow()
     if device.platform ~= 'winrt' then
         self.arrow:scale(0.8)
     end
-    -- self.arrow_label = cc.ui.UILabel.new({
-    --     size = 20,
-    --     font = UIKit:getFontFilePath(),
-    --     color = UIKit:hex2c3b(0xf5e8c4)
-    -- }):addTo(self.arrow):rotation(90):align(display.LEFT_CENTER, 0, -40)
 end
 function GameUIAllianceHome:GetScreenRect()
     local rect1 = self.march:getCascadeBoundingBox()
@@ -369,9 +330,6 @@ function GameUIAllianceHome:RefreshTop(force_refresh)
             :align(display.TOP_CENTER, top_bg:getContentSize().width/2,top_bg:getContentSize().height)
             :addTo(top_bg)
         period_bg:setTouchSwallowEnabled(true)
-        -- local period_bg = display.newSprite("box_104x104.png")
-        --     :align(display.TOP_CENTER, top_bg:getContentSize().width/2,top_bg:getContentSize().height)
-        --     :addTo(top_bg)
 
         local period_text = self:GetAlliancePeriod()
         local period_label = UIKit:ttfLabel(
@@ -395,10 +353,6 @@ function GameUIAllianceHome:RefreshTop(force_refresh)
                 if math.floor(statusFinishTime/1000)>app.timer:GetServerTime() then
                     time_label:setString(GameUtils:formatTimeStyle1(math.floor(statusFinishTime/1000)-app.timer:GetServerTime()))
                 end
-                -- local statusStartTime = basicInfo.statusStartTime
-                -- if app.timer:GetServerTime()>= math.floor(statusStartTime/1000) then
-                --     time_label:setString(GameUtils:formatTimeStyle1(app.timer:GetServerTime()-math.floor(statusStartTime/1000)))
-                -- end
             end
         end)
 
@@ -667,10 +621,6 @@ function GameUIAllianceHome:UpdateMyCityArrows(alliance)
             self.arrow:show():pos(p.x, p.y):rotation(degree)
             self.arrow.btn:rotation(-degree)
             self.arrow.icon:rotation(-degree)
-            -- local isflip = (degree > 0 and degree < 180)
-            -- local distance = ceil(pGetLength(pSub(world_point, p)) / 80)
-            -- self.arrow_label:align(isflip and RIGHT_CENTER or LEFT_CENTER)
-            --     :scale(isflip and -1 or 1):setString(string.format("%dM", distance))
         end
     else
         self.arrow:hide()
@@ -701,35 +651,7 @@ function GameUIAllianceHome:UpdateEnemyArrow()
         self.arrow_enemy:hide()
     end
 end
--- function GameUIAllianceHome:UpdateMyAllianceBuildingArrows(screen_rect, alliance, layer)
---     local id = alliance.id
---     local count = 1
---     alliance:IteratorAllianceBuildings(function(_, v)
---         if count == self.allince_arrow_index then
---             local arrow = self:GetMyAllianceArrow(count)
---             local x,y = v:GetMidLogicPosition()
---             local map_point = layer:ConvertLogicPositionToMapPosition(x, y, id)
---             local world_point = layer:convertToWorldSpace(map_point)
---             if not rectContainsPoint(screen_rect, world_point) then
---                 local p,degree = self:GetIntersectPoint(screen_rect, MID_POINT, world_point)
---                 if p and degree then
---                     arrow:show():pos(p.x, p.y):rotation(degree + 180)
---                 end
---             else
---                 arrow:hide()
---             end
---             return true
---         end
---         count = count + 1
---     end)
---     self.allince_arrow_index = self.allince_arrow_index + 1
---     if self.allince_arrow_index > 5 then
---         self.allince_arrow_index = 1
---     end
--- end
--- function GameUIAllianceHome:GetMyAllianceArrow(count)
---     return self.alliance_building_arrows[count]
--- end
+
 local min = math.min
 local MAX_ARROW_COUNT = 5
 function GameUIAllianceHome:UpdateFriendArrows(screen_rect, alliance, layer, logic_x, logic_y, myself)
@@ -785,42 +707,6 @@ function GameUIAllianceHome:UpdateEnemyCityArrows()
     if self.enemy_arrow_index > MAX_ARROW_COUNT then
         self.enemy_arrow_index = 1
     end
-
-    -- local screen_rect = self:GetScreenRect()
-    -- local x,y = DataUtils:GetAbsolutePosition(mapIndex, 16, 16)
-    -- local sceneLayer = display.getRunningScene():GetSceneLayer()
-    -- local map_point = sceneLayer:ConvertLogicPositionToMapPosition(x,y)
-    -- local world_point = sceneLayer:convertToWorldSpace(map_point)
-    -- if not rectContainsPoint(screen_rect, world_point) then
-    --     local p,degree = self:GetIntersectPoint(screen_rect, MID_POINT, world_point)
-    --     if p and degree then
-    --         degree = degree + 180
-    --         self.arrow_enemy:show():pos(p.x, p.y):rotation(degree)
-    --         self.arrow_enemy.btn:rotation(-degree)
-    --         self.arrow_enemy.icon:rotation(-degree)
-    --         if pGetLength(pSub(world_point, p)) < 1400 then
-    --             self.arrow_enemy:hide()
-    --         end
-    --     end
-    -- else
-    --     self.arrow_enemy:hide()
-    -- end
-
-    -- local count = self:UpdateAllianceArrow(screen_rect, alliance, layer, logic_x, logic_y, self.enemy_arrow_index, function(index)
-    --     if not self.enemy_arrows[index] then
-    --         self.enemy_arrows[index] = display.newSprite("arrow_red-hd.png")
-    --             :addTo(self, -2):align(display.TOP_CENTER):hide()
-    --     end
-    --     return self.enemy_arrows[index]
-    -- end)
-    -- local enemy_arrows = self.enemy_arrows
-    -- for i = count, #enemy_arrows do
-    --     enemy_arrows[i]:hide()
-    -- end
-    -- self.enemy_arrow_index = self.enemy_arrow_index + 1
-    -- if self.enemy_arrow_index > min(count, MAX_ARROW_COUNT) then
-    --     self.enemy_arrow_index = 1
-    -- end
 end
 --
 function GameUIAllianceHome:UpdateAllianceArrow(screen_rect, alliance, layer, logic_x, logic_y, cur_index, func, except_map_id)
@@ -893,43 +779,4 @@ function GameUIAllianceHome:GetAlliancePeriod()
 end
 
 return GameUIAllianceHome
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

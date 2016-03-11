@@ -173,7 +173,7 @@ function GameUISettingAccount:CreateGooglePanel()
     self.google_panel = WidgetUIBackGround.new({width = bg_width,height=bg_height},WidgetUIBackGround.STYLE_TYPE.STYLE_2)
         :align(display.TOP_CENTER, 304, self.facebook_panel and (self.facebook_panel:getPositionY() - 130) or (self.account_warn_label:getPositionY() - 50))
         :addTo(self:GetBody())
-    display.newSprite("icon_facebook_104x104.png"):align(display.LEFT_CENTER, 12, bg_height/2)
+    display.newSprite("icon_google_104x104.png"):align(display.LEFT_CENTER, 12, bg_height/2)
         :addTo(self.google_panel)
     self.google_bind_state_label = UIKit:ttfLabel({
         text = "",
