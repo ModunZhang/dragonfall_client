@@ -213,9 +213,9 @@
     public static final ** CREATOR;
 }
 #================Paypal========================
--libraryjars ./libs/PayPalAndroidSDK-2.13.1.jar
--libraryjars ./libs/okhttp-3.0.1.jar
--libraryjars ./libs/okio-1.6.0.jar
+#-libraryjars ./libs/PayPalAndroidSDK-2.13.1.jar
+#-libraryjars ./libs/okhttp-3.0.1.jar
+#-libraryjars ./libs/okio-1.6.0.jar
 -dontwarn okhttp3.internal.**
 -dontwarn okio.*
 -keep class com.paypal.android.sdk.payments.* {*;}

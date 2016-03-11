@@ -24,7 +24,7 @@ find "$APP_ANDROID_ROOT" -type d | xargs chmod 755 $1
 if [ -d "$APP_ANDROID_ROOT"/bin ]; then
     rm -rf "$APP_ANDROID_ROOT"/bin/*.apk
 fi
-if [ -d "$APP_ANDROID_ROOT"/obj]; then
+if [ -d "$APP_ANDROID_ROOT"/obj ]; then
 	rm -rf "$APP_ANDROID_ROOT"/obj
 fi
 mkdir -p "$APP_ANDROID_ROOT"/bin

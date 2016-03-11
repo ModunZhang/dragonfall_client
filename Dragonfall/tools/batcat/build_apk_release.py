@@ -101,7 +101,8 @@ def initLogData():
 			"latest_bin_hash":"", #当前使用的so文件的hash值
 			"latest_res_hash":"", #当前使用的dragonfall.zip文件的hash值
 			"latest_apk_hash":"", #当前apk文件的hash值
-			"latest_java_macros":"" #当前编译的java源码中定义的宏定义
+			"latest_java_macros":"", #当前编译的java源码中定义的宏定义
+			"latest_app_version":"" #当前编译的资源文件的版本号
 		}
 
 
@@ -112,7 +113,12 @@ def logApkHash():
 		die("apk文件不存在")
 	hash_apk = getFileHash(apk_path)
 	logInfo['latest_apk_hash'] = hash_apk
-	logInfo['data'][hash_apk] = {"so":logInfo['latest_bin_hash'],"macro":logInfo['latest_java_macros'],"res":logInfo['latest_res_hash']}
+	logInfo['data'][hash_apk] = {"so":logInfo['latest_bin_hash'],"macro":logInfo['latest_java_macros'],"res":logInfo['latest_res_hash'],"version":logInfo['latest_app_version']}
+
+def logAppVersion():
+	global logInfo
+	appVersion = getAppVersion(Platform)
+	logInfo['latest_app_version'] = appVersion
 
 def saveLogFile():
 	global logInfo
@@ -157,7 +163,7 @@ if __name__ == "__main__":
 	checkObjs()
 	checkRes()
 	buildApk()
+	logAppVersion()
 	logApkHash()
-	print logInfo
 	saveLogFile()
 	Logging.warning("Android项目构建成功")
