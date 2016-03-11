@@ -70,7 +70,7 @@ def backupBin():
 	if not os.path.exists(obj_path):
 		die("符号文件不存在")
 	#zip文件名的后部分为对应的so文件的hash值
-	zip_name = "release_%s_%s.zip" % (time.strftime("%Y_%m_%d_%H_%M", time.localtime()),logInfo['latest_bin_hash'])
+	zip_name = "objs_%s.zip" % logInfo['latest_bin_hash']
 	zip_file_path = formatPath("%s/bin_bak" % PROJECT_EXECUTE_DIR_PATH)
 	if not os.path.exists(zip_file_path):
 		os.mkdir(zip_file_path)
