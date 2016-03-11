@@ -185,8 +185,8 @@
 -keep class com.batcatstudio.dragonfall.sdk.GoogleSignSDK {
 	public static void Login();
 	public static boolean IsAuthenticated();
-	public static String GetGoogleUserName();
-	public static String GetGoogleId();
+	public static java.lang.String GetGoogleUserName();
+	public static java.lang.String GetGoogleId();
 }
 
 #================Google Billing========================
