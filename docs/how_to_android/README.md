@@ -293,17 +293,22 @@ CC_USE_SPINE | 使用骨骼动画
 CC_USE_ETC1_ZLIB | 打开贴图文件的zlib压缩检查功能,用来压缩etc1文件。需要配合自定义的命令行工具CompressETCTexture用。
 CC_USE_POMELO_C_LIB | 启用pomelo c版本的客户端支持(android会自动添加引用的pomelo库,iOS则需要手动引入到Xcode)
 CC_USE_FACEBOOK | 打开Facebook的功能。这个宏不能控制是否编译facebook二进制到包中。
+CC_USE_SDK_PAYPAL|打开PayPal支付的sdk功能(Android)
+CC_USE_GOOGLE_LOGIN|打开google账号登录接口的功能(Android)
 
 ### Java中的宏定义
 
 注意:这里的宏和`使用模块化编译缩小 apk 体积`中的宏可能同名,但是这里的宏是定义在`Eclipse`中,或者`antenna_predefines.txt`中.只会影响`Java`代码变动的宏。
 
-MACRO        | 功能 
------------- | ------------- 
-CC_USE_FACEBOOK | 打开Android中的FaceBook在java中的逻辑
-COCOS_DEBUG  | 打开Android下Java的Debug模式,主要用于控制`DebugUtil`类中的打印函数
-CC_USE_TALKING_DATA| 控制java中使用TalkingData的sdk，如果没有定义这个宏，可以移除libs文件下的相关jar文件
-
+MACRO        | 功能           | 依赖库 
+------------ | ------------- | -------------
+COCOS_DEBUG  | 打开Android下Java的Debug模式,主要用于控制`DebugUtil`类中的打印函数 | None
+CC_USE_TALKING_DATA| 控制java中使用TalkingData的sdk，如果没有定义这个宏，可以移除libso文件下的相关jar文件 | Game_Analytics_SDK_Android_3.2.3.jar
+CC_USE_FACEBOOK | 打开FaceBook的接口 | facebook lib
+CC_USE_APPSFLYER | 打开Appsflyer的功能 | AF-Android-SDK-v3.3.0.jar
+CC_USE_GOOGLE_PLAY_BILLING_V3 | 打开google play的内购功能和接口 | Google Play Services lib
+CC_USE_GOOGLE_LOGIN | 打开使用Google账号登录的接口  | Google Play Services lib
+CC_USE_SDK_PAYPAL | 打开Paypal支付的接口 | okhttp-3.0.1.jar,okio-1.6.0.jar,PayPalAndroidSDK-2.13.1.jar
 ### Jni和Java中的编写约定
 
 * Java中的打印请使用`DebugUtil`类的静态方法，不使用系统提供的`Log`
