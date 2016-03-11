@@ -37,6 +37,8 @@ import com.batcatstudio.dragonfall.google.gcm.GCMIntentService;
 import com.batcatstudio.dragonfall.notifications.NotificationUtils;
 //#ifdef CC_USE_FACEBOOK
 import com.batcatstudio.dragonfall.sdk.FaceBookSDK;
+//#endif
+//#ifdef CC_USE_GOOGLE_LOGIN
 import com.batcatstudio.dragonfall.sdk.GoogleSignSDK;
 //#endif
 import com.batcatstudio.dragonfall.sdk.MarketSDK;
@@ -66,13 +68,14 @@ public class AppActivity extends Cocos2dxActivity
 {
 
     static String hostIPAdress = "0.0.0.0";
-
+//#ifdef CC_USE_GOOGLE_LOGIN
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(GoogleSignSDK.KEY_IS_RESOLVING, GoogleSignSDK.getInstance().isResolving());
 		outState.putBoolean(GoogleSignSDK.KEY_SHOULD_RESOLVE, GoogleSignSDK.getInstance().isShouldResolve());
     }
+//#endif
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +88,9 @@ public class AppActivity extends Cocos2dxActivity
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         }
         /** Init Java Native **/
+//#ifdef CC_USE_GOOGLE_LOGIN        
         GoogleSignSDK.getInstance().Initialize(savedInstanceState);
+//#endif
         CommonUtils.getInstance();
 		MarketSDK.initSDK();
 		StoreKit.init();
@@ -153,11 +158,15 @@ public class AppActivity extends Cocos2dxActivity
 	@Override
 	protected void onStart() {
 		super.onStart();
+//#ifdef CC_USE_GOOGLE_LOGIN
 		GoogleSignSDK.getInstance().onActivityStart(this);
+//#endif
 	}
 	@Override
 	protected void onStop() {
+//#ifdef CC_USE_GOOGLE_LOGIN
 		GoogleSignSDK.getInstance().onActivityStop(this);
+//#endif
 		NotificationUtils.startLocalPushService();
 		onEnterBackground();
 		super.onStop();
@@ -171,7 +180,9 @@ public class AppActivity extends Cocos2dxActivity
 	protected void onDestroy() {
 		StoreKit.purge();
 		PayPalSDK.getInstance().destroy(this);
+//#ifdef CC_USE_FACEBOOK
 		FaceBookSDK.onDestroy();
+//#endif
 		super.onDestroy();
 	}
 	
@@ -180,7 +191,9 @@ public class AppActivity extends Cocos2dxActivity
 		if(StoreKit.handleActivityResult(requestCode, resultCode, data)) {
 			super.onActivityResult(requestCode, resultCode, data);
 		}
+//#ifdef CC_USE_GOOGLE_LOGIN
 		GoogleSignSDK.getInstance().onActivityResult(requestCode, resultCode, data);
+//#endif
 		PayPalSDK.getInstance().onActivityResult(requestCode, resultCode, data);
 //#ifdef CC_USE_FACEBOOK
 		FaceBookSDK.onActivityResult(this, requestCode, resultCode, data);

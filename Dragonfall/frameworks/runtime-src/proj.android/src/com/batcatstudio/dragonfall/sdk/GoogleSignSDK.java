@@ -1,7 +1,6 @@
 package com.batcatstudio.dragonfall.sdk;
-
+//#ifdef CC_USE_GOOGLE_LOGIN
 import org.cocos2dx.lua.AppActivity;
-
 import com.batcatstudio.dragonfall.utils.DebugUtil;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -18,9 +17,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
-
-public class GoogleSignSDK implements ConnectionCallbacks, OnConnectionFailedListener {
-
+//#endif
+public class GoogleSignSDK 
+//#ifdef CC_USE_GOOGLE_LOGIN
+implements ConnectionCallbacks, OnConnectionFailedListener 
+//#endif
+{
+//#ifdef CC_USE_GOOGLE_LOGIN
 	private static GoogleSignSDK m_instance = null;
 	private static String TAG = "GoogleSignSDK";
 
@@ -227,5 +230,5 @@ public class GoogleSignSDK implements ConnectionCallbacks, OnConnectionFailedLis
 			}
 		}
 	}
-
+//#endif
 }
