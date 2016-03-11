@@ -591,7 +591,7 @@ function Report:IsSoldierFight()
     if not fightReports then
         return
     end
-    return not LuaUtils:table_empty(fightReports.soldierRoundDatas)
+    return fightReports.soldierRoundDatas and not LuaUtils:table_empty(fightReports.soldierRoundDatas)
 end
 function Report:GetOrderedAttackSoldiers()
     local attackPlayerData = self:GetData().attackPlayerData
