@@ -611,10 +611,19 @@ end
 -- 根据一格最大带兵量获取按战斗力排序的士兵列表
 function GameUISendTroopNew:GetSortSoldierMax()
     local max_citizen = self:GetUnitMaxCitizen()
-    local max_soldier = 0
     local sort_soldiers = {}
-    for soldier_type,soldier_count in pairs(User.soldiers) do
+    local own_soldiers = {}
+    for i, soldier_type in ipairs({
+        "swordsman_1", "ranger_1", "lancer_1", "catapult_1",
+        "sentinel_1", "crossbowman_1", "horseArcher_1", "ballista_1",
+        "swordsman_2", "ranger_2", "lancer_2", "catapult_2",
+        "sentinel_2", "crossbowman_2", "horseArcher_2", "ballista_2",
+        "swordsman_3", "ranger_3", "lancer_3", "catapult_3",
+        "sentinel_3", "crossbowman_3", "horseArcher_3", "ballista_3",
+        "skeletonWarrior", "skeletonArcher", "deathKnight", "meatWagon"
+    }) do
         local config = UtilsForSoldier:GetSoldierConfig(User,soldier_type)
+        local soldier_count = User.soldiers[soldier_type]
         if self.isMilitary and User.defenceTroop and User.defenceTroop ~= json.null then
             for i,v in ipairs(User.defenceTroop.soldiers) do
                 if v.name == soldier_type then
@@ -623,15 +632,42 @@ function GameUISendTroopNew:GetSortSoldierMax()
             end
         end
         if soldier_count > 0 then
-            local soldier_unit_citizen = config.citizen
-            local curren_max_citizen = soldier_unit_citizen * soldier_count
-            max_soldier = curren_max_citizen > max_citizen and math.floor(max_citizen/soldier_unit_citizen) or soldier_count
-            table.insert(sort_soldiers, {name = soldier_type,count = max_soldier,power = max_soldier * config.power})
+            table.insert(own_soldiers, {name = soldier_type,count = soldier_count})
+            
         end
     end
-    table.sort( sort_soldiers, function ( a,b )
-        return a.power > b.power
-    end )
+    while #sort_soldiers < 6 and #own_soldiers > 0 do
+        -- 按兵钟总战斗力排序
+        table.sort( own_soldiers, function ( a,b )
+            local a_config = UtilsForSoldier:GetSoldierConfig(User,a.name)
+            local b_config = UtilsForSoldier:GetSoldierConfig(User,b.name)
+            local a_curren_max_citizen = a_config.citizen * a.count
+            local b_curren_max_citizen = b_config.citizen * b.count
+            local a_max_soldier = a_curren_max_citizen > max_citizen and math.floor(max_citizen/a_config.citizen) or a.count
+            local b_max_soldier = b_curren_max_citizen > max_citizen and math.floor(max_citizen/b_config.citizen) or b.count
+            local a_total_power = a_max_soldier * a_config.power
+            local b_total_power = b_max_soldier * b_config.power
+            if a_total_power > b_total_power then
+                return true
+            elseif a_total_power == b_total_power then
+                return a_config.power > b_config.power
+            else
+                return false
+            end
+        end )
+        for i,soldier in ipairs(own_soldiers) do
+            local config = UtilsForSoldier:GetSoldierConfig(User,soldier.name)
+            local soldier_unit_citizen = config.citizen
+            local curren_max_citizen = soldier_unit_citizen * soldier.count
+            local max_soldier = curren_max_citizen > max_citizen and math.floor(max_citizen/soldier_unit_citizen) or soldier.count
+            table.insert(sort_soldiers, {name = soldier.name,count = max_soldier,power = max_soldier * config.power})
+            own_soldiers[i].count = soldier.count - max_soldier
+            if own_soldiers[i].count == 0 then
+                table.remove(own_soldiers,i)
+            end
+            break
+        end
+    end
     return sort_soldiers
 end
 function GameUISendTroopNew:CallFuncMarch_Callback(dragonType,soldiers)
@@ -680,6 +716,8 @@ end
 
 
 return GameUISendTroopNew
+
+
 
 
 
