@@ -161,31 +161,34 @@ function GameUIReplay:CreateSoldierCountBox(infoNode)
         size = 16,
         color = 0xffedae,
     }):addTo(box):align(display.CENTER,point.x,point.y)
-    
 
-    function box:SetSoldierCount(soldierCount)
-        self.count:setString(GameUtils:formatNumber(soldierCount))
+    function box:SetSoldierCount(count)
+        self.count:setString(GameUtils:formatNumber(count))
         return self
     end
     
-    infoNode.count = box
+    infoNode.soldierCount = box
     return box
 end
 function GameUIReplay:GetSoldierCount(isattack, round, dualCount, ishurt)
+    if ishurt then
+        local roundData = self.report:GetSoldierRoundData()
+        local results = isattack 
+                        and roundData[round].attackResults 
+                        or roundData[round].defenceResults
+        return results[dualCount].soldierCount - results[dualCount].soldierDamagedCount
+    else
+        return (isattack and 
+            self.report:GetOrderedAttackSoldiers() or 
+            self.report:GetOrderedDefenceSoldiers())[dualCount].count
+    end
+end
+function GameUIReplay:GetSoldierHurtCount(isattack, round, dualCount)
     local roundData = self.report:GetSoldierRoundData()
     local results = isattack 
                     and roundData[round].attackResults 
                     or roundData[round].defenceResults
-    if results[dualCount] then
-        return ishurt 
-            and (results[dualCount].soldierCount - results[dualCount].soldierDamagedCount) 
-            or results[dualCount].soldierCount
-    else
-        local soldiers = isattack
-                        and self.report:GetOrderedAttackSoldiers()
-                        or self.report:GetOrderedDefenceSoldiers() 
-        return soldiers[dualCount].count
-    end
+    return results[dualCount].soldierDamagedCount
 end
 function GameUIReplay:Start()
     if not self.report:IsSoldierFight() then
@@ -228,7 +231,7 @@ function GameUIReplay:Start()
     local defenceToPercent = (attackRoundDragon.hp - attackRoundDragon.hpDecreased) / attackRoundDragon.hpMax * 100
     local defenceStepPercent = defenceToPercent - dragonBattle:GetDefenceDragon():GetPercent()
 
-    promise.all(dragonBattle:PromsieOfFight(),dragonBattle:PromiseOfVictory())
+    dragonBattle:PromsieOfFight()
     :next(function()
         return promise.all(
         	dragonBattle:GetAttackDragon()
@@ -240,7 +243,7 @@ function GameUIReplay:Start()
     	return dragonBattle:PromiseOfShowBuff()
     end)
     :next(function()
-    	return promise.all(dragonBattle:PromsieOfHide(),dragonBattle:PromiseOfVictoryHide())
+    	return dragonBattle:PromsieOfHide()
     end)
     :next(function()
     	self:OnStartRound()
@@ -544,9 +547,10 @@ function GameUIReplay:OnHurtFinished(hurtTroop)
         local isattack = hurtTroop:IsLeft()
         local round = self.roundCount
         local dual = self.dualCount
-        hurtTroop.infoNode.count:SetSoldierCount(
+        hurtTroop.infoNode.soldierCount:SetSoldierCount(
             self:GetSoldierCount(isattack,round,dual,true)
         )
+        hurtTroop:ShowHurtCount(self:GetSoldierHurtCount(isattack,round,dual))
 
         if self.hurtCount == 1 then -- 反击
             hurtTroop:Hold(0.2, function()
@@ -555,14 +559,14 @@ function GameUIReplay:OnHurtFinished(hurtTroop)
         else -- 死亡
             local attackTroops = hurtTroop.properties.target
             if attackTroops:IsMelee() and self:IsMoved(attackTroops) then
-                hurtTroop:Death()
+                hurtTroop:PromiseOfDeath()
                 local x,y = self:GetOriginPoint(attackTroops)
                 attackTroops:Return(x,y, self:MovingTimeForAttack(), function()
                     attackTroops:FaceCorrect()
                     self:OnFinishDual()
                 end)
             else
-                hurtTroop:Death(function()
+                hurtTroop:PromiseOfDeath():next(function()
                     self:OnFinishDual()
                 end)
             end
@@ -578,8 +582,13 @@ function GameUIReplay:OnHurtFinished(hurtTroop)
             local pps = {}
             for i,v in pairs(self.attackTroops) do
                 local roundData = attackRoundData[i]
-                if roundData and roundData.soldierCount - roundData.soldierDamagedCount <= 0 then
-                    table.insert(pps, v:PromiseOfDeath())
+                if roundData then 
+                    v.infoNode.soldierCount:SetSoldierCount(roundData.soldierCount - roundData.soldierDamagedCount)
+                    table.insert(pps, v:PromiseOfShowHurtCount(roundData.soldierDamagedCount))
+
+                    if roundData.soldierCount - roundData.soldierDamagedCount <= 0 then
+                        table.insert(pps, v:PromiseOfDeath())
+                    end
                 end
             end
 
@@ -593,7 +602,7 @@ function GameUIReplay:OnHurtFinished(hurtTroop)
             end
 
             if wallHp - wallDamagedHp <= 0 then
-                self.defenceTroops[1]:Death()
+                table.insert(pps, self.defenceTroops[1]:PromiseOfDeath())
             end
 
             if #pps > 0 then
