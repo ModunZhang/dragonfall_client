@@ -476,7 +476,7 @@ function GameUISendTroopNew:GetTotalSoldierInfo()
 end
 function GameUISendTroopNew:CreateBottomPart()
     local bottom_bg = display.newScale9Sprite("back_ground_619x52.png", 0, 0,cc.size(620,80),cc.rect(30,20,559,12))
-        :align(display.BOTTOM_CENTER, window.cx,window.bottom+50)
+        :align(display.BOTTOM_CENTER, window.cx,window.bottom)
         :addTo(self:GetView())
     self.isMax = self.military_soldiers ~= nil
     local max_btn = WidgetPushButton.new({normal = "yellow_btn_up_148x58.png",pressed = "yellow_btn_down_148x58.png"})
