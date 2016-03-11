@@ -23,80 +23,143 @@ local fightReport1 = {
         isWin = false,
         hpDecreased = 22
     },
-    playerSoldierRoundDatas = {{
-        soldierName = "swordsman_1",
-        morale = 100,
-        soldierCount = 100,
-        soldierWoundedCount = 2,
-        soldierStar = 1,
-        isWin = true,
-        soldierDamagedCount = 2,
-        moraleDecreased = 2
-    }, {
-        soldierName = "swordsman_1",
-        morale = 98,
-        soldierCount = 98,
-        soldierWoundedCount = 2,
-        soldierStar = 1,
-        isWin = true,
-        soldierDamagedCount = 2,
-        moraleDecreased = 32
-    }, {
-        soldierName = "swordsman_1",
-        morale = 66,
-        soldierCount = 96,
-        soldierWoundedCount = 1,
-        soldierStar = 1,
-        isWin = true,
-        soldierDamagedCount = 1,
-        moraleDecreased = 66
-    }, {
-        soldierName = "ranger_1",
-        morale = 100,
-        soldierCount = 100,
-        soldierWoundedCount = 1,
-        soldierStar = 1,
-        isWin = true,
-        soldierDamagedCount = 1,
-        moraleDecreased = 1
-    }},
-    sectionSoldierRoundDatas = {{
-        soldierName = "lancer_1",
-        morale = 5,
-        soldierCount = 5,
-        soldierWoundedCount = 0,
-        soldierStar = 1,
-        isWin = false,
-        soldierDamagedCount = 3,
-        moraleDecreased = 3
-    }, {
-        soldierName = "ranger_1",
-        morale = 8,
-        soldierCount = 8,
-        soldierWoundedCount = 0,
-        soldierStar = 1,
-        isWin = false,
-        soldierDamagedCount = 5,
-        moraleDecreased = 5
-    }, {
-        soldierName = "catapult_1",
-        morale = 2,
-        soldierCount = 2,
-        soldierWoundedCount = 0,
-        soldierStar = 1,
-        isWin = false,
-        soldierDamagedCount = 2,
-        moraleDecreased = 2
-    }, {
-        soldierName = "swordsman_1",
-        morale = 3,
-        soldierCount = 3,
-        soldierWoundedCount = 0,
-        soldierStar = 1,
-        isWin = false,
-        soldierDamagedCount = 2,
-        moraleDecreased = 2
-    }}
+    ["roundDatas"] = {
+                [1] = {
+                    ["attackResults"] = {
+                        [1] = {
+                            ["soldierName"] = "swordsman_1",
+                            ["soldierWoundedCount"] = 0,
+                            ["soldierStar"] = 1,
+                            ["isWin"] = true,
+                            ["soldierDamagedCount"] = 1,
+                            ["soldierCount"] = 33,
+                        }
+,
+                        [2] = {
+                            ["soldierName"] = "ranger_1",
+                            ["soldierWoundedCount"] = 0,
+                            ["soldierStar"] = 1,
+                            ["isWin"] = true,
+                            ["soldierDamagedCount"] = 1,
+                            ["soldierCount"] = 33,
+                        }
+,
+                    }
+,
+                    ["defenceResults"] = {
+                        [1] = {
+                            ["soldierName"] = "lancer_1",
+                            ["soldierWoundedCount"] = 0,
+                            ["soldierStar"] = 1,
+                            ["isWin"] = false,
+                            ["soldierDamagedCount"] = 1,
+                            ["soldierCount"] = 2,
+                        }
+,
+                        [2] = {
+                            ["soldierName"] = "ranger_1",
+                            ["soldierWoundedCount"] = 0,
+                            ["soldierStar"] = 1,
+                            ["isWin"] = false,
+                            ["soldierDamagedCount"] = 3,
+                            ["soldierCount"] = 5,
+                        }
+,
+                    }
+,
+                }
+,
+                [2] = {
+                    ["attackResults"] = {
+                        [1] = {
+                            ["soldierName"] = "swordsman_1",
+                            ["soldierWoundedCount"] = 0,
+                            ["soldierStar"] = 1,
+                            ["isWin"] = true,
+                            ["soldierDamagedCount"] = 1,
+                            ["soldierCount"] = 32,
+                        }
+,
+                        [2] = {
+                            ["soldierName"] = "ranger_1",
+                            ["soldierWoundedCount"] = 0,
+                            ["soldierStar"] = 1,
+                            ["isWin"] = true,
+                            ["soldierDamagedCount"] = 1,
+                            ["soldierCount"] = 32,
+                        }
+,
+                    }
+,
+                    ["defenceResults"] = {
+                        [1] = {
+                            ["soldierName"] = "lancer_1",
+                            ["soldierWoundedCount"] = 0,
+                            ["soldierStar"] = 1,
+                            ["isWin"] = false,
+                            ["soldierDamagedCount"] = 1,
+                            ["soldierCount"] = 2,
+                        }
+,
+                        [2] = {
+                            ["soldierName"] = "catapult_1",
+                            ["soldierWoundedCount"] = 0,
+                            ["soldierStar"] = 1,
+                            ["isWin"] = false,
+                            ["soldierDamagedCount"] = 1,
+                            ["soldierCount"] = 2,
+                        }
+,
+                    }
+,
+                }
+,
+                [3] = {
+                    ["attackResults"] = {
+                        [1] = {
+                            ["soldierName"] = "swordsman_1",
+                            ["soldierWoundedCount"] = 0,
+                            ["soldierStar"] = 1,
+                            ["isWin"] = true,
+                            ["soldierDamagedCount"] = 1,
+                            ["soldierCount"] = 31,
+                        }
+,
+                        [2] = {
+                            ["soldierName"] = "ranger_1",
+                            ["soldierWoundedCount"] = 0,
+                            ["soldierStar"] = 1,
+                            ["isWin"] = true,
+                            ["soldierDamagedCount"] = 1,
+                            ["soldierCount"] = 31,
+                        }
+,
+                    }
+,
+                    ["defenceResults"] = {
+                        [1] = {
+                            ["soldierName"] = "swordsman_1",
+                            ["soldierWoundedCount"] = 0,
+                            ["soldierStar"] = 1,
+                            ["isWin"] = false,
+                            ["soldierDamagedCount"] = 2,
+                            ["soldierCount"] = 5,
+                        }
+,
+                        [2] = {
+                            ["soldierName"] = "catapult_1",
+                            ["soldierWoundedCount"] = 0,
+                            ["soldierStar"] = 1,
+                            ["isWin"] = false,
+                            ["soldierDamagedCount"] = 1,
+                            ["soldierCount"] = 2,
+                        }
+,
+                    }
+,
+                }
+,
+            }
 }
 
 
@@ -296,16 +359,12 @@ function GameUIPveAttackFte:PormiseOfFte()
 
     self:Find():removeEventListenersByEvent("CLICKED_EVENT")
     self:Find():onButtonClicked(function()
-        local soldiers = string.split(sections[self.pve_name].troops, ",")
-        table.remove(soldiers, 1)
-        UIKit:newGameUI('GameUIPVEFteSendTroop',
-            LuaUtils:table_map(soldiers, function(k,v)
-                local name,star = unpack(string.split(v, ":"))
-                return k, {name = name, star = tonumber(star)}
-            end),
+        local enemies = string.split(sections[self.pve_name].troops, ",")
+        table.remove(enemies, 1)
+        UIKit:newGameUI('GameUISendTroopNew',
             function(dragonType, soldiers)
                 local dragon = City:GetFirstBuildingByType("dragonEyrie"):GetDragonManager():GetDragon(dragonType)
-                local param = {
+                local dragonParam = {
                     dragonType = dragon:Type(),
                     old_exp = dragon:Exp(),
                     new_exp = dragon:Exp(),
@@ -314,55 +373,50 @@ function GameUIPveAttackFte:PormiseOfFte()
                     reward = {},
                 }
 
-
-                local report
+                local fightReport
                 if self.pve_name == "1_1" then
-                    report = fightReport1
-                    param.reward = {{type = "resources", name = "food", count = 1}}
+                    fightReport = fightReport1
+                    dragonParam.reward = {{type = "resources", name = "food", count = 1}}
                 elseif self.pve_name == "1_2" then
-                    report = fightReport2
-                    param.reward = {{type = "resources", name = "wood", count = 1}}
+                    fightReport = fightReport2
+                    dragonParam.reward = {{type = "resources", name = "wood", count = 1}}
                 elseif self.pve_name == "1_3" then
-                    report = fightReport3
-                    param.reward = {{type = "soldierMaterials", name = "deathHand", count = 2}}
+                    fightReport = fightReport3
+                    dragonParam.reward = {{type = "soldierMaterials", name = "deathHand", count = 2}}
                 end
                 mockData.FightWithNpc(self.pve_name)
                 display.getRunningScene():GetSceneLayer():RefreshPve()
-                report.playerDragonFightData.type = dragonType
-                -- UIKit:newGameUI("GameUIReplay", self:DecodeReport(report, dragon, soldiers), function()
-                --     self:performWithDelay(function()
-                --         self:LeftButtonClicked()
-                --         display.getRunningScene():GetSceneLayer():MoveAirship(true)
-                --     end, 0)
-                -- end):AddToCurrentScene(true)
+                fightReport.playerDragonFightData.type = dragonType
 
+                local report = self:DecodeReport(fightReport, dragon, soldiers)
                 local dragon = City:GetFirstBuildingByType("dragonEyrie"):GetDragonManager():GetDragon(dragonType)
-                param.new_exp = dragon:Exp()
-                param.new_level = dragon:Level()
-                param.star = 3
-                param.callback = function()
+                dragonParam.new_exp = dragon:Exp()
+                dragonParam.new_level = dragon:Level()
+                dragonParam.star = 3
+                dragonParam.callback = function()
                     display.getRunningScene():GetSceneLayer():MoveAirship(true)
                 end
+
                 local is_show = false
-                UIKit:newGameUI(self.pve_name == "1_1" and "GameUIReplayFte" or "GameUIReplay", self:DecodeReport(report, dragon, soldiers), function()
+                UIKit:newGameUI(self.pve_name == "1_1" and "GameUIReplayFte" or "GameUIReplay", report, function()
                     if not is_show then
                         is_show = true
-                        UIKit:newGameUI("GameUIPveSummary", param):AddToCurrentScene(true)
+                        UIKit:newGameUI("GameUIPveSummary", dragonParam):AddToCurrentScene(true)
                         self:performWithDelay(function() self:LeftButtonClicked() end, 0)
                     end
                 end, function(replayui)
                     replayui:LeftButtonClicked()
                     if not is_show then
                         is_show = true
-                        UIKit:newGameUI("GameUIPveSummary", param):AddToCurrentScene(true)
+                        UIKit:newGameUI("GameUIPveSummary", dragonParam):AddToCurrentScene(true)
                         self:performWithDelay(function() self:LeftButtonClicked() end, 0)
                     end
                 end):AddToCurrentScene(true)
 
-            end):AddToCurrentScene(true)
+            end, {isPVE = true}):AddToCurrentScene(true)
     end)
 
-    return UIKit:PromiseOfOpen("GameUIPVEFteSendTroop")
+    return UIKit:PromiseOfOpen("GameUISendTroopNew")
         :next(function(ui)
             self:GetFteLayer():removeFromParent()
             return ui:PormiseOfFte(self.pve_name == "1_1")

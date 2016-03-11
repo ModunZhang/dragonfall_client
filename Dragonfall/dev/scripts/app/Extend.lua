@@ -444,6 +444,11 @@ function display.newScene(name)
     return scene
 end
 local Node = cc.Node
+local setAnchorPoint = Node.setAnchorPoint
+function Node:setAnchorPoint(point)
+    assert(type(point) == "table")
+    setAnchorPoint(self, point)
+end
 function Node:scheduleAt(callback, interval)
     callback()
     return self:schedule(callback, interval or 1)
