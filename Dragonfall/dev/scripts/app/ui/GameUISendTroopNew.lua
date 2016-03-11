@@ -684,9 +684,9 @@ end
 -- fte
 local promise = import("..utils.promise")
 local WidgetFteArrow = import("..widget.WidgetFteArrow")
-function GameUISendTroopNew:PormiseOfFte()
+function GameUISendTroopNew:PormiseOfFte(need_fte)
     return self:PromiseOfMax():next(function()
-        return self:PromiseOfAttack()
+        return self:PromiseOfAttack(need_fte)
     end)
 end
 function GameUISendTroopNew:PromiseOfMax()
