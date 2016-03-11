@@ -251,8 +251,15 @@ function GameUISendTroopNew:SelectDragon()
                     btn_label = _("确定"),
                     btn_callback = function (selectDragon)
                         if selectDragon ~= self.dragon then
-                            self:RefreashDragon(selectDragon)
                             self:ResetSoldierNode()
+                            self:RefreashDragon(selectDragon)
+                            self.isMax = false
+                            self.max_btn:setButtonLabel(UIKit:ttfLabel({
+                                text = _("最大"),
+                                size = 24,
+                                color = 0xffedae,
+                                shadow= true
+                            }))
                         end
                     end,
                 },
@@ -633,7 +640,7 @@ function GameUISendTroopNew:GetSortSoldierMax()
         end
         if soldier_count > 0 then
             table.insert(own_soldiers, {name = soldier_type,count = soldier_count})
-            
+
         end
     end
     while #sort_soldiers < 6 and #own_soldiers > 0 do
@@ -729,6 +736,8 @@ end
 
 
 return GameUISendTroopNew
+
+
 
 
 
