@@ -1859,6 +1859,7 @@ end
 local SOLDIER_NODE = 1
 local EFFECT_TAG = 2
 local INFO_TAG = 3
+local HURT_TAG = 5
 function UIKit:CreateFightTroops(soldierName, properties, gameController)
     gameController = gameController or empty_gameController
     local troopsNode = display.newNode()
@@ -1891,6 +1892,15 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         if action then
             action:setSpeed(speed)
         end
+
+        local hurtLabel = self.infoNode:getChildByTag(HURT_TAG)
+        if hurtLabel then
+            local action = hurtLabel:getActionByTag(SPEED_TAG)
+            if action then
+                action:setSpeed(speed)
+            end
+        end
+
         for _, v in pairs(self.soldiers) do
             v:getAnimation():setSpeedScale(speed)
         end
@@ -1908,6 +1918,36 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
     end
     function troopsNode:GetAni()
         return self.soldiers[1]:getAnimation()
+    end
+    function troopsNode:PromiseOfShowHurtCount(count)
+        local p = promise.new()
+        self:ShowHurtCount(count, function()
+            p:resolve()
+        end)
+        return p
+    end
+    function troopsNode:ShowHurtCount(count, func)
+        self.infoNode:removeChildByTag(HURT_TAG)
+        local hurtLabel = UIKit:ttfLabel({
+            text = string.format("- %s", GameUtils:formatNumber(count)),
+            size = 30,
+            color = 0xff0000,
+        }):addTo(self.infoNode, 1, HURT_TAG)
+        :align(display.CENTER)
+
+        local action = cc.Speed:create(transition.sequence({
+            cc.MoveBy:create(0.6, cc.p(0, 30)),
+            cc.CallFunc:create(function()
+                if type(func) == "function" then
+                    func()
+                end
+            end),
+            cc.RemoveSelf:create(),
+        }), self:Speed())
+        action:setTag(SPEED_TAG)
+
+        hurtLabel:runAction(action)
+        return self
     end
     function troopsNode:Hold(time, func)
         local acts = transition.sequence({
@@ -1976,7 +2016,7 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
     end
     function troopsNode:Death(func)
         local acts = transition.sequence({
-            cc.FadeOut:create(0.5),
+            cc.FadeOut:create(0.8),
             cc.CallFunc:create(function()
                 self:hide()
                 if type(func) == "function" then
