@@ -295,6 +295,8 @@ CC_USE_POMELO_C_LIB | 启用pomelo c版本的客户端支持(android会自动添
 CC_USE_FACEBOOK | 打开facebook的功能。这个宏不能控制是否编译facebook的库到包中。
 CC_USE_SDK_PAYPAL | 打开PayPal支付的sdk功能(Android)
 CC_USE_GOOGLE_LOGIN | 打开google账号登录接口的功能(Android)
+CC_USE_APPSFLYER | 打开Appsflyer的功能
+CC_USE_TAKING_DATA | 打开talkingdata的接口
 
 ### Java中的宏定义
 
