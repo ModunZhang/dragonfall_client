@@ -21,7 +21,7 @@ function GameUISettingAccount:onExit()
     GameUISettingAccount.super.onExit(self)
 end
 function GameUISettingAccount:IsBinded()
-    return User:IsBindGameCenter() or User:IsBindFacebook() or User:IsBindFacebook()
+    return User:IsBindGameCenter() or User:IsBindFacebook() or User:IsBindGoogle()
 end
 function GameUISettingAccount:CheckGameCenter()
     self:CreateUI()
@@ -43,30 +43,29 @@ function GameUISettingAccount:UpdateGcName()
 end
 function GameUISettingAccount:CreateUI()
     self:CreateAccountPanel()
-    -- if self:IsBinded() then
-    --     if User:IsBindGameCenter() then
-    --         if device.platform == 'ios' then
-    --             self:CreateGameCenterPanel()
-    --         end
-    --     end
-
-    --     if User:IsBindFacebook() then
-    --         self:CreateFacebookPanel()
-    --     end
-    --     if device.platform == 'android' then
-    --         if User:IsBindGoogle() then
-    --             self:CreateGooglePanel()
-    --         end
-    --     end
-    -- else
-    if device.platform == 'ios' then
-        self:CreateGameCenterPanel()
+    if self:IsBinded() then
+        if User:IsBindGameCenter() then
+            if device.platform == 'ios' then
+                self:CreateGameCenterPanel()
+            end
+        end
+        if User:IsBindFacebook() then
+            self:CreateFacebookPanel()
+        end
+        if User:IsBindGoogle() then
+            if device.platform == 'android' then
+                self:CreateGooglePanel()
+            end
+        end
+    else
+        if device.platform == 'ios' then
+            self:CreateGameCenterPanel()
+        end
+        self:CreateFacebookPanel()
+        if device.platform == 'android' then
+            self:CreateGooglePanel()
+        end
     end
-    self:CreateFacebookPanel()
-    if device.platform == 'android' then
-        self:CreateGooglePanel()
-    end
-    -- end
 
     -- 切换账号按钮
     cc.ui.UIPushButton.new({
@@ -477,6 +476,8 @@ function GameUISettingAccount:ExchangeBindAccount()
 end
 
 return GameUISettingAccount
+
+
 
 
 
