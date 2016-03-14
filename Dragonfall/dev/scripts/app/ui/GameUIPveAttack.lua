@@ -565,15 +565,17 @@ end
 function GameUIPveAttack:GetStarByReport(report)
     local star = 0
     star = star + (report:GetReportResult() and 1 or 0)
-    star = star + (report:GetFightAttackDragonRoundData().isWin and 1 or 0)
+    if report:GetReportResult() then
+        star = star + (report:GetFightAttackDragonRoundData().isWin and 1 or 0)
 
-    local is_first_round_win = true
-    for i,v in ipairs(report:GetSoldierRoundData()[1].attackResults) do
-        if not v.isWin then
-            is_first_round_win = false
+        local is_first_round_win = true
+        for i,v in ipairs(report:GetSoldierRoundData()[1].attackResults) do
+            if not v.isWin then
+                is_first_round_win = false
+            end
         end
+        star = star + (is_first_round_win and 1 or 0)
     end
-    star = star + (is_first_round_win and 1 or 0)
     return star
 end
 function GameUIPveAttack:DecodeReport(report, dragon, attack_soldiers)
@@ -638,6 +640,7 @@ function GameUIPveAttack:DecodeReport(report, dragon, attack_soldiers)
                 return false
             end
         end
+        return true
     end
     function report:GetAttackDragonLevel()
         return dragon:Level()
