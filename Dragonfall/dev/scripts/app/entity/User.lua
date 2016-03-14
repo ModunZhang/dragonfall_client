@@ -389,7 +389,7 @@ function User:IsBindFacebook()
 end
 function User:IsBindGoogle()
     local gc = self.gc
-    return gc and gc.type == "facebook" and gc.gcId ~= "" and gc.gcId ~= json.null
+    return gc and gc.type == "google" and gc.gcId ~= "" and gc.gcId ~= json.null
 end
 --[[end]]
 
