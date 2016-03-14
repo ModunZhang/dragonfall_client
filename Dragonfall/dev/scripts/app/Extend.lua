@@ -2,7 +2,7 @@ require("cocos.cocos2d.Cocos2dConstants")
 print("加载玩家自定义函数!")
 NOT_HANDLE = function(...) print("net message not handel, please check !") end
 local FileUtils = cc.FileUtils:getInstance()
-local openSD = true
+local openSD = ext.isLowMemoryDevice()
 
 local sharedTextureCache = cc.Director:getInstance():getTextureCache()
 function showMemoryUsage(head)
