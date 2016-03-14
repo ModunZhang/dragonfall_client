@@ -29,7 +29,6 @@ function GameUILoginBeta:ctor()
         -- {image = "ui_pvr0.pvr.ccz",list = "ui_pvr0.plist"},
         -- {image = "ui_pvr1.pvr.ccz",list = "ui_pvr1.plist"},
         -- {image = "ui_pvr2.pvr.ccz",list = "ui_pvr2.plist"},
->>>>>>> D3Drender
     }
     self.local_resources_percent_per = LOCAL_RESOURCES_PERCENT / #self.local_resources
 end
