@@ -226,33 +226,50 @@ Vec2 GLView::getVisibleOrigin() const
 
 void GLView::setViewPortInPoints(float x , float y , float w , float h)
 {
+#if DIRECTX_ENABLED == 0
     glViewport((GLint)(x * _scaleX + _viewPortRect.origin.x),
                (GLint)(y * _scaleY + _viewPortRect.origin.y),
                (GLsizei)(w * _scaleX),
                (GLsizei)(h * _scaleY));
+#endif
 }
 
 void GLView::setScissorInPoints(float x , float y , float w , float h)
 {
+#if DIRECTX_ENABLED == 0
     glScissor((GLint)(x * _scaleX + _viewPortRect.origin.x),
               (GLint)(y * _scaleY + _viewPortRect.origin.y),
               (GLsizei)(w * _scaleX),
               (GLsizei)(h * _scaleY));
+#endif
 }
 
 bool GLView::isScissorEnabled()
 {
+#if DIRECTX_ENABLED == 0
 	return (GL_FALSE == glIsEnabled(GL_SCISSOR_TEST)) ? false : true;
+#else
+	return DXStateCache::getInstance().isScissorEnabled();
+#endif
 }
 
 Rect GLView::getScissorRect() const
 {
+	Rect rect;
+#if DIRECTX_ENABLED == 0	
 	GLfloat params[4];
 	glGetFloatv(GL_SCISSOR_BOX, params);
-	float x = (params[0] - _viewPortRect.origin.x) / _scaleX;
-	float y = (params[1] - _viewPortRect.origin.y) / _scaleY;
-	float w = params[2] / _scaleX;
-	float h = params[3] / _scaleY;
+	rect.origin.x = params[0];
+	rect.origin.y = params[1];
+	rect.size.width = params[2];
+	rect.size.height = params[3];
+#else	
+	DXStateCache::getInstance().getScissor(rect);
+#endif
+	float x = (rect.origin.x - _viewPortRect.origin.x) / _scaleX;
+	float y = (rect.origin.y - _viewPortRect.origin.y) / _scaleY;
+	float w = rect.size.width / _scaleX;
+	float h = rect.size.height / _scaleY;
 	return Rect(x, y, w, h);
 }
 

@@ -288,8 +288,16 @@ namespace ui {
         
         Rect rect(textureRect);
         Size size(originalSize);
-        
-        _capInsets = capInsets;
+
+		Rect capInsets_(capInsets);
+		if (!capInsets_.equals(Rect::ZERO) && _scale9Image->getTexture()->isSDTex())
+		{
+			capInsets_.origin.x = capInsets.origin.x / 2;
+			capInsets_.origin.y = capInsets.origin.y / 2;
+			capInsets_.size.width = capInsets.size.width / 2;
+			capInsets_.size.height = capInsets.size.height / 2;
+		}
+		_capInsets = capInsets_;
         
         // If there is no given rect
         if ( rect.equals(Rect::ZERO) )
@@ -311,7 +319,7 @@ namespace ui {
         _spriteFrameRotated = rotated;
         _originalSize = size;
         _preferredSize = size;
-        _capInsetsInternal = capInsets;
+		_capInsetsInternal = capInsets_;
         
         if (_scale9Enabled)
         {
@@ -905,12 +913,16 @@ namespace ui {
                 glState = GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR_NO_MVP);
             }
                 break;
+            #if DIRECTX_ENABLED == 0
             case State::GRAY:
             {
                 auto program = GLProgram::createWithByteArrays(ccPositionTextureColor_noMVP_vert,
                                                                ccUIGrayScale_frag);
                 glState = GLProgramState::getOrCreateWithGLProgram(program);
             }
+            #else
+                CCASSERT(false, "notspported");
+            #endif
             default:
                 break;
         }

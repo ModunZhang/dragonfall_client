@@ -19,7 +19,7 @@ end
 
 function GameUIAllianceJoinTips:onEnter()
 	GameUIAllianceJoinTips.super.onEnter(self)
-	local join_alliance_tips_bg_572x536 = device.platform == 'winrt' and "join_alliance_tips_bg_572x536.png" or "join_alliance_tips_bg_572x536.jpg" 
+	local join_alliance_tips_bg_572x536 = "join_alliance_tips_bg_572x536.jpg" 
 	local bg = display.newSprite(join_alliance_tips_bg_572x536):align(display.BOTTOM_CENTER, 304,112):addTo(self:GetBody())
 	local green_title = display.newSprite("green_title_639x69.png"):addTo(self:GetBody()):align(display.TOP_CENTER,304,700)
 	UIKit:ttfLabel({text = _("联盟强大功能!"),size = 24,color = 0xffedae,shadow = true }):align(display.CENTER,319, 40):addTo(green_title)

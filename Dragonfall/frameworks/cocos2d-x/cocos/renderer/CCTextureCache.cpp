@@ -341,7 +341,7 @@ Texture2D * TextureCache::addImage(const std::string &path)
             bool bRet = image->initWithImageFile(fullpath);
             CC_BREAK_IF(!bRet);
 
-            texture = new (std::nothrow) Texture2D();
+			texture = new (std::nothrow) Texture2D(path);
 
             if( texture && texture->initWithImage(image) )
             {

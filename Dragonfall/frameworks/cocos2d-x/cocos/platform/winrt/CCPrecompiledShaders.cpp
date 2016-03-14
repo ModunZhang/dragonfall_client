@@ -98,8 +98,12 @@ static std::string computeHash(const GLchar* vShaderByteArray, const GLchar* fSh
     }
     if(!err)
     {
+#if DIRECTX_ENABLED == 0
         char* shader_version = (char*) glGetString(GL_SHADING_LANGUAGE_VERSION);
         err = SHA1Input(&sha,(const unsigned char *) shader_version,strlen(shader_version));
+#else
+		NOT_SUPPORTED();
+#endif
     }
     if(!err)
     {
@@ -161,8 +165,11 @@ bool CCPrecompiledShaders::loadProgram(GLuint program, const GLchar* vShaderByte
     auto it = m_precompiledPrograms.find(id);
     if(it == m_precompiledPrograms.end())
         return false;
-
+#if DIRECTX_ENABLED == 0
     glProgramBinaryOES(program, GL_PROGRAM_BINARY_ANGLE, (const GLvoid*) it->second->program, it->second->length);
+#else
+	NOT_SUPPORTED();
+#endif
 
     return true;
 }
@@ -180,13 +187,16 @@ bool CCPrecompiledShaders::addProgram(GLuint program, const std::string& id)
         m_isDirty = true;
 
     CompiledProgram* p = new CompiledProgram();
-
+#if (DIRECTX_ENABLED == 0)
     glGetProgramiv(program, GL_PROGRAM_BINARY_LENGTH_OES, &length);
     p->program.reserve(length);
     p->length = length;
     p->key = id;
     GLenum binaryFormat;
     glGetProgramBinaryOES(program, length, NULL, &binaryFormat, p->program.data());
+#else
+	NOT_SUPPORTED();
+#endif
     m_programs[id] = p;
 
     return true;

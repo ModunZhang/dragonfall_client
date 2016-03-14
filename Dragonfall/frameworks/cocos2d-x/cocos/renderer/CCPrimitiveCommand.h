@@ -60,8 +60,10 @@ public:
     
     /**Get the generated material ID.*/
     inline uint32_t getMaterialID() const { return _materialID; }
+#if DIRECTX_ENABLED == 0
     /**Get the texture ID used for drawing.*/
     inline GLuint getTextureID() const { return _textureID; }
+#endif
     /**Get the glprogramstate used for drawing.*/
     inline GLProgramState* getGLProgramState() const { return _glProgramState; }
     /**Get the blend funcion for drawing.*/

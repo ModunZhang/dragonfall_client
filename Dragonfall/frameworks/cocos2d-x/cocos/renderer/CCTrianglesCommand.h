@@ -70,8 +70,10 @@ public:
     void useMaterial() const;
     /**Get the material id of command.*/
     inline uint32_t getMaterialID() const { return _materialID; }
+#if DIRECTX_ENABLED == 0
     /**Get the openGL texture handle.*/
     inline GLuint getTextureID() const { return _textureID; }
+#endif
     /**Get a const reference of triangles.*/
     inline const Triangles& getTriangles() const { return _triangles; }
     /**Get the vertex count in the triangles.*/

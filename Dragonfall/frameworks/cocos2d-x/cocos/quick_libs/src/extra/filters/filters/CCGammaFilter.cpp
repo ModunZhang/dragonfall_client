@@ -53,11 +53,15 @@ GammaFilter::GammaFilter()
 
 GLProgram* GammaFilter::loadShader()
 {
-    GLProgram* __p = GLProgram::createWithByteArrays(ccPositionTextureColor_noMVP_vert, ccFilterShader_gamma_frag);
-    
+#if DIRECTX_ENABLED == 0
+   GLProgram* __p = GLProgram::createWithByteArrays(ccPositionTextureColor_noMVP_vert, ccFilterShader_gamma_frag);
+   
 //	GLProgram* __p = new GLProgram();
 //	__p->initWithByteArrays(ccPositionTexture_vert, ccFilterShader_gamma_frag);
 	return __p;
+#else
+	return nullptr;
+#endif
 }
 
 void GammaFilter::setParameter(float $param)

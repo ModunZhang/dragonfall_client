@@ -352,20 +352,31 @@ void Label::updateShaderProgram()
         break;
     case cocos2d::LabelEffect::OUTLINE: 
         setGLProgramState(GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_LABEL_OUTLINE));
+#if DIRECTX_ENABLED == 0
         _uniformEffectColor = glGetUniformLocation(getGLProgram()->getProgram(), "u_effectColor");
+#else
+		NOT_SUPPORTED();
+#endif
         break;
     case cocos2d::LabelEffect::GLOW:
         if (_useDistanceField)
         {
             setGLProgramState(GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_LABEL_DISTANCEFIELD_GLOW));
-            _uniformEffectColor = glGetUniformLocation(getGLProgram()->getProgram(), "u_effectColor");
+#if DIRECTX_ENABLED == 0
+			_uniformEffectColor = glGetUniformLocation(getGLProgram()->getProgram(), "u_effectColor");
+#else
+			NOT_SUPPORTED();
+#endif
         }
         break;
     default:
         return;
     }
-    
+#if DIRECTX_ENABLED == 0
     _uniformTextColor = glGetUniformLocation(getGLProgram()->getProgram(), "u_textColor");
+#else
+	_uniformTextColor = getGLProgram()->getUniformLocation("u_textColor");
+#endif
 }
 
 void Label::setFontAtlas(FontAtlas* atlas,bool distanceFieldEnabled /* = false */, bool useA8Shader /* = false */)
@@ -826,6 +837,34 @@ void Label::setFontScale(float fontScale)
     Node::setScale(_fontScale);
 }
 
+
+#if (DIRECTX_ENABLED == 1)
+D3D11_BLEND GetDXBlend2(GLint glBlend)
+{
+	if (glBlend == GL_ZERO)
+		return D3D11_BLEND_ZERO;
+	else if (glBlend == GL_SRC_COLOR)
+		return D3D11_BLEND_SRC_COLOR;
+	else if (glBlend == GL_ONE_MINUS_SRC_COLOR)
+		return D3D11_BLEND_INV_SRC_COLOR;
+	else if (glBlend == GL_SRC_ALPHA)
+		return D3D11_BLEND_SRC_ALPHA;
+	else if (glBlend == GL_ONE_MINUS_SRC_ALPHA)
+		return D3D11_BLEND_INV_SRC_ALPHA;
+	else if (glBlend == GL_DST_ALPHA)
+		return D3D11_BLEND_DEST_ALPHA;
+	else if (glBlend == GL_ONE_MINUS_DST_ALPHA)
+		return D3D11_BLEND_INV_DEST_ALPHA;
+	else if (glBlend == GL_DST_COLOR)
+		return D3D11_BLEND_DEST_COLOR;
+	else if (glBlend == GL_ONE_MINUS_DST_COLOR)
+		return D3D11_BLEND_INV_DEST_COLOR;
+	else if (glBlend == GL_SRC_ALPHA_SATURATE)
+		return D3D11_BLEND_SRC_ALPHA_SAT;
+	return D3D11_BLEND_ONE;
+}
+#endif
+
 void Label::onDraw(const Mat4& transform, bool transformUpdated)
 {
     CC_PROFILER_START("Label - draw");
@@ -838,7 +877,11 @@ void Label::onDraw(const Mat4& transform, bool transformUpdated)
 
     auto glprogram = getGLProgram();
     glprogram->use();
-    GL::blendFunc( _blendFunc.src, _blendFunc.dst );
+#if (DIRECTX_ENABLED == 1)
+	DXStateCache::getInstance().setBlend(_blendFunc.src, _blendFunc.dst);
+#else
+	GL::blendFunc(_blendFunc.src, _blendFunc.dst);
+#endif
 
     if (_currentLabelType == LabelType::TTF)
     {
@@ -852,12 +895,17 @@ void Label::onDraw(const Mat4& transform, bool transformUpdated)
              _effectColorF.r,_effectColorF.g,_effectColorF.b,_effectColorF.a);
     }
 
+
+
     if(_shadowEnabled && _shadowBlurRadius <= 0)
     {
         drawShadowWithoutBlur();
     }
 
     glprogram->setUniformsForBuiltins(transform);
+#if (DIRECTX_ENABLED == 1)
+	glprogram->set();
+#endif
 
     for(const auto &child: _children)
     {
@@ -881,6 +929,9 @@ void Label::drawShadowWithoutBlur()
     setColor(_shadowColor);
 
     getGLProgram()->setUniformsForBuiltins(_shadowTransform);
+#if (DIRECTX_ENABLED == 1)
+	getGLProgram()->set();
+#endif
     for(const auto &child: _children)
     {
         child->updateTransform();

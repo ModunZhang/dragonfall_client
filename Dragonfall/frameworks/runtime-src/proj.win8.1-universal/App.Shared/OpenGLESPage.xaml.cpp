@@ -16,10 +16,12 @@
 * See the License for the specific language governing permissions and limitations under the License.
 */
 
-#include "App.xaml.h"
+#include "pch.h"
 #include "OpenGLESPage.xaml.h"
 #include "AdeasygoSDK/AdeasygoHelper.h"
+
 using namespace cocos2d;
+
 using namespace Platform;
 using namespace Concurrency;
 using namespace Windows::Foundation;
@@ -37,96 +39,179 @@ using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 
 OpenGLESPage::OpenGLESPage() :
-    OpenGLESPage(nullptr)
+m_windowVisible(true),
+m_coreInput(nullptr)
 {
-
-}
-
-OpenGLESPage::OpenGLESPage(OpenGLES* openGLES) :
-    mOpenGLES(openGLES),
-    mRenderSurface(EGL_NO_SURFACE),
-    mCustomRenderSurfaceSize(0,0),
-    mUseCustomRenderSurfaceSize(false),
-    m_coreInput(nullptr),
-    m_dpi(0.0f),
-    m_deviceLost(false),
-    m_orientation(DisplayOrientations::Landscape
-	)
-{
-    InitializeComponent();
+	InitializeComponent();
 #if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
-   //dannyhe
+	//dannyhe
 	Windows::Phone::UI::Input::HardwareButtons::BackPressed += ref new Windows::Foundation::EventHandler<Windows::Phone::UI::Input::BackPressedEventArgs^>(this, &OpenGLESPage::HardwareButtons_BackPressed);
 	Windows::UI::ViewManagement::ApplicationView::GetForCurrentView()->SuppressSystemOverlays = true; //full screen if switch auto hide navigation bar "on"
 	Windows::UI::ViewManagement::ApplicationView::GetForCurrentView()->SetDesiredBoundsMode(Windows::UI::ViewManagement::ApplicationViewBoundsMode::UseCoreWindow);
 	//end
 #endif
-    Windows::UI::Core::CoreWindow^ window = Windows::UI::Xaml::Window::Current->CoreWindow;
 
-    window->VisibilityChanged +=
-        ref new Windows::Foundation::TypedEventHandler<Windows::UI::Core::CoreWindow^, Windows::UI::Core::VisibilityChangedEventArgs^>(this, &OpenGLESPage::OnVisibilityChanged);
+	// 注册页面生命周期的事件处理程序。
+	CoreWindow^ window = Window::Current->CoreWindow;
 
-    swapChainPanel->SizeChanged +=
-        ref new Windows::UI::Xaml::SizeChangedEventHandler(this, &OpenGLESPage::OnSwapChainPanelSizeChanged);
+	window->VisibilityChanged +=
+		ref new TypedEventHandler<CoreWindow^, VisibilityChangedEventArgs^>(this, &OpenGLESPage::OnVisibilityChanged);
 
-    DisplayInformation^ currentDisplayInformation = DisplayInformation::GetForCurrentView();
+	DisplayInformation^ currentDisplayInformation = DisplayInformation::GetForCurrentView();
 
-    currentDisplayInformation->OrientationChanged +=
-        ref new TypedEventHandler<DisplayInformation^, Object^>(this, &OpenGLESPage::OnOrientationChanged);
+	currentDisplayInformation->DpiChanged +=
+		ref new TypedEventHandler<DisplayInformation^, Object^>(this, &OpenGLESPage::OnDpiChanged);
 
-    m_orientation = currentDisplayInformation->CurrentOrientation;
+	currentDisplayInformation->OrientationChanged +=
+		ref new TypedEventHandler<DisplayInformation^, Object^>(this, &OpenGLESPage::OnOrientationChanged);
 
-    this->Loaded +=
-        ref new Windows::UI::Xaml::RoutedEventHandler(this, &OpenGLESPage::OnPageLoaded);
+	DisplayInformation::DisplayContentsInvalidated +=
+		ref new TypedEventHandler<DisplayInformation^, Object^>(this, &OpenGLESPage::OnDisplayContentsInvalidated);
 
-    mSwapChainPanelSize = { swapChainPanel->RenderSize.Width, swapChainPanel->RenderSize.Height };
+	swapChainPanel->CompositionScaleChanged +=
+		ref new TypedEventHandler<SwapChainPanel^, Object^>(this, &OpenGLESPage::OnCompositionScaleChanged);
 
-#if (WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP)
-    Windows::UI::ViewManagement::StatusBar::GetForCurrentView()->HideAsync();
-#else
-    // Disable all pointer visual feedback for better performance when touching.
-    // This is not supported on Windows Phone applications.
-    auto pointerVisualizationSettings = Windows::UI::Input::PointerVisualizationSettings::GetForCurrentView();
-    pointerVisualizationSettings->IsContactFeedbackEnabled = false;
-    pointerVisualizationSettings->IsBarrelButtonFeedbackEnabled = false;
-#endif
+	swapChainPanel->SizeChanged +=
+		ref new SizeChangedEventHandler(this, &OpenGLESPage::OnSwapChainPanelSizeChanged);
 
-    // Register our SwapChainPanel to get independent input pointer events
-    auto workItemHandler = ref new WorkItemHandler([this](IAsyncAction ^)
-    {
-        // The CoreIndependentInputSource will raise pointer events for the specified device types on whichever thread it's created on.
-        m_coreInput = swapChainPanel->CreateCoreIndependentInputSource(
-            Windows::UI::Core::CoreInputDeviceTypes::Mouse |
-            Windows::UI::Core::CoreInputDeviceTypes::Touch |
-            Windows::UI::Core::CoreInputDeviceTypes::Pen
-            );
+	this->Loaded +=
+		        ref new Windows::UI::Xaml::RoutedEventHandler(this, &OpenGLESPage::OnPageLoaded);
 
-        // Register for pointer events, which will be raised on the background thread.
-        m_coreInput->PointerPressed += ref new TypedEventHandler<Object^, PointerEventArgs^>(this, &OpenGLESPage::OnPointerPressed);
-        m_coreInput->PointerMoved += ref new TypedEventHandler<Object^, PointerEventArgs^>(this, &OpenGLESPage::OnPointerMoved);
-        m_coreInput->PointerReleased += ref new TypedEventHandler<Object^, PointerEventArgs^>(this, &OpenGLESPage::OnPointerReleased);
+	#if (WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP)
+	    Windows::UI::ViewManagement::StatusBar::GetForCurrentView()->HideAsync();
+	#else
+	    // Disable all pointer visual feedback for better performance when touching.
+	    // This is not supported on Windows Phone applications.
+	    auto pointerVisualizationSettings = Windows::UI::Input::PointerVisualizationSettings::GetForCurrentView();
+	    pointerVisualizationSettings->IsContactFeedbackEnabled = false;
+	    pointerVisualizationSettings->IsBarrelButtonFeedbackEnabled = false;
+	#endif
 
-        // Begin processing input messages as they're delivered.
-        m_coreInput->Dispatcher->ProcessEvents(CoreProcessEventsOption::ProcessUntilQuit);
-    });
+	// 此时，我们具有访问设备的权限。
+	// 我们可创建与设备相关的资源。
+	m_deviceResources = std::make_shared<DX::DeviceResources>();
+	m_deviceResources->SetSwapChainPanel(swapChainPanel);
 
-    // Run task on a dedicated high priority background thread.
-    m_inputLoopWorker = ThreadPool::RunAsync(workItemHandler, WorkItemPriority::High, WorkItemOptions::TimeSliced);
+	// 注册我们的 SwapChainPanel 以获取独立的输入指针事件
+	auto workItemHandler = ref new WorkItemHandler([this](IAsyncAction ^)
+	{
+		// 对于指定的设备类型，无论它是在哪个线程上，CoreIndependentInputSource 都将引发指针事件。
+		m_coreInput = swapChainPanel->CreateCoreIndependentInputSource(
+			Windows::UI::Core::CoreInputDeviceTypes::Mouse |
+			Windows::UI::Core::CoreInputDeviceTypes::Touch |
+			Windows::UI::Core::CoreInputDeviceTypes::Pen
+			);
 
+		// 指针事件的寄存器，将在后台线程上引发。
+		m_coreInput->PointerPressed += ref new TypedEventHandler<Object^, PointerEventArgs^>(this, &OpenGLESPage::OnPointerPressed);
+		m_coreInput->PointerMoved += ref new TypedEventHandler<Object^, PointerEventArgs^>(this, &OpenGLESPage::OnPointerMoved);
+		m_coreInput->PointerReleased += ref new TypedEventHandler<Object^, PointerEventArgs^>(this, &OpenGLESPage::OnPointerReleased);
+
+		// 一旦发送输入消息，即开始处理它们。
+		m_coreInput->Dispatcher->ProcessEvents(CoreProcessEventsOption::ProcessUntilQuit);
+	});
+
+	// 在高优先级的专用后台线程上运行任务。
+	m_inputLoopWorker = ThreadPool::RunAsync(workItemHandler, WorkItemPriority::High, WorkItemOptions::TimeSliced);
+
+	m_main = std::unique_ptr<DirectXMain>(new DirectXMain(m_deviceResources));
+	m_main->SetOrientation(currentDisplayInformation->CurrentOrientation);
+	m_main->SetSwapChainPanel(swapChainPanel);
 }
+//
+//OpenGLESPage::OpenGLESPage(OpenGLES* openGLES) :
+//    mOpenGLES(openGLES),
+//    mRenderSurface(EGL_NO_SURFACE),
+//    mCustomRenderSurfaceSize(0,0),
+//    mUseCustomRenderSurfaceSize(false),
+//    m_coreInput(nullptr),
+//    m_dpi(0.0f),
+//    m_deviceLost(false),
+//    m_orientation(DisplayOrientations::Landscape
+//	)
+//{
+//    InitializeComponent();
+//#if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
+//   //dannyhe
+//	Windows::Phone::UI::Input::HardwareButtons::BackPressed += ref new Windows::Foundation::EventHandler<Windows::Phone::UI::Input::BackPressedEventArgs^>(this, &OpenGLESPage::HardwareButtons_BackPressed);
+//	Windows::UI::ViewManagement::ApplicationView::GetForCurrentView()->SuppressSystemOverlays = true; //full screen if switch auto hide navigation bar "on"
+//	Windows::UI::ViewManagement::ApplicationView::GetForCurrentView()->SetDesiredBoundsMode(Windows::UI::ViewManagement::ApplicationViewBoundsMode::UseCoreWindow);
+//	//end
+//#endif
+//    Windows::UI::Core::CoreWindow^ window = Windows::UI::Xaml::Window::Current->CoreWindow;
+//
+//    window->VisibilityChanged +=
+//        ref new Windows::Foundation::TypedEventHandler<Windows::UI::Core::CoreWindow^, Windows::UI::Core::VisibilityChangedEventArgs^>(this, &OpenGLESPage::OnVisibilityChanged);
+//
+//    swapChainPanel->SizeChanged +=
+//        ref new Windows::UI::Xaml::SizeChangedEventHandler(this, &OpenGLESPage::OnSwapChainPanelSizeChanged);
+//
+//    DisplayInformation^ currentDisplayInformation = DisplayInformation::GetForCurrentView();
+//
+//    currentDisplayInformation->OrientationChanged +=
+//        ref new TypedEventHandler<DisplayInformation^, Object^>(this, &OpenGLESPage::OnOrientationChanged);
+//
+//    m_orientation = currentDisplayInformation->CurrentOrientation;
+//
+//    this->Loaded +=
+//        ref new Windows::UI::Xaml::RoutedEventHandler(this, &OpenGLESPage::OnPageLoaded);
+//
+//    mSwapChainPanelSize = { swapChainPanel->RenderSize.Width, swapChainPanel->RenderSize.Height };
+//
+//#if (WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP)
+//    Windows::UI::ViewManagement::StatusBar::GetForCurrentView()->HideAsync();
+//#else
+//    // Disable all pointer visual feedback for better performance when touching.
+//    // This is not supported on Windows Phone applications.
+//    auto pointerVisualizationSettings = Windows::UI::Input::PointerVisualizationSettings::GetForCurrentView();
+//    pointerVisualizationSettings->IsContactFeedbackEnabled = false;
+//    pointerVisualizationSettings->IsBarrelButtonFeedbackEnabled = false;
+//#endif
+//
+//    // Register our SwapChainPanel to get independent input pointer events
+//    auto workItemHandler = ref new WorkItemHandler([this](IAsyncAction ^)
+//    {
+//        // The CoreIndependentInputSource will raise pointer events for the specified device types on whichever thread it's created on.
+//        m_coreInput = swapChainPanel->CreateCoreIndependentInputSource(
+//            Windows::UI::Core::CoreInputDeviceTypes::Mouse |
+//            Windows::UI::Core::CoreInputDeviceTypes::Touch |
+//            Windows::UI::Core::CoreInputDeviceTypes::Pen
+//            );
+//
+//        // Register for pointer events, which will be raised on the background thread.
+//        m_coreInput->PointerPressed += ref new TypedEventHandler<Object^, PointerEventArgs^>(this, &OpenGLESPage::OnPointerPressed);
+//        m_coreInput->PointerMoved += ref new TypedEventHandler<Object^, PointerEventArgs^>(this, &OpenGLESPage::OnPointerMoved);
+//        m_coreInput->PointerReleased += ref new TypedEventHandler<Object^, PointerEventArgs^>(this, &OpenGLESPage::OnPointerReleased);
+//
+//        // Begin processing input messages as they're delivered.
+//        m_coreInput->Dispatcher->ProcessEvents(CoreProcessEventsOption::ProcessUntilQuit);
+//    });
+//
+//    // Run task on a dedicated high priority background thread.
+//    m_inputLoopWorker = ThreadPool::RunAsync(workItemHandler, WorkItemPriority::High, WorkItemOptions::TimeSliced);
+//
+//}
+
 
 OpenGLESPage::~OpenGLESPage()
 {
-    StopRenderLoop();
-    DestroyRenderSurface();
+	// 析构时停止渲染和处理事件。
+	m_main->StopRenderLoop();
+#if DIRECTX_ENABLED == 0
+	m_main->DestroyRenderSurface();
+#endif
+	m_coreInput->Dispatcher->StopProcessEvents();
 }
 
 void OpenGLESPage::OnPageLoaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
     // The SwapChainPanel has been created and arranged in the page layout, so EGL can be initialized.
-    CreateRenderSurface();
-    StartRenderLoop();
+#if DIRECTX_ENABLED == 0
+	m_main->CreateRenderSurface();
+#endif
+	m_main->StartRenderLoop();
 }
+#if 0
 
 void OpenGLESPage::OnPointerPressed(Object^ sender, PointerEventArgs^ e)
 {
@@ -325,16 +410,15 @@ void OpenGLESPage::StopRenderLoop()
     }
 }
 
+#endif
 void OpenGLESPage::TerminateApp()
 {
-	if (mOpenGLES)
-	{
-		mOpenGLES->DestroySurface(mRenderSurface);
-		mOpenGLES->Cleanup(); // change Cleanup to public
-	}
+#if DIRECTX_ENABLED == 0
+	m_main->CleanupRenderSurface();
+#endif
 	Windows::UI::Xaml::Application::Current->Exit();
 }
-
+//
 #if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
 void OpenGLESPage::HardwareButtons_BackPressed(Platform::Object^ sender, Windows::Phone::UI::Input::BackPressedEventArgs^ e)
 {
@@ -363,3 +447,87 @@ void OpenGLESPage::HardwareButtons_BackPressed(Platform::Object^ sender, Windows
 	e->Handled = true;
 }
 #endif
+
+// 窗口事件处理程序。
+
+void OpenGLESPage::OnVisibilityChanged(CoreWindow^ sender, VisibilityChangedEventArgs^ args)
+{
+	m_windowVisible = args->Visible;
+	if (m_windowVisible)
+	{
+		m_main->StartRenderLoop();
+	}
+	else
+	{
+		m_main->StopRenderLoop();
+	}
+}
+
+
+// DisplayInformation 事件处理程序。
+
+void OpenGLESPage::OnDpiChanged(DisplayInformation^ sender, Object^ args)
+{
+	critical_section::scoped_lock lock(m_main->GetCriticalSection());
+	m_deviceResources->SetDpi(sender->LogicalDpi);
+	m_main->CreateWindowSizeDependentResources();
+}
+
+void OpenGLESPage::OnOrientationChanged(DisplayInformation^ sender, Object^ args)
+{
+	critical_section::scoped_lock lock(m_main->GetCriticalSection());
+	m_deviceResources->SetCurrentOrientation(sender->CurrentOrientation);
+	m_main->CreateWindowSizeDependentResources();
+	m_main->SetOrientation(sender->CurrentOrientation);
+}
+
+
+void OpenGLESPage::OnDisplayContentsInvalidated(DisplayInformation^ sender, Object^ args)
+{
+	critical_section::scoped_lock lock(m_main->GetCriticalSection());
+	m_deviceResources->ValidateDevice();
+}
+
+void OpenGLESPage::OnPointerPressed(Object^ sender, PointerEventArgs^ e)
+{
+	// 按下指针时开始跟踪指针移动。
+	m_main->OnPointerPressed(sender, e);
+}
+
+void OpenGLESPage::OnPointerMoved(Object^ sender, PointerEventArgs^ e)
+{
+	// 更新指针跟踪代码。
+	m_main->OnPointerMoved(sender, e);
+}
+
+void OpenGLESPage::OnPointerReleased(Object^ sender, PointerEventArgs^ e)
+{
+	// 释放指针时停止跟踪指针移动。
+	m_main->OnPointerReleased(sender, e);
+}
+
+void OpenGLESPage::OnCompositionScaleChanged(SwapChainPanel^ sender, Object^ args)
+{
+	critical_section::scoped_lock lock(m_main->GetCriticalSection());
+	m_deviceResources->SetCompositionScale(sender->CompositionScaleX, sender->CompositionScaleY);
+	m_main->CreateWindowSizeDependentResources();
+}
+
+void OpenGLESPage::OnSwapChainPanelSizeChanged(Object^ sender, SizeChangedEventArgs^ e)
+{
+	critical_section::scoped_lock lock(m_main->GetCriticalSection());
+	m_deviceResources->SetLogicalSize(e->NewSize);
+	m_main->CreateWindowSizeDependentResources();
+
+	m_main->SetSwapChainPanelSize({ e->NewSize.Width, e->NewSize.Height });
+	extendedSplashImage->Height = e->NewSize.Height;
+	extendedSplashImage->Width = e->NewSize.Width;
+}
+
+// 如果在电话应用程序中使用应用程序栏，则取消对其的注释。
+// 在单击应用程序栏按钮时调用。
+//void OpenGLESPage::AppBarButton_Click(Object^ sender, RoutedEventArgs^ e)
+//{
+//	// 如果应用程序栏适合您的应用程序，则使用它。设计应用程序栏，
+//	// 然后填充事件处理程序(与此示例类似)。
+//}

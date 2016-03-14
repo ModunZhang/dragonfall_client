@@ -382,6 +382,7 @@ void MotionStreak::onDraw(const Mat4 &transform, uint32_t flags)
     getGLProgram()->use();
     getGLProgram()->setUniformsForBuiltins(transform);
 
+#if DIRECTX_ENABLED == 0
     GL::enableVertexAttribs(GL::VERTEX_ATTRIB_FLAG_POS_COLOR_TEX );
     GL::blendFunc( _blendFunc.src, _blendFunc.dst );
 
@@ -405,6 +406,9 @@ void MotionStreak::onDraw(const Mat4 &transform, uint32_t flags)
 
     glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)_nuPoints*2);
     CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1, _nuPoints*2);
+#else
+	CC_ASSERT(false);
+#endif
 }
 
 void MotionStreak::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)

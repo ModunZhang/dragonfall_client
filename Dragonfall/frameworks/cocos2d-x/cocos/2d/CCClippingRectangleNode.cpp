@@ -68,7 +68,11 @@ Rect ClippingRectangleNode::intersectionRect(Rect& rect1, Rect& rect2)
 void ClippingRectangleNode::onBeforeVisitScissor()
 {
     if (_clippingEnabled) {
+#if DIRECTX_ENABLED == 0
         glEnable(GL_SCISSOR_TEST);
+#else
+		DXStateCache::getInstance().enableScissor(true);
+#endif
 
         Rect clippingRegion = Rect(_clippingRegion);
         
@@ -119,7 +123,11 @@ void ClippingRectangleNode::onAfterVisitScissor()
 {
     if (_clippingEnabled)
     {
+#if DIRECTX_ENABLED == 0
         glDisable(GL_SCISSOR_TEST);
+#else
+		DXStateCache::getInstance().enableScissor(false);
+#endif
     }
 }
 

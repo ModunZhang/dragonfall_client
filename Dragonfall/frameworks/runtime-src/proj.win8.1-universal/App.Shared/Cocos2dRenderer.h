@@ -20,7 +20,7 @@
 #include <agile.h>
 
 #include "cocos2d.h"
-
+#include "platform/wp8-xaml/cpp/IWP8Win.h"
 
 class AppDelegate;
 
@@ -39,7 +39,16 @@ namespace cocos2d
         void Pause();
         void Resume();
         void DeviceLost();
-        
+		void Clear();
+
+		void SetDeviceResources(const std::shared_ptr<DX::DeviceResources>& deviceResources)
+		{
+			m_deviceResources = deviceResources;
+		}
+		std::shared_ptr<DX::DeviceResources>& GetDeviceResources()
+		{
+			return m_deviceResources;
+		}
     private:
 
         int m_width;
@@ -51,5 +60,44 @@ namespace cocos2d
         Platform::Agile<Windows::UI::Core::CoreDispatcher> m_dispatcher;
         Platform::Agile<Windows::UI::Xaml::Controls::Panel> m_panel;
         Windows::Graphics::Display::DisplayOrientations m_orientation;
+
+		std::shared_ptr<DX::DeviceResources> m_deviceResources;
+		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> m_depthStencilState;
+
+	private:
+		static Cocos2dRenderer* m_instance;
+		class WP8Window* m_wp8window;
+	public:
+		static Cocos2dRenderer* GetInstance()
+		{
+			return m_instance;
+		}
+
+		friend class WP8Window;
     };
+
+
+	class WP8Window : public cocos2d::IWP8Win
+	{
+		virtual ID3D11Device2* GetDevice()
+		{
+			return Cocos2dRenderer::GetInstance()->m_deviceResources->GetD3DDevice();
+		}
+
+		virtual ID3D11DeviceContext2* GetContext()
+		{
+			return Cocos2dRenderer::GetInstance()->m_deviceResources->GetD3DDeviceContext();
+		}
+
+		virtual ID3D11DepthStencilView* GetDepthStencilView()
+		{
+			return Cocos2dRenderer::GetInstance()->m_deviceResources->GetDepthStencilView();
+		}
+
+		virtual ID3D11RenderTargetView* const* GetRenderTargetView() const
+		{
+			return Cocos2dRenderer::GetInstance()->m_deviceResources->GetBackBufferRenderTargetViewAddress();
+		}
+	};
 }
+

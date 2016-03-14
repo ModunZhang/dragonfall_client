@@ -158,6 +158,10 @@ void DisplayFactory::createSpriteDisplay(Bone *bone, DecorativeDisplay *decoDisp
     else
     {
         skin = Skin::createWithSpriteFrameName((textureName + ".png").c_str());
+		if (skin && bone->getArmature()->getName().find("-sd") != std::string::npos)
+		{
+			skin->UpdateVertexRect();
+		}
     }
 
     decoDisplay->setDisplay(skin);
