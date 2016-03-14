@@ -568,7 +568,7 @@ function GameUIPveAttack:GetStarByReport(report)
     if report:GetReportResult() then
         star = star + (report:GetFightAttackDragonRoundData().isWin and 1 or 0)
 
-        local is_first_round_win = true
+        local is_first_round_win = #report:GetSoldierRoundData() == 1
         for i,v in ipairs(report:GetSoldierRoundData()[1].attackResults) do
             if not v.isWin then
                 is_first_round_win = false
