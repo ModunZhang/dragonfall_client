@@ -708,8 +708,10 @@ function GameUIReplay:FinishReplay()
     result:align(display.CENTER, window.cx, window.cy + 150)
     if isWin then
         result:setAnchorPoint(cc.p(0.48, 0.5))
+        app:GetAudioManager():PlayeEffectSoundWithKey("BATTLE_VICTORY")
     else
         result:setAnchorPoint(cc.p(0.5, 0.5))
+        app:GetAudioManager():PlayeEffectSoundWithKey("BATTLE_DEFEATED")
     end
     result:getAnimation():play(isWin and "Victory" or "Defeat", -1, 0)
 
