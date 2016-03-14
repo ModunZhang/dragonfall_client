@@ -84,7 +84,7 @@ function GameUIReplay:DefencePosition()
     return 608 - 100
 end
 function GameUIReplay:TopPositionByRow(row)
-    return display.height - 260 - (row-1) * 105
+    return 910 - 200 - (row-1) * 105
 end
 function GameUIReplay:GetDragonBuff(hp, hpMax)
     local hpPercent = hp / hpMax * 100
@@ -752,7 +752,7 @@ function GameUIReplay:BuildUI()
     ui_map.dragonBattleNode = display.newNode():addTo(self, 10)
 
     ui_map.dragonBattleWhite = display.newSprite("click_empty.png")
-    :addTo(self, 11):align(display.TOP_CENTER, display.cx, display.height - 170)
+    :addTo(bg, 11):align(display.TOP_CENTER, display.cx, 910 - 170)
 
     local size = ui_map.dragonBattleWhite:getContentSize()
     ui_map.dragonBattleWhite:hide()
@@ -761,7 +761,7 @@ function GameUIReplay:BuildUI()
     ui_map.dragonBattleWhite:setScaleY(2.7)
 
     ui_map.soldierBattleWhite = display.newSprite("click_empty.png")
-    :addTo(self, 11):align(display.TOP_CENTER, display.cx, display.height - 140)
+    :addTo(bg, 11):align(display.TOP_CENTER, display.cx, 910 - 80)
 
     local size = ui_map.soldierBattleWhite:getContentSize()
     ui_map.soldierBattleWhite:hide()
