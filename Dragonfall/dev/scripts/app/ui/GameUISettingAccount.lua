@@ -338,9 +338,27 @@ function GameUISettingAccount:ExchangeBindAccount()
         select_gamecenter = cc.ui.UICheckBoxButton.new(checkbox_image)
             :align(display.CENTER, bg_width - 40, bg_height/2):addTo(gamecenter_panel)
     end
+    local select_google
+    local google_panel
+    if device.platform == 'android' then
+        google_panel = WidgetUIBackGround.new({width = bg_width,height=bg_height},WidgetUIBackGround.STYLE_TYPE.STYLE_2)
+            :align(display.TOP_CENTER, 304, b_size.height - 30)
+            :addTo(body)
+        display.newSprite("icon_google_104x104.png"):align(display.LEFT_CENTER, 12, bg_height/2)
+            :addTo(google_panel)
+        local google_bind_state_label = UIKit:ttfLabel({
+            text = _("使用你的Google账号登录"),
+            size = 20,
+            color= 0x403c2f,
+            dimensions = cc.size(260,0)
+        }):align(display.LEFT_CENTER, 130, bg_height/2):addTo(google_panel)
 
+        select_google = cc.ui.UICheckBoxButton.new(checkbox_image)
+            :align(display.CENTER, bg_width - 40, bg_height/2):addTo(google_panel)
+    end
+    local frist_panel = google_panel or gamecenter_panel
     local facebook_panel = WidgetUIBackGround.new({width = bg_width,height=bg_height},WidgetUIBackGround.STYLE_TYPE.STYLE_2)
-        :align(display.TOP_CENTER, 304, gamecenter_panel and (gamecenter_panel:getPositionY() - 130) or b_size.height - 30)
+        :align(display.TOP_CENTER, 304, frist_panel and (frist_panel:getPositionY() - 130) or b_size.height - 30)
         :addTo(body)
     display.newSprite("icon_facebook_104x104.png"):align(display.LEFT_CENTER, 12, bg_height/2)
         :addTo(facebook_panel)
@@ -354,9 +372,11 @@ function GameUISettingAccount:ExchangeBindAccount()
     local select_facebook = cc.ui.UICheckBoxButton.new(checkbox_image)
         :align(display.CENTER, bg_width - 40, bg_height/2):addTo(facebook_panel)
 
-    if select_gamecenter then
-        select_gamecenter:setButtonSelected(true)
-        select_gamecenter:onButtonStateChanged(function(event)
+    local frist_select_box = select_gamecenter or select_google
+
+    if frist_select_box then
+        frist_select_box:setButtonSelected(true)
+        frist_select_box:onButtonStateChanged(function(event)
             local isOn = event.state == "on"
             if select_facebook:isButtonSelected() and isOn then
                 select_facebook:setButtonSelected(not isOn)
@@ -367,8 +387,8 @@ function GameUISettingAccount:ExchangeBindAccount()
     end
     select_facebook:onButtonStateChanged(function(event)
         local isOn = event.state == "on"
-        if select_gamecenter and select_gamecenter:isButtonSelected() and isOn then
-            select_gamecenter:setButtonSelected(not isOn)
+        if frist_select_box and frist_select_box:isButtonSelected() and isOn then
+            frist_select_box:setButtonSelected(not isOn)
         end
     end)
 
@@ -401,6 +421,23 @@ function GameUISettingAccount:ExchangeBindAccount()
                             ext.gamecenter.authenticate(true)
                         end,function()end)
                     end
+                elseif select_google and select_google:isButtonSelected() then
+                    UIKit:showMessageDialog(_("提示"),_("是否确认切换至Google账号？"),function()
+                        ext.google.login(function ( data )
+                            if data.event == "login_success" then
+                                local userid,username = data.userid,data.username
+                                if User.gc and User.gc.gcId == userid then
+                                    UIKit:showMessageDialog(_("提示"),_("你的Google账号绑定了当前游戏账号，请登录其他Google账号，再重试"))
+                                else
+                                    NetManager:getSwitchGcPromise(userid):done(function (response)
+                                        app:restart(true)
+                                    end)
+                                end
+                            else
+                                UIKit:showMessageDialog(_("提示"),_("链接失败"))
+                            end
+                        end)
+                    end,function()end)
                 elseif select_facebook:isButtonSelected() then
                     UIKit:showMessageDialog(_("提示"),_("是否确认切换至Facebook账号？"),function()
                         ext.facebook.login(function ( data )
