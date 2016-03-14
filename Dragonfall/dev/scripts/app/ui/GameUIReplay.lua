@@ -221,7 +221,8 @@ function GameUIReplay:Start()
         hpDecreased = defenceRoundDragon.hpDecreased,
         isWin = defenceRoundDragon.isWin,
         increase = defenceIncrease,
-    }, self):addTo(self.ui_map.dragonBattleNode, 0, BATTLE_OBJECT_TAG):pos(display.cx, display.height - 300)
+    }, self):addTo(self.ui_map.dragonBattleNode, 0, BATTLE_OBJECT_TAG)
+    :pos(display.cx, display.height - 300)
 
     local TIME_PER_HUNDRED_PERCENT = 1 / 100
 
@@ -232,6 +233,9 @@ function GameUIReplay:Start()
     local defenceStepPercent = defenceToPercent - dragonBattle:GetDefenceDragon():GetPercent()
 
     dragonBattle:PromsieOfFight()
+    :next(function()
+        return self:OnHandle("dragonFight")
+    end)
     :next(function()
         return promise.all(
         	dragonBattle:GetAttackDragon()
@@ -244,6 +248,9 @@ function GameUIReplay:Start()
     end)
     :next(function()
     	return dragonBattle:PromsieOfHide()
+    end)
+    :next(function()
+        return self:OnHandle("soldierFight")
     end)
     :next(function()
     	self:OnStartRound()
@@ -730,15 +737,39 @@ function GameUIReplay:ChangeSpeed(speed)
 end
 function GameUIReplay:BuildUI()
     local ui_map = {}
-    ui_map.dragonBattleNode = display.newNode():addTo(self, 10)
     local bg = WidgetUIBackGround.new({width = 608,height = 910},
                     WidgetUIBackGround.STYLE_TYPE.STYLE_1):addTo(self)
                     :align(display.TOP_CENTER, display.cx, display.height - 10)
 
-    local clip = display.newClippingRegionNode(cc.rect(15, 85, 608-15*2, 910 - 85*2)):addTo(bg)
+    local clipWith, clipHeight = 608-15*2, 910-85*2
+    local clip = display.newClippingRegionNode(cc.rect(15,85,clipWith,clipHeight)):addTo(bg)
+    
+
     ui_map.battleBgNode = self:CreateBattleBg():addTo(clip):align(display.LEFT_BOTTOM)
     ui_map.soldierBattleNode = display.newNode():addTo(clip,1)
     ui_map.dragonSkillNode = display.newNode():addTo(clip,2)
+
+    ui_map.dragonBattleNode = display.newNode():addTo(self, 10)
+
+    ui_map.dragonBattleWhite = display.newSprite("click_empty.png")
+    :addTo(self, 11):align(display.TOP_CENTER, display.cx, display.height - 170)
+
+    local size = ui_map.dragonBattleWhite:getContentSize()
+    ui_map.dragonBattleWhite:hide()
+    :opacity(255):setColor(cc.c3b(255,0,0))
+    ui_map.dragonBattleWhite:setScaleX(608/size.width)
+    ui_map.dragonBattleWhite:setScaleY(2.7)
+
+    ui_map.soldierBattleWhite = display.newSprite("click_empty.png")
+    :addTo(self, 11):align(display.TOP_CENTER, display.cx, display.height - 140)
+
+    local size = ui_map.soldierBattleWhite:getContentSize()
+    ui_map.soldierBattleWhite:hide()
+    :opacity(255):setColor(cc.c3b(255,0,0))
+    ui_map.soldierBattleWhite:setScaleX(608/size.width)
+    ui_map.soldierBattleWhite:setScaleY(0.75)
+    
+
     -- 左右黑边
     local line1 = display.newSprite("line_send_trop_612x2.png")
         :align(display.CENTER_TOP, 608/2, 910 - 85)
@@ -920,6 +951,9 @@ function GameUIReplay:DoFte()
     local r = self.ui_map.close:getCascadeBoundingBox()
     WidgetFteArrow.new(_("点击关闭")):addTo(self.ui_map.close)
     :TurnDown():align(display.CENTER_BOTTOM, 0, r.height - 20)
+end
+function GameUIReplay:OnHandle(state)
+
 end
 
 return GameUIReplay
