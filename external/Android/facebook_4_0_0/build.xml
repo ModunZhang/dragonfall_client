@@ -5,7 +5,7 @@
          It contains the path to the SDK. It should *NOT* be checked into
          Version Control Systems. -->
     <property file="local.properties" />
-    <!-- dannyhe:we should generate class files for 1.7 VM version  for facebook 4.0  -->
+    <!-- dannyhe:We should generate class files with 1.7 VM version  in facebook sdk 4.0  -->
     <property name="java.target" value="1.7" />
     <property name="java.source" value="1.7" />
     <!-- The ant.properties file can be created by you. It is only edited by the
