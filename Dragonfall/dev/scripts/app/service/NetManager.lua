@@ -694,7 +694,8 @@ end
 local function get_connectGateServer_promise()
     local p = promise.new(check_request("连接网关服务器失败!"))
     NetManager.m_netService:connect(NetManager.m_gateServer.host, NetManager.m_gateServer.port, function(success)
-        p:resolve({success = success, msg = {code = SUCCESS_CODE}})
+        code = success and SUCCESS_CODE or 0
+        p:resolve({success = success, msg = {code = code}})
     end)
     return p
 end
@@ -753,7 +754,8 @@ end
 local function get_connectLogicServer_promise()
     local p = promise.new(check_request("连接逻辑服务器失败!"))
     NetManager.m_netService:connect(NetManager.m_logicServer.host, NetManager.m_logicServer.port, function(success)
-        p:resolve({success = success, msg = {code = SUCCESS_CODE}})
+        code = success and SUCCESS_CODE or 0
+        p:resolve({success = success, msg = {code = code}})
     end)
     return p
 end
