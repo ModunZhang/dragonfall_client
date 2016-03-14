@@ -9,16 +9,15 @@ public class LaunchHelper {
 	
 	private static String TAG = "LaunchHelper";
 	private static native void nativeInitLuaEngine(String path); 
-	
-	//检查是否首次安装
+	//define the location of resources to extra.
+	private enum UnzipLocation { None, ExternalStorage, InternalSpace }
+	//check the device if player install the game at fist time
 	public static void checkGameFirstInstall(){
 		AppActivity.getGameActivity().setKeepScreenOn(true);
 		if(DataHelper.isAppVersionExpired() || !DataHelper.hasInstallUnzip()) { //需要解压
-			DebugUtil.LogDebug(TAG, "unzip resources");
-			int flag = getInstallFlag();
-			if(flag < 0) {
-				//error
-				DebugUtil.LogDebug(TAG, "check space error");
+			DebugUtil.LogDebug(TAG, "checkGameFirstInstall:need unzip dragonfall.zip");
+			UnzipLocation location = getUnzipLocation();
+			if(location == UnzipLocation.None) {
 				AppActivity.getGameActivity().runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
@@ -27,31 +26,29 @@ public class LaunchHelper {
 				});
 				
 			}else {
-				DataHelper.unzipGameResource(flag == 0);
+				DataHelper.unzipGameResource(location == UnzipLocation.ExternalStorage);
 			}
 		}else {
-			DebugUtil.LogDebug(TAG, "launch game");
 			initNativeLuaEngine();
 		}
 	}
 	
-	// -1 - >error ,0 -> sdcard ,1 ->mobile
-	private static int getInstallFlag() {
-		int intallFlag = -1; 
+	private static UnzipLocation getUnzipLocation() {
+		UnzipLocation location = UnzipLocation.None; 
 		if(!DataHelper.isExternalStorageMounted() || !DataHelper.isExternalStorageSpaceEnough()) {
 			if(DataHelper.isInternalSpaceEnough()) {
-				intallFlag = 1;
+				location = UnzipLocation.InternalSpace;
 			}
 		}else {
-			intallFlag = 0;
+			location = UnzipLocation.ExternalStorage;
 		}
-		return intallFlag;
+		return location;
 	}
 	
 	//启动游戏lua part
 	public static void initNativeLuaEngine() {
 		DataHelper.preInitActivityData();
-		DebugUtil.LogDebug(TAG, "-- game bundle path:"+Cocos2dxHelper.getCocos2dxBundlePath());
+		DebugUtil.LogDebug(TAG, "Game Bundle Path:"+Cocos2dxHelper.getCocos2dxBundlePath());
 		Cocos2dxHelper.runOnGLThread(new Runnable() {	
 			@Override
 			public void run() {
