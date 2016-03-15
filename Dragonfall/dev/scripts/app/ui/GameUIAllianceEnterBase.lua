@@ -138,21 +138,19 @@ function GameUIAllianceEnterBase:InitBuildingImage()
         if tolua.type(images) ~= "table" then
             local building_image = display.newSprite(images)
             local scale,x,y = self:GetBuildImageInfomation(building_image)
-            building_image:addTo(body):pos(x,y)
-            building_image:setAnchorPoint(cc.p(0.5,0.5))
+            building_image:addTo(body):align(display.CENTER,x,y)
             building_image:setScale(scale)
         else
             for i,image in ipairs(images) do
                 local building_image = display.newSprite(image)
                 local scale,x,y = self:GetBuildImageInfomation(building_image)
-                building_image:addTo(body):pos(x,y)
-                building_image:setAnchorPoint(cc.p(0.5,0.5))
+                building_image:addTo(body):align(display.CENTER,x,y)
                 building_image:setScale(scale)
             end
         end
     else
         local scale,x,y = self:GetBuildImageInfomation(sprite)
-        sprite:setAnchorPoint(cc.p(0.5,0.5)):addTo(body):pos(x,y)
+        sprite:addTo(body):align(display.CENTER,x,y)
         sprite:setScale(scale)
     end
     local level_bg = display.newScale9Sprite("back_ground_166x84.png",0 , 0,cc.size(138,34),cc.rect(15,10,136,64))

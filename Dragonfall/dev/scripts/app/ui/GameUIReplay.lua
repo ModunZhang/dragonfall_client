@@ -146,7 +146,8 @@ function GameUIReplay:Setup()
             :pos(30, -20):SetSoldierCount(self:GetSoldierCount(false, 1, i, false))
         end
     else
-        self.defenceTroops[1] = UIKit:CreateFightTroops("wall", {isleft = false,},self)
+        local wallName = string.format("wall_%d", self.report:GetWallData().wall.level)
+        self.defenceTroops[1] = UIKit:CreateFightTroops(wallName, {isleft = false,},self)
                                 :addTo(self.ui_map.soldierBattleNode,0,BATTLE_OBJECT_TAG)
                                 :pos(self:WallPosition()):FaceCorrect()
     end
@@ -293,7 +294,8 @@ function GameUIReplay:OnFinishRound()
         self:OnStartRound()
     elseif #self.attackTroops > 0 and not self.isFightWall
     and self.report:IsFightWall() then
-        self.defenceTroops[1] = UIKit:CreateFightTroops("wall", {isleft = false,},self)
+        local wallName = string.format("wall_%d", self.report:GetWallData().wall.level)
+        self.defenceTroops[1] = UIKit:CreateFightTroops(wallName, {isleft = false,},self)
             :addTo(self.ui_map.soldierBattleNode,0,BATTLE_OBJECT_TAG)
             :pos(self:WallPosition())
             :FaceCorrect()

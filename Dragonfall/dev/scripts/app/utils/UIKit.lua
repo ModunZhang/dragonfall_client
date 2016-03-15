@@ -1538,7 +1538,9 @@ local soldier_fight_map = {
     skeletonArcher  = {"kulousheshou_90"  , cc.p(0.26, 0.29), 4, false},
     deathKnight     = {"siwangqishi_90"   , cc.p(0.28, 0.30), 2, true},
     meatWagon       = {"jiaorouche_90"    , cc.p(0.20, 0.29), 1, false},
-    wall            = {"chengqiang_1"     , cc.p(0.50, 0.50), 1, false},
+    wall_1          = {"chengqiang_1"     , cc.p(0.50, 0.50), 1, false},
+    wall_2          = {"chengqiang_2"     , cc.p(0.50, 0.50), 1, false},
+    wall_3          = {"chengqiang_3"     , cc.p(0.50, 0.50), 1, false},
 }
 local count_map = {
     [1] = {{x = 0, y = 0}},
