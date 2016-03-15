@@ -754,21 +754,21 @@ function GameUIReplay:BuildUI()
     ui_map.dragonBattleNode = display.newNode():addTo(self, 10)
 
     ui_map.dragonBattleWhite = display.newSprite("click_empty.png")
-    :addTo(bg, 11):align(display.TOP_CENTER, display.cx, 910 - 170)
+    :addTo(bg, 11):align(display.TOP_CENTER, 608/2, 910 - 160)
 
     local size = ui_map.dragonBattleWhite:getContentSize()
     ui_map.dragonBattleWhite:hide()
     :opacity(255):setColor(cc.c3b(255,0,0))
-    ui_map.dragonBattleWhite:setScaleX(608/size.width)
+    ui_map.dragonBattleWhite:setScaleX(clipWith/size.width)
     ui_map.dragonBattleWhite:setScaleY(2.7)
 
     ui_map.soldierBattleWhite = display.newSprite("click_empty.png")
-    :addTo(bg, 11):align(display.TOP_CENTER, display.cx, 910 - 80)
+    :addTo(bg, 11):align(display.TOP_CENTER, 608/2, 910 - 110)
 
     local size = ui_map.soldierBattleWhite:getContentSize()
     ui_map.soldierBattleWhite:hide()
     :opacity(255):setColor(cc.c3b(255,0,0))
-    ui_map.soldierBattleWhite:setScaleX(608/size.width)
+    ui_map.soldierBattleWhite:setScaleX(clipWith/size.width)
     ui_map.soldierBattleWhite:setScaleY(0.75)
     
 
