@@ -179,7 +179,7 @@ function GameUIAllianceHome:InitArrow()
         up = "arrow_up_enemy.png",
         down = "arrow_down_enemy.png",
         icon = "attack_58x56.png",
-        }, function()
+    }, function()
         local mapIndex = Alliance_Manager:GetMyAlliance():GetEnemyAllianceMapIndex()
         if not mapIndex then return self.arrow_enemy:hide() end
         local scene = display.getRunningScene()
@@ -416,6 +416,13 @@ function GameUIAllianceHome:RefreshTop(force_refresh)
         else
             display.newSprite("icon_unknown_72x86.png"):align(display.CENTER, flag_bg:getContentSize().width/2,flag_bg:getContentSize().height/2):addTo(flag_bg)
         end
+        if isKing then
+            flag_bg:hide()
+            local crown_icon = display.newSprite("crystalThrone.png")
+                :align(display.LEFT_CENTER, -10, -top_self_size.height/2)
+                :addTo(top_self_bg)
+                :scale(0.14)
+        end
         local alliance_name_label = UIKit:ttfLabel(
             {
                 text = current_alliance and current_alliance.basicInfo.name or (isKing and _("水晶王座") or _("无主之地")),
@@ -455,9 +462,8 @@ function GameUIAllianceHome:RefreshTop(force_refresh)
         end
 
         local period_bg = display.newSprite("background_98x70.png"):align(display.LEFT_CENTER, name_bg:getPositionX() + name_bg:getContentSize().width + 10,-top_self_size.height/2 - 4):addTo(top_self_bg)
-        period_bg:setVisible(not isKing)
         UIKit:ttfLabel({
-            text = current_alliance and Localize.period_type[current_alliance.basicInfo.status] or _("迁移冷却"),
+            text = isKing and _("和平期") or current_alliance and Localize.period_type[current_alliance.basicInfo.status] or _("迁移冷却"),
             size = 16,
             color = 0xbdb582
         }):align(display.CENTER, period_bg:getContentSize().width/2, period_bg:getContentSize().height - 20):addTo(period_bg)
@@ -469,27 +475,32 @@ function GameUIAllianceHome:RefreshTop(force_refresh)
         }):align(display.CENTER, period_bg:getContentSize().width/2, 22):addTo(period_bg)
 
         scheduleAt(period_bg, function()
-            if current_alliance then
-                local basicInfo = current_alliance.basicInfo
-                period_time_label:setColor(basicInfo.status ~= "peace" and UIKit:hex2c4b(0xe34724) or UIKit:hex2c4b(0xa1dd00))
-                if basicInfo.status then
-                    if basicInfo.status ~= "peace" then
-                        local statusFinishTime = basicInfo.statusFinishTime
-                        if math.floor(statusFinishTime/1000)>app.timer:GetServerTime() then
-                            period_time_label:setString(GameUtils:formatTimeStyle1(math.floor(statusFinishTime/1000)-app.timer:GetServerTime()))
-                        end
-                    else
-                        local statusStartTime = basicInfo.statusStartTime
-                        if app.timer:GetServerTime()>= math.floor(statusStartTime/1000) then
-                            period_time_label:setString(GameUtils:formatTimeStyle1(app.timer:GetServerTime()-math.floor(statusStartTime/1000)))
+            if isKing then
+                period_time_label:setString(_("无"))
+                period_time_label:setColor(UIKit:hex2c4b(0xa1dd00))
+            else
+                if current_alliance then
+                    local basicInfo = current_alliance.basicInfo
+                    period_time_label:setColor(basicInfo.status ~= "peace" and UIKit:hex2c4b(0xe34724) or UIKit:hex2c4b(0xa1dd00))
+                    if basicInfo.status then
+                        if basicInfo.status ~= "peace" then
+                            local statusFinishTime = basicInfo.statusFinishTime
+                            if math.floor(statusFinishTime/1000)>app.timer:GetServerTime() then
+                                period_time_label:setString(GameUtils:formatTimeStyle1(math.floor(statusFinishTime/1000)-app.timer:GetServerTime()))
+                            end
+                        else
+                            local statusStartTime = basicInfo.statusStartTime
+                            if app.timer:GetServerTime()>= math.floor(statusStartTime/1000) then
+                                period_time_label:setString(GameUtils:formatTimeStyle1(app.timer:GetServerTime()-math.floor(statusStartTime/1000)))
+                            end
                         end
                     end
+                else
+                    local time = intInit.allianceMoveColdMinutes.value * 60 + Alliance_Manager:GetMyAlliance().basicInfo.allianceMoveTime/1000.0 - app.timer:GetServerTime()
+                    local canMove = Alliance_Manager:GetMyAlliance().basicInfo.allianceMoveTime == 0 or time <= 0
+                    period_time_label:setString(canMove and _("准备就绪") or GameUtils:formatTimeStyle1(time))
+                    period_time_label:setColor(canMove and UIKit:hex2c4b(0xa1dd00) or UIKit:hex2c4b(0xe34724))
                 end
-            else
-                local time = intInit.allianceMoveColdMinutes.value * 60 + Alliance_Manager:GetMyAlliance().basicInfo.allianceMoveTime/1000.0 - app.timer:GetServerTime()
-                local canMove = Alliance_Manager:GetMyAlliance().basicInfo.allianceMoveTime == 0 or time <= 0
-                period_time_label:setString(canMove and _("准备就绪") or GameUtils:formatTimeStyle1(time))
-                period_time_label:setColor(canMove and UIKit:hex2c4b(0xa1dd00) or UIKit:hex2c4b(0xe34724))
             end
         end)
 
@@ -497,39 +508,47 @@ function GameUIAllianceHome:RefreshTop(force_refresh)
         local round_bg = display.newScale9Sprite("background_98x70.png",0 , 0,cc.size(190,28),cc.rect(15,10,68,50))
             :align(display.RIGHT_TOP,-24,-12)
             :addTo(top_enemy_bg)
-        if device.platform == 'winrt' then
-            display.newSprite("icon_world_28x38.png"):align(display.LEFT_CENTER, -10,14):addTo(round_bg)
+        if isKing then
+            display.newSprite("icon_unknown_72x86.png"):align(display.LEFT_CENTER, -10,14):addTo(round_bg):scale(0.4)
         else
-            display.newSprite("icon_world_88x88.png"):align(display.LEFT_CENTER, -10,14):addTo(round_bg):scale(0.4)
+            if device.platform == 'winrt' then
+                display.newSprite("icon_world_28x38.png"):align(display.LEFT_CENTER, -10,14):addTo(round_bg)
+            else
+                display.newSprite("icon_world_88x88.png"):align(display.LEFT_CENTER, -10,14):addTo(round_bg):scale(0.4)
+            end
         end
         UIKit:ttfLabel({
-            text = _("圈数"),
+            text = isKing and "" or _("圈数"),
             size = 18,
             color = 0xffedae
         }):align(display.LEFT_CENTER, 30, 14):addTo(round_bg)
         UIKit:ttfLabel({
-            text = DataUtils:getMapRoundByMapIndex(current_map_index) + 1,
+            text = isKing and _("无") or DataUtils:getMapRoundByMapIndex(current_map_index) + 1,
             size = 20,
-            color = 0xa1dd00
+            color = isKing and 0xffedae or 0xa1dd00
         }):align(display.RIGHT_CENTER, 180, 14):addTo(round_bg)
 
         local buff_bg = display.newScale9Sprite("background_98x70.png",0 , 0,cc.size(190,28),cc.rect(15,10,68,50))
             :align(display.RIGHT_TOP,-24,-50)
             :addTo(top_enemy_bg)
         UIKit:ttfLabel({
-            text = _("增益数量"),
+            text = isKing and "" or _("增益数量"),
             size = 18,
             color = 0xffedae
         }):align(display.LEFT_CENTER,30, 14):addTo(buff_bg)
         UIKit:ttfLabel({
-            text = DataUtils:getMapBuffNumByMapIndex(current_map_index),
+            text = isKing and _("无") or DataUtils:getMapBuffNumByMapIndex(current_map_index),
             size = 20,
-            color = 0xa1dd00
+            color = isKing and 0xffedae or 0xa1dd00
         }):align(display.RIGHT_CENTER, 180, 14):addTo(buff_bg)
-        if device.platform == 'winrt' then
-            display.newSprite("buff_28x28.png"):align(display.LEFT_CENTER, -5,14):addTo(buff_bg)
+        if isKing then
+            display.newSprite("icon_crown_110x94.png"):align(display.LEFT_CENTER, -10,14):addTo(buff_bg):scale(0.3)
         else
-            display.newSprite("buff_68x68.png"):align(display.LEFT_CENTER, -5,14):addTo(buff_bg):scale(0.4)
+            if device.platform == 'winrt' then
+                display.newSprite("buff_28x28.png"):align(display.LEFT_CENTER, -5,14):addTo(buff_bg)
+            else
+                display.newSprite("buff_68x68.png"):align(display.LEFT_CENTER, -5,14):addTo(buff_bg):scale(0.4)
+            end
         end
     end
     self:TopTabButtons()
@@ -572,7 +591,12 @@ function GameUIAllianceHome:OnTopRightButtonClicked(event)
         if self.alliance.basicInfo.status == "fight" or self.alliance.basicInfo.status == "prepare" then
             UIKit:newGameUI("GameUIAllianceBattle", self.city , "fight"):AddToCurrentScene(true)
         else
-            UIKit:newWidgetUI("WidgetAllianceMapBuff",self.current_allinace_index):AddToCurrentScene()
+            local isKing = DataUtils:getMapRoundByMapIndex(self.current_allinace_index) == 0 -- 是否在王座
+            if isKing then
+                UIKit:showMessageDialog(_("提示"), _("即将开放"))
+            else
+                UIKit:newWidgetUI("WidgetAllianceMapBuff",self.current_allinace_index):AddToCurrentScene()
+            end
         end
     end
 end
@@ -628,8 +652,8 @@ function GameUIAllianceHome:UpdateMyCityArrows(alliance)
 end
 function GameUIAllianceHome:UpdateEnemyArrow()
     local mapIndex = self.alliance:GetEnemyAllianceMapIndex()
-    if not mapIndex then 
-        return self.arrow_enemy:hide() 
+    if not mapIndex then
+        return self.arrow_enemy:hide()
     end
     local screen_rect = self:GetScreenRect()
     local x,y = DataUtils:GetAbsolutePosition(mapIndex, 16, 16)
@@ -779,4 +803,7 @@ function GameUIAllianceHome:GetAlliancePeriod()
 end
 
 return GameUIAllianceHome
+
+
+
 
