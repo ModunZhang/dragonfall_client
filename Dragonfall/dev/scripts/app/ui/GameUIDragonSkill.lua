@@ -100,7 +100,7 @@ function GameUIDragonSkill:onEnter()
                 size = 24,
             }))
             :addTo(self.backgroundImage)
-            :align(display.CNETER_BOTTOM,self.backgroundImage:getContentSize().width/2,50)
+            :align(display.CENTER,self.backgroundImage:getContentSize().width/2,50)
             :onButtonClicked(function(event)
                 self:UpgradeButtonClicked()
             end)

@@ -488,7 +488,7 @@ function AllianceDetailScene:OnTouchClicked(pre_x, pre_y, x, y)
             Sprite:PromiseOfFlash(mapObj.obj):next(function()
                 if type_ == "crown" then
                     UIKit:newGameUI("GameUIThroneMain"):AddToCurrentScene()
-                else
+                elseif type_ == "tower1" or type_ == "tower2" then
                     UIKit:showMessageDialog(_("提示"), _("即将开放"))
                 end
             end)

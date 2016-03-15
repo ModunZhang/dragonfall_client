@@ -82,7 +82,7 @@ function GameUIAbjectAlliance:onEnter()
             size = 20,
             shadow = true,
             color = 0xfff3c7
-        })):align(display.CNETER_TOP,window.cx,editbox:getPositionY() - editbox:getCascadeBoundingBox().size.height - 60):addTo(view)
+        })):align(display.CENTER,window.cx,editbox:getPositionY() - editbox:getCascadeBoundingBox().size.height - 60):addTo(view)
         :onButtonClicked(function(event)
             end)
         :setButtonEnabled(false)
