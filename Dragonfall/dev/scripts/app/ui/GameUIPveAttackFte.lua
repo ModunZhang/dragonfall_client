@@ -7,6 +7,23 @@ function GameUIPveAttackFte:ctor(...)
     GameUIPveAttackFte.super.ctor(self, ...)
     self:DisableAutoClose()
 end
+local function get_dragon_type()
+    for k,v in pairs(DataManager:getUserData().dragons) do
+        if v.star > 0 then
+            return k
+        end
+    end
+    assert(false)
+end
+
+local attackDragonSkilled1
+if get_dragon_type() == "redDragon" then
+    attackDragonSkilled1 = {0}
+elseif get_dragon_type() == "blueDragon" then
+    attackDragonSkilled1 = {0,0,0}
+elseif get_dragon_type() == "greenDragon" then
+    attackDragonSkilled1 = {0}
+end
 
 local fightReport1 = {
     playerDragonFightData = {
@@ -49,11 +66,23 @@ local fightReport1 = {
 ,
                     }
 ,
+                    attackDragonSkilled = attackDragonSkilled1,
+                    defenceDragonSkilled = {}
+,
                 }
 ,
             }
 }
 
+
+local attackDragonSkilled2
+if get_dragon_type() == "redDragon" then
+    attackDragonSkilled2 = {0}
+elseif get_dragon_type() == "blueDragon" then
+    attackDragonSkilled2 = {0,1,0}
+elseif get_dragon_type() == "greenDragon" then
+    attackDragonSkilled2 = {0,1}
+end
 
 local fightReport2 = {
     playerDragonFightData = {
@@ -114,12 +143,21 @@ local fightReport2 = {
 ,
                     }
 ,
+                    attackDragonSkilled = attackDragonSkilled2,
+                    defenceDragonSkilled = {},
                 }
 ,
             }
 }
 
-
+local attackDragonSkilled3
+if get_dragon_type() == "redDragon" then
+    attackDragonSkilled3 = {0}
+elseif get_dragon_type() == "blueDragon" then
+    attackDragonSkilled3 = {0,0,0}
+elseif get_dragon_type() == "greenDragon" then
+    attackDragonSkilled3 = {0}
+end
 local fightReport3 = {
     playerDragonFightData = {
         type = "greenDragon",
@@ -161,6 +199,8 @@ local fightReport3 = {
 ,
                     }
 ,
+                    attackDragonSkilled = attackDragonSkilled3,
+                    defenceDragonSkilled = {},
                 }
 ,
             }

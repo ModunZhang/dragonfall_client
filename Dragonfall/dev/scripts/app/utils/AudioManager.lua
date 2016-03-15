@@ -107,7 +107,13 @@ function AudioManager:ctor(game_default)
 	self.is_effect_audio_on = self:GetGameDefault():getBasicInfoValueForKey(EFFECT_MUSIC_KEY,true)
 	self:SetEffectsVolume(0.4)
 end
-
+function AudioManager:GetConfig()
+	return self.is_bg_auido_on, self.is_effect_audio_on
+end
+function AudioManager:ResetorConfig(bg_on,effect_on)
+	self.is_bg_auido_on = bg_on
+	self.is_effect_audio_on = effect_on
+end
 function AudioManager:GetGameDefault()
 	return self.game_default
 end
