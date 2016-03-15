@@ -421,38 +421,58 @@ function GameUIReplay:OnStartSoldierBattle()
     end
 end
 function GameUIReplay:OnFinishAdjustPosition()
-    if self.report:CouldAttackDragonUseSkill() 
-    and self.report:CouldDefenceDragonUseSkill() then
-        self:OnBothDragonAttackTroops()
-    elseif self.report:CouldAttackDragonUseSkill()  then
-        self:OnAttackDragonAttackTroops()
-    elseif self.report:CouldDefenceDragonUseSkill()  then
-        self:OnDefenceDragonAttackTroops()
+    local round = self.report:GetSoldierRoundData()[self.roundCount]
+    if next(round.attackDragonSkilled) and next(round.defenceDragonSkilled) then
+        self:OnBothDragonAttackTroops(round)
+    elseif next(round.attackDragonSkilled) then
+        self:OnAttackDragonAttackTroops(round)
+    elseif next(round.defenceDragonSkilled) then
+        self:OnDefenceDragonAttackTroops(round)
     else
         self:OnStartDual()
     end
 end
-function GameUIReplay:OnAttackDragonAttackTroops()
+function GameUIReplay:OnAttackDragonAttackTroops(round)
+    local effectedTroops = {}
+    for i,v in ipairs(round.attackDragonSkilled) do
+        table.insert(effectedTroops, self.defenceTroops[v + 1])
+    end
+
     self.attackDragon:pos(-400, display.cy)
         :Move(display.width + 400, display.cy, self:MovingTimeForAttack(), function(isend)
             if isend then
                 self:OnStartDual()
             else
-                self:OnDragonAttackTroops(self.attackDragon,self.defenceTroops)
+                self:OnDragonAttackTroops(self.attackDragon, effectedTroops)
             end
         end)
 end
-function GameUIReplay:OnDefenceDragonAttackTroops()
+function GameUIReplay:OnDefenceDragonAttackTroops(round)
+    local effectedTroops = {}
+    for i,v in ipairs(round.defenceDragonSkilled) do
+        table.insert(effectedTroops, self.attackTroops[v + 1])
+    end
+
     self.defenceDragon:pos(display.width + 400, display.cy)
         :Move(-400, display.cy, self:MovingTimeForAttack(), function(isend)
             if isend then
                 self:OnStartDual()
             else
-                self:OnDragonAttackTroops(defenceDragon,self.attackTroops)
+                self:OnDragonAttackTroops(defenceDragon, effectedTroops)
             end
         end)
 end
-function GameUIReplay:OnBothDragonAttackTroops()
+function GameUIReplay:OnBothDragonAttackTroops(round)
+    local effectedAttackTroops = {}
+    for i,v in ipairs(round.attackDragonSkilled) do
+        table.insert(effectedAttackTroops, self.defenceTroops[v + 1])
+    end
+
+    local effectedDefenceTroops = {}
+    for i,v in ipairs(round.defenceDragonSkilled) do
+        table.insert(effectedDefenceTroops, self.attackTroops[v + 1])
+    end
+
     self.attackDragon:pos(-400, display.cy)
         :Move(display.width + 400, display.cy, self:MovingTimeForAttack(), function(isend)
             if isend then
@@ -461,31 +481,29 @@ function GameUIReplay:OnBothDragonAttackTroops()
                         if isend then
                             self:OnStartDual()
                         else
-                            self:OnDragonAttackTroops(self.defenceDragon,self.attackTroops)
+                            self:OnDragonAttackTroops(self.defenceDragon,effectedAttackTroops)
                         end
                     end)
             else
-                self:OnDragonAttackTroops(self.attackDragon,self.defenceTroops)
+                self:OnDragonAttackTroops(self.attackDragon,effectedDefenceTroops)
             end
         end)
 end
 function GameUIReplay:OnDragonAttackTroops(dragon, allTroops)
-    math.randomseed(tostring(os.time()):reverse():sub(1, 6))
     if dragon.dragonType == "redDragon" then
-        local troops = allTroops[math.random(#allTroops)]
+        local troops = allTroops[1]
         UIKit:ttfLabel({
             text = "红龙特效",
             size = 40,
             color = 0xffedae,
         }):addTo(troops.effectsNode, 10, 111):align(display.CENTER, 0, 50)
     elseif dragon.dragonType == "blueDragon" then
-        local v1, v2, v3 = math.random(#allTroops), math.random(#allTroops), math.random(#allTroops)
-        for i,v in ipairs({v1, v2, v3}) do
+        for i,v in ipairs(allTroops) do
             UIKit:ttfLabel({
                 text = "蓝龙特效",
                 size = 40,
                 color = 0xffedae,
-            }):addTo(allTroops[v].effectsNode, 10, 111):align(display.CENTER, 0, 50)
+            }):addTo(v.effectsNode, 10, 111):align(display.CENTER, 0, 50)
         end
     elseif dragon.dragonType == "greenDragon" then
         for i,v in ipairs(allTroops) do

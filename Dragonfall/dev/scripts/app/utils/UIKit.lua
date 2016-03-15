@@ -1986,6 +1986,9 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
             end),
         })
 
+        local function step()
+                app:GetAudioManager():PlaySoldierStepEffectByType(self.soldierType)
+            end
         local footSounds = {}
         for i = 0, time, 0.8 do
             table.insert(footSounds, cc.CallFunc:create(step))

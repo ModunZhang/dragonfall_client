@@ -781,6 +781,9 @@ function GameUILoginBeta:checkFte()
             break
         end
     end
+    local bg_auido_on,effect_audio_on = app:GetAudioManager():GetConfig()
+    app:GetAudioManager():ResetorConfig(false, false)
+    
     DataManager.need_notify = false
     if check("HateDragon") and dragon_type then
         mockData.HateDragon(dragon_type)
@@ -879,6 +882,7 @@ function GameUILoginBeta:checkFte()
     if check("BuildHouseAt_8_3") then
         mockData.BuildHouseAt(8,3,"miner")
     end
+    app:GetAudioManager():ResetorConfig(bg_auido_on, effect_audio_on)
     DataManager.need_notify = true
 end
 
