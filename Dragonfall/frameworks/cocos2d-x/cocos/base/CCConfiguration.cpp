@@ -101,6 +101,7 @@ std::string Configuration::getInfo() const
 
 void Configuration::gatherGPUInfo()
 {
+#if (DIRECTX_ENABLED == 0)
 	_valueDict["gl.vendor"] = Value((const char*)glGetString(GL_VENDOR));
 	_valueDict["gl.renderer"] = Value((const char*)glGetString(GL_RENDERER));
 	_valueDict["gl.version"] = Value((const char*)glGetString(GL_VERSION));
@@ -147,6 +148,64 @@ void Configuration::gatherGPUInfo()
 	_valueDict["gl.supports_vertex_array_object"] = Value(_supportsShareableVAO);
 
     CHECK_GL_ERROR_DEBUG();
+#else
+#define SET_FEATURE(name, variable, value) { \
+	variable = value; \
+	_valueDict[name] = Value(variable); }
+
+	_valueDict["gl.vendor"] = "@samodoma";
+	_valueDict["gl.renderer"] = "Native Direct3D Renderer";
+	_valueDict["gl.version"] = "0.9";
+	SET_FEATURE("gl.supports_ETC1", _supportsETC1, false);
+	SET_FEATURE("gl.supports_ATITC", _supportsATITC, false);
+	SET_FEATURE("gl.supports_PVRTC", _supportsPVRTC, false);
+	SET_FEATURE("gl.supports_NPOT", _supportsNPOT, true);
+	SET_FEATURE("gl.supports_discard_framebuffer", _supportsDiscardFramebuffer, true);
+	SET_FEATURE("gl.supports_vertex_array_object", _supportsShareableVAO, false);
+
+	auto view = GLViewImpl::sharedOpenGLView();
+	const auto featureLevel = view->GetDevice()->GetFeatureLevel();
+	switch (featureLevel)
+	{
+	case D3D_FEATURE_LEVEL_9_1:
+		SET_FEATURE("gl.max_texture_size", _maxTextureSize, 2048);
+		SET_FEATURE("gl.max_texture_units", _maxTextureUnits, 16);
+		_valueDict["gl.version"] = "Direct3D Feature Level 9.1";
+		break;
+	case D3D_FEATURE_LEVEL_9_2:
+		SET_FEATURE("gl.max_texture_size", _maxTextureSize, 2048);
+		SET_FEATURE("gl.max_texture_units", _maxTextureUnits, 16);
+		_valueDict["gl.version"] = "Direct3D Feature Level 9.2";
+		break;
+	case D3D_FEATURE_LEVEL_9_3:
+		SET_FEATURE("gl.max_texture_size", _maxTextureSize, 4096);
+		SET_FEATURE("gl.max_texture_units", _maxTextureUnits, 16);
+		_valueDict["gl.version"] = "Direct3D Feature Level 9.3";
+		break;
+	case D3D_FEATURE_LEVEL_10_0:
+		SET_FEATURE("gl.max_texture_size", _maxTextureSize, 8192);
+		SET_FEATURE("gl.max_texture_units", _maxTextureUnits, 16);
+		_valueDict["gl.version"] = "Direct3D Feature Level 10.0";
+		break;
+	case D3D_FEATURE_LEVEL_10_1:
+		SET_FEATURE("gl.max_texture_size", _maxTextureSize, 8192);
+		SET_FEATURE("gl.max_texture_units", _maxTextureUnits, 32);
+		_valueDict["gl.version"] = "Direct3D Feature Level 10.1";
+		break;
+	default: // DirectX 11
+		SET_FEATURE("gl.max_texture_size", _maxTextureSize, 16384);
+		SET_FEATURE("gl.max_texture_units", _maxTextureUnits, 32);
+		_valueDict["gl.version"] = "Direct3D Feature Level 11.0";
+		break;
+	}
+
+	UINT format;
+	if (view->GetDevice()->CheckFormatSupport(DXGI_FORMAT_B8G8R8A8_UNORM, &format) == S_OK)
+		SET_FEATURE("gl.supports_BGRA8888", _supportsBGRA8888, (format & D3D11_FORMAT_SUPPORT_TEXTURE2D) != 0);
+
+	if (view->GetDevice()->CheckFormatSupport(DXGI_FORMAT_BC3_UNORM, &format) == S_OK)
+		SET_FEATURE("gl.supports_S3TC", _supportsS3TC, (format & D3D11_FORMAT_SUPPORT_TEXTURE2D) != 0);
+#endif
 }
 
 Configuration* Configuration::getInstance()
@@ -180,7 +239,12 @@ void Configuration::purgeConfiguration()
 
 bool Configuration::checkForGLExtension(const std::string &searchName) const
 {
+#if (DIRECTX_ENABLED == 0)
    return  (_glExtensions && strstr(_glExtensions, searchName.c_str() ) ) ? true : false;
+#else
+	CCASSERT(false, "Not supported");
+	return false;
+#endif
 }
 
 //

@@ -39,6 +39,12 @@ THE SOFTWARE.
 
 NS_CC_BEGIN
 
+#if DIRECTX_ENABLED == 1
+#define S3TC_DXT1_EXT 0x78945456
+#define S3TC_DXT3_EXT 0x78945457
+#define S3TC_DXT5_EXT 0x78945458
+#endif
+
 class Image;
 typedef struct _MipmapInfo MipmapInfo;
 
@@ -197,6 +203,12 @@ public:
      * @js ctor
      */
     Texture2D();
+	Texture2D(const std::string& name) : Texture2D(){ _texName = name; }
+	bool isSDTex();
+	const std::string& getTexName()
+	{
+		return _texName;
+	}
     /**
      * @js NA
      * @lua NA
@@ -455,6 +467,9 @@ private:
     static void convertRGBA8888ToRGBA4444(const unsigned char* data, ssize_t dataLen, unsigned char* outData);
     static void convertRGBA8888ToRGB5A1(const unsigned char* data, ssize_t dataLen, unsigned char* outData);
 
+	// Special for DX textures
+	static void convertRGBA4444ToBGRA4444(const unsigned char* data, ssize_t dataLen, unsigned char* outData);
+
 protected:
     /** pixel format of the texture */
     Texture2D::PixelFormat _pixelFormat;
@@ -489,6 +504,38 @@ protected:
     static const PixelFormatInfoMap _pixelFormatInfoTables;
 
     bool _antialiasEnabled;
+
+	std::string _texName;
+
+#if (DIRECTX_ENABLED == 1)
+	ID3D11Texture2D* _texture;
+	ID3D11ShaderResourceView* _textureView;
+	ID3D11SamplerState* _samplerState;
+	bool _renderTargetTexture;
+
+	static int s_TextureCount;
+
+	void UpdateSamplerState();
+public:
+		ID3D11ShaderResourceView* const * getView() const
+		{
+			return &_textureView;
+		}
+		ID3D11SamplerState* const * getSampler() const
+		{
+			return &_samplerState;
+		}
+
+		ID3D11Texture2D* getTexture()
+		{
+			return _texture;
+		}
+
+		void prepareForRenderTarget()
+		{
+			_renderTargetTexture = true;
+		}
+#endif
 };
 
 

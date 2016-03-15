@@ -83,11 +83,15 @@ HBlurFilter::HBlurFilter()
 
 GLProgram* HBlurFilter::loadShader()
 {
-    GLProgram* __p = GLProgram::createWithByteArrays(ccFilterShader_hblur_vert, ccFilterShader_blur_frag);
+#if DIRECTX_ENABLED == 0
+   GLProgram* __p = GLProgram::createWithByteArrays(ccFilterShader_hblur_vert, ccFilterShader_blur_frag);
 //	GLProgram* __p = new GLProgram();
 //	__p->initWithByteArrays(ccFilterShader_hblur_vert, ccFilterShader_blur_frag);
 	//CCLOG("HBlurFilter::loadShader %f", _param);
 	return __p;
+#else
+	return nullptr;
+#endif
 }
 
 //================== VBlurFilter
@@ -113,11 +117,12 @@ VBlurFilter::VBlurFilter()
 
 GLProgram* VBlurFilter::loadShader()
 {
-    GLProgram* __p = GLProgram::createWithByteArrays(ccFilterShader_vblur_vert, ccFilterShader_blur_frag);
-//	GLProgram* __p = new GLProgram();
-//	__p->initWithByteArrays(ccFilterShader_vblur_vert, ccFilterShader_blur_frag);
-
-	return __p;
+//    GLProgram* __p = GLProgram::createWithByteArrays(ccFilterShader_vblur_vert, ccFilterShader_blur_frag);
+////	GLProgram* __p = new GLProgram();
+////	__p->initWithByteArrays(ccFilterShader_vblur_vert, ccFilterShader_blur_frag);
+//
+//	return __p;
+	return nullptr;
 }
 
 //================== GaussianHBlurFilter
@@ -144,11 +149,12 @@ GaussianHBlurFilter::GaussianHBlurFilter()
 
 GLProgram* GaussianHBlurFilter::loadShader()
 {
-    GLProgram* __p = GLProgram::createWithByteArrays(ccPositionTextureColor_noMVP_vert, ccFilterShader_gaussian_hblur_frag);
-//	GLProgram* __p = new GLProgram();
-//	__p->initWithByteArrays(ccPositionTextureColor_vert,
-//		ccFilterShader_gaussian_hblur_frag);
-	return __p;
+//    GLProgram* __p = GLProgram::createWithByteArrays(ccPositionTextureColor_noMVP_vert, ccFilterShader_gaussian_hblur_frag);
+////	GLProgram* __p = new GLProgram();
+////	__p->initWithByteArrays(ccPositionTextureColor_vert,
+////		ccFilterShader_gaussian_hblur_frag);
+//	return __p;
+	return nullptr;
 }
 
 void GaussianHBlurFilter::setUniforms(GLProgram* $cgp)
@@ -193,11 +199,12 @@ GaussianVBlurFilter::GaussianVBlurFilter()
 
 GLProgram* GaussianVBlurFilter::loadShader()
 {
-    GLProgram* __p = GLProgram::createWithByteArrays(ccPositionTextureColor_noMVP_vert, ccFilterShader_gaussian_vblur_frag);
-//	GLProgram* __p = new GLProgram();
-//	__p->initWithByteArrays(ccPositionTextureColor_vert,
-//		ccFilterShader_gaussian_vblur_frag);
-	return __p;
+//    GLProgram* __p = GLProgram::createWithByteArrays(ccPositionTextureColor_noMVP_vert, ccFilterShader_gaussian_vblur_frag);
+////	GLProgram* __p = new GLProgram();
+////	__p->initWithByteArrays(ccPositionTextureColor_vert,
+////		ccFilterShader_gaussian_vblur_frag);
+//	return __p;
+	return nullptr;
 }
 
 void GaussianVBlurFilter::setUniforms(GLProgram* $cgp)
@@ -244,11 +251,12 @@ ZoomBlurFilter::ZoomBlurFilter()
 
 GLProgram* ZoomBlurFilter::loadShader()
 {
-    GLProgram* __p = GLProgram::createWithByteArrays(ccPositionTextureColor_noMVP_vert, ccFilterShader_zoom_blur_frag);
-    
-//	GLProgram* __p = new GLProgram();
-//	__p->initWithByteArrays(ccPositionTexture_vert, ccFilterShader_zoom_blur_frag);
-	return __p;
+//    GLProgram* __p = GLProgram::createWithByteArrays(ccPositionTextureColor_noMVP_vert, ccFilterShader_zoom_blur_frag);
+//    
+////	GLProgram* __p = new GLProgram();
+////	__p->initWithByteArrays(ccPositionTexture_vert, ccFilterShader_zoom_blur_frag);
+//	return __p;
+	return nullptr;
 }
 
 void ZoomBlurFilter::setParameter(float $blurSize, float $centerX, float $centerY)
@@ -308,11 +316,12 @@ MotionBlurFilter::MotionBlurFilter()
 
 GLProgram* MotionBlurFilter::loadShader()
 {
-    GLProgram* __p = GLProgram::createWithByteArrays(ccFilterShader_motion_blur_vert, ccFilterShader_motion_blur_frag);
-    
-//	GLProgram* __p = new GLProgram();
-//	__p->initWithByteArrays(ccFilterShader_motion_blur_vert, ccFilterShader_motion_blur_frag);
-	return __p;
+//    GLProgram* __p = GLProgram::createWithByteArrays(ccFilterShader_motion_blur_vert, ccFilterShader_motion_blur_frag);
+//    
+////	GLProgram* __p = new GLProgram();
+////	__p->initWithByteArrays(ccFilterShader_motion_blur_vert, ccFilterShader_motion_blur_frag);
+//	return __p;
+	return nullptr;
 }
 
 void MotionBlurFilter::setParameter(float $blurSize, float $blurAngle)

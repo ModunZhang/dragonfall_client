@@ -64,11 +64,15 @@ SharpenFilter::SharpenFilter()
 
 GLProgram* SharpenFilter::loadShader()
 {
-    GLProgram* __p = GLProgram::createWithByteArrays(ccFilterShader_sharpen_vert, ccFilterShader_sharpen_frag);
-    
+#if DIRECTX_ENABLED == 0
+   GLProgram* __p = GLProgram::createWithByteArrays(ccFilterShader_sharpen_vert, ccFilterShader_sharpen_frag);
+   
 //	GLProgram* __p = new GLProgram();
 //	__p->initWithByteArrays(ccFilterShader_sharpen_vert, ccFilterShader_sharpen_frag);
 	return __p;
+#else
+	return nullptr;
+#endif
 }
 
 void SharpenFilter::setParameter(float $sharpness, float $widthFactor, float $heightFactor)

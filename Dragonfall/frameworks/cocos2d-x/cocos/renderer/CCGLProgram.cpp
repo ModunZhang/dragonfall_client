@@ -133,21 +133,48 @@ GLProgram* GLProgram::createWithFilenames(const std::string& vShaderFilename, co
     return nullptr;
 }
 
-GLProgram::GLProgram()
-: _program(0)
+#if (DIRECTX_ENABLED == 1)
+int GLProgram::s_programCount = 0;
+#endif
+
+GLProgram::GLProgram():
+#if (DIRECTX_ENABLED == 1)
+_inputLayout(nullptr)
+, _vertexShader(nullptr)
+, _pixelShader(nullptr)
+, _constantBufferVS(nullptr)
+, _constantBufferPS(nullptr)
+, _program(++s_programCount)
+, _uniformDirtyVS(true)
+, _uniformDirtyPS(true)
+#else
+ _program(0)
 , _vertShader(0)
 , _fragShader(0)
 , _flags()
+#endif
 {
     _director = Director::getInstance();
+#if (DIRECTX_ENABLED == 1)
+	memset(_uniformBufferVS, 0, UNIFORM_BUFFER_SIZE);
+	memset(_uniformBufferPS, 0, UNIFORM_BUFFER_SIZE);
+#else
     CCASSERT(nullptr != _director, "Director is null when init a GLProgram");
     memset(_builtInUniforms, 0, sizeof(_builtInUniforms));
+#endif
 }
 
 GLProgram::~GLProgram()
 {
     CCLOGINFO("%s %d deallocing GLProgram: %p", __FUNCTION__, __LINE__, this);
 
+#if (DIRECTX_ENABLED == 1)
+	DXResourceManager::getInstance().remove(&_inputLayout);
+	DXResourceManager::getInstance().remove(&_vertexShader);
+	DXResourceManager::getInstance().remove(&_pixelShader);
+	DXResourceManager::getInstance().remove(&_constantBufferVS);
+	DXResourceManager::getInstance().remove(&_constantBufferPS);
+#else 
     if (_vertShader)
     {
         glDeleteShader(_vertShader);
@@ -170,11 +197,126 @@ GLProgram::~GLProgram()
         free(e.second.first);
     }
     _hashForUniforms.clear();
+#endif
 }
+
+#if (DIRECTX_ENABLED == 1)
+GLProgram* GLProgram::createWithHLSL(const ShaderDescriptor& vShaderByteArray, const ShaderDescriptor& fShaderByteArray)
+{
+	auto ret = new (std::nothrow) GLProgram();
+	if (ret && ret->initWithHLSL(vShaderByteArray, fShaderByteArray)) {
+		ret->link();
+		ret->updateUniforms();
+		ret->autorelease();
+		return ret;
+	}
+
+	CC_SAFE_DELETE(ret);
+	return nullptr;
+}
+
+bool GLProgram::initWithHLSL(const ShaderDescriptor& vertexShader, const ShaderDescriptor& pixelShader)
+{
+#if (DIRECTX_ENABLED == 1)
+	DXResourceManager::getInstance().remove(&_inputLayout);
+	DXResourceManager::getInstance().remove(&_vertexShader);
+	DXResourceManager::getInstance().remove(&_pixelShader);
+	DXResourceManager::getInstance().remove(&_constantBufferVS);
+	DXResourceManager::getInstance().remove(&_constantBufferPS);
+
+	
+	// Load shaders asynchronously.
+#if WINRT
+	auto vspath = "ccShader_" + vertexShader.name + "_VS.cso";
+	auto avspath = FileUtils::getInstance()->fullPathForFilename(vspath);
+	auto vsData = FileUtils::getInstance()->getDataFromFile(avspath);
+	
+	auto pspath = "ccShader_" + pixelShader.name + "_PS.cso";
+	auto apspath = FileUtils::getInstance()->fullPathForFilename(pspath);
+	auto psData = FileUtils::getInstance()->getDataFromFile(apspath);
+#else
+	auto vsData = FileUtils::getInstance()->getDataFromFile("ccShader_" + vertexShader.name + "_VS.cso");
+	auto psData = FileUtils::getInstance()->getDataFromFile("ccShader_" + pixelShader.name + "_PS.cso");
+#endif
+
+	// Get uniform descrption from 
+	int location = 0;
+	for (auto i : vertexShader.uniformValues)
+	{
+		i.location = location;
+		_uniformsDescription[i.name] = i;
+
+		location += i.size;
+	}
+	_uniformPSStart = location;
+	for (auto i : pixelShader.uniformValues)
+	{
+		i.location = location;
+		_uniformsDescription[i.name] = i;
+
+		location += i.size;
+	}
+
+	auto view = GLViewImpl::sharedOpenGLView();
+	_shaderId = vertexShader.name;
+
+	DX::ThrowIfFailed(
+		view->GetDevice()->CreateVertexShader(
+		vsData.getBytes(),
+		vsData.getSize(),
+		nullptr,
+		&_vertexShader));
+
+	DX::ThrowIfFailed(
+		view->GetDevice()->CreateInputLayout(
+		vertexShader.inputLayout.data(),
+		vertexShader.inputLayout.size(),
+		vsData.getBytes(),
+		vsData.getSize(),
+		&_inputLayout));
+
+	DX::ThrowIfFailed(
+		view->GetDevice()->CreatePixelShader(
+		psData.getBytes(),
+		psData.getSize(),
+		nullptr,
+		&_pixelShader));
+
+	CD3D11_BUFFER_DESC constantBufferDesc(UNIFORM_BUFFER_SIZE, D3D11_BIND_CONSTANT_BUFFER);
+	if (!vertexShader.uniformValues.empty())
+	{
+		DX::ThrowIfFailed(
+			view->GetDevice()->CreateBuffer(
+			&constantBufferDesc,
+			nullptr,
+			&_constantBufferVS));
+	}
+
+	if (!pixelShader.uniformValues.empty())
+	{
+		DX::ThrowIfFailed(
+			view->GetDevice()->CreateBuffer(
+			&constantBufferDesc,
+			nullptr,
+			&_constantBufferPS));
+	}
+
+	DXResourceManager::getInstance().add(&_inputLayout);
+	DXResourceManager::getInstance().add(&_vertexShader);
+	DXResourceManager::getInstance().add(&_pixelShader);
+	DXResourceManager::getInstance().add(&_constantBufferVS);
+	DXResourceManager::getInstance().add(&_constantBufferPS);
+	_uniformDirtyPS = _uniformDirtyVS = true;
+#endif
+	return true;
+}
+#endif
 
 bool GLProgram::initWithByteArrays(const GLchar* vShaderByteArray, const GLchar* fShaderByteArray)
 {
-
+#if (DIRECTX_ENABLED == 1)
+	CC_ASSERT(false && "Not supported for Direct3D, use initWithHLSL instead.");
+#else
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
     GLboolean hasCompiler = false;
     glGetBooleanv(GL_SHADER_COMPILER, &hasCompiler);
@@ -228,7 +370,7 @@ bool GLProgram::initWithByteArrays(const GLchar* vShaderByteArray, const GLchar*
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || defined(WP8_SHADER_COMPILER)
     _shaderId = CCPrecompiledShaders::getInstance()->addShaders(vShaderByteArray, fShaderByteArray);
 #endif
-
+#endif
     return true;
 }
 
@@ -269,6 +411,9 @@ bool GLProgram::initWithPrecompiledProgramByteArray(const GLchar* vShaderByteArr
 
 bool GLProgram::initWithFilenames(const std::string &vShaderFilename, const std::string &fShaderFilename)
 {
+#if (DIRECTX_ENABLED == 1)
+	CC_ASSERT(false && "Not supported for Direct3D, use initWithHLSL instead.");
+#endif
     auto fileUtils = FileUtils::getInstance();
     std::string vertexSource = fileUtils->getStringFromFile(FileUtils::getInstance()->fullPathForFilename(vShaderFilename));
     std::string fragmentSource = fileUtils->getStringFromFile(FileUtils::getInstance()->fullPathForFilename(fShaderFilename));
@@ -278,6 +423,7 @@ bool GLProgram::initWithFilenames(const std::string &vShaderFilename, const std:
 
 void GLProgram::bindPredefinedVertexAttribs()
 {
+#if (DIRECTX_ENABLED == 0)
     static const struct {
         const char *attributeName;
         int location;
@@ -297,10 +443,12 @@ void GLProgram::bindPredefinedVertexAttribs()
     for(int i=0; i<size;i++) {
         glBindAttribLocation(_program, attribute_locations[i].location, attribute_locations[i].attributeName);
     }
+#endif 
 }
 
 void GLProgram::parseVertexAttribs()
 {
+#if (DIRECTX_ENABLED == 0)
     _vertexAttribs.clear();
 
     // Query and store vertex attribute meta-data from the program.
@@ -335,10 +483,12 @@ void GLProgram::parseVertexAttribs()
         glGetProgramInfoLog(_program, sizeof(ErrorLog), NULL, ErrorLog);
         CCLOG("Error linking shader program: '%s'\n", ErrorLog);
     }
+#endif
 }
 
 void GLProgram::parseUniforms()
 {
+#if (DIRECTX_ENABLED == 0)
     _userUniforms.clear();
 
     // Query and store uniforms from the program.
@@ -394,35 +544,70 @@ void GLProgram::parseUniforms()
         CCLOG("Error linking shader program: '%s'\n", ErrorLog);
 
     }
+#endif
+}
 
+const Uniform* GLProgram::getUniform(const std::string &name) const
+{
+#if (DIRECTX_ENABLED == 0)
+	const auto itr = _userUniforms.find(name);
+	if( itr != _userUniforms.end())
+		return &itr->second;
+	return nullptr;
+#else
+	const auto itr = _uniformsDescription.find(name);
+	if (itr != _uniformsDescription.end())
+		return &itr->second;
+	return nullptr;
+#endif
 }
 
 Uniform* GLProgram::getUniform(const std::string &name)
 {
+#if (DIRECTX_ENABLED == 0)
     const auto itr = _userUniforms.find(name);
     if( itr != _userUniforms.end())
         return &itr->second;
     return nullptr;
+#else
+	const auto itr = _uniformsDescription.find(name);
+	if (itr != _uniformsDescription.end())
+		return &itr->second;
+	return nullptr;
+#endif
 }
 
 VertexAttrib* GLProgram::getVertexAttrib(const std::string &name)
 {
+#if (DIRECTX_ENABLED == 0)
     const auto itr = _vertexAttribs.find(name);
     if( itr != _vertexAttribs.end())
         return &itr->second;
     return nullptr;
+#else
+	CC_ASSERT(false && "Not supported for Direct3D, input layout is handled with shader descriptor.");
+	return nullptr;
+#endif
 }
 
 std::string GLProgram::getDescription() const
 {
+#if (DIRECTX_ENABLED == 0)
     return StringUtils::format("<GLProgram = "
                                       CC_FORMAT_PRINTF_SIZE_T
                                       " | Program = %i, VertexShader = %i, FragmentShader = %i>",
                                       (size_t)this, _program, _vertShader, _fragShader);
+#else
+	return StringUtils::format("<GLProgram = "
+		CC_FORMAT_PRINTF_SIZE_T
+		" | Program = %i, VertexShader = %i, FragmentShader = %i>",
+		(size_t)this, _program, _vertexShader, _pixelShader);
+#endif
 }
 
 bool GLProgram::compileShader(GLuint * shader, GLenum type, const GLchar* source)
 {
+#if (DIRECTX_ENABLED == 0)
     GLint status;
  
     if (!source)
@@ -480,25 +665,43 @@ bool GLProgram::compileShader(GLuint * shader, GLenum type, const GLchar* source
         return false;;
     }
     return (status == GL_TRUE);
+#endif
+
+	return false;
 }
 
 GLint GLProgram::getAttribLocation(const std::string &attributeName) const
 {
+#if (DIRECTX_ENABLED == 0)
     return glGetAttribLocation(_program, attributeName.c_str());
+#else 
+	CC_ASSERT(false && "Not supported for Direct3D, input layout is handled with shader descriptor.");
+	return 0;
+#endif
 }
 
 GLint GLProgram::getUniformLocation(const std::string &attributeName) const
 {
+#if (DIRECTX_ENABLED == 0)
     return glGetUniformLocation(_program, attributeName.c_str());
+#else
+	const Uniform* u = getUniform(attributeName);
+	if (u)
+		return u->location;
+	return -1;
+#endif
 }
 
 void GLProgram::bindAttribLocation(const std::string &attributeName, GLuint index) const
 {
+#if (DIRECTX_ENABLED == 0)
     glBindAttribLocation(_program, index, attributeName.c_str());
+#endif
 }
 
 void GLProgram::updateUniforms()
 {
+#if (DIRECTX_ENABLED == 0)
     _builtInUniforms[UNIFORM_AMBIENT_COLOR] = glGetUniformLocation(_program, UNIFORM_NAME_AMBIENT_COLOR);
     _builtInUniforms[UNIFORM_P_MATRIX] = glGetUniformLocation(_program, UNIFORM_NAME_P_MATRIX);
     _builtInUniforms[UNIFORM_MV_MATRIX] = glGetUniformLocation(_program, UNIFORM_NAME_MV_MATRIX);
@@ -538,10 +741,12 @@ void GLProgram::updateUniforms()
         setUniformLocationWith1i(_builtInUniforms[UNIFORM_SAMPLER2], 2);
     if(_builtInUniforms[UNIFORM_SAMPLER3] != -1)
         setUniformLocationWith1i(_builtInUniforms[UNIFORM_SAMPLER3], 3);
+#endif
 }
 
 bool GLProgram::link()
 {
+#if (DIRECTX_ENABLED == 0)
     CCASSERT(_program != 0, "Cannot link invalid program");
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
@@ -596,15 +801,57 @@ bool GLProgram::link()
 #endif
 
     return (status == GL_TRUE);
+#else
+	return true;
+#endif
 }
 
 void GLProgram::use()
 {
+#if (DIRECTX_ENABLED == 0)
     GL::useProgram(_program);
+#else
+	DXStateCache::getInstance().setShaders(_vertexShader, _pixelShader);
+	DXStateCache::getInstance().setInputLayout(_inputLayout);
+#endif
+}
+
+void GLProgram::set()
+{
+#if (DIRECTX_ENABLED == 1)
+	auto view = GLViewImpl::sharedOpenGLView();
+
+	if (_constantBufferVS)
+	{
+		// Prepare the constant buffer to send it to the graphics device.
+		if (_uniformDirtyVS)
+		{
+			unsigned char uniformBufferVS[UNIFORM_BUFFER_SIZE];
+			memcpy(uniformBufferVS, _uniformBufferVS, UNIFORM_BUFFER_SIZE);
+			view->GetContext()->UpdateSubresource(_constantBufferVS, 0, NULL, &_uniformBufferVS, 0, 0);
+			memcpy(_uniformBufferVS, uniformBufferVS, UNIFORM_BUFFER_SIZE);
+			_uniformDirtyVS = false;
+		}
+
+		DXStateCache::getInstance().setVSConstantBuffer(0, &_constantBufferVS);
+	}
+
+	if (_constantBufferPS)
+	{
+		if (_uniformDirtyPS)
+		{
+			view->GetContext()->UpdateSubresource(_constantBufferPS, 0, NULL, &_uniformBufferPS, 0, 0);
+			_uniformDirtyPS = false;
+		}
+
+		DXStateCache::getInstance().setPSConstantBuffer(0, &_constantBufferPS);
+	}
+#endif
 }
 
 static std::string logForOpenGLShader(GLuint shader)
 {
+#if (DIRECTX_ENABLED == 0)
     std::string ret;
     GLint logLength = 0, charsWritten = 0;
 
@@ -619,6 +866,9 @@ static std::string logForOpenGLShader(GLuint shader)
 
     free(logBytes);
     return ret;
+#else 
+	return "";
+#endif
 }
 
 static std::string logForOpenGLProgram(GLuint program)
@@ -641,23 +891,36 @@ static std::string logForOpenGLProgram(GLuint program)
 
 std::string GLProgram::getVertexShaderLog() const
 {
+#if (DIRECTX_ENABLED == 0)
     return cocos2d::logForOpenGLShader(_vertShader);
+#else
+	return "";
+#endif
 }
 
 std::string GLProgram::getFragmentShaderLog() const
 {
+#if (DIRECTX_ENABLED == 0)
     return cocos2d::logForOpenGLShader(_fragShader);
+#else
+	return "";
+#endif
 }
 
 std::string GLProgram::getProgramLog() const
 {
+#if (DIRECTX_ENABLED == 0)
     return logForOpenGLProgram(_program);
+#else
+	return "";
+#endif
 }
 
 // Uniform cache
 
 bool GLProgram::updateUniformLocation(GLint location, const GLvoid* data, unsigned int bytes)
 {
+#if (DIRECTX_ENABLED == 0)
     if (location < 0)
     {
         return false;
@@ -692,16 +955,25 @@ bool GLProgram::updateUniformLocation(GLint location, const GLvoid* data, unsign
     }
 
     return updated;
+#else
+	return false;
+#endif
 }
 
 GLint GLProgram::getUniformLocationForName(const char* name) const
 {
     CCASSERT(name != nullptr, "Invalid uniform name" );
     CCASSERT(_program != 0, "Invalid operation. Cannot get uniform location when program is not initialized");
-    
+#if DIRECTX_ENABLED == 0
     return glGetUniformLocation(_program, name);
+#else
+	NOT_SUPPORTED();
+	return 0;
+#endif
 }
 
+
+#if (DIRECTX_ENABLED == 0)
 void GLProgram::setUniformLocationWith1i(GLint location, GLint i1)
 {
     bool updated = updateUniformLocation(location, &i1, sizeof(i1)*1);
@@ -887,6 +1159,135 @@ void GLProgram::setUniformLocationWithMatrix4fv(GLint location, const GLfloat* m
         glUniformMatrix4fv( (GLint)location, (GLsizei)numberOfMatrices, GL_FALSE, matrixArray);
     }
 }
+#else
+
+void GLProgram::updateUniform(int location, unsigned char* input, int size)
+{
+	// PS
+	if (location >= _uniformPSStart)
+	{
+		const int realLocation = location - _uniformPSStart;
+		CCASSERT(realLocation + sizeof(GLint) < UNIFORM_BUFFER_SIZE, "Constant buffer too small.");
+		if (memcmp(_uniformBufferPS + realLocation, input, size) != 0)
+		{
+			memcpy(_uniformBufferPS + realLocation, input, size);
+			_uniformDirtyPS = true;
+		}
+	}
+	else
+	{
+		// VS
+		CCASSERT(location + sizeof(GLint) < UNIFORM_BUFFER_SIZE, "Constant buffer too small.");
+		if (memcmp(_uniformBufferVS + location, input, size) != 0)
+		{
+			memcpy(_uniformBufferVS + location, input, size);
+			_uniformDirtyVS = true;
+		}
+	}
+}
+
+void GLProgram::setUniformLocationWith1i(GLint location, GLint i1)
+{
+	updateUniform(location, (unsigned char*)&i1, sizeof(i1));
+}
+
+void GLProgram::setUniformLocationWith2i(GLint location, GLint i1, GLint i2)
+{
+	updateUniform(location, (unsigned char*)&i1, sizeof(i1));
+	updateUniform(location + sizeof(i1), (unsigned char*)&i2, sizeof(i2));
+}
+
+void GLProgram::setUniformLocationWith3i(GLint location, GLint i1, GLint i2, GLint i3)
+{
+	updateUniform(location, (unsigned char*)&i1, sizeof(i1));
+	updateUniform(location + sizeof(i1), (unsigned char*)&i2, sizeof(i2));
+	updateUniform(location + sizeof(i1) + sizeof(i2), (unsigned char*)&i3, sizeof(i3));
+}
+
+void GLProgram::setUniformLocationWith4i(GLint location, GLint i1, GLint i2, GLint i3, GLint i4)
+{
+	updateUniform(location, (unsigned char*)&i1, sizeof(i1));
+	updateUniform(location + sizeof(i1), (unsigned char*)&i2, sizeof(i2));
+	updateUniform(location + sizeof(i1) + sizeof(i2), (unsigned char*)&i3, sizeof(i3));
+	updateUniform(location + sizeof(i1) + sizeof(i2) + sizeof(i3), (unsigned char*)&i4, sizeof(i4));
+}
+
+void GLProgram::setUniformLocationWith2iv(GLint location, GLint* ints, unsigned int numberOfArrays)
+{
+	updateUniform(location, (unsigned char*)ints, sizeof(GLint) * 2 * numberOfArrays);
+}
+
+void GLProgram::setUniformLocationWith3iv(GLint location, GLint* ints, unsigned int numberOfArrays)
+{
+	updateUniform(location, (unsigned char*)ints, sizeof(GLint) * 3 * numberOfArrays);
+}
+
+void GLProgram::setUniformLocationWith4iv(GLint location, GLint* ints, unsigned int numberOfArrays)
+{
+	updateUniform(location, (unsigned char*)ints, sizeof(GLint) * 4 * numberOfArrays);
+}
+
+void GLProgram::setUniformLocationWith1f(GLint location, GLfloat f1)
+{
+	updateUniform(location, (unsigned char*)&f1, sizeof(f1));
+}
+
+void GLProgram::setUniformLocationWith2f(GLint location, GLfloat f1, GLfloat f2)
+{
+	updateUniform(location, (unsigned char*)&f1, sizeof(f1));
+	updateUniform(location + sizeof(f1), (unsigned char*)&f2, sizeof(f2));
+}
+
+void GLProgram::setUniformLocationWith3f(GLint location, GLfloat f1, GLfloat f2, GLfloat f3)
+{
+	updateUniform(location, (unsigned char*)&f1, sizeof(f1));
+	updateUniform(location + sizeof(f1), (unsigned char*)&f2, sizeof(f2));
+	updateUniform(location + sizeof(f1) + sizeof(f2), (unsigned char*)&f3, sizeof(f3));
+}
+
+void GLProgram::setUniformLocationWith4f(GLint location, GLfloat f1, GLfloat f2, GLfloat f3, GLfloat f4)
+{
+	updateUniform(location, (unsigned char*)&f1, sizeof(f1));
+	updateUniform(location + sizeof(f1), (unsigned char*)&f2, sizeof(f2));
+	updateUniform(location + sizeof(f1) + sizeof(f2), (unsigned char*)&f3, sizeof(f3));
+	updateUniform(location + sizeof(f1) + sizeof(f2) + sizeof(f3), (unsigned char*)&f4, sizeof(f4));
+}
+
+void GLProgram::setUniformLocationWith1fv(GLint location, const GLfloat* floats, unsigned int numberOfArrays)
+{
+	updateUniform(location, (unsigned char*)floats, sizeof(GLfloat) * 1 * numberOfArrays);
+}
+void GLProgram::setUniformLocationWith2fv(GLint location, const GLfloat* floats, unsigned int numberOfArrays)
+{
+	updateUniform(location, (unsigned char*)floats, sizeof(GLfloat) * 2 * numberOfArrays);
+}
+
+void GLProgram::setUniformLocationWith3fv(GLint location, const GLfloat* floats, unsigned int numberOfArrays)
+{
+	updateUniform(location, (unsigned char*)floats, sizeof(GLfloat) * 3 * numberOfArrays);
+}
+
+void GLProgram::setUniformLocationWith4fv(GLint location, const GLfloat* floats, unsigned int numberOfArrays)
+{
+	updateUniform(location, (unsigned char*)floats, sizeof(GLfloat) * 4 * numberOfArrays);
+}
+
+void GLProgram::setUniformLocationWithMatrix2fv(GLint location, const GLfloat* matrixArray, unsigned int numberOfMatrices)
+{
+	updateUniform(location, (unsigned char*)matrixArray, sizeof(GLfloat) * 4 * numberOfMatrices);
+}
+
+void GLProgram::setUniformLocationWithMatrix3fv(GLint location, const GLfloat* matrixArray, unsigned int numberOfMatrices)
+{
+	updateUniform(location, (unsigned char*)matrixArray, sizeof(GLfloat) * 9 * numberOfMatrices);
+}
+
+void GLProgram::setUniformLocationWithMatrix4fv(GLint location, const GLfloat* matrixArray, unsigned int numberOfMatrices)
+{
+	updateUniform(location, (unsigned char*)matrixArray, sizeof(GLfloat) * 16 * numberOfMatrices);
+}
+
+#endif
 
 void GLProgram::setUniformsForBuiltins()
 {
@@ -897,6 +1298,7 @@ void GLProgram::setUniformsForBuiltins(const Mat4 &matrixMV)
 {
     auto& matrixP = _director->getMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION);
 
+#if (DIRECTX_ENABLED == 0)
     if(_flags.usesP)
         setUniformLocationWithMatrix4fv(_builtInUniforms[UNIFORM_P_MATRIX], matrixP.m, 1);
 
@@ -934,10 +1336,49 @@ void GLProgram::setUniformsForBuiltins(const Mat4 &matrixMV)
     
     if(_flags.usesRandom)
         setUniformLocationWith4f(_builtInUniforms[GLProgram::UNIFORM_RANDOM01], CCRANDOM_0_1(), CCRANDOM_0_1(), CCRANDOM_0_1(), CCRANDOM_0_1());
+#else
+	Director *director = Director::getInstance();
+	float time = director->getTotalFrames() * director->getAnimationInterval();
+
+	for (auto u : _uniformsDescription)
+	{
+		if (u.second.name == GLProgram::UNIFORM_NAME_P_MATRIX)
+		{
+			setUniformLocationWithMatrix4fv(u.second.location, matrixP.m, 1);
+		}
+		else if (u.second.name == GLProgram::UNIFORM_NAME_MV_MATRIX)
+		{
+			setUniformLocationWithMatrix4fv(u.second.location, matrixMV.m, 1);
+		}
+		else if (u.second.name == GLProgram::UNIFORM_NAME_MVP_MATRIX)
+		{
+			Mat4 matrixMVP = matrixP * matrixMV;
+			setUniformLocationWithMatrix4fv(u.second.location, matrixMVP.m, 1);
+		}
+		else if (u.second.name == GLProgram::UNIFORM_NAME_TIME)
+		{
+			setUniformLocationWith4f(u.second.location, time / 10.0f, time, time * 2, time * 4);
+		}
+		else if (u.second.name == GLProgram::UNIFORM_NAME_SIN_TIME)
+		{
+			setUniformLocationWith4f(u.second.location, time / 8.0f, time / 4.0f, time / 2.0f, sinf(time));
+		}
+		else if (u.second.name == GLProgram::UNIFORM_NAME_COS_TIME)
+		{
+			setUniformLocationWith4f(u.second.location, time / 8.0f, time / 4.0f, time / 2.0f, cosf(time));
+		}
+		else if (u.second.name == GLProgram::UNIFORM_NAME_RANDOM01)
+		{
+			setUniformLocationWith4f(u.second.location, CCRANDOM_0_1(), CCRANDOM_0_1(), CCRANDOM_0_1(), CCRANDOM_0_1());
+		}
+	}
+
+#endif
 }
 
 void GLProgram::reset()
 {
+#if (DIRECTX_ENABLED == 0)
     _vertShader = _fragShader = 0;
     memset(_builtInUniforms, 0, sizeof(_builtInUniforms));
     
@@ -952,6 +1393,7 @@ void GLProgram::reset()
     }
     
     _hashForUniforms.clear();
+#endif
 }
 
 NS_CC_END

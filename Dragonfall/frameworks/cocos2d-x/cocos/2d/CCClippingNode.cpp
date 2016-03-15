@@ -117,7 +117,11 @@ bool ClippingNode::init()
 
 bool ClippingNode::init(Node *stencil)
 {
+	NOT_SUPPORTED();
+
+#if DIRECTX_ENABLED == 0
     CC_SAFE_RELEASE(_stencil);
+
     _stencil = stencil;
     CC_SAFE_RETAIN(_stencil);
     
@@ -136,6 +140,9 @@ bool ClippingNode::init(Node *stencil)
     }
     
     return true;
+#else
+	return false;
+#endif
 }
 
 void ClippingNode::onEnter()
@@ -219,10 +226,12 @@ void ClippingNode::drawFullScreenQuadClearStencil()
     glProgram->setUniformsForBuiltins();
     glProgram->setUniformLocationWith4fv(colorLocation, (GLfloat*) &color.r, 1);
 
+#if DIRECTX_ENABLED == 0
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     GL::enableVertexAttribs( GL::VERTEX_ATTRIB_FLAG_POSITION );
     glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_POSITION, 2, GL_FLOAT, GL_FALSE, 0, vertices);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+#endif
     
     CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1, 4);
     
@@ -259,6 +268,7 @@ void ClippingNode::visit(Renderer *renderer, const Mat4 &parentTransform, uint32
     {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_WIN32 || CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
 #else
+#if (DIRECTX_ENABLED == 0)
         // since glAlphaTest do not exists in OES, use a shader that writes
         // pixel only if greater than an alpha threshold
         GLProgram *program = GLProgramCache::getInstance()->getGLProgram(GLProgram::SHADER_NAME_POSITION_TEXTURE_ALPHA_TEST_NO_MV);
@@ -269,7 +279,8 @@ void ClippingNode::visit(Renderer *renderer, const Mat4 &parentTransform, uint32
         // we need to recursively apply this shader to all the nodes in the stencil node
         // FIXME: we should have a way to apply shader to all nodes without having to do this
         setProgram(_stencil, program);
-        
+#endif
+		NOT_SUPPORTED();
 #endif
 
     }
@@ -363,6 +374,7 @@ void ClippingNode::setInverted(bool inverted)
 
 void ClippingNode::onBeforeVisit()
 {
+#if DIRECTX_ENABLED == 0
     ///////////////////////////////////
     // INIT
 
@@ -450,15 +462,18 @@ void ClippingNode::onBeforeVisit()
         // pixel will be drawn only if greater than an alpha threshold
         glAlphaFunc(GL_GREATER, _alphaThreshold);
 #else
-        
+		NOT_SUPPORTED();
 #endif
     }
-
+#else
+	NOT_SUPPORTED();
+#endif
     //Draw _stencil
 }
 
 void ClippingNode::onAfterDrawStencil()
 {
+#if DIRECTX_ENABLED == 0
     // restore alpha test state
     if (_alphaThreshold < 1)
     {
@@ -493,11 +508,13 @@ void ClippingNode::onAfterDrawStencil()
     glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 
     // draw (according to the stencil test func) this node and its childs
+#endif
 }
 
 
 void ClippingNode::onAfterVisit()
 {
+#if DIRECTX_ENABLED == 0
     ///////////////////////////////////
     // CLEANUP
 
@@ -512,6 +529,7 @@ void ClippingNode::onAfterVisit()
 
     // we are done using this layer, decrement
     s_layer--;
+#endif
 }
 
 NS_CC_END

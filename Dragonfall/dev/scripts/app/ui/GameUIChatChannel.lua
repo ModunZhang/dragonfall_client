@@ -265,9 +265,14 @@ end
 function GameUIChatChannel:GetChatItemCell()
     local content = display.newNode()
     local other_content = display.newNode()
-    local bottom = display.newScale9Sprite("chat_bubble_bottom_484x14.png"):addTo(other_content):align(display.RIGHT_BOTTOM,LISTVIEW_WIDTH, 0)
-    local middle = display.newScale9Sprite("chat_bubble_middle_484x20.png"):addTo(other_content):align(display.RIGHT_BOTTOM, LISTVIEW_WIDTH, 12)
-    local header = display.newScale9Sprite("chat_bubble_header_484x38.png"):addTo(other_content):align(display.RIGHT_BOTTOM, LISTVIEW_WIDTH,32)
+    local bottom = display.newScale9Sprite("chat_bubble_bottom_484x14.png",
+        nil,nil,cc.size(484,14),centerRect(484,14))
+    :addTo(other_content):align(display.RIGHT_BOTTOM,LISTVIEW_WIDTH, 0)
+    local middle = display.newScale9Sprite("chat_bubble_middle_484x20.png",
+        nil,nil,cc.size(484,20),centerRect(484,20))
+    :addTo(other_content):align(display.RIGHT_BOTTOM, LISTVIEW_WIDTH, 12)
+    local header = display.newScale9Sprite("chat_bubble_header_484x38.png",
+        nil,nil,cc.size(484,38),centerRect(484,38)):addTo(other_content):align(display.RIGHT_BOTTOM, LISTVIEW_WIDTH,32)
     local chat_icon = self:GetChatIcon():addTo(other_content):align(display.LEFT_TOP, 3, 72)
     local system_label = UIKit:ttfLabel({
         text = _("官方"),
@@ -328,9 +333,14 @@ function GameUIChatChannel:GetChatItemCell()
     -- end of other_content
     -- mine
     local mine_content = display.newNode()
-    local bottom = display.newScale9Sprite("chat_bubble_bottom_484x14.png"):addTo(mine_content):align(display.LEFT_BOTTOM, 0, 0)
-    local middle = display.newScale9Sprite("chat_bubble_middle_484x20.png"):addTo(mine_content):align(display.LEFT_BOTTOM, 0, 12)
-    local header = display.newScale9Sprite("chat_bubble_header_484x38.png"):addTo(mine_content):align(display.LEFT_BOTTOM, 0, 32)
+    local bottom = display.newScale9Sprite("chat_bubble_bottom_484x14.png",
+        nil,nil,cc.size(484,14),centerRect(484,14))
+    :addTo(mine_content):align(display.LEFT_BOTTOM, 0, 0)
+    local middle = display.newScale9Sprite("chat_bubble_middle_484x20.png",
+        nil,nil,cc.size(484,20),centerRect(484,20))
+    :addTo(mine_content):align(display.LEFT_BOTTOM, 0, 12)
+    local header = display.newScale9Sprite("chat_bubble_header_484x38.png",
+        nil,nil,cc.size(484,38),centerRect(484,38)):addTo(mine_content):align(display.LEFT_BOTTOM, 0, 32)
     local chat_icon = self:GetChatIcon():addTo(mine_content):align(display.RIGHT_TOP, LISTVIEW_WIDTH - 3, 72)
 
     local from_label = UIKit:ttfLabel({

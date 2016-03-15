@@ -9,7 +9,6 @@
       <Filter>Classes</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Cocos2dRenderer.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)OpenGLES.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)OpenGLESPage.xaml.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LuaExtension.cpp">
       <Filter>Classes\ext</Filter>
@@ -56,6 +55,11 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\sdk\Facebook\tolua_fb_sdk.cpp">
       <Filter>Classes\Facebook</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)DirectXMain.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DeviceResources.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Sample3DSceneRenderer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SampleFpsTextRenderer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)OpenGLES.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="$(MSBuildThisFileDirectory)App.xaml" />
@@ -103,12 +107,14 @@
     <Filter Include="Classes\Facebook">
       <UniqueIdentifier>{a6a6efc9-bb67-463a-a7c6-23d43e1f29cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{5c9651b2-e44e-48e4-b53d-0c4e81d74a3a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\Classes\AppDelegate.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)OpenGLES.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)OpenGLESPage.xaml.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\ext\LuaExtension.h">
       <Filter>Classes\ext</Filter>
@@ -152,6 +158,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\extensions\sdk\Facebook\tolua_fb_sdk.h">
       <Filter>Classes\Facebook</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DirectXMain.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SampleFpsTextRenderer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ShaderStructures.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Sample3DSceneRenderer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DeviceResources.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)OpenGLES.h" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="$(MSBuildThisFileDirectory)OpenGLESPage.xaml" />
@@ -166,5 +178,123 @@
     <PRIResource Include="$(MSBuildThisFileDirectory)Strings\zh-Hant-TW\Resources.resw">
       <Filter>Strings\zh-Hant-TW</Filter>
     </PRIResource>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="$(MSBuildThisFileDirectory)SamplePixelShader.hlsl" />
+    <FxCompile Include="$(MSBuildThisFileDirectory)SampleVertexShader.hlsl" />
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_ccFilterShader_gray_PS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_customer_color_PS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_flash_PS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_Label_df_glow_PS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_Label_df_normal_PS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_Label_normal_PS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_Label_outline_PS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_Label_VS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_mask_layer_PS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_mask_PS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_multi_tex_PS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_nolimittex_PS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_plane_PS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_Position_uColor_PS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_Position_uColor_VS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_PositionColor_noMVP_VS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_PositionColor_PS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_PositionColor_VS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_PositionColorLengthTexture_PS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_PositionColorLengthTexture_VS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_PositionTexture_PS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_PositionTexture_uColor_PS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_PositionTexture_uColor_VS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_PositionTexture_VS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_PositionTextureA8Color_PS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_PositionTextureA8Color_VS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_PositionTextureColor_noMVP_PS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_PositionTextureColor_noMVP_VS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_PositionTextureColor_PS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_PositionTextureColor_VS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_PositionTextureColorAlphaTest_PS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_ps_discoloration_PS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_warning_PS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_3D_Color_PS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_3D_ColorTex_PS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_3D_PositionTex_VS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_banner_PS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)shaders\ccShader_bannerpve_PS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

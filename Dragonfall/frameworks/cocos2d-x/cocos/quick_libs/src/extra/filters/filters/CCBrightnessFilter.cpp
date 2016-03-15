@@ -53,11 +53,15 @@ BrightnessFilter::BrightnessFilter()
 
 GLProgram* BrightnessFilter::loadShader()
 {
-    GLProgram* __p = GLProgram::createWithByteArrays(ccPositionTextureColor_noMVP_vert, ccFilterShader_brightness_frag);
-    
+#if DIRECTX_ENABLED == 0
+   GLProgram* __p = GLProgram::createWithByteArrays(ccPositionTextureColor_noMVP_vert, ccFilterShader_brightness_frag);
+   
 //	GLProgram* __p = new GLProgram();
 //	__p->initWithByteArrays(ccPositionTexture_vert, ccFilterShader_brightness_frag);
 	return __p;
+#else
+	return nullptr;
+#endif
 }
 
 void BrightnessFilter::setParameter(float $brightness)

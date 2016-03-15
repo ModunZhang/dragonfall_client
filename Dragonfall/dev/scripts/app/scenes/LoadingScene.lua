@@ -14,11 +14,11 @@ function LoadingScene:onEnter()
 	self:performWithDelay(function()
 		collectgarbage("collect")
 		-- if device.platform == 'winrt' then
-		-- 	local manager = ccs.ArmatureDataManager:getInstance()
-		--     for k,v in pairs(animation) do
-		--         local path = DEBUG_GET_ANIMATION_PATH(string.format("animations/%s.ExportJson", k))
-		--         manager:removeArmatureFileInfo(path)
-		--     end
+		-- -- 	local manager = ccs.ArmatureDataManager:getInstance()
+		-- --     for k,v in pairs(animation) do
+		-- --         local path = DEBUG_GET_ANIMATION_PATH(string.format("animations/%s.ExportJson", k))
+		-- --         manager:removeArmatureFileInfo(path)
+		-- --     end
 		--     cc.Director:getInstance():purgeCachedData()
 		-- end
 	    enter_scene(app:enterScene(self.nextScene, self.args))

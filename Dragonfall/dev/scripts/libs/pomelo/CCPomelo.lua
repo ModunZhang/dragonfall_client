@@ -21,7 +21,7 @@ end
 function CCPomelo:request(route, msg,cb)
 	print(route,"CCPomelo:request---->")
 	dump(msg,"CCPomelo:request---->")
-	self._pomelo:request(route, msg,function( args )
+	return self._pomelo:request(route, msg,function( args )
         cb(true,args)
 	end)
 end

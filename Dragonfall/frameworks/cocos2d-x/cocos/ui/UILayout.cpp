@@ -321,6 +321,7 @@ void Layout::stencilClippingVisit(Renderer *renderer, const Mat4& parentTransfor
     
 void Layout::onBeforeVisitStencil()
 {
+#if DIRECTX_ENABLED == 0
     s_layer++;
     GLint mask_layer = 0x1 << s_layer;
     GLint mask_layer_l = mask_layer - 1;
@@ -346,10 +347,14 @@ void Layout::onBeforeVisitStencil()
     
     glStencilFunc(GL_NEVER, mask_layer, mask_layer);
     glStencilOp(GL_REPLACE, GL_KEEP, GL_KEEP);
+#else
+	NOT_SUPPORTED();
+#endif
 }
     
 void Layout::drawFullScreenQuadClearStencil()
 {
+#if DIRECTX_ENABLED == 0
     Director* director = Director::getInstance();
     CCASSERT(nullptr != director, "Director is null when seting matrix stack");
 
@@ -361,10 +366,10 @@ void Layout::drawFullScreenQuadClearStencil()
     
     Vec2 vertices[] =
     {
-        Vec2(-1, -1),
-        Vec2(1, -1),
-        Vec2(1, 1),
-        Vec2(-1, 1)
+       Vec2(-1, -1),
+       Vec2(1, -1),
+       Vec2(1, 1),
+       Vec2(-1, 1)
     };
     
     auto glProgram = GLProgramCache::getInstance()->getGLProgram(GLProgram::SHADER_NAME_POSITION_U_COLOR);
@@ -387,39 +392,58 @@ void Layout::drawFullScreenQuadClearStencil()
     
     director->popMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION);
     director->popMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+#else
+	CCASSERT(false, "notspported");
+#endif
 }
 
 void Layout::onAfterDrawStencil()
 {
+#if DIRECTX_ENABLED == 0
     glDepthMask(_currentDepthWriteMask);
     glStencilFunc(GL_EQUAL, _mask_layer_le, _mask_layer_le);
     glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+#else
+	CCASSERT(false, "notspported");
+#endif
 }
 
 
 void Layout::onAfterVisitStencil()
 {
+#if DIRECTX_ENABLED == 0
     glStencilFunc(_currentStencilFunc, _currentStencilRef, _currentStencilValueMask);
     glStencilOp(_currentStencilFail, _currentStencilPassDepthFail, _currentStencilPassDepthPass);
     glStencilMask(_currentStencilWriteMask);
     if (!_currentStencilEnabled)
     {
-        glDisable(GL_STENCIL_TEST);
+       glDisable(GL_STENCIL_TEST);
     }
     s_layer--;
+#else
+	CCASSERT(false, "notspported");
+#endif
 }
     
 void Layout::onBeforeVisitScissor()
 {
+#if DIRECTX_ENABLED == 0
     Rect clippingRect = getClippingRect();
     glEnable(GL_SCISSOR_TEST);
     auto glview = Director::getInstance()->getOpenGLView();
     glview->setScissorInPoints(clippingRect.origin.x, clippingRect.origin.y, clippingRect.size.width, clippingRect.size.height);
+#else
+	CCASSERT(false, "notspported");
+#endif
 }
 
 void Layout::onAfterVisitScissor()
 {
+#if DIRECTX_ENABLED == 0
     glDisable(GL_SCISSOR_TEST);
+#else
+	CCASSERT(false, "notspported");
+#endif
 }
     
 void Layout::scissorClippingVisit(Renderer *renderer, const Mat4& parentTransform, uint32_t parentFlags)
@@ -437,47 +461,51 @@ void Layout::scissorClippingVisit(Renderer *renderer, const Mat4& parentTransfor
 
 void Layout::setClippingEnabled(bool able)
 {
+#if DIRECTX_ENABLED == 0
     if (able == _clippingEnabled)
     {
-        return;
+       return;
     }
     _clippingEnabled = able;
     switch (_clippingType)
     {
-        case ClippingType::STENCIL:
-            if (able)
-            {
-                static bool once = true;
-                if (once)
-                {
-                    glGetIntegerv(GL_STENCIL_BITS, &g_sStencilBits);
-                    if (g_sStencilBits <= 0)
-                    {
-                        CCLOG("Stencil buffer is not enabled.");
-                    }
-                    once = false;
-                }
-                _clippingStencil = DrawNode::create();
-                if (_running)
-                {
-                    _clippingStencil->onEnter();
-                }
-                _clippingStencil->retain();
-                setStencilClippingSize(_contentSize);
-            }
-            else
-            {
-                if (_running)
-                {
-                    _clippingStencil->onExit();
-                }
-                _clippingStencil->release();
-                _clippingStencil = nullptr;
-            }
-            break;
-        default:
-            break;
+       case ClippingType::STENCIL:
+           if (able)
+           {
+               static bool once = true;
+               if (once)
+               {
+                   glGetIntegerv(GL_STENCIL_BITS, &g_sStencilBits);
+                   if (g_sStencilBits <= 0)
+                   {
+                       CCLOG("Stencil buffer is not enabled.");
+                   }
+                   once = false;
+               }
+               _clippingStencil = DrawNode::create();
+               if (_running)
+               {
+                   _clippingStencil->onEnter();
+               }
+               _clippingStencil->retain();
+               setStencilClippingSize(_contentSize);
+           }
+           else
+           {
+               if (_running)
+               {
+                   _clippingStencil->onExit();
+               }
+               _clippingStencil->release();
+               _clippingStencil = nullptr;
+           }
+           break;
+       default:
+           break;
     }
+#else
+	CCASSERT(false, "notspported");
+#endif
 }
     
 void Layout::setClippingType(ClippingType type)

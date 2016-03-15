@@ -1860,6 +1860,8 @@ local SOLDIER_NODE = 1
 local EFFECT_TAG = 2
 local INFO_TAG = 3
 local HURT_TAG = 5
+local normal = GameDatas.Soldiers.normal
+local special = GameDatas.Soldiers.special
 function UIKit:CreateFightTroops(soldierName, properties, gameController)
     gameController = gameController or empty_gameController
     local troopsNode = display.newNode()
@@ -1867,6 +1869,11 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
     troopsNode.infoNode = display.newNode():addTo(troopsNode, 1, INFO_TAG)
     troopsNode.effectsNode = display.newNode():addTo(troopsNode, 2, EFFECT_TAG)
     troopsNode.properties = properties or {}
+    troopsNode.soldierName = soldierName
+    local config = special[soldierName] or normal[soldierName.."_"..1]
+    if config then
+        troopsNode.soldierType = config.type
+    end
     local _,_,count = unpack(soldier_fight_map[soldierName])
     local soldiers = {}
     for i,v in ipairs(count_map[count]) do
@@ -1966,7 +1973,10 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
     function troopsNode:Return(x, y, time, func)
         self.infoNode:hide()
         self:Play("move_90", -1)
-        local acts = transition.sequence({
+
+
+
+        local moveActs = transition.sequence({
             cc.MoveTo:create(time, cc.p(x, y)),
             cc.CallFunc:create(function()
                 self:Idle()
@@ -1975,7 +1985,15 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
                 end
             end),
         })
-        local speed = cc.Speed:create(acts, self:Speed())
+
+        local footSounds = {}
+        for i = 0, time, 0.8 do
+            table.insert(footSounds, cc.CallFunc:create(step))
+            table.insert(footSounds, cc.DelayTime:create(0.5))
+        end
+        local soundActs = transition.sequence(footSounds)
+
+        local speed = cc.Speed:create(cc.Spawn:create(moveActs, soundActs),self:Speed())
         speed:setTag(SPEED_TAG)
         self:runAction(speed)
         local soldierNode = self:getChildByTag(SOLDIER_NODE)
@@ -1984,10 +2002,8 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
     end
     function troopsNode:Move(x, y, time, func, delayTime)
         self.infoNode:hide()
-        if not self:IsWall() then
-            self:Play("move_90", -1)
-        end
-        local acts = transition.sequence({
+
+        local moveActs = transition.sequence{
             cc.MoveTo:create(time, cc.p(x, y)),
             cc.CallFunc:create(function()
                 self:Idle()
@@ -2001,10 +2017,28 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
                     func(true)
                 end
             end),
-        })
-        local speed = cc.Speed:create(acts, self:Speed())
-        speed:setTag(SPEED_TAG)
-        self:runAction(speed)
+        }
+
+        if self:IsWall() then
+            local speed = cc.Speed:create(moveActs, self:Speed())
+            speed:setTag(SPEED_TAG)
+            self:runAction(speed)
+        else
+            self:Play("move_90", -1)
+            local function step()
+                app:GetAudioManager():PlaySoldierStepEffectByType(self.soldierType)
+            end
+            local footSounds = {}
+            for i = 0, time, 0.5 do
+                table.insert(footSounds, cc.CallFunc:create(step))
+                table.insert(footSounds, cc.DelayTime:create(0.5))
+            end
+            local soundActs = transition.sequence(footSounds)
+
+            local speed = cc.Speed:create(cc.Spawn:create(moveActs, soundActs),self:Speed())
+            speed:setTag(SPEED_TAG)
+            self:runAction(speed)
+        end
         return self
     end
     function troopsNode:PromiseOfDeath()
@@ -2015,6 +2049,7 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         return p
     end
     function troopsNode:Death(func)
+        app:GetAudioManager():PlayeEffectSoundWithKey("TROOP_LOSE")
         local acts = transition.sequence({
             cc.FadeOut:create(0.8),
             cc.CallFunc:create(function()
@@ -2037,7 +2072,7 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         elseif not not animationData:getMovement("move_90") then
             self:Play("move_90", -1):StopAni()
         else
-            self:Play("attack", -1):StopAni()
+            self:Play("hurt", -1):StopAni()
         end
         return self
     end
@@ -2060,6 +2095,13 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         return p
     end
     function troopsNode:Play(aniName, aniTimes)
+        if aniName == "attack" then
+            if self.soldierName == "wall" then
+                app:GetAudioManager():PlayeAttackSoundBySoldierName("ranger")
+            else
+                app:GetAudioManager():PlayeAttackSoundBySoldierName(self.soldierName)
+            end
+        end
         for _,v in pairs(self.soldiers) do
             v:getAnimation():play(aniName, 0, aniTimes or 0)
             v:getAnimation():setSpeedScale(self:Speed())

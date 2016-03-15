@@ -21,7 +21,7 @@ using namespace Platform;
 using namespace Windows::UI::Xaml::Controls;
 using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
-
+#if DIRECTX_ENABLED == 0
 OpenGLES::OpenGLES() :
     mEglConfig(nullptr),
     mEglDisplay(EGL_NO_DISPLAY),
@@ -237,3 +237,4 @@ EGLBoolean OpenGLES::SwapBuffers(const EGLSurface surface)
 {
     return (eglSwapBuffers(mEglDisplay, surface));
 }
+#endif

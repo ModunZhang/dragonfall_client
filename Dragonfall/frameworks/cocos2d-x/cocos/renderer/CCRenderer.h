@@ -228,8 +228,13 @@ protected:
     //for TrianglesCommand
     V3F_C4B_T2F _verts[VBO_SIZE];
     GLushort _indices[INDEX_VBO_SIZE];
+//#if (DIRECTX_ENABLED == 1)
+//	ID3D11Buffer* _bufferTriVertex;
+//	ID3D11Buffer* _bufferTriIndex;
+//#else
     GLuint _buffersVAO;
     GLuint _buffersVBO[2]; //0: vertex  1: indices
+//#endif
 
     int _filledVertex;
     int _filledIndex;
@@ -237,8 +242,14 @@ protected:
     //for QuadCommand
     V3F_C4B_T2F _quadVerts[VBO_SIZE];
     GLushort _quadIndices[INDEX_VBO_SIZE];
-    GLuint _quadVAO;
-    GLuint _quadbuffersVBO[2]; //0: vertex  1: indices
+
+#if (DIRECTX_ENABLED == 1)
+	ID3D11Buffer* _bufferVertex;
+	ID3D11Buffer* _bufferIndex;
+#else
+	GLuint _quadVAO;
+	GLuint _quadbuffersVBO[2]; //0: vertex  1: indices
+#endif
     int _numberQuads;
     
     bool _glViewAssigned;
