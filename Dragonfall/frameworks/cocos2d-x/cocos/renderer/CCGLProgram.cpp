@@ -547,6 +547,7 @@ void GLProgram::parseUniforms()
 #endif
 }
 
+#if (DIRECTX_ENABLED == 1)
 const Uniform* GLProgram::getUniform(const std::string &name) const
 {
 #if (DIRECTX_ENABLED == 0)
@@ -561,6 +562,7 @@ const Uniform* GLProgram::getUniform(const std::string &name) const
 	return nullptr;
 #endif
 }
+#endif
 
 Uniform* GLProgram::getUniform(const std::string &name)
 {

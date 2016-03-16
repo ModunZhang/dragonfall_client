@@ -573,24 +573,6 @@ function Alliance:GetShrineEventByid(id)
         end
     end
 end
-function Alliance:GetStarInfoBy(stage)
-    local stagesinfo = {}
-    local stages_map = {}
-    for _,v in pairs(shrineStage) do
-        if shrineStage[v.stageName].stage == stage then
-            table.insert(stagesinfo, v)
-            stages_map[v.stageName] = v
-        end
-    end
-    local total_stars = #stagesinfo * 3
-    local stars = 0
-    for i,v in ipairs(self.shrineDatas) do
-        if stages_map[v.stageName] then
-            stars = stars + v.maxStar
-        end
-    end
-    return stars,total_stars
-end
 function Alliance:GetSubStagesInfoBy(stage)
     local t = {}
     for _,v in pairs(shrineStage) do

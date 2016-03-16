@@ -34,8 +34,9 @@ THE SOFTWARE.
 #include "base/CCEventListenerCustom.h"
 #include "base/CCEventDispatcher.h"
 #include "renderer/CCRenderer.h"
-
+#if DIRECTX_ENABLED == 1
 #include <d3d11_1.h>
+#endif
 
 NS_CC_BEGIN
 

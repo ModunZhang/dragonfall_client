@@ -691,75 +691,22 @@ function GameUIShrineReportInMail:GetFightReportObjectWithJson(json_data)
         json_data.defenceTroopData,
         json_data.fightWithDefenceTroopReports.attackPlayerDragonFightData,
         json_data.fightWithDefenceTroopReports.defenceTroopDragonFightData,
-        json_data.fightWithDefenceTroopReports.attackPlayerSoldierRoundDatas,
-        json_data.fightWithDefenceTroopReports.defenceTroopSoldierRoundDatas,
+        json_data.fightWithDefenceTroopReports.soldierRoundDatas,
         self:IsRoundWin(json_data)
     )
     return shrinePlayFightReport
 end
 
 -- 战斗回放相关获取数据方法
-function ShrinePlayFightReport:ctor(attackName,defenceName,attackPlayerData,defenceTroopData,attackDragonRoundData,defenceDragonRoundData,fightAttackSoldierRoundData,fightDefenceSoldierRoundData,isWin)
+function ShrinePlayFightReport:ctor(attackName,defenceName,attackPlayerData,defenceTroopData,attackDragonRoundData,defenceDragonRoundData,soldierRoundDatas,isWin)
     self.attackName = attackName
     self.defenceName = defenceName
     self.attackPlayerData = attackPlayerData
     self.defenceTroopData = defenceTroopData
     self.attackDragonRoundData = attackDragonRoundData
     self.defenceDragonRoundData = defenceDragonRoundData
-    self.fightAttackSoldierRoundData = fightAttackSoldierRoundData
-    self.fightDefenceSoldierRoundData = fightDefenceSoldierRoundData
+    self.soldierRoundDatas = soldierRoundDatas
     self.isWin = isWin
-    for __,v in ipairs(fightAttackSoldierRoundData) do
-        v.name = v.soldierName
-        v.star = v.soldierStar
-        v.count = v.soldierCount
-    end
-    for __,v in ipairs(fightDefenceSoldierRoundData) do
-        v.name = v.soldierName
-        v.star = v.soldierStar
-        v.count = v.soldierCount
-    end
-    self:formatOrderedAttackSoldiers()
-end
-
-function ShrinePlayFightReport:formatOrderedAttackSoldiers()
-    local result = {}
-    self.orderedAttackSoldiers = {}
-    for index,v in ipairs(self.fightAttackSoldierRoundData) do
-        if not result[v.soldierName] then
-            result[v.soldierName] = {name = v.soldierName,star = v.soldierStar,count = v.soldierCount or 0,index = index}
-        end
-    end
-    for index,v in ipairs(self.attackPlayerData.soldiers) do
-        if not result[v.name] then
-            result[v.name] = {name = v.name,star = v.star,count = v.count or 0,index = index}
-        end
-    end
-    for ___,v in pairs(result) do
-        table.insert(self.orderedAttackSoldiers,v)
-    end
-    table.sort( self.orderedAttackSoldiers, function(a,b)
-        return a.index < b.index
-    end)
-
-    result = {}
-    self.orderedDefenceSoldierRoundData = {}
-    for index,v in ipairs(self.fightDefenceSoldierRoundData) do
-        if not result[v.soldierName] then
-            result[v.soldierName] = {name = v.soldierName,star = v.soldierStar,count = v.soldierCount or 0,index = index}
-        end
-    end
-    for index,v in ipairs(self.defenceTroopData.soldiers) do
-        if not result[v.name] then
-            result[v.name] = {name = v.name,star = v.star,count = v.count or 0,index = index}
-        end
-    end
-    for ___,v in pairs(result) do
-        table.insert(self.orderedDefenceSoldierRoundData,v)
-    end
-    table.sort( self.orderedDefenceSoldierRoundData, function(a,b)
-        return a.index < b.index
-    end)
 end
 
 function ShrinePlayFightReport:GetFightAttackName()
@@ -777,6 +724,17 @@ end
 function ShrinePlayFightReport:GetFightDefenceDragonRoundData()
     return self.defenceDragonRoundData or {}
 end
+function ShrinePlayFightReport:CouldAttackDragonUseSkill()
+    local dragonData = self:GetFightAttackDragonRoundData()
+    return dragonData.hp - dragonData.hpDecreased > 0
+end
+function ShrinePlayFightReport:CouldDefenceDragonUseSkill()
+    local dragonData = self:GetFightDefenceDragonRoundData()
+    return dragonData.hp - dragonData.hpDecreased > 0
+end
+function ShrinePlayFightReport:IsSoldierFight()
+    return true
+end
 function ShrinePlayFightReport:GetFightAttackSoldierRoundData()
     return self.fightAttackSoldierRoundData or {}
 end
@@ -786,17 +744,14 @@ end
 function ShrinePlayFightReport:IsFightWall()
     return false
 end
-function ShrinePlayFightReport:GetFightAttackWallRoundData()
-    return {}
-end
-function ShrinePlayFightReport:GetFightDefenceWallRoundData()
-    return {}
-end
 function ShrinePlayFightReport:GetOrderedAttackSoldiers()
-    return self.orderedAttackSoldiers or {}
+    return self.attackPlayerData.soldiers
 end
 function ShrinePlayFightReport:GetOrderedDefenceSoldiers()
-    return self.orderedDefenceSoldierRoundData or {}
+    return self.defenceTroopData.soldiers
+end
+function ShrinePlayFightReport:GetSoldierRoundData()
+    return self.soldierRoundDatas
 end
 function ShrinePlayFightReport:GetReportResult()
     return self.isWin
@@ -809,14 +764,12 @@ function ShrinePlayFightReport:GetAttackTargetTerrain()
     return Alliance_Manager:GetMyAlliance().basicInfo.terrain
 end
 
-function ShrinePlayFightReport:IsAttackCamp()
-    return true
-end
 function ShrinePlayFightReport:GetDefenceDragonLevel()
     return self.defenceTroopData.dragon.level
 end
 
 return GameUIShrineReportInMail
+
 
 
 
