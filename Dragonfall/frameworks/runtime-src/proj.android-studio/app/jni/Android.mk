@@ -2,40 +2,42 @@ LOCAL_PATH := $(call my-dir)
  
 include $(CLEAR_VARS)
 
+PATH_SUFF := ../
+
 LOCAL_MODULE := cocos2dlua_shared
 
 LOCAL_MODULE_FILENAME := libcocos2dlua
 
 LOCAL_SRC_FILES := \
-../../Classes/AppDelegate.cpp \
-../../Classes/ide-support/SimpleConfigParser.cpp \
+$(PATH_SUFF)../../Classes/AppDelegate.cpp \
+$(PATH_SUFF)../../Classes/ide-support/SimpleConfigParser.cpp \
 hellolua/main.cpp \
-../../../../extensions/ext/common/CommonUtils-android.cpp \
-../../../../extensions/ext/LuaExtension.cpp \
-../../../../extensions/ext/crc/crc32.c \
-../../../../extensions/ext/sysmail/Sysmail-android.cpp \
-../../../../extensions/ext/sysmail/tolua_sysmail.cpp \
-../../../../extensions/ext/notification/tolua_local_push.cpp \
-../../../../extensions/ext/io/FileOperation.cpp \
-../../../../extensions/ext/notification/LocalNotification-android.cpp \
-../../../../extensions/sdk/MarketSDKTool-android.cpp \
-../../../../extensions/ext/platform/android/jni_StoreKit.cpp
+$(PATH_SUFF)../../../../extensions/ext/common/CommonUtils-android.cpp \
+$(PATH_SUFF)../../../../extensions/ext/LuaExtension.cpp \
+$(PATH_SUFF)../../../../extensions/ext/crc/crc32.c \
+$(PATH_SUFF)../../../../extensions/ext/sysmail/Sysmail-android.cpp \
+$(PATH_SUFF)../../../../extensions/ext/sysmail/tolua_sysmail.cpp \
+$(PATH_SUFF)../../../../extensions/ext/notification/tolua_local_push.cpp \
+$(PATH_SUFF)../../../../extensions/ext/io/FileOperation.cpp \
+$(PATH_SUFF)../../../../extensions/ext/notification/LocalNotification-android.cpp \
+$(PATH_SUFF)../../../../extensions/sdk/MarketSDKTool-android.cpp \
+$(PATH_SUFF)../../../../extensions/ext/platform/android/jni_StoreKit.cpp
 
 ifeq ($(CC_USE_SDK_PAYPAL),1)
-LOCAL_SRC_FILES += ../../../../extensions/sdk/PayPal/PayPalSDK-android.cpp
+LOCAL_SRC_FILES += $(PATH_SUFF)../../../../extensions/sdk/PayPal/PayPalSDK-android.cpp
 endif
 
 ifeq ($(CC_USE_FACEBOOK),1)
-LOCAL_SRC_FILES += ../../../../extensions/sdk/Facebook/FacebookSDK-android.cpp \
-../../../../extensions/sdk/Facebook/tolua_fb_sdk.cpp
+LOCAL_SRC_FILES += $(PATH_SUFF)../../../../extensions/sdk/Facebook/FacebookSDK-android.cpp \
+$(PATH_SUFF)../../../../extensions/sdk/Facebook/tolua_fb_sdk.cpp
 endif
 
 ifeq ($(CC_USE_POMELO_C_LIB),1)
-LOCAL_SRC_FILES += ../../../../extensions/sdk/libpomelo/CCPomelo.cpp
+LOCAL_SRC_FILES += $(PATH_SUFF)../../../../extensions/sdk/libpomelo/CCPomelo.cpp
 endif
 
 ifeq ($(CC_USE_GOOGLE_LOGIN),1)
-LOCAL_SRC_FILES += ../../../../extensions/sdk/GoogleSign/GoogleSignSDK-android.cpp
+LOCAL_SRC_FILES += $(PATH_SUFF)../../../../extensions/sdk/GoogleSign/GoogleSignSDK-android.cpp
 endif
 
 #MY_FILES_PATH  :=  $(LOCAL_PATH)/../../../../extensions/ext/platform/android
@@ -50,24 +52,24 @@ endif
 
 $(warning APP_CPPFLAGS:$(APP_CPPFLAGS))
 LOCAL_C_INCLUDES := \
-$(LOCAL_PATH)/../../Classes/protobuf-lite \
-$(LOCAL_PATH)/../../Classes/runtime \
-$(LOCAL_PATH)/../../Classes \
-$(LOCAL_PATH)/../../../cocos2d-x/external \
-$(LOCAL_PATH)/../../../cocos2d-x/tools/simulator/libsimulator/lib \
-$(LOCAL_PATH)/../../../../extensions/ext \
-$(LOCAL_PATH)/../../../../extensions/sdk \
-$(LOCAL_PATH)/../../../../extensions/sdk/GoogleSign \
-$(LOCAL_PATH)/../../../../extensions/sdk/Facebook \
-$(LOCAL_PATH)/../../../../extensions/sdk/PayPal \
-$(LOCAL_PATH)/../../../../extensions/ext/platform/android \
-$(LOCAL_PATH)/../../../../extensions/ext/common \
-$(LOCAL_PATH)/../../../../extensions/ext/io \
-$(LOCAL_PATH)/../../../../extensions/ext/sysmail \
-$(LOCAL_PATH)/../../../../extensions/ext/notification
+$(LOCAL_PATH)/$(PATH_SUFF)../../Classes/protobuf-lite \
+$(LOCAL_PATH)/$(PATH_SUFF)../../Classes/runtime \
+$(LOCAL_PATH)/$(PATH_SUFF)../../Classes \
+$(LOCAL_PATH)/$(PATH_SUFF)../../../cocos2d-x/external \
+$(LOCAL_PATH)/$(PATH_SUFF)../../../cocos2d-x/tools/simulator/libsimulator/lib \
+$(LOCAL_PATH)/$(PATH_SUFF)../../../../extensions/ext \
+$(LOCAL_PATH)/$(PATH_SUFF)../../../../extensions/sdk \
+$(LOCAL_PATH)/$(PATH_SUFF)../../../../extensions/sdk/GoogleSign \
+$(LOCAL_PATH)/$(PATH_SUFF)../../../../extensions/sdk/Facebook \
+$(LOCAL_PATH)/$(PATH_SUFF)../../../../extensions/sdk/PayPal \
+$(LOCAL_PATH)/$(PATH_SUFF)../../../../extensions/ext/platform/android \
+$(LOCAL_PATH)/$(PATH_SUFF)../../../../extensions/ext/common \
+$(LOCAL_PATH)/$(PATH_SUFF)../../../../extensions/ext/io \
+$(LOCAL_PATH)/$(PATH_SUFF)../../../../extensions/ext/sysmail \
+$(LOCAL_PATH)/$(PATH_SUFF)../../../../extensions/ext/notification
 
 ifeq ($(CC_USE_POMELO_C_LIB),1)
-LOCAL_C_INCLUDES += $(LOCAL_PATH)/../../../../extensions/sdk/libpomelo
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/$(PATH_SUFF)../../../../extensions/sdk/libpomelo
 endif
 
 # _COCOS_HEADER_ANDROID_BEGIN

@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 
-//we read version info from "version.properties"
+//dannyhe: we read the version infomation from "version.properties"
 def Properties projectVersion() {
     def versionFile = new File(project.rootDir, 'version.properties')
     def version = new Properties()
@@ -17,7 +17,7 @@ def Properties projectVersion() {
     if(!version['versionName']) version['versionName'] = "1.0"
     return version
 }
-//end for read version info
+//end for read version
 
 android {
     compileSdkVersion 23
@@ -59,6 +59,8 @@ android {
             storePassword "twhsMbcZxJ4isvgWX4BJ"
             keyAlias "xapcn_dragonfall"
             keyPassword "twhsMbcZxJ4isvgWX4BJ"
+            //Including the passwords for your release key and keystore inside the build file is not a good security practice
+            //keyPassword System.console().readLine("\nKey password: ")
         }
     }
 
@@ -86,7 +88,9 @@ dependencies {
     googleplayCompile 'com.google.android.gms:play-services-vision:8.1.0'
 }
 
-//We want to use custom ant antenna task for different flavors with hook the android tasks.
+// dannyhe:we add some tasks to help us,use the cmmand 'gradle task' see all tasks
+
+//java tasks
 ant.importBuild '../GooglePlayPreprocess.xml'
 ant.importBuild '../PayPalPreprocess.xml'
 
@@ -102,4 +106,49 @@ android.applicationVariants.all { variant ->
                 output.outputFile.name.replace(".apk", "-${variant.versionName}-${variant.versionCode}.apk"))
     }
 }
-//end for preprocess
+
+//ndk tasks
+task buildNative(type:Exec,group:'Game') {
+  description 'build our native code(cpp).'
+  executable = 'shell'
+  commandLine './build_native_release.sh'
+  standardOutput = new ByteArrayOutputStream()
+  environment('ANDROID_NDK_ROOT',android.ndkDirectory.getAbsolutePath())
+  ext.output = {
+    return standardOutput.toString()
+  }
+}
+
+task backUpNativeSymbols(type:Zip,group:'Game') {
+    description 'backup our native symbols to a zip file .'
+    appendix = 'symbols'
+    version = projectVersion()['versionName'] + '('+ projectVersion()['versionCode'] + ')'
+    from 'obj'
+    doLast {
+        println 'We created a archive at :' + backUpNativeSymbols.archivePath
+    }
+}
+
+backUpNativeSymbols.shouldRunAfter buildNative
+
+//adb tasks
+def adb = android.getAdbExe().toString()
+android.productFlavors.each { flavor ->
+    def replaceName = 'replaceLua' + flavor.name.capitalize()
+    def runName = 'run' + flavor.name.capitalize()
+    def stopName = 'stop' + flavor.name.capitalize()
+    task(runName,type:Exec,group:'Game') {
+        description 'run the ' + flavor.name.capitalize() + ' game on device.'
+        def argOfClass = flavor.applicationId + '/org.cocos2dx.lua.AppActivity'
+        commandLine "$adb",'shell','am','start','-n',argOfClass
+    }
+    task(stopName,type:Exec,group:'Game') {
+        description 'stop the ' + flavor.name.capitalize() + ' game on device.'
+        commandLine "$adb",'shell','am','force-stop',flavor.applicationId
+    }
+    task(replaceName,type:Exec,group:'Game') {
+        description 'replace the ' + flavor.name.capitalize() + ' zip file of lua on device.'
+        workingDir project.rootDir
+        commandLine "$adb", 'push','../../../update_android/scripts/game.zip','/mnt/sdcard/batcatstudio/dragonfall/bundle/scripts/'
+    }
+}

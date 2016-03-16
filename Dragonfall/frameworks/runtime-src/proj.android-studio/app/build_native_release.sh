@@ -9,9 +9,9 @@ fi
 source $PROFILE_NAME
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-APP_ROOT="$DIR/../../.."
+APP_ROOT="$DIR/../../../.."
 APP_ANDROID_ROOT="$DIR"
-export COCOS2DX_ROOT=$DIR/../../cocos2d-x
+export COCOS2DX_ROOT=$DIR/../../../cocos2d-x
 
 echo "- config:"
 echo "  ANDROID_NDK_ROOT    = $ANDROID_NDK_ROOT"
@@ -21,14 +21,14 @@ echo "  APP_ANDROID_ROOT    = $APP_ANDROID_ROOT"
 
 echo "- cleanup"
 find "$APP_ANDROID_ROOT" -type d | xargs chmod 755 $1
-if [ -d "$APP_ANDROID_ROOT"/bin ]; then
-    rm -rf "$APP_ANDROID_ROOT"/bin/*.apk
-fi
-if [ -d "$APP_ANDROID_ROOT"/obj ]; then
-	rm -rf "$APP_ANDROID_ROOT"/obj
-fi
-mkdir -p "$APP_ANDROID_ROOT"/bin
-chmod 755 "$APP_ANDROID_ROOT"/bin
+# if [ -d "$APP_ANDROID_ROOT"/bin ]; then
+#     rm -rf "$APP_ANDROID_ROOT"/bin/*.apk
+# fi
+# if [ -d "$APP_ANDROID_ROOT"/obj ]; then
+# 	rm -rf "$APP_ANDROID_ROOT"/obj
+# fi
+# mkdir -p "$APP_ANDROID_ROOT"/bin
+# chmod 755 "$APP_ANDROID_ROOT"/bin
 
 # if [ -d "$APP_ANDROID_ROOT"/assets ]; then
 #     rm -rf "$APP_ANDROID_ROOT"/assets/*
