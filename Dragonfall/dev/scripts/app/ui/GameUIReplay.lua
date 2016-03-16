@@ -88,8 +88,8 @@ function GameUIReplay:TopPositionByRow(row)
 end
 function GameUIReplay:GetDragonBuff(hp, hpMax)
     local hpPercent = hp / hpMax * 100
-    for i,buff in ipairs(GameDatas.Dragons.dragonBuff) do
-        if hpPercent >= buff.hpFrom then
+    for i,buff in pairs(GameDatas.Dragons.dragonBuff) do
+        if hpPercent > buff.hpFrom and hpPercent <= buff.hpTo then
             return buff.buffPercent * 100
         end
     end
@@ -753,16 +753,16 @@ function GameUIReplay:FinishReplay()
 end
 function GameUIReplay:ChangeSpeed(speed)
     if speed == 0 then
-        self.speed = 1.2
+        self.speed = 1.5
         self.ui_map.speedup:setButtonLabelString(_("加速"))
-    elseif self.speed == 1.2 then
-        self.speed = 2.4
+    elseif self.speed == 1.5 then
+        self.speed = 3.0
         self.ui_map.speedup:setButtonLabelString(_("x2"))
-    elseif self.speed == 2.4 then
-        self.speed = 4.8
+    elseif self.speed == 3.0 then
+        self.speed = 4.5
         self.ui_map.speedup:setButtonLabelString(_("x4"))
-    elseif self.speed == 4.8 then
-        self.speed = 1.2
+    elseif self.speed == 4.5 then
+        self.speed = 1.5
         self.ui_map.speedup:setButtonLabelString(_("加速"))
     end
     self:RefreshSpeed()
