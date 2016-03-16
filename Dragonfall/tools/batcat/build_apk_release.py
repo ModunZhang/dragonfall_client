@@ -1,5 +1,6 @@
 # coding=utf-8
 # DannyHe
+#only for eclipse + adt project
 from batcat import *
 from basic import *
 import sys,shutil,os,hashlib,time,json
@@ -155,6 +156,7 @@ def checkJavaMacros():
 if __name__ == "__main__":
 	if isWindows():
 		die("这个脚本暂时只支持mac osx")
+	die("这个脚本已废弃")
 	Logging.warning("开始构建Android项目")
 	Logging.debug(PROJECT_EXECUTE_DIR_PATH)
 	Logging.debug(CURRENT_DIR)

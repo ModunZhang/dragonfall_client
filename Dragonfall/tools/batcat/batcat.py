@@ -240,13 +240,14 @@ def getWin32SedPath():
     root_dir = getProjDir()
     return formatPath("%s/tools/win32/sed/sed.exe" % root_dir)
 
-
 def getProjConfigPath(platform):
     platformProjectRoot = getPlatformProjectRoot(platform)
     if platform == 'iOS':
         return formatPath("%s/ios/Info.plist" % platformProjectRoot)
     elif platform == 'Android':
-        return formatPath("%s/AndroidManifest.xml" % platformProjectRoot)
+        # return formatPath("%s/AndroidManifest.xml" % platformProjectRoot)
+        # use AS project ide
+        return formatPath("%s/../version.properties" % platformProjectRoot)
     elif platform == 'WP':
         return formatPath("%s/App.WindowsPhone/Package.appxmanifest" % platformProjectRoot)
 
@@ -261,7 +262,9 @@ def getPlatformProjectRoot(platform):
     if platform == 'iOS':
         return formatPath("%s/frameworks/runtime-src/proj.ios_mac" % root_dir)
     elif platform == 'Android':
-        return formatPath("%s/frameworks/runtime-src/proj.android" % root_dir)
+        return formatPath("%s/frameworks/runtime-src/proj.android-studio/app" % root_dir)
+        # use AS project ide
+        # return formatPath("%s/frameworks/runtime-src/proj.android" % root_dir)
     elif platform == 'WP':
         return formatPath("%s/frameworks/runtime-src/proj.win8.1-universal" % root_dir)
 

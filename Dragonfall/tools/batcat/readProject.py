@@ -4,6 +4,8 @@
 import xml.dom.minidom
 import sys
 import getopt
+import ConfigParser,os
+
 from basic import *
 from batcat import *
 from biplist import *
@@ -25,7 +27,9 @@ def usage():
 
 def initData():
     if platform == 'Android':
-        initAndroidData()
+        # initAndroidData()
+        # use AS project ide
+        initAndroidStudioData()
     if platform == 'WP':
         pass
     if platform == 'iOS':
@@ -34,7 +38,9 @@ def initData():
 
 def getAppVersion():
     if platform == 'Android':
-        return getAndroidAppVersion()
+        # return getAndroidAppVersion()
+        # use AS project ide
+        return getAndroidStudioAppVersion()
     if platform == 'WP':
         return getWPAppVersion()
     if platform == 'iOS':
@@ -43,12 +49,33 @@ def getAppVersion():
 
 def getAppMinVersion():
     if platform == 'Android':
-        return getAndroidAppMinVersion()
+        # return getAndroidAppMinVersion()
+        # use AS project ide
+        return getAndroidStudioAppMinVersion()
     if platform == 'WP':
         return getWPAppMinVersion()
     if platform == 'iOS':
         return getiOSAppMinVersion()
 
+# Android Studio
+
+def initAndroidStudioData():
+    if platform != 'Android':
+        return
+    m_file_path = getProjConfigPath('Android')
+    global config
+    config = ConfigParser.RawConfigParser()
+    config.read(m_file_path)
+
+def getAndroidStudioAppVersion():
+    if platform != 'Android':
+        return
+    return config.get('versions','versionName') 
+
+def getAndroidStudioAppMinVersion():
+    if platform != 'Android':
+        return
+    return config.get('versions','appMinVersion')
 # Android
 
 
