@@ -1569,30 +1569,48 @@ function UIKit:CreateDragonBattle(attackDragon, defenceDragon, gameController)
     gameController = gameController or empty_gameController
     local dragonBattleNode = display.newNode()
     display.newNode():addTo(dragonBattleNode,0,TIMER_TAG)
-    local dragonBattle = ccs.Armature:create("paizi"):addTo(dragonBattleNode)
+    local backBuffNode = display.newNode():addTo(dragonBattleNode)
+    local dragonBattle = ccs.Armature:create("paizi"):addTo(dragonBattleNode,1)
     ccs.Armature:create("paizi"):addTo(dragonBattleNode, 100, RESULT_TAG):hide()
 
-    local left_bone = dragonBattle:getBone("Layer4")
+    local attackBone = dragonBattle:getBone("Layer4")
     local leftDragon = UIKit:CreateFightDragon(attackDragon, gameController)
     :SetPercent(attackDragon.hp/attackDragon.hpMax)
-    :addTo(left_bone):pos(-360, -50)
+    :addTo(attackBone):pos(-360, -50)
     
-    left_bone:addDisplay(leftDragon, 0)
-    left_bone:changeDisplayWithIndex(0, true)
+    attackBone:addDisplay(leftDragon, 0)
+    attackBone:changeDisplayWithIndex(0, true)
 
-    dragonBattleNode.leftBuff = display.newSprite("background_replay.png")
-    :addTo(leftDragon):pos(51,-155)
 
-    local right_bone = dragonBattle:getBone("Layer5")
+    local defenceBone = dragonBattle:getBone("Layer5")
     local rightDragon = UIKit:CreateFightDragon(defenceDragon, gameController)
     :SetPercent(defenceDragon.hp/defenceDragon.hpMax)
-    :addTo(right_bone):pos(238, -82)
+    :addTo(defenceBone):pos(238, -82)
     
-    right_bone:addDisplay(rightDragon, 0)
-    right_bone:changeDisplayWithIndex(0, true)
+    defenceBone:addDisplay(rightDragon, 0)
+    defenceBone:changeDisplayWithIndex(0, true)
 
-    dragonBattleNode.rightBuff = display.newSprite("background_replay.png")
-    :addTo(rightDragon):pos(34,-153)
+    local attackBuffNode = display.newNode():addTo(backBuffNode)
+    local attackBuff = display.newSprite("background_replay.png")
+    :addTo(attackBuffNode):pos(-308, -190 + 200):opacity(0)
+
+    local defenceBuffNode = display.newNode():addTo(backBuffNode)
+    local defenceBuff = display.newSprite("background_replay.png")
+    :addTo(defenceBuffNode):pos(272, -220 + 200):opacity(0)
+
+    backBuffNode:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
+        local attackBuffBone = dragonBattle:getBone("Layer4_Copy2")
+        local attackWorldPoint = attackBuffBone:convertToWorldSpace(cc.p(0,0))
+        local attackNodePoint = backBuffNode:convertToNodeSpace(attackWorldPoint)
+        attackBuffNode:pos(attackNodePoint.x,attackNodePoint.y)
+
+        local defenceBuffBone = dragonBattle:getBone("Layer5_Copy1")
+        local defenceWorldPoint = defenceBuffBone:convertToWorldSpace(cc.p(0,0))
+        local defenceNodePoint = backBuffNode:convertToNodeSpace(defenceWorldPoint)
+        defenceBuffNode:pos(defenceNodePoint.x,defenceNodePoint.y)
+    end)
+    backBuffNode:scheduleUpdate()
+
 
     function dragonBattleNode:GetAttackDragon()
         return leftDragon
@@ -1635,6 +1653,12 @@ function UIKit:CreateDragonBattle(attackDragon, defenceDragon, gameController)
         self:getChildByTag(RESULT_TAG):getAnimation():setSpeedScale(speed)
         leftDragon:RefreshSpeed()
         rightDragon:RefreshSpeed()
+        if attackBuff:getActionByTag(SPEED_TAG) then
+            attackBuff:getActionByTag(SPEED_TAG):setSpeed(speed)
+        end
+        if defenceBuff:getActionByTag(SPEED_TAG) then
+            defenceBuff:getActionByTag(SPEED_TAG):setSpeed(speed)
+        end
         return self
     end
     function dragonBattleNode:Delay(time)
@@ -1658,6 +1682,8 @@ function UIKit:CreateDragonBattle(attackDragon, defenceDragon, gameController)
         self:getChildByTag(RESULT_TAG):getAnimation():pause()
         leftDragon:Pause()
         rightDragon:Pause()
+        attackBuff:stopAllActions()
+        defenceBuff:stopAllActions()
         return self
     end
     function dragonBattleNode:PromiseOfVictory()
@@ -1685,19 +1711,21 @@ function UIKit:CreateDragonBattle(attackDragon, defenceDragon, gameController)
         return self:PromiseOfAnimationFinished(reuslt:getAnimation())
     end
     function dragonBattleNode:PromiseOfShowBuff()
-        for i,v in ipairs({"步兵强化", "弓手强化","骑兵强化","攻城强化",}) do
+        local buffs = {_("攻击强化"), _("生命强化"), _("负重强化")}
+        local length = #buffs * 32
+        for i,v in ipairs(buffs) do
             UIKit:ttfLabel({
             text = v,
             size = 20,
             color = 0xffedae,
             shadow = true,
-            }):addTo(self.leftBuff):align(display.LEFT_CENTER, 30, 128 - (i-1) * 32)
+            }):addTo(attackBuff):align(display.LEFT_CENTER, 30, length - (i-1) * 32)
             UIKit:ttfLabel({
                 text = string.format("+%d%%", attackDragon.increase),
                 size = 20,
                 color = getColorByPercent(leftDragon:GetPercent()),
                 shadow = true,
-            }):addTo(self.leftBuff):align(display.RIGHT_CENTER, 275, 128 - (i-1) * 32)
+            }):addTo(attackBuff):align(display.RIGHT_CENTER, 275, length - (i-1) * 32)
 
 
             UIKit:ttfLabel({
@@ -1705,15 +1733,33 @@ function UIKit:CreateDragonBattle(attackDragon, defenceDragon, gameController)
             size = 20,
             color = 0xffedae,
             shadow = true,
-            }):addTo(self.rightBuff):align(display.LEFT_CENTER, 30, 128 - (i-1) * 32)
+            }):addTo(defenceBuff):align(display.LEFT_CENTER, 30, length - (i-1) * 32)
             UIKit:ttfLabel({
                 text = string.format("+%d%%", defenceDragon.increase),
                 size = 20,
                 color = getColorByPercent(rightDragon:GetPercent()),
                 shadow = true,
-            }):addTo(self.rightBuff):align(display.RIGHT_CENTER, 275, 128 - (i-1) * 32)
+            }):addTo(defenceBuff):align(display.RIGHT_CENTER, 275, length - (i-1) * 32)
         end
-        return self:PromiseOfDelay(1)
+
+        local p1 = promise.new()
+        local seq = transition.sequence({
+            cc.Spawn:create({cc.MoveBy:create(1, cc.p(0, -200)), cc.FadeIn:create(1)}),
+            cc.CallFunc:create(function() p1:resolve() end),
+        })
+        local speed = cc.Speed:create(seq, self:Speed())
+        speed:setTag(SPEED_TAG)
+        attackBuff:runAction(speed)
+
+        local p2 = promise.new()
+        local seq = transition.sequence({
+            cc.Spawn:create({cc.MoveBy:create(1, cc.p(0, -200)), cc.FadeIn:create(1)}),
+            cc.CallFunc:create(function() p2:resolve() end),
+        })
+        local speed = cc.Speed:create(seq, self:Speed())
+        speed:setTag(SPEED_TAG)
+        defenceBuff:runAction(speed)
+        return promise.all(p1, p2):next(self:Delay(1.5))
     end
     return dragonBattleNode:RefreshSpeed()
 end
