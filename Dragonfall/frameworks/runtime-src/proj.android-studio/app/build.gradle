@@ -34,7 +34,7 @@ android {
 
     productFlavors {
         googleplay {
-            applicationId "com.xapcna.dragonfall"
+            applicationId "com.xapcn.dragonfall"
             versionCode projectVersion()['versionCode'] as int
             versionName projectVersion()['versionName']
         }
