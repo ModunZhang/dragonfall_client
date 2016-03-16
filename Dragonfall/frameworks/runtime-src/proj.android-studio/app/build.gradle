@@ -15,8 +15,11 @@ def Properties projectVersion() {
     // safety defaults in case file is missing
     if(!version['versionCode']) version['versionCode'] = 1
     if(!version['versionName']) version['versionName'] = "1.0"
+    if(!version['appMinVersion']) version['appMinVersion'] = "1.0"
+    if(!version['appDebugGate']) version['appDebugGate'] = false
     return version
 }
+
 //end for read version
 
 android {
@@ -37,6 +40,7 @@ android {
             applicationId "com.xapcn.dragonfall"
             versionCode projectVersion()['versionCode'] as int
             versionName projectVersion()['versionName']
+            manifestPlaceholders = ['APP_MIN_VERSION':projectVersion()['appMinVersion'],'APP_HOC':projectVersion()['appDebugGate'] as String]
         }
     }
 
@@ -88,11 +92,13 @@ dependencies {
     googleplayCompile 'com.google.android.gms:play-services-vision:8.1.0'
 }
 
-// dannyhe:we add some tasks to help us,use the cmmand 'gradle task' see all tasks
+// dannyhe:we add some tasks to help us,use the command 'gradle tasks' see all tasks
 
 //java tasks
 ant.importBuild '../GooglePlayPreprocess.xml'
 ant.importBuild '../PayPalPreprocess.xml'
+
+GooglePlayPreprocess.group = 'GameHelper'
 
 android.applicationVariants.all { variant ->
     variant.productFlavors.each { flavor ->
@@ -108,7 +114,7 @@ android.applicationVariants.all { variant ->
 }
 
 //ndk tasks
-task buildNative(type:Exec,group:'Game') {
+task buildNative(type:Exec,group:'GameHelper') {
   description 'build our native code(cpp).'
   executable = 'shell'
   commandLine './build_native_release.sh'
@@ -119,7 +125,7 @@ task buildNative(type:Exec,group:'Game') {
   }
 }
 
-task backUpNativeSymbols(type:Zip,group:'Game') {
+task backUpNativeSymbols(type:Zip,group:'GameHelper') {
     description 'backup our native symbols to a zip file .'
     appendix = 'symbols'
     version = projectVersion()['versionName'] + '('+ projectVersion()['versionCode'] + ')'
@@ -127,6 +133,17 @@ task backUpNativeSymbols(type:Zip,group:'Game') {
     doLast {
         println 'We created a archive at :' + backUpNativeSymbols.archivePath
     }
+}
+
+//check tasks
+task checkVersionInfo(group:'GameHelper',description:'check the project version infomation in version.properties.') << {
+    println '------------------------------------------------'
+    println 'version.properties:'
+    println 'versionCode:'+ projectVersion()['versionCode']
+    println 'versionName:'+ projectVersion()['versionName']
+    println 'appMinVersion:'+ projectVersion()['appMinVersion']
+    println 'appHoc:'+ projectVersion()['appDebugGate']
+    println '------------------------------------------------'
 }
 
 backUpNativeSymbols.shouldRunAfter buildNative
@@ -137,16 +154,16 @@ android.productFlavors.each { flavor ->
     def replaceName = 'replaceLua' + flavor.name.capitalize()
     def runName = 'run' + flavor.name.capitalize()
     def stopName = 'stop' + flavor.name.capitalize()
-    task(runName,type:Exec,group:'Game') {
+    task(runName,type:Exec,group:'GameHelper') {
         description 'run the ' + flavor.name.capitalize() + ' game on device.'
         def argOfClass = flavor.applicationId + '/org.cocos2dx.lua.AppActivity'
         commandLine "$adb",'shell','am','start','-n',argOfClass
     }
-    task(stopName,type:Exec,group:'Game') {
+    task(stopName,type:Exec,group:'GameHelper') {
         description 'stop the ' + flavor.name.capitalize() + ' game on device.'
         commandLine "$adb",'shell','am','force-stop',flavor.applicationId
     }
-    task(replaceName,type:Exec,group:'Game') {
+    task(replaceName,type:Exec,group:'GameHelper') {
         description 'replace the ' + flavor.name.capitalize() + ' zip file of lua on device.'
         workingDir project.rootDir
         commandLine "$adb", 'push','../../../update_android/scripts/game.zip','/mnt/sdcard/batcatstudio/dragonfall/bundle/scripts/'
