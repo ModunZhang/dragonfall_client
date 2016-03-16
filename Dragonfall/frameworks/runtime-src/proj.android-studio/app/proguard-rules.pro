@@ -95,7 +95,7 @@
 
 #================sdks========================
 #talkingdata
--libraryjars ./libs/Game_Analytics_SDK_Android_3.2.3.jar
+#-libraryjars ./libs/Game_Analytics_SDK_Android_3.2.3.jar
 -keep class com.talkingdata.** {*;}
 -keep class com.tendcloud.** {*;}
 -dontwarn com.tendcloud.**
@@ -112,7 +112,7 @@
     <methods>;
 }
 #AppsFlyer
--libraryjars ./libs/AF-Android-SDK-v3.3.0.jar
+#-libraryjars ./libs/AF-Android-SDK-v3.3.0.jar
 #================Project========================
 -keep class com.batcatstudio.dragonfall.notifications.NotificationUtils {
 	public static boolean addLocalPush(...);

@@ -6,6 +6,7 @@ android {
 
     lintOptions {
         warningsAsErrors false
+        disable 'CommitPrefEdits'
     }
     defaultConfig {
         applicationId "com.xapcna.dragonfall"
@@ -56,7 +57,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt')
             signingConfig signingConfigs.release
         }
