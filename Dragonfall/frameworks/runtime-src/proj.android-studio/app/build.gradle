@@ -33,7 +33,7 @@ android {
     }
 
     productFlavors {
-        google {
+        googleplay {
             applicationId "com.xapcna.dragonfall"
             versionCode projectVersion()['versionCode'] as int
             versionName projectVersion()['versionName']
@@ -49,7 +49,7 @@ android {
         aidl.srcDir "src/com/android/vending/billing" //google play v3 billing
     }
 
-    sourceSets.google {
+    sourceSets.googleplay {
         manifest.srcFile "AndroidManifest.xml"
     }
 
@@ -75,15 +75,15 @@ dependencies {
     compile project(':libcocos2dx')
     compile fileTree(dir: 'libs', include: ['*.jar'])
     //TODO: set the jar to each flavors
-    
+
     //facebook
     compile 'com.facebook.android:facebook-android-sdk:4.0.0'
 
     //google play services
-    googleCompile 'com.google.android.gms:play-services-plus:8.1.0'
-    googleCompile 'com.google.android.gms:play-services-ads:8.1.0'
-    googleCompile 'com.google.android.gms:play-services-gcm:8.1.0'
-    googleCompile 'com.google.android.gms:play-services-vision:8.1.0'
+    googleplayCompile 'com.google.android.gms:play-services-plus:8.1.0'
+    googleplayCompile 'com.google.android.gms:play-services-ads:8.1.0'
+    googleplayCompile 'com.google.android.gms:play-services-gcm:8.1.0'
+    googleplayCompile 'com.google.android.gms:play-services-vision:8.1.0'
 }
 
 //We want to use custom ant antenna task for different flavors with hook the android tasks.
@@ -92,7 +92,7 @@ ant.importBuild '../PayPalPreprocess.xml'
 
 android.applicationVariants.all { variant ->
     variant.productFlavors.each { flavor ->
-        if (flavor.name.equals('google')) {
+        if (flavor.name.equals('googleplay')) {
             variant.javaCompile.dependsOn(GooglePlayPreprocess)
         }
     }
