@@ -49,10 +49,6 @@ local auto_cleanup = {}
 for k,v in pairs(jpg_rgb888) do
     auto_cleanup[k] = true
 end
-jpg_rgb888["world_bg.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
-jpg_rgb888["world_title1.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
-jpg_rgb888["world_title2.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
-jpg_rgb888["world_terrain.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
 
 
 centerRect = function(width, height)
