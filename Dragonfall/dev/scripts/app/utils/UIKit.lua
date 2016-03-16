@@ -1599,12 +1599,12 @@ function UIKit:CreateDragonBattle(attackDragon, defenceDragon, gameController)
     :addTo(defenceBuffNode):pos(272, -220 + 200):opacity(0)
 
     backBuffNode:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
-        local attackBuffBone = dragonBattle:getBone("Layer4_Copy2")
+        local attackBuffBone = dragonBattle:getBone("Layer4")
         local attackWorldPoint = attackBuffBone:convertToWorldSpace(cc.p(0,0))
         local attackNodePoint = backBuffNode:convertToNodeSpace(attackWorldPoint)
         attackBuffNode:pos(attackNodePoint.x,attackNodePoint.y)
 
-        local defenceBuffBone = dragonBattle:getBone("Layer5_Copy1")
+        local defenceBuffBone = dragonBattle:getBone("Layer5")
         local defenceWorldPoint = defenceBuffBone:convertToWorldSpace(cc.p(0,0))
         local defenceNodePoint = backBuffNode:convertToNodeSpace(defenceWorldPoint)
         defenceBuffNode:pos(defenceNodePoint.x,defenceNodePoint.y)
@@ -2147,7 +2147,7 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
     end
     function troopsNode:Play(aniName, aniTimes)
         if aniName == "attack" then
-            if self.soldierName == "wall" then
+            if string.find("wall") then
                 app:GetAudioManager():PlayeAttackSoundBySoldierName("ranger")
             else
                 app:GetAudioManager():PlayeAttackSoundBySoldierName(self.soldierName)
