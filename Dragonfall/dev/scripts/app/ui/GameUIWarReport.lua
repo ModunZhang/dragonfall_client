@@ -574,7 +574,6 @@ function GameUIWarReport:CreateSoldierInfo(soldiers)
 
     local content = WidgetClickPageView.new({bg=bg})
     for i=1,#soldiers,4 do
-
         local page_item = content:newItem()
         local gap_x = 120
         local origin_x = -4
@@ -585,8 +584,9 @@ function GameUIWarReport:CreateSoldierInfo(soldiers)
                 count = count + 1
             end
         end
-
-        content:addItem(page_item)
+        if count > 0 then
+            content:addItem(page_item)
+        end
     end
     content:pos(50,101)
     content:reload()

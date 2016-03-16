@@ -25,7 +25,6 @@ function Report:OnPropertyChange(property_name, old_value, new_value)
 
 end
 function Report:DecodeFromJsonData(json_data)
-    LuaUtils:outputTable("json_data",json_data)
     local report = Report.new(json_data.id, json_data.type, json_data.createTime, json_data.isRead, json_data.isSaved,json_data.index)
     report:SetData(json_data[json_data.type])
     return report
@@ -206,7 +205,6 @@ function Report:GetMyRoundDatas()
     local round_datas = {}
     local soldierRoundDatas, wallRoundDatas
     if self.player_id == data.attackPlayerData.id then
-        LuaUtils:outputTable("data",data)
         if data.fightWithHelpDefencePlayerReports then
             soldierRoundDatas = data.fightWithHelpDefencePlayerReports.soldierRoundDatas
         end
