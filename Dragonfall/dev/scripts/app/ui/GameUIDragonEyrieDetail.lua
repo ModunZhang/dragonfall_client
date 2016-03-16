@@ -195,7 +195,6 @@ function GameUIDragonEyrieDetail:CreateProgressTimer()
 end
 
 function GameUIDragonEyrieDetail:OnMoveInStage()
-    GameUIDragonEyrieDetail.super.OnMoveInStage(self)
     local User = User
     self:BuildUI()
     User:AddListenOnType(self, "dragonEquipments")
@@ -208,7 +207,7 @@ function GameUIDragonEyrieDetail:OnMoveInStage()
         end
     end)
     self.draongContentNode:OnEnterIndex(math.abs(0))
-
+    GameUIDragonEyrieDetail.super.OnMoveInStage(self)
 end
 
 function GameUIDragonEyrieDetail:OnMoveOutStage()
@@ -696,6 +695,10 @@ function GameUIDragonEyrieDetail:RefreshSkillList()
             oneSkill:addTo(content)
             local x = (j-1) * (180 + 4)
             oneSkill:pos(x,0)
+            if i == 1 and j == 1 then
+                self.firstSkillBtn = oneSkill
+                self.firstSkillData = skillData
+            end
         end
         content:size(548,110)
         item:addContent(content)
