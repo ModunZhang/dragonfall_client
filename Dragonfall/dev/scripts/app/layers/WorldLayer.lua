@@ -574,8 +574,8 @@ function WorldLayer:CreateFlag(index)
     local p = self:ConvertLogicPositionToMapPosition(self:IndexToLogic(index))
     local node
     if tonumber(index) == self:LogicToIndex(middle_index, middle_index) then
-        node = display.newNode():addTo(self.allianceLayer):pos(p.x+0, p.y+0)
-        display.newSprite("crystalThrone.png"):addTo(node):scale(0.3)
+        node = display.newNode():addTo(self.allianceLayer):pos(p.x,p.y)
+        display.newSprite("crystalThrone.png"):addTo(node):pos(15,15):scale(0.3)
     else
         math.randomseed(tonumber(index) + 12345)
         node = display.newNode():addTo(self.allianceLayer):pos(p.x, p.y)
