@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">魔龍創世紀</string>
+    <string name="send_mail_tip">選擇郵件客戶端</string>
+    <string name="ok">好的</string>
+	<string name="remind_me_later">稍後提醒我</string>
+    <string name="exit_game_title">確認要退出遊戲?</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    
+    <!-- Unzip res start -->
+    <string name="dialog_title_unzipping_file">首次遊戲</string>
+   	<string name="sorry">對不起</string>
+    <string name="dialog_msg_sd_space_not_enough">手機/SD卡空間不足。\n你需要騰出更多空間才能進入遊戲。</string>
+    <string name="dialog_msg_unzip_failed">解壓遊戲資源失敗。</string>
+    <string name="dialog_msg_unzipping_file">初始化遊戲資源，請稍後...\n已完成：%1$d%%</string>
+    <!-- Unzip res end -->
+
+    <!-- Google Billing start -->
+	<string name="dialog_msg_payment_purchased">購買成功！您購買的物品將隨後到賬。</string>
+    <!-- Google Billing end -->
+
+	<!-- Google GCM start -->
+	<string name="dialog_title_gcm_error">無法註冊谷歌通知服務</string>
+	<string name="dialog_msg_gcm_error_account_missing"> 如果你想收到我們的遊戲通知，你需要在設備上綁定一個谷歌賬戶。</string>
+	<string name="dialog_msg_gcm_error_authentication_failed">你的谷歌賬戶設置不正確。\n開啟賬戶的同步功能以便接收我們的遊戲通知。</string>
+	<!-- Google GCM end -->
+</resources>
