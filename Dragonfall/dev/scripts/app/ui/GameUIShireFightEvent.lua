@@ -57,7 +57,7 @@ function GameUIShireFightEvent:OnAllianceDataChanged_shrineEvents(alliance, delt
             end
         end
     end
-    if deltaData("shrineEvents.playerTroops") then
+    if deltaData("shrineEvents") then
         self.popultaion_label:setString(#self:GetFightEvent().playerTroops)
         self:RefreshListView()
     end

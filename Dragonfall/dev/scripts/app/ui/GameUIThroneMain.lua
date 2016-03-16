@@ -122,11 +122,11 @@ function GameUIThroneMain:onEnter()
     }:addTo(content)
     listview:reload()
 
-    local period_label =  UIKit:ttfLabel({text = _("和平期").." ".."00:00:00",
-        size = 22,
-        color = 0x007c23
-    }):align(display.CENTER,BODY_WIDTH/2,content:getPositionY() - content:getContentSize().height - 25):addTo(body)
-    display.newSprite("info_26x26.png"):addTo(body):align(display.RIGHT_CENTER, period_label:getPositionX() - period_label:getContentSize().width/2 - 5, period_label:getPositionY())
+    -- local period_label =  UIKit:ttfLabel({text = _("和平期").." ".."00:00:00",
+    --     size = 22,
+    --     color = 0x007c23
+    -- }):align(display.CENTER,BODY_WIDTH/2,content:getPositionY() - content:getContentSize().height - 25):addTo(body)
+    -- display.newSprite("info_26x26.png"):addTo(body):align(display.RIGHT_CENTER, period_label:getPositionX() - period_label:getContentSize().width/2 - 5, period_label:getPositionY())
     -- local button = WidgetPushButton.new()
     --     :addTo(body,2):align(display.CENTER, period_label:getPositionX(),period_label:getPositionY())
     --     :onButtonClicked(function(event)

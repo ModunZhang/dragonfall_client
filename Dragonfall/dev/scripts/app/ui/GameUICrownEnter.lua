@@ -41,7 +41,7 @@ function GameUICrownEnter:ctor(mapIndex)
     }):align(display.RIGHT_BOTTOM, 527, 160):addTo(body)
 
     UIKit:ttfLabel({
-        text = _("和平期"),
+        text = _("阶段"),
         color= 0x615b44,
         size = 20
     }):align(display.LEFT_BOTTOM, 90, 120):addTo(body)

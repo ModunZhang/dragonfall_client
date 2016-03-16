@@ -23,7 +23,7 @@ function GameUILoginBeta:ctor()
         -- {image = "animations/ui_animation_1.pvr.ccz",list = "animations/ui_animation_1.plist"},
         -- {image = "animations/ui_animation_2.pvr.ccz",list = "animations/ui_animation_2.plist"},
 
-        {image = "level0.pvr.ccz",list = "level0.plist"},
+        {image = "level0.png",list = "level0.plist"},
         -- {image = "ui_png1.pvr.ccz",list = "ui_png1.plist"},
         
         -- {image = "ui_pvr0.pvr.ccz",list = "ui_pvr0.plist"},
@@ -460,7 +460,7 @@ function GameUILoginBeta:onCleanup()
     GameUILoginBeta.super.onCleanup(self)
     -- clean  all  unused textures
     cc.Director:getInstance():getTextureCache():removeTextureForKey("splash_beta_bg_3987x1136.jpg")
-    cc.Director:getInstance():getTextureCache():removeTextureForKey("splash_logo_515x92.png")
+    cc.Director:getInstance():getTextureCache():removeTextureForKey("splash_logo_516x92.png")
     cc.Director:getInstance():getTextureCache():removeTextureForKey("splash_process_color_606x25.png")
     cc.Director:getInstance():getTextureCache():removeTextureForKey("splash_process_bg_606x25.png")
     cc.Director:getInstance():getTextureCache():removeTextureForKey("splash_tips_bg_544x30.png")

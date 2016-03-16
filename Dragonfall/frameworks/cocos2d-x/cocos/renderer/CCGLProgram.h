@@ -365,7 +365,9 @@ public:
     */
     
     /**@{ Get the uniform or vertex attribute by string name in shader, return null if it does not exist.*/
+#if (DIRECTX_ENABLED == 1)
 	const Uniform* GLProgram::getUniform(const std::string &name) const;
+#endif
     Uniform* getUniform(const std::string& name);
     VertexAttrib* getVertexAttrib(const std::string& name);
     /**@}*/

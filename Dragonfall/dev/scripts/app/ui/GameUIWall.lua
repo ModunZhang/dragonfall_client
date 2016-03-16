@@ -7,6 +7,7 @@ local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local WidgetPushButton = import("..widget.WidgetPushButton")
 local UIListView = import(".UIListView")
 local WidgetSoldierBox = import("..widget.WidgetSoldierBox")
+local WidgetSoldierDetails = import("..widget.WidgetSoldierDetails")
 local WidgetSelectDragon = import("..widget.WidgetSelectDragon")
 local timer = app.timer
 local WidgetUseItems = import("..widget.WidgetUseItems")
@@ -364,7 +365,7 @@ function GameUIWall:RefreshListView()
             local soldier = soldiers[i+j-1]
             if soldier then
                 row_item:setContentSize(cc.size(546,166))
-                WidgetSoldierBox.new(nil, function()end):addTo(row_item)
+                WidgetSoldierBox.new(nil, function() WidgetSoldierDetails.new(soldier.name, UtilsForSoldier:SoldierStarByName(User, soldier.name)):addTo(self)end):addTo(row_item)
                     :alignByPoint(cc.p(0.5, 0.5), pos[j] , 83)
                     :SetSoldier(
                         soldier.name,
