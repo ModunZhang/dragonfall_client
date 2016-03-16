@@ -2147,7 +2147,7 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
     end
     function troopsNode:Play(aniName, aniTimes)
         if aniName == "attack" then
-            if string.find("wall") then
+            if string.find(self.soldierName, "wall") then
                 app:GetAudioManager():PlayeAttackSoundBySoldierName("ranger")
             else
                 app:GetAudioManager():PlayeAttackSoundBySoldierName(self.soldierName)
