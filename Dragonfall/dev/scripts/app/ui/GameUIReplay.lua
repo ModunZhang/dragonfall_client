@@ -492,28 +492,38 @@ function GameUIReplay:OnBothDragonAttackTroops(round)
         end)
 end
 function GameUIReplay:OnDragonAttackTroops(dragon, allTroops)
+    local leftPos = cc.p(-50, 15)
+    local rightPos = cc.p(50, 15)
     if dragon.dragonType == "redDragon" then
-        local troops = allTroops[1]
-        UIKit:ttfLabel({
-            text = "红龙特效",
-            size = 40,
-            color = 0xffedae,
-        }):addTo(troops.effectsNode, 10, 111):align(display.CENTER, 0, 50)
+        for i,v in ipairs(allTroops) do
+            if v:IsLeft() then
+                display.newSprite("replay_debuff_red.png")
+                :addTo(v.effectsNode):pos(leftPos.x,leftPos.y)
+            else
+                display.newSprite("replay_debuff_red.png")
+                :addTo(v.effectsNode):pos(rightPos.x,rightPos.y)
+            end
+            break
+        end
     elseif dragon.dragonType == "blueDragon" then
         for i,v in ipairs(allTroops) do
-            UIKit:ttfLabel({
-                text = "蓝龙特效",
-                size = 40,
-                color = 0xffedae,
-            }):addTo(v.effectsNode, 10, 111):align(display.CENTER, 0, 50)
+            if v:IsLeft() then
+                display.newSprite("replay_debuff_blue.png")
+                :addTo(v.effectsNode):pos(leftPos.x,leftPos.y)
+            else
+                display.newSprite("replay_debuff_blue.png")
+                :addTo(v.effectsNode):pos(rightPos.x,rightPos.y)
+            end
         end
     elseif dragon.dragonType == "greenDragon" then
         for i,v in ipairs(allTroops) do
-            UIKit:ttfLabel({
-                text = "绿龙特效",
-                size = 40,
-                color = 0xffedae,
-            }):addTo(v.effectsNode, 10, 111):align(display.CENTER, 0, 50)
+            if v:IsLeft() then
+                display.newSprite("replay_debuff_green.png")
+                :addTo(v.effectsNode):pos(leftPos.x,leftPos.y)
+            else
+                display.newSprite("replay_debuff_green.png")
+                :addTo(v.effectsNode):pos(rightPos.x,rightPos.y)
+            end
         end
     end
 end
