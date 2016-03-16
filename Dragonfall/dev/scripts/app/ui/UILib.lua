@@ -718,21 +718,21 @@ local DRAGON_SKILL_ICON = {
         blueDragon = "earthquake_128x128.png",
     },
     hellFire = {
-        redDragon = "battleHunger_128x128.png",
-        greenDragon = "battleHunger_128x128.png",
-        blueDragon = "battleHunger_128x128.png",
+        redDragon = "hellFire_128x128.png",
+        greenDragon = "hellFire_128x128.png",
+        blueDragon = "hellFire_128x128.png",
     }
     ,
     lightningStorm = {
-        redDragon = "battleHunger_128x128.png",
-        greenDragon = "battleHunger_128x128.png",
-        blueDragon = "battleHunger_128x128.png",
+        redDragon = "lightningStorm_128x128..png",
+        greenDragon = "lightningStorm_128x128.png",
+        blueDragon = "lightningStorm_128x128.png",
     }
     ,
     poisonNova = {
-        redDragon = "battleHunger_128x128.png",
-        greenDragon = "battleHunger_128x128.png",
-        blueDragon = "battleHunger_128x128.png",
+        redDragon = "poisonNova_128x128.png",
+        greenDragon = "poisonNova_128x128.png",
+        blueDragon = "poisonNova_128x128.png",
     }
     ,
     surge = {
