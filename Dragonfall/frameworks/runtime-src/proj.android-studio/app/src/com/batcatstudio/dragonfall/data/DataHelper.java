@@ -18,6 +18,8 @@ import org.cocos2dx.lib.Cocos2dxHelper;
 import org.cocos2dx.lua.AppActivity;
 
 import com.batcatstudio.dragonfall.utils.DebugUtil;
+import com.xapcn.dragonfall.BuildConfig;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -40,12 +42,12 @@ public class DataHelper {
 	private static String ZIP_FILE_NAME = "dragonfall.zip";
 	private static final boolean USE_CRC32 = false;
 	
-	public static String PATH_BUNDLE_SUFFIX = "/batcatstudio/dragonfall/bundle";
-	public static String PATH_DOCUMENTS_SUFFIX = "/batcatstudio/dragonfall/documents";
+	public static String PATH_BUNDLE_SUFFIX = "/batcatstudio/"+BuildConfig.GAME_ID+"/bundle";
+	public static String PATH_DOCUMENTS_SUFFIX = "/batcatstudio/"+BuildConfig.GAME_ID+"/documents";
 	
-	private static String PREFERENCES_NAME = "com.batcatstudio.game.preferences";
+	private static String PREFERENCES_NAME = "com.batcatstudio.game.preferences." + BuildConfig.GAME_ID;
 	
-	public static final long ZIP_RESOURCE_SIZE = 74309987;
+	public static final long ZIP_RESOURCE_SIZE = 74310290;
 
 	private static int appVersionCode = -1;
 

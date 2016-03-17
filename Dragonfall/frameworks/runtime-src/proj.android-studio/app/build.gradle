@@ -33,6 +33,24 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 15
+        buildConfigField "String", "GAME_ID", "\"Batcat\""
+    }
+
+    signingConfigs {
+        googleplay {
+            storeFile file("keystore/xapcn_dragonfall_gp.keystore")
+            storePassword "twhsMbcZxJ4isvgWX4BJ"
+            keyAlias "xapcn_dragonfall"
+            keyPassword "twhsMbcZxJ4isvgWX4BJ"
+        }
+
+         paypal {
+            storeFile file("keystore/dragonfall_google_play.keystore")
+            storePassword "yAb7E9oJ3mooW9Il2coW"
+            keyAlias "batcatstudio"
+            keyPassword "yAb7E9oJ3mooW9Il2coW"
+        }
+
     }
 
     productFlavors {
@@ -40,6 +58,16 @@ android {
             applicationId "com.xapcn.dragonfall"
             versionCode projectVersion()['versionCode'] as int
             versionName projectVersion()['versionName']
+            signingConfig signingConfigs.googleplay
+            buildConfigField "String", "GAME_ID", "\"dragonfall\""
+            manifestPlaceholders = ['APP_MIN_VERSION':projectVersion()['appMinVersion'],'APP_HOC':projectVersion()['appHoc'] as String]
+        }
+        paypal {
+            applicationId "com.batcatstudio.dragonfall"
+            versionCode projectVersion()['versionCode'] as int
+            versionName projectVersion()['versionName']
+            signingConfig signingConfigs.paypal
+            buildConfigField "String", "GAME_ID", "\"dragonfall_paypal\""
             manifestPlaceholders = ['APP_MIN_VERSION':projectVersion()['appMinVersion'],'APP_HOC':projectVersion()['appHoc'] as String]
         }
     }
@@ -55,24 +83,17 @@ android {
 
     sourceSets.googleplay {
         manifest.srcFile "AndroidManifest.xml"
+        res.srcDir "res-googleplay"
     }
-
-    signingConfigs {
-        release {
-            storeFile file("keystore/xapcn_dragonfall_gp.keystore")
-            storePassword "twhsMbcZxJ4isvgWX4BJ"
-            keyAlias "xapcn_dragonfall"
-            keyPassword "twhsMbcZxJ4isvgWX4BJ"
-            //Including the passwords for your release key and keystore inside the build file is not a good security practice
-            //keyPassword System.console().readLine("\nKey password: ")
-        }
+    sourceSets.paypal {
+        manifest.srcFile "AndroidManifestPayPal.xml"
+        res.srcDir "res-paypal"
     }
 
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'),'proguard-rules.pro'
-            signingConfig signingConfigs.release
         }
     }
 }
@@ -80,16 +101,21 @@ android {
 dependencies {
     compile project(':libcocos2dx')
     // apk for google play
-    //sdks
     googleplayCompile files('libs/AF-Android-SDK-v3.3.0.jar', 'libs/Game_Analytics_SDK_Android_3.2.3.jar')
-    //facebook
+    
     googleplayCompile 'com.facebook.android:facebook-android-sdk:4.0.0'
-    //google play services
+    
     googleplayCompile 'com.google.android.gms:play-services-plus:8.1.0'
     googleplayCompile 'com.google.android.gms:play-services-ads:8.1.0'
     googleplayCompile 'com.google.android.gms:play-services-gcm:8.1.0'
-    googleplayCompile 'com.google.android.gms:play-services-vision:8.1.0'
-    //other apks condfig,paypal etc...
+    googleplayCompile 'com.google.android.gms:play-services-vision:8.1.0' //can remove it?
+    //apk for google paypal
+    paypalCompile files('libs/PayPalAndroidSDK-2.13.1.jar', 'libs/okhttp-3.0.1.jar','libs/okio-1.6.0.jar')
+    
+    paypalCompile 'com.facebook.android:facebook-android-sdk:4.0.0'
+
+    paypalCompile 'com.google.android.gms:play-services-gcm:8.1.0'
+    paypalCompile 'com.google.android.gms:play-services-plus:8.1.0'
 }
 
 // dannyhe:we add some tasks to help us,use the command 'gradle tasks' see all tasks
@@ -105,6 +131,8 @@ android.applicationVariants.all { variant ->
     variant.productFlavors.each { flavor ->
         if (flavor.name.equals('googleplay')) {
             variant.javaCompile.dependsOn(GooglePlayPreprocess)
+        }else if(flavor.name.equals('paypal')) {
+            variant.javaCompile.dependsOn(PayPalPreprocess)
         }
     }
     variant.outputs.each { output ->
