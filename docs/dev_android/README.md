@@ -18,6 +18,8 @@
 	~~~
 4. 安装Ant. 从 [http://ant.apache.org](http://ant.apache.org) 下载最新版本的Ant 执行文件.下载解压缩,不能放在包含中文和空格的目录中.
 
+5. 关于Android SDK,可以通过AS自动下载，也可以提前下载好后在环境变量中配置,下面的例子是先安装好了Android SDK进行的配置
+
 ## 配置工作
 
 -   Mac 下修改环境变量：
@@ -210,8 +212,8 @@ CC_USE_SDK_PAYPAL | 打开Paypal支付的接口 | okhttp-3.0.1.jar,okio-1.6.0.ja
 
 ### 我们项目自定义的Gradle任务
 
-为了方便我们开发项目,我定义了一些项目的task,分组在`GameHelper`下,可通过命令`gradlew tasks`或者查看，或者在AS的Gradle视图中查看,如`构建Andoird项目`下那张截图
-如:(具体的任务名称可能有变动，以实际为准!)
+为了方便我们开发项目,我定义了一些项目的task,分组在`GameHelper`下,可通过命令`gradlew tasks`，或者在AS的Gradle视图中查看,如`构建Andoird项目`**下那张截图。具体的任务名称可能有变动，以实际为准!**
+如:
 
 ~~~
 backUpNativeSymbols - backup our native symbols to a zip file .
