@@ -79,17 +79,17 @@ android {
 
 dependencies {
     compile project(':libcocos2dx')
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    //TODO: set the jar to each flavors
-
+    // apk for google play
+    //sdks
+    googleplayCompile files('libs/AF-Android-SDK-v3.3.0.jar', 'libs/Game_Analytics_SDK_Android_3.2.3.jar')
     //facebook
-    compile 'com.facebook.android:facebook-android-sdk:4.0.0'
-
+    googleplayCompile 'com.facebook.android:facebook-android-sdk:4.0.0'
     //google play services
     googleplayCompile 'com.google.android.gms:play-services-plus:8.1.0'
     googleplayCompile 'com.google.android.gms:play-services-ads:8.1.0'
     googleplayCompile 'com.google.android.gms:play-services-gcm:8.1.0'
     googleplayCompile 'com.google.android.gms:play-services-vision:8.1.0'
+    //other apks condfig,paypal etc...
 }
 
 // dannyhe:we add some tasks to help us,use the command 'gradle tasks' see all tasks
