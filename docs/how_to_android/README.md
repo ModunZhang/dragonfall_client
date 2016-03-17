@@ -2,6 +2,8 @@
 #Android 工程说明
 ================
 
+# 因为python脚本已被修改为执行文件到AndroidStudio的目录结构中，所以这个文档没法使用了。参考AndroidStido开发的文档！
+
 > 我们项目暂时无法使用Android Studio开发，而是使用Eclipse+ADT+Ant进行Android开发。
 
 要编译 Android 功能，必须使用最新版本的 Android SDK 和`指定的 r9d 版本` Android NDK.
