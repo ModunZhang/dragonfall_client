@@ -179,8 +179,10 @@ task checkVersionInfo(group:'GameHelper',description:'check the project version 
     println 'appMinVersion:'+ projectVersion()['appMinVersion']
     println 'appHoc:'+ projectVersion()['appHoc']
     println '------------------------------------------------'
-    println 'keysotre file:'
-    println android.signingConfigs.release.storeFile
+    println 'googleplay keysotre file:'
+    println android.signingConfigs.googleplay.storeFile 
+    println 'paypal keysotre file:'
+    println android.signingConfigs.paypal.storeFile
     println '------------------------------------------------'
 
 }
