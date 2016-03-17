@@ -16,7 +16,7 @@ def Properties projectVersion() {
     if(!version['versionCode']) version['versionCode'] = 1
     if(!version['versionName']) version['versionName'] = "1.0"
     if(!version['appMinVersion']) version['appMinVersion'] = "1.0"
-    if(!version['appDebugGate']) version['appDebugGate'] = false
+    if(!version['appHoc']) version['appHoc'] = false
     return version
 }
 
@@ -40,7 +40,7 @@ android {
             applicationId "com.xapcn.dragonfall"
             versionCode projectVersion()['versionCode'] as int
             versionName projectVersion()['versionName']
-            manifestPlaceholders = ['APP_MIN_VERSION':projectVersion()['appMinVersion'],'APP_HOC':projectVersion()['appDebugGate'] as String]
+            manifestPlaceholders = ['APP_MIN_VERSION':projectVersion()['appMinVersion'],'APP_HOC':projectVersion()['appHoc'] as String]
         }
     }
 
@@ -149,7 +149,7 @@ task checkVersionInfo(group:'GameHelper',description:'check the project version 
     println 'versionCode:'+ projectVersion()['versionCode']
     println 'versionName:'+ projectVersion()['versionName']
     println 'appMinVersion:'+ projectVersion()['appMinVersion']
-    println 'appHoc:'+ projectVersion()['appDebugGate']
+    println 'appHoc:'+ projectVersion()['appHoc']
     println '------------------------------------------------'
     println 'keysotre file:'
     println android.signingConfigs.release.storeFile
