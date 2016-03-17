@@ -99,6 +99,7 @@ ant.importBuild '../GooglePlayPreprocess.xml'
 ant.importBuild '../PayPalPreprocess.xml'
 
 GooglePlayPreprocess.group = 'GameHelper'
+PayPalPreprocess.group = 'GameHelper'
 
 android.applicationVariants.all { variant ->
     variant.productFlavors.each { flavor ->
