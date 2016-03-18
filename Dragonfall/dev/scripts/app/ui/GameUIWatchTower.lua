@@ -596,7 +596,7 @@ end
 function GameUIWatchTower:OnRetreatButtonClicked(entity,cb)
     if entity.eventType == "helpToTroops" then
         UIKit:showMessageDialog(_("提示"),_("确定撤军?"),function()
-            NetManager:getRetreatFromHelpedAllianceMemberPromise()
+            NetManager:getRetreatFromHelpedAllianceMemberPromise(entity.id)
                 :done(function()
                     cb(true)
                 end)
@@ -624,6 +624,7 @@ function GameUIWatchTower:OnRetreatButtonClicked(entity,cb)
 end
 
 return GameUIWatchTower
+
 
 
 

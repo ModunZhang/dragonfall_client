@@ -54,7 +54,7 @@ function UtilsForEvent:GetMarchEventPrefix(event, eventType)
         return _("正在进行村落采集")
     end
     if eventType == "helpToTroops" then
-        return  string.format(_("正在协防玩家%s"),event.beHelpedPlayerData.name)
+        return  string.format(_("正在协防玩家%s"),event.name)
     end
     if eventType == "strikeMarchReturnEvents" or eventType == "attackMarchReturnEvents" then
         local march_type = event.marchType
@@ -148,7 +148,7 @@ end
 function UtilsForEvent:GetDestination(event)
     local eventType = event.eventType
     if eventType == "helpToTroops" then
-        return event.beHelpedPlayerData.name
+        return event.name
     elseif eventType == "villageEvents" then
         return Localize.village_name[event.villageData.name] .. "Lv" .. event.villageData.level
     elseif eventType == "strikeMarchEvents" or eventType == "attackMarchEvents" then
@@ -190,7 +190,7 @@ function UtilsForEvent:GetDestinationLocation(event)
         local x , y = DataUtils:GetAbsolutePosition(mapIndex, location.x, location.y)
         return x .. "," .. y
     elseif eventType == "helpToTroops" then
-        local location = event.beHelpedPlayerData.location
+        local location = event.location
         local mapIndex = Alliance_Manager:GetMyAlliance().mapIndex
         local x , y = DataUtils:GetAbsolutePosition(mapIndex, location.x, location.y)
         return x .. "," .. y
@@ -207,7 +207,7 @@ function UtilsForEvent:GetDragonType(event)
     elseif eventType == "strikeMarchEvents" or eventType == "attackMarchEvents" or eventType == "strikeMarchReturnEvents" or eventType == "attackMarchReturnEvents" then
         return event.attackPlayerData.dragon.type
     elseif eventType == "helpToTroops" then
-        return event.playerDragon
+        return event.dragon
     elseif eventType == "shrineEvents" then
         for i,troop in ipairs(event.playerTroops) do
             if troop.id == User:Id() then

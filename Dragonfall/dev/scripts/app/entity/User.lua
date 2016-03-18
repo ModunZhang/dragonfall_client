@@ -1168,7 +1168,7 @@ end
 --[[helpToTroops begin]]
 function User:IsHelpedToPlayer(id)
     for _,v in ipairs(self.helpToTroops) do
-        if v.beHelpedPlayerData.id == id then
+        if v.id == id then
             return true
         end
     end

@@ -1557,9 +1557,9 @@ function NetManager:getHelpAllianceMemberDefencePromise(dragonType, soldiers, ta
         "协防玩家失败!"):done(get_player_response_msg)
 end
 --撤销协防
-function NetManager:getRetreatFromHelpedAllianceMemberPromise()
+function NetManager:getRetreatFromHelpedAllianceMemberPromise(beHelpedPlayerId)
     return get_blocking_request_promise("logic.allianceHandler.retreatFromBeHelpedAllianceMember",
-        {},
+        {beHelpedPlayerId = beHelpedPlayerId},
         "撤销协防失败!"):done(get_player_response_msg)
 end
 --复仇其他联盟
