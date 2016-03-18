@@ -92,7 +92,7 @@
         <!-- activity and service -->
         <activity
             android:name="org.cocos2dx.lua.AppActivity"
-            android:configChanges="orientation"
+            android:configChanges="orientation|screenSize"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
