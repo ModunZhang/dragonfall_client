@@ -4,7 +4,7 @@ import sys
 import getopt
 
 send_url = 'https://android.googleapis.com/gcm/send'
-api_key = 'AIzaSyBgWSvfovLyEsJT1Al-vG-24reZOa6I5Jc'
+api_key = 'AIzaSyDLIZhTJy9UIwBp78jfqIoWnb1DtmYMINw'
 msg = "This is a GCM Topic Message!"
 register_id = ""
 

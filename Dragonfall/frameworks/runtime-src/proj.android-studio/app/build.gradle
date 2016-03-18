@@ -22,6 +22,13 @@ def Properties projectVersion() {
 
 //end for read version
 
+def String gameIdForFlavors(name) {
+    def gameIdOfFlavors = ['googleplay':'dragonfall','paypal':'dragonfall_paypal']
+    return gameIdOfFlavors[name]
+}
+
+
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
@@ -33,7 +40,7 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 15
-        buildConfigField "String", "GAME_ID", "\"Batcat\""
+        buildConfigField "String", "GAME_ID", "\"Batcat\"" //identity for unzip path
     }
 
     signingConfigs {
@@ -84,10 +91,12 @@ android {
     sourceSets.googleplay {
         manifest.srcFile "AndroidManifest.xml"
         res.srcDir "res-googleplay"
+        assets.srcDir "assets-googleplay"
     }
     sourceSets.paypal {
         manifest.srcFile "AndroidManifestPayPal.xml"
         res.srcDir "res-paypal"
+        assets.srcDir "assets-paypal"
     }
 
     buildTypes {
@@ -179,12 +188,14 @@ task checkVersionInfo(group:'GameHelper',description:'check the project version 
     println 'appMinVersion:'+ projectVersion()['appMinVersion']
     println 'appHoc:'+ projectVersion()['appHoc']
     println '------------------------------------------------'
-    println 'googleplay keysotre file:'
-    println android.signingConfigs.googleplay.storeFile 
-    println 'paypal keysotre file:'
-    println android.signingConfigs.paypal.storeFile
+    println 'keysotre files:'
+    android.signingConfigs.each { config ->
+        println config.name + ':' + config.storeFile 
+    }   
     println '------------------------------------------------'
-
+    android.productFlavors.each { flavor ->
+        println gameIdForFlavors(flavor.name)
+    }
 }
 
 backUpNativeSymbols.shouldRunAfter buildNative
@@ -207,6 +218,7 @@ android.productFlavors.each { flavor ->
     task(replaceName,type:Exec,group:'GameHelper') {
         description 'replace the ' + flavor.name.capitalize() + ' zip file of lua on device.'
         workingDir project.rootDir
-        commandLine "$adb", 'push','../../../update_android/scripts/game.zip','/mnt/sdcard/batcatstudio/dragonfall/bundle/scripts/'
+        def pathOfUnzip = '/mnt/sdcard/batcatstudio/'+ gameIdForFlavors(flavor.name)+ '/bundle/scripts/'
+        commandLine "$adb", 'push','../../../update_android/scripts/game.zip',pathOfUnzip
     }
 }
