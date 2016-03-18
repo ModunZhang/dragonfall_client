@@ -13,7 +13,7 @@ User.LISTEN_TYPE = Enum(
     "deals",
     "allianceData",
 
-    "helpedByTroops",
+    "helpedByTroop",
     "helpToTroops",
 
     "buildings",
@@ -1226,7 +1226,7 @@ local before_map = {
     itemEvents = function(userData, deltaData)
         userData:RefreshOutput()
     end,
-    helpedByTroops = function()end,
+    helpedByTroop = function()end,
     helpToTroops = function()end,
 
 
