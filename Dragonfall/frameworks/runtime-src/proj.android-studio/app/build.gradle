@@ -188,14 +188,6 @@ task checkVersionInfo(group:'GameHelper',description:'check the project version 
     println 'appMinVersion:'+ projectVersion()['appMinVersion']
     println 'appHoc:'+ projectVersion()['appHoc']
     println '------------------------------------------------'
-    println 'keysotre files:'
-    android.signingConfigs.each { config ->
-        println config.name + ':' + config.storeFile 
-    }   
-    println '------------------------------------------------'
-    android.productFlavors.each { flavor ->
-        println gameIdForFlavors(flavor.name)
-    }
 }
 
 backUpNativeSymbols.shouldRunAfter buildNative
