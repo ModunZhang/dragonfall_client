@@ -752,7 +752,8 @@ function AllianceLayer:RefreshObjectInfo(object, mapObj, alliance)
             :GetConfigByLevel(member.keepLevel)
         object:GetSprite():setTexture(config.png)
 
-        info.banner:setTexture(banners[member.helpedByTroopsCount])
+        local helpedByTroopsCount = member.beHelped and 1 or 0
+        info.banner:setTexture(banners[helpedByTroopsCount])
         info.level:setString(member.keepLevel)
         info.name:setString(string.format("%s", member.name))
 
