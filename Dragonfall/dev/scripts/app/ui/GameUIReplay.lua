@@ -465,14 +465,14 @@ function GameUIReplay:OnDefenceDragonAttackTroops(round)
         end)
 end
 function GameUIReplay:OnBothDragonAttackTroops(round)
-    local effectedAttackTroops = {}
+    local effectedDefenceTroops = {}
     for i,v in ipairs(round.attackDragonSkilled) do
-        table.insert(effectedAttackTroops, self.defenceTroops[v + 1])
+        table.insert(effectedDefenceTroops, self.defenceTroops[v + 1])
     end
 
-    local effectedDefenceTroops = {}
+    local effectedAttackTroops = {}
     for i,v in ipairs(round.defenceDragonSkilled) do
-        table.insert(effectedDefenceTroops, self.attackTroops[v + 1])
+        table.insert(effectedAttackTroops, self.attackTroops[v + 1])
     end
 
     self.attackDragon:pos(-400, display.cy)
