@@ -70,20 +70,30 @@ void GrayFilter::setParameter(float $r, float $g, float $b, float $a)
 {
 	setParameter(Color4F($r, $g, $b, $a));
 }
-
+#if DIRECTX_ENABLED == 1
+const ShaderDescriptor ccFilterShader_gray = ShaderDescriptor("ccFilterShader_gray")
+.Const("u_grayParam", sizeof(float) * 4, GL_FLOAT_VEC4, true);
+#endif
 GLProgram* GrayFilter::loadShader()
 {
-    GLProgram* __p = GLProgram::createWithByteArrays(ccPositionTextureColor_noMVP_vert, ccFilterShader_gray_frag);
+#if DIRECTX_ENABLED == 0
+   GLProgram* __p = GLProgram::createWithByteArrays(ccPositionTextureColor_noMVP_vert, ccFilterShader_gray_frag);
 //	GLProgram* __p = new GLProgram();
 //	__p->initWithByteArrays(ccPositionTextureColor_noMVP_vert, ccFilterShader_gray_frag);
 	return __p;
+#else
+	GLProgram* __p = GLProgram::createWithHLSL(ccPositionTextureColor_noMVP_vert, ccFilterShader_gray);
+	return __p;
+#endif
 }
 
 void GrayFilter::setAttributes(GLProgram* $cgp)
 {
+#if DIRECTX_ENABLED == 0
 	$cgp->bindAttribLocation(GLProgram::ATTRIBUTE_NAME_POSITION, GLProgram::VERTEX_ATTRIB_POSITION);
 	$cgp->bindAttribLocation(GLProgram::ATTRIBUTE_NAME_COLOR, GLProgram::VERTEX_ATTRIB_COLOR);
 	$cgp->bindAttribLocation(GLProgram::ATTRIBUTE_NAME_TEX_COORD, GLProgram::VERTEX_ATTRIB_TEX_COORD);
+#endif
 }
 
 void GrayFilter::setUniforms(GLProgram* $cgp)

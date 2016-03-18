@@ -134,27 +134,9 @@ function WorldLayer:CreateEdge()
         :addTo(self.scene_node):setScaleY(WIDTH):rotation(-90)
 end
 function WorldLayer:CreateMap()
-    -- local clip = display.newNode():addTo(self.scene_node)
-    --     :align(display.LEFT_BOTTOM,CORNER_LENGTH,CORNER_LENGTH)
     local clip = display.newClippingRegionNode(cc.rect(0, 0, WORLD_WIDTH, WORLD_HEIGHT))
                     :addTo(self.scene_node)
                     :align(display.LEFT_BOTTOM,CORNER_LENGTH,CORNER_LENGTH)
-    -- local map = display.newFilteredSprite("world_terrain.png", "CUSTOM", json.encode({
-    --     frag = "shaders/maptex.fs",
-    --     shaderName = "maptex",
-    --     size = {
-    --         WIDTH/2, --
-    --         HEIGHT,
-    --         0.5/(WIDTH/4),
-    --         1/HEIGHT,
-    --     },
-    --     width = bigMapLength_value,
-    -- })):align(display.LEFT_BOTTOM, 0, 0):addTo(clip)
-    -- local cache = cc.Director:getInstance():getTextureCache()
-    -- cache:addImage("world_map.png"):setAliasTexParameters()
-    -- map:getGLProgramState():setUniformTexture("terrain", cache:getTextureForKey("world_map.png"):getName())
-    -- map:setScaleX(WIDTH/4)
-    -- map:setScaleY(HEIGHT/2)
 
     GameUtils:LoadImagesWithFormat(function()
         cc.TMXTiledMap:create("tmxmaps/worldlayer.tmx")
@@ -375,25 +357,6 @@ function WorldLayer:CreateAllianceSprite(index, alliance)
         math.randomseed(tonumber(index) + 12345)
         local s_x,s_y = self:Offset(index)
         sprite:pos(s_x,s_y)
-        -- if tonumber(index) == self:LogicToIndex(middle_index-1, middle_index-1) then
-        --     sprite:pos(-40, 40)
-        -- elseif tonumber(index) == self:LogicToIndex(middle_index, middle_index-1) then
-        --     sprite:pos(0, 40)
-        -- elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index-1) then
-        --     sprite:pos(40, 40)
-        -- elseif tonumber(index) == self:LogicToIndex(middle_index-1, middle_index) then
-        --     sprite:pos(-40, 0)
-        -- elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index) then
-        --     sprite:pos(40, 0)
-        -- elseif tonumber(index) == self:LogicToIndex(middle_index-1, middle_index+1) then
-        --     sprite:pos(-40, -40)
-        -- elseif tonumber(index) == self:LogicToIndex(middle_index, middle_index+1) then
-        --     sprite:pos(0, -40)
-        -- elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index+1) then
-        --     sprite:pos(40, -40)
-        -- else
-        --     sprite:pos(30 - math.random(30), 30 - math.random(60))
-        -- end
     end
     local size = sprite:getContentSize()
     local banner = display.newSprite("alliance_banner.png")
@@ -592,8 +555,8 @@ function WorldLayer:CreateFlag(index)
     local p = self:ConvertLogicPositionToMapPosition(self:IndexToLogic(index))
     local node
     if tonumber(index) == self:LogicToIndex(middle_index, middle_index) then
-        node = display.newNode():addTo(self.allianceLayer):pos(p.x+40, p.y + 50)
-        display.newSprite("world_crown.png"):addTo(node)
+        node = display.newNode():addTo(self.allianceLayer):pos(p.x,p.y)
+        display.newSprite("crystalThrone.png"):addTo(node):pos(15,15):scale(0.3)
     else
         math.randomseed(tonumber(index) + 12345)
         node = display.newNode():addTo(self.allianceLayer):pos(p.x, p.y)

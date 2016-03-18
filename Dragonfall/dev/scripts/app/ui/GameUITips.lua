@@ -161,7 +161,7 @@ function GameUITips:CreateUIIf_region()
         return self.region_node
     end
     local node = display.newNode():size(608,747):addTo(self.bg)
-    local region_tips_556x344 = device.platform == 'winrt' and "region_tips_556x344.png" or "region_tips_556x344.jpg" 
+    local region_tips_556x344 = "region_tips_556x344.jpg" 
     display.newSprite(region_tips_556x344)
         :align(display.CENTER_TOP, 304, self.bg:getContentSize().height - 30)
         :addTo(node)

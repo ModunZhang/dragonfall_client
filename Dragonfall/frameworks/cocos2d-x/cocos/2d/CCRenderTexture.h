@@ -348,6 +348,14 @@ protected:
     */
     CustomCommand _saveToFileCommand;
     std::function<void (RenderTexture*, const std::string&)> _saveFileCallback;
+
+
+#if DIRECTX_ENABLED == 1
+	ID3D11RenderTargetView* _renderTargetViewMap;
+	ID3D11ShaderResourceView* _shaderResourceViewMap;
+	ID3D11DepthStencilView* _depthStencilView;
+	ID3D11Texture2D* _depthStencil;
+#endif
 protected:
     //renderer caches and callbacks
     void onBegin();

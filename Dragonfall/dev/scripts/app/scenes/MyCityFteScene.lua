@@ -185,10 +185,9 @@ function MyCityFteScene:OpenUI(building, default_tab)
     local city = self:GetCity()
     local User = city:GetUser()
     if iskindof(building, "HelpedTroopsSprite") then
-        local helped = User.helpedByTroops[building:GetIndex()]
+        local helped = User.helpedByTroop
         local user = self.city:GetUser()
-        NetManager:getHelpDefenceTroopDetailPromise(user:Id(),helped.id):done(function(response)
-            LuaUtils:outputTable("response", response)
+        NetManager:getHelpDefenceTroopDetailPromise(user:Id()):done(function(response)
             UIKit:newGameUI("GameUIHelpDefence",self.city, helped ,response.msg.troopDetail):AddToCurrentScene(true)
         end)
         return

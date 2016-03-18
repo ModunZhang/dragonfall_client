@@ -48,6 +48,9 @@ THE SOFTWARE.
 
 #include "deprecated/CCString.h"
 
+#if (DIRECTX_ENABLED == 1)
+#include "platform/winrt/TextureLoader/DDSTextureLoader.h"
+#endif
 
 #if CC_ENABLE_CACHE_TEXTURE_DATA
     #include "renderer/CCTextureCache.h"
@@ -81,6 +84,12 @@ namespace {
 #ifdef GL_ETC1_RGB8_OES
         PixelFormatInfoMapValue(Texture2D::PixelFormat::ETC, Texture2D::PixelFormatInfo(GL_ETC1_RGB8_OES, 0xFFFFFFFF, 0xFFFFFFFF, 4, true, false)),
 #endif
+
+#if DIRECTX_ENABLED == 1
+		PixelFormatInfoMapValue(Texture2D::PixelFormat::S3TC_DXT1, Texture2D::PixelFormatInfo(S3TC_DXT1_EXT, 0xFFFFFFFF, 0xFFFFFFFF, 4, true, false)),
+		PixelFormatInfoMapValue(Texture2D::PixelFormat::S3TC_DXT3, Texture2D::PixelFormatInfo(S3TC_DXT3_EXT, 0xFFFFFFFF, 0xFFFFFFFF, 8, true, true)),
+		PixelFormatInfoMapValue(Texture2D::PixelFormat::S3TC_DXT5, Texture2D::PixelFormatInfo(S3TC_DXT5_EXT, 0xFFFFFFFF, 0xFFFFFFFF, 8, true, true)),
+#else
         
 #ifdef GL_COMPRESSED_RGBA_S3TC_DXT1_EXT
         PixelFormatInfoMapValue(Texture2D::PixelFormat::S3TC_DXT1, Texture2D::PixelFormatInfo(GL_COMPRESSED_RGBA_S3TC_DXT1_EXT, 0xFFFFFFFF, 0xFFFFFFFF, 4, true, false)),
@@ -93,6 +102,7 @@ namespace {
 #ifdef GL_COMPRESSED_RGBA_S3TC_DXT5_EXT
         PixelFormatInfoMapValue(Texture2D::PixelFormat::S3TC_DXT5, Texture2D::PixelFormatInfo(GL_COMPRESSED_RGBA_S3TC_DXT5_EXT, 0xFFFFFFFF, 0xFFFFFFFF, 8, true, false)),
 #endif
+#endif // DIRECTX_ENABLED
         
 #ifdef GL_ATC_RGB_AMD
         PixelFormatInfoMapValue(Texture2D::PixelFormat::ATC_RGB, Texture2D::PixelFormatInfo(GL_ATC_RGB_AMD,
@@ -429,20 +439,132 @@ void Texture2D::convertRGBA8888ToRGB5A1(const unsigned char* data, ssize_t dataL
             |  (data[i + 3] & 0x0080) >> 7;   //A
     }
 }
+
+// RRRRGGGGBBBBAAAA -> BBBBGGGGRRRRAAAA
+void Texture2D::convertRGBA4444ToBGRA4444(const unsigned char* data, ssize_t dataLen, unsigned char* outData)
+{
+	unsigned short* out16 = (unsigned short*)outData;
+	for (ssize_t i = 0, l = dataLen - 1; i < l; i += 2)
+	{
+		*out16++ = (data[i + 0] & 0x0F) << 12	// A
+			| (data[i + 1] & 0xF0) << 4			// R
+			| (data[i + 1] & 0x0F) << 4			// G
+			| (data[i + 0] & 0xF0) >> 4;		// B			
+	}
+}
+
+// // IIIIIIIIAAAAAAAA -> BBBBBBBBGGGGGGGGRRRRRRRRAAAAAAAA
+static void convertAI88ToBGRA8888(const unsigned char* data, ssize_t dataLen, unsigned char* outData)
+{
+	for (ssize_t i = 0, l = dataLen - 1; i < l; i += 2)
+	{
+		*outData++ = data[i];     //B
+		*outData++ = data[i];     //G
+		*outData++ = data[i];     //R
+		*outData++ = data[i + 1]; //A
+	}
+}
+
+// RRRRRRRRGGGGGGGGBBBBBBBBAAAAAAAA -> BBBBBBBBGGGGGGGGRRRRRRRRAAAAAAAA
+static void convertRGBA8888ToBGRA888(const unsigned char* data, ssize_t dataLen, unsigned char* outData)
+{
+	for (ssize_t i = 0, l = dataLen - 3; i < l; i += 4)
+	{
+		*outData++ = data[i + 2];         //B
+		*outData++ = data[i + 1];		  //G
+		*outData++ = data[i];			  //R
+		*outData++ = data[i + 3];		  //A
+	}
+}
+
+// RRRRRRRRGGGGGGGGBBBBBBBB -> BBBBBBBBGGGGGGGGRRRRRRRRAAAAAAAA
+static void convertRGB888ToBGRA8888(const unsigned char* data, ssize_t dataLen, unsigned char* outData)
+{
+	for (ssize_t i = 0, l = dataLen - 2; i < l; i += 3)
+	{
+		*outData++ = data[i + 2];     //B
+		*outData++ = data[i + 1];     //G
+		*outData++ = data[i];		  //R
+		*outData++ = 0xFF;            //A
+	}
+}
+
+// IIIIIIII -> BBBBBBBBGGGGGGGGGRRRRRRRRAAAAAAAA
+static void convertI8ToBGRA8888(const unsigned char* data, ssize_t dataLen, unsigned char* outData)
+{
+	for (ssize_t i = 0; i < dataLen; ++i)
+	{
+		*outData++ = data[i];     //B
+		*outData++ = data[i];     //G
+		*outData++ = data[i];     //R
+		*outData++ = 0xFF;        //A
+	}
+}
 // conventer function end
 //////////////////////////////////////////////////////////////////////////
+#if (DIRECTX_ENABLED == 1)
+int Texture2D::s_TextureCount = 0;
+void Texture2D::UpdateSamplerState()
+{
+	DXResourceManager::getInstance().remove(&_samplerState);
+	D3D11_SAMPLER_DESC samplerDesc;
+	samplerDesc.Filter = _antialiasEnabled ? D3D11_FILTER_MIN_MAG_MIP_LINEAR : D3D11_FILTER_MIN_MAG_MIP_POINT;
+	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+	samplerDesc.MipLODBias = 0;
+	samplerDesc.MaxAnisotropy = 1;
+	samplerDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+	samplerDesc.BorderColor[0] = 1.0f;
+	samplerDesc.BorderColor[1] = 1.0f;
+	samplerDesc.BorderColor[2] = 1.0f;
+	samplerDesc.BorderColor[3] = 1.0f;
+	samplerDesc.MinLOD = -3.402823466e+38F; // -FLT_MAX
+	samplerDesc.MaxLOD = 3.402823466e+38F; // FLT_MAX
 
+	DX::ThrowIfFailed(
+		GLViewImpl::sharedOpenGLView()->GetDevice()->CreateSamplerState(
+		&samplerDesc,
+		&_samplerState
+		)
+		);
+
+	DXResourceManager::getInstance().add(&_samplerState);
+
+#if CC_ENABLE_CACHE_TEXTURE_DATA
+	if (_antialiasEnabled)
+	{
+		TexParams texParams = { (GLuint)(_hasMipmaps ? D3D11_FILTER_MIN_MAG_MIP_POINT : D3D11_FILTER_MIN_MAG_MIP_LINEAR), D3D11_FILTER_MIN_MAG_MIP_LINEAR, D3D11_TEXTURE_ADDRESS_CLAMP, D3D11_TEXTURE_ADDRESS_CLAMP };
+		VolatileTextureMgr::setTexParameters(this, texParams);
+	}
+	else
+	{
+		TexParams texParams = { (GLuint)(_hasMipmaps ? D3D11_FILTER_MIN_MAG_MIP_POINT : D3D11_FILTER_MIN_MAG_MIP_POINT), D3D11_FILTER_MIN_MAG_MIP_POINT, D3D11_TEXTURE_ADDRESS_CLAMP, D3D11_TEXTURE_ADDRESS_CLAMP };
+		VolatileTextureMgr::setTexParameters(this, texParams);
+	}
+#endif
+}
+#endif
 Texture2D::Texture2D()
 : _pixelFormat(Texture2D::PixelFormat::DEFAULT)
 , _pixelsWide(0)
 , _pixelsHigh(0)
-, _name(0)
+
 , _maxS(0.0)
 , _maxT(0.0)
 , _hasPremultipliedAlpha(false)
 , _hasMipmaps(false)
 , _shaderProgram(nullptr)
 , _antialiasEnabled(true)
+#if (DIRECTX_ENABLED == 1)
+, _texture(nullptr)
+, _textureView(nullptr)
+, _samplerState(nullptr)
+, _name(++s_TextureCount)
+, _renderTargetTexture(false)
+#else
+, _name(0)
+#endif
 {
 }
 
@@ -455,19 +577,28 @@ Texture2D::~Texture2D()
     CCLOGINFO("deallocing Texture2D: %p - id=%u", this, _name);
     CC_SAFE_RELEASE(_shaderProgram);
 
-    if(_name)
-    {
-        GL::deleteTexture(_name);
-    }
+	releaseGLTexture();
 }
+
+bool Texture2D::isSDTex()
+{
+	return _texName.find("-sd") != std::string::npos;
+}
+
 
 void Texture2D::releaseGLTexture()
 {
+#if (DIRECTX_ENABLED == 1)
+	DXResourceManager::getInstance().remove(&_texture);
+	DXResourceManager::getInstance().remove(&_textureView);
+	DXResourceManager::getInstance().remove(&_samplerState);
+#else
     if(_name)
     {
         GL::deleteTexture(_name);
     }
     _name = 0;
+#endif
 }
 
 
@@ -585,6 +716,118 @@ bool Texture2D::initWithMipmaps(MipmapInfo* mipmaps, int mipmapsNum, PixelFormat
         return false;
     }
 
+#if (DIRECTX_ENABLED == 1)
+	DXResourceManager::getInstance().remove(&_texture);
+	DXResourceManager::getInstance().remove(&_textureView);
+
+	auto view = GLViewImpl::sharedOpenGLView();
+	bool compressed = false;
+
+	// Defalt 32-bit RGBA
+	bool staticTex = true;
+	auto format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	const auto bpp = getBitsPerPixelForFormat(pixelFormat);
+	if (pixelFormat == PixelFormat::RGBA4444)
+	{
+		// Default 16-bit BGRA needs conversion
+		format = DXGI_FORMAT_B4G4R4A4_UNORM;
+		convertRGBA4444ToBGRA4444(mipmaps->address, mipmaps->len, mipmaps->address);
+	}
+	else if (pixelFormat == PixelFormat::RGB888)
+	{
+		format = DXGI_FORMAT_B8G8R8X8_UNORM;
+	}
+	else if (pixelFormat == PixelFormat::A8)
+	{
+		format = DXGI_FORMAT_R8_UNORM;
+		staticTex = false;
+	}
+	else if (pixelFormat == PixelFormat::AI88)
+	{
+		format = DXGI_FORMAT_R8G8_UNORM;
+		staticTex = false;
+	}
+	else if (pixelFormat == PixelFormat::S3TC_DXT5 || pixelFormat == PixelFormat::S3TC_DXT3 || pixelFormat == PixelFormat::S3TC_DXT1)
+	{
+		DX::ThrowIfFailed(DirectX::CreateDDSTextureFromMemory(view->GetDevice(), (uint8_t*)mipmaps->address, mipmaps->len, (ID3D11Resource**)&_texture, &_textureView));
+		DXResourceManager::getInstance().add(&_texture);
+		DXResourceManager::getInstance().add(&_textureView);
+		UpdateSamplerState();
+
+		compressed = true;
+	}
+	else if (pixelFormat == PixelFormat::RGB565)
+	{
+		format = DXGI_FORMAT_B5G6R5_UNORM;
+	}
+	else if (pixelFormat == PixelFormat::BGRA8888)
+	{
+		format = DXGI_FORMAT_B8G8R8A8_UNORM;
+	}
+	else if (pixelFormat != PixelFormat::RGBA8888)
+	{
+		NOT_SUPPORTED();
+	}
+
+	if (!compressed)
+	{
+		const auto rowPitch = pixelsWide * bpp / 8;
+
+		// Create texture
+		D3D11_TEXTURE2D_DESC desc;
+		desc.Width = pixelsWide;
+		desc.Height = pixelsHigh;
+		desc.MipLevels = mipmapsNum;
+		desc.ArraySize = 1;
+		desc.Format = format;
+		desc.SampleDesc.Count = 1;
+		desc.SampleDesc.Quality = 0;
+		desc.Usage = staticTex ? D3D11_USAGE_IMMUTABLE : D3D11_USAGE_DEFAULT;
+		desc.BindFlags = _renderTargetTexture ? (D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET) : (D3D11_BIND_SHADER_RESOURCE);
+		desc.CPUAccessFlags = 0;
+		desc.MiscFlags = (mipmapsNum > 1) ? D3D11_RESOURCE_MISC_GENERATE_MIPS : 0;
+
+		D3D11_SUBRESOURCE_DATA initData;
+		initData.pSysMem = mipmaps->address;
+		initData.SysMemPitch = static_cast<UINT>(rowPitch);
+		initData.SysMemSlicePitch = static_cast<UINT>(mipmaps->len);
+
+		auto hr = view->GetDevice()->CreateTexture2D(&desc, (mipmapsNum > 1) ? nullptr : &initData, &_texture);
+		if (SUCCEEDED(hr) && _texture != 0)
+		{
+			D3D11_SHADER_RESOURCE_VIEW_DESC SRVDesc;
+			memset(&SRVDesc, 0, sizeof(SRVDesc));
+			SRVDesc.Format = format;
+			SRVDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+			SRVDesc.Texture2D.MipLevels = (mipmapsNum > 1) ? -1 : 1;
+
+			hr = view->GetDevice()->CreateShaderResourceView(_texture, &SRVDesc, &_textureView);
+			if (FAILED(hr))
+			{
+				_texture = nullptr;
+			}
+
+			if (mipmapsNum > 1)
+			{
+				view->GetContext()->UpdateSubresource(_texture, 0, nullptr, mipmaps->address, static_cast<UINT>(rowPitch), static_cast<UINT>(mipmaps->len));
+				view->GetContext()->GenerateMips(_textureView);
+			}
+
+			DXResourceManager::getInstance().add(&_texture);
+			DXResourceManager::getInstance().add(&_textureView);
+			UpdateSamplerState();
+
+#if defined(_DEBUG) || defined(PROFILE)
+			_texture->SetPrivateData(WKPDID_D3DDebugObjectName,
+				sizeof("WICTextureLoader") - 1,
+				"WICTextureLoader"
+				);
+#endif					
+		}
+
+		DX::ThrowIfFailed(hr);
+	}
+#else
     //Set the row align only when mipmapsNum == 1 and the data is uncompressed
     if (mipmapsNum == 1 && !info.compressed)
     {
@@ -680,6 +923,7 @@ bool Texture2D::initWithMipmaps(MipmapInfo* mipmaps, int mipmapsNum, PixelFormat
         width = MAX(width >> 1, 1);
         height = MAX(height >> 1, 1);
     }
+#endif
 
     _contentSize = Size((float)pixelsWide, (float)pixelsHigh);
     _pixelsWide = pixelsWide;
@@ -700,9 +944,26 @@ bool Texture2D::updateWithData(const void *data,int offsetX,int offsetY,int widt
 {
     if (_name)
     {
+#if (DIRECTX_ENABLED == 0)
         GL::bindTexture2D(_name);
         const PixelFormatInfo& info = _pixelFormatInfoTables.at(_pixelFormat);
         glTexSubImage2D(GL_TEXTURE_2D,0,offsetX,offsetY,width,height,info.format, info.type,data);
+#else
+		auto view = GLViewImpl::sharedOpenGLView();
+
+		CD3D11_BOX box;
+		box.left = offsetX;
+		box.top = offsetY;
+		box.right = offsetX + width;
+		box.bottom = offsetY + height;
+		box.front = 0;
+		box.back = 1;
+
+		const PixelFormatInfo& info = _pixelFormatInfoTables.at(_pixelFormat);
+		const auto rowPitch = _pixelsWide * info.bpp / 8;
+
+		view->GetContext()->UpdateSubresource(_texture, 0, &box, data, rowPitch, 0);
+#endif
 
         return true;
     }
@@ -828,6 +1089,11 @@ Texture2D::PixelFormat Texture2D::convertI8ToFormat(const unsigned char* data, s
         *outData = (unsigned char*)malloc(sizeof(unsigned char) * (*outDataLen));
         convertI8ToRGB5A1(data, dataLen, *outData);
         break;
+	case PixelFormat::BGRA8888:
+		*outDataLen = dataLen * 4;
+		*outData = (unsigned char*)malloc(sizeof(unsigned char) * (*outDataLen));
+		convertI8ToBGRA8888(data, dataLen, *outData);
+		break;
     default:
         // unsupport convertion or don't need to convert
         if (format != PixelFormat::AUTO && format != PixelFormat::I8)
@@ -882,6 +1148,11 @@ Texture2D::PixelFormat Texture2D::convertAI88ToFormat(const unsigned char* data,
         *outData = (unsigned char*)malloc(sizeof(unsigned char) * (*outDataLen));
         convertAI88ToRGB5A1(data, dataLen, *outData);
         break;
+	case PixelFormat::BGRA8888:
+		*outDataLen = dataLen * 2;
+		*outData = (unsigned char*)malloc(sizeof(unsigned char) * (*outDataLen));
+		convertAI88ToBGRA8888(data, dataLen, *outData);
+		break;
     default:
         // unsupport convertion or don't need to convert
         if (format != PixelFormat::AUTO && format != PixelFormat::AI88)
@@ -932,6 +1203,11 @@ Texture2D::PixelFormat Texture2D::convertRGB888ToFormat(const unsigned char* dat
         *outData = (unsigned char*)malloc(sizeof(unsigned char) * (*outDataLen));
         convertRGB888ToRGB5A1(data, dataLen, *outData);
         break;
+	case PixelFormat::BGRA8888:
+		*outDataLen = dataLen / 3 * 4;
+		*outData = (unsigned char*)malloc(sizeof(unsigned char) * (*outDataLen));
+		convertRGB888ToBGRA8888(data, dataLen, *outData);
+		break;
     default:
         // unsupport convertion or don't need to convert
         if (format != PixelFormat::AUTO && format != PixelFormat::RGB888)
@@ -986,6 +1262,11 @@ Texture2D::PixelFormat Texture2D::convertRGBA8888ToFormat(const unsigned char* d
         *outData = (unsigned char*)malloc(sizeof(unsigned char) * (*outDataLen));
         convertRGBA8888ToRGB5A1(data, dataLen, *outData);
         break;
+	case PixelFormat::BGRA8888:
+		*outDataLen = dataLen;
+		*outData = (unsigned char*)malloc(sizeof(unsigned char) * (*outDataLen));
+		convertRGBA8888ToBGRA888(data, dataLen, *outData);
+		break;
     default:
         // unsupport convertion or don't need to convert
         if (format != PixelFormat::AUTO && format != PixelFormat::RGBA8888)
@@ -1145,6 +1426,7 @@ bool Texture2D::initWithString(const char *text, const FontDefinition& textDefin
 
 void Texture2D::drawAtPoint(const Vec2& point)
 {
+#if (DIRECTX_ENABLED == 0)
     GLfloat    coordinates[] = {
         0.0f,    _maxT,
         _maxS,_maxT,
@@ -1179,10 +1461,14 @@ void Texture2D::drawAtPoint(const Vec2& point)
 #endif // EMSCRIPTEN
 
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+#else
+	CC_ASSERT(false && "Not implemented.");
+#endif
 }
 
 void Texture2D::drawInRect(const Rect& rect)
 {
+#if (DIRECTX_ENABLED == 0)
     GLfloat    coordinates[] = {    
         0.0f,    _maxT,
         _maxS,_maxT,
@@ -1211,6 +1497,9 @@ void Texture2D::drawInRect(const Rect& rect)
     glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_TEX_COORD, 2, GL_FLOAT, GL_FALSE, 0, coordinates);
 #endif // EMSCRIPTEN
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+#else
+	CC_ASSERT(false && "Not implemented.");
+#endif
 }
 
 void Texture2D::PVRImagesHavePremultipliedAlpha(bool haveAlphaPremultiplied)
@@ -1226,12 +1515,16 @@ void Texture2D::PVRImagesHavePremultipliedAlpha(bool haveAlphaPremultiplied)
 
 void Texture2D::generateMipmap()
 {
+#if (DIRECTX_ENABLED == 0)
     CCASSERT(_pixelsWide == ccNextPOT(_pixelsWide) && _pixelsHigh == ccNextPOT(_pixelsHigh), "Mipmap texture only works in POT textures");
     GL::bindTexture2D( _name );
     glGenerateMipmap(GL_TEXTURE_2D);
     _hasMipmaps = true;
 #if CC_ENABLE_CACHE_TEXTURE_DATA
     VolatileTextureMgr::setHasMipmaps(this, _hasMipmaps);
+#endif
+#else
+	CC_ASSERT(false && "Not implemented.");
 #endif
 }
 
@@ -1242,6 +1535,7 @@ bool Texture2D::hasMipmaps() const
 
 void Texture2D::setTexParameters(const TexParams &texParams)
 {
+#if (DIRECTX_ENABLED == 0)
     CCASSERT((_pixelsWide == ccNextPOT(_pixelsWide) || texParams.wrapS == GL_CLAMP_TO_EDGE) &&
         (_pixelsHigh == ccNextPOT(_pixelsHigh) || texParams.wrapT == GL_CLAMP_TO_EDGE),
         "GL_CLAMP_TO_EDGE should be used in NPOT dimensions");
@@ -1254,6 +1548,7 @@ void Texture2D::setTexParameters(const TexParams &texParams)
 
 #if CC_ENABLE_CACHE_TEXTURE_DATA
     VolatileTextureMgr::setTexParameters(this, texParams);
+#endif
 #endif
 }
 
@@ -1270,7 +1565,7 @@ void Texture2D::setAliasTexParameters()
     {
         return;
     }
-
+#if (DIRECTX_ENABLED == 0)
     GL::bindTexture2D( _name );
 
     if( ! _hasMipmaps )
@@ -1287,6 +1582,9 @@ void Texture2D::setAliasTexParameters()
     TexParams texParams = {(GLuint)(_hasMipmaps?GL_NEAREST_MIPMAP_NEAREST:GL_NEAREST),GL_NEAREST,GL_NONE,GL_NONE};
     VolatileTextureMgr::setTexParameters(this, texParams);
 #endif
+#else
+	UpdateSamplerState();
+#endif
 }
 
 void Texture2D::setAntiAliasTexParameters()
@@ -1302,7 +1600,7 @@ void Texture2D::setAntiAliasTexParameters()
     {
         return;
     }
-
+#if (DIRECTX_ENABLED == 0)
     GL::bindTexture2D( _name );
 
     if( ! _hasMipmaps )
@@ -1318,6 +1616,9 @@ void Texture2D::setAntiAliasTexParameters()
 #if CC_ENABLE_CACHE_TEXTURE_DATA
     TexParams texParams = {(GLuint)(_hasMipmaps?GL_LINEAR_MIPMAP_NEAREST:GL_LINEAR),GL_LINEAR,GL_NONE,GL_NONE};
     VolatileTextureMgr::setTexParameters(this, texParams);
+#endif
+#else
+	UpdateSamplerState();
 #endif
 }
 

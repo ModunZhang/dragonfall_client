@@ -726,7 +726,7 @@ function GameUIPVESendTroop:PromiseOfAttack()
     WidgetFteArrow.new(_("点击进攻")):addTo(self:GetFteLayer()):TurnRight()
         :align(display.RIGHT_CENTER, r.x - 20, r.y + r.height/2)
 
-    return UIKit:PromiseOfOpen("GameUIReplayNew")
+    return UIKit:PromiseOfOpen("GameUIReplay")
 end
 
 

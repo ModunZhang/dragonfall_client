@@ -401,6 +401,11 @@ void GLProgramCache::reloadDefaultGLPrograms()
 
 void GLProgramCache::loadDefaultGLProgram(GLProgram *p, int type)
 {
+#if (DIRECTX_ENABLED == 1)
+#define initWithByteArrays initWithHLSL
+#else
+#define initWithByteArrays initWithByteArrays
+#endif
     switch (type) {
             //dannyhe ETC
 #if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
@@ -426,9 +431,11 @@ void GLProgramCache::loadDefaultGLProgram(GLProgram *p, int type)
         case kShaderType_PositionColor:  
             p->initWithByteArrays(ccPositionColor_vert ,ccPositionColor_frag);
             break;
+#if DIRECTX_ENABLED == 0
         case kShaderType_PositionColorTextureAsPointsize:
             p->initWithByteArrays(ccPositionColorTextureAsPointsize_vert ,ccPositionColor_frag);
             break;
+#endif
         case kShaderType_PositionColor_noMVP:
             p->initWithByteArrays(ccPositionTextureColor_noMVP_vert ,ccPositionColor_frag);
             break;
@@ -471,6 +478,7 @@ void GLProgramCache::loadDefaultGLProgram(GLProgram *p, int type)
         case kShaderType_3DSkinPositionTex:
             p->initWithByteArrays(cc3D_SkinPositionTex_vert, cc3D_ColorTex_frag);
             break;
+#if DIRECTX_ENABLED == 0
         case kShaderType_3DPositionNormal:
             {
                 std::string def = getShaderMacrosForLight();
@@ -497,6 +505,7 @@ void GLProgramCache::loadDefaultGLProgram(GLProgram *p, int type)
         case kShaderType_3DParticleColor:
             p->initWithByteArrays(cc3D_Particle_vert, cc3D_Particle_color_frag);
             break;
+#endif
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WP8 || defined(WP8_SHADER_COMPILER)
         case kShaderType_PositionColor_noMVP_GrayScale:
             p->initWithByteArrays(ccPositionTextureColor_noMVP_vert, ccUIGrayScale_frag);

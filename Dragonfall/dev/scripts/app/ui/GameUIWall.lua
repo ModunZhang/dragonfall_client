@@ -7,6 +7,7 @@ local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local WidgetPushButton = import("..widget.WidgetPushButton")
 local UIListView = import(".UIListView")
 local WidgetSoldierBox = import("..widget.WidgetSoldierBox")
+local WidgetSoldierDetails = import("..widget.WidgetSoldierDetails")
 local WidgetSelectDragon = import("..widget.WidgetSelectDragon")
 local timer = app.timer
 local WidgetUseItems = import("..widget.WidgetUseItems")
@@ -217,7 +218,7 @@ function GameUIWall:CreateMilitaryUIIf()
         :align(display.CENTER_BOTTOM, window.width/2,tips_panel:getPositionY() - tips_panel:getContentSize().height - 70)
         :setButtonLabel("normal", UIKit:ttfLabel({text = _("驻防部队"),size = 22,color = 0xffedae,shadow = true}))
         :onButtonClicked(function()
-            UIKit:newGameUI('GameUIAllianceSendTroops',function(dragonType,soldiers)
+            UIKit:newGameUI('GameUISendTroopNew',function(dragonType,soldiers)
                 if self.dragon_manager:GetDragon(dragonType):IsDead() then
                     UIKit:showMessageDialog(nil,_("选择的龙已经死亡")):CreateCancelButton(
                         {
@@ -261,7 +262,7 @@ function GameUIWall:CreateMilitaryUIIf()
         :align(display.RIGHT_BOTTOM, window.width - 50,list_node:getPositionY() - 70)
         :setButtonLabel("normal", UIKit:ttfLabel({text = _("编辑"),size = 22,color = 0xffedae,shadow = true}))
         :onButtonClicked(function()
-            UIKit:newGameUI('GameUIAllianceSendTroops',function(dragonType,soldiers)
+            UIKit:newGameUI('GameUISendTroopNew',function(dragonType,soldiers)
                 if self.dragon_manager:GetDragon(dragonType):IsDead() then
                     UIKit:showMessageDialog(nil,_("选择的龙已经死亡")):CreateCancelButton(
                         {
@@ -355,16 +356,17 @@ function GameUIWall:RefreshListView()
         local total_power_b = UtilsForSoldier:GetSoldierConfig(User, b.name).power * b.count
         return total_power_a > total_power_b
     end )
-    for i=1,#soldiers,4 do
+    local pos = {65,273,481}
+    for i=1,#soldiers,3 do
         local row_item = display.newNode()
         local added = 1
         local j = i
-        for j=1,4 do
+        for j=1,3 do
             local soldier = soldiers[i+j-1]
             if soldier then
                 row_item:setContentSize(cc.size(546,166))
-                WidgetSoldierBox.new(nil, function()end):addTo(row_item)
-                    :alignByPoint(cc.p(0.5, 0.5), 65 + (130 + 9) * (added - 1) , 83)
+                WidgetSoldierBox.new(nil, function() WidgetSoldierDetails.new(soldier.name, UtilsForSoldier:SoldierStarByName(User, soldier.name)):addTo(self)end):addTo(row_item)
+                    :alignByPoint(cc.p(0.5, 0.5), pos[j] , 83)
                     :SetSoldier(
                         soldier.name,
                         UtilsForSoldier:SoldierStarByName(self.city:GetUser(), soldier.name)

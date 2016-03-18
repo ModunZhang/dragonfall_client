@@ -412,7 +412,7 @@ end
 function GameUIGacha:InitOrdinary()
     local main = self
     local layer = self.ordinary_layer
-    local background_gacha_1 = device.platform == 'winrt' and "background_gacha_1.png" or "background_gacha_1.jpg" 
+    local background_gacha_1 = "background_gacha_1.jpg" 
     self.isOrdinaryInit = display.newSprite(background_gacha_1):addTo(layer)
         :align(display.TOP_CENTER, window.cx, window.top_bottom+36)
     UIKit:ttfLabel({
@@ -508,7 +508,7 @@ end
 function GameUIGacha:InitDeluxe()
     local main = self
     local layer = self.deluxe_layer
-    local background_gacha_2 = device.platform == 'winrt' and "background_gacha_2.png" or "background_gacha_2.jpg" 
+    local background_gacha_2 = "background_gacha_2.jpg" 
     self.isDeluxeInit = display.newSprite(background_gacha_2):addTo(layer)
         :align(display.TOP_CENTER, window.cx, window.top_bottom+36)
     UIKit:ttfLabel({

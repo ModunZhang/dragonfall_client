@@ -1780,12 +1780,12 @@ function GameUIMail:CreateReportContent()
                     color = 0x403c2f
                 }):align(display.LEFT_CENTER, report_content_bg:getContentSize().width/2-20, 60)
                 :addTo(report_content_bg)
-            StarBar.new({
-                max = 3,
-                bg = "alliance_shire_star_60x58_0.png",
-                fill = "alliance_shire_star_60x58_1.png",
-                num = attackTarget.fightStar
-            }):addTo(report_content_bg):align(display.LEFT_CENTER,report_content_bg:getContentSize().width/2-20, 30):scale(0.5)
+            -- StarBar.new({
+            --     max = 3,
+            --     bg = "alliance_shire_star_60x58_0.png",
+            --     fill = "alliance_shire_star_60x58_1.png",
+            --     num = attackTarget.fightStar
+            -- }):addTo(report_content_bg):align(display.LEFT_CENTER,report_content_bg:getContentSize().width/2-20, 30):scale(0.5)
         else
             -- 战报发出方信息
             -- 旗帜
@@ -2108,12 +2108,12 @@ function GameUIMail:CreateSavedReportContent()
                     color = 0x403c2f
                 }):align(display.LEFT_CENTER, report_content_bg:getContentSize().width/2-20, 60)
                 :addTo(report_content_bg)
-            StarBar.new({
-                max = 3,
-                bg = "alliance_shire_star_60x58_0.png",
-                fill = "alliance_shire_star_60x58_1.png",
-                num = attackTarget.fightStar
-            }):addTo(report_content_bg):align(display.LEFT_CENTER,report_content_bg:getContentSize().width/2-20, 30):scale(0.5)
+            -- StarBar.new({
+            --     max = 3,
+            --     bg = "alliance_shire_star_60x58_0.png",
+            --     fill = "alliance_shire_star_60x58_1.png",
+            --     num = attackTarget.fightStar
+            -- }):addTo(report_content_bg):align(display.LEFT_CENTER,report_content_bg:getContentSize().width/2-20, 30):scale(0.5)
         else
             -- 战报发出方信息
             -- 旗帜

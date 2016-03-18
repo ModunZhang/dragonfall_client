@@ -292,7 +292,8 @@ void LuaTouchEventManager::onTouchesEnded(const std::vector<Touch*>& touches, Ev
         dispatchingTouchEvent(touches, event, CCTOUCHENDED);
         // remove all touching nodes
         //CCLOG("TOUCH ENDED, REMOVE ALL TOUCH TARGETS");
-        _touchingTargets.clear();
+		if (s_sharedLuaTouchEventManager)
+			_touchingTargets.clear();
     }
 }
 
@@ -310,18 +311,22 @@ void LuaTouchEventManager::cleanDisabledNode()
 
 	for (auto it : toErase)
 	{
-		removeTouchableNode(it);
+		if (s_sharedLuaTouchEventManager)
+			removeTouchableNode(it);
 	}
 }
 
 void LuaTouchEventManager::onTouchesCancelled(const std::vector<Touch*>& touches, Event *event)
 {
     dispatchingTouchEvent(touches, event, CCTOUCHCANCELLED);
-    // remove all touching nodes
-    //CCLOG("TOUCH CANCELLED, REMOVE ALL TOUCH TARGETS");
-    _touchingTargets.clear();
-    // clear all touching points
-	m_touchingIds.clear();
+	if (s_sharedLuaTouchEventManager)
+	{
+		// remove all touching nodes
+		//CCLOG("TOUCH CANCELLED, REMOVE ALL TOUCH TARGETS");
+		_touchingTargets.clear();
+		// clear all touching points
+		m_touchingIds.clear();
+	}  
 }
 
 void LuaTouchEventManager::cleanup(void)

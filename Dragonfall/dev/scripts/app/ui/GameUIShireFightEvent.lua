@@ -57,7 +57,7 @@ function GameUIShireFightEvent:OnAllianceDataChanged_shrineEvents(alliance, delt
             end
         end
     end
-    if deltaData("shrineEvents.playerTroops") then
+    if deltaData("shrineEvents") then
         self.popultaion_label:setString(#self:GetFightEvent().playerTroops)
         self:RefreshListView()
     end
@@ -248,7 +248,7 @@ function GameUIShireFightEvent:DispathSoliderButtonClicked()
     end
     local final_func = function ()
         local attack_func = function ()
-            UIKit:newGameUI("GameUIAllianceSendTroops",function(dragonType,soldiers,total_march_time,gameuialliancesendtroops)
+            UIKit:newGameUI("GameUISendTroopNew",function(dragonType,soldiers,total_march_time,gameuialliancesendtroops)
                 if type(self.GetFightEvent) ~= 'function' then gameuialliancesendtroops:LeftButtonClicked() end
                 if total_march_time >= UtilsForShrine:GetEventTime(self:GetFightEvent()) then
                     UIKit:showMessageDialog(_("提示"),

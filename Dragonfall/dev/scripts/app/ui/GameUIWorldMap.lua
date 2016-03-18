@@ -501,7 +501,12 @@ function GameUIWorldMap:OnTouchClicked(pre_x, pre_y, x, y)
         return
     end
     app:GetAudioManager():PlayeEffectSoundWithKey("NORMAL_DOWN")
-    UIKit:newWidgetUI("WidgetWorldAllianceInfo",click_object,index,true):AddToCurrentScene()
+    -- 王座
+    if DataUtils:getMapRoundByMapIndex(index) == 0 then
+        UIKit:newGameUI("GameUICrownEnter",index):AddToCurrentScene()
+    else
+        UIKit:newWidgetUI("WidgetWorldAllianceInfo",click_object,index,true):AddToCurrentScene()
+    end
 end
 function GameUIWorldMap:IsFingerOn()
     return self.event_manager:TouchCounts() ~= 0

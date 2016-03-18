@@ -366,7 +366,7 @@ function GameUIDragonEyrieMain:CreateDragonContentNodeIf()
                         return
                     end
                     if dragon:IsFree() then
-                        UIKit:newGameUI('GameUIAllianceSendTroops',function(dragonType,soldiers)
+                        UIKit:newGameUI('GameUISendTroopNew',function(dragonType,soldiers)
                             if self.dragon_manager:GetDragon(dragonType):IsDead() then
                                 UIKit:showMessageDialog(nil,_("选择的龙已经死亡"))
                                 return

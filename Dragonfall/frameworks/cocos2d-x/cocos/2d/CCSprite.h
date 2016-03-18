@@ -240,6 +240,7 @@ public:
      * Do not call it manually. Use setTextureRect instead.
      */
     virtual void setVertexRect(const Rect& rect);
+	void UpdateVertexRect(void);
 
     /** @{
      * Sets a new SpriteFrame to the Sprite.
@@ -554,6 +555,7 @@ protected:
     ssize_t             _atlasIndex;        /// Absolute (real) Index on the SpriteSheet
     SpriteBatchNode*    _batchNode;         /// Used batch node (weak reference)
 
+	bool				_isSd;
     bool                _dirty;             /// Whether the sprite needs to be updated
     bool                _recursiveDirty;    /// Whether all of the sprite's children needs to be updated
     bool                _shouldBeHidden;    /// should not be drawn because one of the ancestors is not visible

@@ -91,25 +91,30 @@ void PolygonBatch::add (const Texture2D* addTexture,
 }
 
 void PolygonBatch::flush () {
-	if (!_verticesCount) return;
+	#if DIRECTX_ENABLED == 0
+		if (!_verticesCount) return;
 
-	GL::bindTexture2D(_texture->getName());
-	GL::bindVAO(0);
-	glEnableVertexAttribArray(GLProgram::VERTEX_ATTRIB_POSITION);
-	glEnableVertexAttribArray(GLProgram::VERTEX_ATTRIB_COLOR);
-	glEnableVertexAttribArray(GLProgram::VERTEX_ATTRIB_TEX_COORDS);
-	glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_POSITION, 2, GL_FLOAT, GL_FALSE, sizeof(V2F_C4B_T2F), &_vertices[0].vertices);
-	glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_COLOR, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(V2F_C4B_T2F), &_vertices[0].colors);
-	glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_TEX_COORDS, 2, GL_FLOAT, GL_FALSE, sizeof(V2F_C4B_T2F), &_vertices[0].texCoords);
+		GL::bindTexture2D(_texture->getName());
+		GL::bindVAO(0);
+		glEnableVertexAttribArray(GLProgram::VERTEX_ATTRIB_POSITION);
+		glEnableVertexAttribArray(GLProgram::VERTEX_ATTRIB_COLOR);
+		glEnableVertexAttribArray(GLProgram::VERTEX_ATTRIB_TEX_COORDS);
+		glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_POSITION, 2, GL_FLOAT, GL_FALSE, sizeof(V2F_C4B_T2F), &_vertices[0].vertices);
+		glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_COLOR, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(V2F_C4B_T2F), &_vertices[0].colors);
+		glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_TEX_COORDS, 2, GL_FLOAT, GL_FALSE, sizeof(V2F_C4B_T2F), &_vertices[0].texCoords);
 
-	glDrawElements(GL_TRIANGLES, _trianglesCount, GL_UNSIGNED_SHORT, _triangles);
+		glDrawElements(GL_TRIANGLES, _trianglesCount, GL_UNSIGNED_SHORT, _triangles);
 
-	CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1, _verticesCount);
+		CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1, _verticesCount);
 
-	_verticesCount = 0;
-	_trianglesCount = 0;
+		_verticesCount = 0;
+		_trianglesCount = 0;
 
-	CHECK_GL_ERROR_DEBUG();
+		CHECK_GL_ERROR_DEBUG();
+	#else
+		CCASSERT(false, "notspported");
+	#endif
+	
 }
 
 }

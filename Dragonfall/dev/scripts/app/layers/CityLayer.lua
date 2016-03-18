@@ -270,8 +270,8 @@ function CityLayer:OnUserDataChanged_soldiers(userData, deltaData)
     if self:IsBarracksMoving() then return end
     self:UpdateSoldiersVisible()
 end
-function CityLayer:OnUserDataChanged_helpedByTroops(userData, deltaData)
-    self:UpdateHelpedByTroopsVisible(userData.helpedByTroops)
+function CityLayer:OnUserDataChanged_helpedByTroop(userData, deltaData)
+    self:UpdateHelpedByTroopsVisible({userData.helpedByTroop})
 end
 function CityLayer:IsBarracksMoving()
     return self:GetCityNode():getChildByTag(BARRACKS_SOLDIER_TAG)
@@ -394,7 +394,7 @@ function CityLayer:ReloadSceneBackground()
         self.background:removeFromParent()
     end
     self.background = display.newNode():addTo(self, SCENE_ZORDER.SCENE_BACKGROUND)
-    local suffix = device.platform == "winrt" and "png" or "jpg"
+    local suffix = "jpg"
     local s = suffix == "png" and (1316 / 1024) or 1
     local terrain = self:Terrain()
     local left_1 = string.format("left_background_1_%s.%s", terrain, suffix)
@@ -451,7 +451,7 @@ function CityLayer:InitWithCity(city)
     city:AddListenOnType(self, city.LISTEN_TYPE.DESTROY_DECORATOR)
     local User = self.scene:GetCity():GetUser()
     User:AddListenOnType(self, "soldiers")
-    User:AddListenOnType(self, "helpedByTroops")
+    User:AddListenOnType(self, "helpedByTroop")
     User:AddListenOnType(self, "buildings")
     User:AddListenOnType(self, "houseEvents")
     User:AddListenOnType(self, "buildingEvents")
@@ -512,7 +512,7 @@ function CityLayer:InitWithCity(city)
     -- 协防的部队
     local helpedByTroops = {}
     for i, v in ipairs({
-        {x = 25, y = 55},
+        -- {x = 25, y = 55},
         {x = 35, y = 55},
     }) do
         table.insert(helpedByTroops, HelpedTroopsSprite.new(self, i, v.x, v.y):addTo(city_node))
@@ -637,7 +637,7 @@ function CityLayer:UpdateAllDynamicWithCity(city)
     self:UpdateTreesWithCity(city)
     self:UpdateWallsWithCity(city)
     self:UpdateSoldiersVisible()
-    self:UpdateHelpedByTroopsVisible(User.helpedByTroops)
+    self:UpdateHelpedByTroopsVisible({User.helpedByTroop})
     self:UpdateCitizen(city)
 end
 function CityLayer:UpdateRuinsVisibleWithCity(city)
@@ -786,9 +786,9 @@ function CityLayer:RefreshSoldiers()
 
     self:UpdateSoldiersVisible()
 end
-function CityLayer:UpdateHelpedByTroopsVisible(helped_by_troops)
+function CityLayer:UpdateHelpedByTroopsVisible(helpedByTroops)
     self:IteratorHelpedTroops(function(i, v)
-        v:setVisible(helped_by_troops[i] ~= nil)
+        v:setVisible(type(helpedByTroops[i]) == "table")
     end)
 end
 function CityLayer:IteratorHelpedTroops(func)

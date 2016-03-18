@@ -88,7 +88,7 @@ function GameUIAllianceBattle:InitBattleStatistics()
     local other_alliance = self.other_alliance
     layer:removeAllChildren()
     self.request_num_label = nil
-    local alliance_battle_bg_612x886 = device.platform == 'winrt' and "alliance_battle_bg_612x886.png" or "alliance_battle_bg_612x886.jpg"
+    local alliance_battle_bg_612x886 = "alliance_battle_bg_612x886.jpg" 
     display.newSprite(alliance_battle_bg_612x886):addTo(layer):align(display.TOP_CENTER,window.cx,window.top_bottom+28)
     local status = alliance.basicInfo.status
     -- local status = ""

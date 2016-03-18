@@ -53,17 +53,24 @@ public:
      @param mv ModelView matrix for the command.
      @param flags to indicate that the command is using 3D rendering or not.
      */
+#if DIRECTX_ENABLED == 0
     void init(float globalOrder, GLuint textureID, GLProgramState* shader, const BlendFunc& blendType, V3F_C4B_T2F_Quad* quads, ssize_t quadCount,
               const Mat4& mv, uint32_t flags);
-    /**Deprecated function, the params is similar as the upper init function, with flags equals 0.*/
-    CC_DEPRECATED_ATTRIBUTE void init(float globalOrder, GLuint textureID, GLProgramState* shader, const BlendFunc& blendType, V3F_C4B_T2F_Quad* quads, ssize_t quadCount,
-              const Mat4& mv);
+	/**Deprecated function, the params is similar as the upper init function, with flags equals 0.*/
+	CC_DEPRECATED_ATTRIBUTE void init(float globalOrder, GLuint textureID, GLProgramState* shader, const BlendFunc& blendType, V3F_C4B_T2F_Quad* quads, ssize_t quadCount,
+		const Mat4& mv);
+#else
+	void init(float globalOrder, Texture2D * texture, GLProgramState* shader, const BlendFunc& blendType, V3F_C4B_T2F_Quad* quads, ssize_t quadCount,
+		const Mat4& mv, uint32_t flags);
+#endif
     /**Apply the texture, shaders, programs, blend functions to GPU pipeline.*/
     void useMaterial() const;
     /**Get the material id of command.*/
     inline uint32_t getMaterialID() const { return _materialID; }
+#if DIRECTX_ENABLED == 0
     /**Get the openGL texture handle.*/
     inline GLuint getTextureID() const { return _textureID; }
+#endif
     /**Get the pointer of the rendered quads.*/
     inline V3F_C4B_T2F_Quad* getQuads() const { return _quads; }
     /**Get the number of quads for rendering.*/
@@ -82,7 +89,11 @@ protected:
     /**Generated material id.*/
     uint32_t _materialID;
     /**OpenGL handle for texture.*/
+#if DIRECTX_ENABLED == 0
     GLuint _textureID;
+#else
+	Texture2D* _texture;
+#endif
     /**GLprogramstate for the commmand. encapsulate shaders and uniforms.*/
     GLProgramState* _glProgramState;
     /**Blend function when rendering the triangles.*/

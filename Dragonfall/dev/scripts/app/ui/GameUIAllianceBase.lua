@@ -165,7 +165,7 @@ function GameUIAllianceBase:GetEnterButtons()
         local mid = self:GetMapObjectInfo().id
         local aid = self.alliance._id
         local attack_button = self:BuildOneButton("icon_move_player_city.png",_("进攻")):onButtonClicked(function()
-            UIKit:newGameUI('GameUIAllianceSendTroops',function(dragonType,soldiers,total_march_time,gameuialliancesendtroops)
+            UIKit:newGameUI('GameUISendTroopNew',function(dragonType,soldiers,total_march_time,gameuialliancesendtroops)
                 NetManager:getAttackMonsterPromise(dragonType,soldiers, aid, mid):done(function()
                     app:GetAudioManager():PlayeEffectSoundWithKey("TROOP_SENDOUT")
                     gameuialliancesendtroops:LeftButtonClicked()
@@ -189,7 +189,7 @@ function GameUIAllianceBase:GetEnterButtons()
         end
 
         local attack_button = self:BuildOneButton("capture_38x56.png",_("占领")):onButtonClicked(function()
-            UIKit:newGameUI('GameUIAllianceSendTroops',function(dragonType,soldiers,total_march_time,gameuialliancesendtroops)
+            UIKit:newGameUI('GameUISendTroopNew',function(dragonType,soldiers,total_march_time,gameuialliancesendtroops)
                 NetManager:getAttackVillagePromise(dragonType,soldiers,aid,mid):done(function()
                     app:GetAudioManager():PlayeEffectSoundWithKey("TROOP_SENDOUT")
                     gameuialliancesendtroops:LeftButtonClicked()
@@ -204,7 +204,7 @@ function GameUIAllianceBase:GetEnterButtons()
     local mid = self:GetMemberId()
     local aid = self.alliance._id
     local attack_button = self:BuildOneButton("icon_move_player_city.png",_("攻打")):onButtonClicked(function()
-        UIKit:newGameUI('GameUIAllianceSendTroops',function(dragonType,soldiers,total_march_time,gameuialliancesendtroops)
+        UIKit:newGameUI('GameUISendTroopNew',function(dragonType,soldiers,total_march_time,gameuialliancesendtroops)
             NetManager:getAttackPlayerCityPromise(dragonType, soldiers, aid, mid):done(function()
                 app:GetAudioManager():PlayeEffectSoundWithKey("TROOP_SENDOUT")
                 gameuialliancesendtroops:LeftButtonClicked()

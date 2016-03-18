@@ -44,7 +44,7 @@ if __name__=="__main__":
 		L.sort()
 		for i in L:
 			f.write("animation[\"%s\"] = {%s}\n" % (i[0], ",".join([ '\"animations/'+item+'\"' for item in i[1]])))
-		f.write('return animation')
+		f.write('return animation\n')
 
 
 

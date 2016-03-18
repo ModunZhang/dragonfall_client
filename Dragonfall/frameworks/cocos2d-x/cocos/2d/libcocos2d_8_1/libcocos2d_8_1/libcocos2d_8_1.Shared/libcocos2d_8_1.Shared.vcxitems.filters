@@ -1752,6 +1752,18 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UITextView\UITextViewImpl-winrt.h">
       <Filter>ui\UIWidgets\UITextView</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\platform\winrt\textureloader\DDSTextureLoader.h">
+      <Filter>platform\winrt\TextureLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\platform\winrt\textureloader\DirectXHelpers.h">
+      <Filter>platform\winrt\TextureLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\platform\winrt\textureloader\PlatformHelpers.h">
+      <Filter>platform\winrt\TextureLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\platform\winrt\textureloader\dds.h">
+      <Filter>platform\winrt\TextureLoader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\cocos2d.cpp" />
@@ -3330,6 +3342,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\ui\UITextView\UITextViewImpl-winrt.cpp">
       <Filter>ui\UIWidgets\UITextView</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\platform\winrt\textureloader\DDSTextureLoader.cpp">
+      <Filter>platform\winrt\TextureLoader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="2d">
@@ -3587,6 +3602,12 @@
     <Filter Include="ui\UIWidgets\UITextView">
       <UniqueIdentifier>{9201ccf1-8c45-41ff-9044-f86775bd0b6b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="platform\winrt\TextureLoader">
+      <UniqueIdentifier>{44fd8ce6-d948-4123-9e5b-574d2556bf6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\shaders">
+      <UniqueIdentifier>{8c9b912f-3bf7-4bf8-8c3d-cbe3d68b6dcc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)..\..\..\cocos2d.def" />
@@ -3704,5 +3725,121 @@
     <None Include="$(MSBuildThisFileDirectory)..\..\..\..\3d\CCAnimationCurve.inl">
       <Filter>3d</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_Label_df_normal_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_Label_normal_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_Label_outline_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_Label_VS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_Position_uColor_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_Position_uColor_VS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_PositionColor_noMVP_VS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_PositionColor_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_PositionColor_VS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_PositionColorLengthTexture_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_PositionColorLengthTexture_VS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_PositionTexture_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_PositionTexture_uColor_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_PositionTexture_uColor_VS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_PositionTexture_VS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_PositionTextureA8Color_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_PositionTextureA8Color_VS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_PositionTextureColor_noMVP_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_PositionTextureColor_noMVP_VS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_PositionTextureColor_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_PositionTextureColor_VS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_PositionTextureColorAlphaTest_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_3D_Color_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_3D_ColorTex_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_3D_PositionTex_VS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_Label_df_glow_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_flash_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_mask_layer_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_banner_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_bannerpve_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_customer_color_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_mask_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_multi_tex_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_nolimittex_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_plane_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_ps_discoloration_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_warning_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\renderer\shaders\ccShader_ccFilterShader_gray_PS.hlsl">
+      <Filter>renderer\shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

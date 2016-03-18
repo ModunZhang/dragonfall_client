@@ -34,7 +34,9 @@ THE SOFTWARE.
 #include "base/CCEventListenerCustom.h"
 #include "base/CCEventDispatcher.h"
 #include "renderer/CCRenderer.h"
-
+#if DIRECTX_ENABLED == 1
+#include <d3d11_1.h>
+#endif
 
 NS_CC_BEGIN
 
@@ -58,6 +60,12 @@ RenderTexture::RenderTexture()
 , _autoDraw(false)
 , _sprite(nullptr)
 , _saveFileCallback(nullptr)
+#if DIRECTX_ENABLED == 1
+, _depthStencilView(nullptr)
+, _renderTargetViewMap(nullptr)
+, _shaderResourceViewMap(nullptr)
+, _depthStencil(nullptr)
+#endif
 {
 #if CC_ENABLE_CACHE_TEXTURE_DATA
     // Listen this event to save render texture before come to background.
@@ -75,11 +83,18 @@ RenderTexture::~RenderTexture()
     CC_SAFE_RELEASE(_sprite);
     CC_SAFE_RELEASE(_textureCopy);
     
+#if DIRECTX_ENABLED == 0
     glDeleteFramebuffers(1, &_FBO);
     if (_depthRenderBufffer)
     {
         glDeleteRenderbuffers(1, &_depthRenderBufffer);
     }
+#else
+	DXResourceManager::getInstance().remove(&_depthStencilView);
+	DXResourceManager::getInstance().remove(&_shaderResourceViewMap);
+	DXResourceManager::getInstance().remove(&_renderTargetViewMap);
+	DXResourceManager::getInstance().remove(&_depthStencil);
+#endif
     CC_SAFE_DELETE(_UITextureImage);
 }
 
@@ -197,7 +212,9 @@ bool RenderTexture::initWithWidthAndHeight(int w, int h, Texture2D::PixelFormat 
         h = (int)(h * CC_CONTENT_SCALE_FACTOR());
         _fullviewPort = Rect(0,0,w,h);
         
+#if DIRECTX_ENABLED == 0
         glGetIntegerv(GL_FRAMEBUFFER_BINDING, &_oldFBO);
+#endif
 
         // textures must be power of two squared
         int powW = 0;
@@ -224,12 +241,17 @@ bool RenderTexture::initWithWidthAndHeight(int w, int h, Texture2D::PixelFormat 
         _texture = new (std::nothrow) Texture2D();
         if (_texture)
         {
+#if DIRECTX_ENABLED == 1
+			_texture->prepareForRenderTarget();
+#endif
             _texture->initWithData(data, dataLen, (Texture2D::PixelFormat)_pixelFormat, powW, powH, Size((float)w, (float)h));
         }
         else
         {
             break;
         }
+
+#if DIRECTX_ENABLED == 0
         GLint oldRBO;
         glGetIntegerv(GL_RENDERBUFFER_BINDING, &oldRBO);
         
@@ -270,7 +292,57 @@ bool RenderTexture::initWithWidthAndHeight(int w, int h, Texture2D::PixelFormat 
 
         // check if it worked (probably worth doing :) )
         CCASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Could not attach texture to framebuffer");
+#else	
+		DXResourceManager::getInstance().remove(&_depthStencilView);
+		DXResourceManager::getInstance().remove(&_shaderResourceViewMap);
+		DXResourceManager::getInstance().remove(&_renderTargetViewMap);
 
+		D3D11_TEXTURE2D_DESC textureDesc;
+		_texture->getTexture()->GetDesc(&textureDesc);
+
+		auto view = GLViewImpl::sharedOpenGLView();
+		/////////////////////// Map's Render Target
+		// Setup the description of the render target view.
+		CD3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc;
+		renderTargetViewDesc.Format = textureDesc.Format;
+		renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+		renderTargetViewDesc.Texture2D.MipSlice = 0;
+
+		// Create the render target view.
+		view->GetDevice()->CreateRenderTargetView(_texture->getTexture(), &renderTargetViewDesc, &_renderTargetViewMap);
+
+		/////////////////////// Map's Shader Resource View
+		// Setup the description of the shader resource view.
+		CD3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
+		shaderResourceViewDesc.Format = textureDesc.Format;
+		shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+		shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
+		shaderResourceViewDesc.Texture2D.MipLevels = 1;
+
+		// Create the shader resource view.
+		view->GetDevice()->CreateShaderResourceView(_texture->getTexture(), &shaderResourceViewDesc, &_shaderResourceViewMap);
+
+		// Create a descriptor for the depth/stencil buffer.
+		CD3D11_TEXTURE2D_DESC depthStencilDesc(
+			DXGI_FORMAT_D24_UNORM_S8_UINT,
+			static_cast<UINT>(w),
+			static_cast<UINT>(h),
+			1,
+			1,
+			D3D11_BIND_DEPTH_STENCIL
+			);
+
+		// Allocate a 2-D surface as the depth/stencil buffer.		
+		DX::ThrowIfFailed(view->GetDevice()->CreateTexture2D(&depthStencilDesc, nullptr, &_depthStencil));
+
+		// Create a DepthStencil view on this surface to use on bind.
+		CD3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc(D3D11_DSV_DIMENSION_TEXTURE2D);
+		DX::ThrowIfFailed(view->GetDevice()->CreateDepthStencilView(_depthStencil, &depthStencilViewDesc, &_depthStencilView));
+		DXResourceManager::getInstance().add(&_depthStencil);
+		DXResourceManager::getInstance().add(&_depthStencilView);
+		DXResourceManager::getInstance().add(&_shaderResourceViewMap);
+		DXResourceManager::getInstance().add(&_renderTargetViewMap);
+#endif
         _texture->setAliasTexParameters();
 
         // retained
@@ -281,9 +353,10 @@ bool RenderTexture::initWithWidthAndHeight(int w, int h, Texture2D::PixelFormat 
 
         _sprite->setBlendFunc( BlendFunc::ALPHA_PREMULTIPLIED );
 
+#if DIRECTX_ENABLED == 0
         glBindRenderbuffer(GL_RENDERBUFFER, oldRBO);
         glBindFramebuffer(GL_FRAMEBUFFER, _oldFBO);
-        
+#endif
         // Diabled by default.
         _autoDraw = false;
         
@@ -369,6 +442,7 @@ void RenderTexture::clearDepth(float depthValue)
 
 void RenderTexture::clearStencil(int stencilValue)
 {
+#if DIRECTX_ENABLED == 0
     // save old stencil value
     int stencilClearValue;
     glGetIntegerv(GL_STENCIL_CLEAR_VALUE, &stencilClearValue);
@@ -378,6 +452,10 @@ void RenderTexture::clearStencil(int stencilValue)
 
     // restore clear color
     glClearStencil(stencilClearValue);
+#else	
+	auto view = GLViewImpl::sharedOpenGLView();
+	view->GetContext()->ClearDepthStencilView(_depthStencilView, D3D11_CLEAR_STENCIL, 0, stencilValue);
+#endif
 }
 
 void RenderTexture::visit(Renderer *renderer, const Mat4 &parentTransform, uint32_t parentFlags)
@@ -493,6 +571,7 @@ Image* RenderTexture::newImage(bool fliimage)
             break;
         }
 
+#if DIRECTX_ENABLED == 0
         glGetIntegerv(GL_FRAMEBUFFER_BINDING, &_oldFBO);
         glBindFramebuffer(GL_FRAMEBUFFER, _FBO);
 
@@ -528,7 +607,44 @@ Image* RenderTexture::newImage(bool fliimage)
         {
             image->initWithRawData(tempData, savedBufferWidth * savedBufferHeight * 4, savedBufferWidth, savedBufferHeight, 8);
         }
-        
+#else
+		auto view = GLViewImpl::sharedOpenGLView();
+		ID3D11Texture2D* stagingTexture = nullptr;
+		// Create texture
+		D3D11_TEXTURE2D_DESC desc;
+		_texture->getTexture()->GetDesc(&desc);
+		desc.Usage = D3D11_USAGE_STAGING;
+		desc.BindFlags = 0;
+		desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+
+		D3D11_MAPPED_SUBRESOURCE mr;
+		auto hr = view->GetDevice()->CreateTexture2D(&desc, nullptr, &stagingTexture);
+		if (SUCCEEDED(hr) && _texture != 0)
+		{
+			view->GetContext()->CopyResource(stagingTexture, _texture->getTexture());
+
+			view->GetContext()->Map(stagingTexture, 0, D3D11_MAP_READ, 0, &mr);
+
+			GLubyte* rawData = (GLubyte*)mr.pData;
+
+			int i = 0;
+			for (int y = 0; y < savedBufferHeight; y++)
+			{
+				for (int x = 0; x < savedBufferWidth * 4; x++)
+				{
+					tempData[i++] = rawData[x];
+				}
+
+				rawData += mr.RowPitch;
+			}
+
+			view->GetContext()->Unmap(stagingTexture, 0);
+			stagingTexture->Release();
+			stagingTexture = nullptr;
+
+			image->initWithRawData(tempData, savedBufferWidth * savedBufferHeight * 4, savedBufferWidth, savedBufferHeight, 8);
+		}
+#endif
     } while (0);
 
     CC_SAFE_DELETE_ARRAY(buffer);
@@ -564,10 +680,24 @@ void RenderTexture::onBegin()
         Size size = director->getWinSizeInPixels();
         float widthRatio = size.width / texSize.width;
         float heightRatio = size.height / texSize.height;
-        
+
+#if (DIRECTX_ENABLED == 1)
+		auto m = DirectX::XMMatrixOrthographicOffCenterLH(-widthRatio, widthRatio, -heightRatio, heightRatio, -1, 1);
+		Mat4 orthoMatrix((float*)m.r);
+
+		// Pnew = (Pold * Pcor) T
+		_oldProjMatrix.transpose();
+		auto mat = _oldProjMatrix * orthoMatrix;
+		mat.transpose();
+		_oldProjMatrix.transpose();
+
+		director->loadIdentityMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION);
+		director->multiplyMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION, mat);
+#else
         Mat4 orthoMatrix;
         Mat4::createOrthographicOffCenter((float)-1.0 / widthRatio, (float)1.0 / widthRatio, (float)-1.0 / heightRatio, (float)1.0 / heightRatio, -1, 1, &orthoMatrix);
         director->multiplyMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION, orthoMatrix);
+#endif		
     }
     else
     {
@@ -588,11 +718,15 @@ void RenderTexture::onBegin()
         viewport.origin.x = (_fullRect.origin.x - _rtTextureRect.origin.x) * viewPortRectWidthRatio;
         viewport.origin.y = (_fullRect.origin.y - _rtTextureRect.origin.y) * viewPortRectHeightRatio;
         //glViewport(_fullviewPort.origin.x, _fullviewPort.origin.y, (GLsizei)_fullviewPort.size.width, (GLsizei)_fullviewPort.size.height);
-        glViewport(viewport.origin.x, viewport.origin.y, (GLsizei)viewport.size.width, (GLsizei)viewport.size.height);
-    }
+#if DIRECTX_ENABLED == 0
+		glViewport(viewport.origin.x, viewport.origin.y, (GLsizei)viewport.size.width, (GLsizei)viewport.size.height);
+#else
+		DXStateCache::getInstance().setViewport(viewport.origin.x, viewport.origin.y, viewport.size.width, viewport.size.height);
+#endif
+	}
 
     // Adjust the orthographic projection and viewport
-    
+#if DIRECTX_ENABLED == 0
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &_oldFBO);
     glBindFramebuffer(GL_FRAMEBUFFER, _FBO);
 
@@ -607,13 +741,24 @@ void RenderTexture::onBegin()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _texture->getName(), 0);
     }
+#else
+	// Set our maps Render Target
+	auto view = GLViewImpl::sharedOpenGLView();
+	view->GetContext()->OMSetRenderTargets(1, &_renderTargetViewMap, _depthStencilView);
+#endif
 }
 
 void RenderTexture::onEnd()
 {
     Director *director = Director::getInstance();
 
+#if DIRECTX_ENABLED == 0
     glBindFramebuffer(GL_FRAMEBUFFER, _oldFBO);
+#else
+	// Set our maps Render Target
+	auto view = GLViewImpl::sharedOpenGLView();
+	view->GetContext()->OMSetRenderTargets(1, view->GetRenderTargetView(), view->GetDepthStencilView());
+#endif
 
     // restore viewport
     director->setViewport();
@@ -625,6 +770,7 @@ void RenderTexture::onEnd()
 
 void RenderTexture::onClear()
 {
+#if DIRECTX_ENABLED == 0
     // save clear color
     GLfloat oldClearColor[4] = {0.0f};
     GLfloat oldDepthClearValue = 0.0f;
@@ -665,10 +811,26 @@ void RenderTexture::onClear()
     {
         glClearStencil(oldStencilClearValue);
     }
+#else
+	// Set our maps Render Target
+	auto view = GLViewImpl::sharedOpenGLView();
+	view->GetContext()->OMSetRenderTargets(1, &_renderTargetViewMap, _depthStencilView);
+
+	// Now clear the render target
+	if (_clearFlags & GL_COLOR_BUFFER_BIT)
+		view->GetContext()->ClearRenderTargetView(_renderTargetViewMap, (float*)&_clearColor);
+
+	if (_clearFlags & GL_DEPTH_BUFFER_BIT)
+		view->GetContext()->ClearDepthStencilView(_depthStencilView, D3D11_CLEAR_DEPTH, _clearDepth, _clearStencil);
+
+	if (_clearFlags & GL_STENCIL_BUFFER_BIT)
+		view->GetContext()->ClearDepthStencilView(_depthStencilView, D3D11_CLEAR_STENCIL, _clearDepth, _clearStencil);
+#endif
 }
 
 void RenderTexture::onClearDepth()
 {
+#if DIRECTX_ENABLED == 0
     //! save old depth value
     GLfloat depthClearValue;
     glGetFloatv(GL_DEPTH_CLEAR_VALUE, &depthClearValue);
@@ -678,6 +840,11 @@ void RenderTexture::onClearDepth()
 
     // restore clear color
     glClearDepth(depthClearValue);
+#else
+	// Set our maps Render Target
+	auto view = GLViewImpl::sharedOpenGLView();
+	view->GetContext()->ClearDepthStencilView(_depthStencilView, D3D11_CLEAR_DEPTH, _clearDepth, 0);
+#endif
 }
 
 void RenderTexture::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
@@ -728,10 +895,24 @@ void RenderTexture::begin()
         
         float widthRatio = size.width / texSize.width;
         float heightRatio = size.height / texSize.height;
-        
+
+#if (DIRECTX_ENABLED == 1)
+		auto m = DirectX::XMMatrixOrthographicOffCenterLH(-widthRatio, widthRatio, -heightRatio, heightRatio, -1, 1);
+		Mat4 orthoMatrix((float*)m.r);
+
+		// Pnew = (Pold * Pcor) T
+		_oldProjMatrix.transpose();
+		auto mat = _oldProjMatrix * orthoMatrix;
+		mat.transpose();
+		_oldProjMatrix.transpose();
+
+		director->loadIdentityMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION);
+		director->multiplyMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION, mat);
+#else
         Mat4 orthoMatrix;
         Mat4::createOrthographicOffCenter((float)-1.0 / widthRatio, (float)1.0 / widthRatio, (float)-1.0 / heightRatio, (float)1.0 / heightRatio, -1, 1, &orthoMatrix);
         director->multiplyMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION, orthoMatrix);
+#endif	
     }
 
     _groupCommand.init(_globalZOrder);

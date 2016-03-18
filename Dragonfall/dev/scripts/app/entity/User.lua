@@ -13,7 +13,7 @@ User.LISTEN_TYPE = Enum(
     "deals",
     "allianceData",
 
-    "helpedByTroops",
+    "helpedByTroop",
     "helpToTroops",
 
     "buildings",
@@ -1168,7 +1168,7 @@ end
 --[[helpToTroops begin]]
 function User:IsHelpedToPlayer(id)
     for _,v in ipairs(self.helpToTroops) do
-        if v.beHelpedPlayerData.id == id then
+        if v.id == id then
             return true
         end
     end
@@ -1226,7 +1226,7 @@ local before_map = {
     itemEvents = function(userData, deltaData)
         userData:RefreshOutput()
     end,
-    helpedByTroops = function()end,
+    helpedByTroop = function()end,
     helpToTroops = function()end,
 
 

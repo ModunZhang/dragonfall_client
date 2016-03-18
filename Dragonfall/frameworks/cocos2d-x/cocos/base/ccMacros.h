@@ -241,7 +241,7 @@ It should work same as apples CFSwapInt32LittleToHost(..)
 
 #endif
 
-#if !defined(COCOS2D_DEBUG) || COCOS2D_DEBUG == 0
+#if !defined(COCOS2D_DEBUG) || COCOS2D_DEBUG == 0 || DIRECTX_ENABLED == 1
 #define CHECK_GL_ERROR_DEBUG()
 #else
 #define CHECK_GL_ERROR_DEBUG() \
@@ -278,5 +278,9 @@ It should work same as apples CFSwapInt32LittleToHost(..)
 #define CC_CALLBACK_1(__selector__,__target__, ...) std::bind(&__selector__,__target__, std::placeholders::_1, ##__VA_ARGS__)
 #define CC_CALLBACK_2(__selector__,__target__, ...) std::bind(&__selector__,__target__, std::placeholders::_1, std::placeholders::_2, ##__VA_ARGS__)
 #define CC_CALLBACK_3(__selector__,__target__, ...) std::bind(&__selector__,__target__, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, ##__VA_ARGS__)
+
+#define NOT_SUPPORTED() CCASSERT(false, "Not supported.");
+
+#define DX_NOT_SUPPORTED() if(DIRECTX_ENABLED == 1) { NOT_SUPPORTED(); }
 
 #endif // __BASE_CCMACROS_H__
