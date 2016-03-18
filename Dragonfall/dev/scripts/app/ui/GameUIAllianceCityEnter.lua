@@ -135,7 +135,7 @@ function GameUIAllianceCityEnter:GetEnterButtons()
             if can_not_help_in_city then
                 help_button = self:BuildOneButton("tmp_retreat_defense_48x58.png",_("撤防")):onButtonClicked(function()
                     UIKit:showMessageDialog(_("提示"),_("是否确认撤防"),function()
-                        NetManager:getRetreatFromHelpedAllianceMemberPromise(member.id)
+                        NetManager:getRetreatFromHelpedAllianceMemberPromise()
                     end,
                     function()
                     end)

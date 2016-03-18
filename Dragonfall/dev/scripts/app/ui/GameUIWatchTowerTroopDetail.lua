@@ -116,7 +116,7 @@ function GameUIWatchTowerTroopDetail:onEnter()
 end
 
 function GameUIWatchTowerTroopDetail:RequestPlayerHelpedByTroops()
-    NetManager:getHelpDefenceTroopDetailPromise(self:GetUserId(),self:GetEventData().id):done(function(msg)
+    NetManager:getHelpDefenceTroopDetailPromise(self:GetUserId()):done(function(msg)
         self.event_data = msg
         self:RefreshListView()
     end)

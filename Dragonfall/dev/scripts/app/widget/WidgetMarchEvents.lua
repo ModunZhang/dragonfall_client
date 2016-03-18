@@ -618,7 +618,7 @@ function WidgetMarchEvents:OnRetreatButtonClicked(event, eventType)
         end)
     elseif eventType == "helpToTroops" then
         UIKit:showMessageDialog(_("提示"),_("确定撤军?"),function()
-            NetManager:getRetreatFromHelpedAllianceMemberPromise(event.beHelpedPlayerData.id)
+            NetManager:getRetreatFromHelpedAllianceMemberPromise()
         end)
     end
 end

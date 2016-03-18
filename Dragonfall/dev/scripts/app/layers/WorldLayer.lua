@@ -357,25 +357,6 @@ function WorldLayer:CreateAllianceSprite(index, alliance)
         math.randomseed(tonumber(index) + 12345)
         local s_x,s_y = self:Offset(index)
         sprite:pos(s_x,s_y)
-        -- if tonumber(index) == self:LogicToIndex(middle_index-1, middle_index-1) then
-        --     sprite:pos(-40, 40)
-        -- elseif tonumber(index) == self:LogicToIndex(middle_index, middle_index-1) then
-        --     sprite:pos(0, 40)
-        -- elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index-1) then
-        --     sprite:pos(40, 40)
-        -- elseif tonumber(index) == self:LogicToIndex(middle_index-1, middle_index) then
-        --     sprite:pos(-40, 0)
-        -- elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index) then
-        --     sprite:pos(40, 0)
-        -- elseif tonumber(index) == self:LogicToIndex(middle_index-1, middle_index+1) then
-        --     sprite:pos(-40, -40)
-        -- elseif tonumber(index) == self:LogicToIndex(middle_index, middle_index+1) then
-        --     sprite:pos(0, -40)
-        -- elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index+1) then
-        --     sprite:pos(40, -40)
-        -- else
-        --     sprite:pos(30 - math.random(30), 30 - math.random(60))
-        -- end
     end
     local size = sprite:getContentSize()
     local banner = display.newSprite("alliance_banner.png")

@@ -24,11 +24,11 @@ function GameUILoginBeta:ctor()
         -- {image = "animations/ui_animation_2.pvr.ccz",list = "animations/ui_animation_2.plist"},
 
         {image = "level0.png",list = "level0.plist"},
-        -- {image = "ui_png1.pvr.ccz",list = "ui_png1.plist"},
-        
-        -- {image = "ui_pvr0.pvr.ccz",list = "ui_pvr0.plist"},
-        -- {image = "ui_pvr1.pvr.ccz",list = "ui_pvr1.plist"},
-        -- {image = "ui_pvr2.pvr.ccz",list = "ui_pvr2.plist"},
+    -- {image = "ui_png1.pvr.ccz",list = "ui_png1.plist"},
+
+    -- {image = "ui_pvr0.pvr.ccz",list = "ui_pvr0.plist"},
+    -- {image = "ui_pvr1.pvr.ccz",list = "ui_pvr1.plist"},
+    -- {image = "ui_pvr2.pvr.ccz",list = "ui_pvr2.plist"},
     }
     self.local_resources_percent_per = LOCAL_RESOURCES_PERCENT / #self.local_resources
 end
@@ -293,24 +293,35 @@ function GameUILoginBeta:OpenUserAgreement()
         end):align(display.LEFT_CENTER, 20, 44):addTo(body)
 end
 function GameUILoginBeta:createGameNotice()
+    self:setProgressPercent(0)
+    self:setProgressText(_("正在获取游戏公告..."))
     local request = network.createHTTPRequest(function(event)
         local ok = (event.name == "completed")
         local request = event.request
-
+        self:setProgressPercent(50)
         if not ok then
             -- 请求失败，显示错误代码和错误消息
             -- print(request:getErrorCode(), request:getErrorMessage())
             if request:getErrorCode() ~= 0 and request:getErrorMessage() then
-                self:showStartState()
+                self:setProgressPercent(100)
+                self:performWithDelay(function()
+                    self.progress_bar:hide()
+                    self.tips_ui:hide()
+                    self:showStartState()
+                end, 0.5)
             end
             return
         end
-
         local code = request:getResponseStatusCode()
         if code ~= 200 then
             -- 请求结束，但没有返回 200 响应代码
             -- print("code===",code)
-            self:showStartState()
+            self:setProgressPercent(100)
+            self:performWithDelay(function()
+                self.progress_bar:hide()
+                self.tips_ui:hide()
+                self:showStartState()
+            end, 0.5)
             return
         end
 
@@ -319,7 +330,12 @@ function GameUILoginBeta:createGameNotice()
 
         local results = json.decode(response)
         if results.code ~= 200 then
-            self:showStartState()
+            self:setProgressPercent(100)
+            self:performWithDelay(function()
+                self.progress_bar:hide()
+                self.tips_ui:hide()
+                self:showStartState()
+            end, 0.5)
             return
         end
         if string.trim(results.data) ~= "" then
@@ -358,7 +374,12 @@ function GameUILoginBeta:createGameNotice()
             listview:addItem(item)
             listview:reload()
         end
-        self:showStartState()
+        self:setProgressPercent(100)
+        self:performWithDelay(function()
+            self.progress_bar:hide()
+            self.tips_ui:hide()
+            self:showStartState()
+        end, 0.5)
     end, string.format("http://gate.batcatstudio.com/dragonfall/get-notice?env=%s&platform=%s", string.urlencode(CONFIG_IS_DEBUG and "development" or "production"),string.urlencode(GameUtils:getPlatformForServer())), "GET")
     request:setTimeout(10)
     request:start()
@@ -482,12 +503,11 @@ function GameUILoginBeta:__loadToTextureCache(config,shouldLogin)
     display.addSpriteFrames(DEBUG_GET_ANIMATION_PATH(config.list),DEBUG_GET_ANIMATION_PATH(config.image),function()
         self:setProgressPercent((self.progress_num or 0) + self.local_resources_percent_per)
         if shouldLogin then
-            -- self:loginAction()
-            self:performWithDelay(function()
-                self.progress_bar:hide()
-                self.tips_ui:hide()
-                self:createGameNotice()
-            end, 0.5)
+            self:createGameNotice()
+            -- self:performWithDelay(function()
+            --     self.progress_bar:hide()
+            --     self.tips_ui:hide()
+            -- end, 0.5)
         end
     end)
 end
@@ -783,7 +803,7 @@ function GameUILoginBeta:checkFte()
     end
     local bg_auido_on,effect_audio_on = app:GetAudioManager():GetConfig()
     app:GetAudioManager():ResetorConfig(false, false)
-    
+
     DataManager.need_notify = false
     if check("HateDragon") and dragon_type then
         mockData.HateDragon(dragon_type)
@@ -889,6 +909,7 @@ end
 
 
 return GameUILoginBeta
+
 
 
 

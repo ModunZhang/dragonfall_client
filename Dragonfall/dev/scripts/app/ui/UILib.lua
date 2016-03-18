@@ -736,9 +736,9 @@ local DRAGON_SKILL_ICON = {
     }
     ,
     surge = {
-        redDragon = "battleHunger_128x128.png",
-        greenDragon = "battleHunger_128x128.png",
-        blueDragon = "battleHunger_128x128.png",
+        redDragon = "surge_128x128.png",
+        greenDragon = "surge_128x128.png",
+        blueDragon = "surge_128x128.png",
     }
 }
 local DAILY_QUESTS_ICON = {
