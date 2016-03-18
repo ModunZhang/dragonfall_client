@@ -15,13 +15,14 @@ local UIListView = import("..ui.UIListView")
 
 local WidgetSelectSoldiers = class("WidgetSelectSoldiers", WidgetPopDialog)
 
-function WidgetSelectSoldiers:ctor(max_citizen,isDefence,callback,settingSoldiers,index_soldiers)
+function WidgetSelectSoldiers:ctor(max_citizen,isDefence,callback,settingSoldiers,index_soldiers,index)
     WidgetSelectSoldiers.super.ctor(self,704,_("选择兵种"))
     self.max_citizen = max_citizen
     self.isDefence = isDefence -- 是否为驻防士兵操作
     self.callback = callback
     self.settingSoldiers = settingSoldiers
     self.index_soldiers = index_soldiers -- 当前配置的士兵格子已经配置的士兵
+    self.index = index -- 当前配置的士兵格子index
 end
 
 function WidgetSelectSoldiers:onEnter()
@@ -72,14 +73,18 @@ function WidgetSelectSoldiers:SoldiersList()
         "meatWagon",
     }
     local user_soldiers = User.soldiers
+    local has_soldiers = false
     for _,name in pairs(soldier_map) do
         local max_num = self:GetMaxSelectSoldier(name)
         if max_num > 0 then
             self:CreateSoldierItem(name,max_num)
+            has_soldiers = true
         end
     end
-
     list:reload()
+    if not has_soldiers then
+        return
+    end
     for i,item in ipairs(list:getItems()) do
         local soldier_type = item:GetSoldier()
         if soldier_type == self.index_soldiers.name then
@@ -229,7 +234,7 @@ end
 function WidgetSelectSoldiers:GetSettingSoldierCountByName(name)
     local settingCount = 0
     for i,soldier in ipairs(self.settingSoldiers) do
-        if soldier.name == name and self.index_soldiers.name ~= name then
+        if soldier.name == name and (self.index_soldiers.name ~= name or i ~= self.index) then
             settingCount = settingCount + soldier.count
         end
     end
