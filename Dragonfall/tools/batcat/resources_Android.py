@@ -265,6 +265,8 @@ def exportRes(sourceDir,  targetDir):
             dir_name = os.path.basename(sourceFile)
             if dir_name == 'images':
                 exportImagesRes(sourceFile)
+            elif dir_name == 'animations_wp_sd':
+                Logging.warning("不处理animations_wp_sd文件夹")
             elif dir_name == 'animations':
                 Logging.warning("不处理animations文件夹")
             elif dir_name == 'animations_mac':
