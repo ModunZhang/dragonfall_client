@@ -231,7 +231,7 @@ const bool IsAppAdHocMode()
     }
     return ret;
 }
-bool isLowMemoryDevice()
+bool IsLowMemoryDevice()
 {
     cocos2d::JniMethodInfo t;
     bool ret = false;
@@ -243,8 +243,19 @@ bool isLowMemoryDevice()
     return ret;
 }
 
-long getAppMemoryUsage()
+long GetAppMemoryUsage()
 {
     return 0;
+}
+bool IsGoogleStore()
+{
+    cocos2d::JniMethodInfo t;
+    bool ret = false;
+    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "isGoogleStore", "()Z")) 
+    {
+        ret = t.env->CallStaticBooleanMethod(t.classID, t.methodID);
+        t.env->DeleteLocalRef(t.classID);
+    }
+    return ret;
 }
 #endif

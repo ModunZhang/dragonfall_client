@@ -46,9 +46,12 @@ std::string GetInternetConnectionStatus();
 const bool IsAppAdHocMode();
 
 //memory about
-bool isLowMemoryDevice();
+bool IsLowMemoryDevice();
 
-long getAppMemoryUsage();
+long GetAppMemoryUsage();
+
+//is for google play iap
+bool IsGoogleStore();
 
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 

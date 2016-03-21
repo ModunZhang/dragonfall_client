@@ -235,7 +235,7 @@ const bool IsAppAdHocMode()
     return isDebug;
 }
 
-bool isLowMemoryDevice()
+bool IsLowMemoryDevice()
 {
 #ifdef DEBUG
     vm_statistics_data_t vmStats;
@@ -255,7 +255,7 @@ bool isLowMemoryDevice()
 #endif
 }
 
-long getAppMemoryUsage()
+long GetAppMemoryUsage()
 {
 #ifdef DEBUG
     task_basic_info_data_t taskInfo;
@@ -274,5 +274,10 @@ long getAppMemoryUsage()
 #else
     return 0;
 #endif
+}
+
+bool IsGoogleStore()
+{
+    return false;
 }
 #endif

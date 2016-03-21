@@ -66,6 +66,15 @@ public class CommonUtils {
 
 	}
 
+	public static boolean isGoogleStore(){
+//#ifdef CC_USE_GOOGLE_PLAY_BILLING_V3
+		return  true;
+//#endif
+// #ifdef CC_USE_SDK_PAYPAL
+//@		return  true;
+//#endif
+	}
+
 	public static String getAppVersion() {
 		return getInstance().getDeviceInfo().getAppVersion();
 	}
