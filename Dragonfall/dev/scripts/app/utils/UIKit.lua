@@ -1723,7 +1723,7 @@ function UIKit:CreateDragonBattle(attackDragon, defenceDragon, gameController)
             UIKit:ttfLabel({
                 text = string.format("+%d%%", attackDragon.increase),
                 size = 20,
-                color = getColorByPercent(leftDragon:GetPercent()),
+                color = getColorByPercent(leftDragon:GetPercent()/100),
                 shadow = true,
             }):addTo(attackBuff):align(display.RIGHT_CENTER, 275, length - (i-1) * 32)
 
@@ -1737,7 +1737,7 @@ function UIKit:CreateDragonBattle(attackDragon, defenceDragon, gameController)
             UIKit:ttfLabel({
                 text = string.format("+%d%%", defenceDragon.increase),
                 size = 20,
-                color = getColorByPercent(rightDragon:GetPercent()),
+                color = getColorByPercent(rightDragon:GetPercent()/100),
                 shadow = true,
             }):addTo(defenceBuff):align(display.RIGHT_CENTER, 275, length - (i-1) * 32)
         end
@@ -1840,7 +1840,7 @@ function UIKit:CreateFightDragon(param, gameController)
         return self
     end
     function fightDragonNode:GetPercent()
-        return self.progress:getPercentage() / 100
+        return self.progress:getPercentage()
     end
     function fightDragonNode:SetPercent(percent)
         self.progress:setPercentage(percent * 100)
