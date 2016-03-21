@@ -331,6 +331,7 @@ function GameUIAllianceVillageEnter:GetEnterButtons()
                 else
                     final_func()
                 end
+                self:LeftButtonClicked()
             end)
             buttons = {attack_button}
         end
@@ -356,6 +357,7 @@ function GameUIAllianceVillageEnter:GetEnterButtons()
                 else
                     final_func()
                 end
+                self:LeftButtonClicked()
             end)
             local strike_button = self:BuildOneButton("strike_66x62.png",_("突袭")):onButtonClicked(function()
                 local toLocation = self:GetLogicPosition()
@@ -366,6 +368,7 @@ function GameUIAllianceVillageEnter:GetEnterButtons()
                 else
                     UIKit:newGameUI("GameUIStrikePlayer",GameUIStrikePlayer.STRIKE_TYPE.VILLAGE,{alliance = focus_alliance,toLocation = toLocation,defenceAllianceId = alliance_id,defenceVillageId = village_id}):AddToCurrentScene(true)
                 end
+                self:LeftButtonClicked()
             end)
             buttons = {attack_button,strike_button}
         else -- 无人占领
@@ -392,6 +395,7 @@ function GameUIAllianceVillageEnter:GetEnterButtons()
                 else
                     final_func()
                 end
+                self:LeftButtonClicked()
             end)
             buttons = {attack_button}
         end
