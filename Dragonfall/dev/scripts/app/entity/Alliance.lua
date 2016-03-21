@@ -865,7 +865,7 @@ function Alliance:CanCheckOtherAllianceCityBuildingLevel()
     return self:GetAllianceBuildingInfoByName("watchTower").level >= 12
 end
 function Alliance:GetShrinePosition()
-    return {x = 13, y = 17}
+    return {x = 8, y = 12}
 end
 function Alliance:SetIsMyAlliance(isMyAlliance)
     self.isMyAlliance = isMyAlliance
