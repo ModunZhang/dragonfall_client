@@ -176,7 +176,7 @@ task cleanNativeSymbols(type: Delete,group:'GameHelper') {
 
 
 //check tasks
-task checkVersionInfo(group:'GameHelper',description:'check the project version infomation in version.properties.') << {
+task checkVersionInfo << {
     println '------------------------------------------------'
     println 'version.properties:'
     println 'versionCode:'+ projectVersion()['versionCode']
@@ -185,6 +185,8 @@ task checkVersionInfo(group:'GameHelper',description:'check the project version 
     println 'appHoc:'+ projectVersion()['appHoc']
     println '------------------------------------------------'
 }
+checkVersionInfo.group = 'GameHelper'
+checkVersionInfo.description = 'check the project version infomation in version.properties.'
 
 backUpNativeSymbols.shouldRunAfter buildNative
 
