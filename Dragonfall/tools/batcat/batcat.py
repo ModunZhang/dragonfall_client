@@ -233,6 +233,10 @@ def getConvertTool():
     else:
         return "convert" #mac 需预先安装ImageMagick的命令行工具
 
+def getPngQuantTool():
+    if not isWindows():
+        root_dir = getProjDir()
+        return formatPath("%s/tools/TextureTools/pngquant" % root_dir) 
 
 def getWin32SedPath():
     if not isWindows():

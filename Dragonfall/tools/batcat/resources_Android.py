@@ -19,9 +19,11 @@ IMAGEFORMAT = "ETC1"
 IMAGEQUALITY = "etcfast"
 PVRTOOL = getPVRTexTool()
 CONVERTTOOL = getConvertTool()
-
+PNGQUANTTOOL = getPngQuantTool()
 QUIET_MODE = True
 
+
+PNG_COMPRESS_WITH_PNGQUANT = True #使用pngquant有损压缩png图片
 ALPHA_USE_ETC = True  # alpha纹理使用etc格式压缩
 COMPRESS_ETC_FILE = True  # etc格式纹理通过自定义压缩工具再压缩
 
@@ -50,6 +52,12 @@ def CompileResources(in_file_path, out_dir_path):
     code, ret = executeCommand(comand, QUIET_MODE)
     return code == 0
 
+def PngQuantImage(in_file_path,out_file_path):
+    comand = "%s -v --force --output %s -- %s" % (PNGQUANTTOOL, out_file_path,in_file_path)
+    if not QUIET_MODE:
+        comand = "%s -v" % comand
+    code, ret = executeCommand(comand, QUIET_MODE)
+    return code == 0
 
 def PVRImage(in_path, out_path):
     command = "%s -f %s -i %s -o %s -q %s" % (
@@ -82,9 +90,19 @@ def NormalImages(in_path,out_path,outdir):
             shutil.copy(in_path, outdir)
         elif fileExt not in getTempFileExtensions():
             if NEED_ENCRYPT_RES:
-                CompileResources(in_path, outdir)
+                if PNG_COMPRESS_WITH_PNGQUANT and ('pvr' in fileName or 'buildings0' in fileName):
+                    temp_file_path = os.path.join(TEMP_RES_DIR, os.path.basename(in_path))
+                    if PngQuantImage(in_path,temp_file_path):
+                        CompileResources(temp_file_path, outdir)
+                    else:
+                        die("处理png失败:%s" % in_path)
+                else:
+                    CompileResources(in_path, outdir)
             else:
-                shutil.copy(in_path, outdir)
+                if PNG_COMPRESS_WITH_PNGQUANT and ('pvr' in fileName or 'buildings0' in fileName):
+                    PngQuantImage(in_path,out_path)
+                else:
+                    shutil.copy(in_path, outdir)
         return True
     return False
 ########################################################################
