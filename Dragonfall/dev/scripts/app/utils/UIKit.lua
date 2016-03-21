@@ -1940,10 +1940,11 @@ local INFO_TAG = 3
 local HURT_TAG = 5
 local normal = GameDatas.Soldiers.normal
 local special = GameDatas.Soldiers.special
+local SOLDIER_SCALE = 0.8
 function UIKit:CreateFightTroops(soldierName, properties, gameController)
     gameController = gameController or empty_gameController
     local troopsNode = display.newNode()
-    local soldiersNode = display.newNode():addTo(troopsNode, 0, SOLDIER_NODE):scale(0.8)
+    local soldiersNode = display.newNode():addTo(troopsNode, 0, SOLDIER_NODE):scale(SOLDIER_SCALE)
     troopsNode.infoNode = display.newNode():addTo(troopsNode, 1, INFO_TAG)
     troopsNode.effectsNode = display.newNode():addTo(troopsNode, 2, EFFECT_TAG)
     troopsNode.properties = properties or {}
@@ -2201,11 +2202,11 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         return self
     end
     function troopsNode:Left()
-        self:getChildByTag(SOLDIER_NODE):setScaleX(1)
+        self:getChildByTag(SOLDIER_NODE):setScaleX(SOLDIER_SCALE)
         return self
     end
     function troopsNode:Right()
-        self:getChildByTag(SOLDIER_NODE):setScaleX(-1)
+        self:getChildByTag(SOLDIER_NODE):setScaleX(-SOLDIER_SCALE)
         return self
     end
     return troopsNode:RefreshSpeed()
