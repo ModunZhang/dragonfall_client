@@ -1741,6 +1741,7 @@ local function upgrade_soldier_star_promise(soldierName,finishNow)
         finishNow = finishNow,
     }, "士兵晋级失败!"):done(get_player_response_msg):done(function()
         if finishNow then
+            app:GetAudioManager():PlayeEffectSoundWithKey("COMPLETE")
             GameGlobalUI:showTips(
                 _("士兵晋级完成"),
                 string.format(

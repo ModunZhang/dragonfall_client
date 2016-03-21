@@ -484,6 +484,7 @@ function AllianceDetailScene:OnTouchClicked(pre_x, pre_y, x, y)
                 self:OpenUI(alliance, mapObj)
             end
         else
+            app:GetAudioManager():PlayeEffectSoundWithKey("HOME_PAGE")
             self.util_node:performWithDelay(function()app:lockInput(false)end,0.5)
             Sprite:PromiseOfFlash(mapObj.obj):next(function()
                 if type_ == "crown" then

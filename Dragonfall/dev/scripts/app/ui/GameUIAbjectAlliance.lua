@@ -52,7 +52,7 @@ function GameUIAbjectAlliance:onEnter()
     }:addTo(content)
     local item = listview:newItem()
     local content_label = UIKit:ttfLabel({
-        text = _("占领王座联盟的国王可以选择本服务器的任意联盟进行驱逐，被驱逐的联盟会强制前一处原来的位置。此外，被驱逐联盟的所有成员的粮食储备，超过暗藏的部分将全部消失"),
+        text = _("占领王座联盟的国王可以选择本服务器的任意联盟进行驱逐。被驱逐的联盟会强制迁移出原来的位置。此外，被驱逐联盟的所有成员的粮食储备，超过暗仓的部分将全部丢失。"),
         size = 22,
         color= 0x615b44,
         align = cc.TEXT_ALIGNMENT_LEFT,
