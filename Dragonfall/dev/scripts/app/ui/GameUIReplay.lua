@@ -820,7 +820,7 @@ function GameUIReplay:BuildUI()
     ui_map.dragonBattleWhite:hide()
     :opacity(255):setColor(cc.c3b(255,0,0))
     ui_map.dragonBattleWhite:setScaleX(clipWith/size.width)
-    ui_map.dragonBattleWhite:setScaleY(2.7)
+    ui_map.dragonBattleWhite:setScaleY(1.8)
 
     ui_map.soldierBattleWhite = display.newSprite("click_empty.png")
     :addTo(bg, 11):align(display.TOP_CENTER, 608/2, 910 - 110)

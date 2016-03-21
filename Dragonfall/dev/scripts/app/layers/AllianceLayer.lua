@@ -129,7 +129,7 @@ function AllianceLayer:onCleanup()
             v2:release()
         end
     end
-    if self.middle_crown then
+    if self.middle_crown and not self.middle_crown:getParent() then
         self.middle_crown:release()
     end
 end
