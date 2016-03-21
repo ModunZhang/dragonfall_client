@@ -28,8 +28,8 @@ def preBuild():
     executeCommand(command, False)
     command = "python build_format_map.py -j jpg_rgb888.lua"
     executeCommand(command, False)
-    command = "python build_animation.py -o animation.lua"
-    executeCommand(command, False)
+    # command = "python build_animation.py -o animation.lua"
+    # executeCommand(command, False)
 
 
 def getAllArgs():

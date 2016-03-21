@@ -352,7 +352,8 @@ local DECORATOR_IMAGE = {
 local DRAGON_HEAD = {
     blueDragon = "Dragon_blue_113x128.png",
     redDragon = "redDragon.png",
-    greenDragon = "greenDragon.png"
+    greenDragon = "greenDragon.png",
+    blackDragon = "tmp_black_dragon_113x128.png",
 }
 local SMALL_DRAGON_HEAD = {
     blueDragon = "blueDragon_40x40.png",

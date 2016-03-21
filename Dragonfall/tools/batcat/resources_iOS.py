@@ -175,6 +175,8 @@ def exportRes(sourceDir,  targetDir):
                 exportImagesRes(sourceFile)
             elif dir_name == 'animations':
                 exportAnimationRes(sourceFile)
+            elif dir_name == 'animations_wp_sd':
+                Logging.warning("不处理animations_wp_sd文件夹")
             elif dir_name == 'animations_mac':
                 Logging.warning("不处理animations_mac文件夹")
             else:
