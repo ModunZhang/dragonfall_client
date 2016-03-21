@@ -27,8 +27,6 @@ def String gameIdForFlavors(name) {
     return gameIdOfFlavors[name]
 }
 
-
-
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
@@ -116,14 +114,12 @@ dependencies {
     
     googleplayCompile 'com.google.android.gms:play-services-plus:8.1.0'
     googleplayCompile 'com.google.android.gms:play-services-ads:8.1.0'
-    googleplayCompile 'com.google.android.gms:play-services-gcm:8.1.0'
-    googleplayCompile 'com.google.android.gms:play-services-vision:8.1.0' //can remove it?
+
     //apk for google paypal
     paypalCompile files('libs/PayPalAndroidSDK-2.13.1.jar', 'libs/okhttp-3.0.1.jar','libs/okio-1.6.0.jar')
-    
+
     paypalCompile 'com.facebook.android:facebook-android-sdk:4.0.0'
 
-    paypalCompile 'com.google.android.gms:play-services-gcm:8.1.0'
     paypalCompile 'com.google.android.gms:play-services-plus:8.1.0'
 }
 
