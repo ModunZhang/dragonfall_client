@@ -228,10 +228,11 @@ function GameUIReplay:Start()
     local TIME_PER_HUNDRED_PERCENT = 1 / 100
 
     local attackToPercent = (attackRoundDragon.hp - attackRoundDragon.hpDecreased) / attackRoundDragon.hpMax * 100
-    local attackStepPercent = attackToPercent - dragonBattle:GetAttackDragon():GetPercent()
+    local attackStepPercent = math.abs(attackToPercent - dragonBattle:GetAttackDragon():GetPercent())
 
-    local defenceToPercent = (attackRoundDragon.hp - attackRoundDragon.hpDecreased) / attackRoundDragon.hpMax * 100
-    local defenceStepPercent = defenceToPercent - dragonBattle:GetDefenceDragon():GetPercent()
+
+    local defenceToPercent = (defenceRoundDragon.hp - defenceRoundDragon.hpDecreased) / defenceRoundDragon.hpMax * 100
+    local defenceStepPercent = math.abs(defenceToPercent - dragonBattle:GetDefenceDragon():GetPercent())
 
     dragonBattle:PromsieOfFight()
     :next(function()
