@@ -39,6 +39,7 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
+import android.media.AudioManager;
 import android.opengl.GLSurfaceView;
 import android.os.Build;
 import android.os.Bundle;
@@ -292,6 +293,7 @@ public abstract class Cocos2dxActivity extends Activity implements Cocos2dxHelpe
         
         PSNative.init(this);
         PSNetwork.init(this);
+        this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
     }
 
     //native method,call GLViewImpl::getGLContextAttrs() to get the OpenGL ES context attributions
