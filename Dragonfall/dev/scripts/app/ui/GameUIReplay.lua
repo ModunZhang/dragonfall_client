@@ -107,15 +107,15 @@ function GameUIReplay:Setup()
 
     if self.report:IsDragonFight() then
         local attackDragonType = self.report:GetFightAttackDragonRoundData().type
-        self.attackDragon = UIKit:CreateSkillDragon(attackDragonType, 90, self)
-        :addTo(self.ui_map.dragonSkillNode,0,BATTLE_OBJECT_TAG):pos(-400, display.cy)
+        self.attackDragon = UIKit:CreateSkillDragon(attackDragonType, true, self)
+        :addTo(self.ui_map.dragonSkillNode,0,BATTLE_OBJECT_TAG):pos(display.cx, display.cy)
 
         self.ui_map.attackDragonLabel:setString(Localize.dragon[attackDragonType])
         self.ui_map.attackDragonIcon:setTexture(UILib.dragon_head[attackDragonType])
 
         local defenceDragonType = self.report:GetFightDefenceDragonRoundData().type
-        self.defenceDragon = UIKit:CreateSkillDragon(defenceDragonType, 360, self)
-        :addTo(self.ui_map.dragonSkillNode,0,BATTLE_OBJECT_TAG):pos(display.width + 400, display.cy)
+        self.defenceDragon = UIKit:CreateSkillDragon(defenceDragonType, false, self)
+        :addTo(self.ui_map.dragonSkillNode,0,BATTLE_OBJECT_TAG):pos(display.cx, display.cy)
 
         self.ui_map.defenceDragonLabel:setString(Localize.dragon[defenceDragonType])
         self.ui_map.defenceDragonIcon:setTexture(UILib.dragon_head[defenceDragonType])
@@ -439,15 +439,22 @@ function GameUIReplay:OnAttackDragonAttackTroops(round)
     for i,v in ipairs(round.attackDragonSkilled) do
         table.insert(effectedTroops, self.defenceTroops[v + 1])
     end
+    self.attackDragon:Attack(function(isend)
+        if isend then
+            self:OnStartDual()
+        else
+            self:OnDragonAttackTroops(self.attackDragon, effectedTroops)
+        end
+    end)
 
-    self.attackDragon:pos(-400, display.cy)
-        :Move(display.width + 400, display.cy, self:MovingTimeForAttack(), function(isend)
-            if isend then
-                self:OnStartDual()
-            else
-                self:OnDragonAttackTroops(self.attackDragon, effectedTroops)
-            end
-        end)
+    -- self.attackDragon:pos(-400, display.cy)
+    --     :Move(display.width + 400, display.cy, self:MovingTimeForAttack(), function(isend)
+    --         if isend then
+    --             self:OnStartDual()
+    --         else
+    --             self:OnDragonAttackTroops(self.attackDragon, effectedTroops)
+    --         end
+    --     end)
 end
 function GameUIReplay:OnDefenceDragonAttackTroops(round)
     local effectedTroops = {}
@@ -455,14 +462,22 @@ function GameUIReplay:OnDefenceDragonAttackTroops(round)
         table.insert(effectedTroops, self.attackTroops[v + 1])
     end
 
-    self.defenceDragon:pos(display.width + 400, display.cy)
-        :Move(-400, display.cy, self:MovingTimeForAttack(), function(isend)
-            if isend then
-                self:OnStartDual()
-            else
-                self:OnDragonAttackTroops(defenceDragon, effectedTroops)
-            end
-        end)
+    -- self.defenceDragon:pos(display.width + 400, display.cy)
+    --     :Move(-400, display.cy, self:MovingTimeForAttack(), function(isend)
+    --         if isend then
+    --             self:OnStartDual()
+    --         else
+    --             self:OnDragonAttackTroops(defenceDragon, effectedTroops)
+    --         end
+    --     end)
+
+    self.defenceDragon:Attack(function(isend)
+        if isend then
+            self:OnStartDual()
+        else
+            self:OnDragonAttackTroops(self.defenceDragon, effectedTroops)
+        end
+    end)
 end
 function GameUIReplay:OnBothDragonAttackTroops(round)
     local effectedDefenceTroops = {}
@@ -475,21 +490,36 @@ function GameUIReplay:OnBothDragonAttackTroops(round)
         table.insert(effectedAttackTroops, self.attackTroops[v + 1])
     end
 
-    self.attackDragon:pos(-400, display.cy)
-        :Move(display.width + 400, display.cy, self:MovingTimeForAttack(), function(isend)
-            if isend then
-                self.defenceDragon:pos(display.width + 400, display.cy)
-                    :Move(-400, display.cy, self:MovingTimeForAttack(), function(isend)
-                        if isend then
-                            self:OnStartDual()
-                        else
-                            self:OnDragonAttackTroops(self.defenceDragon,effectedAttackTroops)
-                        end
-                    end)
-            else
-                self:OnDragonAttackTroops(self.attackDragon,effectedDefenceTroops)
-            end
-        end)
+
+    self.attackDragon:Attack(function(isend)
+        if isend then
+            self.defenceDragon:Attack(function(isend)
+                if isend then
+                    self:OnStartDual()
+                else
+                    self:OnDragonAttackTroops(self.defenceDragon,effectedAttackTroops)
+                end
+            end)
+        else
+            self:OnDragonAttackTroops(self.attackDragon,effectedDefenceTroops)
+        end
+    end)
+
+    -- self.attackDragon:pos(-400, display.cy)
+    --     :Move(display.width + 400, display.cy, self:MovingTimeForAttack(), function(isend)
+    --         if isend then
+    --             self.defenceDragon:pos(display.width + 400, display.cy)
+    --                 :Move(-400, display.cy, self:MovingTimeForAttack(), function(isend)
+    --                     if isend then
+    --                         self:OnStartDual()
+    --                     else
+    --                         self:OnDragonAttackTroops(self.defenceDragon,effectedAttackTroops)
+    --                     end
+    --                 end)
+    --         else
+    --             self:OnDragonAttackTroops(self.attackDragon,effectedDefenceTroops)
+    --         end
+    --     end)
 end
 function GameUIReplay:OnDragonAttackTroops(dragon, allTroops)
     local leftPos = cc.p(-50, 15)
