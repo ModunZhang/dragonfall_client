@@ -213,8 +213,19 @@
 #-libraryjars ./libs/PayPalAndroidSDK-2.13.1.jar
 #-libraryjars ./libs/okhttp-3.0.1.jar
 #-libraryjars ./libs/okio-1.6.0.jar
--dontwarn okhttp3.internal.**
+#-dontwarn okhttp3.internal.**
+#-dontwarn okio.*
+#-keep class com.paypal.android.sdk.payments.* {*;}
+#-dontwarn com.paypal.android.sdk.payments.**
+#-dontwarn com.paypal.android.sdk.**
+
+# This is added for okhttp 3.1.2 bug fix as shown at https://github.com/square/okhttp/issues/2323
+-keepclassmembers class * implements javax.net.ssl.SSLSocketFactory {
+    private javax.net.ssl.SSLSocketFactory delegate;
+}
+
+# -------- PayPal SDK ----------
+# (does not include card.io)
+
+# -- Ignoring warnings from okio based on https://github.com/square/okio/issues/60
 -dontwarn okio.*
--keep class com.paypal.android.sdk.payments.* {*;}
--dontwarn com.paypal.android.sdk.payments.**
--dontwarn com.paypal.android.sdk.**

@@ -142,7 +142,9 @@ dependencies {
     //apk for google paypal
 //    paypalCompile files('libs/PayPalAndroidSDK-2.13.1.jar', 'libs/okhttp-3.0.1.jar','libs/okio-1.6.0.jar')
 
-    paypalCompile 'com.paypal.sdk:paypal-android-sdk:2.13.3'
+    paypalCompile ('com.paypal.sdk:paypal-android-sdk:2.13.3') {
+        exclude group: 'io.card'
+    }
     paypalCompile 'com.facebook.android:facebook-android-sdk:4.0.0'
 
     paypalCompile 'com.google.android.gms:play-services-plus:8.1.0'
