@@ -194,13 +194,12 @@ CC_USE_TAKING_DATA | 打开talkingdata的接口
 
 MACRO        | 功能           | 依赖库 
 ------------ | ------------- | -------------
-COCOS_DEBUG  | 打开Android下Java的Debug模式,主要用于控制`DebugUtil`类中的打印函数 | None
 CC_USE_TALKING_DATA| 控制java中使用TalkingData的sdk，如果没有定义这个宏，可以移除libso文件下的相关jar文件 | Game_Analytics_SDK_Android_3.2.3.jar
 CC_USE_FACEBOOK | 打开facebook的接口 
 CC_USE_APPSFLYER | 打开Appsflyer的功能 | AF-Android-SDK-v3.3.0.jar
-CC_USE_GOOGLE_PLAY_BILLING_V3 | 打开google play的内购功能和接口 | Google Play Services 
-CC_USE_GOOGLE_LOGIN | 打开使用Google账号登录的接口  | Google Play Services 
-CC_USE_SDK_PAYPAL | 打开Paypal支付的接口 | okhttp-3.0.1.jar,okio-1.6.0.jar,PayPalAndroidSDK-2.13.1.jar
+CC_USE_GOOGLE_PLAY_BILLING_V3 | 打开google play的内购功能和接口 
+CC_USE_GOOGLE_LOGIN | 打开使用Google账号登录的接口  
+CC_USE_SDK_PAYPAL | 打开Paypal支付的接口 
 
 ### Jni和Java中的编写约定
 

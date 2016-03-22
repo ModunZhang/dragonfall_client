@@ -20,11 +20,13 @@ class PayPalSDK
 public:
 	static PayPalSDK* GetInstance();
 	~PayPalSDK();
-	void buy(std::string itemKey,double price);
+	void buy(std::string itemName,std::string itemKey,double price);
 	void postInitWithTransactionListenerLua(cocos2d::LUA_FUNCTION listener,cocos2d::LUA_FUNCTION listener_failed);
 	bool isPayPalSupport();
-	void onPayPalDone(std::string payment);
+	void onPayPalDone(std::string paymentId,std::string payment);
 	void onPayPalFailed();
+	void updatePaypalPayments();
+	void consumePaypalPayment(std::string paymentId);
 private:
 	cocos2d::LUA_FUNCTION m_listener;
 	cocos2d::LUA_FUNCTION m_listener_failed;

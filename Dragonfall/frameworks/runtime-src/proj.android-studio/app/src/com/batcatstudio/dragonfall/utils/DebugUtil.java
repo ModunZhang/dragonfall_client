@@ -1,14 +1,12 @@
 package com.batcatstudio.dragonfall.utils;
 import android.util.Log;
 
+import com.xapcn.dragonfall.BuildConfig;
+
 public class DebugUtil {
 	private static final boolean isLogErrorOn = true;
 	private static final boolean isLogExceptionOn = true;
-//#ifdef COCOS_DEBUG
-	private static final boolean isLogDebugOn = true;
-//#else
-//@	private static final boolean isLogDebugOn = false;
-//#endif
+	private static final boolean isLogDebugOn = BuildConfig.DEBUG;
 	public static void LogErr(String TAG, String msg) {
 		if (isLogErrorOn)
 			Log.e(TAG, msg);
