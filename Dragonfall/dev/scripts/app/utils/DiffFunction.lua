@@ -31,7 +31,7 @@ return function(base, delta)
         local origin_key,value = unpack(v)
         if type(value) == "table" then
             local ok,origin_value = base(origin_key)
-            if ok then
+            if ok and origin_value ~= json.null then
                 if #origin_value > 0 and #value > 0 then
                     for _,_ in ipairs(origin_value) do
                         table.insert(fixDelta, {string.format("%s.0", origin_key), json.null})

@@ -1899,7 +1899,6 @@ function UIKit:CreateSkillDragon(dragonType, isattack, gameController)
             end),
             cc.DelayTime:create(0.5),
             cc.CallFunc:create(function()
-                app:GetAudioManager():PlayDragonSkill(self.dragonType)
                 if type(func) == "function" then
                     func(false)
                 end
