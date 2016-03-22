@@ -229,9 +229,4 @@ long GetAppMemoryUsage()
 	return 0;
 #endif
 }
-
-bool IsGoogleStore()
-{
-	return false;
-}
 #endif
