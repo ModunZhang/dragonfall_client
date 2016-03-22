@@ -18,6 +18,12 @@ local terrain_music_map = {
 	[3] = "sfx_desert.mp3",
 }
 
+local skill_sound_map = {
+	redDragon = "skill_hellFire.mp3",
+	blueDragon = "skill_lingtningStorm.mp3",
+	greenDragon = "skill_poisonNova.mp3",
+}
+
 local effect_sound_map = {
 	NORMAL_DOWN = "sfx_tap_button.mp3",
 	HOME_PAGE = "sfx_tap_homePage.mp3",
@@ -167,6 +173,13 @@ function AudioManager:GetLastPlayedFileName()
 end
 
 --Api normal
+function AudioManager:PlayDragonSkill(dragonType)
+	local sfx = skill_sound_map[dragonType]
+	if sfx then
+		self:PlayeEffectSound(sfx)
+	end
+end
+
 function AudioManager:PlayBuildingEffectByType(type_)
 	local sfx = building_sfx_map[type_]
 	if sfx then

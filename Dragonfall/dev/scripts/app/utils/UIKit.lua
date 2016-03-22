@@ -1894,6 +1894,9 @@ function UIKit:CreateSkillDragon(dragonType, isattack, gameController)
         self.dragonAni:getAnimation():play("Animation1", -1, 0)
         self:RefreshSpeed()
         local acts = transition.sequence({
+            cc.CallFunc:create(function()
+                app:GetAudioManager():PlayBuildingEffectByType("dragonEyrie")
+            end),
             cc.DelayTime:create(0.5),
             cc.CallFunc:create(function()
                 if type(func) == "function" then
