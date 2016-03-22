@@ -50,6 +50,8 @@ return function(base, delta)
                 else
                     table.insert(fixDelta, v)
                 end
+            else
+                table.insert(fixDelta, v)
             end
         else
             table.insert(fixDelta, v)
