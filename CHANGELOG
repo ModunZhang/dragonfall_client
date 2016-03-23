@@ -10,7 +10,9 @@ iOS将购买时的loading效果调整为无动画模式,用于测试是否loadin
 更新2dx的websocket源码为最新
 脚本支持所有图片资源的加密
 脚本自动更新修复bug,支持对所有平台生成版本信息文件。添加平台信息到生成的版本信息文件中。
+关闭百度翻译功能,统一使用Google翻译
 
+android使用全新的AS构建项目
 android的websocket主动关闭连接时不再回调close事件,其他平台测试后再修改
 android完善CCLuaJavaBridge的功能,支持java特殊参数的传入及返回(ArrayList,HashMap,Vector),修复了android上系统提示框crash的bug
 android重构etc shader及添加新的etcshader,sprite添加更多方法支持
@@ -18,3 +20,4 @@ android添加google play是否可用的判断
 android修改jni脚本可能导致脚本间互相影响的bug
 android移除掉所有输入框点击确定后的事件回调
 android上其他地方的修改
+
