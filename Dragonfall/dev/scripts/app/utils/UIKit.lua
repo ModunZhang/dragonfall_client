@@ -1723,7 +1723,7 @@ function UIKit:CreateDragonBattle(attackDragon, defenceDragon, gameController)
             UIKit:ttfLabel({
                 text = string.format("+%d%%", attackDragon.increase),
                 size = 20,
-                color = getColorByPercent(leftDragon:GetPercent()),
+                color = getColorByPercent(leftDragon:GetPercent()/100),
                 shadow = true,
             }):addTo(attackBuff):align(display.RIGHT_CENTER, 275, length - (i-1) * 32)
 
@@ -1737,7 +1737,7 @@ function UIKit:CreateDragonBattle(attackDragon, defenceDragon, gameController)
             UIKit:ttfLabel({
                 text = string.format("+%d%%", defenceDragon.increase),
                 size = 20,
-                color = getColorByPercent(rightDragon:GetPercent()),
+                color = getColorByPercent(rightDragon:GetPercent()/100),
                 shadow = true,
             }):addTo(defenceBuff):align(display.RIGHT_CENTER, 275, length - (i-1) * 32)
         end
@@ -1840,7 +1840,7 @@ function UIKit:CreateFightDragon(param, gameController)
         return self
     end
     function fightDragonNode:GetPercent()
-        return self.progress:getPercentage() / 100
+        return self.progress:getPercentage()
     end
     function fightDragonNode:SetPercent(percent)
         self.progress:setPercentage(percent * 100)
@@ -1859,10 +1859,18 @@ function UIKit:CreateFightDragon(param, gameController)
     end
     return fightDragonNode:RefreshSpeed()
 end
-
-function UIKit:CreateSkillDragon(dragonType, degree, gameController)
+local skill_dragon_map = {
+    redDragon   = "red_dragon_90",
+    blueDragon  = "blue_dragon_90",
+    greenDragon = "green_dragon_90",
+    blackDragon = "black_dragon_90",
+}
+function UIKit:CreateSkillDragon(dragonType, isattack, gameController)
     gameController = gameController or empty_gameController
-    local dragonNode = self:CreateDragonByDegree(degree or 90, 3, dragonType or "redDragon")
+    local dragonNode = display.newNode()
+    dragonNode.dragonAni = ccs.Armature:create(skill_dragon_map[dragonType])
+    :addTo(dragonNode):setScaleX(isattack and 1 or -1)
+    -- local dragonNode = self:CreateDragonByDegree(degree or 90, 3, dragonType or "redDragon")
     dragonNode.dragonType = dragonType
     function dragonNode:IsDragon()end
     function dragonNode:Pause()
@@ -1880,6 +1888,31 @@ function UIKit:CreateSkillDragon(dragonType, degree, gameController)
             action:setSpeed(speed)
         end
         self.dragonAni:getAnimation():setSpeedScale(speed)
+        return self
+    end
+    function dragonNode:Attack(func)
+        self.dragonAni:getAnimation():play("Animation1", -1, 0)
+        self:RefreshSpeed()
+        local acts = transition.sequence({
+            cc.CallFunc:create(function()
+                app:GetAudioManager():PlayBuildingEffectByType("dragonEyrie")
+            end),
+            cc.DelayTime:create(0.5),
+            cc.CallFunc:create(function()
+                if type(func) == "function" then
+                    func(false)
+                end
+            end),
+            cc.DelayTime:create(1),
+            cc.CallFunc:create(function()
+                if type(func) == "function" then
+                    func(true)
+                end
+            end),
+        })
+        local speed = cc.Speed:create(acts, self:Speed())
+        speed:setTag(SPEED_TAG)
+        self:runAction(speed)
         return self
     end
     function dragonNode:Move(x, y, time, func, delayTime)
@@ -1910,10 +1943,11 @@ local INFO_TAG = 3
 local HURT_TAG = 5
 local normal = GameDatas.Soldiers.normal
 local special = GameDatas.Soldiers.special
+local SOLDIER_SCALE = 0.8
 function UIKit:CreateFightTroops(soldierName, properties, gameController)
     gameController = gameController or empty_gameController
     local troopsNode = display.newNode()
-    local soldiersNode = display.newNode():addTo(troopsNode, 0, SOLDIER_NODE):scale(0.8)
+    local soldiersNode = display.newNode():addTo(troopsNode, 0, SOLDIER_NODE):scale(SOLDIER_SCALE)
     troopsNode.infoNode = display.newNode():addTo(troopsNode, 1, INFO_TAG)
     troopsNode.effectsNode = display.newNode():addTo(troopsNode, 2, EFFECT_TAG)
     troopsNode.properties = properties or {}
@@ -2171,11 +2205,11 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         return self
     end
     function troopsNode:Left()
-        self:getChildByTag(SOLDIER_NODE):setScaleX(1)
+        self:getChildByTag(SOLDIER_NODE):setScaleX(SOLDIER_SCALE)
         return self
     end
     function troopsNode:Right()
-        self:getChildByTag(SOLDIER_NODE):setScaleX(-1)
+        self:getChildByTag(SOLDIER_NODE):setScaleX(-SOLDIER_SCALE)
         return self
     end
     return troopsNode:RefreshSpeed()

@@ -64,7 +64,17 @@ function DragonSkill:GetEffect()
 	end
 	return 0
 end
-
+--获取下一级技能的效果
+function DragonSkill:GetNextLevelEffect()
+	if self:IsMaxLevel() then
+		return self:GetEffect()
+	end
+	local config = self.config_skill[self:Level()+1]
+	if config then
+		return config.effect
+	end
+	return 0
+end
 function DragonSkill:GetBloodCost()
 	local config = self.config_skill[self:Level() + 1]
 	if config then

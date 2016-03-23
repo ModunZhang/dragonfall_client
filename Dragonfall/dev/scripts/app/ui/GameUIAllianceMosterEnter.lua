@@ -110,7 +110,7 @@ function GameUIAllianceMosterEnter:onEnter()
     local origin_x,origin_y,gap_x ,added_count = soldier_head_icon:getPositionX() + 90,soldier_head_icon:getPositionY() - 85, 100,1
     for i,reward in ipairs(rewards) do
         local info = string.split(reward,":")
-        local reward_node = display.newNode():setOpacity(0)
+        local reward_node = display.newNode():setOpacity(i < 5 and 255 or 0)
         reward_node:setContentSize(cc.size(88,88))
         reward_node:addTo(body):align(display.LEFT_CENTER, origin_x + (added_count - 1) * gap_x, origin_y)
         local reward_box = display.newSprite("box_118x118.png"):addTo(reward_node):align(display.CENTER, 44 , 44):scale(88/118)
@@ -137,20 +137,22 @@ function GameUIAllianceMosterEnter:onEnter()
         end
         table.insert(reward_table, reward_node)
     end
-    local show_reward_index = 1
-    scheduleAt(self, function()
-        local end_index = show_reward_index + 4 
-        for i,reward_node in ipairs(reward_table) do
-            if i < end_index and i >= show_reward_index then
-                reward_node:runAction(cc.FadeTo:create(0.4, 255))
-            else
-                if reward_node:isVisible() then
-                    reward_node:runAction(cc.FadeTo:create(0.4, 0))
+    local show_reward_index = 5
+    self:performWithDelay(function()
+        scheduleAt(self, function()
+            local end_index = show_reward_index + 4
+            for i,reward_node in ipairs(reward_table) do
+                if i < end_index and i >= show_reward_index then
+                    reward_node:runAction(cc.FadeTo:create(0.4, 255))
+                else
+                    if reward_node:isVisible() then
+                        reward_node:runAction(cc.FadeTo:create(0.4, 0))
+                    end
                 end
             end
-        end
-        show_reward_index = end_index > #reward_table and 1 or end_index
-    end,2)
+            show_reward_index = end_index > #reward_table and 1 or end_index
+        end,2)
+    end, 2)
     -- local clipNode = display.newClippingRegionNode(cc.rect(soldier_head_icon:getPositionX() + 90 ,20,380,150)):addTo(body)
     -- local rewards_node = display.newNode():addTo(clipNode)
     -- rewards_node:setContentSize(cc.size(#rewards * 100,100))
@@ -242,6 +244,7 @@ function GameUIAllianceMosterEnter:GetBelongAlliance()
 end
 
 return GameUIAllianceMosterEnter
+
 
 
 

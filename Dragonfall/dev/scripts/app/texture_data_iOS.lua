@@ -1,4 +1,5 @@
 local texture_data = {}
+local sd = {}
 texture_data["Fairground.png"] = "buildings0.pvr.ccz"
 texture_data["academy.png"] = "buildings0.pvr.ccz"
 texture_data["alliance_bloodSpring.png"] = "buildings0.pvr.ccz"
@@ -11,6 +12,7 @@ texture_data["alliance_watchTower.png"] = "buildings0.pvr.ccz"
 texture_data["armyCamp.png"] = "buildings0.pvr.ccz"
 texture_data["barracks.png"] = "buildings0.pvr.ccz"
 texture_data["blackSmith.png"] = "buildings0.pvr.ccz"
+texture_data["crystalTower.png"] = "buildings0.pvr.ccz"
 texture_data["dragonEyrie.png"] = "buildings0.pvr.ccz"
 texture_data["dwelling_1.png"] = "buildings0.pvr.ccz"
 texture_data["dwelling_2.png"] = "buildings0.pvr.ccz"
@@ -22,6 +24,7 @@ texture_data["foundry.png"] = "buildings0.pvr.ccz"
 texture_data["gate_1.png"] = "buildings0.pvr.ccz"
 texture_data["gate_2.png"] = "buildings0.pvr.ccz"
 texture_data["gate_3.png"] = "buildings0.pvr.ccz"
+texture_data["guardTower.png"] = "buildings0.pvr.ccz"
 texture_data["hospital.png"] = "buildings0.pvr.ccz"
 texture_data["hunterHall.png"] = "buildings0.pvr.ccz"
 texture_data["keep_1.png"] = "buildings0.pvr.ccz"
@@ -1343,4 +1346,6 @@ texture_data["tmp_tips_56x60.png"] = "ui_pvr2.pvr.ccz"
 texture_data["world_crown_circle1.png"] = "ui_pvr2.pvr.ccz"
 texture_data["world_crown_circle2.png"] = "ui_pvr2.pvr.ccz"
 texture_data["yellow_head_42x98.png"] = "ui_pvr2.pvr.ccz"
+--------------------
+texture_data.sd = sd
 return texture_data

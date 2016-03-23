@@ -8,7 +8,7 @@ function LoadingScene:ctor(...)
 	self.args = args
 end
 
-local animation = import("..animation")
+-- local animation = import("..animation")
 function LoadingScene:onEnter()
 	display.newColorLayer(cc.c4b(255, 255, 255, 255)):addTo(self)
 	self:performWithDelay(function()

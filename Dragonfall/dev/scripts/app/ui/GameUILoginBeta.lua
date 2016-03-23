@@ -9,7 +9,6 @@ local UIListView = import(".UIListView")
 local Localize = import("..utils.Localize")
 local LOCAL_RESOURCES_PERCENT = 100
 local WidgetPushTransparentButton = import("..widget.WidgetPushTransparentButton")
-local animation = import("..animation")
 function GameUILoginBeta:ctor()
     GameUILoginBeta.super.ctor(self)
     self.m_localJson = nil

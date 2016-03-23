@@ -107,15 +107,15 @@ function GameUIReplay:Setup()
 
     if self.report:IsDragonFight() then
         local attackDragonType = self.report:GetFightAttackDragonRoundData().type
-        self.attackDragon = UIKit:CreateSkillDragon(attackDragonType, 90, self)
-        :addTo(self.ui_map.dragonSkillNode,0,BATTLE_OBJECT_TAG):pos(-400, display.cy)
+        self.attackDragon = UIKit:CreateSkillDragon(attackDragonType, true, self):hide()
+        :addTo(self.ui_map.dragonSkillNode,0,BATTLE_OBJECT_TAG):pos(display.cx, display.cy)
 
         self.ui_map.attackDragonLabel:setString(Localize.dragon[attackDragonType])
         self.ui_map.attackDragonIcon:setTexture(UILib.dragon_head[attackDragonType])
 
         local defenceDragonType = self.report:GetFightDefenceDragonRoundData().type
-        self.defenceDragon = UIKit:CreateSkillDragon(defenceDragonType, 360, self)
-        :addTo(self.ui_map.dragonSkillNode,0,BATTLE_OBJECT_TAG):pos(display.width + 400, display.cy)
+        self.defenceDragon = UIKit:CreateSkillDragon(defenceDragonType, false, self):hide()
+        :addTo(self.ui_map.dragonSkillNode,0,BATTLE_OBJECT_TAG):pos(display.cx, display.cy)
 
         self.ui_map.defenceDragonLabel:setString(Localize.dragon[defenceDragonType])
         self.ui_map.defenceDragonIcon:setTexture(UILib.dragon_head[defenceDragonType])
@@ -228,10 +228,11 @@ function GameUIReplay:Start()
     local TIME_PER_HUNDRED_PERCENT = 1 / 100
 
     local attackToPercent = (attackRoundDragon.hp - attackRoundDragon.hpDecreased) / attackRoundDragon.hpMax * 100
-    local attackStepPercent = attackToPercent - dragonBattle:GetAttackDragon():GetPercent()
+    local attackStepPercent = math.abs(attackToPercent - dragonBattle:GetAttackDragon():GetPercent())
 
-    local defenceToPercent = (attackRoundDragon.hp - attackRoundDragon.hpDecreased) / attackRoundDragon.hpMax * 100
-    local defenceStepPercent = defenceToPercent - dragonBattle:GetDefenceDragon():GetPercent()
+
+    local defenceToPercent = (defenceRoundDragon.hp - defenceRoundDragon.hpDecreased) / defenceRoundDragon.hpMax * 100
+    local defenceStepPercent = math.abs(defenceToPercent - dragonBattle:GetDefenceDragon():GetPercent())
 
     dragonBattle:PromsieOfFight()
     :next(function()
@@ -425,77 +426,69 @@ end
 function GameUIReplay:OnFinishAdjustPosition()
     local round = self.report:GetSoldierRoundData()[self.roundCount]
     if next(round.attackDragonSkilled) and next(round.defenceDragonSkilled) then
-        self:OnBothDragonAttackTroops(round)
+        local start,finish = self:PromisesOfAttackDragonSkill(round)
+        finish:next(function()
+            local start,finish = self:PromisesOfDefenceDragonSkill(round)
+            return finish
+        end):next(function()
+            self:OnStartDual()
+        end)
     elseif next(round.attackDragonSkilled) then
-        self:OnAttackDragonAttackTroops(round)
+        local start,finish = self:PromisesOfAttackDragonSkill(round)
+        finish:next(function()
+            self:OnStartDual()
+        end)
     elseif next(round.defenceDragonSkilled) then
-        self:OnDefenceDragonAttackTroops(round)
+        local start,finish = self:PromisesOfDefenceDragonSkill(round)
+        finish:next(function()
+            self:OnStartDual()
+        end)
     else
         self:OnStartDual()
     end
 end
-function GameUIReplay:OnAttackDragonAttackTroops(round)
+function GameUIReplay:PromisesOfAttackDragonSkill(round)
     local effectedTroops = {}
     for i,v in ipairs(round.attackDragonSkilled) do
         table.insert(effectedTroops, self.defenceTroops[v + 1])
     end
 
-    self.attackDragon:pos(-400, display.cy)
-        :Move(display.width + 400, display.cy, self:MovingTimeForAttack(), function(isend)
-            if isend then
-                self:OnStartDual()
-            else
-                self:OnDragonAttackTroops(self.attackDragon, effectedTroops)
-            end
-        end)
+    local skill, finish = promise.new(), promise.new()
+    self.attackDragon:show():Attack(function(isend)
+        if isend then
+            self.attackDragon:hide()
+            finish:resolve()
+        else
+            self:OnDragonAttackTroops(self.attackDragon, effectedTroops)
+            skill:resolve()
+        end
+    end)
+    return skill, finish
 end
-function GameUIReplay:OnDefenceDragonAttackTroops(round)
+function GameUIReplay:PromisesOfDefenceDragonSkill(round)
     local effectedTroops = {}
     for i,v in ipairs(round.defenceDragonSkilled) do
         table.insert(effectedTroops, self.attackTroops[v + 1])
     end
 
-    self.defenceDragon:pos(display.width + 400, display.cy)
-        :Move(-400, display.cy, self:MovingTimeForAttack(), function(isend)
-            if isend then
-                self:OnStartDual()
-            else
-                self:OnDragonAttackTroops(defenceDragon, effectedTroops)
-            end
-        end)
-end
-function GameUIReplay:OnBothDragonAttackTroops(round)
-    local effectedAttackTroops = {}
-    for i,v in ipairs(round.attackDragonSkilled) do
-        table.insert(effectedAttackTroops, self.defenceTroops[v + 1])
-    end
-
-    local effectedDefenceTroops = {}
-    for i,v in ipairs(round.defenceDragonSkilled) do
-        table.insert(effectedDefenceTroops, self.attackTroops[v + 1])
-    end
-
-    self.attackDragon:pos(-400, display.cy)
-        :Move(display.width + 400, display.cy, self:MovingTimeForAttack(), function(isend)
-            if isend then
-                self.defenceDragon:pos(display.width + 400, display.cy)
-                    :Move(-400, display.cy, self:MovingTimeForAttack(), function(isend)
-                        if isend then
-                            self:OnStartDual()
-                        else
-                            self:OnDragonAttackTroops(self.defenceDragon,effectedAttackTroops)
-                        end
-                    end)
-            else
-                self:OnDragonAttackTroops(self.attackDragon,effectedDefenceTroops)
-            end
-        end)
+    local skill, finish = promise.new(), promise.new()
+    self.defenceDragon:show():Attack(function(isend)
+        if isend then
+            self.defenceDragon:hide()
+            finish:resolve()
+        else
+            self:OnDragonAttackTroops(self.defenceDragon, effectedTroops)
+            skill:resolve()
+        end
+    end)
+    return skill, finish
 end
 function GameUIReplay:OnDragonAttackTroops(dragon, allTroops)
     local leftPos = cc.p(-50, 15)
     local rightPos = cc.p(50, 15)
     if dragon.dragonType == "redDragon" then
         for i,v in ipairs(allTroops) do
+            app:GetAudioManager():PlayDragonSkill(dragon.dragonType)
             if v:IsLeft() then
                 display.newSprite("replay_debuff_red.png")
                 :addTo(v.effectsNode):pos(leftPos.x,leftPos.y)
@@ -516,6 +509,7 @@ function GameUIReplay:OnDragonAttackTroops(dragon, allTroops)
             end
         end
     elseif dragon.dragonType == "greenDragon" then
+        app:GetAudioManager():PlayDragonSkill(dragon.dragonType)
         for i,v in ipairs(allTroops) do
             if v:IsLeft() then
                 display.newSprite("replay_debuff_green.png")
@@ -790,7 +784,7 @@ function GameUIReplay:BuildUI()
     ui_map.dragonBattleWhite:hide()
     :opacity(255):setColor(cc.c3b(255,0,0))
     ui_map.dragonBattleWhite:setScaleX(clipWith/size.width)
-    ui_map.dragonBattleWhite:setScaleY(2.7)
+    ui_map.dragonBattleWhite:setScaleY(1.8)
 
     ui_map.soldierBattleWhite = display.newSprite("click_empty.png")
     :addTo(bg, 11):align(display.TOP_CENTER, 608/2, 910 - 110)
