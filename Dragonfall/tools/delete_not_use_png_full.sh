@@ -122,12 +122,10 @@ if [[ ${#@} -ge 2 ]]; then
 	cd $cur_path
 	
 	cd $1
-	files=(*.png) 
-	for f in ${files[*]}
-	do
-		ScanPng2 $f
-		# echo $f
-	done
+	for file in $(ls $dir)
+    do
+    	ScanPng2 $file
+    done
 	End;
 else
 	echo usage : delete_not_use_png_full.sh imageDir scriptDir
