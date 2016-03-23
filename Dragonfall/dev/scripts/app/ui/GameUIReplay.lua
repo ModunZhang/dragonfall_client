@@ -526,6 +526,8 @@ function GameUIReplay:OnDragonAttackTroops(dragon, allTroops)
                 local effect = display.newSprite("replay_debuff_red.png")
                                     :addTo(troop.effectsNode)
                 effect:pos(point.x,point.y+(troop.effectsNode:getChildrenCount()-1)*10)
+
+                troop:PromiseOfHurt():next(function() troop:Idle() end)
             end
         end)
         
@@ -568,6 +570,7 @@ function GameUIReplay:OnDragonAttackTroops(dragon, allTroops)
                     local effect = display.newSprite("replay_debuff_blue.png")
                                     :addTo(troop.effectsNode)
                     effect:pos(point.x,point.y+(troop.effectsNode:getChildrenCount()-1)*10)
+                    troop:PromiseOfHurt():next(function() troop:Idle() end)
                 end)
             end
         end
@@ -594,6 +597,7 @@ function GameUIReplay:OnDragonAttackTroops(dragon, allTroops)
                     local point = isdefencer and leftPos or rightPos
                     display.newSprite("replay_debuff_green.png")
                     :addTo(troop.effectsNode):pos(point.x,point.y)
+                    troop:PromiseOfHurt():next(function() troop:Idle() end)
                 end
             end
         end)
@@ -619,6 +623,7 @@ function GameUIReplay:OnDragonAttackTroops(dragon, allTroops)
                     local point = isdefencer and leftPos or rightPos
                     display.newSprite("replay_debuff_green.png")
                     :addTo(troop.effectsNode):pos(point.x,point.y)
+                    troop:PromiseOfHurt():next(function() troop:Idle() end)
                 end
             end
         end)

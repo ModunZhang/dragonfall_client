@@ -2080,8 +2080,6 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         self.infoNode:hide()
         self:Play("move_90", -1)
 
-
-
         local moveActs = transition.sequence({
             cc.MoveTo:create(time, cc.p(x, y)),
             cc.CallFunc:create(function()
