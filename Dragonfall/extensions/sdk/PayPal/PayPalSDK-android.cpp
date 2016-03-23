@@ -207,7 +207,7 @@ void tolua_ext_module_paypal(lua_State* tolua_S)
     tolua_function(tolua_S,"init",tolua_ext_paypal_postInitWithTransactionListenerLua);
     tolua_function(tolua_S,"isPayPalSupport",tolua_ext_paypal_isPayPalSupport);
     tolua_function(tolua_S,"updatePaypalPayments",tolua_ext_paypal_updatePaypalPayments);
-    tolua_function(tolua_S,"consumePaypalPayment",tolua_ext_paypal_consumePaypalPayment);
+    tolua_function(tolua_S,"consumePurchase",tolua_ext_paypal_consumePaypalPayment);
     tolua_endmodule(tolua_S);
 }
 /*** Native ***/

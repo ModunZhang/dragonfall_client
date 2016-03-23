@@ -13,6 +13,8 @@ import org.cocos2dx.lua.AppActivity;
 //@import java.util.Map;
 //@import org.json.JSONException;
 //@import org.json.JSONObject;
+//@
+//@import com.batcatstudio.dragonfall.data.DataHelper;
 //@import com.batcatstudio.dragonfall.utils.DebugUtil;
 //@import com.batcatstudio.dragonfall.utils.DesUtils;
 //@import com.paypal.android.sdk.payments.PayPalConfiguration;
@@ -184,9 +186,10 @@ public class PayPalSDK {
 //@
 //@	}
 //@
-//@	//检测手机中是否存在数据文件,始终返回文件路径
+//@	//检测手机中是否存在数据文件,始终返回文件路径(内存卡/手机)
 //@	private String checkDataFile(){
-//@		String outputDirectory = AppActivity.getGameActivity().getFilesDir().getAbsolutePath() + "/batcatstudio/" + BuildConfig.GAME_ID;
+//@		//注意:如果手机没有内存卡,数据文件在游戏卸载的时候会被系统删除！
+//@		String outputDirectory = DataHelper.getUnZipRootPath(DataHelper.isExternalStorageMounted()) + "/batcatstudio/" + BuildConfig.GAME_ID;
 //@		try{
 //@			File file = new File(outputDirectory);
 //@			if (!file.exists()) {
@@ -195,6 +198,7 @@ public class PayPalSDK {
 //@			String rawFilePath = outputDirectory  +  RAWFILE_NAME;
 //@			File rawFile = new File(rawFilePath);
 //@			if(!rawFile.exists()){
+//@				DebugUtil.LogErr(TAG,"create new payapl config "+rawFilePath);
 //@				rawFile.createNewFile();
 //@			}
 //@			return rawFilePath;
