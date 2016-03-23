@@ -579,7 +579,7 @@ function GameUIReplay:OnDragonAttackTroops(dragon, allTroops)
         p:next(function()
             app:GetAudioManager():PlayDragonSkill(dragon.dragonType)
         end)
-        :next(self:Delay(0.08))
+        :next(self:Delay(0.3))
         :next(function()
             math.randomseed(#allTroops)
             for i = 1, 6, 2 do
@@ -601,11 +601,11 @@ function GameUIReplay:OnDragonAttackTroops(dragon, allTroops)
                 end
             end
         end)
-        :next(self:Delay(0.3))
+        :next(self:Delay(0.1))
         :next(function()
             app:GetAudioManager():PlayDragonSkill(dragon.dragonType)
         end)
-        :next(self:Delay(0.08))
+        :next(self:Delay(0.3))
         :next(function()
             math.randomseed(#allTroops)
             for i = 2, 6, 2 do
