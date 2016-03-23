@@ -14,12 +14,10 @@
 2. 安装`AS`及最新的`Andorid SDK`. 从 [http://developer.android.com/sdk/index.html](http://developer.android.com/sdk/index.html) 下载最新版本的AS,`我们统一使用Gradle 2.8作为构建脚本的版本.`,**第一次使用gradlew命令或导入AS可能会很慢,因为会自动从网上下载gradle 2.8**
 
 3. 安装`Android NDK`.由于 cocos2d-x 还不支持最新的 NDK r10，所以我们需要从网络上搜索 NDK r9d 下载用于编译.下载解压缩,不能放在包含中文和空格的目录中.
-
-~~~
+	~~~
 	如果需要使用cocos2d-x官方提供的编译脚本编译android上的第三方库,
 	cocos2d-x官方提供的编译脚本需要使用NDK r10版本，具体查看它的说明文件
-~~~
-
+	~~~
 4. 安装Ant. 从 [http://ant.apache.org](http://ant.apache.org) 下载最新版本的Ant 执行文件.下载解压缩,不能放在包含中文和空格的目录中.
 
 5. 关于Android SDK,可以通过AS自动下载，也可以提前下载好后在环境变量中配置,下面的例子是先安装好了Android SDK进行的配置
