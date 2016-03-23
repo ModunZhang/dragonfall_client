@@ -2,20 +2,20 @@
 # Android Studio开发
 
 ~~~
-我们Andorid项目现在只能在mac上使用AS(Android Studio)开发,
-项目路径为Dragonfall/frameworks/runtime-src/proj.android-studio
+	我们Andorid项目现在只能在mac上使用AS(Android Studio)开发
+	项目路径为Dragonfall/frameworks/runtime-src/proj.android-studio
 ~~~
 
 ## 安装部分
 
-1. 安装`jdk 1.7u80`.找到JDK的绝对路径,如:`/Library/Java/JavaVirtualMachines/jdk1.7.0_80.jdk/Contents/Home`
+1. 安装`jdk 1.7`.找到JDK的绝对路径,如:`/Library/Java/JavaVirtualMachines/jdk1.7.0_80.jdk/Contents/Home`
 
-2. 安装`AS`及最新的`Andorid SDK`. 从 [http://developer.android.com/sdk/index.html](http://developer.android.com/sdk/index.html) 下载最新版本的AS,`我们统一使用Gradle 2.8作为构建脚本的版本.`,**第一次使用gradlew命令或导入AS可能会很慢,因为会自动从网上下载gradle 2.8**
+2. 安装`AS`及最新的`Andorid SDK`. 从 [http://developer.android.com/sdk/index.html](http://developer.android.com/sdk/index.html) 下载最新版本的AS,`我们统一使用Gradle 2.8作为构建脚本的版本`,**第一次使用gradlew命令或导入AS可能会很慢,因为会自动从网上下载gradle 2.8**
 
 3. 安装`Android NDK`.由于 cocos2d-x 还不支持最新的 NDK r10，所以我们需要从网络上搜索 NDK r9d 下载用于编译.下载解压缩,不能放在包含中文和空格的目录中.
 	~~~
-	如果需要使用cocos2d-x官方提供的编译脚本编译android上的第三方库,
-	cocos2d-x官方提供的编译脚本需要使用NDK r10版本，具体查看它的说明文件
+		如果需要使用cocos2d-x官方提供的编译脚本编译android上的第三方库
+		cocos2d-x官方提供的编译脚本需要使用NDK r10版本，具体查看它的说明文件
 	~~~
 4. 安装Ant. 从 [http://ant.apache.org](http://ant.apache.org) 下载最新版本的Ant 执行文件.下载解压缩,不能放在包含中文和空格的目录中.
 
@@ -165,9 +165,9 @@ Android 官方文档：http://developer.android.com/tools/device.html
     
 ### 使用模块化编译缩小 apk 体积（Cpp模块） ###
 
-从quick 3.5开始,官方不再提供模块化编译的功能，我们项目参考3.3的编译宏定义提供部分模块化编译的功能
+  从quick 3.5开始,官方不再提供模块化编译的功能，我们项目参考3.3的编译宏定义提供部分模块化编译的功能
 
-> 测试编译麻烦，我们就不提供具体减少的app体积数据! iOS中将使用新target的方式定义这些宏减少二进制文件的大小！
+> 测试麻烦，我们就不提供具体减少的app体积数据! iOS中将使用新target的方式定义这些宏减少二进制文件的大小！
 
 打开项目中的 `proj.android-studio/app/jni/Application.mk` 文件，然后将不需要的模块值改为 0。
 
@@ -191,7 +191,7 @@ CC_USE_TAKING_DATA | 打开talkingdata的接口
 
 ### Java中的宏定义
 
-注意:这里的宏和`使用模块化编译缩小 apk 体积`中的宏可能同名,但是这里的宏是定义在`GooglePlayPreprocess.txt`或其他`XXXXPreprocess.txt`中(其他版本的apk).只会影响`Java`代码变动的宏。
+  注意:这里的宏和`使用模块化编译缩小 apk 体积`中的宏可能同名,但是这里的宏是定义在`GooglePlayPreprocess.txt`或其他`XXXXPreprocess.txt`中(其他版本的apk).这些宏只会影响`Java`代码变动。
 
 MACRO        | 功能           | 依赖库 
 ------------ | ------------- | -------------
@@ -210,9 +210,11 @@ CC_USE_SDK_PAYPAL | 打开Paypal支付的接口
 
 * 如果是可选功能,在Java中使用宏定义开关。比如上面的`CC_USE_FACEBOOK`
 
+* 在多个apk的情况下(applicationId不一样),我们使用同一个动态库及同一份游戏资源
+
 ### 我们项目自定义的Gradle任务
 
-为了方便我们开发项目,我定义了一些项目的task,分组在`GameHelper`下,可通过命令`gradlew tasks`查看，或者在AS的Gradle视图中查看,**如构建Andoird项目下那张截图。具体的任务可能有变动，以实际为准!**
+  为了方便我们开发项目,我定义了一些项目的task,分组在`GameHelper`下,可通过命令`gradlew tasks`查看，或者在AS的Gradle视图中查看,**如构建Andoird项目下那张截图。具体的任务可能有变动，以实际为准!**
 
 ~~~
 backUpNativeSymbols - backup our native symbols to a zip file .
@@ -228,4 +230,4 @@ stopGoogleplay - stop the Googleplay game on device.
 
 ### 关于项目的依赖库
 
-AS项目中除了`jar`文件外(Dragonfall/frameworks/runtime-src/proj.android-studio/app/libs下),其他的依赖库gradle会自动从网上下载,具体设置参考gradle的开发文档！
+  AS项目中除了`jar`文件外(Dragonfall/frameworks/runtime-src/proj.android-studio/app/libs下),其他的依赖库gradle会自动从网上下载,具体设置参考gradle的开发文档！
