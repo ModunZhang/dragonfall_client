@@ -118,7 +118,11 @@ function enter_scene(scene)
             scene:removeChildByTag(CLOUD_TAG)
             app:lockInput(false)
             if app:getStore() then
-                app:getStore():updateTransactionStates() -- 更新内购订单状态
+                if device.platform == 'android' and ext.paypal.isPayPalSupport() then
+                    ext.paypal.updatePaypalPayments()
+                else
+                    app:getStore():updateTransactionStates() -- 更新内购订单状态
+                end
             end
         end
     })
@@ -511,7 +515,11 @@ function MyApp:getStore()
         return Store
     elseif device.platform == 'android' then
         if not cc.storeProvider then
-            Store.init(handler(self, self.verifyGooglePlayPurchase),handler(self, self.transitionFailedInGooglePlay))
+            if ext.paypal.isPayPalSupport() then
+                ext.paypal.init(handler(self, self.verifyPaypalPurchase),handler(self, self.transitionFailedInPaypal))
+            else
+                Store.init(handler(self, self.verifyGooglePlayPurchase),handler(self, self.transitionFailedInGooglePlay))
+            end
         end
         return Store
     elseif device.platform == 'winrt' then
@@ -633,6 +641,17 @@ function MyApp:verifyGooglePlayPurchase(orderId,purchaseData,signature)
 end
 function MyApp:transitionFailedInGooglePlay()
     print("transitionFailedInGooglePlay---->")
+    device.hideActivityIndicator()
+end
+
+-- android Paypal
+--------------------
+function MyApp:verifyPaypalPurchase(paymentID,purchaseData)
+    print("verifyPaypalPurchase---->",paymentID,purchaseData)
+end
+
+function MyApp:transitionFailedInPaypal()
+    print("transitionFailedInPaypal---->")
     device.hideActivityIndicator()
 end
 -- iOS
