@@ -17,6 +17,7 @@ function GameUIWall:ctor(city,building,default_tab)
     GameUIWall.super.ctor(self,city,Localize.building_name[building:GetType()],building,default_tab)
     self.dragon_manager = city:GetFirstBuildingByType("dragonEyrie"):GetDragonManager()
     self.dragon_manager:AddListenOnType(self,self.dragon_manager.LISTEN_TYPE.OnHPChanged)
+    User:AddListenOnType(self, "defenceTroop")
 end
 
 function GameUIWall:OnMoveInStage()
@@ -50,6 +51,7 @@ end
 
 function GameUIWall:OnMoveOutStage()
     self.dragon_manager:RemoveListenerOnType(self,self.dragon_manager.LISTEN_TYPE.OnHPChanged)
+    User:RemoveListenerOnType(self, "defenceTroop")
     GameUIWall.super.OnMoveOutStage(self)
 end
 
@@ -351,15 +353,9 @@ function GameUIWall:RefreshListView()
         return
     end
     local soldiers = clone(User.defenceTroop.soldiers)
-    table.sort( soldiers, function ( a,b )
-        local total_power_a = UtilsForSoldier:GetSoldierConfig(User, a.name).power * a.count
-        local total_power_b = UtilsForSoldier:GetSoldierConfig(User, b.name).power * b.count
-        return total_power_a > total_power_b
-    end )
     local pos = {65,273,481}
     for i=1,#soldiers,3 do
         local row_item = display.newNode()
-        local added = 1
         local j = i
         for j=1,3 do
             local soldier = soldiers[i+j-1]
@@ -372,7 +368,6 @@ function GameUIWall:RefreshListView()
                         UtilsForSoldier:SoldierStarByName(self.city:GetUser(), soldier.name)
                     )
                     :SetNumber(soldier.count)
-                added = added + 1
             end
         end
         local item = self.info_list:newItem()
@@ -434,6 +429,9 @@ function GameUIWall:OnHPChanged()
         self.hp_label:setString(dragon:Hp() .. "/" .. dragon:GetMaxHP())
         self.dragon_hp_progress:setPercentage(dragon:Hp()/dragon:GetMaxHP()*100)
     end
+end
+function GameUIWall:OnUserDataChanged_defenceTroop(userData, deltaData)
+    self:RefreshListView()
 end
 return GameUIWall
 

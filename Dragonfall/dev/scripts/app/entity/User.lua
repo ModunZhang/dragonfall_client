@@ -57,7 +57,8 @@ User.LISTEN_TYPE = Enum(
     "dailyTasks",
     "dailyQuests",
     "dailyQuestEvents",
-    "inviteToAllianceEvents")
+    "inviteToAllianceEvents",
+    "defenceTroop")
 
 property(User, "id", 0)
 property(User, "soldierStars", {})
@@ -1528,6 +1529,7 @@ local before_map = {
         end
     end,
     inviteToAllianceEvents = function()end,
+    defenceTroop = function()end,
     vipEvents = function(userData, deltaData)
         userData:RefreshOutput()
     end,

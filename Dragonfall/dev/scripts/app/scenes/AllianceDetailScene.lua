@@ -379,6 +379,9 @@ function AllianceDetailScene:onExit()
     Alliance_Manager:GetMyAlliance():RemoveListenerOnType(self, "shrineEvents")
     Alliance_Manager:GetMyAlliance():RemoveListenerOnType(self, "operation")
 end
+function AllianceDetailScene:ViewIndex()
+    return self.current_allinace_index
+end
 function AllianceDetailScene:FetchAllianceDatasByIndex(index, func)
     if Alliance_Manager:GetMyAlliance().mapIndex == index then
         if self.GetHomePage and self:GetHomePage() then
@@ -451,8 +454,8 @@ function AllianceDetailScene:OnTouchClicked(pre_x, pre_y, x, y)
     if mapObj then
         local alliance = Alliance_Manager:GetAllianceByCache(mapObj.index)
         local type_ = Alliance:GetMapObjectType(mapObj)
+        app:GetAudioManager():PlayeEffectSoundWithKey("HOME_PAGE")
         if alliance then
-            app:GetAudioManager():PlayeEffectSoundWithKey("HOME_PAGE")
             if type_ == "member"
                 or type_ == "village"
                 or type_ == "building" then
@@ -484,9 +487,18 @@ function AllianceDetailScene:OnTouchClicked(pre_x, pre_y, x, y)
                 self:OpenUI(alliance, mapObj)
             end
         else
-            app:GetAudioManager():PlayeEffectSoundWithKey("HOME_PAGE")
+            if type_ == "empty" then
+                return
+            end
+            local scale_map = {
+                tower1 = 1,
+                tower2 = 1,
+                crown = 3
+            }
             self.util_node:performWithDelay(function()app:lockInput(false)end,0.5)
-            Sprite:PromiseOfFlash(mapObj.obj):next(function()
+            self:GetSceneLayer()
+            :PromiseOfFlashEmptyGround(mapObj.index,mapObj.x,mapObj.y,scale_map[type_])
+            :next(function()
                 if type_ == "crown" then
                     UIKit:newGameUI("GameUIThroneMain"):AddToCurrentScene()
                 elseif type_ == "tower1" or type_ == "tower2" then
