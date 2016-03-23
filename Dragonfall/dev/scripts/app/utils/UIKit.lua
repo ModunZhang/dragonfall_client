@@ -1950,6 +1950,7 @@ local effect_map = {
     poison_2 = cc.p(0.5,0.2),
     poison_3 = cc.p(0.5,0.3),
     fire = cc.p(0.5,0.3),
+    lightning = cc.p(0.5,0.3),
 }
 function UIKit:CreateSkillEffect(effectType, isFlipX)
     local armature = ccs.Armature:create(effectType)

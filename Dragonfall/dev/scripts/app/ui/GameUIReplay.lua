@@ -522,7 +522,7 @@ function GameUIReplay:OnDragonAttackTroops(dragon, allTroops)
         :next(self:Delay(0.1))
         :next(function()
             for i,troop in ipairs(allTroops) do
-                local point = troop:IsLeft() and leftPos or rightPos
+                local point = isdefencer and leftPos or rightPos
                 local effect = display.newSprite("replay_debuff_red.png")
                                     :addTo(troop.effectsNode)
                 effect:pos(point.x,point.y+(troop.effectsNode:getChildrenCount()-1)*10)
@@ -531,19 +531,45 @@ function GameUIReplay:OnDragonAttackTroops(dragon, allTroops)
         
     elseif dragon.dragonType == "blueDragon" then
         math.randomseed(#allTroops)
-        table.sort(allTroops, function()
-            return math.random(2) == 1
-        end)
+        allTroops = randomArray(allTroops)
+
+        local needAddCount = 3 - #allTroops > 0 and (3 - #allTroops) or 0
+        local addindexes = {}
+        for i = #allTroops + 1, 6 do
+            table.insert(addindexes, i)
+        end
+        addindexes = randomArray(addindexes)
+
+        for i = 1, needAddCount do
+            local row = addindexes[i]
+            table.insert(allTroops, {x = x, y = self:TopPositionByRow(row)})
+        end
+
+        local point = isdefencer and leftPos or rightPos
         for i,troop in ipairs(allTroops) do
-            local point = troop:IsLeft() and leftPos or rightPos
             p:next(function()
                 app:GetAudioManager():PlayDragonSkill(dragon.dragonType)
-            end):next(self:Delay(0.3))
-            :next(function()
-                local effect = display.newSprite("replay_debuff_blue.png")
-                                :addTo(troop.effectsNode)
-                effect:pos(point.x,point.y+(troop.effectsNode:getChildrenCount()-1)*10)
             end)
+            :next(self:Delay(0.08))
+            :next(function()
+                local x,y
+                if troop.IsTroops then
+                    x,y = troop:getPosition()
+                else
+                    x,y = troop.x, troop.y
+                end
+                UIKit:CreateSkillEffect("lightning", isdefencer)
+                :pos(x,y):addTo(self.ui_map.effectNode,y,BATTLE_OBJECT_TAG)
+                :getAnimation():setSpeedScale(self.speed)
+            end)
+            if troop.IsTroops then
+                p:next(self:Delay(0.1))
+                :next(function()
+                    local effect = display.newSprite("replay_debuff_blue.png")
+                                    :addTo(troop.effectsNode)
+                    effect:pos(point.x,point.y+(troop.effectsNode:getChildrenCount()-1)*10)
+                end)
+            end
         end
     elseif dragon.dragonType == "greenDragon" then
         local aniarray = {"poison_1", "poison_2", "poison_3"}
@@ -559,14 +585,13 @@ function GameUIReplay:OnDragonAttackTroops(dragon, allTroops)
                 :addTo(self.ui_map.effectNode,y,BATTLE_OBJECT_TAG)
                 :getAnimation():setSpeedScale(self.speed)
             end
-            
         end)
         :next(self:Delay(0.1))
         :next(function()
             for i = 1, 6, 2 do
                 local troop = allTroops[i]
                 if allTroops[i] then
-                    local point = troop:IsLeft() and leftPos or rightPos
+                    local point = isdefencer and leftPos or rightPos
                     display.newSprite("replay_debuff_green.png")
                     :addTo(troop.effectsNode):pos(point.x,point.y)
                 end
@@ -591,15 +616,14 @@ function GameUIReplay:OnDragonAttackTroops(dragon, allTroops)
             for i = 2, 6, 2 do
                 local troop = allTroops[i]
                 if allTroops[i] then
-                    local point = troop:IsLeft() and leftPos or rightPos
+                    local point = isdefencer and leftPos or rightPos
                     display.newSprite("replay_debuff_green.png")
                     :addTo(troop.effectsNode):pos(point.x,point.y)
                 end
             end
         end)
-        :next(self:Delay(1))
     end
-    return p:next(self:Delay(0.5))
+    return p:next(self:Delay(1.5))
 end
 function GameUIReplay:OnFinishDual()
     self.dualCount = self.dualCount + 1
