@@ -257,24 +257,26 @@ function GameUtils:Translate(text,cb)
         cb(" ")
         return
     end
-    local language = self:GetGameLanguage()
-    if language == 'en' or language == 'tw' then
-        self:Baidu_Translate(text,cb)
-    else
-        if type(self.reachableGoogle)  == nil then
-            if network.isHostNameReachable("www.google.com") then
-                self.reachableGoogle = true
-                self:Google_Translate(text,cb)
-            else
-                self.reachableGoogle = false
-                self:Baidu_Translate(text,cb)
-            end
-        elseif self.reachableGoogle then
-            self:Google_Translate(text,cb)
-        else
-            self:Baidu_Translate(text,cb)
-        end
-    end
+    -- 关闭Baidu翻译
+    self:Google_Translate(text,cb)
+    -- local language = self:GetGameLanguage()
+    -- if language == 'en' or language == 'tw' then
+    --     self:Baidu_Translate(text,cb)
+    -- else
+    --     if type(self.reachableGoogle)  == nil then
+    --         if network.isHostNameReachable("www.google.com") then
+    --             self.reachableGoogle = true
+    --             self:Google_Translate(text,cb)
+    --         else
+    --             self.reachableGoogle = false
+    --             self:Baidu_Translate(text,cb)
+    --         end
+    --     elseif self.reachableGoogle then
+    --         self:Google_Translate(text,cb)
+    --     else
+    --         self:Baidu_Translate(text,cb)
+    --     end
+    -- end
 end
 
 
