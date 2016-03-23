@@ -1,6 +1,5 @@
 
-#Android Studio开发
-================
+# Android Studio开发
 
 ~~~
 我们Andorid项目现在只能在mac上使用AS(Android Studio)开发,
