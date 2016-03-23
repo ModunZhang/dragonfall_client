@@ -23,6 +23,8 @@ local normal = GameDatas.Soldiers.normal
 local SPECIAL = GameDatas.Soldiers.special
 
 local GameUISendTroopNew = UIKit:createUIClass("GameUISendTroopNew","GameUIWithCommonHeader")
+GameUISendTroopNew.dragonType = nil
+
 local soldier_arrange = {
     swordsman_1 = {row = 2, col = 2},
     swordsman_2 = {row = 2, col = 2},
@@ -102,7 +104,10 @@ function GameUISendTroopNew:ctor(march_callback,params)
     self.march_callback = march_callback
 
     -- 默认选中最强的并且可以出战的龙,如果都不能出战，则默认最强龙
-    self.dragon = params.dragon or self.dragon_manager:GetDragon(self.dragon_manager:GetCanFightPowerfulDragonType()) or self.dragon_manager:GetDragon(self.dragon_manager:GetPowerfulDragonType())
+    self.dragon = params.dragon or self.dragon_manager:GetDragon((self.isPVE and GameUISendTroopNew.dragonType) or self.dragon_manager:GetCanFightPowerfulDragonType()) or self.dragon_manager:GetDragon(self.dragon_manager:GetPowerfulDragonType())
+    if self.isPVE then
+        GameUISendTroopNew.dragonType = self.dragon:Type()
+    end
 end
 
 function GameUISendTroopNew:OnMoveInStage()
@@ -281,6 +286,9 @@ function GameUISendTroopNew:RefreashDragon(dragon)
     self.lead_citizen:setString(string.formatnumberthousands(citizen).."/"..string.formatnumberthousands(dragon:LeadCitizen()))
     self.soldier_load:setString(string.formatnumberthousands(load))
     self.dragon = dragon
+    if self.isPVE then
+        GameUISendTroopNew.dragonType = self.dragon:Type()
+    end
 end
 -- 单个格子最大带兵量
 function GameUISendTroopNew:GetUnitMaxCitizen()
