@@ -82,7 +82,7 @@ def AlphaImage(in_path, out_path):
 
 ########################################################################
 #这里定义的图片名称将以png格式打入android资源包(在iOS上的基础上添加了一些图不压缩)
-NORMAL_IMAGE_NAMES = ['city_only0','buildings0','ui_png0','ui_png1','loading_circle_yellow','loading_circle_green','loading_circle_blue','level0','pve_only0','ui_pvr0','ui_pvr1','ui_pvr2']
+NORMAL_IMAGE_NAMES = ['city_only0','buildings0','ui_png0','ui_png1','ui_png2','loading_circle_yellow','loading_circle_green','loading_circle_blue','level0','pve_only0','ui_pvr0','ui_pvr1','ui_pvr2']
 def NormalImages(in_path,out_path,outdir):
     fileName,fileExt = os.path.basename(in_path).split('.')
     if fileName in NORMAL_IMAGE_NAMES:

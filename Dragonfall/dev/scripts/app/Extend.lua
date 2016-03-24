@@ -38,6 +38,7 @@ if device.platform == 'android' and ext.isLowMemoryDevice() then
         ['buildings0'] = "buildings_low_ram0",
         ['ui_png0'] = "ui_png_low_ram0",
         ['ui_png1'] = "ui_png_low_ram1",
+        ['ui_png2'] = "ui_png_low_ram2",
         ['level0'] = "level_low_ram0",
         ['pve_only0'] = "pve_only_low_ram0",
         ['ui_pvr0'] = "ui_pvr_low_ram0",
