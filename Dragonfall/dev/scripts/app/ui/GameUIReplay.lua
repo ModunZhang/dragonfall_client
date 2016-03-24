@@ -779,15 +779,19 @@ function GameUIReplay:OnFight(attackTroop, defenceTroop)
 end
 function GameUIReplay:OnAttacking(attackTroop, defenceTroop)
     attackTroop.properties.target = defenceTroop
+    local isrevenge = false
     if isTroops(defenceTroop) then
         defenceTroop.properties.target = attackTroop
+        if attackTroop:IsCatapult() then
+            isrevenge = math.abs(defenceTroop:getPositionX() - attackTroop:getPositionX()) < 300
+        end
     else
         for _,v in pairs(defenceTroop) do
             v.properties.target = attackTroop
         end
     end
-    attackTroop:PromiseOfAttack():next(function()
-    	self:OnAttackFinished(attackTroop)
+    promise.all(attackTroop:PromiseOfAttack(isrevenge)):next(function()
+        self:OnAttackFinished(attackTroop)
     end)
 end
 function GameUIReplay:IsMoved(troops)

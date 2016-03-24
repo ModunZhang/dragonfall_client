@@ -2025,6 +2025,9 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
     function troopsNode:IsWall()
         return not self.soldiers[1]:getAnimation():getAnimationData():getMovement("move_90")
     end
+    function troopsNode:IsCatapult()
+        return string.find(soldierName, "catapult")
+    end
     function troopsNode:IsMelee()
         local _,_,_,ismelee = unpack(soldier_fight_map[soldierName])
         return ismelee
@@ -2187,7 +2190,31 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         self:Play("hurt", 0)
         return self:PromiseOfAnimationFinished(self:GetAni())
     end
-    function troopsNode:PromiseOfAttack()
+    function troopsNode:PromiseOfAttack(isrevenge)
+        if isrevenge then
+            local p1 = promise.new()
+            local p2 = promise.new()
+            local d = self:IsLeft() and 20 or -20
+            local x,y = self:getPosition()
+            self:Play("move_90", -1)
+            local acts = transition.sequence({
+                cc.MoveTo:create(0.3,cc.p(x+d,y)),
+                cc.CallFunc:create(function() 
+                    app:GetAudioManager()
+                    :PlayeAttackSoundBySoldierName(self.soldierName, "rush")
+                    p1:resolve() 
+                end),
+                cc.MoveTo:create(0.3,cc.p(x,y)),
+                cc.CallFunc:create(function() 
+                    self:Idle()
+                    p2:resolve()
+                end),
+            })
+            local speed = cc.Speed:create(acts, self:Speed())
+            speed:setTag(SPEED_TAG)
+            self:runAction(speed)
+            return p1,p2
+        end
         self:Play("attack", 0)
         return self:PromiseOfAnimationFinished(self:GetAni())
     end
