@@ -1534,7 +1534,7 @@ local soldier_fight_map = {
     ballista_1      = {"nuche_1_90"       , cc.p(0.18, 0.37), 1, false},
     ballista_2      = {"nuche_2_90"       , cc.p(0.20, 0.37), 1, false},
     ballista_3      = {"nuche_3_90"       , cc.p(0.17, 0.30), 1, false},
-    skeletonWarrior = {"kulouyongshi_90"  , cc.p(0.33, 0.32), 4, true},
+    skeletonWarrior = {"kulouyongshi_90"  , cc.p(0.38, 0.32), 4, true},
     skeletonArcher  = {"kulousheshou_90"  , cc.p(0.26, 0.29), 4, false},
     deathKnight     = {"siwangqishi_90"   , cc.p(0.28, 0.30), 2, true},
     meatWagon       = {"jiaorouche_90"    , cc.p(0.20, 0.29), 1, false},
@@ -1865,6 +1865,12 @@ local skill_dragon_map = {
     greenDragon = "green_dragon_90",
     blackDragon = "black_dragon_90",
 }
+local skill_time_map = {
+    redDragon = 0,
+    blueDragon = 0,
+    greenDragon = 0.3,
+    blackDragon = 0,
+}
 function UIKit:CreateSkillDragon(dragonType, isattack, gameController)
     gameController = gameController or empty_gameController
     local dragonNode = display.newNode()
@@ -1891,19 +1897,21 @@ function UIKit:CreateSkillDragon(dragonType, isattack, gameController)
         return self
     end
     function dragonNode:Attack(func)
+        local totalTime = 3
+        local skillTime = skill_time_map[self.dragonType]
         self.dragonAni:getAnimation():play("Animation1", -1, 0)
         self:RefreshSpeed()
         local acts = transition.sequence({
             cc.CallFunc:create(function()
                 app:GetAudioManager():PlayBuildingEffectByType("dragonEyrie")
             end),
-            cc.DelayTime:create(0.5),
+            cc.DelayTime:create(skillTime),
             cc.CallFunc:create(function()
                 if type(func) == "function" then
                     func(false)
                 end
             end),
-            cc.DelayTime:create(1),
+            cc.DelayTime:create(totalTime - skillTime),
             cc.CallFunc:create(function()
                 if type(func) == "function" then
                     func(true)
@@ -1936,6 +1944,22 @@ function UIKit:CreateSkillDragon(dragonType, isattack, gameController)
         return self
     end
     return dragonNode:RefreshSpeed()
+end
+local effect_map = {
+    poison_1 = cc.p(0.5,0.25),
+    poison_2 = cc.p(0.5,0.2),
+    poison_3 = cc.p(0.5,0.3),
+    fire = cc.p(0.5,0.3),
+    lightning = cc.p(0.5,0.3),
+}
+function UIKit:CreateSkillEffect(effectType, isFlipX)
+    local armature = ccs.Armature:create(effectType)
+    if isFlipX then
+        armature:setScaleX(- armature:getScaleX())
+    end
+    armature:setAnchorPoint(effect_map[effectType])
+    armature:getAnimation():playWithIndex(0, -1, 0)
+    return armature
 end
 local SOLDIER_NODE = 1
 local EFFECT_TAG = 2
@@ -2055,8 +2079,6 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
     function troopsNode:Return(x, y, time, func)
         self.infoNode:hide()
         self:Play("move_90", -1)
-
-
 
         local moveActs = transition.sequence({
             cc.MoveTo:create(time, cc.p(x, y)),
@@ -2412,6 +2434,15 @@ function UIKit:CreateArrow(param, func)
     arrow.icon = display.newSprite(param.icon or "arrow_icon_mine.png")
         :addTo(arrow):pos(96/2, 102/2 - 4)
     return arrow
+end
+
+function UIKit:ScaleAni()
+    return cc.RepeatForever:create(
+                    transition.sequence{
+                        cc.ScaleTo:create(0.5, 1.1),
+                        cc.ScaleTo:create(0.5, 1.0),
+                    }
+                )
 end
 
 

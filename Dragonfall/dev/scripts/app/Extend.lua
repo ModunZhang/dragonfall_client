@@ -316,6 +316,13 @@ end
 cc.c4f = cc.c4b
 
 
+function randomArray(array)
+    local t = {}
+    for i = 1, #array do
+        table.insert(t, table.remove(array, math.random(#array)))
+    end
+    return t
+end
 
 
 local old_ctor = cc.ui.UIPushButton.ctor
