@@ -67,9 +67,11 @@ if device.platform == 'android' and ext.isLowMemoryDevice() then
 
     -- 更新查找单张图片从低画质的大图中查询
     for k,v in pairs(plist_texture_data) do
-        local image_key = string.gsub(v,"%.png","")
-        if low_ram_texture_name[image_key] then
-            plist_texture_data[k] = low_ram_texture_name[image_key] .. ".png"
+        if k ~= 'sd' then 
+            local image_key = string.gsub(v,"%.png","")
+            if low_ram_texture_name[image_key] then
+                plist_texture_data[k] = low_ram_texture_name[image_key] .. ".png"
+            end
         end
     end
 end
