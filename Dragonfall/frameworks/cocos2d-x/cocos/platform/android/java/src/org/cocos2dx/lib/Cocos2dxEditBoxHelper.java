@@ -436,6 +436,9 @@ public class Cocos2dxEditBoxHelper {
         if (null != editBox) {
             imm.hideSoftInputFromWindow(editBox.getWindowToken(), 0);
             mCocos2dxActivity.getGLSurfaceView().setSoftKeyboardShown(false);
+            //dannyhe
+            mCocos2dxActivity.hideSystemUI();
+
         }
     }
     //dannyhe

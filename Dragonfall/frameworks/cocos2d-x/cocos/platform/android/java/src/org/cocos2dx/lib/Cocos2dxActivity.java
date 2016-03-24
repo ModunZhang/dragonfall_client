@@ -431,7 +431,7 @@ public abstract class Cocos2dxActivity extends Activity implements Cocos2dxHelpe
     // Inner and Anonymous Classes
     // ===========================================================
 
-    private void hideSystemUI()
+    public void hideSystemUI()
     {
         if(this.mGLSurfaceView == null) {
             return;
