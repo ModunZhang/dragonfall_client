@@ -26,27 +26,6 @@ THE SOFTWARE.
 ****************************************************************************/
 package org.cocos2dx.lua;
 
-import java.util.ArrayList;
-
-import org.cocos2dx.lib.Cocos2dxActivity;
-import org.cocos2dx.lib.Cocos2dxHelper;
-
-import com.batcatstudio.dragonfall.data.DataHelper;
-import com.batcatstudio.dragonfall.google.billing.StoreKit;
-import com.batcatstudio.dragonfall.google.gcm.GCMIntentService;
-import com.batcatstudio.dragonfall.notifications.NotificationUtils;
-//#ifdef CC_USE_FACEBOOK
-import com.batcatstudio.dragonfall.sdk.FaceBookSDK;
-//#endif
-//#ifdef CC_USE_GOOGLE_LOGIN
-import com.batcatstudio.dragonfall.sdk.GoogleSignSDK;
-//#endif
-import com.batcatstudio.dragonfall.sdk.MarketSDK;
-import com.batcatstudio.dragonfall.sdk.PayPalSDK;
-import com.batcatstudio.dragonfall.utils.CommonUtils;
-import com.batcatstudio.dragonfall.utils.LaunchHelper;
-import com.xapcn.dragonfall.R;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -58,11 +37,33 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
 import android.view.KeyEvent;
+
+import com.batcatstudio.dragonfall.data.DataHelper;
+import com.batcatstudio.dragonfall.google.billing.StoreKit;
+import com.batcatstudio.dragonfall.google.gcm.GCMIntentService;
+import com.batcatstudio.dragonfall.notifications.NotificationUtils;
+import com.batcatstudio.dragonfall.sdk.MarketSDK;
+import com.batcatstudio.dragonfall.sdk.PayPalSDK;
+import com.batcatstudio.dragonfall.utils.CommonUtils;
+import com.batcatstudio.dragonfall.utils.LaunchHelper;
+import com.xapcn.dragonfall.R;
+
+import org.cocos2dx.lib.Cocos2dxActivity;
+import org.cocos2dx.lib.Cocos2dxHelper;
+
+import java.util.ArrayList;
+//#ifdef CC_USE_FACEBOOK
+import com.batcatstudio.dragonfall.sdk.FaceBookSDK;
+//#endif
+//#ifdef CC_USE_GOOGLE_LOGIN
+import com.batcatstudio.dragonfall.sdk.GoogleSignSDK;
+//#endif
 
 public class AppActivity extends Cocos2dxActivity
 {
@@ -81,12 +82,16 @@ public class AppActivity extends Cocos2dxActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         gameActivity = this;
-      
+
         if(nativeIsLandScape()) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         }
+		//we want to use the Material theme above android 5.0
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+			setTheme(R.style.NewGameTheme);
+		}
         /** Init Java Native **/
 //#ifdef CC_USE_GOOGLE_LOGIN        
         GoogleSignSDK.getInstance().Initialize(savedInstanceState);
