@@ -10,7 +10,7 @@
 
 1. 安装`jdk 1.7`.找到JDK的绝对路径,如:`/Library/Java/JavaVirtualMachines/jdk1.7.0_80.jdk/Contents/Home`
 
-2. 安装`AS`及最新的`Andorid SDK`. 从 [http://developer.android.com/sdk/index.html](http://developer.android.com/sdk/index.html) 下载最新版本的AS,`我们统一使用Gradle 2.8作为构建脚本的版本`,**第一次使用gradlew命令或导入AS可能会很慢,因为会自动从网上下载gradle 2.8**
+2. 安装`AS`及最新的`Andorid SDK`. 从 [http://developer.android.com/sdk/index.html](http://developer.android.com/sdk/index.html) 下载最新版本的AS,安装`Android SDK`,`我们统一使用Gradle 2.8作为构建脚本的版本`,**第一次使用gradlew命令或导入AS可能会很慢,因为会自动从网上下载gradle 2.8**
 
 3. 安装`Android NDK`.由于 cocos2d-x 还不支持最新的 NDK r10，所以我们需要从网络上搜索 NDK r9d 下载用于编译.下载解压缩,不能放在包含中文和空格的目录中.
 	~~~
@@ -148,12 +148,12 @@ Android 官方文档：http://developer.android.com/tools/device.html
 
 1. 首先我们需要构建和打包我们的资源.
    
-	* 构建的话使用我们的`python脚本`进行,和`iOS`一样,只是选择`Android`就可
+	* 构建游戏资源我们使用`python脚本`进行,和`iOS`一样,只是选择`Android`就可
     
     * Android上需要多执行一个脚本:`create_android_zip.py`来将update_android下的文件打包
      
 2. 构建我们项目的cpp部分.
-	
+
 	* 使用`Gradle`命令行构建,进入目录`Dragonfall/frameworks/runtime-src/proj.android-studio`,`gradlew`为`Gradle`的包裹工具
 	
 	   ~~~
@@ -161,7 +161,17 @@ Android 官方文档：http://developer.android.com/tools/device.html
 	   ~~~
    		
 	* 使用AS进行构建,先后双击我们自定义的两个任务`buildNative`和`backUpNativeSymbols`执行即可
-	   ![](res/build_native.png)
+	   ![](res/build_native.png)   
+	   
+3. 构建`apk`
+
+	* 使用`Gradle`构建`apk`包,最终生成的`apk`在`Dragonfall/frameworks/runtime-src/proj.android-studio/app/build/outputs/apk`目录下
+	 
+	 ~~~
+	 ./gradlew aR
+	 ~~~
+    
+    * 使用`AS`构建
     
 ### 使用模块化编译缩小 apk 体积（Cpp模块） ###
 
