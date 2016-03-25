@@ -384,7 +384,7 @@ function MyApp:onEnterForeground()
             scene:GetHomePage():PromiseOfFteAlliance()
         end
     end
-    self:retryConnectServer(false)
+    self:retryConnectServer(true)
 end
 function MyApp:onEnterPause()
     LuaUtils:outputTable("onEnterPause", {})
