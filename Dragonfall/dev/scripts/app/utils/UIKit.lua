@@ -1538,6 +1538,39 @@ local soldier_fight_map = {
     wall_2          = {"chengqiang_2"     , cc.p(0.50, 0.50), 1, false},
     wall_3          = {"chengqiang_3"     , cc.p(0.50, 0.50), 1, false},
 }
+local pve_soldier_fight_map = {
+    swordsman_1     = {"bubing_1_90"              , cc.p(0.43, 0.23), 4, true},
+    swordsman_2     = {"heihua_bubing_2_90"       , cc.p(0.43, 0.21), 4, true},
+    swordsman_3     = {"heihua_bubing_3_90"       , cc.p(0.43, 0.23), 4, true},
+    ranger_1        = {"gongjianshou_1_90"        , cc.p(0.36, 0.20), 4, false},
+    ranger_2        = {"heihua_gongjianshou_2_90" , cc.p(0.30, 0.19), 4, false},
+    ranger_3        = {"heihua_gongjianshou_3_90" , cc.p(0.30, 0.18), 4, false},
+    lancer_1        = {"qibing_1_90"              , cc.p(0.32, 0.35), 2, true},
+    lancer_2        = {"heihua_qibing_2_90"       , cc.p(0.32, 0.33), 2, true},
+    lancer_3        = {"heihua_qibing_3_90"       , cc.p(0.28, 0.35), 2, true},
+    catapult_1      = {"toushiche_90"             , cc.p(0.50, 0.25), 1, false},
+    catapult_2      = {"heihua_toushiche_2_90"    , cc.p(0.50, 0.25), 1, false},
+    catapult_3      = {"heihua_toushiche_3_90"    , cc.p(0.50, 0.25), 1, false},
+    sentinel_1      = {"shaobing_1_90"            , cc.p(0.30, 0.24), 4, true},
+    sentinel_2      = {"heihua_shaobing_2_90"     , cc.p(0.30, 0.23), 4, true},
+    sentinel_3      = {"heihua_shaobing_3_90"     , cc.p(0.30, 0.23), 4, true},
+    crossbowman_1   = {"nugongshou_1_90"          , cc.p(0.32, 0.34), 4, false},
+    crossbowman_2   = {"heihua_nugongshou_2_90"   , cc.p(0.32, 0.29), 4, false},
+    crossbowman_3   = {"heihua_nugongshou_3_90"   , cc.p(0.32, 0.28), 4, false},
+    horseArcher_1   = {"youqibing_1_90"           , cc.p(0.29, 0.23), 2, false},
+    horseArcher_2   = {"heihua_youqibing_2_90"    , cc.p(0.26, 0.25), 2, false},
+    horseArcher_3   = {"heihua_youqibing_3_90"    , cc.p(0.26, 0.22), 2, false},
+    ballista_1      = {"nuche_1_90"               , cc.p(0.18, 0.37), 1, false},
+    ballista_2      = {"heihua_nuche_2_90"        , cc.p(0.20, 0.37), 1, false},
+    ballista_3      = {"heihua_nuche_3_90"        , cc.p(0.17, 0.30), 1, false},
+    skeletonWarrior = {"kulouyongshi_90"          , cc.p(0.38, 0.32), 4, true},
+    skeletonArcher  = {"kulousheshou_90"          , cc.p(0.26, 0.29), 4, false},
+    deathKnight     = {"siwangqishi_90"           , cc.p(0.28, 0.30), 2, true},
+    meatWagon       = {"jiaorouche_90"            , cc.p(0.50, 0.40), 1, false},
+    wall_1          = {"chengqiang_1"             , cc.p(0.50, 0.50), 1, false},
+    wall_2          = {"chengqiang_2"             , cc.p(0.50, 0.50), 1, false},
+    wall_3          = {"chengqiang_3"             , cc.p(0.50, 0.50), 1, false},
+}
 local count_map = {
     [1] = {{x = 0, y = 0}},
     [2] = {{x = 0, y = 20}, {x = 0, y = -20}},
@@ -1978,11 +2011,17 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
     if config then
         troopsNode.soldierType = config.type
     end
-    local _,_,count = unpack(soldier_fight_map[soldierName])
+    local fight_soldier_config = properties.ispve and pve_soldier_fight_map or soldier_fight_map
+    local _,_,count = unpack(fight_soldier_config[soldierName])
     local soldiers = {}
     for i,v in ipairs(count_map[count]) do
-        soldiers[#soldiers + 1] = self:CreateFightSoldier(soldierName)
-            :addTo(soldiersNode,1):pos(v.x, v.y)
+        local aniName, ap = unpack(fight_soldier_config[soldierName])
+        local armature = ccs.Armature:create(aniName)
+        armature:setAnchorPoint(ap)
+        if "wall" == soldierName then
+            armature:setScaleX(-1)
+        end
+        soldiers[i] = armature:addTo(soldiersNode,1):pos(v.x, v.y)
     end
     troopsNode.soldiers = soldiers
     function troopsNode:IsTroops() return soldierName ~= "wall" end
@@ -2032,7 +2071,7 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         return string.find(soldierName, "catapult") or string.find(soldierName, "meatWagon")
     end
     function troopsNode:IsMelee()
-        local _,_,_,ismelee = unpack(soldier_fight_map[soldierName])
+        local _,_,_,ismelee = unpack(fight_soldier_config[soldierName])
         return ismelee
     end
     function troopsNode:GetAni()
@@ -2294,15 +2333,6 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         return self
     end
     return troopsNode:RefreshSpeed()
-end
-function UIKit:CreateFightSoldier(soldierName)
-    local aniName, ap = unpack(soldier_fight_map[soldierName])
-    local armature = ccs.Armature:create(aniName)
-    armature:setAnchorPoint(ap)
-    if "wall" == soldierName then
-        armature:setScaleX(-1)
-    end
-    return armature
 end
 
 
