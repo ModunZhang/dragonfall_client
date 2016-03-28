@@ -156,7 +156,7 @@ dependencies {
 // JAVA tasks
 
 // def the marcos for different markets,all marcos defined in "dev_android/README.md"
-def GooglePlayMarcos = "CC_USE_FACEBOOK,CC_USE_TALKING_DATA,CC_USE_APPSFLYER,CC_USE_GOOGLE_PLAY_BILLING_V3,CC_USE_GOOGLE_LOGIN"
+def GooglePlayMarcos = "CC_USE_FACEBOOK,CC_USE_GOOGLE_LOGIN,CC_USE_GOOGLE_PLAY_BILLING_V3,CC_USE_TALKING_DATA,CC_USE_APPSFLYER"
 def PayPalMarcos = "CC_USE_FACEBOOK,CC_USE_GOOGLE_LOGIN,CC_USE_SDK_PAYPAL"
 
 ant.properties['wtk.home'] = "tools"
@@ -167,7 +167,7 @@ task PreprocessPayPal(group:'GameHelper',description:'preprocess java source cod
     inputs.dir "src"
     outputs.dir "src"
     doLast {
-        ant.echo(message: "build paypal java codes with marcos:" + PayPalMarcos)
+        ant.echo(message: "Process java codes:" + PayPalMarcos)
         ant.wtkpreprocess(
             srcdir: "src",
             destdir: "src", 
@@ -185,7 +185,7 @@ task PreprocessGooglePlay(group:'GameHelper',description:'preprocess java source
     inputs.dir "src"
     outputs.dir "src"
     doLast {
-        ant.echo(message: "build googleplay java codes with marcos:" + GooglePlayMarcos)
+        ant.echo(message: "Process java codes:" + GooglePlayMarcos)
         ant.wtkpreprocess(
             srcdir: "src",
             destdir: "src", 
@@ -240,6 +240,8 @@ task cleanNativeSymbols(type: Delete,group:'GameHelper') {
     delete 'obj'
 }
 
+backUpNativeSymbols.shouldRunAfter buildNative
+
 // check version tasks
 task checkVersionInfo(group:'GameHelper',description:'check the project version infomation in version.properties.') {
     doLast {
@@ -253,7 +255,6 @@ task checkVersionInfo(group:'GameHelper',description:'check the project version 
     }
 }
 
-backUpNativeSymbols.shouldRunAfter buildNative
 
 // adb helper tasks
 def adb = android.getAdbExe().toString()
