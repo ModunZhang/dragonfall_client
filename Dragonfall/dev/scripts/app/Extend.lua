@@ -113,7 +113,9 @@ end
 display.setTexturePixelFormat("fte_background.jpg", cc.TEXTURE2_D_PIXEL_FORMAT_RG_B888)
 -- 4444
 for i,v in ipairs{
-    "emoji.png"
+    "emoji.png",
+    "rgba4444_only0.png",
+    "rgba4444_only0-sd.png",
 } do
     display.setTexturePixelFormat(v, cc.TEXTURE2_D_PIXEL_FORMAT_RGB_A4444)
 end

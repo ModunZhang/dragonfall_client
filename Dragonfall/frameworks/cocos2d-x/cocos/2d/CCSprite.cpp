@@ -446,9 +446,9 @@ void Sprite::UpdateVertexRect()
 	setContentSize(size);
 	_rect.size.width = _rect.size.width * 2;
 	_rect.size.height = _rect.size.height * 2;
-	_unflippedOffsetPositionFromCenter.x *= 2;
-	_unflippedOffsetPositionFromCenter.y *= 2;
 	Vec2 relativeOffset = _unflippedOffsetPositionFromCenter;
+    relativeOffset.x *= 2;
+    relativeOffset.y *= 2;
 	// issue #732
 	if (_flippedX)
 	{

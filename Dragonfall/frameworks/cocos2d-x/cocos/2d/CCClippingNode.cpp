@@ -117,8 +117,6 @@ bool ClippingNode::init()
 
 bool ClippingNode::init(Node *stencil)
 {
-	NOT_SUPPORTED();
-
 #if DIRECTX_ENABLED == 0
     CC_SAFE_RELEASE(_stencil);
 
@@ -141,6 +139,7 @@ bool ClippingNode::init(Node *stencil)
     
     return true;
 #else
+	NOT_SUPPORTED();
 	return false;
 #endif
 }
