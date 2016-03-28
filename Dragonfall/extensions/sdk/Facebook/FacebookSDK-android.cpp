@@ -109,6 +109,9 @@ static FacebookSDK *s_FacebookSDK = NULL; // pointer to singleton
 
 void FacebookSDK::Initialize(std::string appId /* = "" */)
 {
+    if(NULL == jmInitialize) {
+        return;
+    }
     JNIEnv* env = cocos2d::JniHelper::getEnv();
     env->CallStaticVoidMethod(jcFaceBookSDK,jmInitialize);
 }
