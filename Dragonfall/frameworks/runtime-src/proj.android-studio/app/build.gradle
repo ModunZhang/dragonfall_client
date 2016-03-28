@@ -274,7 +274,7 @@ android.productFlavors.each { flavor ->
     task(replaceName,type:Exec,group:'GameHelper') {
         description 'replace the ' + flavor.name.capitalize() + ' zip file of lua on device.'
         workingDir project.rootDir
-        def pathOfUnzip = '/mnt/sdcard/batcatstudio/'+ gameIdForFlavors(flavor.name)+ '/bundle/scripts/'
+        def pathOfUnzip = '/mnt/sdcard/batcatstudio/'+ gameIdForFlavors(flavor.name)+ '/bundle/scripts'
         commandLine "$adb", 'push','../../../update_android/scripts/game.zip',pathOfUnzip
     }
 }
