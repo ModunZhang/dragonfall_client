@@ -20,7 +20,7 @@ local attackDragonSkilled1
 if get_dragon_type() == "redDragon" then
     attackDragonSkilled1 = {0}
 elseif get_dragon_type() == "blueDragon" then
-    attackDragonSkilled1 = {0,0,0}
+    attackDragonSkilled1 = {0}
 elseif get_dragon_type() == "greenDragon" then
     attackDragonSkilled1 = {0}
 end

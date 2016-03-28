@@ -161,9 +161,14 @@ function AudioManager:PlayeEffectSound(filename)
 	end
 end
 
-function AudioManager:PlayeAttackSoundBySoldierName(soldier_name)
+function AudioManager:PlayeAttackSoundBySoldierName(soldier_name, subattack)
 	local soldier = unpack(string.split(soldier_name, "_"))
-	local audio_name = string.format("sfx_%s_attack.mp3", soldier)
+	local audio_name
+	if subattack then
+		audio_name = string.format("sfx_%s_attack_%s.mp3", soldier, subattack)
+	else
+		audio_name = string.format("sfx_%s_attack.mp3", soldier)
+	end
 	assert(audio_name, audio_name.." 音乐不存在")
 	self:PlayeEffectSound(audio_name)
 end
