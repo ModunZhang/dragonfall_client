@@ -9,7 +9,7 @@ local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local WidgetPushButton = import("..widget.WidgetPushButton")
 
 function GameUIKingwarNotice:ctor(city)
-    GameUIKingwarNotice.super.ctor(self,city, _("国王公告"))
+    GameUIKingwarNotice.super.ctor(self,city, _("国王通告"))
 end
 
 function GameUIKingwarNotice:onEnter()
