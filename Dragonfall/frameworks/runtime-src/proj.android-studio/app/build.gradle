@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 
-//dannyhe: we read the version infomation from "version.properties"
+// we read the version infomation from "version.properties"
 def Properties projectVersion() {
     def versionFile = new File(project.rootDir, 'version.properties')
     def version = new Properties()
@@ -22,6 +22,7 @@ def Properties projectVersion() {
 
 //end for read version
 
+// read the game id for each flavors
 def String gameIdForFlavors(name) {
     def gameIdOfFlavors = ['googleplay':'dragonfall','paypal':'dragonfall_paypal']
     return gameIdOfFlavors[name]
@@ -38,9 +39,9 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 15
-        buildConfigField "String", "GAME_ID", "\"Batcat\"" //identity for unzip path
+        buildConfigField "String", "GAME_ID", "\"Batcat\"" //identity for unzip path on SD card
     }
-
+    // warning: we don't want read the password form console!
     signingConfigs {
         googleplay {
             storeFile file("keystore/xapcn_dragonfall_gp.keystore")
@@ -50,14 +51,14 @@ android {
         }
 
          paypal {
+            //TODO:replace the paypal's keystore file before release!
             storeFile file("keystore/dragonfall_google_play.keystore")
             storePassword "yAb7E9oJ3mooW9Il2coW"
             keyAlias "batcatstudio"
             keyPassword "yAb7E9oJ3mooW9Il2coW"
         }
-
     }
-
+    // maybe we should add some channel infomations to `manifestPlaceholders`
     productFlavors {
         googleplay {
             applicationId "com.xapcn.dragonfall"
@@ -131,7 +132,7 @@ android {
 
 dependencies {
     compile project(':libcocos2dx')
-    // apk for google play
+    // Google Play Market
     googleplayCompile files('libs/AF-Android-SDK-v3.3.0.jar', 'libs/Game_Analytics_SDK_Android_3.2.3.jar')
     
     googleplayCompile 'com.facebook.android:facebook-android-sdk:4.0.0'
@@ -139,8 +140,7 @@ dependencies {
     googleplayCompile 'com.google.android.gms:play-services-plus:8.1.0'
     googleplayCompile 'com.google.android.gms:play-services-ads:8.1.0'
 
-    //apk for google paypal
-//    paypalCompile files('libs/PayPalAndroidSDK-2.13.1.jar', 'libs/okhttp-3.0.1.jar','libs/okio-1.6.0.jar')
+    // Paypal Market
 
     paypalCompile ('com.paypal.sdk:paypal-android-sdk:2.13.3') {
         exclude group: 'io.card'
@@ -150,31 +150,70 @@ dependencies {
     paypalCompile 'com.google.android.gms:play-services-plus:8.1.0'
 }
 
-// dannyhe:we add some tasks to help us,use the command 'gradle tasks' see all tasks
+// We add some tasks to help us,use the command 'gradle tasks' see all tasks
+// warning: Our project can't build debug and release task in one chain! Just like we can't support the task 'gradle build'
 
-//java tasks
-ant.importBuild '../GooglePlayPreprocess.xml'
-ant.importBuild '../PayPalPreprocess.xml'
+// JAVA tasks
 
-GooglePlayPreprocess.group = 'GameHelper'
-PayPalPreprocess.group = 'GameHelper'
+// def the marcos for different markets,all marcos defined in "dev_android/README.md"
+def GooglePlayMarcos = "CC_USE_FACEBOOK,CC_USE_TALKING_DATA,CC_USE_APPSFLYER,CC_USE_GOOGLE_PLAY_BILLING_V3,CC_USE_GOOGLE_LOGIN"
+def PayPalMarcos = "CC_USE_FACEBOOK,CC_USE_GOOGLE_LOGIN,CC_USE_SDK_PAYPAL"
+
+ant.properties['wtk.home'] = "tools"
+ant.taskdef( name: "wtkpreprocess", classname: "de.pleumann.antenna.WtkPreprocess", classpath:"../tools/antenna-bin-1.0.2.jar")
+
+// paypal Market,support `up-to-date`
+task PreprocessPayPal(group:'GameHelper',description:'preprocess java source code for paypal market.') {
+    inputs.dir "src"
+    outputs.dir "src"
+    doLast {
+        ant.echo(message: "build paypal java codes with marcos:" + PayPalMarcos)
+        ant.wtkpreprocess(
+            srcdir: "src",
+            destdir: "src", 
+            verbose:true,
+            printsymbols:true,
+            debuglevel:"debug",
+            encoding:"UTF-8",
+            symbols:PayPalMarcos
+        )
+    }
+}
+
+// Google Play market,support `up-to-date`
+task PreprocessGooglePlay(group:'GameHelper',description:'preprocess java source code for googleplay market.') {
+    inputs.dir "src"
+    outputs.dir "src"
+    doLast {
+        ant.echo(message: "build googleplay java codes with marcos:" + GooglePlayMarcos)
+        ant.wtkpreprocess(
+            srcdir: "src",
+            destdir: "src", 
+            verbose:true,
+            printsymbols:true,
+            debuglevel:"debug",
+            encoding:"UTF-8",
+            symbols:GooglePlayMarcos
+        )
+    }
+}
 
 android.applicationVariants.all { variant ->
     variant.productFlavors.each { flavor ->
         if (flavor.name.equals('googleplay')) {
-            variant.javaCompile.dependsOn(GooglePlayPreprocess)
+            variant.javaCompile.dependsOn(PreprocessGooglePlay)
         }else if(flavor.name.equals('paypal')) {
-            variant.javaCompile.dependsOn(PayPalPreprocess)
+            variant.javaCompile.dependsOn(PreprocessPayPal)
         }
     }
     variant.outputs.each { output ->
         output.outputFile = new File(
-                output.outputFile.parent,
-                output.outputFile.name.replace(".apk", "-${variant.versionName}-${variant.versionCode}.apk"))
+            output.outputFile.parent,
+            output.outputFile.name.replace(".apk", "-${variant.versionName}-${variant.versionCode}.apk"))
     }
 }
 
-//ndk tasks
+// NDK tasks
 task buildNative(type:Exec,group:'GameHelper') {
   description 'build our native code(cpp).'
   executable = 'shell'
@@ -182,7 +221,7 @@ task buildNative(type:Exec,group:'GameHelper') {
   standardOutput = new ByteArrayOutputStream()
   environment('ANDROID_NDK_ROOT',android.ndkDirectory.getAbsolutePath())
   ext.output = {
-    return standardOutput.toString()
+     return standardOutput.toString()
   }
 }
 
@@ -192,7 +231,7 @@ task backUpNativeSymbols(type:Zip,group:'GameHelper') {
     version = projectVersion()['versionName'] + '('+ projectVersion()['versionCode'] + ')'
     from 'obj'
     doLast {
-        println 'We created a archive at :' + backUpNativeSymbols.archivePath
+        println 'We created a archive file :' + backUpNativeSymbols.archivePath
     }
 }
 
@@ -201,23 +240,22 @@ task cleanNativeSymbols(type: Delete,group:'GameHelper') {
     delete 'obj'
 }
 
-
-//check tasks
-task checkVersionInfo << {
-    println '------------------------------------------------'
-    println 'version.properties:'
-    println 'versionCode:'+ projectVersion()['versionCode']
-    println 'versionName:'+ projectVersion()['versionName']
-    println 'appMinVersion:'+ projectVersion()['appMinVersion']
-    println 'appHoc:'+ projectVersion()['appHoc']
-    println '------------------------------------------------'
+// check version tasks
+task checkVersionInfo(group:'GameHelper',description:'check the project version infomation in version.properties.') {
+    doLast {
+        println '------------------------------------------------'
+        println 'version.properties:'
+        println 'versionCode:'+ projectVersion()['versionCode']
+        println 'versionName:'+ projectVersion()['versionName']
+        println 'appMinVersion:'+ projectVersion()['appMinVersion']
+        println 'appHoc:'+ projectVersion()['appHoc']
+        println '------------------------------------------------'
+    }
 }
-checkVersionInfo.group = 'GameHelper'
-checkVersionInfo.description = 'check the project version infomation in version.properties.'
 
 backUpNativeSymbols.shouldRunAfter buildNative
 
-//adb tasks
+// adb helper tasks
 def adb = android.getAdbExe().toString()
 android.productFlavors.each { flavor ->
     def replaceName = 'replaceLua' + flavor.name.capitalize()
