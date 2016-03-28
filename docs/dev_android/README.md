@@ -4,7 +4,7 @@
 ~~~
 	我们Andorid项目现在只能在mac上使用AS(Android Studio)开发
 	项目路径为Dragonfall/frameworks/runtime-src/proj.android-studio
-  构建的时候,我们项目不支持同时构建debug和release版本,但是支持统一版本下的不同apk构建
+  构建的时候,我们项目不支持同时构建debug和release版本,但是支持同一版本下的不同apk构建
 ~~~
 
 ## 安装部分
@@ -226,7 +226,7 @@ CC_USE_SDK_PAYPAL | 打开Paypal支付的接口
 
 ### 我们项目自定义的Gradle任务
 
-  为了方便我们开发项目,我定义了一些项目的task,分组在`GameHelper`下,可通过命令`gradlew tasks`查看，或者在AS的Gradle视图中查看,**如构建Andoird项目下那张截图。具体的任务可能有变动，以实际为准!**
+  为了方便我们开发项目,我定义了一些项目的task,分组在`GameHelper`下,可通过命令`gradlew tasks`查看，或者在AS的Gradle视图中查看,**如构建Andoird项目下那张截图。具体的任务可能有变动，以实际命令查看到的任务为准!**
 
 ~~~
 GameHelper tasks

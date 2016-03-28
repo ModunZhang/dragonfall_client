@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import org.cocos2dx.lib.Cocos2dxActivity;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -13,6 +14,9 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Vibrator;
 import android.telephony.TelephonyManager;
+import android.view.KeyCharacterMap;
+import android.view.KeyEvent;
+import android.view.ViewConfiguration;
 
 public class PSNative {
 	static Cocos2dxActivity mContext = null;
@@ -229,5 +233,18 @@ public class PSNative {
 
 	public static Context getAppContext() {
 		return mContext;
+	}
+	@TargetApi(14)
+	public static boolean checkDeviceHasNavigationBar(Context activity) {
+		//通过判断设备是否有返回键、菜单键(不是虚拟键,是手机屏幕外的按键)来确定是否有navigation bar
+		boolean hasMenuKey = ViewConfiguration.get(activity)
+				.hasPermanentMenuKey();
+		boolean hasBackKey = KeyCharacterMap
+				.deviceHasKey(KeyEvent.KEYCODE_BACK);
+
+		if (!hasMenuKey && !hasBackKey) {
+			return true;
+		}
+		return false;
 	}
 }
