@@ -569,7 +569,7 @@ function Report:GetFightAttackDragonRoundData()
     local dragonFightData = data.fightWithHelpDefencePlayerReports or
         data.fightWithDefencePlayerReports or
         data.fightWithDefenceMonsterReports
-    return dragonFightData.attackPlayerDragonFightData or dragonFightData.defenceMonsterDragonFightData
+    return dragonFightData.attackPlayerDragonFightData
 end
 function Report:GetFightDefenceDragonRoundData()
     local data = self:GetData()
@@ -579,7 +579,7 @@ function Report:GetFightDefenceDragonRoundData()
     local dragonFightData = data.fightWithHelpDefencePlayerReports or
         data.fightWithDefencePlayerReports or
         data.fightWithDefenceMonsterReports
-    return dragonFightData.attackPlayerDragonFightData or dragonFightData.defenceMonsterDragonFightData
+    return dragonFightData.defencePlayerDragonFightData or dragonFightData.defenceMonsterDragonFightData
 end
 function Report:IsSoldierFight()
     local data = self:GetData()
@@ -621,6 +621,9 @@ function Report:IsFightWall()
         isFight = true
     end
     return isFight
+end
+function Report:IsFightWithBlackTroops()
+    return self:Type() == "attackMonster"
 end
 function Report:GetFightAttackWallRoundData()
     if not self:IsFightWall() then

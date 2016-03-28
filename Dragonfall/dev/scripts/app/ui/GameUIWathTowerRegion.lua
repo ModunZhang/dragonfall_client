@@ -590,7 +590,7 @@ end
 function GameUIWathTowerRegion:OnRetreatButtonClicked(entity,cb)
     if entity:GetType() == entity.ENTITY_TYPE.HELPTO then
         UIKit:showMessageDialog(_("提示"),_("确定撤军?"),function()
-            NetManager:getRetreatFromHelpedAllianceMemberPromise(entity:WithObject().beHelpedPlayerData.id)
+            NetManager:getRetreatFromHelpedAllianceMemberPromise(entity:WithObject().id)
                 :done(function()
                     cb(true)
                 end)

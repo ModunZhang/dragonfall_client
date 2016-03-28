@@ -1559,9 +1559,7 @@ end
 --撤销协防
 function NetManager:getRetreatFromHelpedAllianceMemberPromise(beHelpedPlayerId)
     return get_blocking_request_promise("logic.allianceHandler.retreatFromBeHelpedAllianceMember",
-        {
-            beHelpedPlayerId = beHelpedPlayerId,
-        },
+        {beHelpedPlayerId = beHelpedPlayerId},
         "撤销协防失败!"):done(get_player_response_msg)
 end
 --复仇其他联盟
@@ -1652,9 +1650,9 @@ function NetManager:getHelpDefenceMarchEventDetailPromise(eventId)
         {eventId = eventId},"获取协防事件数据失败!"):done(get_player_response_msg)
 end
 --查看协防部队详细信息
-function NetManager:getHelpDefenceTroopDetailPromise(playerId,helpedByPlayerId)
+function NetManager:getHelpDefenceTroopDetailPromise(playerId)
     return get_blocking_request_promise("logic.allianceHandler.getHelpDefenceTroopDetail",
-        {playerId = playerId,helpedByPlayerId = helpedByPlayerId},"查看协防部队详细信息失败!"):done(get_player_response_msg)
+        {playerId = playerId},"查看协防部队详细信息失败!"):done(get_player_response_msg)
 end
 -- 出售商品
 function NetManager:getSellItemPromise(type,name,count,price)
@@ -1743,6 +1741,7 @@ local function upgrade_soldier_star_promise(soldierName,finishNow)
         finishNow = finishNow,
     }, "士兵晋级失败!"):done(get_player_response_msg):done(function()
         if finishNow then
+            app:GetAudioManager():PlayeEffectSoundWithKey("COMPLETE")
             GameGlobalUI:showTips(
                 _("士兵晋级完成"),
                 string.format(

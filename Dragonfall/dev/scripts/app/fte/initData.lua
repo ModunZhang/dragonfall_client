@@ -13,7 +13,7 @@ return {
     deals = { },
     inviteToAllianceEvents = { },
     itemEvents = { },
-    helpedByTroops = { },
+    helpedByTroop = json.null,
     mails = { },
     iapGifts = { },
     serverId = "cache-server-1",

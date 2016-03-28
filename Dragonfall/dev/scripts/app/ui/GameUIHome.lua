@@ -322,6 +322,8 @@ function GameUIHome:CreateTop()
         color = 0xfffeb3,
     }):addTo(quest_bar_bg):align(display.LEFT_CENTER, -130, 0)
 
+    self.quest_label:runAction(UIKit:ScaleAni())
+
     return top_bg
 end
 function GameUIHome:GotoUnlockBuilding(location_id)

@@ -419,7 +419,7 @@ function GameUIGacha:InitOrdinary()
         text = _("每日获得免费抽奖机会，激活VIP5 以上，每日可获得额外的免费抽奖机会"),
         size = 22,
         color = 0xffedae,
-        dimensions = cc.size(400,0)
+        dimensions = cc.size(420,0)
     }):align(display.CENTER, window.cx, window.top_bottom-50):addTo(layer)
     local OrdinaryGachaPool = self:CreateGachaPool(layer)
 

@@ -352,7 +352,8 @@ local DECORATOR_IMAGE = {
 local DRAGON_HEAD = {
     blueDragon = "Dragon_blue_113x128.png",
     redDragon = "redDragon.png",
-    greenDragon = "greenDragon.png"
+    greenDragon = "greenDragon.png",
+    blackDragon = "tmp_black_dragon_113x128.png",
 }
 local SMALL_DRAGON_HEAD = {
     blueDragon = "blueDragon_40x40.png",
@@ -736,9 +737,9 @@ local DRAGON_SKILL_ICON = {
     }
     ,
     surge = {
-        redDragon = "battleHunger_128x128.png",
-        greenDragon = "battleHunger_128x128.png",
-        blueDragon = "battleHunger_128x128.png",
+        redDragon = "surge_128x128.png",
+        greenDragon = "surge_128x128.png",
+        blueDragon = "surge_128x128.png",
     }
 }
 local DAILY_QUESTS_ICON = {

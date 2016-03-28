@@ -143,6 +143,12 @@ void FacebookSDK::clearFacebookCookies()
 	{
 		cookieManager->DeleteCookie(iter);
 	}
+	//clean the local account 
+	if (IsAuthenticated())
+	{
+		Windows::Storage::ApplicationData::Current->LocalSettings->Values->Remove("FBUser_Id");
+		Windows::Storage::ApplicationData::Current->LocalSettings->Values->Remove("FBUser_Name");
+	}
 }
 
 void FacebookSDK::CallLuaCallback(cocos2d::ValueMap valMap)

@@ -110,9 +110,10 @@ function GameUIAllianceCityEnter:GetBuildingInfo()
         {"["..self:GetFocusAlliance().basicInfo.tag.."]"..self:GetMember().name,0x403c2f},
     }
 
+    local helpedByTroopsCount = self:GetMember().beHelped and 1 or 0
     local help_count = {
         {_("协防玩家"),0x615b44},
-        {self:GetMember().helpedByTroopsCount,0x403c2f},
+        {helpedByTroopsCount,0x403c2f},
     }
     return {location,player_name,help_count}
 end
@@ -120,7 +121,7 @@ end
 function GameUIAllianceCityEnter:GetEnterButtons()
     local buttons = {}
     local member = self:GetMember()
-    print("helpedByTroopsCount====,",member.helpedByTroopsCount)
+    local helpedByTroopsCount = member.beHelped and 1 or 0
     if self:IsMyAlliance() then --我方玩家
         local alliance = self:GetMyAlliance()
         if User:Id() == member.id then -- me
@@ -139,6 +140,7 @@ function GameUIAllianceCityEnter:GetEnterButtons()
                     end,
                     function()
                     end)
+                    self:LeftButtonClicked()
                 end)
             else
                 help_button = self:BuildOneButton("help_defense_44x56.png",_("协防")):onButtonClicked(function()
@@ -174,7 +176,7 @@ function GameUIAllianceCityEnter:GetEnterButtons()
                         end
                         self:LeftButtonClicked()
                     end
-                    if member.helpedByTroopsCount > 0 then
+                    if helpedByTroopsCount > 0 then
                         UIKit:showMessageDialog(_("提示"),_("目标协防数量已满，是否确认继续派兵？"),helpDefencePlayer,function()end)
                     else
                         helpDefencePlayer()
@@ -243,6 +245,7 @@ function GameUIAllianceCityEnter:GetEnterButtons()
             else
                 final_func()
             end
+            self:LeftButtonClicked()
         end)
         local my_allaince = Alliance_Manager:GetMyAlliance()
         -- attack_button:setButtonEnabled(my_allaince.basicInfo.status == "fight")
@@ -255,6 +258,7 @@ function GameUIAllianceCityEnter:GetEnterButtons()
             else
                 UIKit:newGameUI("GameUIStrikePlayer",1,{memberId = member.id,alliance = alliance,toLocation = toLocation,targetIsProtected = member.isProtected}):AddToCurrentScene(true)
             end
+            self:LeftButtonClicked()
         end)
         -- strike_button:setButtonEnabled(my_allaince.basicInfo.status == "fight")
 

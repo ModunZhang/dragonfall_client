@@ -113,23 +113,41 @@ function ScanPng2()
 
 cur_path=$(pwd)
 
-cd $cur_path
-cd ../dev/scripts/app/
-script_path=$(pwd)
+if [[ ${#@} -ge 2 ]]; then
+	Begin;
+	cur_path=$(pwd)
+	
+	cd $2
+	script_path=$(pwd)
+	cd $cur_path
+	
+	cd $1
+	for file in $(ls $dir)
+    do
+    	ScanPng2 $file
+    done
+	End;
+else
+	echo usage : delete_not_use_png_full.sh imageDir scriptDir
+fi
 
-cd $cur_path
-cd ../dev/res/images
-res_path=$(pwd)
+# cd $cur_path
+# cd ../dev/scripts/app/
+# script_path=$(pwd)
 
-Begin;
-files=(*.png) 
-for f in ${files[*]}
-do
-	if [ ${f##*.} != "sh" ]; then
-		ScanPng2 $f
-	fi
-done
-End;
+# cd $cur_path
+# cd ../dev/res/images
+# res_path=$(pwd)
+
+# Begin;
+# files=(*.png) 
+# for f in ${files[*]}
+# do
+# 	if [ ${f##*.} != "sh" ]; then
+# 		ScanPng2 $f
+# 	fi
+# done
+# End;
 
 
 # Begin;

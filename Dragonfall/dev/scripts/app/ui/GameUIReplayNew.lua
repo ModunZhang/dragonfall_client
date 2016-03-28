@@ -892,7 +892,7 @@ function GameUIReplayNew:OnMoveInStage()
 
     GameUIReplayNew.super.OnMoveInStage(self)
 end
-local animation = import("..animation")
+-- local animation = import("..animation")
 function GameUIReplayNew:onExit()
     GameUIReplayNew.super.onExit(self)
     if type(self.callback) == "function" then

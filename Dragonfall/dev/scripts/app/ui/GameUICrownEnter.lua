@@ -157,17 +157,9 @@ function GameUICrownEnter:Located(mapIndex, x, y)
         if scene.__cname ~= 'AllianceDetailScene' then
             app:EnterMyAllianceScene({mapIndex = mapIndex})
         else
-            if Alliance_Manager:GetAllianceByCache(mapIndex) then
-                scene:GotoAllianceByXY(scene:GetSceneLayer():IndexToLogic(mapIndex))
-                EnterIn(mapIndex)
-                self:LeftButtonClicked()
-            else
-                scene:FetchAllianceDatasByIndex(mapIndex, function()
-                    scene:GotoAllianceByXY(scene:GetSceneLayer():IndexToLogic(mapIndex))
-                    EnterIn(mapIndex)
-                    self:LeftButtonClicked()
-                end)
-            end
+            scene:GotoAllianceByXY(scene:GetSceneLayer():IndexToLogic(mapIndex))
+            EnterIn(mapIndex)
+            self:LeftButtonClicked()
         end
     end
 end

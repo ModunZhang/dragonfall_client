@@ -23,6 +23,8 @@ local normal = GameDatas.Soldiers.normal
 local SPECIAL = GameDatas.Soldiers.special
 
 local GameUISendTroopNew = UIKit:createUIClass("GameUISendTroopNew","GameUIWithCommonHeader")
+GameUISendTroopNew.dragonType = nil
+
 local soldier_arrange = {
     swordsman_1 = {row = 2, col = 2},
     swordsman_2 = {row = 2, col = 2},
@@ -102,18 +104,22 @@ function GameUISendTroopNew:ctor(march_callback,params)
     self.march_callback = march_callback
 
     -- 默认选中最强的并且可以出战的龙,如果都不能出战，则默认最强龙
-    self.dragon = params.dragon or self.dragon_manager:GetDragon(self.dragon_manager:GetCanFightPowerfulDragonType()) or self.dragon_manager:GetDragon(self.dragon_manager:GetPowerfulDragonType())
+    self.dragon = params.dragon or self.dragon_manager:GetDragon((self.isPVE and GameUISendTroopNew.dragonType) or self.dragon_manager:GetCanFightPowerfulDragonType()) or self.dragon_manager:GetDragon(self.dragon_manager:GetPowerfulDragonType())
+    if self.isPVE then
+        GameUISendTroopNew.dragonType = self.dragon:Type()
+    end
 end
 
 function GameUISendTroopNew:OnMoveInStage()
-    self:CreateTerrainBackground()
-    self:SelectDragonPart()
-    self:SelectSoldiersPart()
-    self:CreateBottomPart()
+    
     GameUISendTroopNew.super.OnMoveInStage(self)
 end
 function GameUISendTroopNew:CreateBetweenBgAndTitle()
     GameUISendTroopNew.super.CreateBetweenBgAndTitle(self)
+    self:CreateTerrainBackground()
+    self:SelectDragonPart()
+    self:SelectSoldiersPart()
+    self:CreateBottomPart()
 end
 function GameUISendTroopNew:onExit()
     GameUISendTroopNew.super.onExit(self)
@@ -255,7 +261,7 @@ function GameUISendTroopNew:SelectDragon()
                             self:RefreashDragon(selectDragon)
                             self.isMax = false
                             self.max_btn:setButtonLabel(UIKit:ttfLabel({
-                                text = _("最大"),
+                                text = _("最大"), 
                                 size = 24,
                                 color = 0xffedae,
                                 shadow= true
@@ -280,6 +286,9 @@ function GameUISendTroopNew:RefreashDragon(dragon)
     self.lead_citizen:setString(string.formatnumberthousands(citizen).."/"..string.formatnumberthousands(dragon:LeadCitizen()))
     self.soldier_load:setString(string.formatnumberthousands(load))
     self.dragon = dragon
+    if self.isPVE then
+        GameUISendTroopNew.dragonType = self.dragon:Type()
+    end
 end
 -- 单个格子最大带兵量
 function GameUISendTroopNew:GetUnitMaxCitizen()
@@ -320,7 +329,7 @@ function GameUISendTroopNew:CreateSoldierNode()
                         soldier_node:SetStatus(1)
                     end
                     self:RefreshSoldierNodes()
-                end,self:GetSettingSoldiers(),self:GetSettingSoldiersByIndex(soldier_node:GetIndex())):AddToCurrentScene()
+                end,self:GetSettingSoldiers(),self:GetSettingSoldiersByIndex(soldier_node:GetIndex()),soldier_node:GetIndex()):AddToCurrentScene()
             end
         end)
     setSoldierBtn:setContentSize(s_size)
@@ -370,10 +379,12 @@ function GameUISendTroopNew:CreateSoldierNode()
             corp:PlayAnimation("idle_90")
         else
             corp:PlayAnimation("move_90")
-            corp:setPositionY(s_size.height - 10)
+            if string.find(soldier_type , "catapult") or string.find(soldier_type , "meatWagon") then
+                corp:setPositionX(s_size.width - 150)
+            end
+            corp:setPositionY(s_size.height - 20)
         end
-        local config = UtilsForSoldier:GetSoldierConfig(User, soldier_type)
-        power_label:setString(string.formatnumberthousands(config.power * soldier_count))
+        power_label:setString(string.formatnumberthousands(soldier_count))
         self.soldier_type = soldier_type
         self.soldier_count = soldier_count
         return self
@@ -425,9 +436,11 @@ function GameUISendTroopNew:RefreshSoldierNodes()
     local soldier_node_table = self.soldier_node_table
     -- 首先取出所有已经设置的士兵信息
     local current_soldiers = self:GetSettingSoldiers()
+    local has_soldiers = false
     for i,soldier_node in ipairs(soldier_node_table) do
         if current_soldiers[i] then
             soldier_node:SetSoldier(current_soldiers[i].name,current_soldiers[i].count):SetStatus(2)
+            has_soldiers = true
         else
             if i == 1 or current_soldiers[i-1] then
                 soldier_node:SetStatus(1)
@@ -438,6 +451,15 @@ function GameUISendTroopNew:RefreshSoldierNodes()
     end
     self:RefreashDragon()
     self:RefreshMarchTimeAndBuff()
+    if has_soldiers then
+        self.isMax = true
+        self.max_btn:setButtonLabel(UIKit:ttfLabel({
+            text = _("最小"),
+            size = 24,
+            color = 0xffedae,
+            shadow= true
+        }))
+    end
 end
 function GameUISendTroopNew:ResetSoldierNode()
     for i,soldier_node in ipairs(self.soldier_node_table) do
@@ -640,7 +662,6 @@ function GameUISendTroopNew:GetSortSoldierMax()
         end
         if soldier_count > 0 then
             table.insert(own_soldiers, {name = soldier_type,count = soldier_count})
-
         end
     end
     while #sort_soldiers < 6 and #own_soldiers > 0 do

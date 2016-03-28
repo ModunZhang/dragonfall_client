@@ -354,6 +354,7 @@ function GameUIAllianceEnterBase:BuildOneButton(image,title,music_info)
         size = 18,
         color = 0xffedae,
     }):align(display.CENTER, -s.width/2 , -s.height+25):addTo(btn)
+    btn:setTouchSwallowEnabled(true)
     return btn
 end
 

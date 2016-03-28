@@ -31,7 +31,7 @@ function WorldLayer:onEnter()
     self.map = self:CreateMap()
 
     local p = self:ConvertLogicPositionToMapPosition(middle_index, middle_index)
-    display.newSprite("world_middle.png"):addTo(self.map):pos(p.x + 104, p.y+1)
+    display.newSprite("world_middle.jpg"):addTo(self.map):pos(p.x + 104, p.y+1)
 
     display.newSprite("world_crown_circle2.png")
         :addTo(self.map):pos(p.x+10, p.y)
@@ -357,25 +357,6 @@ function WorldLayer:CreateAllianceSprite(index, alliance)
         math.randomseed(tonumber(index) + 12345)
         local s_x,s_y = self:Offset(index)
         sprite:pos(s_x,s_y)
-        -- if tonumber(index) == self:LogicToIndex(middle_index-1, middle_index-1) then
-        --     sprite:pos(-40, 40)
-        -- elseif tonumber(index) == self:LogicToIndex(middle_index, middle_index-1) then
-        --     sprite:pos(0, 40)
-        -- elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index-1) then
-        --     sprite:pos(40, 40)
-        -- elseif tonumber(index) == self:LogicToIndex(middle_index-1, middle_index) then
-        --     sprite:pos(-40, 0)
-        -- elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index) then
-        --     sprite:pos(40, 0)
-        -- elseif tonumber(index) == self:LogicToIndex(middle_index-1, middle_index+1) then
-        --     sprite:pos(-40, -40)
-        -- elseif tonumber(index) == self:LogicToIndex(middle_index, middle_index+1) then
-        --     sprite:pos(0, -40)
-        -- elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index+1) then
-        --     sprite:pos(40, -40)
-        -- else
-        --     sprite:pos(30 - math.random(30), 30 - math.random(60))
-        -- end
     end
     local size = sprite:getContentSize()
     local banner = display.newSprite("alliance_banner.png")

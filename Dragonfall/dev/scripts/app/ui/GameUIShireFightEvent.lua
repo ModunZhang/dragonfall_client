@@ -58,8 +58,12 @@ function GameUIShireFightEvent:OnAllianceDataChanged_shrineEvents(alliance, delt
         end
     end
     if deltaData("shrineEvents") then
-        self.popultaion_label:setString(#self:GetFightEvent().playerTroops)
-        self:RefreshListView()
+        if self.popultaion_label then
+            self.popultaion_label:setString(#self:GetFightEvent().playerTroops)
+        end
+        if self.info_list then
+            self:RefreshListView()
+        end
     end
 end
 
@@ -257,7 +261,6 @@ function GameUIShireFightEvent:DispathSoliderButtonClicked()
                             NetManager:getMarchToShrinePromose(self:GetFightEvent().id,dragonType,soldiers):done(function()
                                 app:GetAudioManager():PlayeEffectSoundWithKey("TROOP_SENDOUT")
                             end)
-                            gameuialliancesendtroops:LeftButtonClicked()
                         end,
                         function()
                         end)

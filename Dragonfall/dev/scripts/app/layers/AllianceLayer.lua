@@ -129,7 +129,7 @@ function AllianceLayer:onCleanup()
             v2:release()
         end
     end
-    if self.middle_crown then
+    if self.middle_crown and not self.middle_crown:getParent() then
         self.middle_crown:release()
     end
 end
@@ -752,7 +752,8 @@ function AllianceLayer:RefreshObjectInfo(object, mapObj, alliance)
             :GetConfigByLevel(member.keepLevel)
         object:GetSprite():setTexture(config.png)
 
-        info.banner:setTexture(banners[member.helpedByTroopsCount])
+        local helpedByTroopsCount = member.beHelped and 1 or 0
+        info.banner:setTexture(banners[helpedByTroopsCount])
         info.level:setString(member.keepLevel)
         info.name:setString(string.format("%s", member.name))
 
@@ -1222,13 +1223,19 @@ function AllianceLayer:CreateMiddleCrown(obj_node)
         else -- 没有找到就是tower
             size = {width = 1, height = 1}
             local x,y = (2 * v.x - size.width + 1) / 2, (2 * v.y - size.height + 1) / 2
-            local sprite
+            local sprite = display.newNode()
             if name == "tower1" then
-                sprite = createEffectSprite("crystalTower.png")
+                ccs.Armature:create("crystalTower"):addTo(sprite)
+                :pos(0,50):getAnimation():playWithIndex(0)
+                -- sprite = createEffectSprite("crystalTower.png")
             elseif name == "tower2" then
-                sprite = createEffectSprite("guardTower.png")
+                ccs.Armature:create("guardTower"):addTo(sprite)
+                :pos(0,50):getAnimation():playWithIndex(0)
+                -- sprite = createEffectSprite("guardTower.png")
             elseif name == "crown" then
-                sprite = createEffectSprite("crystalThrone.png")
+                ccs.Armature:create("crystalThrone"):addTo(sprite)
+                :pos(0,50):getAnimation():playWithIndex(0)
+                -- sprite = createEffectSprite("crystalThrone.png")
             end
             local node = self:CreateClickableObject():addTo(obj_node)
                         :SetAlliancePos(x,y):AddSprite(sprite)
@@ -1467,12 +1474,12 @@ function AllianceLayer:GetMapInfoByIndex(index, alliance)
     style = style == nil and math.random(6) or style
     return terrain, style
 end
-function AllianceLayer:PromiseOfFlashEmptyGround(mapIndex, x, y)
+function AllianceLayer:PromiseOfFlashEmptyGround(mapIndex, x, y, scale)
     local CLICK_EMPTY_TAG = 911
     self.empty_node:removeChildByTag(CLICK_EMPTY_TAG)
     local point = self:RealPosition(mapIndex, x, y)
     local p = promise.new()
-    display.newSprite("click_empty.png")
+    display.newSprite("click_empty.png"):scale(scale or 1)
         :addTo(self.empty_node, 10000, CLICK_EMPTY_TAG)
         :pos(point.x, point.y):opacity(0)
         :runAction(

@@ -614,9 +614,8 @@ function GameUIMonsterReport:GetReportTitle()
 end
 function GameUIMonsterReport:GetFightTarget()
     local monster_data = self.report:GetEnemyPlayerData().soldiers[1]
-    local monster_type = monster_data.name
 
-    local battleAt = _("黑龙军团").."-"..Localize.soldier_name[monster_type]
+    local battleAt = _("黑龙军团")
     local location = self.report:GetBattleLocation()
     return string.format(_("Battle at %s (%d,%d)"),battleAt,location.x,location.y)
 end

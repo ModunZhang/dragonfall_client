@@ -589,6 +589,9 @@ function GameUIPveAttack:DecodeReport(report, dragon, attack_soldiers)
         local name,star,count = unpack(string.split(v, ":"))
         return k, {name = name, star = tonumber(star), count = count}
     end)
+    function report:IsFightWithBlackTroops()
+        return true
+    end
     function report:GetFightAttackName()
         return user.basicInfo.name
     end

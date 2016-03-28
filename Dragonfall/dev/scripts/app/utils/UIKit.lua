@@ -1329,10 +1329,6 @@ local function createAniWithConfig(ani, config, default_animation)
     sprite:setScaleY(s)
     sprite:setAnchorPoint(ap)
     sprite:getAnimation():play(default_animation)
-    if shadow then
-        display.newSprite("tmp_soldier_shadow.png")
-            :addTo(sprite):setAnchorPoint(cc.p(0.25,0.45))
-    end
     return sprite
 end
 
@@ -1519,9 +1515,9 @@ local soldier_fight_map = {
     lancer_1        = {"qibing_1_90"      , cc.p(0.32, 0.35), 2, true},
     lancer_2        = {"qibing_2_90"      , cc.p(0.32, 0.33), 2, true},
     lancer_3        = {"qibing_3_90"      , cc.p(0.28, 0.35), 2, true},
-    catapult_1      = {"toushiche_90"     , cc.p(0.15, 0.25), 1, false},
-    catapult_2      = {"toushiche_2_90"   , cc.p(0.17, 0.25), 1, false},
-    catapult_3      = {"toushiche_3_90"   , cc.p(0.19, 0.25), 1, false},
+    catapult_1      = {"toushiche_90"     , cc.p(0.50, 0.25), 1, false},
+    catapult_2      = {"toushiche_2_90"   , cc.p(0.50, 0.25), 1, false},
+    catapult_3      = {"toushiche_3_90"   , cc.p(0.50, 0.25), 1, false},
     sentinel_1      = {"shaobing_1_90"    , cc.p(0.30, 0.24), 4, true},
     sentinel_2      = {"shaobing_2_90"    , cc.p(0.30, 0.23), 4, true},
     sentinel_3      = {"shaobing_3_90"    , cc.p(0.30, 0.23), 4, true},
@@ -1534,13 +1530,46 @@ local soldier_fight_map = {
     ballista_1      = {"nuche_1_90"       , cc.p(0.18, 0.37), 1, false},
     ballista_2      = {"nuche_2_90"       , cc.p(0.20, 0.37), 1, false},
     ballista_3      = {"nuche_3_90"       , cc.p(0.17, 0.30), 1, false},
-    skeletonWarrior = {"kulouyongshi_90"  , cc.p(0.33, 0.32), 4, true},
+    skeletonWarrior = {"kulouyongshi_90"  , cc.p(0.38, 0.32), 4, true},
     skeletonArcher  = {"kulousheshou_90"  , cc.p(0.26, 0.29), 4, false},
     deathKnight     = {"siwangqishi_90"   , cc.p(0.28, 0.30), 2, true},
-    meatWagon       = {"jiaorouche_90"    , cc.p(0.20, 0.29), 1, false},
+    meatWagon       = {"jiaorouche_90"    , cc.p(0.50, 0.40), 1, false},
     wall_1          = {"chengqiang_1"     , cc.p(0.50, 0.50), 1, false},
     wall_2          = {"chengqiang_2"     , cc.p(0.50, 0.50), 1, false},
     wall_3          = {"chengqiang_3"     , cc.p(0.50, 0.50), 1, false},
+}
+local pve_soldier_fight_map = {
+    swordsman_1     = {"bubing_1_90"              , cc.p(0.43, 0.23), 4, true},
+    swordsman_2     = {"heihua_bubing_2_90"       , cc.p(0.43, 0.21), 4, true},
+    swordsman_3     = {"heihua_bubing_3_90"       , cc.p(0.43, 0.23), 4, true},
+    ranger_1        = {"gongjianshou_1_90"        , cc.p(0.36, 0.20), 4, false},
+    ranger_2        = {"heihua_gongjianshou_2_90" , cc.p(0.30, 0.19), 4, false},
+    ranger_3        = {"heihua_gongjianshou_3_90" , cc.p(0.30, 0.18), 4, false},
+    lancer_1        = {"qibing_1_90"              , cc.p(0.32, 0.35), 2, true},
+    lancer_2        = {"heihua_qibing_2_90"       , cc.p(0.32, 0.33), 2, true},
+    lancer_3        = {"heihua_qibing_3_90"       , cc.p(0.28, 0.35), 2, true},
+    catapult_1      = {"toushiche_90"             , cc.p(0.50, 0.25), 1, false},
+    catapult_2      = {"heihua_toushiche_2_90"    , cc.p(0.50, 0.25), 1, false},
+    catapult_3      = {"heihua_toushiche_3_90"    , cc.p(0.50, 0.25), 1, false},
+    sentinel_1      = {"shaobing_1_90"            , cc.p(0.30, 0.24), 4, true},
+    sentinel_2      = {"heihua_shaobing_2_90"     , cc.p(0.30, 0.23), 4, true},
+    sentinel_3      = {"heihua_shaobing_3_90"     , cc.p(0.30, 0.23), 4, true},
+    crossbowman_1   = {"nugongshou_1_90"          , cc.p(0.32, 0.34), 4, false},
+    crossbowman_2   = {"heihua_nugongshou_2_90"   , cc.p(0.32, 0.29), 4, false},
+    crossbowman_3   = {"heihua_nugongshou_3_90"   , cc.p(0.32, 0.28), 4, false},
+    horseArcher_1   = {"youqibing_1_90"           , cc.p(0.29, 0.23), 2, false},
+    horseArcher_2   = {"heihua_youqibing_2_90"    , cc.p(0.26, 0.25), 2, false},
+    horseArcher_3   = {"heihua_youqibing_3_90"    , cc.p(0.26, 0.22), 2, false},
+    ballista_1      = {"nuche_1_90"               , cc.p(0.18, 0.37), 1, false},
+    ballista_2      = {"heihua_nuche_2_90"        , cc.p(0.20, 0.37), 1, false},
+    ballista_3      = {"heihua_nuche_3_90"        , cc.p(0.17, 0.30), 1, false},
+    skeletonWarrior = {"kulouyongshi_90"          , cc.p(0.38, 0.32), 4, true},
+    skeletonArcher  = {"kulousheshou_90"          , cc.p(0.26, 0.29), 4, false},
+    deathKnight     = {"siwangqishi_90"           , cc.p(0.28, 0.30), 2, true},
+    meatWagon       = {"jiaorouche_90"            , cc.p(0.50, 0.40), 1, false},
+    wall_1          = {"chengqiang_1"             , cc.p(0.50, 0.50), 1, false},
+    wall_2          = {"chengqiang_2"             , cc.p(0.50, 0.50), 1, false},
+    wall_3          = {"chengqiang_3"             , cc.p(0.50, 0.50), 1, false},
 }
 local count_map = {
     [1] = {{x = 0, y = 0}},
@@ -1723,7 +1752,7 @@ function UIKit:CreateDragonBattle(attackDragon, defenceDragon, gameController)
             UIKit:ttfLabel({
                 text = string.format("+%d%%", attackDragon.increase),
                 size = 20,
-                color = getColorByPercent(leftDragon:GetPercent()),
+                color = getColorByPercent(leftDragon:GetPercent()/100),
                 shadow = true,
             }):addTo(attackBuff):align(display.RIGHT_CENTER, 275, length - (i-1) * 32)
 
@@ -1737,7 +1766,7 @@ function UIKit:CreateDragonBattle(attackDragon, defenceDragon, gameController)
             UIKit:ttfLabel({
                 text = string.format("+%d%%", defenceDragon.increase),
                 size = 20,
-                color = getColorByPercent(rightDragon:GetPercent()),
+                color = getColorByPercent(rightDragon:GetPercent()/100),
                 shadow = true,
             }):addTo(defenceBuff):align(display.RIGHT_CENTER, 275, length - (i-1) * 32)
         end
@@ -1840,7 +1869,7 @@ function UIKit:CreateFightDragon(param, gameController)
         return self
     end
     function fightDragonNode:GetPercent()
-        return self.progress:getPercentage() / 100
+        return self.progress:getPercentage()
     end
     function fightDragonNode:SetPercent(percent)
         self.progress:setPercentage(percent * 100)
@@ -1859,10 +1888,24 @@ function UIKit:CreateFightDragon(param, gameController)
     end
     return fightDragonNode:RefreshSpeed()
 end
-
-function UIKit:CreateSkillDragon(dragonType, degree, gameController)
+local skill_dragon_map = {
+    redDragon   = "red_dragon_90",
+    blueDragon  = "blue_dragon_90",
+    greenDragon = "green_dragon_90",
+    blackDragon = "black_dragon_90",
+}
+local skill_time_map = {
+    redDragon = 0,
+    blueDragon = 0,
+    greenDragon = 0.3,
+    blackDragon = 0,
+}
+function UIKit:CreateSkillDragon(dragonType, isattack, gameController)
     gameController = gameController or empty_gameController
-    local dragonNode = self:CreateDragonByDegree(degree or 90, 3, dragonType or "redDragon")
+    local dragonNode = display.newNode()
+    dragonNode.dragonAni = ccs.Armature:create(skill_dragon_map[dragonType])
+    :addTo(dragonNode):setScaleX(isattack and 1 or -1)
+    -- local dragonNode = self:CreateDragonByDegree(degree or 90, 3, dragonType or "redDragon")
     dragonNode.dragonType = dragonType
     function dragonNode:IsDragon()end
     function dragonNode:Pause()
@@ -1880,6 +1923,33 @@ function UIKit:CreateSkillDragon(dragonType, degree, gameController)
             action:setSpeed(speed)
         end
         self.dragonAni:getAnimation():setSpeedScale(speed)
+        return self
+    end
+    function dragonNode:Attack(func)
+        local totalTime = 3
+        local skillTime = skill_time_map[self.dragonType]
+        self.dragonAni:getAnimation():play("Animation1", -1, 0)
+        self:RefreshSpeed()
+        local acts = transition.sequence({
+            cc.CallFunc:create(function()
+                app:GetAudioManager():PlayBuildingEffectByType("dragonEyrie")
+            end),
+            cc.DelayTime:create(skillTime),
+            cc.CallFunc:create(function()
+                if type(func) == "function" then
+                    func(false)
+                end
+            end),
+            cc.DelayTime:create(totalTime - skillTime),
+            cc.CallFunc:create(function()
+                if type(func) == "function" then
+                    func(true)
+                end
+            end),
+        })
+        local speed = cc.Speed:create(acts, self:Speed())
+        speed:setTag(SPEED_TAG)
+        self:runAction(speed)
         return self
     end
     function dragonNode:Move(x, y, time, func, delayTime)
@@ -1904,29 +1974,54 @@ function UIKit:CreateSkillDragon(dragonType, degree, gameController)
     end
     return dragonNode:RefreshSpeed()
 end
+local effect_map = {
+    poison_1 = cc.p(0.5,0.25),
+    poison_2 = cc.p(0.5,0.2),
+    poison_3 = cc.p(0.5,0.3),
+    fire = cc.p(0.5,0.3),
+    lightning = cc.p(0.5,0.3),
+}
+function UIKit:CreateSkillEffect(effectType, isFlipX)
+    local armature = ccs.Armature:create(effectType)
+    if isFlipX then
+        armature:setScaleX(- armature:getScaleX())
+    end
+    armature:setAnchorPoint(effect_map[effectType])
+    armature:getAnimation():playWithIndex(0, -1, 0)
+    return armature
+end
 local SOLDIER_NODE = 1
-local EFFECT_TAG = 2
-local INFO_TAG = 3
+local BULLET_NODE = 2
+local EFFECT_TAG = 3
+local INFO_TAG = 4
 local HURT_TAG = 5
 local normal = GameDatas.Soldiers.normal
 local special = GameDatas.Soldiers.special
+local SOLDIER_SCALE = 0.8
 function UIKit:CreateFightTroops(soldierName, properties, gameController)
     gameController = gameController or empty_gameController
     local troopsNode = display.newNode()
-    local soldiersNode = display.newNode():addTo(troopsNode, 0, SOLDIER_NODE):scale(0.8)
-    troopsNode.infoNode = display.newNode():addTo(troopsNode, 1, INFO_TAG)
-    troopsNode.effectsNode = display.newNode():addTo(troopsNode, 2, EFFECT_TAG)
+    local soldiersNode = display.newNode():addTo(troopsNode, 0, SOLDIER_NODE):scale(SOLDIER_SCALE)
+    troopsNode.bulletNode = display.newNode():addTo(troopsNode, 1, BULLET_NODE)
+    troopsNode.infoNode = display.newNode():addTo(troopsNode, 2, INFO_TAG)
+    troopsNode.effectsNode = display.newNode():addTo(troopsNode, 3, EFFECT_TAG)
     troopsNode.properties = properties or {}
     troopsNode.soldierName = soldierName
     local config = special[soldierName] or normal[soldierName.."_"..1]
     if config then
         troopsNode.soldierType = config.type
     end
-    local _,_,count = unpack(soldier_fight_map[soldierName])
+    local fight_soldier_config = properties.ispve and pve_soldier_fight_map or soldier_fight_map
+    local _,_,count = unpack(fight_soldier_config[soldierName])
     local soldiers = {}
     for i,v in ipairs(count_map[count]) do
-        soldiers[#soldiers + 1] = self:CreateFightSoldier(soldierName)
-            :addTo(soldiersNode,1):pos(v.x, v.y)
+        local aniName, ap = unpack(fight_soldier_config[soldierName])
+        local armature = ccs.Armature:create(aniName)
+        armature:setAnchorPoint(ap)
+        if "wall" == soldierName then
+            armature:setScaleX(-1)
+        end
+        soldiers[i] = armature:addTo(soldiersNode,1):pos(v.x, v.y)
     end
     troopsNode.soldiers = soldiers
     function troopsNode:IsTroops() return soldierName ~= "wall" end
@@ -1959,6 +2054,11 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         for _, v in pairs(self.soldiers) do
             v:getAnimation():setSpeedScale(speed)
         end
+
+        for _,v in pairs(self.bulletNode:getChildren()) do
+            v:getAnimation():setSpeedScale(speed)
+        end
+
         return self
     end
     function troopsNode:Speed()
@@ -1967,8 +2067,11 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
     function troopsNode:IsWall()
         return not self.soldiers[1]:getAnimation():getAnimationData():getMovement("move_90")
     end
+    function troopsNode:IsCatapult()
+        return string.find(soldierName, "catapult") or string.find(soldierName, "meatWagon")
+    end
     function troopsNode:IsMelee()
-        local _,_,_,ismelee = unpack(soldier_fight_map[soldierName])
+        local _,_,_,ismelee = unpack(fight_soldier_config[soldierName])
         return ismelee
     end
     function troopsNode:GetAni()
@@ -2021,8 +2124,6 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
     function troopsNode:Return(x, y, time, func)
         self.infoNode:hide()
         self:Play("move_90", -1)
-
-
 
         local moveActs = transition.sequence({
             cc.MoveTo:create(time, cc.p(x, y)),
@@ -2131,9 +2232,62 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         self:Play("hurt", 0)
         return self:PromiseOfAnimationFinished(self:GetAni())
     end
-    function troopsNode:PromiseOfAttack()
+    function troopsNode:PromiseOfAttack(isrevenge)
+        if isrevenge then
+            local p1 = promise.new()
+            local p2 = promise.new()
+            local d = self:IsLeft() and 20 or -20
+            local x,y = self:getPosition()
+            self:Play("move_90", -1)
+            local acts = transition.sequence({
+                cc.MoveTo:create(0.15,cc.p(x+d,y)),
+                cc.CallFunc:create(function() 
+                    app:GetAudioManager()
+                    :PlayeAttackSoundBySoldierName(self.soldierName, "rush")
+                    p1:resolve() 
+                end),
+                cc.MoveTo:create(0.15,cc.p(x,y)),
+                cc.CallFunc:create(function() 
+                    self:Idle()
+                    p2:resolve()
+                end),
+            })
+            local speed = cc.Speed:create(acts, self:Speed())
+            speed:setTag(SPEED_TAG)
+            self:runAction(speed)
+            return p1,p2
+        end
+        self.bulletNode:removeAllChildren()
         self:Play("attack", 0)
-        return self:PromiseOfAnimationFinished(self:GetAni())
+        if self:IsCatapult() then
+            local attackPromise = self:PromiseOfAnimationFinished(self:GetAni()):next(function()
+                    self:Idle()
+                end)
+            local bulletPromise = promise.new()
+            local acts = transition.sequence({
+                    cc.DelayTime:create(0.6),
+                    cc.CallFunc:create(function()
+                        local armature = ccs.Armature:create("stone"):addTo(self.bulletNode)
+                        if self:IsLeft() then
+                            armature:pos(-50, 50)
+                        else
+                            armature:pos(50, 50):setScaleX(-1)
+                        end
+                        armature:getAnimation():playWithIndex(0,-1,0)
+                        armature:getAnimation():setSpeedScale(self:Speed())
+                        self:PromiseOfAnimationFinished(armature:getAnimation()):next(function()
+                            bulletPromise:resolve()
+                        end)
+                    end),
+                })
+            local speed = cc.Speed:create(acts, self:Speed())
+            speed:setTag(SPEED_TAG)
+            self:runAction(speed)
+            return promise.all(attackPromise,bulletPromise)
+        else
+            return self:PromiseOfAnimationFinished(self:GetAni())
+        end
+        
     end
     function troopsNode:PromiseOfAnimationFinished(animation)
         local p = promise.new()
@@ -2171,23 +2325,14 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         return self
     end
     function troopsNode:Left()
-        self:getChildByTag(SOLDIER_NODE):setScaleX(1)
+        self:getChildByTag(SOLDIER_NODE):setScaleX(SOLDIER_SCALE)
         return self
     end
     function troopsNode:Right()
-        self:getChildByTag(SOLDIER_NODE):setScaleX(-1)
+        self:getChildByTag(SOLDIER_NODE):setScaleX(-SOLDIER_SCALE)
         return self
     end
     return troopsNode:RefreshSpeed()
-end
-function UIKit:CreateFightSoldier(soldierName)
-    local aniName, ap = unpack(soldier_fight_map[soldierName])
-    local armature = ccs.Armature:create(aniName)
-    armature:setAnchorPoint(ap)
-    if "wall" == soldierName then
-        armature:setScaleX(-1)
-    end
-    return armature
 end
 
 
@@ -2378,6 +2523,15 @@ function UIKit:CreateArrow(param, func)
     arrow.icon = display.newSprite(param.icon or "arrow_icon_mine.png")
         :addTo(arrow):pos(96/2, 102/2 - 4)
     return arrow
+end
+
+function UIKit:ScaleAni()
+    return cc.RepeatForever:create(
+                    transition.sequence{
+                        cc.ScaleTo:create(0.8, 1.02),
+                        cc.ScaleTo:create(0.8, 1.0),
+                    }
+                )
 end
 
 
