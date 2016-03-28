@@ -1329,10 +1329,6 @@ local function createAniWithConfig(ani, config, default_animation)
     sprite:setScaleY(s)
     sprite:setAnchorPoint(ap)
     sprite:getAnimation():play(default_animation)
-    if shadow then
-        display.newSprite("tmp_soldier_shadow.png")
-            :addTo(sprite):setAnchorPoint(cc.p(0.25,0.45))
-    end
     return sprite
 end
 
@@ -1519,9 +1515,9 @@ local soldier_fight_map = {
     lancer_1        = {"qibing_1_90"      , cc.p(0.32, 0.35), 2, true},
     lancer_2        = {"qibing_2_90"      , cc.p(0.32, 0.33), 2, true},
     lancer_3        = {"qibing_3_90"      , cc.p(0.28, 0.35), 2, true},
-    catapult_1      = {"toushiche_90"     , cc.p(0.15, 0.25), 1, false},
-    catapult_2      = {"toushiche_2_90"   , cc.p(0.17, 0.25), 1, false},
-    catapult_3      = {"toushiche_3_90"   , cc.p(0.19, 0.25), 1, false},
+    catapult_1      = {"toushiche_90"     , cc.p(0.50, 0.25), 1, false},
+    catapult_2      = {"toushiche_2_90"   , cc.p(0.50, 0.25), 1, false},
+    catapult_3      = {"toushiche_3_90"   , cc.p(0.50, 0.25), 1, false},
     sentinel_1      = {"shaobing_1_90"    , cc.p(0.30, 0.24), 4, true},
     sentinel_2      = {"shaobing_2_90"    , cc.p(0.30, 0.23), 4, true},
     sentinel_3      = {"shaobing_3_90"    , cc.p(0.30, 0.23), 4, true},
@@ -1537,7 +1533,7 @@ local soldier_fight_map = {
     skeletonWarrior = {"kulouyongshi_90"  , cc.p(0.38, 0.32), 4, true},
     skeletonArcher  = {"kulousheshou_90"  , cc.p(0.26, 0.29), 4, false},
     deathKnight     = {"siwangqishi_90"   , cc.p(0.28, 0.30), 2, true},
-    meatWagon       = {"jiaorouche_90"    , cc.p(0.20, 0.29), 1, false},
+    meatWagon       = {"jiaorouche_90"    , cc.p(0.50, 0.40), 1, false},
     wall_1          = {"chengqiang_1"     , cc.p(0.50, 0.50), 1, false},
     wall_2          = {"chengqiang_2"     , cc.p(0.50, 0.50), 1, false},
     wall_3          = {"chengqiang_3"     , cc.p(0.50, 0.50), 1, false},
@@ -1962,8 +1958,9 @@ function UIKit:CreateSkillEffect(effectType, isFlipX)
     return armature
 end
 local SOLDIER_NODE = 1
-local EFFECT_TAG = 2
-local INFO_TAG = 3
+local BULLET_NODE = 2
+local EFFECT_TAG = 3
+local INFO_TAG = 4
 local HURT_TAG = 5
 local normal = GameDatas.Soldiers.normal
 local special = GameDatas.Soldiers.special
@@ -1972,8 +1969,9 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
     gameController = gameController or empty_gameController
     local troopsNode = display.newNode()
     local soldiersNode = display.newNode():addTo(troopsNode, 0, SOLDIER_NODE):scale(SOLDIER_SCALE)
-    troopsNode.infoNode = display.newNode():addTo(troopsNode, 1, INFO_TAG)
-    troopsNode.effectsNode = display.newNode():addTo(troopsNode, 2, EFFECT_TAG)
+    troopsNode.bulletNode = display.newNode():addTo(troopsNode, 1, BULLET_NODE)
+    troopsNode.infoNode = display.newNode():addTo(troopsNode, 2, INFO_TAG)
+    troopsNode.effectsNode = display.newNode():addTo(troopsNode, 3, EFFECT_TAG)
     troopsNode.properties = properties or {}
     troopsNode.soldierName = soldierName
     local config = special[soldierName] or normal[soldierName.."_"..1]
@@ -2017,6 +2015,11 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         for _, v in pairs(self.soldiers) do
             v:getAnimation():setSpeedScale(speed)
         end
+
+        for _,v in pairs(self.bulletNode:getChildren()) do
+            v:getAnimation():setSpeedScale(speed)
+        end
+
         return self
     end
     function troopsNode:Speed()
@@ -2026,7 +2029,7 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         return not self.soldiers[1]:getAnimation():getAnimationData():getMovement("move_90")
     end
     function troopsNode:IsCatapult()
-        return string.find(soldierName, "catapult")
+        return string.find(soldierName, "catapult") or string.find(soldierName, "meatWagon")
     end
     function troopsNode:IsMelee()
         local _,_,_,ismelee = unpack(soldier_fight_map[soldierName])
@@ -2198,13 +2201,13 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
             local x,y = self:getPosition()
             self:Play("move_90", -1)
             local acts = transition.sequence({
-                cc.MoveTo:create(0.3,cc.p(x+d,y)),
+                cc.MoveTo:create(0.15,cc.p(x+d,y)),
                 cc.CallFunc:create(function() 
                     app:GetAudioManager()
                     :PlayeAttackSoundBySoldierName(self.soldierName, "rush")
                     p1:resolve() 
                 end),
-                cc.MoveTo:create(0.3,cc.p(x,y)),
+                cc.MoveTo:create(0.15,cc.p(x,y)),
                 cc.CallFunc:create(function() 
                     self:Idle()
                     p2:resolve()
@@ -2215,8 +2218,37 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
             self:runAction(speed)
             return p1,p2
         end
+        self.bulletNode:removeAllChildren()
         self:Play("attack", 0)
-        return self:PromiseOfAnimationFinished(self:GetAni())
+        if self:IsCatapult() then
+            local attackPromise = self:PromiseOfAnimationFinished(self:GetAni()):next(function()
+                    self:Idle()
+                end)
+            local bulletPromise = promise.new()
+            local acts = transition.sequence({
+                    cc.DelayTime:create(0.6),
+                    cc.CallFunc:create(function()
+                        local armature = ccs.Armature:create("stone"):addTo(self.bulletNode)
+                        if self:IsLeft() then
+                            armature:pos(-50, 50)
+                        else
+                            armature:pos(50, 50):setScaleX(-1)
+                        end
+                        armature:getAnimation():playWithIndex(0,-1,0)
+                        armature:getAnimation():setSpeedScale(self:Speed())
+                        self:PromiseOfAnimationFinished(armature:getAnimation()):next(function()
+                            bulletPromise:resolve()
+                        end)
+                    end),
+                })
+            local speed = cc.Speed:create(acts, self:Speed())
+            speed:setTag(SPEED_TAG)
+            self:runAction(speed)
+            return promise.all(attackPromise,bulletPromise)
+        else
+            return self:PromiseOfAnimationFinished(self:GetAni())
+        end
+        
     end
     function troopsNode:PromiseOfAnimationFinished(animation)
         local p = promise.new()
@@ -2466,8 +2498,8 @@ end
 function UIKit:ScaleAni()
     return cc.RepeatForever:create(
                     transition.sequence{
-                        cc.ScaleTo:create(0.5, 1.1),
-                        cc.ScaleTo:create(0.5, 1.0),
+                        cc.ScaleTo:create(0.8, 1.02),
+                        cc.ScaleTo:create(0.8, 1.0),
                     }
                 )
 end
