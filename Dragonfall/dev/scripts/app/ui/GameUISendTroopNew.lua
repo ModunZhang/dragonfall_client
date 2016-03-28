@@ -379,7 +379,10 @@ function GameUISendTroopNew:CreateSoldierNode()
             corp:PlayAnimation("idle_90")
         else
             corp:PlayAnimation("move_90")
-            corp:setPositionY(s_size.height - 10)
+            if string.find(soldier_type , "catapult") or string.find(soldier_type , "meatWagon") then
+                corp:setPositionX(s_size.width - 150)
+            end
+            corp:setPositionY(s_size.height - 20)
         end
         power_label:setString(string.formatnumberthousands(soldier_count))
         self.soldier_type = soldier_type
