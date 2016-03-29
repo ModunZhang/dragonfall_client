@@ -26,12 +26,12 @@ function UtilsForEvent:GetMilitaryTechEventLocalize(tech_name, level)
     end
     if tech_type == "hpAdd" then
         return string.format(
-            _("研发科技-%s血量增加到 Lv %d"),
+            _("%s血量增加到 Lv %d"),
             Localize.soldier_category[category],
             level + 1)
     end
     return string.format(
-        _("研发科技-%s对%s的攻击到 Lv %d"),
+        _("%s对%s的攻击到 Lv %d"),
         Localize.soldier_category[category],
         Localize.soldier_category[tech_type],
         level + 1)
@@ -120,13 +120,9 @@ function UtilsForEvent:GetCollectPercent(event)
     return collectCount, collectPercent
 end
 function UtilsForEvent:GetVillageEventPrefix(event)
-    local x,y = DataUtils:GetAbsolutePosition(event.toAlliance.mapIndex,
-        event.toAlliance.location.x,
-        event.toAlliance.location.y)
-    local target_pos = string.format("%s,%s", x, y)
-    return string.format(_("正在采集%sLv%s (%s)"),
+    return string.format(_("正在采集%sLv%s"),
         Localize.village_name[event.villageData.name],
-        event.villageData.level,target_pos)
+        event.villageData.level)
 end
 function UtilsForEvent:GetEventTime(event)
     if event.eventType == "shrineEvents" then

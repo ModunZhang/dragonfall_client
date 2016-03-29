@@ -556,7 +556,7 @@ function GameUISendTroopNew:CreateBottomPart()
                 elseif #soldiers == 0 then
                     UIKit:showMessageDialog(_("提示"),_("请选择要派遣的部队"))
                     return
-                elseif self.alliance:IsReachEventLimit() and not self.isMilitary then
+                elseif self.alliance:IsReachEventLimit() and not self.isMilitary and not self.isPVE then
                     local dialog = UIKit:showMessageDialog(_("提示"),_("没有空闲的行军队列"))
                     if User.basicInfo.marchQueue < 2 then
                         dialog:CreateOKButton(
