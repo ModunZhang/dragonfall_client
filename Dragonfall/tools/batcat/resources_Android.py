@@ -90,7 +90,7 @@ def NormalImages(in_path,out_path,outdir):
             shutil.copy(in_path, outdir)
         elif fileExt not in getTempFileExtensions():
             if NEED_ENCRYPT_RES:
-                if PNG_COMPRESS_WITH_PNGQUANT and ('pvr' in fileName or 'buildings0' in fileName):
+                if PNG_COMPRESS_WITH_PNGQUANT and ('buildings0' in fileName):
                     temp_file_path = os.path.join(TEMP_RES_DIR, os.path.basename(in_path))
                     if PngQuantImage(in_path,temp_file_path):
                         CompileResources(temp_file_path, outdir)
@@ -99,7 +99,7 @@ def NormalImages(in_path,out_path,outdir):
                 else:
                     CompileResources(in_path, outdir)
             else:
-                if PNG_COMPRESS_WITH_PNGQUANT and ('pvr' in fileName or 'buildings0' in fileName):
+                if PNG_COMPRESS_WITH_PNGQUANT and ('buildings0' in fileName):
                     PngQuantImage(in_path,out_path)
                 else:
                     shutil.copy(in_path, outdir)
