@@ -261,6 +261,9 @@ function GameUIShireFightEvent:DispathSoliderButtonClicked()
                             NetManager:getMarchToShrinePromose(self:GetFightEvent().id,dragonType,soldiers):done(function()
                                 app:GetAudioManager():PlayeEffectSoundWithKey("TROOP_SENDOUT")
                             end)
+                            if gameuialliancesendtroops and gameuialliancesendtroops.LeftButtonClicked then
+                                gameuialliancesendtroops:LeftButtonClicked()
+                            end
                         end,
                         function()
                         end)

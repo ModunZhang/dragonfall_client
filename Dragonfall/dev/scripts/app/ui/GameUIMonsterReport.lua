@@ -475,7 +475,7 @@ function GameUIMonsterReport:CreateMonsterItem(monster)
     -- 联盟名字背景框
     display.newScale9Sprite("back_ground_red_254x42.png", 1, 0,cc.size(256,50),cc.rect(10,10,234,22)):align(display.LEFT_BOTTOM):addTo(player_item)
     -- 玩家头像
-    local heroBg = display.newSprite("dragon_bg_114x114.png"):addTo(player_item,1):align(display.CENTER, 50, height/2):setScale(0.7)
+    local heroBg = display.newSprite("dragon_bg_114x114.png"):addTo(player_item,1):align(display.CENTER, 45, height/2):setScale(0.7)
     local icon = display.newSprite("tmp_black_dragon_113x128.png"):addTo(heroBg)
         :align(display.CENTER,56,65)
 
@@ -487,6 +487,7 @@ function GameUIMonsterReport:CreateMonsterItem(monster)
         text = battleAt .." " .. string.format(_("等级%d"),monster.level),
         size = 20,
         color = 0x403c2f,
+        dimensions = cc.size(140,0)
     }):align(display.CENTER,170, height-25)
         :addTo(player_item)
 
