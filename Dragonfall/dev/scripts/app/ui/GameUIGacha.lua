@@ -307,7 +307,6 @@ function GameUIGacha:CreateGachaPool(layer)
         end
         layer:EnAbleButton(false)
         local terminal_point
-        print("item_name=",item_name,"count=",item[2])
         for i,item in ipairs(items) do
             if item:GetGachaItemName() == item_name and item:GetGachaItemCount()== self.current_gacha_item_count then
                 terminal_point = i
@@ -318,11 +317,11 @@ function GameUIGacha:CreateGachaPool(layer)
 
         -- 随机转几圈
         math.randomseed(tostring(os.time()):reverse():sub(1, 6))
-        local round_num = math.random(3,5)
+        local round_num = math.random(1,2)
         -- 总共要跳动的格子数
         self.total_steps = round_num*16+terminal_point - current_index
         -- 当前计时器周期
-        self.current_period = 0.005
+        self.current_period = 0.08
         -- 跳动步子参数，越慢的计时器行走的格子数越少
         self.step_offset = 10
         if self.handle then
@@ -356,8 +355,8 @@ function GameUIGacha:CreateGachaPool(layer)
             self.handle = nil
             if self.total_steps-self.run_steps<10 then
                 self.current_period = self.current_period + 0.03
-            elseif self.total_steps-self.run_steps<40 then
-                self.current_period = self.current_period + 0.001
+            -- elseif self.total_steps-self.run_steps<40 then
+            --     self.current_period = self.current_period + 0.005
             end
             self.handle = scheduler.scheduleGlobal(handler(self, self.Run), self.current_period, false)
             -- if self.total_steps-self.run_steps<10 then
