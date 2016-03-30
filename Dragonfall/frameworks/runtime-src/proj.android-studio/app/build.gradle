@@ -255,6 +255,7 @@ task checkVersionInfo(group:'GameHelper',description:'check the project version 
     }
 }
 
+preBuild.dependsOn(checkVersionInfo)
 
 // adb helper tasks
 def adb = android.getAdbExe().toString()
@@ -262,19 +263,23 @@ android.productFlavors.each { flavor ->
     def replaceName = 'replaceLua' + flavor.name.capitalize()
     def runName = 'run' + flavor.name.capitalize()
     def stopName = 'stop' + flavor.name.capitalize()
-    task(runName,type:Exec,group:'GameHelper') {
-        description 'run the ' + flavor.name.capitalize() + ' game on device.'
+    def restartName = 'restart' + flavor.name.capitalize()
+
+    task(runName,type:Exec,group:'GameHelper',description:'run the ' + flavor.name.capitalize() + ' game on device.') {
         def argOfClass = flavor.applicationId + '/org.cocos2dx.lua.AppActivity'
         commandLine "$adb",'shell','am','start','-n',argOfClass
     }
-    task(stopName,type:Exec,group:'GameHelper') {
-        description 'stop the ' + flavor.name.capitalize() + ' game on device.'
+
+    task(stopName,type:Exec,group:'GameHelper',description:'stop the ' + flavor.name.capitalize() + ' game on device.') {
         commandLine "$adb",'shell','am','force-stop',flavor.applicationId
     }
-    task(replaceName,type:Exec,group:'GameHelper') {
-        description 'replace the ' + flavor.name.capitalize() + ' zip file of lua on device.'
+
+    task(replaceName,type:Exec,group:'GameHelper',description:'replace the ' + flavor.name.capitalize() + ' zip file of lua on device.') {
         workingDir project.rootDir
         def pathOfUnzip = '/mnt/sdcard/batcatstudio/'+ gameIdForFlavors(flavor.name)+ '/bundle/scripts'
         commandLine "$adb", 'push','../../../update_android/scripts/game.zip',pathOfUnzip
     }
+    
+    task(restartName,dependsOn:stopName,group:'GameHelper',description:'restart the ' + flavor.name.capitalize() + ' game on device.')
+    tasks.getByPath(restartName).finalizedBy tasks.getByPath(runName)
 }
