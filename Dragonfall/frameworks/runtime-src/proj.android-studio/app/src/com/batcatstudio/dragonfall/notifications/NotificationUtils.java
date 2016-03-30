@@ -84,7 +84,10 @@ public class NotificationUtils {
     }
     @SuppressLint("NewApi")
     public static void generalGCMNotification(Context context,String msg){
-    	if(AppActivity.getGameActivity() != null)return;
+    	 if(AppActivity.getGameActivity() != null){
+             //如果游戏在前台将不提示远程推送
+             if (!AppActivity.getGameActivity().isEnterBackground)return;
+         }
     	int icon = R.mipmap.ic_launcher;
 		long when = System.currentTimeMillis();
 		CharSequence message = msg;
@@ -93,23 +96,13 @@ public class NotificationUtils {
 		Intent gameIntent = new Intent(context, AppActivity.class);
 		PendingIntent intent = PendingIntent.getActivity(context, 0, gameIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		
-//		Notification notification = new Notification(icon, message, when);
-//		notification.defaults = Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE;
-//		notification.flags |= Notification.FLAG_AUTO_CANCEL;
-//		notification.flags |= Notification.FLAG_SHOW_LIGHTS;
-//		notification.ledARGB = 0xFFFF0000;
-//		notification.ledOnMS = 1000;
-//		notification.ledOffMS = 500;
-//		notification.setLatestEventInfo(context, title, message, intent);
-//		notificationManager.notify((int) SystemClock.elapsedRealtime(), notification);
-		
 		Notification.Builder builder = new Notification.Builder(context)  
 		            .setContentTitle(title)  
 		            .setContentText(message)  
 		            .setContentIntent(intent)  
 		            .setSmallIcon(icon)  
 		            .setWhen(when);
-		Notification notification = builder.getNotification();  
+		Notification notification = builder.build();
 			
 		notification.defaults = Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE;
 		notification.flags |= Notification.FLAG_AUTO_CANCEL;
