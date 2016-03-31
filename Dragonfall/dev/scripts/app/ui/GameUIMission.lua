@@ -609,11 +609,8 @@ function GameUIMission:GetDailyTasksFinishedPoints()
 end
 function GameUIMission:RefreshDisplayGreenPoint()
     if not self.tab_buttons then return end
-    self.tab_buttons:SetGreenTipsShow("daily",self:GetDailyTasksFinishedPoints() < 200)
+    self.tab_buttons:SetGreenTipsShow("daily",self:GetDailyTasksFinishedPoints() < self:GetMaxPoint())
 end
-
-
-
 
 function GameUIMission:dailyListviewListener(event)
     local city = self.city

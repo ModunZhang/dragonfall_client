@@ -216,8 +216,9 @@ function GameUIWatchTower:GetMyEventItemWithIndex(index,isOpen,entity)
         UIKit:ttfLabel({
             text =  string.format(_("累计签到%s天，永久+1进攻队列"), 7),
             size = 22,
-            color= 0x403c2f
-        }):addTo(bg):align(display.LEFT_TOP, 164, event_bg:getPositionY() + 118)
+            color= 0x403c2f,
+            dimensions = cc.size(360,0)
+        }):addTo(bg):align(display.LEFT_TOP, 164, event_bg:getPositionY() + 120)
         display.newSprite(string.format("player_queue_seq_%d_112x112.png",index), 67, 67):addTo(event_bg)
     else
         if not entity then
