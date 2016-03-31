@@ -382,11 +382,9 @@ end
 local base_event_map = {
     disconnect = function(success, response)
         printLog("Server Status","disconnect")
-        if NetManager.m_netService:isConnected() then
-            UIKit:showKeyMessageDialog(_("错误"), _("与服务器的链接中断，请检查你的网络环境后重试!"), function()
-                app:retryConnectServer()
-            end)
-        end
+        UIKit:showKeyMessageDialog(_("错误"), _("与服务器的链接中断，请检查你的网络环境后重试!"), function()
+            app:retryConnectServer()
+        end)
     end,
     timeout = function(success, response)
     end,
