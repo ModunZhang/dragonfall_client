@@ -383,6 +383,7 @@ function MyApp:onEnterForeground()
     UIKit:closeAllUI()
     dump("onEnterForeground------>")
     local scene = display.getRunningScene()
+    if not scene then return end
     if scene and scene.__cname == "LogoScene" then
         return
     end
@@ -525,7 +526,7 @@ function MyApp:getStore()
             if ext.paypal.isPayPalSupport() then
                 ext.paypal.init(handler(self, self.verifyPaypalPurchase),handler(self, self.transitionFailedInPaypal))
             else
-                Store.init(handler(self, self.verifyGooglePlayPurchase),handler(self, self.transitionFailedInGooglePlay))
+                Store.init(handler(self, self.beginVerifyGooglePlayPurchase),handler(self, self.transitionFailedInGooglePlay))
             end
         end
         return Store
@@ -608,6 +609,10 @@ end
 
 -- android
 --------------------
+function MyApp:beginVerifyGooglePlayPurchase(orderId,purchaseData,signature)
+    GameStatesHelper:getInstance():scheduleFunction(handler(self, self.verifyGooglePlayPurchase),orderId,purchaseData,signature)
+end
+
 function MyApp:verifyGooglePlayPurchase(orderId,purchaseData,signature)
     print("verifyGooglePlayPurchase---->",orderId,purchaseData,signature)
     local transaction = Store.getTransactionDataWithPurchaseData(purchaseData)

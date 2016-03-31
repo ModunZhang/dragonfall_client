@@ -254,9 +254,9 @@ function MyCityScene:onEnterTransitionFinish()
             UIKit:newGameUI("GameUIActivityRewardNew",GameUIActivityRewardNew.REWARD_TYPE.FIRST_IN_PURGURE):AddToScene(self, true)
         end
         --开启屏幕锁定定时器(前面已经关闭)
-        if ext.disableIdleTimer then
-            ext.disableIdleTimer(false)
-        end
+        -- if ext.disableIdleTimer then
+        --     ext.disableIdleTimer(false)
+        -- end
         -- gamecenter 初始化
         if ext.gamecenter.isGameCenterEnabled() and not ext.gamecenter.isAuthenticated() then
             ext.gamecenter.authenticate(false)
