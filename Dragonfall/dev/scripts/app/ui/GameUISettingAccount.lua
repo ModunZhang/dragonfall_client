@@ -6,7 +6,7 @@ local WidgetPopDialog = import("..widget.WidgetPopDialog")
 local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local Localize = import("..utils.Localize")
 local GameUISettingAccount = class("GameUISettingAccount", WidgetPopDialog)
-
+local GameStatesHelper = import("..utils.GameStatesHelper")
 
 function GameUISettingAccount:ctor()
     GameUISettingAccount.super.ctor(self,722,_("账号绑定"),display.top-120)
@@ -28,18 +28,19 @@ function GameUISettingAccount:CheckGameCenter()
     self:RefreshUI()
 end
 function GameUISettingAccount:UpdateGcName()
-    if ext.gamecenter.isAuthenticated() then
-        local gcName,gcId = ext.gamecenter.getPlayerNameAndId()
-        if User.gc and User.gc.gcId == gcId and gcName ~= User.gc.gcName then
-            NetManager:getUpdateGcNamePromise(gcName)
-        end
-    end
-    if ext.facebook and ext.facebook.isAuthenticated() then
-        local gcName,gcId = ext.facebook.getPlayerNameAndId()
-        if User.gc and User.gc.gcId == gcId and gcName ~= User.gc.gcName then
-            NetManager:getUpdateGcNamePromise(gcName)
-        end
-    end
+    -- 因为现在每次刷新主城的时候,会检查是否有未执行的绑定操作,所以这里不再需要主动绑定,只要绑定操作的函数被添加到GameStatesHelper中即可
+    -- if ext.gamecenter.isAuthenticated() then
+    --     local gcName,gcId = ext.gamecenter.getPlayerNameAndId()
+    --     if User.gc and User.gc.gcId == gcId and gcName ~= User.gc.gcName then
+    --         NetManager:getUpdateGcNamePromise(gcName)
+    --     end
+    -- end
+    -- if ext.facebook and ext.facebook.isAuthenticated() then
+    --     local gcName,gcId = ext.facebook.getPlayerNameAndId()
+    --     if User.gc and User.gc.gcId == gcId and gcName ~= User.gc.gcName then
+    --         NetManager:getUpdateGcNamePromise(gcName)
+    --     end
+    -- end
 end
 function GameUISettingAccount:CreateUI()
     self:CreateAccountPanel()
@@ -152,7 +153,7 @@ function GameUISettingAccount:CreateFacebookPanel()
                 end)
             end,function()end)
         else
-            ext.facebook.login(function ( data )
+            local facebook_scheduleFunc = function ( data )
                 if data.event == "login_success" then
                     local userid,username = data.userid,data.username
                     NetManager:getBindGcPromise("facebook",userid,username):done(function (response)
@@ -163,6 +164,9 @@ function GameUISettingAccount:CreateFacebookPanel()
                 else
                     UIKit:showMessageDialog(_("提示"),_("链接失败"))
                 end
+            end
+            ext.facebook.login(function ( data )
+                GameStatesHelper:getInstance():scheduleFunction(facebook_scheduleFunc,data)
             end)
         end
         end)
@@ -199,7 +203,7 @@ function GameUISettingAccount:CreateGooglePanel()
                 end)
             end,function()end)
         else
-            ext.google.login(function ( data )
+            local google_scheduleFunc = function(data)
                 if data.event == "login_success" then
                     local userid,username = data.userid,data.username
                     NetManager:getBindGcPromise("google",userid,username):done(function (response)
@@ -210,6 +214,9 @@ function GameUISettingAccount:CreateGooglePanel()
                 else
                     UIKit:showMessageDialog(_("提示"),_("链接失败"))
                 end
+            end
+            ext.google.login(function ( data )
+                GameStatesHelper:getInstance():scheduleFunction(google_scheduleFunc,data)
             end)
         end
         end)
@@ -421,37 +428,43 @@ function GameUISettingAccount:ExchangeBindAccount()
                         end,function()end)
                     end
                 elseif select_google and select_google:isButtonSelected() then
+                    local google_scheduleFunc = function(data)
+                        if data.event == "login_success" then
+                            local userid,username = data.userid,data.username
+                            if User.gc and User.gc.gcId == userid then
+                                UIKit:showMessageDialog(_("提示"),_("你的Google账号绑定了当前游戏账号，请登录其他Google账号，再重试"))
+                            else
+                                NetManager:getSwitchGcPromise(userid):done(function (response)
+                                    app:restart(true)
+                                end)
+                            end
+                        else
+                            UIKit:showMessageDialog(_("提示"),_("链接失败"))
+                        end
+                    end
                     UIKit:showMessageDialog(_("提示"),_("是否确认切换至Google账号？"),function()
                         ext.google.login(function ( data )
-                            if data.event == "login_success" then
-                                local userid,username = data.userid,data.username
-                                if User.gc and User.gc.gcId == userid then
-                                    UIKit:showMessageDialog(_("提示"),_("你的Google账号绑定了当前游戏账号，请登录其他Google账号，再重试"))
-                                else
-                                    NetManager:getSwitchGcPromise(userid):done(function (response)
-                                        app:restart(true)
-                                    end)
-                                end
-                            else
-                                UIKit:showMessageDialog(_("提示"),_("链接失败"))
-                            end
+                            GameStatesHelper:getInstance():scheduleFunction(google_scheduleFunc,data)
                         end)
                     end,function()end)
                 elseif select_facebook:isButtonSelected() then
+                    local facebook_scheduleFunc = function(data)
+                        if data.event == "login_success" then
+                            local userid,username = data.userid,data.username
+                            if User.gc and User.gc.gcId == userid then
+                                UIKit:showMessageDialog(_("提示"),_("你的Facebook账号绑定了当前游戏账号，请登录其他Facebook账号，再重试"))
+                            else
+                                NetManager:getSwitchGcPromise(userid):done(function (response)
+                                    app:restart(true)
+                                end)
+                            end
+                        else
+                            UIKit:showMessageDialog(_("提示"),_("链接失败"))
+                        end
+                    end
                     UIKit:showMessageDialog(_("提示"),_("是否确认切换至Facebook账号？"),function()
                         ext.facebook.login(function ( data )
-                            if data.event == "login_success" then
-                                local userid,username = data.userid,data.username
-                                if User.gc and User.gc.gcId == userid then
-                                    UIKit:showMessageDialog(_("提示"),_("你的Facebook账号绑定了当前游戏账号，请登录其他Facebook账号，再重试"))
-                                else
-                                    NetManager:getSwitchGcPromise(userid):done(function (response)
-                                        app:restart(true)
-                                    end)
-                                end
-                            else
-                                UIKit:showMessageDialog(_("提示"),_("链接失败"))
-                            end
+                            GameStatesHelper:getInstance():scheduleFunction(facebook_scheduleFunc,data)
                         end)
                     end,function()end)
                 end

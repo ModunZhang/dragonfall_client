@@ -131,13 +131,14 @@ public class StoreKit {
 							.showDialog(AppActivity.AppActivityDialog.DIALOG_PAYMENT_PURCHASED.ordinal());
 				}
 			});
-			AppActivity.getGameActivity().runOnGLThread(new Runnable() {
-				@Override
-				public void run() {
-					verifyGPV3Purchase(purchase.getOrderId(), purchase.getOriginalJson(),
-							purchase.getSignature());
-				}
-			});
+		// dannyhe:单次购买成功后,我们不再验证.等待下次刷新的时候,再验证
+		// 	AppActivity.getGameActivity().runOnGLThread(new Runnable() {
+		// 		Override
+		// 		public void run() {
+		// 			verifyGPV3Purchase(purchase.getOrderId(), purchase.getOriginalJson(),
+		// 					purchase.getSignature());
+		// 		}
+		// 	});
 		}
 	};
 //#endif

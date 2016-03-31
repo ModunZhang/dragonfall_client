@@ -59,6 +59,7 @@ void ShowAlert(std::string title, std::string content,std::string okString,std::
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 
 void AndroidCheckFistInstall();
+bool isGameLaunched();//finish the unzip resources on android
 
 #endif
 

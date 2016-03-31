@@ -102,6 +102,11 @@ void AppDelegate::applicationDidEnterBackground()
 #endif
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID)
 	Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("APP_ENTER_BACKGROUND_EVENT");
+#else
+    if(isGameLaunched())
+    {
+        Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("APP_ENTER_BACKGROUND_EVENT");
+    }
 #endif
 }
 
@@ -119,6 +124,11 @@ void AppDelegate::applicationWillEnterForeground()
 #endif
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID)
 	Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("APP_ENTER_FOREGROUND_EVENT");
+#else
+    if(isGameLaunched())
+    {
+        Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("APP_ENTER_FOREGROUND_EVENT");
+    }
 #endif
 }
 
@@ -381,16 +391,6 @@ extern "C"
         FileUtils::getInstance()->setSearchPaths(paths);
         default_file_util_search_pahts = paths;
         AppDelegateExtern::initLuaEngine();
-    }
-    //发送游戏自定义事件(暂时只会发送 进入/退出后台的事件，与iOS统一)
-    void Java_org_cocos2dx_lua_AppActivity_dispatchGameEvent(JNIEnv *env, jobject thisz,jstring jgameEventName)
-    {
-        std::string eventName("");
-        eventName = cocos2d::JniHelper::jstring2string(jgameEventName);
-        if(eventName.length() > 0)
-        {
-            Director::getInstance()->getEventDispatcher()->dispatchCustomEvent(eventName);
-        }
     }
     //音乐结束回调
     void Java_org_cocos2dx_lib_Cocos2dxMusic_onBackgroundMusicCompletion(JNIEnv *env, jobject thisz)

@@ -55,7 +55,6 @@ import com.batcatstudio.dragonfall.utils.LaunchHelper;
 import com.xapcn.dragonfall.R;
 
 import org.cocos2dx.lib.Cocos2dxActivity;
-import org.cocos2dx.lib.Cocos2dxHelper;
 
 import java.util.ArrayList;
 //#ifdef CC_USE_FACEBOOK
@@ -143,21 +142,19 @@ public class AppActivity extends Cocos2dxActivity
     private static native boolean nativeIsDebug();
     
     /************************Extension Android************************/
-    
-    private static native void dispatchGameEvent(String eventName); //dispath the life cycle event to native
 
     @Override
 	protected void onResume() {
+		fullBackground = false;
 		super.onResume();
 		MarketSDK.onResume(this);
 		NotificationUtils.stopLocalPushService();
-		onEnterForeground();
 	}
 
 	@Override
 	protected void onPause() {
-		super.onPause();
 		MarketSDK.onPause(this);
+		super.onPause();
 	}
 
 	@Override
@@ -169,11 +166,12 @@ public class AppActivity extends Cocos2dxActivity
 	}
 	@Override
 	protected void onStop() {
+		fullBackground = true;
 //#ifdef CC_USE_GOOGLE_LOGIN
 		GoogleSignSDK.getInstance().onActivityStop(this);
 //#endif
 		NotificationUtils.startLocalPushService();
-		onEnterBackground();
+
 		super.onStop();
 		
 	}
@@ -232,8 +230,12 @@ public class AppActivity extends Cocos2dxActivity
 	}
 	
 	private boolean gameLaunched = false;
-	
-	public static boolean isEnterBackground = false;
+
+	public  boolean isFullBackground() {
+		return fullBackground;
+	}
+
+	public static boolean fullBackground = false;
 	
 	private ProgressDialog loadingDialog = null;
 	
@@ -401,50 +403,5 @@ public class AppActivity extends Cocos2dxActivity
 	public void setGameLaunched(boolean gameLaunched) {
 		this.gameLaunched = gameLaunched;
 	}
-	
-	private void onEnterForeground() {
-		if(!isEnterBackground){
-			return;
-		}
-		isEnterBackground = false;
-		if(isGameLaunched()){
-			Runnable callLua = new Runnable() {
-				@Override
-				public void run() {
-					 if(isGameLaunched()) {
-					 	 Cocos2dxHelper.runOnGLThread(new Runnable() {
-					 		@Override
-					 		public void run() {
-					 			dispatchGameEvent("APP_ENTER_FOREGROUND_EVENT");
-					 		}
-					 	});
-					  }
-				}
-			};
-			gameHandler.postDelayed(callLua, 500);
-		}
-	}
 
-	private void onEnterBackground() {
-		if(isEnterBackground){
-			return;
-		}
-		isEnterBackground = true;
-		if(isGameLaunched()){
-			Runnable callLua = new Runnable() {
-				@Override
-				public void run() {
-					if(isGameLaunched()) {
-						 	Cocos2dxHelper.runOnGLThread(new Runnable() {
-						 		@Override
-						 		public void run() {
-						 			dispatchGameEvent("APP_ENTER_BACKGROUND_EVENT");
-						 		}
-						 	});
-					}
-				}
-			};
-			gameHandler.postDelayed(callLua, 500);
-		}
-	}
 }

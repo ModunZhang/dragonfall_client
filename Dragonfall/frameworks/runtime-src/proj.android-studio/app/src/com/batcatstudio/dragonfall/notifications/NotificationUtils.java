@@ -86,7 +86,7 @@ public class NotificationUtils {
     public static void generalGCMNotification(Context context,String msg){
     	 if(AppActivity.getGameActivity() != null){
              //如果游戏在前台将不提示远程推送
-             if (!AppActivity.getGameActivity().isEnterBackground)return;
+             if (!AppActivity.getGameActivity().isFullBackground())return;
          }
     	int icon = R.mipmap.ic_launcher;
 		long when = System.currentTimeMillis();
@@ -94,6 +94,7 @@ public class NotificationUtils {
 		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		String title = context.getString(R.string.app_name);
 		Intent gameIntent = new Intent(context, AppActivity.class);
+        gameIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		PendingIntent intent = PendingIntent.getActivity(context, 0, gameIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		
 		Notification.Builder builder = new Notification.Builder(context)  

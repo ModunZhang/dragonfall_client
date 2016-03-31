@@ -173,9 +173,12 @@ public class CommonUtils {
 		return GCMUtils.getRegisterId();
 	}
 	
-	public static boolean isLowMemoryDevice()
-	{
+	public static boolean isLowMemoryDevice() {
 		return getInstance().getDeviceInfo().isLowMemoryDevice();
+	}
+
+	public static boolean isGameLaunched(){
+		return AppActivity.getGameActivity().isGameLaunched();
 	}
 	
 	public static void RegistereForRemoteNotifications() {

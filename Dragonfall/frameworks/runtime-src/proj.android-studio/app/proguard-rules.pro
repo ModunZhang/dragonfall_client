@@ -151,6 +151,7 @@
 	public static boolean isAppHocMode();
 	public static boolean isLowMemoryDevice();
 	public static java.lang.String GetDeviceToken();
+	public static boolean isGameLaunched();
 }
 
 -keep class com.batcatstudio.dragonfall.io.JniFileOperation {

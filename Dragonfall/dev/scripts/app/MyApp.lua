@@ -89,6 +89,7 @@ local User_ = import('.entity.User')
 local MyApp = class("MyApp", cc.mvc.AppBase)
 local scheduler = require(cc.PACKAGE_NAME .. ".scheduler")
 local AllianceManager_ = import(".entity.AllianceManager")
+local GameStatesHelper = import(".utils.GameStatesHelper")
 Alliance_Manager = AllianceManager_.new()
 CLOUD_TAG = 1987
 local speed = 2
@@ -117,16 +118,22 @@ function enter_scene(scene)
         onComplete = function()
             scene:removeChildByTag(CLOUD_TAG)
             app:lockInput(false)
-            if app:getStore() then
-                if device.platform == 'android' and ext.paypal.isPayPalSupport() then
-                    ext.paypal.updatePaypalPayments()
-                else
-                    app:getStore():updateTransactionStates() -- 更新内购订单状态
-                end
-            end
+            updateGameStateAfterEnterScene()
         end
     })
 end
+
+function updateGameStateAfterEnterScene()
+    if app:getStore() then
+        if device.platform == 'android' and ext.paypal.isPayPalSupport() then
+            ext.paypal.updatePaypalPayments()
+        else
+            app:getStore():updateTransactionStates() -- 更新内购订单状态
+        end
+    end
+    GameStatesHelper:getInstance():popExecute()
+end
+
 function enter_scene_transition(scene_name, ...)
     app:lockInput(true)
     local color_layer = cc.LayerColor:create(cc.c4b(255,255,255,0))

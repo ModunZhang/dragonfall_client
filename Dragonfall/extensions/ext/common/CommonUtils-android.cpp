@@ -195,6 +195,19 @@ void AndroidCheckFistInstall()
         t.env->DeleteLocalRef(t.classID);
     }
 }
+
+bool isGameLaunched()
+{
+    cocos2d::JniMethodInfo t;
+    bool ret = false;
+    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "isGameLaunched", "()Z")) 
+    {
+        ret = t.env->CallStaticBooleanMethod(t.classID, t.methodID);
+        t.env->DeleteLocalRef(t.classID);
+    }
+    return ret;
+}
+
 float GetBatteryLevel()
 {
     cocos2d::JniMethodInfo t;
