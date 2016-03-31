@@ -13,6 +13,8 @@ local isTroops = function(troops)
     return troops.IsTroops
 end
 function GameUIReplay:ctor(report, callback, skipcallback)
+    assert(report.IsFightWithBlackTroops)
+
     assert(report.GetAttackTargetTerrain)
     
     assert(report.GetFightAttackName)
@@ -148,6 +150,7 @@ function GameUIReplay:Setup()
         for i,v in ipairs(self.report:GetOrderedDefenceSoldiers()) do
             self.defenceTroops[i] = UIKit:CreateFightTroops(v.name, {
                 isleft = false,
+                ispve = self.report:IsFightWithBlackTroops(),
             },self):addTo(self.ui_map.soldierBattleNode,0,BATTLE_OBJECT_TAG) 
             :pos(self:DefencePosition(), self:TopPositionByRow(i))
             :FaceCorrect():Idle()

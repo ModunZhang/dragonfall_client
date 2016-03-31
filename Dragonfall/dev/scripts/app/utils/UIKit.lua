@@ -364,7 +364,7 @@ function UIKit:getImageByBuildingType( building_type ,level)
     elseif building_type=="shop" then
         return UILib.alliance_building.shop
     elseif building_type=="shrine" then
-        return UILib.alliance_building.shrine
+        return {UILib.alliance_building.shrine,"alliance_shrine_2.png"}
     end
 end
 
@@ -1329,10 +1329,6 @@ local function createAniWithConfig(ani, config, default_animation)
     sprite:setScaleY(s)
     sprite:setAnchorPoint(ap)
     sprite:getAnimation():play(default_animation)
-    if shadow then
-        display.newSprite("tmp_soldier_shadow.png")
-            :addTo(sprite):setAnchorPoint(cc.p(0.25,0.45))
-    end
     return sprite
 end
 
@@ -1519,9 +1515,9 @@ local soldier_fight_map = {
     lancer_1        = {"qibing_1_90"      , cc.p(0.32, 0.35), 2, true},
     lancer_2        = {"qibing_2_90"      , cc.p(0.32, 0.33), 2, true},
     lancer_3        = {"qibing_3_90"      , cc.p(0.28, 0.35), 2, true},
-    catapult_1      = {"toushiche_90"     , cc.p(0.15, 0.25), 1, false},
-    catapult_2      = {"toushiche_2_90"   , cc.p(0.17, 0.25), 1, false},
-    catapult_3      = {"toushiche_3_90"   , cc.p(0.19, 0.25), 1, false},
+    catapult_1      = {"toushiche_90"     , cc.p(0.50, 0.25), 1, false},
+    catapult_2      = {"toushiche_2_90"   , cc.p(0.50, 0.25), 1, false},
+    catapult_3      = {"toushiche_3_90"   , cc.p(0.50, 0.25), 1, false},
     sentinel_1      = {"shaobing_1_90"    , cc.p(0.30, 0.24), 4, true},
     sentinel_2      = {"shaobing_2_90"    , cc.p(0.30, 0.23), 4, true},
     sentinel_3      = {"shaobing_3_90"    , cc.p(0.30, 0.23), 4, true},
@@ -1537,10 +1533,43 @@ local soldier_fight_map = {
     skeletonWarrior = {"kulouyongshi_90"  , cc.p(0.38, 0.32), 4, true},
     skeletonArcher  = {"kulousheshou_90"  , cc.p(0.26, 0.29), 4, false},
     deathKnight     = {"siwangqishi_90"   , cc.p(0.28, 0.30), 2, true},
-    meatWagon       = {"jiaorouche_90"    , cc.p(0.20, 0.29), 1, false},
+    meatWagon       = {"jiaorouche_90"    , cc.p(0.50, 0.40), 1, false},
     wall_1          = {"chengqiang_1"     , cc.p(0.50, 0.50), 1, false},
     wall_2          = {"chengqiang_2"     , cc.p(0.50, 0.50), 1, false},
     wall_3          = {"chengqiang_3"     , cc.p(0.50, 0.50), 1, false},
+}
+local pve_soldier_fight_map = {
+    swordsman_1     = {"bubing_1_90"              , cc.p(0.43, 0.23), 4, true},
+    swordsman_2     = {"heihua_bubing_2_90"       , cc.p(0.43, 0.21), 4, true},
+    swordsman_3     = {"heihua_bubing_3_90"       , cc.p(0.43, 0.23), 4, true},
+    ranger_1        = {"gongjianshou_1_90"        , cc.p(0.36, 0.20), 4, false},
+    ranger_2        = {"heihua_gongjianshou_2_90" , cc.p(0.30, 0.19), 4, false},
+    ranger_3        = {"heihua_gongjianshou_3_90" , cc.p(0.30, 0.18), 4, false},
+    lancer_1        = {"qibing_1_90"              , cc.p(0.32, 0.35), 2, true},
+    lancer_2        = {"heihua_qibing_2_90"       , cc.p(0.32, 0.33), 2, true},
+    lancer_3        = {"heihua_qibing_3_90"       , cc.p(0.28, 0.35), 2, true},
+    catapult_1      = {"toushiche_90"             , cc.p(0.50, 0.25), 1, false},
+    catapult_2      = {"heihua_toushiche_2_90"    , cc.p(0.50, 0.25), 1, false},
+    catapult_3      = {"heihua_toushiche_3_90"    , cc.p(0.50, 0.25), 1, false},
+    sentinel_1      = {"shaobing_1_90"            , cc.p(0.30, 0.24), 4, true},
+    sentinel_2      = {"heihua_shaobing_2_90"     , cc.p(0.30, 0.23), 4, true},
+    sentinel_3      = {"heihua_shaobing_3_90"     , cc.p(0.30, 0.23), 4, true},
+    crossbowman_1   = {"nugongshou_1_90"          , cc.p(0.32, 0.34), 4, false},
+    crossbowman_2   = {"heihua_nugongshou_2_90"   , cc.p(0.32, 0.29), 4, false},
+    crossbowman_3   = {"heihua_nugongshou_3_90"   , cc.p(0.32, 0.28), 4, false},
+    horseArcher_1   = {"youqibing_1_90"           , cc.p(0.29, 0.23), 2, false},
+    horseArcher_2   = {"heihua_youqibing_2_90"    , cc.p(0.26, 0.25), 2, false},
+    horseArcher_3   = {"heihua_youqibing_3_90"    , cc.p(0.26, 0.22), 2, false},
+    ballista_1      = {"nuche_1_90"               , cc.p(0.18, 0.37), 1, false},
+    ballista_2      = {"heihua_nuche_2_90"        , cc.p(0.20, 0.37), 1, false},
+    ballista_3      = {"heihua_nuche_3_90"        , cc.p(0.17, 0.30), 1, false},
+    skeletonWarrior = {"kulouyongshi_90"          , cc.p(0.38, 0.32), 4, true},
+    skeletonArcher  = {"kulousheshou_90"          , cc.p(0.26, 0.29), 4, false},
+    deathKnight     = {"siwangqishi_90"           , cc.p(0.28, 0.30), 2, true},
+    meatWagon       = {"jiaorouche_90"            , cc.p(0.50, 0.40), 1, false},
+    wall_1          = {"chengqiang_1"             , cc.p(0.50, 0.50), 1, false},
+    wall_2          = {"chengqiang_2"             , cc.p(0.50, 0.50), 1, false},
+    wall_3          = {"chengqiang_3"             , cc.p(0.50, 0.50), 1, false},
 }
 local count_map = {
     [1] = {{x = 0, y = 0}},
@@ -1962,8 +1991,9 @@ function UIKit:CreateSkillEffect(effectType, isFlipX)
     return armature
 end
 local SOLDIER_NODE = 1
-local EFFECT_TAG = 2
-local INFO_TAG = 3
+local BULLET_NODE = 2
+local EFFECT_TAG = 3
+local INFO_TAG = 4
 local HURT_TAG = 5
 local normal = GameDatas.Soldiers.normal
 local special = GameDatas.Soldiers.special
@@ -1972,19 +2002,26 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
     gameController = gameController or empty_gameController
     local troopsNode = display.newNode()
     local soldiersNode = display.newNode():addTo(troopsNode, 0, SOLDIER_NODE):scale(SOLDIER_SCALE)
-    troopsNode.infoNode = display.newNode():addTo(troopsNode, 1, INFO_TAG)
-    troopsNode.effectsNode = display.newNode():addTo(troopsNode, 2, EFFECT_TAG)
+    troopsNode.bulletNode = display.newNode():addTo(troopsNode, 1, BULLET_NODE)
+    troopsNode.infoNode = display.newNode():addTo(troopsNode, 2, INFO_TAG)
+    troopsNode.effectsNode = display.newNode():addTo(troopsNode, 3, EFFECT_TAG)
     troopsNode.properties = properties or {}
     troopsNode.soldierName = soldierName
     local config = special[soldierName] or normal[soldierName.."_"..1]
     if config then
         troopsNode.soldierType = config.type
     end
-    local _,_,count = unpack(soldier_fight_map[soldierName])
+    local fight_soldier_config = properties.ispve and pve_soldier_fight_map or soldier_fight_map
+    local _,_,count = unpack(fight_soldier_config[soldierName])
     local soldiers = {}
     for i,v in ipairs(count_map[count]) do
-        soldiers[#soldiers + 1] = self:CreateFightSoldier(soldierName)
-            :addTo(soldiersNode,1):pos(v.x, v.y)
+        local aniName, ap = unpack(fight_soldier_config[soldierName])
+        local armature = ccs.Armature:create(aniName)
+        armature:setAnchorPoint(ap)
+        if "wall" == soldierName then
+            armature:setScaleX(-1)
+        end
+        soldiers[i] = armature:addTo(soldiersNode,1):pos(v.x, v.y)
     end
     troopsNode.soldiers = soldiers
     function troopsNode:IsTroops() return soldierName ~= "wall" end
@@ -2017,6 +2054,11 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         for _, v in pairs(self.soldiers) do
             v:getAnimation():setSpeedScale(speed)
         end
+
+        for _,v in pairs(self.bulletNode:getChildren()) do
+            v:getAnimation():setSpeedScale(speed)
+        end
+
         return self
     end
     function troopsNode:Speed()
@@ -2026,10 +2068,10 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         return not self.soldiers[1]:getAnimation():getAnimationData():getMovement("move_90")
     end
     function troopsNode:IsCatapult()
-        return string.find(soldierName, "catapult")
+        return string.find(soldierName, "catapult") or string.find(soldierName, "meatWagon")
     end
     function troopsNode:IsMelee()
-        local _,_,_,ismelee = unpack(soldier_fight_map[soldierName])
+        local _,_,_,ismelee = unpack(fight_soldier_config[soldierName])
         return ismelee
     end
     function troopsNode:GetAni()
@@ -2198,13 +2240,13 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
             local x,y = self:getPosition()
             self:Play("move_90", -1)
             local acts = transition.sequence({
-                cc.MoveTo:create(0.3,cc.p(x+d,y)),
+                cc.MoveTo:create(0.15,cc.p(x+d,y)),
                 cc.CallFunc:create(function() 
                     app:GetAudioManager()
                     :PlayeAttackSoundBySoldierName(self.soldierName, "rush")
                     p1:resolve() 
                 end),
-                cc.MoveTo:create(0.3,cc.p(x,y)),
+                cc.MoveTo:create(0.15,cc.p(x,y)),
                 cc.CallFunc:create(function() 
                     self:Idle()
                     p2:resolve()
@@ -2215,8 +2257,37 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
             self:runAction(speed)
             return p1,p2
         end
+        self.bulletNode:removeAllChildren()
         self:Play("attack", 0)
-        return self:PromiseOfAnimationFinished(self:GetAni())
+        if self:IsCatapult() then
+            local attackPromise = self:PromiseOfAnimationFinished(self:GetAni()):next(function()
+                    self:Idle()
+                end)
+            local bulletPromise = promise.new()
+            local acts = transition.sequence({
+                    cc.DelayTime:create(0.6),
+                    cc.CallFunc:create(function()
+                        local armature = ccs.Armature:create("stone"):addTo(self.bulletNode)
+                        if self:IsLeft() then
+                            armature:pos(-50, 50)
+                        else
+                            armature:pos(50, 50):setScaleX(-1)
+                        end
+                        armature:getAnimation():playWithIndex(0,-1,0)
+                        armature:getAnimation():setSpeedScale(self:Speed())
+                        self:PromiseOfAnimationFinished(armature:getAnimation()):next(function()
+                            bulletPromise:resolve()
+                        end)
+                    end),
+                })
+            local speed = cc.Speed:create(acts, self:Speed())
+            speed:setTag(SPEED_TAG)
+            self:runAction(speed)
+            return promise.all(attackPromise,bulletPromise)
+        else
+            return self:PromiseOfAnimationFinished(self:GetAni())
+        end
+        
     end
     function troopsNode:PromiseOfAnimationFinished(animation)
         local p = promise.new()
@@ -2262,15 +2333,6 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         return self
     end
     return troopsNode:RefreshSpeed()
-end
-function UIKit:CreateFightSoldier(soldierName)
-    local aniName, ap = unpack(soldier_fight_map[soldierName])
-    local armature = ccs.Armature:create(aniName)
-    armature:setAnchorPoint(ap)
-    if "wall" == soldierName then
-        armature:setScaleX(-1)
-    end
-    return armature
 end
 
 
@@ -2466,8 +2528,8 @@ end
 function UIKit:ScaleAni()
     return cc.RepeatForever:create(
                     transition.sequence{
-                        cc.ScaleTo:create(0.5, 1.1),
-                        cc.ScaleTo:create(0.5, 1.0),
+                        cc.ScaleTo:create(0.8, 1.02),
+                        cc.ScaleTo:create(0.8, 1.0),
                     }
                 )
 end

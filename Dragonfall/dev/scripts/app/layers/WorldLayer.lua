@@ -31,7 +31,7 @@ function WorldLayer:onEnter()
     self.map = self:CreateMap()
 
     local p = self:ConvertLogicPositionToMapPosition(middle_index, middle_index)
-    display.newSprite("world_middle.png"):addTo(self.map):pos(p.x + 104, p.y+1)
+    display.newSprite("world_middle.jpg"):addTo(self.map):pos(p.x + 104, p.y+1)
 
     display.newSprite("world_crown_circle2.png")
         :addTo(self.map):pos(p.x+10, p.y)

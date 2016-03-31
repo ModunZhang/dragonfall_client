@@ -724,10 +724,7 @@ function GameUIWarReport:GetReportTitle()
     return self.report:GetReportTitle()
 
 end
--- function GameUIWarReport.report:GetReportResult()
---     return self.report:GetReportStar()
 
--- end
 function GameUIWarReport:GetFightTarget()
     local battleAt = self.report:GetBattleAt()
     local location = self.report:GetBattleLocation()

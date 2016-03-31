@@ -78,7 +78,7 @@ function GameUIWorldMap:onExit()
     removeImageByKey("world_alliance_iceField.png")
     removeImageByKey("world_crown.png")
     removeImageByKey("world_edge.png")
-    removeImageByKey("world_middle.png")
+    removeImageByKey("world_middle.jpg")
     
     removeImageByKey("world_bg.jpg")
     removeImageByKey("world_title1.jpg")

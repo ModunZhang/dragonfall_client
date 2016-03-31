@@ -622,6 +622,9 @@ function Report:IsFightWall()
     end
     return isFight
 end
+function Report:IsFightWithBlackTroops()
+    return self:Type() == "attackMonster"
+end
 function Report:GetFightAttackWallRoundData()
     if not self:IsFightWall() then
         return {}

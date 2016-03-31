@@ -370,7 +370,7 @@ function GameUIUpgradeTechnology:GetUpgradeRequirements()
             isVisible = true,
             isSatisfy = not User:HasProductionTechEvent(),
             icon="hammer_33x40.png",
-            description= User:HasProductionTechEvent() and "0/1" or "1/1"
+            description= _("升级队列")..(User:HasProductionTechEvent() and " 0/1" or " 1/1")
         })
     if unLockByTech.index ~= current_tech.index then
         table.insert(requirements,
@@ -379,7 +379,7 @@ function GameUIUpgradeTechnology:GetUpgradeRequirements()
                 isVisible = true,
                 isSatisfy = unLockByTech.level >= current_tech_info.unlockLevel,
                 icon= UtilsForTech:GetProductionTechImage(tech_name),
-                description= _("等级达到") .. current_tech_info.unlockLevel,
+                description= UtilsForTech:GetTechLocalize(tech_name).." ".._("等级达到") .. current_tech_info.unlockLevel,
                 canNotBuy = true,
             })
     end
@@ -389,7 +389,7 @@ function GameUIUpgradeTechnology:GetUpgradeRequirements()
             isVisible = true,
             isSatisfy = current_tech_info.academyLevel <= User:GetAcademyLevel(),
             icon="academy.png",
-            description = _("等级达到") .. current_tech_info.academyLevel,
+            description = _("学院").." ".._("等级达到") .. current_tech_info.academyLevel,
             canNotBuy = true,
         })
     table.insert(requirements,

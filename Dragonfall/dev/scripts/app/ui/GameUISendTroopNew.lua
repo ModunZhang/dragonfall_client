@@ -379,7 +379,10 @@ function GameUISendTroopNew:CreateSoldierNode()
             corp:PlayAnimation("idle_90")
         else
             corp:PlayAnimation("move_90")
-            corp:setPositionY(s_size.height - 10)
+            if string.find(soldier_type , "catapult") or string.find(soldier_type , "meatWagon") then
+                corp:setPositionX(s_size.width - 150)
+            end
+            corp:setPositionY(s_size.height - 20)
         end
         power_label:setString(string.formatnumberthousands(soldier_count))
         self.soldier_type = soldier_type
@@ -553,7 +556,7 @@ function GameUISendTroopNew:CreateBottomPart()
                 elseif #soldiers == 0 then
                     UIKit:showMessageDialog(_("提示"),_("请选择要派遣的部队"))
                     return
-                elseif self.alliance:IsReachEventLimit() and not self.isMilitary then
+                elseif self.alliance:IsReachEventLimit() and not self.isMilitary and not self.isPVE then
                     local dialog = UIKit:showMessageDialog(_("提示"),_("没有空闲的行军队列"))
                     if User.basicInfo.marchQueue < 2 then
                         dialog:CreateOKButton(

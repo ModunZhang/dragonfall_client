@@ -232,16 +232,18 @@ function GameUILoginBeta:createUserAgreement()
     }):addTo(self.ui_layer,2)
         :align(display.LEFT_BOTTOM,display.left+2,display.bottom)
     self.user_agreement_label = user_agreement_label
-    local clicked = false
+    local click = false
     local button = WidgetPushButton.new()
         :addTo(self.ui_layer,2):align(display.LEFT_BOTTOM, display.left+2,display.bottom)
         :onButtonClicked(function(event)
             if event.name == "CLICKED_EVENT" then
-                if not clicked then
-                    clicked = true
+                if not click then
+                    click = true
                     local seq = transition.sequence({cc.ScaleTo:create(0.1,1.3),cc.ScaleTo:create(0.1,1),cc.CallFunc:create(function()
-                        self:OpenUserAgreement()
-                        clicked = false
+                        self:performWithDelay(function()
+                            self:OpenUserAgreement()
+                            click = false
+                        end, 0.2)
                     end)})
                     user_agreement_label:runAction(seq)
                 end
@@ -253,6 +255,7 @@ function GameUILoginBeta:createUserAgreement()
 end
 function GameUILoginBeta:OpenUserAgreement()
     local dialog = UIKit:newWidgetUI("WidgetPopDialog",770,_("用户协议"),display.top-130):addTo(self.ui_layer,2)
+    self.agreement_dialog = dialog
     local body = dialog:GetBody()
     local size = body:getContentSize()
     local bg = WidgetUIBackGround.new({width = 580 , height = 658},WidgetUIBackGround.STYLE_TYPE.STYLE_5):align(display.CENTER_BOTTOM, size.width/2, 80):addTo(body)
@@ -912,6 +915,11 @@ end
 
 
 return GameUILoginBeta
+
+
+
+
+
 
 
 

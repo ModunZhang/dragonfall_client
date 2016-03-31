@@ -4,49 +4,49 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>root/heihua_bubing_2/attack/10003.png</key>
+            <key>root/heihua_bubing_2/attack/10002.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{134,902},{47,41}}</string>
+                <string>{{83,909},{33,55}}</string>
                 <key>offset</key>
-                <string>{-17,-3}</string>
+                <string>{-7,0}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,10},{47,41}}</string>
+                <string>{{17,0},{33,55}}</string>
                 <key>sourceSize</key>
                 <string>{81,55}</string>
             </dict>
-            <key>root/heihua_bubing_2/attack/10005.png</key>
+            <key>root/heihua_bubing_2/attack/10004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{677,695},{59,39}}</string>
+                <string>{{508,744},{59,37}}</string>
                 <key>offset</key>
-                <string>{10,-3}</string>
+                <string>{10,-4}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{21,11},{59,39}}</string>
+                <string>{{21,13},{59,37}}</string>
                 <key>sourceSize</key>
                 <string>{81,55}</string>
             </dict>
-            <key>root/heihua_bubing_2/hurt/10001.png</key>
+            <key>root/heihua_bubing_2/attack/10006.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{837,895},{35,55}}</string>
+                <string>{{569,744},{49,37}}</string>
                 <key>offset</key>
-                <string>{5,2}</string>
+                <string>{8,-4}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{11,0},{35,55}}</string>
+                <string>{{24,13},{49,37}}</string>
                 <key>sourceSize</key>
-                <string>{47,59}</string>
+                <string>{81,55}</string>
             </dict>
             <key>root/heihua_bubing_2/move/10001.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{781,583},{36,48}}</string>
+                <string>{{468,788},{36,48}}</string>
                 <key>offset</key>
                 <string>{-3,0}</string>
                 <key>rotated</key>
@@ -56,166 +56,192 @@
                 <key>sourceSize</key>
                 <string>{46,50}</string>
             </dict>
-            <key>root/heihua_bubing_3/attack/10004.png</key>
+            <key>root/heihua_bubing_2/move/10002.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{395,952},{70,43}}</string>
+                <string>{{438,900},{34,42}}</string>
                 <key>offset</key>
-                <string>{13,-5}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{28,16},{70,43}}</string>
-                <key>sourceSize</key>
-                <string>{100,65}</string>
-            </dict>
-            <key>root/heihua_bubing_3/hurt/10002.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{744,274},{41,66}}</string>
-                <key>offset</key>
-                <string>{-9,-3}</string>
+                <string>{0,-4}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,6},{41,66}}</string>
+                <string>{{6,8},{34,42}}</string>
                 <key>sourceSize</key>
-                <string>{59,72}</string>
+                <string>{46,50}</string>
             </dict>
-            <key>root/heihua_bubing_3/hurt/10003.png</key>
+            <key>root/heihua_bubing_2/move/10003.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{738,695},{39,56}}</string>
+                <string>{{358,900},{38,42}}</string>
                 <key>offset</key>
-                <string>{-6,0}</string>
+                <string>{-1,-4}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{3,8},{38,42}}</string>
+                <key>sourceSize</key>
+                <string>{46,50}</string>
+            </dict>
+            <key>root/heihua_bubing_2/move/10006.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{274,900},{40,42}}</string>
+                <key>offset</key>
+                <string>{1,-4}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{4,8},{40,42}}</string>
+                <key>sourceSize</key>
+                <string>{46,50}</string>
+            </dict>
+            <key>root/heihua_bubing_2/move/10007.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{316,900},{40,42}}</string>
+                <key>offset</key>
+                <string>{1,-4}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{4,8},{40,42}}</string>
+                <key>sourceSize</key>
+                <string>{46,50}</string>
+            </dict>
+            <key>root/heihua_bubing_3/attack/10007.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{500,256},{34,51}}</string>
+                <key>offset</key>
+                <string>{-3,-1}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{30,8},{34,51}}</string>
+                <key>sourceSize</key>
+                <string>{100,65}</string>
+            </dict>
+            <key>root/heihua_gongjianshou_2/attack/10002.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{507,900},{30,42}}</string>
+                <key>offset</key>
+                <string>{-18,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{7,3},{30,42}}</string>
+                <key>sourceSize</key>
+                <string>{80,48}</string>
+            </dict>
+            <key>root/heihua_gongjianshou_2/attack/10004.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{398,900},{38,42}}</string>
+                <key>offset</key>
+                <string>{-12,-2}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{9,5},{38,42}}</string>
+                <key>sourceSize</key>
+                <string>{80,48}</string>
+            </dict>
+            <key>root/heihua_gongjianshou_2/attack/10005.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{185,900},{42,44}}</string>
+                <key>offset</key>
+                <string>{-11,-2}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{4,8},{39,56}}</string>
+                <string>{{8,4},{42,44}}</string>
                 <key>sourceSize</key>
-                <string>{59,72}</string>
-            </dict>
-            <key>root/heihua_bubing_3/hurt/10004.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{796,695},{39,52}}</string>
-                <key>offset</key>
-                <string>{-1,6}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{9,4},{39,52}}</string>
-                <key>sourceSize</key>
-                <string>{59,72}</string>
-            </dict>
-            <key>root/heihua_bubing_3/idle/90/10007.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{819,583},{40,52}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{0,1},{40,52}}</string>
-                <key>sourceSize</key>
-                <string>{40,54}</string>
-            </dict>
-            <key>root/heihua_bubing_3/move/10004.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{790,895},{55,45}}</string>
-                <key>offset</key>
-                <string>{-4,-7}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{0,15},{55,45}}</string>
-                <key>sourceSize</key>
-                <string>{63,61}</string>
-            </dict>
-            <key>root/heihua_bubing_3/move/10005.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{692,895},{55,47}}</string>
-                <key>offset</key>
-                <string>{-3,-7}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{1,14},{55,47}}</string>
-                <key>sourceSize</key>
-                <string>{63,61}</string>
-            </dict>
-            <key>root/heihua_bubing_3/move/10006.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{741,895},{55,47}}</string>
-                <key>offset</key>
-                <string>{2,-7}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{6,14},{55,47}}</string>
-                <key>sourceSize</key>
-                <string>{63,61}</string>
+                <string>{80,48}</string>
             </dict>
             <key>root/heihua_gongjianshou_2/attack/10009.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{604,695},{71,39}}</string>
+                <string>{{339,766},{80,46}}</string>
                 <key>offset</key>
-                <string>{0,-1}</string>
+                <string>{0,1}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,2},{71,39}}</string>
+                <string>{{0,0},{80,46}}</string>
                 <key>sourceSize</key>
-                <string>{71,41}</string>
+                <string>{80,48}</string>
             </dict>
-            <key>root/heihua_gongjianshou_2/hurt/10001.png</key>
+            <key>root/heihua_gongjianshou_2/attack/10011.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1001,273},{21,38}}</string>
+                <string>{{539,900},{30,42}}</string>
                 <key>offset</key>
-                <string>{1,0}</string>
+                <string>{-16,-3}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{4,0},{21,38}}</string>
+                <string>{{9,6},{30,42}}</string>
                 <key>sourceSize</key>
-                <string>{27,38}</string>
+                <string>{80,48}</string>
             </dict>
-            <key>root/heihua_gongjianshou_2/hurt/10003.png</key>
+            <key>root/heihua_gongjianshou_2/hurt/10002.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1001,313},{19,38}}</string>
+                <string>{{734,143},{30,47}}</string>
+                <key>offset</key>
+                <string>{-1,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{1,0},{30,47}}</string>
+                <key>sourceSize</key>
+                <string>{34,47}</string>
+            </dict>
+            <key>root/heihua_gongjianshou_3/attack/10009.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{253,778},{80,43}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{4,0},{19,38}}</string>
+                <string>{{0,2},{80,43}}</string>
                 <key>sourceSize</key>
-                <string>{27,38}</string>
+                <string>{80,47}</string>
             </dict>
-            <key>root/heihua_gongjianshou_2/move/10006.png</key>
+            <key>root/heihua_gongjianshou_3/move/10002.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{192,347},{23,36}}</string>
+                <string>{{231,900},{41,42}}</string>
                 <key>offset</key>
-                <string>{5,0}</string>
+                <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{15,0},{23,36}}</string>
+                <string>{{5,0},{41,42}}</string>
                 <key>sourceSize</key>
-                <string>{43,36}</string>
+                <string>{51,42}</string>
+            </dict>
+            <key>root/heihua_gongjianshou_3/move/10006.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{474,900},{31,42}}</string>
+                <key>offset</key>
+                <string>{3,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{13,0},{31,42}}</string>
+                <key>sourceSize</key>
+                <string>{51,42}</string>
             </dict>
             <key>root/heihua_nuche_2/attack/10001.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{895,273},{104,75}}</string>
+                <string>{{2,249},{104,75}}</string>
                 <key>offset</key>
                 <string>{-39,-5}</string>
                 <key>rotated</key>
@@ -228,7 +254,7 @@
             <key>root/heihua_nuche_2/attack/10002.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{369,208},{96,77}}</string>
+                <string>{{868,2},{96,77}}</string>
                 <key>offset</key>
                 <string>{-45,-4}</string>
                 <key>rotated</key>
@@ -241,11 +267,11 @@
             <key>root/heihua_nuche_2/attack/10003.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{186,470},{90,79}}</string>
+                <string>{{418,140},{90,79}}</string>
                 <key>offset</key>
                 <string>{-49,-3}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{7,7},{90,79}}</string>
                 <key>sourceSize</key>
@@ -254,7 +280,7 @@
             <key>root/heihua_nuche_2/attack/10004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{800,107},{202,87}}</string>
+                <string>{{214,2},{202,87}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -264,23 +290,49 @@
                 <key>sourceSize</key>
                 <string>{202,87}</string>
             </dict>
-            <key>root/heihua_nuche_2/attack/10006.png</key>
+            <key>root/heihua_nuche_2/attack/10005.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{184,650},{82,81}}</string>
+                <string>{{2,944},{78,77}}</string>
                 <key>offset</key>
-                <string>{-55,-2}</string>
+                <string>{-53,-4}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
+                <string>{{9,9},{78,77}}</string>
+                <key>sourceSize</key>
+                <string>{202,87}</string>
+            </dict>
+            <key>root/heihua_nuche_2/attack/10006.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{940,693},{82,81}}</string>
+                <key>offset</key>
+                <string>{-55,-2}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
                 <string>{{5,5},{82,81}}</string>
+                <key>sourceSize</key>
+                <string>{202,87}</string>
+            </dict>
+            <key>root/heihua_nuche_2/attack/10007.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{81,944},{78,77}}</string>
+                <key>offset</key>
+                <string>{-53,-4}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{9,9},{78,77}}</string>
                 <key>sourceSize</key>
                 <string>{202,87}</string>
             </dict>
             <key>root/heihua_nuche_2/attack/10008.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{912,196},{110,75}}</string>
+                <string>{{2,107},{110,75}}</string>
                 <key>offset</key>
                 <string>{-36,-5}</string>
                 <key>rotated</key>
@@ -293,20 +345,33 @@
             <key>root/heihua_nuche_2/hurt/10001.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{520,821},{72,71}}</string>
+                <string>{{774,783},{72,71}}</string>
                 <key>offset</key>
                 <string>{-3,4}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{6,1},{72,71}}</string>
+                <key>sourceSize</key>
+                <string>{90,81}</string>
+            </dict>
+            <key>root/heihua_nuche_2/hurt/10002.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{946,464},{76,71}}</string>
+                <key>offset</key>
+                <string>{-3,2}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{4,3},{76,71}}</string>
                 <key>sourceSize</key>
                 <string>{90,81}</string>
             </dict>
             <key>root/heihua_nuche_2/hurt/10003.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{267,506},{88,79}}</string>
+                <string>{{536,285},{88,79}}</string>
                 <key>offset</key>
                 <string>{-1,1}</string>
                 <key>rotated</key>
@@ -319,7 +384,7 @@
             <key>root/heihua_nuche_2/hurt/10004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{94,521},{90,79}}</string>
+                <string>{{536,204},{90,79}}</string>
                 <key>offset</key>
                 <string>{0,-1}</string>
                 <key>rotated</key>
@@ -332,7 +397,7 @@
             <key>root/heihua_nuche_2/hurt/10005.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{699,419},{86,75}}</string>
+                <string>{{624,397},{86,75}}</string>
                 <key>offset</key>
                 <string>{0,-3}</string>
                 <key>rotated</key>
@@ -345,7 +410,7 @@
             <key>root/heihua_nuche_2/move/10000.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{787,432},{86,75}}</string>
+                <string>{{766,445},{86,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -358,7 +423,7 @@
             <key>root/heihua_nuche_2/move/10001.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{697,496},{86,75}}</string>
+                <string>{{854,504},{86,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -371,7 +436,7 @@
             <key>root/heihua_nuche_2/move/10002.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{180,811},{84,75}}</string>
+                <string>{{441,463},{84,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -384,7 +449,7 @@
             <key>root/heihua_nuche_2/move/10003.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{91,825},{84,75}}</string>
+                <string>{{354,479},{84,75}}</string>
                 <key>offset</key>
                 <string>{-1,0}</string>
                 <key>rotated</key>
@@ -397,7 +462,7 @@
             <key>root/heihua_nuche_2/move/10004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,855},{84,75}}</string>
+                <string>{{265,486},{84,75}}</string>
                 <key>offset</key>
                 <string>{-1,0}</string>
                 <key>rotated</key>
@@ -410,7 +475,7 @@
             <key>root/heihua_nuche_2/move/10005.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{606,542},{86,75}}</string>
+                <string>{{766,522},{86,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -423,7 +488,7 @@
             <key>root/heihua_nuche_3/attack/10001.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{517,202},{112,87}}</string>
+                <string>{{214,91},{112,87}}</string>
                 <key>offset</key>
                 <string>{-50,-7}</string>
                 <key>rotated</key>
@@ -436,7 +501,7 @@
             <key>root/heihua_nuche_3/attack/10002.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{893,350},{102,89}}</string>
+                <string>{{662,2},{102,89}}</string>
                 <key>offset</key>
                 <string>{-56,-6}</string>
                 <key>rotated</key>
@@ -449,7 +514,7 @@
             <key>root/heihua_nuche_3/attack/10003.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,304},{96,91}}</string>
+                <string>{{114,168},{96,91}}</string>
                 <key>offset</key>
                 <string>{-59,-5}</string>
                 <key>rotated</key>
@@ -462,7 +527,7 @@
             <key>root/heihua_nuche_3/attack/10004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{805,2},{210,103}}</string>
+                <string>{{2,2},{210,103}}</string>
                 <key>offset</key>
                 <string>{2,0}</string>
                 <key>rotated</key>
@@ -475,7 +540,7 @@
             <key>root/heihua_nuche_3/attack/10005.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{357,517},{78,87}}</string>
+                <string>{{108,261},{78,87}}</string>
                 <key>offset</key>
                 <string>{-67,-7}</string>
                 <key>rotated</key>
@@ -488,7 +553,7 @@
             <key>root/heihua_nuche_3/attack/10006.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{517,378},{78,89}}</string>
+                <string>{{857,347},{78,89}}</string>
                 <key>offset</key>
                 <string>{-68,-6}</string>
                 <key>rotated</key>
@@ -501,7 +566,7 @@
             <key>root/heihua_nuche_3/attack/10007.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,624},{80,87}}</string>
+                <string>{{212,227},{80,87}}</string>
                 <key>offset</key>
                 <string>{-67,-7}</string>
                 <key>rotated</key>
@@ -514,7 +579,7 @@
             <key>root/heihua_nuche_3/attack/10008.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{121,152},{116,85}}</string>
+                <string>{{418,53},{116,85}}</string>
                 <key>offset</key>
                 <string>{-46,-8}</string>
                 <key>rotated</key>
@@ -527,7 +592,7 @@
             <key>root/heihua_nuche_3/hurt/10001.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,484},{85,90}}</string>
+                <string>{{858,260},{85,90}}</string>
                 <key>offset</key>
                 <string>{-7,1}</string>
                 <key>rotated</key>
@@ -540,7 +605,7 @@
             <key>root/heihua_nuche_3/hurt/10002.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{267,327},{91,90}}</string>
+                <string>{{863,81},{91,90}}</string>
                 <key>offset</key>
                 <string>{-2,0}</string>
                 <key>rotated</key>
@@ -553,11 +618,11 @@
             <key>root/heihua_nuche_3/hurt/10003.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{364,287},{93,88}}</string>
+                <string>{{328,91},{93,88}}</string>
                 <key>offset</key>
                 <string>{3,-1}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{6,3},{93,88}}</string>
                 <key>sourceSize</key>
@@ -566,7 +631,7 @@
             <key>root/heihua_nuche_3/hurt/10004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{609,306},{89,86}}</string>
+                <string>{{766,280},{89,86}}</string>
                 <key>offset</key>
                 <string>{1,-2}</string>
                 <key>rotated</key>
@@ -579,7 +644,7 @@
             <key>root/heihua_nuche_3/move/10000.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{517,291},{90,85}}</string>
+                <string>{{642,93},{90,85}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -592,7 +657,7 @@
             <key>root/heihua_nuche_3/move/10001.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{360,377},{90,85}}</string>
+                <string>{{766,106},{90,85}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -605,7 +670,7 @@
             <key>root/heihua_nuche_3/move/10002.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{100,347},{90,85}}</string>
+                <string>{{858,173},{90,85}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -618,7 +683,7 @@
             <key>root/heihua_nuche_3/move/10003.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{267,419},{90,85}}</string>
+                <string>{{536,117},{90,85}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -631,7 +696,7 @@
             <key>root/heihua_nuche_3/move/10004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,397},{90,85}}</string>
+                <string>{{628,180},{90,85}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -644,7 +709,7 @@
             <key>root/heihua_nuche_3/move/10005.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{94,434},{90,85}}</string>
+                <string>{{766,193},{90,85}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -654,23 +719,10 @@
                 <key>sourceSize</key>
                 <string>{90,85}</string>
             </dict>
-            <key>root/heihua_nugongshou_2/attack/10009.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{850,695},{39,45}}</string>
-                <key>offset</key>
-                <string>{-4,1}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{39,45}}</string>
-                <key>sourceSize</key>
-                <string>{47,47}</string>
-            </dict>
             <key>root/heihua_nugongshou_2/attack/jian.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1017,2},{25,2}}</string>
+                <string>{{536,53},{25,2}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -680,23 +732,49 @@
                 <key>sourceSize</key>
                 <string>{25,2}</string>
             </dict>
-            <key>root/heihua_nugongshou_3/attack/10007.png</key>
+            <key>root/heihua_nugongshou_2/hurt/10004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{897,695},{41,39}}</string>
+                <string>{{734,93},{30,48}}</string>
                 <key>offset</key>
-                <string>{0,2}</string>
+                <string>{3,1}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{2,1},{41,39}}</string>
+                <string>{{6,0},{30,48}}</string>
+                <key>sourceSize</key>
+                <string>{36,50}</string>
+            </dict>
+            <key>root/heihua_nugongshou_3/attack/10001.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{140,909},{33,43}}</string>
+                <key>offset</key>
+                <string>{-4,1}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{2,0},{33,43}}</string>
+                <key>sourceSize</key>
+                <string>{45,45}</string>
+            </dict>
+            <key>root/heihua_nugongshou_3/attack/10012.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{956,989},{33,43}}</string>
+                <key>offset</key>
+                <string>{-6,0}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{0,1},{33,43}}</string>
                 <key>sourceSize</key>
                 <string>{45,45}</string>
             </dict>
             <key>root/heihua_nugongshou_3/attack/jian.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1017,2},{25,2}}</string>
+                <string>{{536,53},{25,2}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -706,10 +784,23 @@
                 <key>sourceSize</key>
                 <string>{25,2}</string>
             </dict>
+            <key>root/heihua_nugongshou_3/hurt/10001.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{571,900},{28,42}}</string>
+                <key>offset</key>
+                <string>{5,-1}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{10,3},{28,42}}</string>
+                <key>sourceSize</key>
+                <string>{38,46}</string>
+            </dict>
             <key>root/heihua_nugongshou_3/hurt/10003.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{700,306},{34,42}}</string>
+                <string>{{576,783},{34,42}}</string>
                 <key>offset</key>
                 <string>{0,-1}</string>
                 <key>rotated</key>
@@ -719,23 +810,49 @@
                 <key>sourceSize</key>
                 <string>{38,46}</string>
             </dict>
-            <key>root/heihua_qibing_2/attack/10004.png</key>
+            <key>root/heihua_qibing_2/attack/10000.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{650,952},{68,65}}</string>
+                <string>{{643,798},{74,63}}</string>
                 <key>offset</key>
-                <string>{-14,-1}</string>
+                <string>{-15,0}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{8,3},{68,65}}</string>
+                <string>{{4,3},{74,63}}</string>
+                <key>sourceSize</key>
+                <string>{112,69}</string>
+            </dict>
+            <key>root/heihua_qibing_2/attack/10001.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{688,679},{76,59}}</string>
+                <key>offset</key>
+                <string>{-12,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{6,5},{76,59}}</string>
+                <key>sourceSize</key>
+                <string>{112,69}</string>
+            </dict>
+            <key>root/heihua_qibing_2/attack/10003.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{948,397},{74,65}}</string>
+                <key>offset</key>
+                <string>{-19,2}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{74,65}}</string>
                 <key>sourceSize</key>
                 <string>{112,69}</string>
             </dict>
             <key>root/heihua_qibing_2/attack/10005.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{118,239},{100,45}}</string>
+                <string>{{766,2},{100,45}}</string>
                 <key>offset</key>
                 <string>{3,1}</string>
                 <key>rotated</key>
@@ -748,7 +865,7 @@
             <key>root/heihua_qibing_2/attack/10006.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{787,312},{104,45}}</string>
+                <string>{{212,180},{104,45}}</string>
                 <key>offset</key>
                 <string>{3,1}</string>
                 <key>rotated</key>
@@ -761,7 +878,7 @@
             <key>root/heihua_qibing_2/attack/10007.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,571},{90,51}}</string>
+                <string>{{628,267},{90,51}}</string>
                 <key>offset</key>
                 <string>{-5,2}</string>
                 <key>rotated</key>
@@ -774,20 +891,33 @@
             <key>root/heihua_qibing_2/attack/10008.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{791,821},{72,63}}</string>
+                <string>{{848,863},{72,63}}</string>
                 <key>offset</key>
                 <string>{-15,1}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{5,2},{72,63}}</string>
                 <key>sourceSize</key>
                 <string>{112,69}</string>
             </dict>
+            <key>root/heihua_qibing_2/hurt/10001.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{85,836},{79,71}}</string>
+                <key>offset</key>
+                <string>{2,7}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{5,1},{79,71}}</string>
+                <key>sourceSize</key>
+                <string>{85,87}</string>
+            </dict>
             <key>root/heihua_qibing_2/hurt/10002.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{517,526},{61,87}}</string>
+                <string>{{390,274},{61,87}}</string>
                 <key>offset</key>
                 <string>{-8,0}</string>
                 <key>rotated</key>
@@ -800,11 +930,11 @@
             <key>root/heihua_qibing_2/hurt/10003.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{450,516},{65,85}}</string>
+                <string>{{2,543},{65,85}}</string>
                 <key>offset</key>
                 <string>{-9,1}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{1,0},{65,85}}</string>
                 <key>sourceSize</key>
@@ -813,98 +943,46 @@
             <key>root/heihua_qibing_2/hurt/10004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{452,429},{63,85}}</string>
+                <string>{{354,414},{63,85}}</string>
                 <key>offset</key>
                 <string>{-4,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{7,1},{63,85}}</string>
                 <key>sourceSize</key>
                 <string>{85,87}</string>
             </dict>
-            <key>root/heihua_qibing_2/idle/90/10000.png</key>
+            <key>root/heihua_qibing_2/hurt/10005.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{445,603},{70,64}}</string>
+                <string>{{385,944},{77,65}}</string>
                 <key>offset</key>
-                <string>{-1,0}</string>
+                <string>{2,8}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{1,0},{70,64}}</string>
+                <string>{{6,3},{77,65}}</string>
                 <key>sourceSize</key>
-                <string>{74,64}</string>
+                <string>{85,87}</string>
             </dict>
-            <key>root/heihua_qibing_2/idle/90/10001.png</key>
+            <key>root/heihua_qibing_2/idle/90/10004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{445,669},{70,64}}</string>
+                <string>{{848,797},{74,64}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{2,0},{70,64}}</string>
-                <key>sourceSize</key>
-                <string>{74,64}</string>
-            </dict>
-            <key>root/heihua_qibing_2/idle/90/10002.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{593,821},{72,64}}</string>
-                <key>offset</key>
-                <string>{-1,0}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{72,64}}</string>
-                <key>sourceSize</key>
-                <string>{74,64}</string>
-            </dict>
-            <key>root/heihua_qibing_2/idle/90/10003.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{659,821},{72,64}}</string>
-                <key>offset</key>
-                <string>{-1,0}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{72,64}}</string>
-                <key>sourceSize</key>
-                <string>{74,64}</string>
-            </dict>
-            <key>root/heihua_qibing_2/idle/90/10005.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{725,821},{72,64}}</string>
-                <key>offset</key>
-                <string>{-1,0}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{72,64}}</string>
-                <key>sourceSize</key>
-                <string>{74,64}</string>
-            </dict>
-            <key>root/heihua_qibing_2/idle/90/10006.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,952},{70,64}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{2,0},{70,64}}</string>
+                <string>{{0,0},{74,64}}</string>
                 <key>sourceSize</key>
                 <string>{74,64}</string>
             </dict>
             <key>root/heihua_qibing_2/idle/90/10007.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{68,952},{70,64}}</string>
+                <string>{{708,802},{70,64}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -914,49 +992,36 @@
                 <key>sourceSize</key>
                 <string>{74,64}</string>
             </dict>
-            <key>root/heihua_qibing_2/move/10000.png</key>
+            <key>root/heihua_qibing_2/move/10002.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{134,952},{70,57}}</string>
+                <string>{{834,928},{74,59}}</string>
                 <key>offset</key>
-                <string>{-2,1}</string>
+                <string>{0,0}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{70,57}}</string>
+                <string>{{0,0},{74,59}}</string>
                 <key>sourceSize</key>
                 <string>{74,59}</string>
             </dict>
-            <key>root/heihua_qibing_2/move/10004.png</key>
+            <key>root/heihua_qibing_2/move/10006.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{193,952},{70,57}}</string>
+                <string>{{895,928},{74,59}}</string>
                 <key>offset</key>
-                <string>{-2,1}</string>
+                <string>{0,0}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{70,57}}</string>
-                <key>sourceSize</key>
-                <string>{74,59}</string>
-            </dict>
-            <key>root/heihua_qibing_2/move/10007.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{856,821},{72,59}}</string>
-                <key>offset</key>
-                <string>{-1,0}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{72,59}}</string>
+                <string>{{0,0},{74,59}}</string>
                 <key>sourceSize</key>
                 <string>{74,59}</string>
             </dict>
             <key>root/heihua_qibing_3/attack/10001.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{608,471},{87,69}}</string>
+                <string>{{2,399},{87,69}}</string>
                 <key>offset</key>
                 <string>{-12,3}</string>
                 <key>rotated</key>
@@ -969,20 +1034,33 @@
             <key>root/heihua_qibing_3/attack/10002.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{769,952},{77,67}}</string>
+                <string>{{697,600},{77,67}}</string>
                 <key>offset</key>
                 <string>{-19,4}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{10,2},{77,67}}</string>
+                <key>sourceSize</key>
+                <string>{135,79}</string>
+            </dict>
+            <key>root/heihua_qibing_3/attack/10003.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{168,819},{79,79}}</string>
+                <key>offset</key>
+                <string>{-28,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{79,79}}</string>
                 <key>sourceSize</key>
                 <string>{135,79}</string>
             </dict>
             <key>root/heihua_qibing_3/attack/10004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{481,952},{81,69}}</string>
+                <string>{{173,686},{81,69}}</string>
                 <key>offset</key>
                 <string>{-18,5}</string>
                 <key>rotated</key>
@@ -995,7 +1073,7 @@
             <key>root/heihua_qibing_3/attack/10005.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,152},{117,51}}</string>
+                <string>{{543,2},{117,51}}</string>
                 <key>offset</key>
                 <string>{4,4}</string>
                 <key>rotated</key>
@@ -1008,7 +1086,7 @@
             <key>root/heihua_qibing_3/attack/10006.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{787,196},{123,49}}</string>
+                <string>{{418,2},{123,49}}</string>
                 <key>offset</key>
                 <string>{5,3}</string>
                 <key>rotated</key>
@@ -1021,7 +1099,7 @@
             <key>root/heihua_qibing_3/attack/10007.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{118,286},{97,59}}</string>
+                <string>{{114,107},{97,59}}</string>
                 <key>offset</key>
                 <string>{-7,3}</string>
                 <key>rotated</key>
@@ -1034,7 +1112,7 @@
             <key>root/heihua_qibing_3/attack/10008.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{517,663},{85,71}}</string>
+                <string>{{91,414},{85,71}}</string>
                 <key>offset</key>
                 <string>{-13,3}</string>
                 <key>rotated</key>
@@ -1047,11 +1125,11 @@
             <key>root/heihua_qibing_3/hurt/10001.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{947,633},{81,75}}</string>
+                <string>{{347,626},{81,75}}</string>
                 <key>offset</key>
                 <string>{8,7}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{21,3},{81,75}}</string>
                 <key>sourceSize</key>
@@ -1060,7 +1138,7 @@
             <key>root/heihua_qibing_3/hurt/10002.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{359,464},{51,89}}</string>
+                <string>{{409,221},{51,89}}</string>
                 <key>offset</key>
                 <string>{-5,1}</string>
                 <key>rotated</key>
@@ -1073,7 +1151,7 @@
             <key>root/heihua_qibing_3/hurt/10003.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{608,394},{75,89}}</string>
+                <string>{{318,186},{75,89}}</string>
                 <key>offset</key>
                 <string>{-15,2}</string>
                 <key>rotated</key>
@@ -1086,7 +1164,7 @@
             <key>root/heihua_qibing_3/hurt/10004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{267,270},{55,95}}</string>
+                <string>{{766,49},{55,95}}</string>
                 <key>offset</key>
                 <string>{-3,0}</string>
                 <key>rotated</key>
@@ -1099,11 +1177,11 @@
             <key>root/heihua_qibing_3/hurt/10005.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{823,736},{83,71}}</string>
+                <string>{{88,637},{83,71}}</string>
                 <key>offset</key>
                 <string>{11,12}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{23,0},{83,71}}</string>
                 <key>sourceSize</key>
@@ -1112,7 +1190,7 @@
             <key>root/heihua_qibing_3/idle/90/10000.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{267,663},{87,71}}</string>
+                <string>{{2,326},{87,71}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -1125,7 +1203,7 @@
             <key>root/heihua_qibing_3/idle/90/10001.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{356,673},{85,71}}</string>
+                <string>{{2,470},{85,71}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -1138,7 +1216,7 @@
             <key>root/heihua_qibing_3/idle/90/10002.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{267,736},{85,71}}</string>
+                <string>{{267,413},{85,71}}</string>
                 <key>offset</key>
                 <string>{-1,0}</string>
                 <key>rotated</key>
@@ -1151,7 +1229,7 @@
             <key>root/heihua_qibing_3/idle/90/10003.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{354,746},{85,71}}</string>
+                <string>{{178,459},{85,71}}</string>
                 <key>offset</key>
                 <string>{-1,0}</string>
                 <key>rotated</key>
@@ -1164,7 +1242,7 @@
             <key>root/heihua_qibing_3/idle/90/10004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{267,809},{85,71}}</string>
+                <string>{{89,487},{85,71}}</string>
                 <key>offset</key>
                 <string>{-1,0}</string>
                 <key>rotated</key>
@@ -1177,7 +1255,7 @@
             <key>root/heihua_qibing_3/idle/90/10005.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{91,752},{87,71}}</string>
+                <string>{{301,263},{87,71}}</string>
                 <key>offset</key>
                 <string>{-1,0}</string>
                 <key>rotated</key>
@@ -1190,7 +1268,7 @@
             <key>root/heihua_qibing_3/idle/90/10006.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,782},{87,71}}</string>
+                <string>{{197,309},{87,71}}</string>
                 <key>offset</key>
                 <string>{-1,0}</string>
                 <key>rotated</key>
@@ -1203,7 +1281,7 @@
             <key>root/heihua_qibing_3/idle/90/10007.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{787,359},{87,71}}</string>
+                <string>{{91,341},{87,71}}</string>
                 <key>offset</key>
                 <string>{-1,0}</string>
                 <key>rotated</key>
@@ -1216,7 +1294,7 @@
             <key>root/heihua_qibing_3/move/10000.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{266,882},{84,68}}</string>
+                <string>{{440,540},{84,68}}</string>
                 <key>offset</key>
                 <string>{-1,1}</string>
                 <key>rotated</key>
@@ -1229,11 +1307,11 @@
             <key>root/heihua_qibing_3/move/10001.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{443,735},{84,72}}</string>
+                <string>{{527,521},{84,72}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{2,0},{84,72}}</string>
                 <key>sourceSize</key>
@@ -1242,11 +1320,11 @@
             <key>root/heihua_qibing_3/move/10002.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{517,589},{86,72}}</string>
+                <string>{{950,309},{86,72}}</string>
                 <key>offset</key>
                 <string>{-1,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{86,72}}</string>
                 <key>sourceSize</key>
@@ -1255,11 +1333,11 @@
             <key>root/heihua_qibing_3/move/10003.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{875,441},{86,72}}</string>
+                <string>{{462,375},{86,72}}</string>
                 <key>offset</key>
                 <string>{-1,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{86,72}}</string>
                 <key>sourceSize</key>
@@ -1268,7 +1346,7 @@
             <key>root/heihua_qibing_3/move/10004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{564,952},{84,68}}</string>
+                <string>{{351,556},{84,68}}</string>
                 <key>offset</key>
                 <string>{-1,1}</string>
                 <key>rotated</key>
@@ -1281,7 +1359,7 @@
             <key>root/heihua_qibing_3/move/10005.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{785,509},{86,72}}</string>
+                <string>{{536,447},{86,72}}</string>
                 <key>offset</key>
                 <string>{-1,0}</string>
                 <key>rotated</key>
@@ -1294,11 +1372,11 @@
             <key>root/heihua_qibing_3/move/10006.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{94,602},{88,72}}</string>
+                <string>{{950,219},{88,72}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{88,72}}</string>
                 <key>sourceSize</key>
@@ -1307,7 +1385,7 @@
             <key>root/heihua_qibing_3/move/10007.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{873,515},{86,72}}</string>
+                <string>{{624,474},{86,72}}</string>
                 <key>offset</key>
                 <string>{-1,0}</string>
                 <key>rotated</key>
@@ -1317,49 +1395,49 @@
                 <key>sourceSize</key>
                 <string>{88,72}</string>
             </dict>
-            <key>root/heihua_shaobing_2/attack/10001.png</key>
+            <key>root/heihua_shaobing_2/attack/10004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{217,341},{48,44}}</string>
+                <string>{{437,610},{82,40}}</string>
                 <key>offset</key>
-                <string>{-22,-2}</string>
+                <string>{16,-2}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{12,10},{48,44}}</string>
+                <string>{{33,12},{82,40}}</string>
                 <key>sourceSize</key>
                 <string>{116,60}</string>
             </dict>
-            <key>root/heihua_shaobing_2/attack/10003.png</key>
+            <key>root/heihua_shaobing_2/attack/10005.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{349,952},{70,44}}</string>
+                <string>{{521,640},{82,40}}</string>
                 <key>offset</key>
-                <string>{-16,-6}</string>
+                <string>{16,-2}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{7,14},{70,44}}</string>
+                <string>{{33,12},{82,40}}</string>
                 <key>sourceSize</key>
                 <string>{116,60}</string>
             </dict>
-            <key>root/heihua_shaobing_2/attack/10006.png</key>
+            <key>root/heihua_shaobing_2/attack/10008.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{301,952},{70,46}}</string>
+                <string>{{510,140},{24,56}}</string>
                 <key>offset</key>
-                <string>{8,-7}</string>
+                <string>{-26,2}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{31,14},{70,46}}</string>
+                <string>{{20,0},{24,56}}</string>
                 <key>sourceSize</key>
                 <string>{116,60}</string>
             </dict>
             <key>root/heihua_shaobing_2/hurt/10001.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{467,208},{46,48}}</string>
+                <string>{{716,350},{46,48}}</string>
                 <key>offset</key>
                 <string>{14,-7}</string>
                 <key>rotated</key>
@@ -1372,7 +1450,7 @@
             <key>root/heihua_shaobing_2/hurt/10004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{848,952},{24,56}}</string>
+                <string>{{510,198},{24,56}}</string>
                 <key>offset</key>
                 <string>{1,4}</string>
                 <key>rotated</key>
@@ -1382,36 +1460,10 @@
                 <key>sourceSize</key>
                 <string>{74,66}</string>
             </dict>
-            <key>root/heihua_shaobing_2/idle/90/10006.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{997,353},{25,56}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{25,56}}</string>
-                <key>sourceSize</key>
-                <string>{25,56}</string>
-            </dict>
-            <key>root/heihua_shaobing_2/idle/90/10007.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{997,411},{25,56}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{25,56}}</string>
-                <key>sourceSize</key>
-                <string>{25,56}</string>
-            </dict>
             <key>root/heihua_shaobing_2/move/10004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{440,952},{70,39}}</string>
+                <string>{{983,838},{70,39}}</string>
                 <key>offset</key>
                 <string>{-2,-6}</string>
                 <key>rotated</key>
@@ -1424,37 +1476,24 @@
             <key>root/heihua_shaobing_2/move/10005.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{744,202},{70,41}}</string>
+                <string>{{601,900},{70,41}}</string>
                 <key>offset</key>
                 <string>{-1,-6}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{1,15},{70,41}}</string>
-                <key>sourceSize</key>
-                <string>{74,59}</string>
-            </dict>
-            <key>root/heihua_shaobing_2/move/10006.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{874,895},{66,41}}</string>
-                <key>offset</key>
-                <string>{3,-7}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{7,16},{66,41}}</string>
                 <key>sourceSize</key>
                 <string>{74,59}</string>
             </dict>
             <key>root/heihua_shaobing_3/attack/10001.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{467,256},{48,45}}</string>
+                <string>{{421,788},{48,45}}</string>
                 <key>offset</key>
                 <string>{-21,-2}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{13,10},{48,45}}</string>
                 <key>sourceSize</key>
@@ -1463,7 +1502,7 @@
             <key>root/heihua_shaobing_3/attack/10003.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{220,269},{70,45}}</string>
+                <string>{{801,856},{70,45}}</string>
                 <key>offset</key>
                 <string>{-16,-7}</string>
                 <key>rotated</key>
@@ -1476,7 +1515,7 @@
             <key>root/heihua_shaobing_3/attack/10004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{692,650},{82,43}}</string>
+                <string>{{766,676},{82,43}}</string>
                 <key>offset</key>
                 <string>{16,-2}</string>
                 <key>rotated</key>
@@ -1489,85 +1528,46 @@
             <key>root/heihua_shaobing_3/attack/10005.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{917,821},{82,43}}</string>
+                <string>{{526,595},{82,43}}</string>
                 <key>offset</key>
                 <string>{16,-2}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{33,11},{82,43}}</string>
                 <key>sourceSize</key>
                 <string>{116,61}</string>
             </dict>
-            <key>root/heihua_shaobing_3/attack/10006.png</key>
+            <key>root/heihua_shaobing_3/move/10000.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{252,952},{70,47}}</string>
+                <string>{{392,838},{62,60}}</string>
                 <key>offset</key>
-                <string>{8,-7}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{31,14},{70,47}}</string>
-                <key>sourceSize</key>
-                <string>{116,61}</string>
-            </dict>
-            <key>root/heihua_shaobing_3/attack/10008.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{239,152},{26,57}}</string>
-                <key>offset</key>
-                <string>{-25,2}</string>
+                <string>{3,2}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{20,0},{26,57}}</string>
+                <string>{{14,0},{62,60}}</string>
                 <key>sourceSize</key>
-                <string>{116,61}</string>
+                <string>{84,64}</string>
             </dict>
-            <key>root/heihua_shaobing_3/hurt/10001.png</key>
+            <key>root/heihua_shaobing_3/move/10001.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{88,902},{44,48}}</string>
+                <string>{{456,838},{60,60}}</string>
                 <key>offset</key>
-                <string>{15,-6}</string>
+                <string>{3,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{30,15},{44,48}}</string>
+                <string>{{15,2},{60,60}}</string>
                 <key>sourceSize</key>
-                <string>{74,66}</string>
-            </dict>
-            <key>root/heihua_shaobing_3/hurt/10004.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{239,211},{26,56}}</string>
-                <key>offset</key>
-                <string>{2,4}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{26,1},{26,56}}</string>
-                <key>sourceSize</key>
-                <string>{74,66}</string>
-            </dict>
-            <key>root/heihua_shaobing_3/idle/90/10007.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{917,905},{29,56}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{29,56}}</string>
-                <key>sourceSize</key>
-                <string>{29,56}</string>
+                <string>{84,64}</string>
             </dict>
             <key>root/heihua_shaobing_3/move/10002.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{459,303},{62,56}}</string>
+                <string>{{966,2},{62,56}}</string>
                 <key>offset</key>
                 <string>{4,-4}</string>
                 <key>rotated</key>
@@ -1580,7 +1580,7 @@
             <key>root/heihua_shaobing_3/move/10004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{873,589},{82,42}}</string>
+                <string>{{610,625},{82,42}}</string>
                 <key>offset</key>
                 <string>{-1,-7}</string>
                 <key>rotated</key>
@@ -1590,131 +1590,222 @@
                 <key>sourceSize</key>
                 <string>{84,64}</string>
             </dict>
-            <key>root/heihua_shaobing_3/move/10007.png</key>
+            <key>root/heihua_shaobing_3/move/10005.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{717,952},{68,50}}</string>
+                <string>{{720,192},{80,44}}</string>
                 <key>offset</key>
-                <string>{6,-4}</string>
+                <string>{1,-7}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{14,11},{68,50}}</string>
+                <string>{{3,17},{80,44}}</string>
+                <key>sourceSize</key>
+                <string>{84,64}</string>
+            </dict>
+            <key>root/heihua_shaobing_3/move/10006.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{720,274},{74,44}}</string>
+                <key>offset</key>
+                <string>{5,-7}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{10,17},{74,44}}</string>
                 <key>sourceSize</key>
                 <string>{84,64}</string>
             </dict>
             <key>root/heihua_toushiche_2/attack/10001.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{963,469},{80,59}}</string>
+                <string>{{2,753},{81,61}}</string>
                 <key>offset</key>
-                <string>{-93,-18}</string>
+                <string>{0,-7}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,37},{80,59}}</string>
+                <string>{{0,14},{81,61}}</string>
                 <key>sourceSize</key>
-                <string>{266,97}</string>
+                <string>{81,75}</string>
             </dict>
             <key>root/heihua_toushiche_2/attack/10002.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{874,963},{80,59}}</string>
+                <string>{{430,652},{81,61}}</string>
                 <key>offset</key>
-                <string>{-93,-18}</string>
+                <string>{0,-7}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,37},{80,59}}</string>
+                <string>{{0,14},{81,61}}</string>
                 <key>sourceSize</key>
-                <string>{266,97}</string>
+                <string>{81,75}</string>
+            </dict>
+            <key>root/heihua_toushiche_2/attack/10003.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{580,819},{79,61}}</string>
+                <key>offset</key>
+                <string>{0,-7}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{1,14},{79,61}}</string>
+                <key>sourceSize</key>
+                <string>{81,75}</string>
+            </dict>
+            <key>root/heihua_toushiche_2/attack/10004.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{519,944},{77,61}}</string>
+                <key>offset</key>
+                <string>{1,-7}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{3,14},{77,61}}</string>
+                <key>sourceSize</key>
+                <string>{81,75}</string>
+            </dict>
+            <key>root/heihua_toushiche_2/attack/10005.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{582,944},{77,61}}</string>
+                <key>offset</key>
+                <string>{1,-7}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{3,14},{77,61}}</string>
+                <key>sourceSize</key>
+                <string>{81,75}</string>
+            </dict>
+            <key>root/heihua_toushiche_2/attack/10006.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{708,942},{77,61}}</string>
+                <key>offset</key>
+                <string>{1,-7}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{3,14},{77,61}}</string>
+                <key>sourceSize</key>
+                <string>{81,75}</string>
+            </dict>
+            <key>root/heihua_toushiche_2/attack/10007.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{771,942},{77,61}}</string>
+                <key>offset</key>
+                <string>{1,-7}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{3,14},{77,61}}</string>
+                <key>sourceSize</key>
+                <string>{81,75}</string>
             </dict>
             <key>root/heihua_toushiche_2/attack/10008.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,205},{114,97}}</string>
+                <string>{{249,823},{75,75}}</string>
                 <key>offset</key>
-                <string>{-72,0}</string>
+                <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{4,0},{114,97}}</string>
+                <string>{{3,0},{75,75}}</string>
                 <key>sourceSize</key>
-                <string>{266,97}</string>
+                <string>{81,75}</string>
             </dict>
             <key>root/heihua_toushiche_2/attack/10009.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{267,141},{248,65}}</string>
+                <string>{{452,944},{77,65}}</string>
                 <key>offset</key>
-                <string>{-6,-16}</string>
+                <string>{1,-5}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{3,32},{248,65}}</string>
+                <string>{{3,10},{77,65}}</string>
                 <key>sourceSize</key>
-                <string>{266,97}</string>
+                <string>{81,75}</string>
             </dict>
             <key>root/heihua_toushiche_2/attack/10010.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{539,2},{264,61}}</string>
+                <string>{{645,943},{79,61}}</string>
                 <key>offset</key>
-                <string>{0,-17}</string>
+                <string>{0,-7}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{1,35},{264,61}}</string>
+                <string>{{1,14},{79,61}}</string>
                 <key>sourceSize</key>
-                <string>{266,97}</string>
+                <string>{81,75}</string>
             </dict>
             <key>root/heihua_toushiche_2/attack/10011.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{536,65},{262,59}}</string>
+                <string>{{343,703},{81,61}}</string>
                 <key>offset</key>
-                <string>{-2,-18}</string>
+                <string>{0,-7}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,37},{262,59}}</string>
+                <string>{{0,14},{81,61}}</string>
                 <key>sourceSize</key>
-                <string>{266,97}</string>
+                <string>{81,75}</string>
             </dict>
             <key>root/heihua_toushiche_2/attack/10012.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{271,2},{266,61}}</string>
+                <string>{{256,715},{81,61}}</string>
                 <key>offset</key>
-                <string>{0,-18}</string>
+                <string>{0,-7}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,36},{266,61}}</string>
+                <string>{{0,14},{81,61}}</string>
                 <key>sourceSize</key>
-                <string>{266,97}</string>
+                <string>{81,75}</string>
             </dict>
             <key>root/heihua_toushiche_2/attack/10013.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{961,551},{80,61}}</string>
+                <string>{{256,715},{81,61}}</string>
                 <key>offset</key>
-                <string>{-93,-18}</string>
+                <string>{0,-7}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,36},{80,61}}</string>
+                <string>{{0,14},{81,61}}</string>
                 <key>sourceSize</key>
-                <string>{266,97}</string>
+                <string>{81,75}</string>
+            </dict>
+            <key>root/heihua_toushiche_2/hurt/10000.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{170,757},{81,60}}</string>
+                <key>offset</key>
+                <string>{8,-5}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{16,10},{81,60}}</string>
+                <key>sourceSize</key>
+                <string>{97,70}</string>
             </dict>
             <key>root/heihua_toushiche_2/hurt/10001.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{517,458},{89,66}}</string>
+                <string>{{956,128},{89,66}}</string>
                 <key>offset</key>
                 <string>{-4,2}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{89,66}}</string>
                 <key>sourceSize</key>
@@ -1723,20 +1814,33 @@
             <key>root/heihua_toushiche_2/hurt/10002.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{896,736},{83,64}}</string>
+                <string>{{2,687},{83,64}}</string>
                 <key>offset</key>
                 <string>{3,-1}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{10,4},{83,64}}</string>
+                <key>sourceSize</key>
+                <string>{97,70}</string>
+            </dict>
+            <key>root/heihua_toushiche_2/hurt/10003.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,878},{79,64}}</string>
+                <key>offset</key>
+                <string>{9,-3}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{18,6},{79,64}}</string>
                 <key>sourceSize</key>
                 <string>{97,70}</string>
             </dict>
             <key>root/heihua_toushiche_2/hurt/10004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{177,888},{81,62}}</string>
+                <string>{{87,710},{81,62}}</string>
                 <key>offset</key>
                 <string>{7,-3}</string>
                 <key>rotated</key>
@@ -1746,10 +1850,36 @@
                 <key>sourceSize</key>
                 <string>{97,70}</string>
             </dict>
+            <key>root/heihua_toushiche_2/hurt/10005.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{85,774},{81,60}}</string>
+                <key>offset</key>
+                <string>{8,-5}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{16,10},{81,60}}</string>
+                <key>sourceSize</key>
+                <string>{97,70}</string>
+            </dict>
+            <key>root/heihua_toushiche_2/move/10000.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,816},{81,60}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{81,60}}</string>
+                <key>sourceSize</key>
+                <string>{81,60}</string>
+            </dict>
             <key>root/heihua_toushiche_2/move/10001.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{781,633},{81,60}}</string>
+                <string>{{605,669},{81,60}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -1762,7 +1892,7 @@
             <key>root/heihua_toushiche_2/move/10002.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{864,633},{81,60}}</string>
+                <string>{{766,721},{81,60}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -1775,11 +1905,11 @@
             <key>root/heihua_toushiche_2/move/10003.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{962,716},{81,60}}</string>
+                <string>{{849,735},{81,60}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{81,60}}</string>
                 <key>sourceSize</key>
@@ -1788,11 +1918,11 @@
             <key>root/heihua_toushiche_2/move/10004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{962,799},{81,60}}</string>
+                <string>{{932,776},{81,60}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{81,60}}</string>
                 <key>sourceSize</key>
@@ -1801,11 +1931,11 @@
             <key>root/heihua_toushiche_2/move/10005.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{962,882},{81,60}}</string>
+                <string>{{513,682},{81,60}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{81,60}}</string>
                 <key>sourceSize</key>
@@ -1814,176 +1944,189 @@
             <key>root/heihua_toushiche_3/attack/10001.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{671,736},{83,74}}</string>
+                <string>{{176,532},{84,75}}</string>
                 <key>offset</key>
-                <string>{-90,-13}</string>
+                <string>{2,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{4,27},{83,74}}</string>
+                <string>{{4,0},{84,75}}</string>
                 <key>sourceSize</key>
-                <string>{271,102}</string>
+                <string>{88,75}</string>
             </dict>
             <key>root/heihua_toushiche_3/attack/10002.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{605,619},{85,74}}</string>
+                <string>{{854,581},{86,75}}</string>
                 <key>offset</key>
-                <string>{-91,-13}</string>
+                <string>{1,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{2,27},{85,74}}</string>
+                <string>{{2,0},{86,75}}</string>
                 <key>sourceSize</key>
-                <string>{271,102}</string>
+                <string>{88,75}</string>
             </dict>
             <key>root/heihua_toushiche_3/attack/10003.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{267,587},{87,74}}</string>
+                <string>{{286,336},{86,75}}</string>
                 <key>offset</key>
-                <string>{-92,-13}</string>
+                <string>{1,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,27},{87,74}}</string>
+                <string>{{2,0},{86,75}}</string>
                 <key>sourceSize</key>
-                <string>{271,102}</string>
+                <string>{88,75}</string>
             </dict>
             <key>root/heihua_toushiche_3/attack/10004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{91,676},{87,74}}</string>
+                <string>{{626,320},{88,75}}</string>
                 <key>offset</key>
-                <string>{-92,-13}</string>
+                <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,27},{87,74}}</string>
+                <string>{{0,0},{88,75}}</string>
                 <key>sourceSize</key>
-                <string>{271,102}</string>
+                <string>{88,75}</string>
             </dict>
             <key>root/heihua_toushiche_3/attack/10005.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,706},{87,74}}</string>
+                <string>{{766,368},{88,75}}</string>
                 <key>offset</key>
-                <string>{-92,-13}</string>
+                <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,27},{87,74}}</string>
+                <string>{{0,0},{88,75}}</string>
                 <key>sourceSize</key>
-                <string>{271,102}</string>
+                <string>{88,75}</string>
             </dict>
             <key>root/heihua_toushiche_3/attack/10006.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{356,597},{87,74}}</string>
+                <string>{{856,427},{88,75}}</string>
                 <key>offset</key>
-                <string>{-92,-13}</string>
+                <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,27},{87,74}}</string>
+                <string>{{0,0},{88,75}}</string>
                 <key>sourceSize</key>
-                <string>{271,102}</string>
+                <string>{88,75}</string>
             </dict>
             <key>root/heihua_toushiche_3/attack/10007.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{631,202},{111,102}}</string>
+                <string>{{160,944},{78,75}}</string>
                 <key>offset</key>
-                <string>{-74,0}</string>
+                <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{6,0},{111,102}}</string>
+                <string>{{5,0},{78,75}}</string>
                 <key>sourceSize</key>
-                <string>{271,102}</string>
+                <string>{88,75}</string>
             </dict>
             <key>root/heihua_toushiche_3/attack/10008.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{536,126},{249,74}}</string>
+                <string>{{942,616},{80,75}}</string>
                 <key>offset</key>
-                <string>{-4,-13}</string>
+                <string>{2,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{7,27},{249,74}}</string>
+                <string>{{6,0},{80,75}}</string>
                 <key>sourceSize</key>
-                <string>{271,102}</string>
+                <string>{88,75}</string>
             </dict>
             <key>root/heihua_toushiche_3/attack/10009.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,78},{263,72}}</string>
+                <string>{{613,548},{82,75}}</string>
                 <key>offset</key>
-                <string>{2,-13}</string>
+                <string>{3,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{6,28},{263,72}}</string>
+                <string>{{6,0},{82,75}}</string>
                 <key>sourceSize</key>
-                <string>{271,102}</string>
+                <string>{88,75}</string>
             </dict>
             <key>root/heihua_toushiche_3/attack/10010.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{271,65},{263,74}}</string>
+                <string>{{374,337},{86,75}}</string>
                 <key>offset</key>
-                <string>{-1,-13}</string>
+                <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{3,27},{263,74}}</string>
+                <string>{{1,0},{86,75}}</string>
                 <key>sourceSize</key>
-                <string>{271,102}</string>
+                <string>{88,75}</string>
             </dict>
             <key>root/heihua_toushiche_3/attack/10011.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{267,74}}</string>
+                <string>{{89,560},{84,75}}</string>
                 <key>offset</key>
-                <string>{2,-13}</string>
+                <string>{2,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{4,27},{267,74}}</string>
+                <string>{{4,0},{84,75}}</string>
                 <key>sourceSize</key>
-                <string>{271,102}</string>
-            </dict>
-            <key>root/heihua_toushiche_3/attack/10012.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{747,736},{83,74}}</string>
-                <key>offset</key>
-                <string>{-90,-13}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{4,27},{83,74}}</string>
-                <key>sourceSize</key>
-                <string>{271,102}</string>
+                <string>{88,75}</string>
             </dict>
             <key>root/heihua_toushiche_3/hurt/10001.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{186,562},{86,79}}</string>
+                <string>{{536,366},{86,79}}</string>
                 <key>offset</key>
                 <string>{-1,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{86,79}}</string>
+                <key>sourceSize</key>
+                <string>{88,79}</string>
+            </dict>
+            <key>root/heihua_toushiche_3/hurt/10002.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{942,537},{80,77}}</string>
+                <key>offset</key>
+                <string>{4,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{8,1},{80,77}}</string>
+                <key>sourceSize</key>
+                <string>{88,79}</string>
+            </dict>
+            <key>root/heihua_toushiche_3/hurt/10003.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{312,944},{78,71}}</string>
+                <key>offset</key>
+                <string>{4,-2}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{9,6},{78,71}}</string>
                 <key>sourceSize</key>
                 <string>{88,79}</string>
             </dict>
             <key>root/heihua_toushiche_3/hurt/10004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{354,819},{84,75}}</string>
+                <string>{{2,610},{84,75}}</string>
                 <key>offset</key>
                 <string>{2,-1}</string>
                 <key>rotated</key>
@@ -1996,24 +2139,37 @@
             <key>root/heihua_toushiche_3/hurt/10005.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{440,821},{78,73}}</string>
+                <string>{{237,944},{78,73}}</string>
                 <key>offset</key>
                 <string>{4,-2}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{9,5},{78,73}}</string>
+                <key>sourceSize</key>
+                <string>{88,79}</string>
+            </dict>
+            <key>root/heihua_toushiche_3/hurt/10006.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{426,715},{80,71}}</string>
+                <key>offset</key>
+                <string>{3,-2}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{7,6},{80,71}}</string>
                 <key>sourceSize</key>
                 <string>{88,79}</string>
             </dict>
             <key>root/heihua_toushiche_3/move/10000.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{192,387},{81,73}}</string>
+                <string>{{260,640},{81,73}}</string>
                 <key>offset</key>
                 <string>{1,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{3,1},{81,73}}</string>
                 <key>sourceSize</key>
@@ -2022,11 +2178,11 @@
             <key>root/heihua_toushiche_3/move/10001.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{517,736},{83,75}}</string>
+                <string>{{262,563},{83,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{1,0},{83,75}}</string>
                 <key>sourceSize</key>
@@ -2035,7 +2191,7 @@
             <key>root/heihua_toushiche_3/move/10002.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{700,342},{85,75}}</string>
+                <string>{{766,599},{85,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -2048,7 +2204,7 @@
             <key>root/heihua_toushiche_3/move/10003.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{180,734},{85,75}}</string>
+                <string>{{853,658},{85,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -2061,7 +2217,7 @@
             <key>root/heihua_toushiche_3/move/10004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{694,573},{85,75}}</string>
+                <string>{{180,382},{85,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -2074,20 +2230,33 @@
             <key>root/heihua_toushiche_3/move/10005.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{594,736},{83,75}}</string>
+                <string>{{175,609},{83,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{1,0},{83,75}}</string>
                 <key>sourceSize</key>
                 <string>{85,75}</string>
             </dict>
+            <key>root/heihua_youqibing_2/attack/10004.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{518,838},{60,60}}</string>
+                <key>offset</key>
+                <string>{-20,1}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{60,60}}</string>
+                <key>sourceSize</key>
+                <string>{100,62}</string>
+            </dict>
             <key>root/heihua_youqibing_2/attack/10012.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{267,208},{100,60}}</string>
+                <string>{{540,55},{100,60}}</string>
                 <key>offset</key>
                 <string>{0,-1}</string>
                 <key>rotated</key>
@@ -2097,36 +2266,88 @@
                 <key>sourceSize</key>
                 <string>{100,62}</string>
             </dict>
-            <key>root/heihua_youqibing_3/attack/10001.png</key>
+            <key>root/heihua_youqibing_2/attack/10013.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{560,895},{64,55}}</string>
+                <string>{{708,740},{60,56}}</string>
                 <key>offset</key>
                 <string>{-20,-2}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{1,8},{64,55}}</string>
+                <string>{{0,5},{60,56}}</string>
                 <key>sourceSize</key>
-                <string>{106,67}</string>
+                <string>{100,62}</string>
+            </dict>
+            <key>root/heihua_youqibing_2/hurt/10001.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{922,863},{63,59}}</string>
+                <key>offset</key>
+                <string>{1,0}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{2,0},{63,59}}</string>
+                <key>sourceSize</key>
+                <string>{65,59}</string>
             </dict>
             <key>root/heihua_youqibing_3/attack/10002.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{626,895},{64,55}}</string>
+                <string>{{479,309},{64,55}}</string>
                 <key>offset</key>
                 <string>{-20,-3}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{1,9},{64,55}}</string>
+                <key>sourceSize</key>
+                <string>{106,67}</string>
+            </dict>
+            <key>root/heihua_youqibing_3/attack/10003.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{673,874},{66,63}}</string>
+                <key>offset</key>
+                <string>{-20,2}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{66,63}}</string>
+                <key>sourceSize</key>
+                <string>{106,67}</string>
+            </dict>
+            <key>root/heihua_youqibing_3/attack/10004.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{738,874},{66,61}}</string>
+                <key>offset</key>
+                <string>{-20,0}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{0,3},{66,61}}</string>
+                <key>sourceSize</key>
+                <string>{106,67}</string>
+            </dict>
+            <key>root/heihua_youqibing_3/attack/10005.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{620,731},{66,65}}</string>
+                <key>offset</key>
+                <string>{-20,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,1},{66,65}}</string>
                 <key>sourceSize</key>
                 <string>{106,67}</string>
             </dict>
             <key>root/heihua_youqibing_3/attack/10012.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{787,247},{106,63}}</string>
+                <string>{{2,184},{106,63}}</string>
                 <key>offset</key>
                 <string>{0,-2}</string>
                 <key>rotated</key>
@@ -2136,10 +2357,49 @@
                 <key>sourceSize</key>
                 <string>{106,67}</string>
             </dict>
+            <key>root/heihua_youqibing_3/attack/10013.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{956,928},{66,59}}</string>
+                <key>offset</key>
+                <string>{-20,-2}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,6},{66,59}}</string>
+                <key>sourceSize</key>
+                <string>{106,67}</string>
+            </dict>
+            <key>root/heihua_youqibing_3/attack/10016.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{508,783},{66,53}}</string>
+                <key>offset</key>
+                <string>{-20,-1}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,8},{66,53}}</string>
+                <key>sourceSize</key>
+                <string>{106,67}</string>
+            </dict>
+            <key>root/heihua_youqibing_3/hurt/10001.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{326,838},{64,60}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{2,1},{64,60}}</string>
+                <key>sourceSize</key>
+                <string>{68,62}</string>
+            </dict>
             <key>root/heihua_youqibing_3/hurt/10002.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{459,367},{56,60}}</string>
+                <string>{{966,66},{56,60}}</string>
                 <key>offset</key>
                 <string>{-6,1}</string>
                 <key>rotated</key>
@@ -2149,55 +2409,42 @@
                 <key>sourceSize</key>
                 <string>{68,62}</string>
             </dict>
-            <key>root/heihua_youqibing_3/move/10002.png</key>
+            <key>root/heihua_youqibing_3/hurt/10004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{352,896},{68,54}}</string>
+                <string>{{712,534},{64,52}}</string>
+                <key>offset</key>
+                <string>{1,4}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{3,1},{64,52}}</string>
+                <key>sourceSize</key>
+                <string>{68,62}</string>
+            </dict>
+            <key>root/heihua_youqibing_3/move/10000.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{712,398},{66,52}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{68,54}}</string>
+                <string>{{1,1},{66,52}}</string>
                 <key>sourceSize</key>
                 <string>{68,54}</string>
             </dict>
-            <key>root/heihua_youqibing_3/move/10003.png</key>
+            <key>root/heihua_youqibing_3/move/10004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{422,896},{68,54}}</string>
+                <string>{{712,466},{66,52}}</string>
                 <key>offset</key>
-                <string>{0,0}</string>
+                <string>{-1,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{68,54}}</string>
-                <key>sourceSize</key>
-                <string>{68,54}</string>
-            </dict>
-            <key>root/heihua_youqibing_3/move/10006.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{492,896},{66,54}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{1,0},{66,54}}</string>
-                <key>sourceSize</key>
-                <string>{68,54}</string>
-            </dict>
-            <key>root/heihua_youqibing_3/move/10007.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{956,965},{66,54}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{1,0},{66,54}}</string>
+                <string>{{0,1},{66,52}}</string>
                 <key>sourceSize</key>
                 <string>{68,54}</string>
             </dict>
@@ -2211,7 +2458,7 @@
             <key>size</key>
             <string>{1024,1024}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:f685bb198ad8c06cf298a98c05606bd9:1/2$</string>
+            <string>$TexturePacker:SmartUpdate:01d51662a1eed4a1400a4e818dc413f6:1/2$</string>
             <key>textureFileName</key>
             <string>heihua_animation_90_0-sd.png</string>
         </dict>

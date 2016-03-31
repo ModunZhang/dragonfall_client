@@ -29,17 +29,20 @@ function GameUIMission:OnUserDataChanged_dailyTasks(userData, deltaData)
     if not self:CurrentIsDailyMission() then return end
     self:RefreshDailyList()
     local points = self:GetDailyTasksFinishedPoints()
-    self.dailyTaskRewardCount_progress:setPercentage(points/200 * 100)
+    self.dailyTaskRewardCount_progress:setPercentage(points/self:GetMaxPoint() * 100)
     self.my_points:setString(string.format(_("我的积分:%d"),points))
 end
 function GameUIMission:OnUserDataChanged_countInfo()
     local points = self:GetDailyTasksFinishedPoints()
-    self.dailyTaskRewardCount_progress:setPercentage(points/200 * 100)
+    self.dailyTaskRewardCount_progress:setPercentage(points/self:GetMaxPoint() * 100)
     self.boxed_node:RefreshBoxes()
     self:RefreshDisplayGreenPoint()
 end
 function GameUIMission:OnUserDataChanged_growUpTasks()
     self:RefreshAchievementList()
+end
+function GameUIMission:GetMaxPoint()
+    return dailyTaskRewardsConfig[#dailyTaskRewardsConfig].score
 end
 function GameUIMission:ctor(city,mission_type, need_tips)
     GameUIMission.super.ctor(self,city, _("任务"))
@@ -203,10 +206,11 @@ end
 function GameUIMission:GetAchievementListItem(isFinished,data)
     local item = self.achievement_list:newItem()
     local content = UIKit:CreateBoxWithoutContent()
-    UIKit:ttfLabel({
+    local desc = UIKit:ttfLabel({
         text = isFinished and data:Title() or data:Desc(),
         size = 22,
-        color= 0x403c2f
+        color= 0x403c2f,
+        dimensions = cc.size(380,0)
     }):align(display.LEFT_CENTER, 5, 33):addTo(content)
     if not isFinished then
         display.newSprite("next_32x38.png"):align(display.RIGHT_CENTER, 548, 33):addTo(content)
@@ -306,7 +310,6 @@ end
 
 --日常任务
 function GameUIMission:CreateUIIf_daily()
-    print("CreateUIIf_daily---->")
     if self.daily_layer then
         --refresh list
         self:RefreshDailyList()
@@ -366,7 +369,7 @@ function GameUIMission:CreateUIIf_daily()
     self.my_points = my_points
     local progress_bg,progress =  self:GetProgressBar()
     progress_bg:align(display.CENTER_TOP, layer:getContentSize().width/2, my_points:getPositionY() - my_points:getContentSize().height - 16):addTo(layer)
-    progress:setPercentage(points/200 * 100)
+    progress:setPercentage(points/self:GetMaxPoint() * 100)
     self.dailyTaskRewardCount_progress = progress
     local boxed_node = self:GetRewardsNode():align(display.CENTER_TOP, layer:getContentSize().width/2 + 30, progress_bg:getPositionY() - progress_bg:getContentSize().height - 15):addTo(layer)
     self.boxed_node = boxed_node
