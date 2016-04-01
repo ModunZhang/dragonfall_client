@@ -347,11 +347,16 @@ function MyApp:retryConnectServer(need_disconnect)
         print("MyApp:debug--->1")
     end
     if UIKit:isKeyMessageDialogShow() then return end
-    --如果在登录界面并且未进入游戏忽略
+    --如果在登录界面
     if display.getRunningScene().__cname == 'MainScene' then
-        if not display.getRunningScene().enter_next_scene then
-            return
+        if display.getRunningScene().startGame then -- 如果发现点击了开始游戏,取消掉之前的所有操作,立即执行登陆操作
+            local ui = display.getRunningScene().ui
+            if ui then
+                ui:stopAllActions()
+                ui:loginAction() 
+            end
         end
+        return
     end
     NetManager.m_logicServer.host = nil
     NetManager.m_logicServer.port = nil
