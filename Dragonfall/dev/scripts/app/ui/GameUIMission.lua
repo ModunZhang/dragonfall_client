@@ -206,10 +206,11 @@ end
 function GameUIMission:GetAchievementListItem(isFinished,data)
     local item = self.achievement_list:newItem()
     local content = UIKit:CreateBoxWithoutContent()
-    UIKit:ttfLabel({
+    local desc = UIKit:ttfLabel({
         text = isFinished and data:Title() or data:Desc(),
         size = 22,
-        color= 0x403c2f
+        color= 0x403c2f,
+        dimensions = cc.size(380,0)
     }):align(display.LEFT_CENTER, 5, 33):addTo(content)
     if not isFinished then
         display.newSprite("next_32x38.png"):align(display.RIGHT_CENTER, 548, 33):addTo(content)
@@ -608,11 +609,8 @@ function GameUIMission:GetDailyTasksFinishedPoints()
 end
 function GameUIMission:RefreshDisplayGreenPoint()
     if not self.tab_buttons then return end
-    self.tab_buttons:SetGreenTipsShow("daily",self:GetDailyTasksFinishedPoints() < 200)
+    self.tab_buttons:SetGreenTipsShow("daily",self:GetDailyTasksFinishedPoints() < self:GetMaxPoint())
 end
-
-
-
 
 function GameUIMission:dailyListviewListener(event)
     local city = self.city

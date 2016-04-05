@@ -767,6 +767,9 @@ end
 function ShrinePlayFightReport:GetDefenceDragonLevel()
     return self.defenceTroopData.dragon.level
 end
+function ShrinePlayFightReport:IsFightWithBlackTroops()
+    return false
+end
 
 return GameUIShrineReportInMail
 

@@ -159,7 +159,9 @@ function GameUIWithCommonHeader:CreateTitle(title)
 end
 
 function GameUIWithCommonHeader:CreateBackGround()
-    return display.newSprite("common_bg_center.png"):align(display.CENTER_TOP, window.cx,window.top-40):addTo(self:GetView())
+    local backGround_1 = display.newSprite("common_bg_center_1.png"):align(display.CENTER_TOP, window.cx,window.top-40):addTo(self:GetView())
+    local backGround_2 = display.newSprite("common_bg_center_2.png"):align(display.CENTER_TOP, window.cx,0):addTo(backGround_1)
+    return backGround_1
 end
 
 function GameUIWithCommonHeader:CreateHomeButton(on_clicked)

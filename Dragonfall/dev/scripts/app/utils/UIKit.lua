@@ -364,7 +364,7 @@ function UIKit:getImageByBuildingType( building_type ,level)
     elseif building_type=="shop" then
         return UILib.alliance_building.shop
     elseif building_type=="shrine" then
-        return UILib.alliance_building.shrine
+        return {UILib.alliance_building.shrine,"alliance_shrine_2.png"}
     end
 end
 

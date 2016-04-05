@@ -181,7 +181,6 @@ function GameUIAllianceEnterBase:GetLevelBg()
 end
 
 function GameUIAllianceEnterBase:GetLevelLabelText()
-    dump()
     return self:GetBuilding().level and _("等级") .. self:GetBuilding().level or ""
 end
 
