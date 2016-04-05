@@ -48,6 +48,32 @@ static inline std::string convertPathFormatToUnixStyle(const std::string& path)
 }
 
 
+static std::string UTF8StringToMultiByte(const std::string& strUtf8)
+{
+	std::string ret;
+	if (!strUtf8.empty())
+	{
+		std::wstring strWideChar = StringUtf8ToWideChar(strUtf8);
+		int nNum = WideCharToMultiByte(CP_ACP, 0, strWideChar.c_str(), -1, nullptr, 0, nullptr, FALSE);
+		if (nNum)
+		{
+			char* ansiString = new char[nNum + 1];
+			ansiString[0] = 0;
+
+			nNum = WideCharToMultiByte(CP_ACP, 0, strWideChar.c_str(), -1, ansiString, nNum + 1, nullptr, FALSE);
+
+			ret = ansiString;
+			delete[] ansiString;
+		}
+		else
+		{
+			CCLOG("Wrong convert to Ansi code:0x%x", GetLastError());
+		}
+	}
+
+	return ret;
+}
+
 static void _checkPath()
 {
     if (s_pszResourcePath.empty())
@@ -208,4 +234,8 @@ string CCFileUtilsWinRT::getAppPath()
 	return convertPathFormatToUnixStyle(std::string(PlatformStringToString(package->InstalledLocation->Path)));
 }
 
+std::string CCFileUtilsWinRT::getSuitableFOpen(const std::string& filenameUtf8) const
+{
+	return UTF8StringToMultiByte(filenameUtf8);
+}
 NS_CC_END

@@ -330,6 +330,15 @@ public:
     // This method is used internally.
     virtual bool writeToFile(ValueMap& dict, const std::string& fullPath);
     
+	/**
+	* Windows fopen can't support UTF-8 filename
+	* Need convert all parameters fopen and other 3rd-party libs
+	*
+	* @param filename std::string name file for conversion from utf-8
+	* @return std::string ansi filename in current locale
+	*/
+	virtual std::string getSuitableFOpen(const std::string& filenameUtf8) const;
+
     // Converts the contents of a file to a ValueVector.
     // This method is used internally.
     virtual ValueVector getValueVectorFromFile(const std::string& filename);
@@ -343,6 +352,14 @@ public:
      */
     virtual bool isFileExist(const std::string& filename) const;
     
+	/**
+	*  Gets filename extension is a suffix (separated from the base filename by a dot) in lower case.
+	*  Examples of filename extensions are .png, .jpeg, .exe, .dmg and .txt.
+	*  @param filePath The path of the file, it could be a relative or absolute path.
+	*  @return suffix for filename in lower case or empty if a dot not found.
+	*/
+	virtual std::string getFileExtension(const std::string& filePath) const;
+
     /**
      *  Checks whether the path is an absolute path.
      *
