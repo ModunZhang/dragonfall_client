@@ -11,7 +11,7 @@
 ------------| ------------               | ------------- 				  | -------------
 版本号		| CFBundleShortVersionString | versionName 			  		  | Version前三位(Package.appxmanifest)
 构建版本号	| CFBundleVersion            | versionCode           		  | Version最后一位(Package.appxmanifest)
-进入测试服	| AppHoc                     | appHoc					  	  | AppHoc (App.xaml)
+进入测试服	| AppHoc                     | appHoc [false true]		      | AppHoc (App.xaml)[False True]
 最低支持版本	| AppMinVersion              | appMinVersion 				  | AppMinVersion (App.xaml)
 
 ### 自动更新说明
