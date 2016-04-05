@@ -406,7 +406,7 @@ function GameUIGacha:GetLightLine(isSenior)
     -- cc.SpriteFrameCache:getInstance():addSpriteFrame(srpite_frame_2,img_2)
     local frames = display.newFrames(patten, 1, 2)
     local animation = display.newAnimation(frames, 0.2)
-    light_line:playAnimationForever(animation)
+    light_line:scale(true and 2 or 1):playAnimationForever(animation)
     return light_line
 end
 function GameUIGacha:InitOrdinary()

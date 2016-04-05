@@ -51,7 +51,7 @@ function WidgetGachaItemBox:SetOrginStatus()
             return
         end
         local animation = display.newAnimation(frames, 0.2)
-        light_box:playAnimationForever(animation)
+        light_box:scale(true and 2 or 1):playAnimationForever(animation)
     end
 end
 -- 设置选中点或取消选中点状态 ，针对3连抽
@@ -76,7 +76,7 @@ function WidgetGachaItemBox:SetSelectedStatus()
             return
         end
         local animation = display.newAnimation(frames, 0.2)
-        select_box:playAnimationForever(animation)
+        select_box:scale(true and 2 or 1):playAnimationForever(animation)
     end
 end
 -- 设置经过状态或取消经过状态
