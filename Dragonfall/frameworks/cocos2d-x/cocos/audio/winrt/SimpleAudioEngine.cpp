@@ -19,9 +19,14 @@
 #include "SimpleAudioEngine.h"
 #include "Audio.h"
 #include "cocos2d.h"
-
 #include <map>
 //#include "CCCommon.h"
+#define CONVERT_TO_NEW_AUDIO_ENGINE 1 //使用新的音乐引擎在wp上解析文件
+#if CONVERT_TO_NEW_AUDIO_ENGINE
+#include "audio/include/AudioEngine.h"
+using namespace cocos2d;
+using namespace cocos2d::experimental;
+#endif
 using namespace std;
 USING_NS_CC;
 
@@ -123,46 +128,88 @@ bool SimpleAudioEngine::isBackgroundMusicPlaying()
 
 unsigned int SimpleAudioEngine::playEffect(const char* pszFilePath, bool bLoop,float pitch, float pan, float gain)
 {
+#if CONVERT_TO_NEW_AUDIO_ENGINE
+	return AudioEngine::play2d(pszFilePath, bLoop, 1.0);
+#else
     unsigned int sound;
     string fullPath = CCFileUtils::getInstance()->fullPathForFilename(pszFilePath);
     sharedAudioController()->PlaySoundEffect(fullPath.c_str(), bLoop, sound);    // TODO: need to support playEffect parameters
     return sound;
+#endif
 }
 
 void SimpleAudioEngine::stopEffect(unsigned int nSoundId)
 {
+#if CONVERT_TO_NEW_AUDIO_ENGINE
+	if (nSoundId!=AudioEngine::INVALID_AUDIO_ID)
+	{
+		AudioEngine::stop(nSoundId);
+	}
+#else
     sharedAudioController()->StopSoundEffect(nSoundId);
+#endif
 }
 
 void SimpleAudioEngine::preloadEffect(const char* pszFilePath)
 {
+#if CONVERT_TO_NEW_AUDIO_ENGINE
+	AudioEngine::preload(pszFilePath);
+#else
     string fullPath = CCFileUtils::getInstance()->fullPathForFilename(pszFilePath);
     sharedAudioController()->PreloadSoundEffect(fullPath.c_str());
+#endif
 }
 
 void SimpleAudioEngine::pauseEffect(unsigned int nSoundId)
 {
+#if CONVERT_TO_NEW_AUDIO_ENGINE
+	if (nSoundId!=AudioEngine::INVALID_AUDIO_ID)
+	{
+		AudioEngine::pause(nSoundId);
+	}
+#else
     sharedAudioController()->PauseSoundEffect(nSoundId);
+#endif
+
 }
 
 void SimpleAudioEngine::resumeEffect(unsigned int nSoundId)
 {
+#if CONVERT_TO_NEW_AUDIO_ENGINE
+	if (nSoundId != AudioEngine::INVALID_AUDIO_ID)
+	{
+		AudioEngine::resume(nSoundId);
+	}
+#else
     sharedAudioController()->ResumeSoundEffect(nSoundId);
+#endif
 }
 
 void SimpleAudioEngine::pauseAllEffects()
 {
+#if CONVERT_TO_NEW_AUDIO_ENGINE
+	AudioEngine::pauseAll();
+#else
     sharedAudioController()->PauseAllSoundEffects();
+#endif
 }
 
 void SimpleAudioEngine::resumeAllEffects()
 {
+#if CONVERT_TO_NEW_AUDIO_ENGINE
+	AudioEngine::resumeAll();
+#else
     sharedAudioController()->ResumeAllSoundEffects();
+#endif
 }
 
 void SimpleAudioEngine::stopAllEffects()
 {
+#if CONVERT_TO_NEW_AUDIO_ENGINE
+	AudioEngine::stopAll();
+#else
     sharedAudioController()->StopAllSoundEffects(false);
+#endif
 }
 
 void SimpleAudioEngine::preloadBackgroundMusic(const char* pszFilePath)
@@ -172,8 +219,12 @@ void SimpleAudioEngine::preloadBackgroundMusic(const char* pszFilePath)
 
 void SimpleAudioEngine::unloadEffect(const char* pszFilePath)
 {
+#if CONVERT_TO_NEW_AUDIO_ENGINE
+	AudioEngine::uncache(pszFilePath);
+#else
     string fullPath = CCFileUtils::getInstance()->fullPathForFilename(pszFilePath);
     sharedAudioController()->UnloadSoundEffect(fullPath.c_str());
+#endif
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -192,12 +243,20 @@ void SimpleAudioEngine::setBackgroundMusicVolume(float volume)
 
 float SimpleAudioEngine::getEffectsVolume()
 {
+#if CONVERT_TO_NEW_AUDIO_ENGINE
+	return 1.0;
+#else
     return sharedAudioController()->GetSoundEffectVolume();
+#endif
 }
 
 void SimpleAudioEngine::setEffectsVolume(float volume)
 {
+#if CONVERT_TO_NEW_AUDIO_ENGINE
+	
+#else
     sharedAudioController()->SetSoundEffectVolume((volume<=0.0f)? 0.0f : volume);
+#endif
 }
 
 } // end of namespace CocosDenshion
