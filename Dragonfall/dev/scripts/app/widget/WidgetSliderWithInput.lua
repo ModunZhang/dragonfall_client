@@ -27,7 +27,7 @@ function WidgetSliderWithInput:ctor(params)
     min = slider_max <= 1 and 0 or min
     self.slider = WidgetSlider.new(display.LEFT_TO_RIGHT,  {bar = bar,
         progress = progress,
-        button = "slider_btn_66x66.png"}, {max = slider_max,min = min,scale9=true}):addTo(self)
+        button = "slider_btn_66x66.png"}, {max = slider_max,min = min}):addTo(self)
     local slider = self.slider
 
 
