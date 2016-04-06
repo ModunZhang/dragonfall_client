@@ -25,7 +25,7 @@ function FairGroundSprite:GetSpriteFile()
     return "Fairground.png"
 end
 function FairGroundSprite:GetSpriteOffset()
-    return 80, 130
+    return 0, 0
 end
 function FairGroundSprite:GetMidLogicPosition()
     return self:GetLogicMap():ConvertToLogicPosition(self:getPosition())

@@ -25,8 +25,6 @@ function GameUIReplay:ctor(report, callback, skipcallback)
     assert(report.GetDefenceDragonLevel)
     assert(report.GetFightAttackDragonRoundData)
     assert(report.GetFightDefenceDragonRoundData)
-    assert(report.CouldAttackDragonUseSkill)
-    assert(report.CouldDefenceDragonUseSkill)
 
     assert(report.IsSoldierFight)
     assert(report.GetOrderedAttackSoldiers)
@@ -87,7 +85,7 @@ function GameUIReplay:MoveSpeed()
     return 100
 end
 function GameUIReplay:WallPosition()
-    return self:DefencePosition() + 200, display.cy
+    return self:DefencePosition() + 200, self:TopPositionByRow(1)-260
 end
 function GameUIReplay:AttackPosition()
     return 100
@@ -117,20 +115,32 @@ function GameUIReplay:Setup()
     self.ui_map.attackName:setString(self.report:GetFightAttackName())
     self.ui_map.defenceName:setString(self.report:GetFightDefenceName())
 
+    -- 发生兵种战斗
     if self.report:IsDragonFight() then
         local attackDragonType = self.report:GetFightAttackDragonRoundData().type
         self.attackDragon = UIKit:CreateSkillDragon(attackDragonType, true, self):hide()
-        :addTo(self.ui_map.dragonSkillNode,0,BATTLE_OBJECT_TAG):pos(display.cx-100, display.cy)
+        :addTo(self.ui_map.dragonSkillNode,0,BATTLE_OBJECT_TAG):pos(display.cx, display.cy)
 
         self.ui_map.attackDragonLabel:setString(Localize.dragon[attackDragonType])
         self.ui_map.attackDragonIcon:setTexture(UILib.dragon_head[attackDragonType])
 
         local defenceDragonType = self.report:GetFightDefenceDragonRoundData().type
         self.defenceDragon = UIKit:CreateSkillDragon(defenceDragonType, false, self):hide()
-        :addTo(self.ui_map.dragonSkillNode,0,BATTLE_OBJECT_TAG):pos(display.cx+100, display.cy)
+        :addTo(self.ui_map.dragonSkillNode,0,BATTLE_OBJECT_TAG):pos(display.cx, display.cy)
 
         self.ui_map.defenceDragonLabel:setString(Localize.dragon[defenceDragonType])
         self.ui_map.defenceDragonIcon:setTexture(UILib.dragon_head[defenceDragonType])
+    -- 直接攻打城墙
+    else
+        assert(self.report.GetFightAttackIcon)
+        self.ui_map.attackDragonLabel:setString("")
+        local icon = self.report:GetFightAttackIcon()
+        self.ui_map.attackDragonIcon:setTexture(UIKit:GetPlayerIconImage(icon))
+
+        self.ui_map.defenceDragonLabel:setString(_("城墙"))
+        self.ui_map.defenceDragonIcon:setTexture("icon_wall_83x103.png")
+        local x,y = self.ui_map.defenceDragonIcon:getPosition()
+        self.ui_map.defenceDragonIcon:pos(x,y-5):flipX(false)
     end
 
     self.attackTroops = {}

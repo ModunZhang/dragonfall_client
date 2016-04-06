@@ -536,6 +536,10 @@ function Report:GetFightAttackName()
     local data = self:GetData()
     return data.attackPlayerData.name
 end
+function Report:GetFightAttackIcon()
+    local data = self:GetData()
+    return data.attackPlayerData.icon
+end
 function Report:GetFightDefenceName()
     local data = self:GetData()
     return data.helpDefencePlayerData and data.helpDefencePlayerData.name

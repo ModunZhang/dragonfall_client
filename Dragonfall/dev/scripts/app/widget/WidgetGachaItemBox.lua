@@ -56,12 +56,6 @@ function WidgetGachaItemBox:SetOrginStatus()
         })))
         self:addChild(light_box)
         self.light_box = light_box
-        -- local frames = display.newFrames(patten, 1, 2)
-        -- if not frames then
-        --     return
-        -- end
-        -- local animation = display.newAnimation(frames, 0.2)
-        -- light_box:scale(true and 2 or 1):playAnimationForever(animation)
     end
 end
 -- 设置选中点或取消选中点状态 ，针对3连抽
@@ -88,16 +82,8 @@ function WidgetGachaItemBox:SetSelectedStatus()
             end),
             cc.DelayTime:create(0.2),
         })))
-        -- local select_box = display.newSprite(img_1)
         self:addChild(select_box)
-
-        -- local frames = display.newFrames(patten, 1, 2)
-        -- self.select_box = select_box
-        -- if not frames then
-        --     return
-        -- end
-        -- local animation = display.newAnimation(frames, 0.2)
-        -- select_box:scale(true and 2 or 1):playAnimationForever(animation)
+        self.select_box = select_box
     end
 end
 -- 设置经过状态或取消经过状态
@@ -144,6 +130,9 @@ function WidgetGachaItemBox:RemoveSelectStatus( )
     end
 end
 return WidgetGachaItemBox
+
+
+
 
 
 
