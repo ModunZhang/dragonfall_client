@@ -400,15 +400,25 @@ function GameUIGacha:GetLightLine(isSenior)
         patten = "gacha_line_20x568_%d.png"
         w,h = 20,568
     end
-    local srpite_frame_1 = cc.SpriteFrame:create(img_1,cc.rect(0,0,w,h))
-    local srpite_frame_2 = cc.SpriteFrame:create(img_2,cc.rect(0,0,w,h))
+    -- local srpite_frame_1 = cc.SpriteFrame:create(img_1,cc.rect(0,0,w,h))
+    -- local srpite_frame_2 = cc.SpriteFrame:create(img_2,cc.rect(0,0,w,h))
     local light_line = display.newSprite(img_1)
 
     -- cc.SpriteFrameCache:getInstance():addSpriteFrame(srpite_frame_1,img_1)
     -- cc.SpriteFrameCache:getInstance():addSpriteFrame(srpite_frame_2,img_2)
-    local frames = display.newFrames(patten, 1, 2)
-    local animation = display.newAnimation(frames, 0.2)
-    light_line:scale(true and 2 or 1):playAnimationForever(animation)
+    -- local frames = display.newFrames(patten, 1, 2)
+    -- local animation = display.newAnimation(frames, 0.2)
+    -- light_line:scale(true and 2 or 1):playAnimationForever(animation)
+    light_line:runAction(cc.RepeatForever:create(transition.sequence({
+            cc.CallFunc:create(function()
+                light_line:setTexture(string.format(patten,2))
+            end),
+            cc.DelayTime:create(0.2),
+            cc.CallFunc:create(function()
+                light_line:setTexture(string.format(patten,1))
+            end),
+            cc.DelayTime:create(0.2),
+        })))
     return light_line
 end
 function GameUIGacha:InitOrdinary()
