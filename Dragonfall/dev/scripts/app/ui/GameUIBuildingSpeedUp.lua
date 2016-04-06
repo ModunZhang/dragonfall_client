@@ -25,7 +25,7 @@ function GameUIBuildingSpeedUp:ctor(event)
     scheduleAt(self, function()
         local time, percent = UtilsForEvent:GetEventInfo(self.event)
         self:SetFreeButtonEnabled(time <= DataUtils:getFreeSpeedUpLimitTime())
-        self:SetProgressInfo(GameUtils:formatTimeStyle1(time), percent)
+        self:SetProgressInfo(time, percent)
     end)
 
     User:AddListenOnType(self, "houseEvents")

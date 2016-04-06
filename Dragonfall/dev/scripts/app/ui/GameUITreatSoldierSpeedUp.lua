@@ -28,7 +28,7 @@ function GameUITreatSoldierSpeedUp:ctor()
             return 
         end
         local time, percent = UtilsForEvent:GetEventInfo(event)
-        self:SetProgressInfo(GameUtils:formatTimeStyle1(time), percent)
+        self:SetProgressInfo(time, percent)
     end)
     User:AddListenOnType(self, "treatSoldierEvents")
 end

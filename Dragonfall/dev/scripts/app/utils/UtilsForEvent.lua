@@ -19,21 +19,22 @@ function UtilsForEvent:GetEventInfo(event)
     return math.ceil(left), (time - start) * 100.0 / (finish - start)
 end
 -- 将事件加速到可免费加速需要的金龙币
-function UtilsForEvent:GetSpeedUpPrice(event,eventType)
+function UtilsForEvent:GetSpeedUpPrice(event,eventType,time)
     if self:CouldFreeSpeedUp(eventType) then
         local freeTime = DataUtils:getFreeSpeedUpLimitTime()
-        local leftTime = self:GetEventInfo(event)
+        local leftTime = time or self:GetEventInfo(event)
         local speedUpTime = leftTime - freeTime
         if speedUpTime > 0 then
             return DataUtils:getGemByTimeInterval(speedUpTime)
         end
     else
-        return DataUtils:getGemByTimeInterval(self:GetEventInfo(event))
+        local leftTime = time or self:GetEventInfo(event)
+        return DataUtils:getGemByTimeInterval(leftTime)
     end
 end
 --事件是否能免费加速
 function UtilsForEvent:CouldFreeSpeedUp(eventType)
-    if eventType == "soldierEvents"
+    if not eventType or  eventType == "soldierEvents"
         or eventType == "dragonEquipmentEvents"
         or eventType == "dailyQuestEvents"
         or eventType == "dragonDeathEvents"

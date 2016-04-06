@@ -24,7 +24,7 @@ function GameUIBarracksSpeedUp:ctor()
             self:LeftButtonClicked()
         end
         local time, percent = UtilsForEvent:GetEventInfo(event)
-        self:SetProgressInfo(GameUtils:formatTimeStyle1(time), percent)
+        self:SetProgressInfo(time, percent)
     end)
 end
 

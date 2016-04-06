@@ -75,12 +75,13 @@ function WidgetSpeedUp:ctor()
 
 end
 
-function WidgetSpeedUp:SetProgressInfo(time_label, percent)
+function WidgetSpeedUp:SetProgressInfo(time, percent)
     if math.floor(percent) ==100 then
         self:LeftButtonClicked()
         return
     end
-    self.progress:SetProgressInfo(time_label, percent)
+    self.progress:SetProgressInfo(GameUtils:formatTimeStyle1(time), percent)
+    self.price_label:setString(string.formatnumberthousands(UtilsForEvent:GetSpeedUpPrice(nil,nil,time)))
     return self
 end
 function WidgetSpeedUp:SetFreeButtonEnabled(enable)
@@ -105,7 +106,7 @@ function WidgetSpeedUp:SetUpgradeTip(tip)
     return self
 end
 function WidgetSpeedUp:SetAccBtnsGroup(eventType,speedUpEvent)
-    self.acc_buttons = WidgetAccelerateGroup.new(eventType,event):addTo(self.body):align(display.BOTTOM_CENTER,self.body:getContentSize().width/2,10)
+    self.acc_buttons = WidgetAccelerateGroup.new(eventType,speedUpEvent):addTo(self.body):align(display.BOTTOM_CENTER,self.body:getContentSize().width/2,10)
     self.speedUp_button:onButtonClicked(function(event)
         if event.name == "CLICKED_EVENT" then
             NetManager:getSpeedUpPromise(eventType, speedUpEvent.id)

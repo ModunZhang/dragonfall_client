@@ -25,7 +25,7 @@ function GameUIDragonDeathSpeedUp:ctor(dragonType)
     self:SetUpgradeTip(Localize.dragon[dragonType] .. _("正在复活"))
 	scheduleAt(self, function()
         local time, percent = UtilsForEvent:GetEventInfo(self.event)
-        self:SetProgressInfo(GameUtils:formatTimeStyle1(time), percent)
+        self:SetProgressInfo(time, percent)
     end)
 
     User:AddListenOnType(self, "dragonDeathEvents")

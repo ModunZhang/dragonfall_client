@@ -106,8 +106,8 @@ function WidgetAccelerateGroup:ctor(eventType,speedUpEvent)
                     local effect = UtilsForItem:IsSpeedUpItem(speedUp_item_name).effect * 60
                     local max_count = math.min(math.ceil(leftTime/effect), User:GetItemCount(speedUp_item_name))
                     UIKit:newWidgetUI("WidgetUseMutiItems", speedUp_item_name,{max_count = max_count,
-                        eventType = eventType,
-                        eventId = speedUpEvent.id
+                        eventType = speedUpEvent and eventType,
+                        eventId = speedUpEvent and speedUpEvent.id
                     }):AddToCurrentScene()
                 else
                     if item_info.price > User:GetGemValue() then
@@ -123,8 +123,8 @@ function WidgetAccelerateGroup:ctor(eventType,speedUpEvent)
                     else
                         NetManager:getBuyAndUseItemPromise(speedUp_item_name,{[speedUp_item_name] = {
                             count = 1,
-                            eventType = eventType,
-                            eventId = speedUpEvent.id
+                            eventType = speedUpEvent and eventType,
+                            eventId = speedUpEvent and speedUpEvent.id
                         }})
                     end
                 end
