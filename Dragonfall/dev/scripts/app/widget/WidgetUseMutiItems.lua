@@ -9,7 +9,7 @@ local Localize_item = import("..utils.Localize_item")
 local WidgetUseMutiItems = class("WidgetUseMutiItems", WidgetPopDialog)
 local item_resource = GameDatas.Items.resource
 
-function WidgetUseMutiItems:ctor(item_name)
+function WidgetUseMutiItems:ctor(item_name,params)
     local resource_type
     if string.find(item_name,"wood") then
         resource_type = "wood"
@@ -20,6 +20,10 @@ function WidgetUseMutiItems:ctor(item_name)
     elseif string.find(item_name,"iron") then
         resource_type = "iron"
     end
+    local max_count = params and params.max_count or User:GetItemCount(item_name)
+    local eventType = params and params.eventType
+    local eventId = params and params.eventId
+
     self.resource_type = resource_type
     WidgetUseMutiItems.super.ctor(self,resource_type and 348 or 282,Localize_item.item_name[item_name],display.top-298)
     self.item_name = item_name
@@ -38,8 +42,7 @@ function WidgetUseMutiItems:ctor(item_name)
         :addTo(slider_bg)
 
     -- slider
-
-    local slider = WidgetSliderWithInput.new({max = User:GetItemCount(item_name)})
+    local slider = WidgetSliderWithInput.new({max = max_count})
         :addTo(slider_bg)
         :align(display.CENTER, slider_bg:getContentSize().width/2,  65)
         :OnSliderValueChanged(function(event)
@@ -56,8 +59,14 @@ function WidgetUseMutiItems:ctor(item_name)
         }))
         :onButtonClicked(function(event)
             if event.name == "CLICKED_EVENT" then
+                local par = {}
+                par.count = slider:GetValue()
+                if eventType and eventId then
+                    par.eventType = eventType
+                    par.eventId = eventId
+                end
                 NetManager:getUseItemPromise(item_name,{
-                    [item_name] = {count = slider:GetValue()}
+                    [item_name] = par
                 }):done(function ()
                     self:LeftButtonClicked()
                 end)
@@ -65,7 +74,7 @@ function WidgetUseMutiItems:ctor(item_name)
         end):align(display.BOTTOM_CENTER, body_size.width/2,30):addTo(body)
     button:setButtonEnabled(slider:GetValue() ~= 0)
     self.button = button
-    slider:SetValue(User:GetItemCount(item_name))
+    slider:SetValue(max_count)
     self.slider = slider
 end
 function WidgetUseMutiItems:onEnter()

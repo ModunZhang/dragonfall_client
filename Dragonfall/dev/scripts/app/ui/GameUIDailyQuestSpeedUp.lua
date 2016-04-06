@@ -11,7 +11,7 @@ function GameUIDailyQuestSpeedUp:ctor(quest)
     GameUIDailyQuestSpeedUp.super.ctor(self)
     dump(quest)
     self.quest = quest
-    self:SetAccBtnsGroup(self:GetEventType(),quest.id)
+    self:SetAccBtnsGroup(self:GetEventType(),quest)
     self:SetAccTips(_("每日任务不能免费加速"))
     self:SetUpgradeTip(string.format(_("正在%s"),Localize.daily_quests_name[quest.index]))
 

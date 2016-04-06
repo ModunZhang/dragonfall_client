@@ -18,7 +18,7 @@ function GameUIBuildingSpeedUp:ctor(event)
     end
     self.event = event
     self.eventType = event.location and "buildingEvents" or "houseEvents"
-    self:SetAccBtnsGroup(self.eventType, event.id)
+    self:SetAccBtnsGroup(self.eventType, event)
     local building = UtilsForBuilding:GetBuildingByEvent(User, event)
     self:SetUpgradeTip(string.format(_("正在升级 %s 到等级 %d"), Localize.building_name[building.type], building.level + 1))
     self:OnFreeButtonClicked(handler(self, self.FreeSpeedUpAction))

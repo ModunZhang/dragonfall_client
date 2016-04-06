@@ -18,6 +18,32 @@ function UtilsForEvent:GetEventInfo(event)
     end
     return math.ceil(left), (time - start) * 100.0 / (finish - start)
 end
+-- 将事件加速到可免费加速需要的金龙币
+function UtilsForEvent:GetSpeedUpPrice(event,eventType)
+    if self:CouldFreeSpeedUp(eventType) then
+        local freeTime = DataUtils:getFreeSpeedUpLimitTime()
+        local leftTime = self:GetEventInfo(event)
+        local speedUpTime = leftTime - freeTime
+        if speedUpTime > 0 then
+            return DataUtils:getGemByTimeInterval(speedUpTime)
+        end
+    else
+        return DataUtils:getGemByTimeInterval(self:GetEventInfo(event))
+    end
+end
+--事件是否能免费加速
+function UtilsForEvent:CouldFreeSpeedUp(eventType)
+    if eventType == "soldierEvents"
+        or eventType == "dragonEquipmentEvents"
+        or eventType == "dailyQuestEvents"
+        or eventType == "dragonDeathEvents"
+        or eventType == "materialEvents"
+        or eventType == "treatSoldierEvents"
+    then
+        return false
+    end
+    return true
+end
 function UtilsForEvent:GetMilitaryTechEventLocalize(tech_name, level)
     local category, tech_type = unpack(string.split(tech_name, "_"))
     if tonumber(tech_type) then
@@ -254,6 +280,7 @@ function UtilsForEvent:GetAllMyMarchEvents()
     end
     return events
 end
+
 
 
 

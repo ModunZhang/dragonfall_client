@@ -20,7 +20,7 @@ function GameUIDragonDeathSpeedUp:ctor(dragonType)
 		self:LeftButtonClicked()
 	end
 	self.event = event
-	self:SetAccBtnsGroup(self:GetEventType(), event.id)
+	self:SetAccBtnsGroup(self:GetEventType(), event)
     self:SetAccTips(_("龙的复活没有免费加速"))
     self:SetUpgradeTip(Localize.dragon[dragonType] .. _("正在复活"))
 	scheduleAt(self, function()
