@@ -49,7 +49,7 @@ function LogoScene:loadSplashResources()
 end
 
 function LogoScene:onExit()
-    cc.Director:getInstance():getTextureCache():removeTextureForKey("batcat_logo_368x507.png")
+    removeImageByKey("batcat_logo_368x507.png")
 end
 
 return LogoScene

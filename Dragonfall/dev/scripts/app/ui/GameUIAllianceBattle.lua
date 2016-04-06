@@ -60,10 +60,10 @@ function GameUIAllianceBattle:onExit()
 end
 function GameUIAllianceBattle:onCleanup()
     GameUIAllianceBattle.super.onCleanup(self)
-    cc.Director:getInstance():getTextureCache():removeTextureForKey("alliance_battle_bg_612x886.png")
-    cc.Director:getInstance():getTextureCache():removeTextureForKey("alliance_battle_bg_612x886.jpg")
-    cc.Director:getInstance():getTextureCache():removeTextureForKey("background_550x170.png")
-    cc.Director:getInstance():getTextureCache():removeTextureForKey("background_550x170.jpg")
+    removeImageByKey("alliance_battle_bg_612x886.png")
+    removeImageByKey("alliance_battle_bg_612x886.jpg")
+    removeImageByKey("background_550x170.png")
+    removeImageByKey("background_550x170.jpg")
 end
 
 function GameUIAllianceBattle:CreateBetweenBgAndTitle()

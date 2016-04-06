@@ -223,7 +223,7 @@ function GameUIGacha:CreateGachaPool(layer)
         temp_box:SetPassStatus()
         current_box = temp_box
         current_index = next_index
-        if device.platform ~= 'winrt' and isPlayMusic then
+        if isPlayMusic then
             app:GetAudioManager():PlayeEffectSound("sfx_gacha.mp3")
         end
     end
@@ -351,7 +351,7 @@ function GameUIGacha:CreateGachaPool(layer)
         local run_steps = self.run_steps or 0
 
         self.run_steps = run_steps + 1
-        local isFinalStep = (self.total_steps-self.run_steps) < 4
+        local isFinalStep = (self.total_steps-self.run_steps) < 6
         self:SkipByStep(isFinalStep)
         if self.handle then
             scheduler.unscheduleGlobal(self.handle)
@@ -641,10 +641,8 @@ end
 
 function GameUIGacha:onCleanup()
     GameUIGacha.super.onCleanup(self)
-    cc.Director:getInstance():getTextureCache():removeTextureForKey("background_gacha_1.png")
-    cc.Director:getInstance():getTextureCache():removeTextureForKey("background_gacha_1.jpg")
-    cc.Director:getInstance():getTextureCache():removeTextureForKey("background_gacha_2.png")
-    cc.Director:getInstance():getTextureCache():removeTextureForKey("background_gacha_2.jpg")
+    removeImageByKey("background_gacha_1.jpg")
+    removeImageByKey("background_gacha_2.jpg")
 end
 
 return GameUIGacha

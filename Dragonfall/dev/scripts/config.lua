@@ -35,7 +35,7 @@ CONFIG_REMOTE_SERVER = {
     },
     gate = {
         host = "54.223.166.65",
-        port = 13100,
+        port = 13120,
         name = "gate-server-1"
     },
 }
@@ -58,7 +58,7 @@ CONFIG_IS_DEBUG = true
 -- 是否记录日志文件 如果关闭lua错误将被发送到三方sdk
 CONFIG_LOG_DEBUG_FILE = true
 
-GLOBAL_FTE = true
+GLOBAL_FTE = false
 GLOBAL_FTE_DEBUG = false
 
 -- 是否关闭自动更新,不设置表示打开自动更新

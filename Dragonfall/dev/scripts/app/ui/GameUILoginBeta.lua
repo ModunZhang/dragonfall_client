@@ -482,12 +482,12 @@ end
 function GameUILoginBeta:onCleanup()
     GameUILoginBeta.super.onCleanup(self)
     -- clean  all  unused textures
-    cc.Director:getInstance():getTextureCache():removeTextureForKey("splash_beta_bg_3987x1136.jpg")
-    cc.Director:getInstance():getTextureCache():removeTextureForKey("splash_logo_516x92.png")
-    cc.Director:getInstance():getTextureCache():removeTextureForKey("splash_process_color_606x25.png")
-    cc.Director:getInstance():getTextureCache():removeTextureForKey("splash_process_bg_606x25.png")
-    cc.Director:getInstance():getTextureCache():removeTextureForKey("splash_tips_bg_544x30.png")
-    cc.Director:getInstance():getTextureCache():removeTextureForKey("start_game_292x28.png.png")
+    removeImageByKey("splash_beta_bg_3987x1136.jpg")
+    removeImageByKey("splash_logo_516x92.png")
+    removeImageByKey("splash_process_color_606x25.png")
+    removeImageByKey("splash_process_bg_606x25.png")
+    removeImageByKey("splash_tips_bg_544x30.png")
+    removeImageByKey("start_game_292x28.png.png")
 end
 
 

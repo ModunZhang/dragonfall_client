@@ -25,8 +25,7 @@ function GameUITips:onEnter()
 end
 function GameUITips:onCleanup()
     GameUITips.super.onCleanup(self)
-    cc.Director:getInstance():getTextureCache():removeTextureForKey("region_tips_556x344.png")
-    cc.Director:getInstance():getTextureCache():removeTextureForKey("region_tips_556x344.jpg")
+    removeImageByKey("region_tips_556x344.jpg")
 end
 
 function GameUITips:BuildUI()
