@@ -13,7 +13,7 @@ function GameUIBlackSmithSpeedUp:ctor(building)
         self:LeftButtonClicked()
         return
     end
-    self:SetAccBtnsGroup(self:GetEventType(), event.id)
+    self:SetAccBtnsGroup(self:GetEventType(), event)
     self:SetAccTips(_("制造装备不能免费加速"))
     self:SetUpgradeTip(_("制造装备").."X 1")
     scheduleAt(self, function()

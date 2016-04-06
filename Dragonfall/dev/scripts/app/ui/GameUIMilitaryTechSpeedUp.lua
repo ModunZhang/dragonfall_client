@@ -10,7 +10,7 @@ function GameUIMilitaryTechSpeedUp:ctor(event)
     local User = User
     GameUIMilitaryTechSpeedUp.super.ctor(self)
     self.militaryEvent = event
-    self:SetAccBtnsGroup(User:EventType(event),event.id)
+    self:SetAccBtnsGroup(User:EventType(event),event)
     local str
     if User:IsSoldierStarEvent(event) then
         str = UtilsForEvent:GetMilitaryTechEventLocalize(event.name, UtilsForSoldier:SoldierStarByName(User, event.name))

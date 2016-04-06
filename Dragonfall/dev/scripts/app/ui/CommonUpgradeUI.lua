@@ -121,8 +121,11 @@ function CommonUpgradeUI:Upgrading()
             local time, percent = UtilsForEvent:GetEventInfo(event)
             self.acc_layer.upgrade_time_label:setString(GameUtils:formatTimeStyle1(time))
             pro:setPercentage(percent)
-            self.acc_layer.acc_button:setButtonEnabled(
+            self.acc_layer.acc_button:setVisible(
                 DataUtils:getFreeSpeedUpLimitTime() >= time
+            )
+            self.acc_layer.speedUpButton:setVisible(
+                DataUtils:getFreeSpeedUpLimitTime() < time
             )
         end
     else
@@ -133,8 +136,11 @@ function CommonUpgradeUI:Upgrading()
             local time, percent = UtilsForEvent:GetEventInfo(event)
             self.acc_layer.upgrade_time_label:setString(GameUtils:formatTimeStyle1(time))
             pro:setPercentage(percent)
-            self.acc_layer.acc_button:setButtonEnabled(
+            self.acc_layer.acc_button:setVisible(
                 DataUtils:getFreeSpeedUpLimitTime() >= time
+            )
+            self.acc_layer.speedUpButton:setVisible(
+                DataUtils:getFreeSpeedUpLimitTime() < time
             )
         end
     end
@@ -822,17 +828,19 @@ function CommonUpgradeUI:InitAccelerationPart()
     display.newSprite("hourglass_30x38.png", display.cx - 250, display.top - 345):addTo(self.acc_layer):setScale(0.8)
     -- 免费加速按钮
     self:CreateFreeSpeedUpBuildingUpgradeButton()
+    -- 立即完成按钮
+    self:CreateFinishNowBuildingUpgradeButton()
     -- 可免费加速提示
     -- 背景框
-    WidgetUIBackGround.new({width = 546,height=90},WidgetUIBackGround.STYLE_TYPE.STYLE_3):align(display.CENTER,  display.cx, display.top - 435):addTo(self.acc_layer)
+    local tip_bg = WidgetUIBackGround.new({width = 546,height=96},WidgetUIBackGround.STYLE_TYPE.STYLE_5):align(display.CENTER,  window.cx, display.top - 432):addTo(self.acc_layer)
     self.acc_tip_label = cc.ui.UILabel.new({
         UILabelType = cc.ui.UILabel.LABEL_TYPE_TTF,
         font = UIKit:getFontFilePath(),
         size = 20,
-        dimensions = cc.size(530, 0),
+        dimensions = cc.size(350, 0),
         color = UIKit:hex2c3b(0x403c2f)
-    }):align(display.LEFT_CENTER, display.cx - 270, display.top - 435)
-        :addTo(self.acc_layer)
+    }):align(display.CENTER, tip_bg:getContentSize().width/2, tip_bg:getContentSize().height/2)
+        :addTo(tip_bg)
     self:SetAccTipLabel()
     -- 按时间加速区域
     self:CreateAccButtons()
@@ -867,12 +875,56 @@ function CommonUpgradeUI:CreateFreeSpeedUpBuildingUpgradeButton()
     if event then
         local time = UtilsForEvent:GetEventInfo(event)
         if DataUtils:getFreeSpeedUpLimitTime() >= time then
-            self.acc_layer.acc_button:setButtonEnabled(true)
+            self.acc_layer.acc_button:show()
+        else
+            self.acc_layer.acc_button:hide()
         end
     else
-        self.acc_layer.acc_button:setButtonEnabled(false)
+        self.acc_layer.acc_button:hide()
     end
+end
 
+function CommonUpgradeUI:CreateFinishNowBuildingUpgradeButton()
+    local button = cc.ui.UIPushButton.new({normal = "green_btn_up_148x76.png",pressed = "green_btn_down_148x76.png"})
+        :setButtonLabel(UIKit:ttfLabel({
+            text = _("加速"),
+            size = 20,
+            color = 0xffedae,
+            shadow = true
+        }))
+        :setButtonLabelOffset(0, 16)
+        :onButtonClicked(function(event)
+            if event.name == "CLICKED_EVENT" then
+                 NetManager:getSpeedUpPromise(self:GetEventTypeByBuilding(), self.building:UniqueUpgradingKey())
+            end
+        end)
+        :align(display.CENTER, display.cx+194, display.top - 335):addTo(self.acc_layer)
+
+    local num_bg = display.newSprite("back_ground_124x28.png"):addTo(button):align(display.CENTER,0, -18)
+    -- gem icon
+    local gem_icon = display.newSprite("gem_icon_62x61.png"):addTo(num_bg):align(display.CENTER, 20, num_bg:getContentSize().height/2):scale(0.6)
+    local price = UIKit:ttfLabel({
+        size = 18,
+        color = 0xffd200,
+    }):align(display.LEFT_CENTER, 50 , num_bg:getContentSize().height/2)
+        :addTo(num_bg)
+    scheduleAt(self, function()
+        if self.building:IsUpgrading() then
+            price:setString(string.formatnumberthousands(UtilsForEvent:GetSpeedUpPrice(self.building:GetUpgradingEvent(),self:GetEventTypeByBuilding())))
+        end
+    end)
+    local event = UtilsForBuilding:GetBuildingEventByLocation(User, self:GetCurrentLocation())
+    if event then
+        local time = UtilsForEvent:GetEventInfo(event)
+        if DataUtils:getFreeSpeedUpLimitTime() >= time then
+            button:hide()
+        else
+            button:show()
+        end
+    else
+        button:show()
+    end
+    self.acc_layer.speedUpButton = button
 end
 
 function CommonUpgradeUI:SetAccTipLabel()
@@ -884,7 +936,7 @@ function CommonUpgradeUI:GetEventTypeByBuilding()
 end
 function CommonUpgradeUI:CreateAccButtons()
     -- 8个加速按钮单独放置在一个layer上方便处理事件
-    self.acc_button_layer = WidgetAccelerateGroup.new(self:GetEventTypeByBuilding(),self.building:UniqueUpgradingKey()):addTo(self.acc_layer):align(display.BOTTOM_CENTER,window.cx,window.bottom_top+115)
+    self.acc_button_layer = WidgetAccelerateGroup.new(self:GetEventTypeByBuilding(),self.building:GetUpgradingEvent()):addTo(self.acc_layer):align(display.BOTTOM_CENTER,window.cx,window.bottom_top+115)
     self:visibleChildLayers()
 end
 
@@ -1119,6 +1171,7 @@ function CommonUpgradeUI:PopNotSatisfyDialog(listener,can_not_update_type)
 end
 
 return CommonUpgradeUI
+
 
 
 
