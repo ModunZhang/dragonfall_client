@@ -28,9 +28,11 @@ THE SOFTWARE.
 #endif
 #include <Windows.h>
 #include <wrl/client.h>
+#include <wrl/wrappers/corewrappers.h>
 #include <ppl.h>
 #include <ppltasks.h>
 #include <sstream>
+
 
 #if CC_TARGET_PLATFORM != CC_PLATFORM_WP8
 using namespace Windows::UI::Xaml;
@@ -361,7 +363,7 @@ Concurrency::task<Platform::Array<byte>^> ReadDataAsync(Platform::String^ path)
 std::string computeHashForFile(const std::string& filePath)
 {
     std::string ret = filePath;
-   /* int pos = std::string::npos;
+    int pos = std::string::npos;
     pos = ret.find_last_of('/');
 
     if (pos != std::string::npos) {
@@ -393,17 +395,35 @@ std::string computeHashForFile(const std::string& filePath)
             ss << fInfo.ChangeTime.QuadPart;
             ret = ss.str();
         }
-    }*/
+    }
 
     return ret;
+}
+
+std::string computeHashString(const char *key)
+{
+	unsigned int len = strlen(key);
+	const char *end = key + len;
+	unsigned int hash;
+
+	for (hash = 0; key < end; key++)
+	{
+		hash *= 16777619;
+		hash ^= (unsigned int)(unsigned char)toupper(*key);
+	}
+	std::stringstream ret;
+	ret << (hash);
+	return std::string(ret.str());
 }
 
 bool createMappedCacheFile(const std::string& srcFilePath, std::string& cacheFilePath, std::string ext)
 {
     bool ret = false;
+	auto key = computeHashString(srcFilePath.c_str());
     auto folderPath = FileUtils::getInstance()->getWritablePath();
-    cacheFilePath = folderPath + computeHashForFile(srcFilePath) + ext;
-    std::string prevFile = UserDefault::getInstance()->getStringForKey(srcFilePath.c_str());
+	auto fileName = computeHashForFile(srcFilePath) + ext;
+	cacheFilePath = folderPath + fileName;
+	std::string prevFile = folderPath + UserDefault::getInstance()->getStringForKey(key.c_str());
 
     if (prevFile == cacheFilePath) {
         ret = FileUtils::getInstance()->isFileExist(cacheFilePath);
@@ -411,20 +431,21 @@ bool createMappedCacheFile(const std::string& srcFilePath, std::string& cacheFil
     else {
         FileUtils::getInstance()->removeFile(prevFile);
     }
-
-    UserDefault::getInstance()->setStringForKey(srcFilePath.c_str(), cacheFilePath);
+	UserDefault::getInstance()->setStringForKey(key.c_str(), fileName);
     return ret;
 }
 
 void destroyMappedCacheFile(const std::string& key)
 {
-    std::string value = UserDefault::getInstance()->getStringForKey(key.c_str());
+	auto newKey = computeHashString(key.c_str());
+	std::string value = UserDefault::getInstance()->getStringForKey(newKey.c_str());
     
     if (!value.empty()) {
-        FileUtils::getInstance()->removeFile(value);
+		auto cacheFilePath = FileUtils::getInstance()->getWritablePath() + value;
+		FileUtils::getInstance()->removeFile(cacheFilePath);
     }
 
-    UserDefault::getInstance()->setStringForKey(key.c_str(), "");
+	UserDefault::getInstance()->setStringForKey(newKey.c_str(), "");
 }
 
 NS_CC_END

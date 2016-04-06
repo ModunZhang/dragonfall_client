@@ -63,6 +63,8 @@ void CC_DLL CCLogIPAddresses();
 std::string CC_DLL getDeviceIPAddresses();
 
 std::string computeHashForFile(const std::string& filePath);
+//compute the hash value (unsigned int) of string
+std::string computeHashString(const char *key);
 
 // creates a  cache file path corresponding to given source file.
 // srcFilePath - source file.
