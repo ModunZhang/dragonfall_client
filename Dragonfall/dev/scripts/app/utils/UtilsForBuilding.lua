@@ -83,13 +83,13 @@ end
 local HouseFunction = GameDatas.HouseFunction
 local BuildingFunction = GameDatas.BuildingFunction
 function UtilsForBuilding:GetBuildingConfig(houseOrBuildingName)
-    return BuildingFunction[houseOrBuildingName] 
+    return BuildingFunction[houseOrBuildingName]
         or HouseFunction[houseOrBuildingName]
 end
 local HouseLevelUp = GameDatas.HouseLevelUp
 local BuildingLevelUp = GameDatas.BuildingLevelUp
 function UtilsForBuilding:GetLevelUpConfig(houseOrBuildingName)
-    return BuildingLevelUp[houseOrBuildingName] 
+    return BuildingLevelUp[houseOrBuildingName]
         or HouseLevelUp[houseOrBuildingName]
 end
 
@@ -338,22 +338,22 @@ function UtilsForBuilding:GetMaxCasualty(userData, offset)
 end
 
 
--- 
+--
 local keep = GameDatas.BuildingFunction.keep
 function UtilsForBuilding:GetFreeUnlockPoint(userData)
     local unlocked_count = 0
     for _,building in pairs(userData.buildings) do
-        if building.level > 0 
-        and building.type ~= "wall"
-        and building.type ~= "tower" then
+        if building.level > 0
+            and building.type ~= "wall"
+            and building.type ~= "tower" then
             unlocked_count = unlocked_count + 1
         end
     end
     for _,event in pairs(userData.buildingEvents) do
         local building = self:GetBuildingBy(userData, event.location)
-        if building.level == 0 
-        and building.type ~= "wall"
-        and building.type ~= "tower" then
+        if building.level == 0
+            and building.type ~= "wall"
+            and building.type ~= "tower" then
             unlocked_count = unlocked_count + 1
         end
     end
@@ -492,6 +492,11 @@ function UtilsForBuilding:GetBuildingEventsBySeq(userData)
     table.sort(events, function(a, b) return a.finishTime < b.finishTime end)
     return events
 end
+function UtilsForBuilding:CouldFreeSpeedUpWithShortestBuildingEvent(userData)
+    local shortest_event = self:GetBuildingEventsBySeq(userData)[1]
+    local time = UtilsForEvent:GetEventInfo(shortest_event)
+    return time <= DataUtils:getFreeSpeedUpLimitTime()
+end
 function UtilsForBuilding:GetBuildingByEvent(userData, event)
     if event.location then
         return self:GetBuildingByLocation(userData, event.location)
@@ -562,7 +567,7 @@ function UtilsForBuilding:GetUsedCitizen(userData, house, buildingLocation, offs
     if buildingLocation then
         for _,event in pairs(userData.houseEvents) do
             if buildingLocation == event.buildingLocation
-            and house.location == event.houseLocation then
+                and house.location == event.houseLocation then
                 efficiency_level = house.level + 1
             end
         end
@@ -592,6 +597,7 @@ end
 --         end
 --     end
 -- end
+
 
 
 

@@ -721,7 +721,7 @@ end
 
 function GameUIMission:onCleanup()
     GameUIMission.super.onCleanup(self)
-    cc.Director:getInstance():getTextureCache():removeTextureForKey("mission_header_bg_616x184.jpg")
+    removeImageByKey("mission_header_bg_616x184.jpg")
 end
 
 

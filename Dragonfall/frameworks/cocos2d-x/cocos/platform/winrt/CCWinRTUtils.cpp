@@ -28,9 +28,11 @@ THE SOFTWARE.
 #endif
 #include <Windows.h>
 #include <wrl/client.h>
+#include <wrl/wrappers/corewrappers.h>
 #include <ppl.h>
 #include <ppltasks.h>
 #include <sstream>
+
 
 #if CC_TARGET_PLATFORM != CC_PLATFORM_WP8
 using namespace Windows::UI::Xaml;
@@ -48,6 +50,55 @@ using namespace Windows::Storage::Pickers;
 using namespace Windows::Storage::Streams;
 using namespace Windows::Networking::Connectivity;
 
+
+std::wstring StringUtf8ToWideChar(const std::string& strUtf8)
+{
+	std::wstring ret;
+	if (!strUtf8.empty())
+	{
+		int nNum = MultiByteToWideChar(CP_UTF8, 0, strUtf8.c_str(), -1, nullptr, 0);
+		if (nNum)
+		{
+			WCHAR* wideCharString = new WCHAR[nNum + 1];
+			wideCharString[0] = 0;
+
+			nNum = MultiByteToWideChar(CP_UTF8, 0, strUtf8.c_str(), -1, wideCharString, nNum + 1);
+
+			ret = wideCharString;
+			delete[] wideCharString;
+		}
+		else
+		{
+			CCLOG("Wrong convert to WideChar code:0x%x", GetLastError());
+		}
+	}
+	return ret;
+}
+
+std::string StringWideCharToUtf8(const std::wstring& strWideChar)
+{
+	std::string ret;
+	if (!strWideChar.empty())
+	{
+		int nNum = WideCharToMultiByte(CP_UTF8, 0, strWideChar.c_str(), -1, nullptr, 0, nullptr, FALSE);
+		if (nNum)
+		{
+			char* utf8String = new char[nNum + 1];
+			utf8String[0] = 0;
+
+			nNum = WideCharToMultiByte(CP_UTF8, 0, strWideChar.c_str(), -1, utf8String, nNum + 1, nullptr, FALSE);
+
+			ret = utf8String;
+			delete[] utf8String;
+		}
+		else
+		{
+			CCLOG("Wrong convert to Utf8 code:0x%x", GetLastError());
+		}
+	}
+
+	return ret;
+}
 std::wstring CCUtf8ToUnicode(const char * pszUtf8Str, unsigned len/* = -1*/)
 {
     std::wstring ret;
@@ -287,7 +338,7 @@ Concurrency::task<Platform::Array<byte>^> ReadDataAsync(Platform::String^ filena
 		return fileData;
 	});
 }
-#else
+#endif
 
 
 
@@ -309,9 +360,92 @@ Concurrency::task<Platform::Array<byte>^> ReadDataAsync(Platform::String^ path)
 	});
 }
 
+std::string computeHashForFile(const std::string& filePath)
+{
+    std::string ret = filePath;
+    int pos = std::string::npos;
+    pos = ret.find_last_of('/');
 
+    if (pos != std::string::npos) {
+        ret = ret.substr(pos);
+    }
 
-#endif
+    pos = ret.find_last_of('.');
 
+    if (pos != std::string::npos) {
+        ret = ret.substr(0, pos);
+    }
+
+    CREATEFILE2_EXTENDED_PARAMETERS extParams = { 0 };
+    extParams.dwFileAttributes = FILE_ATTRIBUTE_NORMAL;
+    extParams.dwFileFlags = FILE_FLAG_RANDOM_ACCESS;
+    extParams.dwSecurityQosFlags = SECURITY_ANONYMOUS;
+    extParams.dwSize = sizeof(extParams);
+    extParams.hTemplateFile = nullptr;
+    extParams.lpSecurityAttributes = nullptr;
+	
+    Microsoft::WRL::Wrappers::FileHandle file(CreateFile2(std::wstring(filePath.begin(), filePath.end()).c_str(), GENERIC_READ, FILE_SHARE_READ, OPEN_EXISTING, &extParams));
+
+    if (file.Get() != INVALID_HANDLE_VALUE) {
+        FILE_BASIC_INFO  fInfo = { 0 };
+        if (GetFileInformationByHandleEx(file.Get(), FileBasicInfo, &fInfo, sizeof(FILE_BASIC_INFO))) {
+            std::stringstream ss;
+            ss << ret << "_";
+            ss << fInfo.CreationTime.QuadPart;
+            ss << fInfo.ChangeTime.QuadPart;
+            ret = ss.str();
+        }
+    }
+
+    return ret;
+}
+
+std::string computeHashString(const char *key)
+{
+	unsigned int len = strlen(key);
+	const char *end = key + len;
+	unsigned int hash;
+
+	for (hash = 0; key < end; key++)
+	{
+		hash *= 16777619;
+		hash ^= (unsigned int)(unsigned char)toupper(*key);
+	}
+	std::stringstream ret;
+	ret << (hash);
+	return std::string(ret.str());
+}
+
+bool createMappedCacheFile(const std::string& srcFilePath, std::string& cacheFilePath, std::string ext)
+{
+    bool ret = false;
+	auto key = computeHashString(srcFilePath.c_str());
+    auto folderPath = FileUtils::getInstance()->getWritablePath();
+	auto fileName = computeHashForFile(srcFilePath) + ext;
+	cacheFilePath = folderPath + fileName;
+	std::string prevFile = folderPath + UserDefault::getInstance()->getStringForKey(key.c_str());
+
+    if (prevFile == cacheFilePath) {
+        ret = FileUtils::getInstance()->isFileExist(cacheFilePath);
+    }
+    else {
+        FileUtils::getInstance()->removeFile(prevFile);
+    }
+	UserDefault::getInstance()->setStringForKey(key.c_str(), fileName);
+    return ret;
+}
+
+void destroyMappedCacheFile(const std::string& key)
+{
+	auto newKey = computeHashString(key.c_str());
+	std::string value = UserDefault::getInstance()->getStringForKey(newKey.c_str());
+    
+    if (!value.empty()) {
+		auto cacheFilePath = FileUtils::getInstance()->getWritablePath() + value;
+		FileUtils::getInstance()->removeFile(cacheFilePath);
+    }
+
+	UserDefault::getInstance()->setStringForKey(newKey.c_str(), "");
+}
 
 NS_CC_END

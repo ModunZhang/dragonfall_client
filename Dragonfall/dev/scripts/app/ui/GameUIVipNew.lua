@@ -202,7 +202,7 @@ function GameUIVipNew:onExit()
 end
 function GameUIVipNew:onCleanup()
     GameUIVipNew.super.onCleanup(self)
-    cc.Director:getInstance():getTextureCache():removeTextureForKey("back_ground_vip_608x164.jpg")
+    removeImageByKey("back_ground_vip_608x164.jpg")
 end
 function GameUIVipNew:InitVip()
     self:InitVipTop()

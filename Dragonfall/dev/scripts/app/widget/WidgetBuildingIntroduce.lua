@@ -21,8 +21,8 @@ function WidgetBuildingIntroduce:ctor(building)
         :addTo(body)
 
     local build_png = SpriteConfig[building:GetType()]:GetConfigByLevel(1).png
-    local building_image = display.newScale9Sprite(build_png, building_bg:getContentSize().width/2, building_bg:getContentSize().height/2):addTo(building_bg)
-    building_image:setAnchorPoint(cc.p(0.5,0.5))
+    local building_image = display.newSprite(build_png, 126/2, 126/2):addTo(building_bg)
+    -- building_image:setAnchorPoint(cc.p(0.5,0.5))
     building_image:setScale(90/math.max(building_image:getContentSize().width,building_image:getContentSize().height))
 
     local configs = SpriteConfig[building:GetType()]:GetAnimationConfigsByLevel(1)

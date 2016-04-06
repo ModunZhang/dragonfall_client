@@ -2,7 +2,10 @@ require("cocos.cocos2d.Cocos2dConstants")
 print("加载玩家自定义函数!")
 NOT_HANDLE = function(...) print("net message not handel, please check !") end
 local FileUtils = cc.FileUtils:getInstance()
-local openSD = ext.isLowMemoryDevice() and device.platform == 'winrt'
+function isUseSdImage()
+    return ext.isLowMemoryDevice() and device.platform == 'winrt'
+end
+local openSD = isUseSdImage()
 
 local sharedTextureCache = cc.Director:getInstance():getTextureCache()
 function showMemoryUsage(head)
@@ -93,6 +96,9 @@ local rgba4444 = import(".rgba4444")
 local jpg_rgb888 = import(".jpg_rgb888")
 
 jpg_rgb888["tmxmaps/terrain1.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
+jpg_rgb888["plus_right_grassLand.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B888
+jpg_rgb888["plus_right_iceField.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B888
+jpg_rgb888["plus_right_desert.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B888
 
 
 local auto_cleanup = {}
@@ -126,7 +132,7 @@ function removeImageByKey(key)
         end
     end
     
-    print("setAliasTexParameters", cacheKey)
+    print("removeImageByKey", cacheKey)
     cache:removeTextureForKey(cacheKey)
 end
 function setAliasTexParametersForKey(key)

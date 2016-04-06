@@ -120,6 +120,7 @@ function GameUISendTroopNew:CreateBetweenBgAndTitle()
     self:SelectDragonPart()
     self:SelectSoldiersPart()
     self:CreateBottomPart()
+    self:RefreashDragon()
 end
 function GameUISendTroopNew:onExit()
     GameUISendTroopNew.super.onExit(self)

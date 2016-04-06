@@ -242,6 +242,7 @@ function Item:SetBuildingType(building_type, level)
         local frame = sharedSpriteFrameCache:getSpriteFrame(v)
         if frame then
             display.newSprite("#"..v):addTo(self.building_icon):pos(p.x, p.y)
+            :scale(isUseSdImage() and 2 or 1)
         end
     end
     return self
