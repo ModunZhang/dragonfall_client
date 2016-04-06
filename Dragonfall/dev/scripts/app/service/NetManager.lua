@@ -1251,13 +1251,21 @@ function NetManager:getRequestAllianceToSpeedUpPromise(eventType, eventId)
         return result
     end)
 end
--- 免费加速建筑升级
+-- 免费加速
 function NetManager:getFreeSpeedUpPromise(eventType, eventId)
     return get_blocking_request_promise("logic.playerHandler.freeSpeedUp", {
         eventType = eventType,
         eventId = eventId,
     }, "请求免费加速失败!"):done(get_player_response_msg)
 end
+-- 宝石加速
+function NetManager:getSpeedUpPromise(eventType, eventId)
+    return get_blocking_request_promise("logic.playerHandler.speedUp", {
+        eventType = eventType,
+        eventId = eventId,
+    }, "请求宝石加速失败!"):done(get_player_response_msg)
+end
+
 -- 协助玩家加速
 function NetManager:getHelpAllianceMemberSpeedUpPromise(eventId)
     return get_blocking_request_promise("logic.allianceHandler.helpAllianceMemberSpeedUp", {

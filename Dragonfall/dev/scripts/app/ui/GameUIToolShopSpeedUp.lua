@@ -16,7 +16,7 @@ function GameUIToolShopSpeedUp:ctor(building)
         return 
     end
     self.event = event
-    self:SetAccBtnsGroup(self:GetEventType(), event.id)
+    self:SetAccBtnsGroup(self:GetEventType(), event)
     self:SetAccTips(_("生产材料不能免费加速"))
     
     local production = UtilsForBuilding:GetPropertyBy(User, "toolShop", "production")
@@ -30,7 +30,7 @@ function GameUIToolShopSpeedUp:ctor(building)
             return 
         end
         local time, percent = UtilsForEvent:GetEventInfo(event)
-        self:SetProgressInfo(GameUtils:formatTimeStyle1(time), percent)
+        self:SetProgressInfo(time, percent)
     end)
 end
 function GameUIToolShopSpeedUp:GetEventType()

@@ -32,12 +32,16 @@ function UpgradeBuilding:ctor(building_info)
     self.level = building_info.level and building_info.level or 1
     self.upgrade_to_next_level_time = (building_info.finishTime == nil) and 0 or building_info.finishTime
     self.unique_upgrading_key = nil
+    self.event = nil
 end
 function UpgradeBuilding:GetRealEntity()
     return self
 end
 function UpgradeBuilding:UniqueUpgradingKey()
     return self.unique_upgrading_key
+end
+function UpgradeBuilding:GetUpgradingEvent()
+    return self.event
 end
 function UpgradeBuilding:CanUpgrade()
     local legal = self:IsBuildingUpgradeLegal()
@@ -110,8 +114,11 @@ end
 function UpgradeBuilding:OnEvent(event)
     if event then
         self.unique_upgrading_key = event.id
+        self.event = event
+        dump(event)
     else
         self.unique_upgrading_key = nil
+        self.event = nil
     end
 end
 function UpgradeBuilding:OnHandle(level, finish_time)

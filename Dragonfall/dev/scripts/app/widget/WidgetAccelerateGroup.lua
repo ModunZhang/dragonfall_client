@@ -15,7 +15,7 @@ local WidgetAccelerateGroup = class("WidgetAccelerateGroup",function ()
 end)
 
 
-function WidgetAccelerateGroup:ctor(eventType,eventId)
+function WidgetAccelerateGroup:ctor(eventType,speedUpEvent)
     local width,height = 640,500
     self.acc_button_layer = display.newNode()
     self.acc_button_layer:setContentSize(cc.size(width,height))
@@ -102,10 +102,13 @@ function WidgetAccelerateGroup:ctor(eventType,eventId)
                 acc_button:setVisible(false)
                 time_button:setVisible(true)
                 if string.find(own_label:getString(),_("拥有")) then
-                    NetManager:getUseItemPromise(speedUp_item_name,{[speedUp_item_name] = {
-                        eventType = eventType,
-                        eventId = eventId
-                    }})
+                    local leftTime = UtilsForEvent:GetEventInfo(speedUpEvent)
+                    local effect = UtilsForItem:IsSpeedUpItem(speedUp_item_name).effect * 60
+                    local max_count = math.min(math.ceil(leftTime/effect), User:GetItemCount(speedUp_item_name))
+                    UIKit:newWidgetUI("WidgetUseMutiItems", speedUp_item_name,{max_count = max_count,
+                        eventType = speedUpEvent and eventType,
+                        eventId = speedUpEvent and speedUpEvent.id
+                    }):AddToCurrentScene()
                 else
                     if item_info.price > User:GetGemValue() then
                         UIKit:showMessageDialog(_("主人"),_("金龙币不足"))
@@ -119,8 +122,9 @@ function WidgetAccelerateGroup:ctor(eventType,eventId)
                             )
                     else
                         NetManager:getBuyAndUseItemPromise(speedUp_item_name,{[speedUp_item_name] = {
-                            eventType = eventType,
-                            eventId = eventId
+                            count = 1,
+                            eventType = speedUpEvent and eventType,
+                            eventId = speedUpEvent and speedUpEvent.id
                         }})
                     end
                 end
@@ -160,6 +164,7 @@ function WidgetAccelerateGroup:OnUserDataChanged_items()
     end
 end
 return WidgetAccelerateGroup
+
 
 
 
