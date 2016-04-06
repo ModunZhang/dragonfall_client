@@ -522,7 +522,7 @@ function CityLayer:InitWithCity(city)
     -- pve 入口
     self.watchTower = WatchTowerSprite.new(self, -7, 15):addTo(city_node)
     self.pve_airship = AirshipSprite.new(self, -7, 2):addTo(city_node)
-    self.fair_ground = FairGroundSprite.new(self, -5, 8):addTo(city_node)
+    self.fair_ground = FairGroundSprite.new(self, -5, 9):addTo(city_node)
 
 
     -- 更新其他需要动态生成的建筑
