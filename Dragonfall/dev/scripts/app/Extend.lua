@@ -2,7 +2,10 @@ require("cocos.cocos2d.Cocos2dConstants")
 print("加载玩家自定义函数!")
 NOT_HANDLE = function(...) print("net message not handel, please check !") end
 local FileUtils = cc.FileUtils:getInstance()
-local openSD = ext.isLowMemoryDevice()
+function isUseSdImage()
+    return ext.isLowMemoryDevice()
+end
+local openSD = isUseSdImage()
 
 local sharedTextureCache = cc.Director:getInstance():getTextureCache()
 function showMemoryUsage(head)
@@ -79,7 +82,7 @@ function removeImageByKey(key)
         end
     end
     
-    print("setAliasTexParameters", cacheKey)
+    print("removeImageByKey", cacheKey)
     cache:removeTextureForKey(cacheKey)
 end
 function setAliasTexParametersForKey(key)

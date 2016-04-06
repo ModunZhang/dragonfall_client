@@ -223,7 +223,7 @@ function GameUIGacha:CreateGachaPool(layer)
         temp_box:SetPassStatus()
         current_box = temp_box
         current_index = next_index
-        if device.platform ~= 'winrt' and isPlayMusic then
+        if isPlayMusic then
             app:GetAudioManager():PlayeEffectSound("sfx_gacha.mp3")
         end
     end
@@ -351,7 +351,7 @@ function GameUIGacha:CreateGachaPool(layer)
         local run_steps = self.run_steps or 0
 
         self.run_steps = run_steps + 1
-        local isFinalStep = (self.total_steps-self.run_steps) < 4
+        local isFinalStep = (self.total_steps-self.run_steps) < 6
         self:SkipByStep(isFinalStep)
         if self.handle then
             scheduler.unscheduleGlobal(self.handle)
@@ -400,15 +400,25 @@ function GameUIGacha:GetLightLine(isSenior)
         patten = "gacha_line_20x568_%d.png"
         w,h = 20,568
     end
-    local srpite_frame_1 = cc.SpriteFrame:create(img_1,cc.rect(0,0,w,h))
-    local srpite_frame_2 = cc.SpriteFrame:create(img_2,cc.rect(0,0,w,h))
+    -- local srpite_frame_1 = cc.SpriteFrame:create(img_1,cc.rect(0,0,w,h))
+    -- local srpite_frame_2 = cc.SpriteFrame:create(img_2,cc.rect(0,0,w,h))
     local light_line = display.newSprite(img_1)
 
     -- cc.SpriteFrameCache:getInstance():addSpriteFrame(srpite_frame_1,img_1)
     -- cc.SpriteFrameCache:getInstance():addSpriteFrame(srpite_frame_2,img_2)
-    local frames = display.newFrames(patten, 1, 2)
-    local animation = display.newAnimation(frames, 0.2)
-    light_line:playAnimationForever(animation)
+    -- local frames = display.newFrames(patten, 1, 2)
+    -- local animation = display.newAnimation(frames, 0.2)
+    -- light_line:scale(true and 2 or 1):playAnimationForever(animation)
+    light_line:runAction(cc.RepeatForever:create(transition.sequence({
+            cc.CallFunc:create(function()
+                light_line:setTexture(string.format(patten,2))
+            end),
+            cc.DelayTime:create(0.2),
+            cc.CallFunc:create(function()
+                light_line:setTexture(string.format(patten,1))
+            end),
+            cc.DelayTime:create(0.2),
+        })))
     return light_line
 end
 function GameUIGacha:InitOrdinary()
