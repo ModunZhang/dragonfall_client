@@ -96,9 +96,9 @@ local rgba4444 = import(".rgba4444")
 local jpg_rgb888 = import(".jpg_rgb888")
 
 jpg_rgb888["tmxmaps/terrain1.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
-jpg_rgb888["plus_right_grassLand.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B888
-jpg_rgb888["plus_right_iceField.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B888
-jpg_rgb888["plus_right_desert.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B888
+-- jpg_rgb888["plus_right_grassLand.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B888
+-- jpg_rgb888["plus_right_iceField.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B888
+-- jpg_rgb888["plus_right_desert.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B888
 
 
 local auto_cleanup = {}
@@ -166,7 +166,15 @@ for k,v in pairs(jpg_rgb888) do
         display.setTexturePixelFormat(string.format("%s-sd.%s",prename, suffix), v)
     end
 end
-display.setTexturePixelFormat("fte_background.jpg", cc.TEXTURE2_D_PIXEL_FORMAT_RG_B888)
+-- rgb_888
+for i,v in ipairs{
+    "fte_background.jpg",
+    "plus_right_desert.png",
+    "plus_right_iceField.png",
+    "plus_right_grassLand.png",
+} do
+    display.setTexturePixelFormat("fte_background.jpg", cc.TEXTURE2_D_PIXEL_FORMAT_RG_B888)
+end
 -- 4444
 for i,v in ipairs{
     "emoji.png",
