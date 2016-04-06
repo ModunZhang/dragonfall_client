@@ -225,8 +225,7 @@ task buildNative(type:Exec,group:'GameHelper') {
   }
 }
 
-task backUpNativeSymbols(type:Zip,group:'GameHelper') {
-    description 'Backup our native symbols to a zip file .'
+task backUpNativeSymbols(type:Zip,group:'GameHelper',description:'Backup our native symbols to a zip file .') {
     appendix = 'symbols'
     version = projectVersion()['versionName'] + '('+ projectVersion()['versionCode'] + ')'
     from 'obj'
@@ -235,8 +234,7 @@ task backUpNativeSymbols(type:Zip,group:'GameHelper') {
     }
 }
 
-task cleanNativeSymbols(type: Delete,group:'GameHelper') {
-    description 'Clean the native symbols.'
+task cleanNativeSymbols(type: Delete,group:'GameHelper',description:'Clean the native symbols.') {
     delete 'obj'
 }
 
