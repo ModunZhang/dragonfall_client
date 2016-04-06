@@ -405,7 +405,7 @@ function GameUIGacha:GetLightLine(isSenior)
     -- cc.SpriteFrameCache:getInstance():addSpriteFrame(srpite_frame_2,img_2)
     local frames = display.newFrames(patten, 1, 2)
     local animation = display.newAnimation(frames, 0.2)
-    light_line:scale(true and 2 or 1):playAnimationForever(animation)
+    light_line:playAnimationForever(animation)
     return light_line
 end
 function GameUIGacha:InitOrdinary()
@@ -628,10 +628,8 @@ end
 
 function GameUIGacha:onCleanup()
     GameUIGacha.super.onCleanup(self)
-    cc.Director:getInstance():getTextureCache():removeTextureForKey("background_gacha_1.png")
-    cc.Director:getInstance():getTextureCache():removeTextureForKey("background_gacha_1.jpg")
-    cc.Director:getInstance():getTextureCache():removeTextureForKey("background_gacha_2.png")
-    cc.Director:getInstance():getTextureCache():removeTextureForKey("background_gacha_2.jpg")
+    removeImageByKey("background_gacha_1.jpg")
+    removeImageByKey("background_gacha_2.jpg")
 end
 
 return GameUIGacha
