@@ -25,7 +25,7 @@ function GameUIDailyQuestSpeedUp:ctor(quest)
             self:LeftButtonClicked()
             return
         end
-        self:SetProgressInfo(GameUtils:formatTimeStyle1(show_time), 100-(quest.finishTime-current_time*1000)/(quest.finishTime-quest.startTime)*100 )
+        self:SetProgressInfo(show_time, 100-(quest.finishTime-current_time*1000)/(quest.finishTime-quest.startTime)*100 )
     end)
 end
 
@@ -49,7 +49,7 @@ function GameUIDailyQuestSpeedUp:OnTimer(current_time)
         self:LeftButtonClicked()
         return
     end
-    self:SetProgressInfo(GameUtils:formatTimeStyle1(show_time), 100-(quest.finishTime-current_time*1000)/(quest.finishTime-quest.startTime)*100 )
+    self:SetProgressInfo(show_time, 100-(quest.finishTime-current_time*1000)/(quest.finishTime-quest.startTime)*100 )
 end
 function GameUIDailyQuestSpeedUp:OnUserDataChanged_dailyQuestEvents(userData, deltaData)
     local quest = self.quest
@@ -63,7 +63,7 @@ function GameUIDailyQuestSpeedUp:OnUserDataChanged_dailyQuestEvents(userData, de
                     self:LeftButtonClicked()
                     return
                 end
-                self:SetProgressInfo(GameUtils:formatTimeStyle1(show_time), 100-(v.finishTime-app.timer:GetServerTime()*1000)/(v.finishTime-v.startTime)*100 )
+                self:SetProgressInfo(show_time, 100-(v.finishTime-app.timer:GetServerTime()*1000)/(v.finishTime-v.startTime)*100 )
             end
         end
     end

@@ -19,7 +19,7 @@ function GameUIMilitaryTechSpeedUp:ctor(event)
     end
     self:SetUpgradeTip(str)
     local time, percent = UtilsForEvent:GetEventInfo(event)
-    self:SetProgressInfo(GameUtils:formatTimeStyle1(time), percent)
+    self:SetProgressInfo(time, percent)
     self:CheckCanSpeedUpFree()
     self:OnFreeButtonClicked(handler(self, self.FreeSpeedUpAction))
 
@@ -28,7 +28,7 @@ function GameUIMilitaryTechSpeedUp:ctor(event)
     scheduleAt(self, function()
         if self.progress then
             local time, percent = UtilsForEvent:GetEventInfo(self:GetEvent())
-            self:SetProgressInfo(GameUtils:formatTimeStyle1(time), percent)
+            self:SetProgressInfo(time, percent)
             self:CheckCanSpeedUpFree()
         end
     end)

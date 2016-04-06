@@ -30,7 +30,7 @@ function GameUIToolShopSpeedUp:ctor(building)
             return 
         end
         local time, percent = UtilsForEvent:GetEventInfo(event)
-        self:SetProgressInfo(GameUtils:formatTimeStyle1(time), percent)
+        self:SetProgressInfo(time, percent)
     end)
 end
 function GameUIToolShopSpeedUp:GetEventType()
