@@ -12,7 +12,7 @@ end
 function LoadingScene:onEnter()
 	display.newColorLayer(cc.c4b(255, 255, 255, 255)):addTo(self)
 	self:performWithDelay(function()
-		collectgarbage("collect")
+		-- collectgarbage("collect")
 		-- if device.platform == 'winrt' then
 		-- -- 	local manager = ccs.ArmatureDataManager:getInstance()
 		-- --     for k,v in pairs(animation) do
@@ -22,7 +22,7 @@ function LoadingScene:onEnter()
 		--     cc.Director:getInstance():purgeCachedData()
 		-- end
 	    enter_scene(app:enterScene(self.nextScene, self.args))
-	end, 0.1)
+	end, 0.01)
 end
 
 function LoadingScene:onExit()
