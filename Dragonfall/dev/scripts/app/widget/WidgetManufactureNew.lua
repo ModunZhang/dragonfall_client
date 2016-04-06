@@ -195,7 +195,7 @@ function WidgetManufactureNew:ReloadMaterials(materials, materials_map)
                     iron = iron_cur,
                 })
                 if need_gems > 0 then
-                    UIKit:showMessageDialog(_("提示"), "资源不足!")
+                    UIKit:showMessageDialog(_("提示"), _("资源不足"))
                         :CreateOKButtonWithPrice(
                             {
                                 listener = function()

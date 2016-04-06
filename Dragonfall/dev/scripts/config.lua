@@ -35,7 +35,7 @@ CONFIG_REMOTE_SERVER = {
     },
     gate = {
         host = "54.223.166.65",
-        port = 13120,
+        port = 13100,
         name = "gate-server-1"
     },
 }
