@@ -25,8 +25,6 @@ function GameUIReplay:ctor(report, callback, skipcallback)
     assert(report.GetDefenceDragonLevel)
     assert(report.GetFightAttackDragonRoundData)
     assert(report.GetFightDefenceDragonRoundData)
-    assert(report.CouldAttackDragonUseSkill)
-    assert(report.CouldDefenceDragonUseSkill)
 
     assert(report.IsSoldierFight)
     assert(report.GetOrderedAttackSoldiers)
@@ -121,14 +119,14 @@ function GameUIReplay:Setup()
     if self.report:IsDragonFight() then
         local attackDragonType = self.report:GetFightAttackDragonRoundData().type
         self.attackDragon = UIKit:CreateSkillDragon(attackDragonType, true, self):hide()
-        :addTo(self.ui_map.dragonSkillNode,0,BATTLE_OBJECT_TAG):pos(display.cx-100, display.cy)
+        :addTo(self.ui_map.dragonSkillNode,0,BATTLE_OBJECT_TAG):pos(display.cx, display.cy)
 
         self.ui_map.attackDragonLabel:setString(Localize.dragon[attackDragonType])
         self.ui_map.attackDragonIcon:setTexture(UILib.dragon_head[attackDragonType])
 
         local defenceDragonType = self.report:GetFightDefenceDragonRoundData().type
         self.defenceDragon = UIKit:CreateSkillDragon(defenceDragonType, false, self):hide()
-        :addTo(self.ui_map.dragonSkillNode,0,BATTLE_OBJECT_TAG):pos(display.cx+100, display.cy)
+        :addTo(self.ui_map.dragonSkillNode,0,BATTLE_OBJECT_TAG):pos(display.cx, display.cy)
 
         self.ui_map.defenceDragonLabel:setString(Localize.dragon[defenceDragonType])
         self.ui_map.defenceDragonIcon:setTexture(UILib.dragon_head[defenceDragonType])
