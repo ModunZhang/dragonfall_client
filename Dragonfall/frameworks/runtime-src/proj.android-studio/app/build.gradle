@@ -163,7 +163,7 @@ ant.properties['wtk.home'] = "tools"
 ant.taskdef( name: "wtkpreprocess", classname: "de.pleumann.antenna.WtkPreprocess", classpath:"../tools/antenna-bin-1.0.2.jar")
 
 // paypal Market,support `up-to-date`
-task PreprocessPayPal(group:'GameHelper',description:'preprocess java source code for paypal market.') {
+task PreprocessPayPal(group:'GameHelper',description:'Preprocess java source code for paypal market.') {
     inputs.dir "src"
     outputs.dir "src"
     doLast {
@@ -181,7 +181,7 @@ task PreprocessPayPal(group:'GameHelper',description:'preprocess java source cod
 }
 
 // Google Play market,support `up-to-date`
-task PreprocessGooglePlay(group:'GameHelper',description:'preprocess java source code for googleplay market.') {
+task PreprocessGooglePlay(group:'GameHelper',description:'Preprocess java source code for googleplay market.') {
     inputs.dir "src"
     outputs.dir "src"
     doLast {
@@ -215,7 +215,7 @@ android.applicationVariants.all { variant ->
 
 // NDK tasks
 task buildNative(type:Exec,group:'GameHelper') {
-  description 'build our native code(cpp).'
+  description 'Build our native code(cpp).'
   executable = 'shell'
   commandLine './build_native_release.sh'
   standardOutput = new ByteArrayOutputStream()
@@ -226,7 +226,7 @@ task buildNative(type:Exec,group:'GameHelper') {
 }
 
 task backUpNativeSymbols(type:Zip,group:'GameHelper') {
-    description 'backup our native symbols to a zip file .'
+    description 'Backup our native symbols to a zip file .'
     appendix = 'symbols'
     version = projectVersion()['versionName'] + '('+ projectVersion()['versionCode'] + ')'
     from 'obj'
@@ -236,14 +236,14 @@ task backUpNativeSymbols(type:Zip,group:'GameHelper') {
 }
 
 task cleanNativeSymbols(type: Delete,group:'GameHelper') {
-    description 'clean the native symbols.'
+    description 'Clean the native symbols.'
     delete 'obj'
 }
 
 backUpNativeSymbols.shouldRunAfter buildNative
 
 // check version tasks
-task checkVersionInfo(group:'GameHelper',description:'check the project version infomation in version.properties.') {
+task checkVersionInfo(group:'GameHelper',description:'Check the project version infomation in version.properties.') {
     doLast {
         println '------------------------------------------------'
         println 'version.properties:'
@@ -265,21 +265,21 @@ android.productFlavors.each { flavor ->
     def stopName = 'stop' + flavor.name.capitalize()
     def restartName = 'restart' + flavor.name.capitalize()
 
-    task(runName,type:Exec,group:'GameHelper',description:'run the ' + flavor.name.capitalize() + ' game on device.') {
+    task(runName,type:Exec,group:'GameHelper',description:'Run the ' + flavor.name.capitalize() + ' game on connected device.') {
         def argOfClass = flavor.applicationId + '/org.cocos2dx.lua.AppActivity'
         commandLine "$adb",'shell','am','start','-n',argOfClass
     }
 
-    task(stopName,type:Exec,group:'GameHelper',description:'stop the ' + flavor.name.capitalize() + ' game on device.') {
+    task(stopName,type:Exec,group:'GameHelper',description:'Stop the ' + flavor.name.capitalize() + ' game on connected device.') {
         commandLine "$adb",'shell','am','force-stop',flavor.applicationId
     }
 
-    task(replaceName,type:Exec,group:'GameHelper',description:'replace the ' + flavor.name.capitalize() + ' zip file of lua on device.') {
+    task(replaceName,type:Exec,group:'GameHelper',description:'Replace the ' + flavor.name.capitalize() + ' zip file of lua on connected device.') {
         workingDir project.rootDir
         def pathOfUnzip = '/mnt/sdcard/batcatstudio/'+ gameIdForFlavors(flavor.name)+ '/bundle/scripts'
         commandLine "$adb", 'push','../../../update_android/scripts/game.zip',pathOfUnzip
     }
     
-    task(restartName,dependsOn:stopName,group:'GameHelper',description:'restart the ' + flavor.name.capitalize() + ' game on device.')
+    task(restartName,dependsOn:stopName,group:'GameHelper',description:'Restart the ' + flavor.name.capitalize() + ' game on connected device.')
     tasks.getByPath(restartName).finalizedBy tasks.getByPath(runName)
 }
