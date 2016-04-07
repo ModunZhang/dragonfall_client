@@ -13,7 +13,7 @@ function WidgetInput:ctor(params)
     self:DisableCloseBtn()
     local body = self.body
     local max = params.max
-    local current = params.current
+    local current = params.current or 0
     local min = params.min or 0
     local unit = params.unit or ""
     local callback = params.callback or NOT_HANDLE
@@ -21,27 +21,43 @@ function WidgetInput:ctor(params)
     if unit == "K" then
         exchange = 1000
     end
-    self.current_value = min
+    self.current_value = current
     -- max 有时会变化
     self.max = max
 
     local function edit(event, editbox)
-        local text = tonumber(editbox:getText()) or min
+        local text = self.current_value
         if event == "began" then
-            if min==text then
+            if text == 0 then
                 editbox:setText("")
+            else
+                editbox:setText(text)
+                self.perfix_lable:setString(string.format("/ %s", GameUtils:formatNumber(max)))
             end
         elseif event == "changed" then
-            if text then
-                if text > math.floor(self.max/exchange) then
-                    editbox:setText(math.floor(self.max/exchange))
-                end
+            local change_text = editbox:getText()
+            local change_value = change_text == "" and min or tonumber(change_text)
+            if change_value > math.floor(self.max/exchange) then
+                editbox:setText(math.floor(self.max/exchange))
             end
         elseif event == "ended" then
             if editbox:getText()=="" or min>text then
-                editbox:setText(min)
+                local btn_value
+                local btn_unit  = ""
+                if min >= 1000 then
+                    local f_value = GameUtils:formatNumber(min)
+                    btn_value = string.sub(f_value,1,-2)
+                    btn_unit = string.sub(f_value,-1,-1)
+                else
+                    btn_value = min
+                end
+                editbox:setText(btn_value)
+                self.perfix_lable:setString(string.format(btn_unit.."/ %s", GameUtils:formatNumber(max)))
+                self.current_value = min
             else
-                local e_value = math.floor(text*exchange)
+                local change_text = editbox:getText()
+                local change_value = change_text == "" and min or tonumber(change_text)
+                local e_value = math.floor(change_value*exchange)
                 local btn_value
                 local btn_unit  = ""
                 if e_value>=1000 then
@@ -54,7 +70,7 @@ function WidgetInput:ctor(params)
                 editbox:setText(btn_value)
                 self.perfix_lable:setString(string.format(btn_unit.."/ %s", GameUtils:formatNumber(max)))
 
-                self.current_value = text
+                self.current_value = e_value
             end
             callback(self.current_value)
         end
@@ -72,8 +88,16 @@ function WidgetInput:ctor(params)
         listener = edit
     })
     local editbox = self.editbox
+    local btn_value,btn_unit = current,""
+    if current>=1000 then
+        local f_value = GameUtils:formatNumber(current)
+        btn_value = string.sub(f_value,1,-2)
+        btn_unit = string.sub(f_value,-1,-1)
+    else
+        btn_value = current
+    end
     editbox:setMaxLength(10)
-    editbox:setText(current)
+    editbox:setText(btn_value)
     editbox:setFont(UIKit:getFontFilePath(),20)
     editbox:setFontColor(cc.c3b(0,0,0))
     editbox:setInputMode(cc.EDITBOX_INPUT_MODE_NUMERIC)
@@ -81,7 +105,7 @@ function WidgetInput:ctor(params)
     editbox:align(display.CENTER, body:getContentSize().width/2,body:getContentSize().height/2+20):addTo(body)
 
     self.perfix_lable = UIKit:ttfLabel({
-        text = string.format(unit.."/ %s", GameUtils:formatNumber(max)),
+        text = string.format(btn_unit.."/ %s", GameUtils:formatNumber(max)),
         size = 20,
         color = 0x403c2f
     }):addTo(body)
@@ -109,6 +133,9 @@ function WidgetInput:onEnter()
     self.editbox:touchDownAction(editbox,2)
 end
 return WidgetInput
+
+
+
 
 
 

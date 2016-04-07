@@ -107,7 +107,7 @@ function WidgetAccelerateGroup:ctor(eventType,speedUpEvent)
                     local max_count = math.min(math.ceil(leftTime/effect), User:GetItemCount(speedUp_item_name))
                     UIKit:newWidgetUI("WidgetUseMutiItems", speedUp_item_name,{max_count = max_count,
                         eventType = speedUpEvent and eventType,
-                        eventId = speedUpEvent and speedUpEvent.id
+                        event = speedUpEvent
                     }):AddToCurrentScene()
                 else
                     if item_info.price > User:GetGemValue() then
