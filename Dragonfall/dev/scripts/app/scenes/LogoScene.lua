@@ -20,7 +20,7 @@ function LogoScene:onEnter()
     end
     
     self.layer = cc.LayerColor:create(cc.c4b(255,255,255,255)):addTo(self)
-    self.sprite = display.newSprite("aiyingyong_512x512.png", display.cx, display.cy):addTo(self.layer)
+    self.sprite = display.newSprite("aiyingyong_512x512.png", display.cx, display.cy):addTo(self.layer):scale(display.height* 440/581632)
     self:performWithDelay(function() self:beginAnimate() end,0.5)
 end
 
@@ -29,7 +29,7 @@ function LogoScene:beginAnimate()
     local sequence = transition.sequence({
         cc.FadeOut:create(0.5),
         cc.CallFunc:create(function()
-            self.sprite:setTexture("batcat_logo_368x472.png")
+            self.sprite:setTexture("batcat_logo_512x512.png")
         end),
         cc.FadeIn:create(0.4),
         cc.DelayTime:create(0.5),
@@ -55,7 +55,7 @@ end
 
 function LogoScene:onExit()
     removeImageByKey("aiyingyong_512x512.png")
-    removeImageByKey("batcat_logo_368x472.png")
+    removeImageByKey("batcat_logo_512x512.png")
 end
 
 return LogoScene
