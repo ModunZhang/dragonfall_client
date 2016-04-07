@@ -928,8 +928,7 @@ function CommonUpgradeUI:CreateFinishNowBuildingUpgradeButton()
 end
 
 function CommonUpgradeUI:SetAccTipLabel()
-    --TODO 设置对应的提示 ，现在是临时的
-    self.acc_tip_label:setString(_("小于5分钟时，可使用免费加速.激活VIP X后，小于5分钟时可使用免费加速"))
+    self.acc_tip_label:setString(string.format(_("小于%dmin时可以使用免费加速"),UtilsForVip:GetVipFreeSpeedUpTime(User)))
 end
 function CommonUpgradeUI:GetEventTypeByBuilding()
     return City:IsFunctionBuilding(self.building) and "buildingEvents" or "houseEvents"

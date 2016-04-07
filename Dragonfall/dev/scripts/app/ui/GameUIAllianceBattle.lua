@@ -223,7 +223,7 @@ function GameUIAllianceBattle:InitBattleStatistics()
         end)
         local war_award_info = {
             {_("联盟战荣耀值基础奖励"),"honour_128x128.png",GameDatas.AllianceInitData.intInit.allianceFightRewardHonour.value},
-            {_("联盟战期间最高击杀者"),"gem_icon_62x61.png",GameDatas.AllianceInitData.intInit.allianceFightRewardGem.value},
+            {_("联盟战期间最高击杀者"),"gem_icon_62x61.png",GameDatas.AllianceInitData.intInit.allianceFightGemClass2Get.value * 10},
             {_("可召集其他联盟前来助阵")},
             {_("将敌方所有玩家城墙摧毁可强制敌方联盟搬迁")},
         }
@@ -476,7 +476,7 @@ function GameUIAllianceBattle:InitBattleStatistics()
             :addTo(gem_bg,2)
             :scale(0.7)
         UIKit:ttfLabel({
-            text = "+"..string.formatnumberthousands(GameDatas.AllianceInitData.intInit.allianceFightRewardGem.value),
+            text = "+"..string.formatnumberthousands(GameDatas.AllianceInitData.intInit.allianceFightGemClass2Get.value * 10),
             size = 22,
             color = 0x90e300,
         }):addTo(gem_bg,2)
