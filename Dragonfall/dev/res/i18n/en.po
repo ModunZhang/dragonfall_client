@@ -7,7 +7,7 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: _\n"
 "X-Poedit-Basepath: ../../scripts/app/\n"
-"PO-Revision-Date: 2016-04-07 10:36+0800\n"
+"PO-Revision-Date: 2016-04-07 11:40+0800\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: xls-to-po 1.0\n"
@@ -32,14 +32,14 @@ msgstr "You need to join an Alliance at first"
 msgid "恭喜"
 msgstr "Congrats!"
 
+msgid "您已获得%s,到物品里面查看"
+msgstr "You've got the %s, please check it in the Item bar !"
+
 msgid "已为你恢复以前的购买"
 msgstr "We have already recovered your last purchase"
 
 msgid "确定"
 msgstr "OK"
-
-msgid "您已获得%s,到物品里面查看"
-msgstr "You've got the %s, please check it in the Item bar !"
 
 msgid "请求超时"
 msgstr "Time out"
@@ -895,8 +895,11 @@ msgstr "Upgrading %s to Lv%d"
 msgid "免费加速"
 msgstr "Free"
 
-msgid "小于5分钟时，可使用免费加速.激活VIP X后，小于5分钟时可使用免费加速"
-msgstr "You can speed up for free when the time is less than 5 minutes"
+msgid "加速"
+msgstr "Speed up"
+
+msgid "小于%dmin时可以使用免费加速"
+msgstr "You can speed up for free when the time is less than %d min"
 
 msgid "补充资源"
 msgstr "Supply resources"
@@ -906,6 +909,9 @@ msgstr "You need more resources,do you want to supply with Dragon coins ?"
 
 msgid "前往商店"
 msgstr "Store"
+
+msgid "您当前没有空闲的建筑队列,请首先将上一条队列加速完成"
+msgstr "You have no available building queues, please finish the last queue by speeding up it"
 
 msgid "立即完成"
 msgstr "Finish Now"
@@ -977,9 +983,6 @@ msgstr "Research queue is idle now"
 
 msgid "选择一个技能进行研发"
 msgstr "Choose a science to research"
-
-msgid "加速"
-msgstr "Speed up"
 
 msgid "每日登陆奖励"
 msgstr "Daily sign-in rewards"
@@ -3510,6 +3513,9 @@ msgstr "Science"
 msgid "点击科技"
 msgstr "Click the Science"
 
+msgid "城墙"
+msgstr "Wall"
+
 msgid "x2"
 msgstr "x2"
 
@@ -3671,6 +3677,9 @@ msgstr "Blocked"
 msgid "遇到问题"
 msgstr "Contact US"
 
+msgid "分享"
+msgstr "Share"
+
 msgid "城堡等级达到8级解锁"
 msgstr "Require Castle Lv8"
 
@@ -3755,17 +3764,17 @@ msgstr "Game Center is already bound with your current game account, please swit
 msgid "是否确认切换账号到GameCenter %s"
 msgstr "Are you sure to switch account to Game Center %s ?"
 
-msgid "是否确认切换至Google账号？"
-msgstr "Are you sure to switch account to Google %s ?"
-
 msgid "你的Google账号绑定了当前游戏账号，请登录其他Google账号，再重试"
 msgstr "Google is already bound with your current game account, please switch to another Google account (outside the game) and try again."
 
-msgid "是否确认切换至Facebook账号？"
-msgstr "Are you sure to switch account to Facebook ?"
+msgid "是否确认切换至Google账号？"
+msgstr "Are you sure to switch account to Google %s ?"
 
 msgid "你的Facebook账号绑定了当前游戏账号，请登录其他Facebook账号，再重试"
 msgstr "Facebook is already bound with your current game account, please switch to another Facebook account (outside the game) and try again."
+
+msgid "是否确认切换至Facebook账号？"
+msgstr "Are you sure to switch account to Facebook ?"
 
 msgid "警告"
 msgstr "Warning"
@@ -4004,6 +4013,9 @@ msgstr "Includes Everything Shown"
 
 msgid "+价值%d的道具"
 msgstr " +%d More in Items"
+
+msgid "Google Play商店暂时不能购买,请检查手机Google Play商店的相关设置"
+msgstr "Google Play Store is not available now,please check the setting of your phone"
 
 msgid "赠送给联盟成员的%s"
 msgstr "%s for your Alliance"
@@ -4445,9 +4457,6 @@ msgstr "No battle happened since you weren't garrisoned"
 
 msgid "%s损失"
 msgstr "%s Loss"
-
-msgid "城墙"
-msgstr "Wall"
 
 msgid "城墙生命值"
 msgstr "Wall Durability"
@@ -8153,9 +8162,6 @@ msgstr "Upkeep"
 msgid "下一步"
 msgstr "Next"
 
-msgid "小于%dmin时可以使用免费加速"
-msgstr "You can speed up for free when the time is less than %d min"
-
 msgid "联盟拥有"
 msgstr "Alliance Own"
 
@@ -8251,6 +8257,12 @@ msgstr "Own:%d"
 
 msgid "使用数量"
 msgstr "Use Amount"
+
+msgid "剩余时间"
+msgstr "Remaining"
+
+msgid "道具数量"
+msgstr "You Own"
 
 msgid "联盟会战说明"
 msgstr "Alliance Battle Introduction"

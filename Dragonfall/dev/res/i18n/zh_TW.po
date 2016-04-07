@@ -7,7 +7,7 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: _\n"
 "X-Poedit-Basepath: ../../scripts/app/\n"
-"PO-Revision-Date: 2016-04-07 10:36+0800\n"
+"PO-Revision-Date: 2016-04-07 11:40+0800\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: xls-to-po 1.0\n"
@@ -32,14 +32,14 @@ msgstr "加入聯盟後開放此功能！"
 msgid "恭喜"
 msgstr "恭喜"
 
+msgid "您已获得%s,到物品里面查看"
+msgstr "你已獲得%s,請前往物品欄查看"
+
 msgid "已为你恢复以前的购买"
 msgstr "已為你恢復之前的購買"
 
 msgid "确定"
 msgstr "確定"
-
-msgid "您已获得%s,到物品里面查看"
-msgstr "你已獲得%s,請前往物品欄查看"
 
 msgid "请求超时"
 msgstr "請求超時"
@@ -966,8 +966,11 @@ msgstr "正在升級 %s 到等級 %d"
 msgid "免费加速"
 msgstr "免費加速"
 
-msgid "小于5分钟时，可使用免费加速.激活VIP X后，小于5分钟时可使用免费加速"
-msgstr "小於5分鐘時，可使用免費加速"
+msgid "加速"
+msgstr "加速"
+
+msgid "小于%dmin时可以使用免费加速"
+msgstr "小於%dmin時可以使用免費加速"
 
 msgid "补充资源"
 msgstr "補充資源"
@@ -977,6 +980,9 @@ msgstr "您當前沒有足夠的資源,是否花費金龍幣立即補充"
 
 msgid "前往商店"
 msgstr "前往商店"
+
+msgid "您当前没有空闲的建筑队列,请首先将上一条队列加速完成"
+msgstr "您當前沒有空閑的建築隊列,請首先將上一條隊列加速完成"
 
 msgid "立即完成"
 msgstr "立即完成"
@@ -1052,9 +1058,6 @@ msgstr "研發隊列空閒"
 
 msgid "选择一个技能进行研发"
 msgstr "選擇一個科技進行研發"
-
-msgid "加速"
-msgstr "加速"
 
 msgid "每日登陆奖励"
 msgstr "每日登陸獎勵"
@@ -3643,6 +3646,9 @@ msgstr "科技研發"
 msgid "点击科技"
 msgstr "點擊科技"
 
+msgid "城墙"
+msgstr "城牆"
+
 msgid "x2"
 msgstr "x2"
 
@@ -3810,6 +3816,9 @@ msgstr "已屏蔽用戶"
 msgid "遇到问题"
 msgstr "遇到問題"
 
+msgid "分享"
+msgstr "分享"
+
 msgid "城堡等级达到8级解锁"
 msgstr "城堡等級達到8級後解鎖"
 
@@ -3902,18 +3911,18 @@ msgstr ""
 msgid "是否确认切换账号到GameCenter %s"
 msgstr "是否確認切換賬號到Game Center %s ?"
 
-msgid "是否确认切换至Google账号？"
-msgstr "是否確認切換至Google賬號？"
-
 msgid "你的Google账号绑定了当前游戏账号，请登录其他Google账号，再重试"
 msgstr "你的Google賬號綁定了當前遊戲賬號，請登錄其他Google賬號，再重試"
 
-msgid "是否确认切换至Facebook账号？"
-msgstr "是否確認切換至Facebook賬號？"
+msgid "是否确认切换至Google账号？"
+msgstr "是否確認切換至Google賬號？"
 
 msgid "你的Facebook账号绑定了当前游戏账号，请登录其他Facebook账号，再重试"
 msgstr ""
 "你的Facebook賬號綁定了當前遊戲賬號，請登錄其他Facebook賬號，再重試"
+
+msgid "是否确认切换至Facebook账号？"
+msgstr "是否確認切換至Facebook賬號？"
 
 msgid "警告"
 msgstr "警告"
@@ -4167,6 +4176,9 @@ msgstr "禮包中包含下列所有物品"
 
 msgid "+价值%d的道具"
 msgstr " +價值%d的道具"
+
+msgid "Google Play商店暂时不能购买,请检查手机Google Play商店的相关设置"
+msgstr "Google Play商店暫時不能購買,請檢查手機Google Play商店的相關設置"
 
 msgid "赠送给联盟成员的%s"
 msgstr "贈送給聯盟成員的%s"
@@ -4617,9 +4629,6 @@ msgstr "由於我方未駐防，戰鬥未發生"
 
 msgid "%s损失"
 msgstr "%s損失"
-
-msgid "城墙"
-msgstr "城牆"
 
 msgid "城墙生命值"
 msgstr "城牆生命值"
@@ -8527,9 +8536,6 @@ msgstr "維護費費用"
 msgid "下一步"
 msgstr "下一步"
 
-msgid "小于%dmin时可以使用免费加速"
-msgstr "小於%dmin時可以使用免費加速"
-
 msgid "联盟拥有"
 msgstr "聯盟擁有"
 
@@ -8625,6 +8631,12 @@ msgstr "擁有:%d"
 
 msgid "使用数量"
 msgstr "使用數量"
+
+msgid "剩余时间"
+msgstr "剩余時間"
+
+msgid "道具数量"
+msgstr "道具數量"
 
 msgid "联盟会战说明"
 msgstr "聯盟會戰說明"
