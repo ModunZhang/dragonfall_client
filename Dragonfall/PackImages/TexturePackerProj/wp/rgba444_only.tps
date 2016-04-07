@@ -194,7 +194,7 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>../../rgba444_single</filename>
+            <filename>../../../dev/res/images/rgba444_single</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
