@@ -505,7 +505,7 @@ function MyCityFteScene:PromiseOfExplorePve()
     end):next(function()
         return GameUINpc:PromiseOfLeave()
     end):next(function()
-        return self:PromiseOfClickBuilding(-9, 4, nil, _("点击飞艇进入探险地图"), {
+        return self:PromiseOfClickBuilding(-7, 2, nil, _("点击飞艇进入探险地图"), {
             direction = "up",
             x = -25,
             y = -230,
