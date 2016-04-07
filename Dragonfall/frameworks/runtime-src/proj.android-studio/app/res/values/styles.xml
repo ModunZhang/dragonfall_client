@@ -1,0 +1,10 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base Game theme. -->
+    <style name="BaseGameTheme" parent="@android:style/Theme.NoTitleBar.Fullscreen"/>
+
+    <style name="NewGameTheme" parent="@android:style/Theme.Material" tools:targetApi="LOLLIPOP" >
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+</resources>

@@ -124,6 +124,22 @@ def exportImagesRes(image_dir_path):
                         elif fileExt == 'plist':
                             Logging.debug("拷贝 %s" % current_sourceFile)
                             shutil.copy(current_sourceFile, outdir)
+            elif dir_name == "sdimages":
+                for image_file in os.listdir(sourceFile):
+                    current_sourceFile = os.path.join(sourceFile,  image_file)
+                    if os.path.isfile(current_sourceFile):
+                        fileExt = current_sourceFile.split('.')[-1]
+                        if fileExt not in getTempFileExtensions() and fileExt != 'plist':
+                            if NEED_ENCRYPT_RES:
+                                CompileResources(
+                                    current_sourceFile, outdir)
+                                Logging.debug("拷贝 %s" % current_sourceFile)
+                            else:
+                                Logging.debug("拷贝 %s" % current_sourceFile)
+                                shutil.copy(current_sourceFile, outdir)
+                        elif fileExt == 'plist':
+                            Logging.debug("拷贝 %s" % current_sourceFile)
+                            shutil.copy(current_sourceFile, outdir)
             else:
                 Logging.info("未处理:%s" % sourceFile)
 
@@ -172,8 +188,11 @@ def exportRes(sourceDir,  targetDir):
             if not os.path.exists(outdir):
                 os.makedirs(outdir)
             if fileExt not in ('po') and fileExt not in getTempFileExtensions():
-                shutil.copy(sourceFile,  outdir)
-                Logging.debug("拷贝 %s" % sourceFile)
+                if fileExt in ('png','jpg') and NEED_ENCRYPT_RES:
+                    CompileResources(sourceFile, outdir)
+                else:
+                    shutil.copy(sourceFile,  outdir)
+                    Logging.debug("拷贝 %s" % sourceFile)
         elif os.path.isdir(sourceFile):
             dir_name = os.path.basename(sourceFile)
             if dir_name == 'images':
@@ -181,6 +200,8 @@ def exportRes(sourceDir,  targetDir):
             elif dir_name == 'animations':
                 Logging.warning("未处理animations文件夹")
             elif dir_name == 'animations_mac':
+                exportAnimationRes(sourceFile)
+            elif dir_name == 'animations_wp_sd':
                 exportAnimationRes(sourceFile)
             else:
                 exportRes(sourceFile, targetFile)

@@ -164,8 +164,13 @@ end
 
 function GameUIStore:OnBuyButtonClicked(productId)
 	device.showActivityIndicator()
-	if device.platform == 'android' then
-		UIKit:showMessageDialog("抱歉","暂不支持android平台的购买")
+	if device.platform == 'android' and not ext.paypal.isPayPalSupport() and  not app:getStore().canMakePurchases() then
+		UIKit:showMessageDialog(_("错误"),_("Google Play商店暂时不能购买,请检查手机Google Play商店的相关设置"))
+		return
+	end
+	if device.platform == 'android' and ext.paypal.isPayPalSupport() then
+		local info = DataUtils:getIapInfo(productId)
+		ext.paypal.buy(UIKit:getIapPackageName(productId),productId,tonumber(string.format("%.2f",info.price)))
 	else
 		app:getStore().purchaseWithProductId(productId,1)
 	end

@@ -13,7 +13,7 @@ function GameUIBarracksSpeedUp:ctor()
         self:LeftButtonClicked()
         return
     end
-    self:SetAccBtnsGroup(self:GetEventType(), event.id)
+    self:SetAccBtnsGroup(self:GetEventType(), event)
     self:SetAccTips(_("招募士兵不能免费加速"))
     self:SetUpgradeTip(string.format(_("招募%s x%d"), Localize.soldier_name[event.name], event.count))
     
@@ -24,7 +24,7 @@ function GameUIBarracksSpeedUp:ctor()
             self:LeftButtonClicked()
         end
         local time, percent = UtilsForEvent:GetEventInfo(event)
-        self:SetProgressInfo(GameUtils:formatTimeStyle1(time), percent)
+        self:SetProgressInfo(time, percent)
     end)
 end
 

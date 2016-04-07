@@ -122,6 +122,9 @@ TMXLayer::TMXLayer()
 , _vData(nullptr)
 , _indexBuffer(nullptr)
 {
+#if DIRECTX_ENABLED == 1
+    NOT_SUPPORTED();
+#endif
 }
 
 TMXLayer::~TMXLayer()
@@ -129,10 +132,11 @@ TMXLayer::~TMXLayer()
     CC_SAFE_RELEASE(_tileSet);
     CC_SAFE_RELEASE(_texture);
     CC_SAFE_DELETE_ARRAY(_tiles);
+#if DIRECTX_ENABLED == 0
     CC_SAFE_RELEASE(_vData);
     CC_SAFE_RELEASE(_vertexBuffer);
     CC_SAFE_RELEASE(_indexBuffer);
-    
+#endif
 }
 
 void TMXLayer::draw(Renderer *renderer, const Mat4& transform, uint32_t flags)
@@ -173,6 +177,7 @@ void TMXLayer::draw(Renderer *renderer, const Mat4& transform, uint32_t flags)
 
 void TMXLayer::onDraw(Primitive *primitive)
 {
+#if DIRECTX_ENABLED == 0
     GL::bindTexture2D(_texture->getName());
     getGLProgramState()->apply(_modelViewTransform);
     
@@ -181,10 +186,12 @@ void TMXLayer::onDraw(Primitive *primitive)
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1, primitive->getCount() * 4);
+#endif
 }
 
 void TMXLayer::updateTiles(const Rect& culledRect)
 {
+#if DIRECTX_ENABLED == 0
     Rect visibleTiles = culledRect;
     Size mapTileSize = CC_SIZE_PIXELS_TO_POINTS(_mapTileSize);
     Size tileSize = CC_SIZE_PIXELS_TO_POINTS(_tileSet->_tileSize);
@@ -273,11 +280,12 @@ void TMXLayer::updateTiles(const Rect& culledRect)
             _indicesVertexZNumber.erase(iter.first);
         }
     }
-    
+#endif 
 }
 
 void TMXLayer::updateVertexBuffer()
 {
+#if DIRECTX_ENABLED == 0
     GL::bindVAO(0);
     if(nullptr == _vData)
     {
@@ -293,18 +301,19 @@ void TMXLayer::updateVertexBuffer()
     {
         _vertexBuffer->updateVertices((void*)&_totalQuads[0], (int)_totalQuads.size() * 4, 0);
     }
-    
+#endif
 }
 
 void TMXLayer::updateIndexBuffer()
 {
+#if DIRECTX_ENABLED == 0
     if(nullptr == _indexBuffer)
     {
         _indexBuffer = IndexBuffer::create(IndexBuffer::IndexType::INDEX_TYPE_SHORT_16, (int)_indices.size());
         CC_SAFE_RETAIN(_indexBuffer);
     }
     _indexBuffer->updateIndices(&_indices[0], (int)_indices.size(), 0);
-    
+#endif
 }
 
 // FastTMXLayer - setup Tiles
@@ -710,6 +719,7 @@ Value TMXLayer::getProperty(const std::string& propertyName) const
 
 void TMXLayer::parseInternalProperties()
 {
+#if DIRECTX_ENABLED == 0
     auto vertexz = getProperty("cc_vertexz");
     if (vertexz.isNull()) return;
     
@@ -735,6 +745,7 @@ void TMXLayer::parseInternalProperties()
     {
         _vertexZvalue = vertexz.asInt();
     }
+#endif
 }
 
 //CCTMXLayer2 - obtaining positions, offset

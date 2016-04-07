@@ -18386,6 +18386,105 @@ static int lua_cocos2dx_EventDispatcher_finalize(lua_State* tolua_S)
     printf("luabindings: finalizing LUA object (EventDispatcher)");
     return 0;
 }
+//dannyhe touch event switch for lua
+int lua_cocos2dx_EventDispatcher_isTouchEventEnabled(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::EventDispatcher* cobj = nullptr;
+    bool ok  = true;
+    
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+    
+    
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"cc.EventDispatcher",0,&tolua_err)) goto tolua_lerror;
+#endif
+    
+    cobj = (cocos2d::EventDispatcher*)tolua_tousertype(tolua_S,1,0);
+    
+#if COCOS2D_DEBUG >= 1
+    if (!cobj)
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_EventDispatcher_isTouchEventEnabled'", nullptr);
+        return 0;
+    }
+#endif
+    
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0)
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_EventDispatcher_isTouchEventEnabled'", nullptr);
+            return 0;
+        }
+        bool ret = cobj->isTouchEventEnabled();
+        tolua_pushboolean(tolua_S,(bool)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.EventDispatcher:isTouchEventEnabled",argc, 0);
+    return 0;
+    
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_EventDispatcher_isTouchEventEnabled'.",&tolua_err);
+#endif
+    
+    return 0;
+}
+
+int lua_cocos2dx_EventDispatcher_setTouchEventEnabled(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::EventDispatcher* cobj = nullptr;
+    bool ok  = true;
+    
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+    
+    
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"cc.EventDispatcher",0,&tolua_err)) goto tolua_lerror;
+#endif
+    
+    cobj = (cocos2d::EventDispatcher*)tolua_tousertype(tolua_S,1,0);
+    
+#if COCOS2D_DEBUG >= 1
+    if (!cobj)
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_EventDispatcher_setTouchEventEnabled'", nullptr);
+        return 0;
+    }
+#endif
+    
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1)
+    {
+        bool arg0;
+        
+        ok &= luaval_to_boolean(tolua_S, 2,&arg0, "cc.EventDispatcher:setEnabled");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_EventDispatcher_setTouchEventEnabled'", nullptr);
+            return 0;
+        }
+        cobj->setTouchEventEnabled(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.EventDispatcher:setTouchEventEnabled",argc, 1);
+    return 0;
+    
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_EventDispatcher_setTouchEventEnabled'.",&tolua_err);
+#endif
+    
+    return 0;
+}
 
 int lua_register_cocos2dx_EventDispatcher(lua_State* tolua_S)
 {
@@ -18407,6 +18506,10 @@ int lua_register_cocos2dx_EventDispatcher(lua_State* tolua_S)
         tolua_function(tolua_S,"removeAllEventListeners",lua_cocos2dx_EventDispatcher_removeAllEventListeners);
         tolua_function(tolua_S,"removeCustomEventListeners",lua_cocos2dx_EventDispatcher_removeCustomEventListeners);
         tolua_function(tolua_S,"isEnabled",lua_cocos2dx_EventDispatcher_isEnabled);
+        //dannyhe:we want to disable touch event in lua
+        tolua_function(tolua_S,"isTouchEventEnabled",lua_cocos2dx_EventDispatcher_isTouchEventEnabled);
+        tolua_function(tolua_S,"setTouchEventEnabled", lua_cocos2dx_EventDispatcher_setTouchEventEnabled);
+        //end
         tolua_function(tolua_S,"removeEventListenersForType",lua_cocos2dx_EventDispatcher_removeEventListenersForType);
     tolua_endmodule(tolua_S);
     std::string typeName = typeid(cocos2d::EventDispatcher).name();
@@ -50718,6 +50821,53 @@ int lua_cocos2dx_Sprite_setVertexRect(lua_State* tolua_S)
 
     return 0;
 }
+int lua_cocos2dx_Sprite_UpdateVertexRect(lua_State* tolua_S)
+{
+	int argc = 0;
+	cocos2d::Sprite* cobj = nullptr;
+	bool ok = true;
+
+#if COCOS2D_DEBUG >= 1
+	tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+	if (!tolua_isusertype(tolua_S, 1, "cc.Sprite", 0, &tolua_err)) goto tolua_lerror;
+#endif
+
+	cobj = (cocos2d::Sprite*)tolua_tousertype(tolua_S, 1, 0);
+
+#if COCOS2D_DEBUG >= 1
+	if (!cobj)
+	{
+		tolua_error(tolua_S, "invalid 'cobj' in function 'lua_cocos2dx_Sprite_UpdateVertexRect'", nullptr);
+		return 0;
+	}
+#endif
+
+	argc = lua_gettop(tolua_S) - 1;
+	if (argc == 0)
+	{
+		if (!ok)
+		{
+			tolua_error(tolua_S, "invalid arguments in function 'lua_cocos2dx_Sprite_UpdateVertexRect'", nullptr);
+			return 0;
+		}
+		cobj->UpdateVertexRect();
+		lua_settop(tolua_S, 1);
+		return 1;
+	}
+	luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.Sprite:UpdateVertexRect", argc, 0);
+	return 0;
+
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+	tolua_error(tolua_S, "#ferror in function 'lua_cocos2dx_Sprite_UpdateVertexRect'.", &tolua_err);
+#endif
+
+	return 0;
+}
 int lua_cocos2dx_Sprite_create(lua_State* tolua_S)
 {
     int argc = 0;
@@ -50928,6 +51078,17 @@ static int lua_cocos2dx_Sprite_finalize(lua_State* tolua_S)
 }
 
 //dannyhe
+static int lua_cocos2dx_Sprite_needETCAlphaData(lua_State* tolua_S)
+{
+    cocos2d::Sprite* cobj = nullptr;
+
+    cobj = (cocos2d::Sprite*)tolua_tousertype(tolua_S,1,0);
+
+    bool ret = cobj->needETCAlphaData();
+    tolua_pushboolean(tolua_S,(bool)ret);
+    return 1;
+}
+
 static int lua_cocos2dx_Sprite_bindAlphaDataToETCTextureIf(lua_State* tolua_S)
 {
 #if USE_ETC1_TEXTURE_WITH_ALPHA_DATA
@@ -51010,12 +51171,14 @@ int lua_register_cocos2dx_Sprite(lua_State* tolua_S)
         tolua_function(tolua_S,"isFlippedX",lua_cocos2dx_Sprite_isFlippedX);
         tolua_function(tolua_S,"isFlippedY",lua_cocos2dx_Sprite_isFlippedY);
         tolua_function(tolua_S,"setVertexRect",lua_cocos2dx_Sprite_setVertexRect);
+		tolua_function(tolua_S, "UpdateVertexRect", lua_cocos2dx_Sprite_UpdateVertexRect);
         tolua_function(tolua_S,"create", lua_cocos2dx_Sprite_create);
         tolua_function(tolua_S,"createWithTexture", lua_cocos2dx_Sprite_createWithTexture);
         tolua_function(tolua_S,"createWithSpriteFrameName", lua_cocos2dx_Sprite_createWithSpriteFrameName);
         tolua_function(tolua_S,"createWithSpriteFrame", lua_cocos2dx_Sprite_createWithSpriteFrame);
         //dannyhe
         tolua_function(tolua_S,"bindAlphaDataToETCTextureIf", lua_cocos2dx_Sprite_bindAlphaDataToETCTextureIf);
+        tolua_function(tolua_S,"needETCAlphaData", lua_cocos2dx_Sprite_needETCAlphaData);
     tolua_endmodule(tolua_S);
     std::string typeName = typeid(cocos2d::Sprite).name();
     g_luaType[typeName] = "cc.Sprite";

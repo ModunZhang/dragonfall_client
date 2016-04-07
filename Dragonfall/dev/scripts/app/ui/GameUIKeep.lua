@@ -349,7 +349,8 @@ function GameUIKeep:CreateCanBeUnlockedBuildingListView()
             for _,v in ipairs(config:GetStaticImagesByLevel()) do
                 local frame = sharedSpriteFrameCache:getSpriteFrame(v)
                 if frame then
-                    building_image_1 = display.newSprite("#"..v,p.x, p.y,{class=cc.FilteredSpriteWithOne}):addTo(building_image)
+                    building_image_1 = display.newSprite("#"..v,p.x, p.y,{class=cc.FilteredSpriteWithOne})
+                    :addTo(building_image):scale(isUseSdImage() and 2 or 1)
                 end
             end
             if not isUnlocked then

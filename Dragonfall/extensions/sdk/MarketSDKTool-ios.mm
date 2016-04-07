@@ -7,15 +7,30 @@
 //
 
 #include "MarketSDKTool.h"
-#import "TalkingDataGA.h"
+
+//force unuse appsflyer on iOS Simulator
+#if TARGET_IPHONE_SIMULATOR
+#if CC_USE_APPSFLYER
+#undef CC_USE_APPSFLYER
+#endif
+#endif
+
 #include "tolua_fix.h"
-//MARK:定义宏
-#define USE_TAKING_DATA true
-#define TD_APP_ID @"3309C905801D8D028876DB821ADB0123"
+#if CC_USE_TAKING_DATA
+#import "TalkingDataGA.h"
+#endif
+#if CC_USE_APPSFLYER
+#include "AppsFlyerTracker.h"
+#endif
+
+
+#define TD_APP_ID @"A96439345EE4F59AEF4CBF1DEFF21DEA"
 #define TD_CHANNEL_ID @"All"
+#define APPSFLYER_DEV_KEY @"ZP4ME9pKgfnjPDPobDyt" //xapcn
+#define APPSFLYER_DEV_APP_ID @""
 
 static MarketSDKTool *s_MarketSDKTool = NULL; // pointer to singleton
-#ifdef USE_TAKING_DATA
+#ifdef CC_USE_TAKING_DATA
 static TDGAAccount *tdga_account = NULL;
 #endif
 MarketSDKTool * MarketSDKTool::getInstance()
@@ -38,16 +53,21 @@ void MarketSDKTool::destroyInstance()
 
 void MarketSDKTool::initSDK()
 {
-#ifdef USE_TAKING_DATA
+#ifdef CC_USE_TAKING_DATA
     [TalkingDataGA onStart:TD_APP_ID withChannelId:TD_CHANNEL_ID];
     [TalkingDataGA setVerboseLogDisabled];
+#endif
+#if CC_USE_APPSFLYER
+    [AppsFlyerTracker sharedTracker].appsFlyerDevKey = APPSFLYER_DEV_KEY;
+    [AppsFlyerTracker sharedTracker].appleAppID = @"REPLACE THIS WITH YOUR App_ID";
+    [[AppsFlyerTracker sharedTracker] trackAppLaunch];
 #endif
 }
 
 
 void MarketSDKTool::onPlayerLogin(const char *playerId,const char*playerName,const char*serverName)
 {
-#ifdef USE_TAKING_DATA
+#ifdef CC_USE_TAKING_DATA
     TDGAAccount *account = [TDGAAccount setAccount:[NSString stringWithUTF8String:playerId]];
     [account setAccountName:[NSString stringWithUTF8String:playerName]];
     [account setAccountType:kAccountRegistered];
@@ -59,7 +79,7 @@ void MarketSDKTool::onPlayerLogin(const char *playerId,const char*playerName,con
 
 void MarketSDKTool::onPlayerChargeRequst(const char *orderID, const char *productId, double currencyAmount, double virtualCurrencyAmount,const char *currencyType)
 {
-#ifdef USE_TAKING_DATA
+#ifdef CC_USE_TAKING_DATA
     [TDGAVirtualCurrency onChargeRequst:[NSString stringWithUTF8String:orderID]
                                   iapId:[NSString stringWithUTF8String:productId]
                          currencyAmount:currencyAmount currencyType:[NSString stringWithUTF8String:currencyType]
@@ -70,42 +90,42 @@ void MarketSDKTool::onPlayerChargeRequst(const char *orderID, const char *produc
 
 void MarketSDKTool::onPlayerChargeSuccess(const char *orderID)
 {
-#ifdef USE_TAKING_DATA
+#ifdef CC_USE_TAKING_DATA
      [TDGAVirtualCurrency onChargeSuccess:[NSString stringWithUTF8String:orderID]];
 #endif
 }
 
 void MarketSDKTool::onPlayerBuyGameItems(const char *itemID, int count, double itemPrice)
 {
-#ifdef USE_TAKING_DATA
+#ifdef CC_USE_TAKING_DATA
     [TDGAItem onPurchase:[NSString stringWithUTF8String:itemID] itemNumber:count priceInVirtualCurrency:itemPrice];
 #endif
 }
 
 void MarketSDKTool::onPlayerUseGameItems(const char *itemID,int count)
 {
-#ifdef USE_TAKING_DATA
+#ifdef CC_USE_TAKING_DATA
     [TDGAItem onUse:[NSString stringWithUTF8String:itemID] itemNumber:count];
 #endif
 }
 
 void MarketSDKTool::onPlayerReward(double cont,const char* reason)
 {
-#ifdef USE_TAKING_DATA
+#ifdef CC_USE_TAKING_DATA
     [TDGAVirtualCurrency onReward:cont reason:[NSString stringWithUTF8String:reason]];
 #endif
 }
 
 void MarketSDKTool::onPlayerEvent(const char *event_id,const char*arg)
 {
-#ifdef USE_TAKING_DATA
+#ifdef CC_USE_TAKING_DATA
     [TalkingDataGA onEvent:[NSString stringWithUTF8String:event_id] eventData:@{@"desc":[NSString stringWithUTF8String:arg]}];
 #endif
 }
 
 void MarketSDKTool::onPlayerLevelUp(int level)
 {
-#ifdef USE_TAKING_DATA
+#ifdef CC_USE_TAKING_DATA
     if (tdga_account) {
         [tdga_account setLevel:level];
     }

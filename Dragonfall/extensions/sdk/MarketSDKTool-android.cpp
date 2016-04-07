@@ -39,7 +39,7 @@ void MarketSDKTool::initSDK()
 
 void MarketSDKTool::onPlayerLogin(const char *playerId,const char*playerName,const char*serverName)
 {
-#ifdef USE_TAKING_DATA
+#ifdef CC_USE_TAKING_DATA
   	cocos2d::JniMethodInfo t;
    	if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "onPlayerLogin", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"))
      {
@@ -57,7 +57,7 @@ void MarketSDKTool::onPlayerLogin(const char *playerId,const char*playerName,con
 
 void MarketSDKTool::onPlayerChargeRequst(const char *orderID, const char *productId, double currencyAmount, double virtualCurrencyAmount,const char *currencyType)
 {
-#ifdef USE_TAKING_DATA
+#ifdef CC_USE_TAKING_DATA
     cocos2d::JniMethodInfo t;
    	if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "onPlayerChargeRequst", "(Ljava/lang/String;Ljava/lang/String;DDLjava/lang/String;)V")) 
     {
@@ -76,7 +76,7 @@ void MarketSDKTool::onPlayerChargeRequst(const char *orderID, const char *produc
 
 void MarketSDKTool::onPlayerChargeSuccess(const char *orderID)
 {
-#ifdef USE_TAKING_DATA
+#ifdef CC_USE_TAKING_DATA
     cocos2d::JniMethodInfo t;
    	if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "onPlayerChargeSuccess", "(Ljava/lang/String;)V")) 
     {
@@ -90,7 +90,7 @@ void MarketSDKTool::onPlayerChargeSuccess(const char *orderID)
 
 void MarketSDKTool::onPlayerBuyGameItems(const char *itemID, int count, double itemPrice)
 {
-#ifdef USE_TAKING_DATA
+#ifdef CC_USE_TAKING_DATA
      cocos2d::JniMethodInfo t;
    	if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "onPlayerBuyGameItems", "(Ljava/lang/String;ID)V")) 
     {   
@@ -105,7 +105,7 @@ void MarketSDKTool::onPlayerBuyGameItems(const char *itemID, int count, double i
 
 void MarketSDKTool::onPlayerUseGameItems(const char *itemID,int count)
 {
-#ifdef USE_TAKING_DATA
+#ifdef CC_USE_TAKING_DATA
     cocos2d::JniMethodInfo t;
    	if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "onPlayerUseGameItems", "(Ljava/lang/String;I)V")) 
     {   
@@ -119,7 +119,7 @@ void MarketSDKTool::onPlayerUseGameItems(const char *itemID,int count)
 
 void MarketSDKTool::onPlayerReward(double count,const char* reason)
 {
-#ifdef USE_TAKING_DATA
+#ifdef CC_USE_TAKING_DATA
     cocos2d::JniMethodInfo t;
    	if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "onPlayerReward", "(DLjava/lang/String;)V")) 
     {
@@ -133,7 +133,7 @@ void MarketSDKTool::onPlayerReward(double count,const char* reason)
 
 void MarketSDKTool::onPlayerEvent(const char *event_id,const char*arg)
 {
-#ifdef USE_TAKING_DATA
+#ifdef CC_USE_TAKING_DATA
     cocos2d::JniMethodInfo t;
    	if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "onPlayerEvent", "(Ljava/lang/String;Ljava/lang/String;)V")) 
     {
@@ -149,7 +149,7 @@ void MarketSDKTool::onPlayerEvent(const char *event_id,const char*arg)
 
 void MarketSDKTool::onPlayerLevelUp(int level)
 {
-#ifdef USE_TAKING_DATA
+#ifdef CC_USE_TAKING_DATA
     cocos2d::JniMethodInfo t;
    	if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "onPlayerLevelUp", "(I)V"))
     {

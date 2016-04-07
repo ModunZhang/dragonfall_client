@@ -8,7 +8,8 @@
 	pip install requests
 	pip install colorama
 	pip install biplist
-	pip install poxls
+
+> poxls插件的安装,参考文档i18n_texture中的安装办法
 
 ###平台部分 
 ####所有系统
@@ -23,14 +24,11 @@
 
  
 	Windows上必须多添加一个系统变量`GIT_REPOSITOTY_AUTO_UPDATE_CYGWIN`,值必须为`cygwin`风格的路径字符串。指向自动更新仓库的本地绝对路径,如`GIT_REPOSITOTY_AUTO_UPDATE_CYGWIN = /cygdrive/d/Project/kod_update_server`
+
 	
-
-
-
 ####Windows
 
-* 安装**ImageMagick** [http://www.imagemagick.org/script/binary-releases.php](http://www.imagemagick.org/script/binary-releases.php "http://www.imagemagick.org/script/binary-releases.php")
->**配置系统的环境变量`CONVERT_PATH`指向`ImageMagick命令行工具的目录`,python脚本会自动查找命令行工具`convert`**
+* 直接运行`ImageMagick_6.9.3-4Q16`下的`ImageMagick-6.9.3-4-Q16-x64-dll.exe`安装即可,**配置系统的环境变量`CONVERT_PATH`指向`ImageMagick命令行工具的目录`,python脚本会自动查找命令行工具`convert`**
 
 * 安装**TexturePacker cmd命令行可执行环境**
 
@@ -39,6 +37,22 @@
 ####Mac
 * 安装**TexturePacker bash命令行可执行环境**
 
+* 安装**ImageMagick**命令行工具
+
+	1. 首先安装Homebrew [http://brew.sh](http://brew.sh/)
+	2. 将`ImageMagick_6.9.3-4Q16`目录下的`imagemagick-6.9.3-4.tar.xz`拷贝到`/Library/Caches/Homebrew`下
+	3. 将`ImageMagick_6.9.3-4Q16`目录下的`imagemagick.rb`拷贝到`/usr/local/Library/Formula/`下
+	4. 执行安装命令
+	
+		~~~
+		brew install imagemagick
+		~~~
+	5. 验证是否安装成功
+	
+		~~~
+		convert -version
+		~~~
+	
 ####验证脚本的正确安装
 
 执行脚本`python checkEnv.py`进行验证脚本安装的正确性，如果发生错误请确认上面的配置!
@@ -82,6 +96,10 @@
 13. gcm_push.py **Android下 GCM推送测试脚本**
 	
 	`python gcm_push.py --message="Bye Bye" --id="APA91bEv6GmHN3q5Swrsu_Lxxw9zds3Q2C2TPwtWIrBDbouo4uyyE5AdaKxFnZ39FYg0dyJcliPBZa_fqrc5figMZ5-M-gMNfWb_VAm6-HQS1QiDbdyBGTnPysaMw4cBsOGaUkPUbkm_"`
+
+14. syncUpdateDataToGit.py **将自动更新的文件同步到远程git仓库**
+	
+	> 参数:1.平台 2.选择执行的环境
 
 ##关于脚本生成的临时垃圾文件
 如果python脚本执行过程中被打断或者发生关键性错误,可能会留下一些处理资源的临时文件,如果python脚本成功执行完成,会自动清理这些临时垃圾文件
@@ -130,7 +148,10 @@
 `WindowsPhone`的资源处理只能在Windows环境进行!
 
 ##已知问题
-* `create_android_zip.py`对android的资源压缩会导致java不能进行解压，mac下脚本暂时使用系统命令打包,windows下还未支持
+
+**自动更新上传到git的脚本只能在mac上执行**
+
+> `syncUpdateDataToGit.py`脚本在`windows`上执行时`rsync`命令拷贝时权限有bug
 
 ----
 By Dannyhe 11/11/2015

@@ -35,11 +35,21 @@
 
 * mac
 
-> 执行命令 cmake -G “Xcode” .
+执行命令 
+
+~~~
+cmake -G “Xcode” .
+~~~
 
 * win32
-> 执行命令 cmake -G "Visual Studio 12 2013" .
-> 也可以使用cmake的gui工具生成项目
+
+> 可以使用cmake的gui工具生成项目
+
+或者执行命令 
+
+~~~
+cmake -G "Visual Studio 12 2013" .
+~~~
 
 ### 子模块的引入
 
@@ -57,11 +67,13 @@
 
 ### 如何查看版本
 
-> 查看文件夹下的`version.json`,里面有对应库的版本信息
+**查看文件夹下的`version.json`,里面有对应库的版本信息**
 
 ### 如何更新第三方库
 
 * 如果是跟随2dx更新,直接下载最新的二进制文件即可[cocos2d-x-3rd-party-libs-bin](https://github.com/cocos2d/cocos2d-x-3rd-party-libs-bin)
+
+
 * 如果需要自己更新iOS/Android下2dx某个库，使用2dx的第三方库项目编译即可[cocos2d-x-3rd-party-libs-src](https://github.com/cocos2d/cocos2d-x-3rd-party-libs-src)
 
 

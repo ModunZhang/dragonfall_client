@@ -167,14 +167,19 @@ def exportRes(sourceDir,  targetDir):
                     continue
                 if not os.path.exists(outdir):
                     os.makedirs(outdir)
-                shutil.copy(sourceFile,  outdir)
-                Logging.debug("拷贝 %s" % sourceFile)
+                if fileExt in ('png','jpg') and NEED_ENCRYPT_RES:
+                    CompileResources(sourceFile, outdir)
+                else:
+                    shutil.copy(sourceFile,  outdir)
+                    Logging.debug("拷贝 %s" % sourceFile)
         elif os.path.isdir(sourceFile):
             dir_name = os.path.basename(sourceFile)
             if dir_name == 'images':
                 exportImagesRes(sourceFile)
             elif dir_name == 'animations':
                 exportAnimationRes(sourceFile)
+            elif dir_name == 'animations_wp_sd':
+                Logging.warning("不处理animations_wp_sd文件夹")
             elif dir_name == 'animations_mac':
                 Logging.warning("不处理animations_mac文件夹")
             else:

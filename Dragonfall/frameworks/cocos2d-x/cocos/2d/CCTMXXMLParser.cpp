@@ -377,11 +377,9 @@ void TMXMapInfo::startElement(void *ctx, const char *name, const char **atts)
     else if (elementName == "image")
     {
         TMXTilesetInfo* tileset = tmxMapInfo->getTilesets().back();
-
         // build full path
         std::string imagename = attributeDict["source"].asString();
-
-        if (_TMXFileName.find_last_of("/") != string::npos)
+        /*if (_TMXFileName.find_last_of("/") != string::npos)
         {
             string dir = _TMXFileName.substr(0, _TMXFileName.find_last_of("/") + 1);
             tileset->_sourceImage = dir + imagename;
@@ -389,7 +387,33 @@ void TMXMapInfo::startElement(void *ctx, const char *name, const char **atts)
         else 
         {
             tileset->_sourceImage = _resources + (_resources.size() ? "/" : "") + imagename;
-        }
+        }*/
+#if COCOS2D_DEBUG > 0
+        cocos2d::log("we fixed the TMXMapInfo init images from cocos2dx!");
+#endif
+        //FIXME:fix the tmxmap read images from cocos2dx search path. dannyhe
+		if (_TMXFileName.find_last_of("/") != string::npos)
+		{
+			string dir = _TMXFileName.substr(0, _TMXFileName.find_last_of("/") + 1);
+			if (dir.find("res/") != string::npos)
+			{
+				std::string searchPath = dir.substr(dir.find("res/")) + imagename;
+				std::string finalPath = FileUtils::getInstance()->fullPathForFilename(searchPath);
+				tileset->_sourceImage = finalPath;
+			}
+			else
+			{
+				std::string finalPath = FileUtils::getInstance()->fullPathForFilename(imagename);
+				tileset->_sourceImage = finalPath;
+			}
+			
+		}
+		else
+		{
+			tileset->_sourceImage = _resources + (_resources.size() ? "/" : "") + imagename;
+		}
+        
+		std::string tmp = FileUtils::getInstance()->fullPathForFilename(imagename);
     } 
     else if (elementName == "data")
     {

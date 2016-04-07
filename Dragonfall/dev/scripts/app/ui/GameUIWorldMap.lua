@@ -75,16 +75,15 @@ function GameUIWorldMap:onExit()
     removeImageByKey("protect_2.png")
     removeImageByKey("world_alliance_desert.png")
     removeImageByKey("world_alliance_grassLand.png")
-    removeImageByKey("world_alliance_desert.png")
+    removeImageByKey("world_alliance_iceField.png")
     removeImageByKey("world_crown.png")
     removeImageByKey("world_edge.png")
-    removeImageByKey("world_map.png")
-    removeImageByKey("world_middle.png")
+    removeImageByKey("world_middle.jpg")
     
-    removeImageByKey("world_bg.png")
-    removeImageByKey("world_title1.png")
-    removeImageByKey("world_title2.png")
-    removeImageByKey("world_terrain.png")
+    removeImageByKey("world_bg.jpg")
+    removeImageByKey("world_title1.jpg")
+    removeImageByKey("world_title2.jpg")
+    removeImageByKey("tmxmaps/world_terrain.jpg")
 end
 local deg = math.deg
 local ceil = math.ceil
@@ -502,7 +501,12 @@ function GameUIWorldMap:OnTouchClicked(pre_x, pre_y, x, y)
         return
     end
     app:GetAudioManager():PlayeEffectSoundWithKey("NORMAL_DOWN")
-    UIKit:newWidgetUI("WidgetWorldAllianceInfo",click_object,index,true):AddToCurrentScene()
+    -- 王座
+    if DataUtils:getMapRoundByMapIndex(index) == 0 then
+        UIKit:newGameUI("GameUICrownEnter",index):AddToCurrentScene()
+    else
+        UIKit:newWidgetUI("WidgetWorldAllianceInfo",click_object,index,true):AddToCurrentScene()
+    end
 end
 function GameUIWorldMap:IsFingerOn()
     return self.event_manager:TouchCounts() ~= 0

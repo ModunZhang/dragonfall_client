@@ -1,5 +1,6 @@
 local UIListView = import("..ui.UIListView")
 local WidgetUseItems = import(".WidgetUseItems")
+local Localize = import("..utils.Localize")
 
 local WidgetRequirementListview = class("WidgetRequirementListview", function ()
     local layer = cc.Layer:create()
@@ -263,6 +264,8 @@ function WidgetRequirementListview:listviewListener(event)
                  WidgetUseItems.new():Create({
                     item_name = "heroBlood_1"
                 }):AddToCurrentScene()
+            elseif Localize.equip_material[resource_type] then
+                UIKit:newWidgetUI("WidgetMaterialDetails", "dragonMaterials",resource_type):AddToCurrentScene()
             end
         end
     end

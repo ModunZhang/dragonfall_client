@@ -147,7 +147,17 @@ function GameUIStorePackage:CreateBuyButton()
 end
 
 function GameUIStorePackage:OnBuyButtonClicked()
-	app:getStore().purchaseWithProductId(self:GetData().productId,1)
+	if device.platform == 'android' and not app:getStore().canMakePurchases() and not ext.paypal.isPayPalSupport() then
+		UIKit:showMessageDialog(_("错误"),_("Google Play商店暂时不能购买,请检查手机Google Play商店的相关设置"))
+		return
+	end
+	if device.platform == 'android' and ext.paypal.isPayPalSupport() then
+		local productId = self:GetData().productId
+		local info = DataUtils:getIapInfo(productId)
+		ext.paypal.buy(UIKit:getIapPackageName(productId),productId,tonumber(string.format("%.2f",info.price)))
+	else
+		app:getStore().purchaseWithProductId(self:GetData().productId,1)
+	end
 	device.showActivityIndicator()
 end
 

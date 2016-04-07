@@ -54,11 +54,15 @@ HueFilter::HueFilter()
 
 GLProgram* HueFilter::loadShader()
 {
-    GLProgram* __p = GLProgram::createWithByteArrays(ccPositionTextureColor_noMVP_vert, ccFilterShader_hue_frag);
-    
+#if DIRECTX_ENABLED == 0
+   GLProgram* __p = GLProgram::createWithByteArrays(ccPositionTextureColor_noMVP_vert, ccFilterShader_hue_frag);
+   
 //	GLProgram* __p = new GLProgram();
 //	__p->initWithByteArrays(ccPositionTexture_vert, ccFilterShader_hue_frag);
 	return __p;
+#else
+	return nullptr;
+#endif
 }
 
 void HueFilter::setParameter(float $param)

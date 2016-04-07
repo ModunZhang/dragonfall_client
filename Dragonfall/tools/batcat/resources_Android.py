@@ -19,13 +19,15 @@ IMAGEFORMAT = "ETC1"
 IMAGEQUALITY = "etcfast"
 PVRTOOL = getPVRTexTool()
 CONVERTTOOL = getConvertTool()
+PNGQUANTTOOL = getPngQuantTool()
+QUIET_MODE = True
 
-QUIET_MODE = False
 
+PNG_COMPRESS_WITH_PNGQUANT = True #使用pngquant有损压缩png图片
 ALPHA_USE_ETC = True  # alpha纹理使用etc格式压缩
 COMPRESS_ETC_FILE = True  # etc格式纹理通过自定义压缩工具再压缩
 
-Logging.DEBUG_MODE = True
+Logging.DEBUG_MODE = False
 
 def getAllArgs():
 
@@ -50,6 +52,12 @@ def CompileResources(in_file_path, out_dir_path):
     code, ret = executeCommand(comand, QUIET_MODE)
     return code == 0
 
+def PngQuantImage(in_file_path,out_file_path):
+    comand = "%s -v --force --output %s -- %s" % (PNGQUANTTOOL, out_file_path,in_file_path)
+    if not QUIET_MODE:
+        comand = "%s -v" % comand
+    code, ret = executeCommand(comand, QUIET_MODE)
+    return code == 0
 
 def PVRImage(in_path, out_path):
     command = "%s -f %s -i %s -o %s -q %s" % (
@@ -72,6 +80,32 @@ def AlphaImage(in_path, out_path):
         CONVERTTOOL, in_path, out_path)
     return executeCommand(command, QUIET_MODE)[0] == 0
 
+########################################################################
+#这里定义的图片名称将以png格式打入android资源包(在iOS上的基础上添加了一些图不压缩)
+NORMAL_IMAGE_NAMES = ['city_only0','buildings0','ui_png0','ui_png1','ui_png2','loading_circle_yellow','loading_circle_green','loading_circle_blue','level0','pve_only0','ui_pvr0','ui_pvr1','ui_pvr2']
+def NormalImages(in_path,out_path,outdir):
+    fileName,fileExt = os.path.basename(in_path).split('.')
+    if fileName in NORMAL_IMAGE_NAMES:
+        if fileExt == 'plist':
+            shutil.copy(in_path, outdir)
+        elif fileExt not in getTempFileExtensions():
+            if NEED_ENCRYPT_RES:
+                if PNG_COMPRESS_WITH_PNGQUANT and ('buildings0' in fileName):
+                    temp_file_path = os.path.join(TEMP_RES_DIR, os.path.basename(in_path))
+                    if PngQuantImage(in_path,temp_file_path):
+                        CompileResources(temp_file_path, outdir)
+                    else:
+                        die("处理png失败:%s" % in_path)
+                else:
+                    CompileResources(in_path, outdir)
+            else:
+                if PNG_COMPRESS_WITH_PNGQUANT and ('buildings0' in fileName):
+                    PngQuantImage(in_path,out_path)
+                else:
+                    shutil.copy(in_path, outdir)
+        return True
+    return False
+########################################################################
 
 def exportImagesRes(image_dir_path):
     outdir = os.path.join(RES_DEST_DIR, os.path.basename(image_dir_path))
@@ -96,7 +130,7 @@ def exportImagesRes(image_dir_path):
         elif os.path.isdir(sourceFile):
             dir_name = os.path.basename(sourceFile)
             Logging.warning("文件夹: %s" % dir_name)
-            if "_Compressed_mac" == dir_name:  # _Compressed_mac文件夹
+            if "_Compressed_android" == dir_name:  # _Compressed_mac文件夹
                 for image_file in os.listdir(sourceFile):
                     image_sourceFile = os.path.join(sourceFile,  image_file)
                     image_targetFile = os.path.join(outdir,  image_file)
@@ -106,6 +140,8 @@ def exportImagesRes(image_dir_path):
                         Logging.info("忽略 %s" % image_sourceFile)
                         continue
                     Logging.debug("处理 %s" % image_sourceFile)
+                    if NormalImages(image_sourceFile,image_targetFile,outdir):
+                        continue
                     fileInfo = image_file.split('.')
                     fileExt = fileInfo[-1]
                     if fileExt == 'plist':
@@ -154,6 +190,8 @@ def exportImagesRes(image_dir_path):
                         Logging.info("忽略 %s" % image_sourceFile)
                         continue
                     Logging.debug("处理 %s" % image_sourceFile)
+                    if NormalImages(image_sourceFile,image_targetFile,outdir):
+                        continue
                     fileInfo = image_file.split('.')
                     fileExt = fileInfo[-1]
                     if fileExt in getTempFileExtensions():
@@ -198,6 +236,8 @@ def exportImagesRes(image_dir_path):
                     image_targetFile = os.path.join(outdir,  image_file)
                     image_outdir = os.path.dirname(image_targetFile)
                     fileExt = image_sourceFile.split('.')[-1]
+                    if NormalImages(image_sourceFile,image_targetFile,outdir):
+                        continue
                     if fileExt in getTempFileExtensions():
                         continue
                     if not fileNewer(image_sourceFile, image_targetFile):
@@ -231,8 +271,11 @@ def exportRes(sourceDir,  targetDir):
                     continue
                 if not os.path.exists(outdir):
                     os.makedirs(outdir)
-                shutil.copy(sourceFile,  outdir)
-                Logging.debug("拷贝 %s" % sourceFile)
+                if fileExt in ('png','jpg') and NEED_ENCRYPT_RES:
+                    CompileResources(sourceFile, outdir)
+                else:
+                    shutil.copy(sourceFile,  outdir)
+                    Logging.debug("拷贝 %s" % sourceFile)
             elif fileExt == 'ttf': #android 拷贝字体文件到res下
                 Logging.debug("拷贝 %s" % file)
                 shutil.copy(sourceFile,  RES_DEST_DIR)
@@ -240,10 +283,13 @@ def exportRes(sourceDir,  targetDir):
             dir_name = os.path.basename(sourceFile)
             if dir_name == 'images':
                 exportImagesRes(sourceFile)
+            elif dir_name == 'animations_wp_sd':
+                Logging.warning("不处理animations_wp_sd文件夹")
             elif dir_name == 'animations':
                 Logging.warning("不处理animations文件夹")
+            elif dir_name == 'animations_wp_sd':
+                Logging.warning("不处理animations_wp_sd文件夹")
             elif dir_name == 'animations_mac':
-                Logging.warning("animations_mac")
                 exportAnimationRes(sourceFile)
             else:
                 exportRes(sourceFile, targetFile)
@@ -261,6 +307,8 @@ def exportAnimationRes(animation_path):
         if not os.path.exists(outdir):
             os.makedirs(outdir)
         if not fileNewer(sourceFile, targetFile) or fileExt == 'DS_Store':
+            continue
+        if NormalImages(sourceFile,targetFile,outdir):
             continue
         if fileExt == "plist" or fileExt == "ExportJson":
             shutil.copy(sourceFile, targetFile)

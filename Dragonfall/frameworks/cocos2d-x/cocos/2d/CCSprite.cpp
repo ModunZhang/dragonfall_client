@@ -285,6 +285,9 @@ Sprite::Sprite(void)
 , _texture(nullptr)
 , _spriteFrame(nullptr)
 , _insideBounds(true)
+, _etc_texture_file("")
+, _etc_alpha_texture_file("")
+, _isSd(false)
 {
 #if CC_SPRITE_DEBUG_DRAW
     _debugDrawNode = DrawNode::create();
@@ -383,6 +386,7 @@ void Sprite::setTextureRect(const Rect& rect)
 
 void Sprite::setTextureRect(const Rect& rect, bool rotated, const Size& untrimmedSize)
 {
+	_isSd = false;
     _rectRotated = rotated;
 
     setContentSize(untrimmedSize);
@@ -432,6 +436,57 @@ void Sprite::setTextureRect(const Rect& rect, bool rotated, const Size& untrimme
 void Sprite::setVertexRect(const Rect& rect)
 {
     _rect = rect;
+}
+
+void Sprite::UpdateVertexRect()
+{
+	CCASSERT(_isSd == false, "sd error!!!!!");
+	_isSd = true;
+	Size size = getContentSize();
+	size.width *= 2;
+	size.height *= 2;
+	setContentSize(size);
+	_rect.size.width = _rect.size.width * 2;
+	_rect.size.height = _rect.size.height * 2;
+	Vec2 relativeOffset = _unflippedOffsetPositionFromCenter;
+    relativeOffset.x *= 2;
+    relativeOffset.y *= 2;
+	// issue #732
+	if (_flippedX)
+	{
+		relativeOffset.x = -relativeOffset.x;
+	}
+	if (_flippedY)
+	{
+		relativeOffset.y = -relativeOffset.y;
+	}
+
+	_offsetPosition.x = relativeOffset.x + (_contentSize.width - _rect.size.width) / 2;
+	_offsetPosition.y = relativeOffset.y + (_contentSize.height - _rect.size.height) / 2;
+
+
+	// rendering using batch node
+	if (_batchNode)
+	{
+		// update dirty_, don't update recursiveDirty_
+		setDirty(true);
+	}
+	else
+	{
+		// self rendering
+
+		// Atlas: Vertex
+		float x1 = 0 + _offsetPosition.x;
+		float y1 = 0 + _offsetPosition.y;
+		float x2 = x1 + _rect.size.width;
+		float y2 = y1 + _rect.size.height;
+
+		// Don't update Z.
+		_quad.bl.vertices = Vec3(x1, y1, 0);
+		_quad.br.vertices = Vec3(x2, y1, 0);
+		_quad.tl.vertices = Vec3(x1, y2, 0);
+		_quad.tr.vertices = Vec3(x2, y2, 0);
+	}
 }
 
 void Sprite::setTextureCoords(Rect rect)
@@ -616,8 +671,12 @@ void Sprite::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
     if(_insideBounds)
 #endif
     {
+#if DIRECTX_ENABLED == 0
         _quadCommand.init(_globalZOrder, _texture->getName(), getGLProgramState(), _blendFunc, &_quad, 1, transform, flags);
-        renderer->addCommand(&_quadCommand);
+#else
+		_quadCommand.init(_globalZOrder, _texture, getGLProgramState(), _blendFunc, &_quad, 1, transform, flags);
+#endif
+		renderer->addCommand(&_quadCommand);
         
 #if CC_SPRITE_DEBUG_DRAW
         _debugDrawNode->clear();
@@ -872,7 +931,18 @@ void Sprite::setFlippedX(bool flippedX)
     if (_flippedX != flippedX)
     {
         _flippedX = flippedX;
+		auto needUpdateVertex = _isSd;
+		if (_isSd) {
+			_contentSize.width /= 2;
+			_contentSize.height /= 2;
+			_rect.size.width /= 2;
+			_rect.size.height /= 2;
+		}
         setTextureRect(_rect, _rectRotated, _contentSize);
+		if (needUpdateVertex) 
+		{
+			UpdateVertexRect();
+		}
     }
 }
 
@@ -886,7 +956,18 @@ void Sprite::setFlippedY(bool flippedY)
     if (_flippedY != flippedY)
     {
         _flippedY = flippedY;
+		auto needUpdateVertex = _isSd;
+		if (_isSd) {
+			_contentSize.width /= 2;
+			_contentSize.height /= 2;
+			_rect.size.width /= 2;
+			_rect.size.height /= 2;
+		}
         setTextureRect(_rect, _rectRotated, _contentSize);
+		if (needUpdateVertex)
+		{
+			UpdateVertexRect();
+		}
     }
 }
 
@@ -944,6 +1025,7 @@ void Sprite::bindAlphaDataToETCTextureIf(Texture2D * texture,std::string etc1_fi
     CCLOG("Sprite:bindAlphaDataToETCTextureIf---%s,%d",etc1_file.c_str(),_textureFormat);
     if (_textureFormat == Texture2D::PixelFormat::ETC)
     {
+        _etc_texture_file = etc1_file;
         CCASSERT(etc1_file.size() > 0, "CCSprite#bindAlphaDataToETCTextureIf: texture file name not found");
         std::string alpha_file = etc1_file.erase(etc1_file.find_last_of("."));
         alpha_file = alpha_file + "_alpha_etc1.png";
@@ -956,8 +1038,9 @@ void Sprite::bindAlphaDataToETCTextureIf(Texture2D * texture,std::string etc1_fi
 #endif
         if (texture_alpha)
         {
+            _etc_alpha_texture_file = alpha_file;
             CCLOG("Sprite:bindAlphaDataToETCTextureIf:Bind alpha data %s -> %s",alpha_file.c_str(),etc1_file.c_str());
-            auto program = GLProgramCache::getInstance()->getGLProgram(GLProgram::SHADER_NAME_ETC_ALPHA); //新加的etc shader
+            auto program = GLProgramCache::getInstance()->getGLProgram(GLProgram::SHADER_NAME_ETC_ALPHA_POSITION_TEXTURE_COLOR_NO_MVP); //新加的etc shader
             auto etc_program_state = GLProgramState::create(program);
             etc_program_state->setUniformTexture("u_texture1", texture_alpha);
             setGLProgramState(etc_program_state);

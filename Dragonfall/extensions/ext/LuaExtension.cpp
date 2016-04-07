@@ -46,6 +46,12 @@ extern "C" {
 #endif
 #include "MarketSDKTool.h"
 #include "jni_StoreKit.h"
+#if CC_USE_SDK_PAYPAL
+#include "PayPalSDK.h"
+#endif
+#if CC_USE_GOOGLE_LOGIN
+#include "GoogleSignSDK.h"
+#endif
 #define KODLOG(format, ...) CCLOG(format, ##__VA_ARGS__);
 //MARK:iOS
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_IOS
@@ -858,14 +864,14 @@ static int tolua_ext_is_app_hoc(lua_State* tolua_S)
 
 static int tolua_ext_isLowMemoryDevice(lua_State* tolua_S)
 {
-	bool ret = isLowMemoryDevice();
+	bool ret = IsLowMemoryDevice();
 	tolua_pushboolean(tolua_S, ret);
 	return 1;
 }
 
 static int tolua_ext_getAppMemoryUsage(lua_State* tolua_S)
 {
-	auto ret = getAppMemoryUsage();
+	auto ret = GetAppMemoryUsage();
 	tolua_pushnumber(tolua_S, ret);
 	return 1;
 }
@@ -933,7 +939,7 @@ static void ResgisterGlobalExtFunctions(lua_State* tolua_S)
     tolua_function(tolua_S, "getDeviceLanguage",tolua_ext_get_language_code);
     tolua_function(tolua_S, "isAppAdHoc",tolua_ext_is_app_hoc);
 	tolua_function(tolua_S, "isLowMemoryDevice", tolua_ext_isLowMemoryDevice);
-	tolua_function(tolua_S, "getAppMemoryUsage", tolua_ext_getAppMemoryUsage);
+    tolua_function(tolua_S, "getAppMemoryUsage", tolua_ext_getAppMemoryUsage);
 #if  CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 	tolua_function(tolua_S, "openURL", tolua_ext_open_url);
 	tolua_function(tolua_S, "showAlert", tolua_ext_show_alert);
@@ -948,6 +954,12 @@ static void RegisterExtModules(lua_State* tolua_S)
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
      tolua_ext_module_store(tolua_S);
 	 tolua_ext_module_market(tolua_S);
+#if CC_USE_SDK_PAYPAL
+     tolua_ext_module_paypal(tolua_S);
+#endif
+#if CC_USE_GOOGLE_LOGIN
+     tolua_ext_module_google(tolua_S);
+#endif
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 	tolua_ext_module_audio(tolua_S);
 	tolua_ext_module_adeasygo(tolua_S);

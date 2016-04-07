@@ -254,9 +254,9 @@ function MyCityScene:onEnterTransitionFinish()
             UIKit:newGameUI("GameUIActivityRewardNew",GameUIActivityRewardNew.REWARD_TYPE.FIRST_IN_PURGURE):AddToScene(self, true)
         end
         --开启屏幕锁定定时器(前面已经关闭)
-        if ext.disableIdleTimer then
-            ext.disableIdleTimer(false)
-        end
+        -- if ext.disableIdleTimer then
+        --     ext.disableIdleTimer(false)
+        -- end
         -- gamecenter 初始化
         if ext.gamecenter.isGameCenterEnabled() and not ext.gamecenter.isAuthenticated() then
             ext.gamecenter.authenticate(false)
@@ -446,10 +446,9 @@ function MyCityScene:OpenUI(building, default_tab, need_tips, build_name)
     local city = self:GetCity()
     local User = city:GetUser()
     if iskindof(building, "HelpedTroopsSprite") then
-        local helped = User.helpedByTroops[building:GetIndex()]
+        local helped = User.helpedByTroop
         local user = self.city:GetUser()
-        NetManager:getHelpDefenceTroopDetailPromise(user:Id(),helped.id):done(function(response)
-            LuaUtils:outputTable("response", response)
+        NetManager:getHelpDefenceTroopDetailPromise(user:Id()):done(function(response)
             UIKit:newGameUI("GameUIHelpDefence",self.city, helped ,response.msg.troopDetail):AddToCurrentScene(true)
         end)
         return

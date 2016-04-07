@@ -52,8 +52,13 @@ intInit["allianceRegionMapHeight"] = {
 }
 intInit["citizenPerLeadership"] = {
 	["type"] = "citizenPerLeadership",
-	["value"] = 100,
+	["value"] = 20,
 	["desc"] = "每一点龙的领导力带领多少兵力"
+}
+intInit["maxTroopPerDragon"] = {
+	["type"] = "maxTroopPerDragon",
+	["value"] = 6,
+	["desc"] = "每条龙最多带多少部队"
 }
 intInit["dragonStrikeHpDecreasedPercent"] = {
 	["type"] = "dragonStrikeHpDecreasedPercent",
@@ -85,18 +90,13 @@ intInit["KilledCitizenPerWallHp"] = {
 	["value"] = 5,
 	["desc"] = "损失一点城墙血量获得多少击杀积分"
 }
-intInit["villageRefreshMinutes"] = {
-	["type"] = "villageRefreshMinutes",
-	["value"] = 180,
-	["desc"] = "村落采空后多少分钟后刷新"
-}
 intInit["monsterRefreshMinutes"] = {
 	["type"] = "monsterRefreshMinutes",
 	["value"] = 120,
 	["desc"] = "区域地图野怪多少分钟后刷新"
 }
-intInit["villageRefreshTime"] = {
-	["type"] = "villageRefreshTime",
+intInit["villageRefreshMinutes"] = {
+	["type"] = "villageRefreshMinutes",
 	["value"] = 240,
 	["desc"] = "区域地图村落多少分钟后刷新"
 }
@@ -130,8 +130,13 @@ intInit["allianceFightRewardHonour"] = {
 	["value"] = 20000,
 	["desc"] = "联盟战荣耀值奖励"
 }
-intInit["allianceFightRewardGem"] = {
-	["type"] = "allianceFightRewardGem",
-	["value"] = 100,
-	["desc"] = "联盟战宝石奖励"
+intInit["allianceFightGemClass2Get"] = {
+	["type"] = "allianceFightGemClass2Get",
+	["value"] = 10,
+	["desc"] = "联盟战可得多少10个宝石的宝箱"
+}
+intInit["canBuyAllianceArchonMinutes"] = {
+	["type"] = "canBuyAllianceArchonMinutes",
+	["value"] = 10080,
+	["desc"] = "多长时间能购竞选联盟盟主职位"
 }

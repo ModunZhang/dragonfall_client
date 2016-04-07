@@ -382,11 +382,9 @@ end
 local base_event_map = {
     disconnect = function(success, response)
         printLog("Server Status","disconnect")
-        if NetManager.m_netService:isConnected() then
-            UIKit:showKeyMessageDialog(_("错误"), _("与服务器的链接中断，请检查你的网络环境后重试!"), function()
-                app:retryConnectServer()
-            end)
-        end
+        UIKit:showKeyMessageDialog(_("错误"), _("与服务器的链接中断，请检查你的网络环境后重试!"), function()
+            app:retryConnectServer()
+        end)
     end,
     timeout = function(success, response)
     end,
@@ -694,7 +692,8 @@ end
 local function get_connectGateServer_promise()
     local p = promise.new(check_request("连接网关服务器失败!"))
     NetManager.m_netService:connect(NetManager.m_gateServer.host, NetManager.m_gateServer.port, function(success)
-        p:resolve({success = success, msg = {code = SUCCESS_CODE}})
+        code = success and SUCCESS_CODE or 0
+        p:resolve({success = success, msg = {code = code}})
     end)
     return p
 end
@@ -724,7 +723,7 @@ function NetManager:getLogicServerInfoPromise()
     elseif device.platform == 'mac' then
         platform = 'ios'
     elseif device.platform == "android" then
-        platform = 'ios'
+        platform = 'android'
     elseif device.platform == "ios" then
         platform = 'ios'
     elseif device.platform == 'winrt' then
@@ -753,7 +752,8 @@ end
 local function get_connectLogicServer_promise()
     local p = promise.new(check_request("连接逻辑服务器失败!"))
     NetManager.m_netService:connect(NetManager.m_logicServer.host, NetManager.m_logicServer.port, function(success)
-        p:resolve({success = success, msg = {code = SUCCESS_CODE}})
+        code = success and SUCCESS_CODE or 0
+        p:resolve({success = success, msg = {code = code}})
     end)
     return p
 end
@@ -1251,13 +1251,21 @@ function NetManager:getRequestAllianceToSpeedUpPromise(eventType, eventId)
         return result
     end)
 end
--- 免费加速建筑升级
+-- 免费加速
 function NetManager:getFreeSpeedUpPromise(eventType, eventId)
     return get_blocking_request_promise("logic.playerHandler.freeSpeedUp", {
         eventType = eventType,
         eventId = eventId,
     }, "请求免费加速失败!"):done(get_player_response_msg)
 end
+-- 宝石加速
+function NetManager:getSpeedUpPromise(eventType, eventId)
+    return get_blocking_request_promise("logic.playerHandler.speedUp", {
+        eventType = eventType,
+        eventId = eventId,
+    }, "请求宝石加速失败!"):done(get_player_response_msg)
+end
+
 -- 协助玩家加速
 function NetManager:getHelpAllianceMemberSpeedUpPromise(eventId)
     return get_blocking_request_promise("logic.allianceHandler.helpAllianceMemberSpeedUp", {
@@ -1559,9 +1567,7 @@ end
 --撤销协防
 function NetManager:getRetreatFromHelpedAllianceMemberPromise(beHelpedPlayerId)
     return get_blocking_request_promise("logic.allianceHandler.retreatFromBeHelpedAllianceMember",
-        {
-            beHelpedPlayerId = beHelpedPlayerId,
-        },
+        {beHelpedPlayerId = beHelpedPlayerId},
         "撤销协防失败!"):done(get_player_response_msg)
 end
 --复仇其他联盟
@@ -1652,9 +1658,9 @@ function NetManager:getHelpDefenceMarchEventDetailPromise(eventId)
         {eventId = eventId},"获取协防事件数据失败!"):done(get_player_response_msg)
 end
 --查看协防部队详细信息
-function NetManager:getHelpDefenceTroopDetailPromise(playerId,helpedByPlayerId)
+function NetManager:getHelpDefenceTroopDetailPromise(playerId)
     return get_blocking_request_promise("logic.allianceHandler.getHelpDefenceTroopDetail",
-        {playerId = playerId,helpedByPlayerId = helpedByPlayerId},"查看协防部队详细信息失败!"):done(get_player_response_msg)
+        {playerId = playerId},"查看协防部队详细信息失败!"):done(get_player_response_msg)
 end
 -- 出售商品
 function NetManager:getSellItemPromise(type,name,count,price)
@@ -1743,6 +1749,7 @@ local function upgrade_soldier_star_promise(soldierName,finishNow)
         finishNow = finishNow,
     }, "士兵晋级失败!"):done(get_player_response_msg):done(function()
         if finishNow then
+            app:GetAudioManager():PlayeEffectSoundWithKey("COMPLETE")
             GameGlobalUI:showTips(
                 _("士兵晋级完成"),
                 string.format(
@@ -1884,6 +1891,16 @@ function NetManager:getVerifyMicrosoftIAPPromise( transactionIdentifier )
     return get_none_blocking_request_promise("logic.playerHandler.addWpOfficialPlayerBillingData",
         {
             receiptData=transactionIdentifier,
+        }
+        ,"玩家内购失败", true):next(get_player_response_msg)
+end
+-- Android google play v3 内购
+function NetManager:getVerifyGooglePlayIAPPromise(receiptData,receiptSignature)
+    print("fuck ---- getVerifyGooglePlayIAPPromise",receiptData,receiptSignature)
+    return get_none_blocking_request_promise("logic.playerHandler.addAndroidOfficialPlayerBillingData",
+        {
+            receiptData=receiptData,
+            receiptSignature=receiptSignature,
         }
         ,"玩家内购失败", true):next(get_player_response_msg)
 end

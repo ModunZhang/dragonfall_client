@@ -72,6 +72,7 @@ function WidgetManufactureNew:onEnter()
     User:AddListenOnType(self, "materialEvents")
     scheduleAt(self, function()
         self:UpdateCurrentEvent()
+        self:RefreshRequirements(self.material_tab:GetSelectedButtonTag())
     end)
 end
 function WidgetManufactureNew:onExit()
@@ -194,7 +195,7 @@ function WidgetManufactureNew:ReloadMaterials(materials, materials_map)
                     iron = iron_cur,
                 })
                 if need_gems > 0 then
-                    UIKit:showMessageDialog(_("提示"), "资源不足!")
+                    UIKit:showMessageDialog(_("提示"), _("资源不足"))
                         :CreateOKButtonWithPrice(
                             {
                                 listener = function()
@@ -294,7 +295,7 @@ function WidgetManufactureNew:ReloadMaterials(materials, materials_map)
 end
 function WidgetManufactureNew:UpdateCurrentEvent()
     local event_name = self.material_tab:GetSelectedButtonTag()
-    self:UpdateByEvent(User:GetMakingMaterialsEvent(event_name) 
+    self:UpdateByEvent(User:GetMakingMaterialsEvent(event_name)
         or User:GetStoreMaterialsEvent(event_name))
 end
 function WidgetManufactureNew:UpdateByEvent(event)
@@ -429,6 +430,7 @@ end
 
 
 return WidgetManufactureNew
+
 
 
 

@@ -1,6 +1,5 @@
 local NetService = {}
 local cocos_promise = import("..utils.cocos_promise")
-NetService.NET_STATE = {DISCONNECT = -1 , CONNECT = 0}
 --lua pomelo
 local json = json
 -- if device.platform == 'winrt' then
@@ -17,37 +16,26 @@ function NetService:init(  )
     self.m_pomelo = CCPomelo:getInstance()
     self.m_deltatime = 0
     self.m_urlcode = import("app.utils.urlcode")
-    self.net_state = self.NET_STATE.DISCONNECT
-end
-
-function NetService:getNetState()
-    return self.net_state
 end
 
 function NetService:isConnected()
-    return self.net_state == self.NET_STATE.CONNECT
+    return self.m_pomelo:isReady()
 end
 
 function NetService:isDisconnected()
-    return self.net_state == self.NET_STATE.DISCONNECT
+    return not self:isConnected()
 end
 
 function NetService:connect(host, port, cb)
     self.m_pomelo:asyncConnect(host, port, function ( success ) 
-        if success then 
-            self.net_state = self.NET_STATE.CONNECT
-        else
-            self.net_state = self.NET_STATE.DISCONNECT
-        end
         cb(success)
     end)
 end
 
 function NetService:disconnect( )
-    if self.net_state == self.NET_STATE.DISCONNECT then return end
+    if self:isDisconnected() then return end
     self.m_pomelo:cleanup() -- clean the callback in pomelo thread
     self.m_pomelo:stop()
-    self.net_state = self.NET_STATE.DISCONNECT
 end
 
 
@@ -60,7 +48,7 @@ function NetService:setDeltatime(deltatime)
 end
 
 function NetService:request(route, lmsg, cb)
-    if self.net_state == self.NET_STATE.DISCONNECT then 
+    if self:isDisconnected() then 
         cocos_promise.defer(function()
             cb(false,{message = _("连接服务器失败,请检测你的网络环境!"),code = 0}) 
         end)
@@ -69,7 +57,6 @@ function NetService:request(route, lmsg, cb)
     lmsg = lmsg or {}
     -- lmsg.__time__ = ext.now() + self.m_deltatime
     local ret = self.m_pomelo:request(route, json.encode(lmsg), function ( success, jmsg )
-            if not success then  self.net_state = self.NET_STATE.DISCONNECT end 
             if jmsg then
                 jmsg = json.decode(jmsg)
             else
@@ -85,7 +72,7 @@ function NetService:request(route, lmsg, cb)
 end
 
 function NetService:notify( route, lmsg, cb )
-    if self.net_state == self.NET_STATE.DISCONNECT then 
+    if self:isDisconnected() then 
         cocos_promise.defer(function()
             cb(false,{message = _("连接服务器失败,请检测你的网络环境!"),code = 0}) 
         end)
@@ -93,7 +80,6 @@ function NetService:notify( route, lmsg, cb )
     lmsg = lmsg or {}
     -- lmsg.__time__ = ext.now() + self.m_deltatime
     self.m_pomelo:notify(route, json.encode(lmsg), function ( success )
-        if not success then  self.net_state = self.NET_STATE.DISCONNECT end 
         cb(success)
     end)
 end

@@ -212,7 +212,7 @@ function GameUIGacha:CreateGachaPool(layer)
         current_box:SetOrginStatus()
     end
 
-    function GachaPool:SkipByStep()
+    function GachaPool:SkipByStep(isPlayMusic)
         -- 是否顺时针
         local gap = 1
         current_box:ResetLigt()
@@ -223,8 +223,8 @@ function GameUIGacha:CreateGachaPool(layer)
         temp_box:SetPassStatus()
         current_box = temp_box
         current_index = next_index
-        if device.platform ~= 'winrt' then
-            app:GetAudioManager():PlayeEffectSound("sfx_gacha.mp3")
+        if isPlayMusic then
+            app:GetAudioManager():PlayeEffectSound("sfx_gacha_2.mp3")
         end
     end
     function GachaPool:Stop()
@@ -307,7 +307,6 @@ function GameUIGacha:CreateGachaPool(layer)
         end
         layer:EnAbleButton(false)
         local terminal_point
-        print("item_name=",item_name,"count=",item[2])
         for i,item in ipairs(items) do
             if item:GetGachaItemName() == item_name and item:GetGachaItemCount()== self.current_gacha_item_count then
                 terminal_point = i
@@ -318,13 +317,12 @@ function GameUIGacha:CreateGachaPool(layer)
 
         -- 随机转几圈
         math.randomseed(tostring(os.time()):reverse():sub(1, 6))
-        local round_num = math.random(3,5)
+        -- local round_num = math.random(3,5)
+        local round_num = 6
         -- 总共要跳动的格子数
-        self.total_steps = round_num*16+terminal_point - current_index
+        self.total_steps = round_num * 16 + terminal_point - current_index
         -- 当前计时器周期
-        self.current_period = 0.005
-        -- 跳动步子参数，越慢的计时器行走的格子数越少
-        self.step_offset = 10
+        self.current_period = 0.003
         if self.handle then
             scheduler.unscheduleGlobal(self.handle)
             self.handle = nil
@@ -348,16 +346,23 @@ function GameUIGacha:CreateGachaPool(layer)
             return
         end
         local run_steps = self.run_steps or 0
-
-        self:SkipByStep()
+        local left_step = self.total_steps-run_steps
+        if run_steps == 0 then
+            app:GetAudioManager():PlayeEffectSound("sfx_gacha_1.mp3")
+        -- elseif left_step == 30 then
+        --     app:GetAudioManager():StopEffectSound()
+        elseif left_step == 7 then
+            app:GetAudioManager():StopEffectSound()
+        end
         self.run_steps = run_steps + 1
-        if self.handle then
+        self:SkipByStep(left_step < 8)
+        if self.handle  then
             scheduler.unscheduleGlobal(self.handle)
             self.handle = nil
-            if self.total_steps-self.run_steps<10 then
-                self.current_period = self.current_period + 0.03
-            elseif self.total_steps-self.run_steps<40 then
-                self.current_period = self.current_period + 0.001
+            if self.total_steps - self.run_steps < 8 then
+                self.current_period = self.current_period + 0.05
+            elseif self.total_steps - self.run_steps < 31 then
+                self.current_period = self.current_period + 0.002
             end
             self.handle = scheduler.scheduleGlobal(handler(self, self.Run), self.current_period, false)
             -- if self.total_steps-self.run_steps<10 then
@@ -398,28 +403,38 @@ function GameUIGacha:GetLightLine(isSenior)
         patten = "gacha_line_20x568_%d.png"
         w,h = 20,568
     end
-    local srpite_frame_1 = cc.SpriteFrame:create(img_1,cc.rect(0,0,w,h))
-    local srpite_frame_2 = cc.SpriteFrame:create(img_2,cc.rect(0,0,w,h))
+    -- local srpite_frame_1 = cc.SpriteFrame:create(img_1,cc.rect(0,0,w,h))
+    -- local srpite_frame_2 = cc.SpriteFrame:create(img_2,cc.rect(0,0,w,h))
     local light_line = display.newSprite(img_1)
 
     -- cc.SpriteFrameCache:getInstance():addSpriteFrame(srpite_frame_1,img_1)
     -- cc.SpriteFrameCache:getInstance():addSpriteFrame(srpite_frame_2,img_2)
-    local frames = display.newFrames(patten, 1, 2)
-    local animation = display.newAnimation(frames, 0.2)
-    light_line:playAnimationForever(animation)
+    -- local frames = display.newFrames(patten, 1, 2)
+    -- local animation = display.newAnimation(frames, 0.2)
+    -- light_line:scale(true and 2 or 1):playAnimationForever(animation)
+    light_line:runAction(cc.RepeatForever:create(transition.sequence({
+        cc.CallFunc:create(function()
+            light_line:setTexture(string.format(patten,2))
+        end),
+        cc.DelayTime:create(0.2),
+        cc.CallFunc:create(function()
+            light_line:setTexture(string.format(patten,1))
+        end),
+        cc.DelayTime:create(0.2),
+    })))
     return light_line
 end
 function GameUIGacha:InitOrdinary()
     local main = self
     local layer = self.ordinary_layer
-    local background_gacha_1 = device.platform == 'winrt' and "background_gacha_1.png" or "background_gacha_1.jpg" 
+    local background_gacha_1 = "background_gacha_1.jpg"
     self.isOrdinaryInit = display.newSprite(background_gacha_1):addTo(layer)
         :align(display.TOP_CENTER, window.cx, window.top_bottom+36)
     UIKit:ttfLabel({
         text = _("每日获得免费抽奖机会，激活VIP5 以上，每日可获得额外的免费抽奖机会"),
         size = 22,
         color = 0xffedae,
-        dimensions = cc.size(400,0)
+        dimensions = cc.size(420,0)
     }):align(display.CENTER, window.cx, window.top_bottom-50):addTo(layer)
     local OrdinaryGachaPool = self:CreateGachaPool(layer)
 
@@ -463,7 +478,7 @@ function GameUIGacha:InitOrdinary()
                 end
             end
         end)
-        
+
     -- 是否有免费抽奖次数
     if User:GetOddFreeNormalGachaCount()>0 then
         button:setButtonLabel(UIKit:commonButtonLable({
@@ -508,7 +523,7 @@ end
 function GameUIGacha:InitDeluxe()
     local main = self
     local layer = self.deluxe_layer
-    local background_gacha_2 = device.platform == 'winrt' and "background_gacha_2.png" or "background_gacha_2.jpg" 
+    local background_gacha_2 = "background_gacha_2.jpg"
     self.isDeluxeInit = display.newSprite(background_gacha_2):addTo(layer)
         :align(display.TOP_CENTER, window.cx, window.top_bottom+36)
     UIKit:ttfLabel({
@@ -629,13 +644,12 @@ end
 
 function GameUIGacha:onCleanup()
     GameUIGacha.super.onCleanup(self)
-    cc.Director:getInstance():getTextureCache():removeTextureForKey("background_gacha_1.png")
-    cc.Director:getInstance():getTextureCache():removeTextureForKey("background_gacha_1.jpg")
-    cc.Director:getInstance():getTextureCache():removeTextureForKey("background_gacha_2.png")
-    cc.Director:getInstance():getTextureCache():removeTextureForKey("background_gacha_2.jpg")
+    removeImageByKey("background_gacha_1.jpg")
+    removeImageByKey("background_gacha_2.jpg")
 end
 
 return GameUIGacha
+
 
 
 

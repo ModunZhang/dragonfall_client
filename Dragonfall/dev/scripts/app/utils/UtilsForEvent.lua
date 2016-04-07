@@ -18,6 +18,33 @@ function UtilsForEvent:GetEventInfo(event)
     end
     return math.ceil(left), (time - start) * 100.0 / (finish - start)
 end
+-- 将事件加速到可免费加速需要的金龙币
+function UtilsForEvent:GetSpeedUpPrice(event,eventType,time)
+    if self:CouldFreeSpeedUp(eventType) then
+        local freeTime = DataUtils:getFreeSpeedUpLimitTime()
+        local leftTime = time or self:GetEventInfo(event)
+        local speedUpTime = leftTime - freeTime
+        if speedUpTime > 0 then
+            return DataUtils:getGemByTimeInterval(speedUpTime)
+        end
+    else
+        local leftTime = time or self:GetEventInfo(event)
+        return DataUtils:getGemByTimeInterval(leftTime)
+    end
+end
+--事件是否能免费加速
+function UtilsForEvent:CouldFreeSpeedUp(eventType)
+    if not eventType or  eventType == "soldierEvents"
+        or eventType == "dragonEquipmentEvents"
+        or eventType == "dailyQuestEvents"
+        or eventType == "dragonDeathEvents"
+        or eventType == "materialEvents"
+        or eventType == "treatSoldierEvents"
+    then
+        return false
+    end
+    return true
+end
 function UtilsForEvent:GetMilitaryTechEventLocalize(tech_name, level)
     local category, tech_type = unpack(string.split(tech_name, "_"))
     if tonumber(tech_type) then
@@ -26,12 +53,12 @@ function UtilsForEvent:GetMilitaryTechEventLocalize(tech_name, level)
     end
     if tech_type == "hpAdd" then
         return string.format(
-            _("研发科技-%s血量增加到 Lv %d"),
+            _("%s血量增加到 Lv %d"),
             Localize.soldier_category[category],
             level + 1)
     end
     return string.format(
-        _("研发科技-%s对%s的攻击到 Lv %d"),
+        _("%s对%s的攻击到 Lv %d"),
         Localize.soldier_category[category],
         Localize.soldier_category[tech_type],
         level + 1)
@@ -54,7 +81,7 @@ function UtilsForEvent:GetMarchEventPrefix(event, eventType)
         return _("正在进行村落采集")
     end
     if eventType == "helpToTroops" then
-        return  string.format(_("正在协防玩家%s"),event.beHelpedPlayerData.name)
+        return  string.format(_("正在协防玩家%s"),event.name)
     end
     if eventType == "strikeMarchReturnEvents" or eventType == "attackMarchReturnEvents" then
         local march_type = event.marchType
@@ -120,13 +147,9 @@ function UtilsForEvent:GetCollectPercent(event)
     return collectCount, collectPercent
 end
 function UtilsForEvent:GetVillageEventPrefix(event)
-    local x,y = DataUtils:GetAbsolutePosition(event.toAlliance.mapIndex,
-        event.toAlliance.location.x,
-        event.toAlliance.location.y)
-    local target_pos = string.format("%s,%s", x, y)
-    return string.format(_("正在采集%sLv%s (%s)"),
+    return string.format(_("正在采集%sLv%s"),
         Localize.village_name[event.villageData.name],
-        event.villageData.level,target_pos)
+        event.villageData.level)
 end
 function UtilsForEvent:GetEventTime(event)
     if event.eventType == "shrineEvents" then
@@ -148,7 +171,7 @@ end
 function UtilsForEvent:GetDestination(event)
     local eventType = event.eventType
     if eventType == "helpToTroops" then
-        return event.beHelpedPlayerData.name
+        return event.name
     elseif eventType == "villageEvents" then
         return Localize.village_name[event.villageData.name] .. "Lv" .. event.villageData.level
     elseif eventType == "strikeMarchEvents" or eventType == "attackMarchEvents" then
@@ -190,7 +213,7 @@ function UtilsForEvent:GetDestinationLocation(event)
         local x , y = DataUtils:GetAbsolutePosition(mapIndex, location.x, location.y)
         return x .. "," .. y
     elseif eventType == "helpToTroops" then
-        local location = event.beHelpedPlayerData.location
+        local location = event.location
         local mapIndex = Alliance_Manager:GetMyAlliance().mapIndex
         local x , y = DataUtils:GetAbsolutePosition(mapIndex, location.x, location.y)
         return x .. "," .. y
@@ -207,7 +230,7 @@ function UtilsForEvent:GetDragonType(event)
     elseif eventType == "strikeMarchEvents" or eventType == "attackMarchEvents" or eventType == "strikeMarchReturnEvents" or eventType == "attackMarchReturnEvents" then
         return event.attackPlayerData.dragon.type
     elseif eventType == "helpToTroops" then
-        return event.playerDragon
+        return event.dragon
     elseif eventType == "shrineEvents" then
         for i,troop in ipairs(event.playerTroops) do
             if troop.id == User:Id() then
@@ -258,6 +281,7 @@ function UtilsForEvent:GetAllMyMarchEvents()
     end
     return events
 end
+
 
 
 

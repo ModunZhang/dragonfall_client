@@ -31,6 +31,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.SparseArray;
@@ -67,11 +68,6 @@ public class Cocos2dxEditBoxHelper {
     public static void __editBoxEditingDidEnd(int index, String text){
         editBoxEditingDidEnd(index, text);
     }
-    //dannyhe
-    private static native void editBoxEditingDidReturn(int index);
-    public static void __editBoxEditingDidReturn(int index){
-        editBoxEditingDidReturn(index);
-    }
 
     /******TextView******/
 
@@ -89,12 +85,6 @@ public class Cocos2dxEditBoxHelper {
     public static void __textViewEditingDidEnd(int index, String text){
         textViewEditingDidEnd(index, text);
     }
-    //dannyhe
-    private static native void textViewEditingDidReturn(int index);
-    public static void __textViewEditingDidReturn(int index){
-        textViewEditingDidReturn(index);
-    }
-
 
 
     public Cocos2dxEditBoxHelper(ResizeLayout layout) {
@@ -227,14 +217,10 @@ public class Cocos2dxEditBoxHelper {
                         if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                                 (keyCode == KeyEvent.KEYCODE_ENTER)) {
                             //if editbox doesn't support multiline, just hide the keyboard
-                            //dannyhe
-                            if (!editBox.isMultilineEnabled()) {
-                                Cocos2dxEditBoxHelper.__editBoxEditingDidReturn(index);
+                            if ((editBox.getInputType() & InputType.TYPE_TEXT_FLAG_MULTI_LINE) != InputType.TYPE_TEXT_FLAG_MULTI_LINE) {
                                 Cocos2dxEditBoxHelper.closeKeyboard(index);
                                 mCocos2dxActivity.getGLSurfaceView().requestFocus();
                                 return true;
-                            } else {
-                                Cocos2dxEditBoxHelper.__textViewEditingDidReturn(index);
                             }
                         }
                         return false;
@@ -450,6 +436,9 @@ public class Cocos2dxEditBoxHelper {
         if (null != editBox) {
             imm.hideSoftInputFromWindow(editBox.getWindowToken(), 0);
             mCocos2dxActivity.getGLSurfaceView().setSoftKeyboardShown(false);
+            //dannyhe
+            mCocos2dxActivity.hideSystemUI();
+
         }
     }
     //dannyhe

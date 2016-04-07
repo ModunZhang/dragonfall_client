@@ -194,6 +194,7 @@ MeshCommand::~MeshCommand()
 
 void MeshCommand::applyRenderState()
 {
+#if DIRECTX_ENABLED == 0
     _renderStateCullFaceEnabled = glIsEnabled(GL_CULL_FACE) != GL_FALSE;
     _renderStateDepthTest = glIsEnabled(GL_DEPTH_TEST) != GL_FALSE;
     glGetBooleanv(GL_DEPTH_WRITEMASK, &_renderStateDepthWrite);
@@ -220,10 +221,12 @@ void MeshCommand::applyRenderState()
     {
         glDepthMask(_depthWriteEnabled);
     }
+#endif
 }
 
 void MeshCommand::restoreRenderState()
 {
+#if DIRECTX_ENABLED == 0
     if (_cullFaceEnabled != _renderStateCullFaceEnabled)
     {
         _renderStateCullFaceEnabled ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
@@ -243,6 +246,7 @@ void MeshCommand::restoreRenderState()
     {
         glDepthMask(_renderStateDepthWrite);
     }
+#endif
 }
 
 void MeshCommand::genMaterialID(GLuint texID, void* glProgramState, GLuint vertexBuffer, GLuint indexBuffer, const BlendFunc& blend)
@@ -259,11 +263,14 @@ void MeshCommand::genMaterialID(GLuint texID, void* glProgramState, GLuint verte
 
 void MeshCommand::MatrixPalleteCallBack( GLProgram* glProgram, Uniform* uniform)
 {
+#if DIRECTX_ENABLED == 0
     glUniform4fv( uniform->location, (GLsizei)_matrixPaletteSize, (const float*)_matrixPalette );
+#endif
 }
 
 void MeshCommand::preBatchDraw()
 {
+#if DIRECTX_ENABLED == 0
     // Set material
     GL::bindTexture2D(_textureID);
     GL::blendFunc(_blendType.src, _blendType.dst);
@@ -280,9 +287,13 @@ void MeshCommand::preBatchDraw()
         _glProgramState->applyAttributes();
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBuffer);
     }
+#else
+	CCASSERT(false, "Not supported.");
+#endif
 }
 void MeshCommand::batchDraw()
 {
+#if DIRECTX_ENABLED == 0
     // set render state
     applyRenderState();
     
@@ -305,9 +316,13 @@ void MeshCommand::batchDraw()
     glDrawElements(_primitive, (GLsizei)_indexCount, _indexFormat, 0);
     
     CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1, _indexCount);
+#else
+	CCASSERT(false, "Not supported.");
+#endif
 }
 void MeshCommand::postBatchDraw()
 {
+#if DIRECTX_ENABLED == 0
     //restore render state
     restoreRenderState();
     if (_vao)
@@ -319,10 +334,14 @@ void MeshCommand::postBatchDraw()
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
+#else
+	CCASSERT(false, "Not supported.");
+#endif
 }
 
 void MeshCommand::execute()
 {
+#if DIRECTX_ENABLED == 0
     // set render state
     applyRenderState();
     // Set material
@@ -355,10 +374,14 @@ void MeshCommand::execute()
     restoreRenderState();
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+#else
+	CCASSERT(false, "Not supported.");
+#endif
 }
 
 void MeshCommand::buildVAO()
 {
+#if DIRECTX_ENABLED == 0
     releaseVAO();
     glGenVertexArrays(1, &_vao);
     GL::bindVAO(_vao);
@@ -377,15 +400,22 @@ void MeshCommand::buildVAO()
     GL::bindVAO(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+#else
+	CCASSERT(false, "Not supported.");
+#endif
 }
 void MeshCommand::releaseVAO()
 {
+#if DIRECTX_ENABLED == 0
     if (_vao)
     {
         glDeleteVertexArrays(1, &_vao);
         _vao = 0;
         GL::bindVAO(0);
     }
+#else
+	CCASSERT(false, "Not supported.");
+#endif
 }
 
 

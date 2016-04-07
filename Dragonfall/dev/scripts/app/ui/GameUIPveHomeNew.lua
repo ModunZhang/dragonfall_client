@@ -168,9 +168,19 @@ end
 function GameUIPveHomeNew:ChangeChatChannel(channel_index)
     self.chat:ChangeChannel(channel_index)
 end
+local WidgetLight = import("..widget.WidgetLight")
 function GameUIPveHomeNew:TipsOnReward(enable)
-    if enable == false then self.reward_icon:stopAllActions(); return end
+    if enable == false then 
+        self.reward_icon:removeAllChildren()
+        self.reward_icon:stopAllActions()
+        return 
+    end
     if self.reward_icon:getNumberOfRunningActions() > 0 then return end
+    if not self.reward_icon:getChildByTag(1) then 
+        local size = self.reward_icon:getContentSize()
+        WidgetLight.new():addTo(self.reward_icon, -1, 1)
+        :scale(0.6):pos(size.width/2, size.height/2)
+    end
     self.reward_icon:runAction(UIKit:ShakeAction(true,2))
 end
 

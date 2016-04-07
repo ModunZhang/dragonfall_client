@@ -197,7 +197,7 @@ function GameUICityBuildingInfo:onEnter()
     local body = self:GetBody()
     local b_size = body:getContentSize()
     -- 总览介绍
-    local total_title_bg = WidgetUIBackGround.new({width = 556 , height = 106},WidgetUIBackGround.STYLE_TYPE.STYLE_5)
+    local total_title_bg = WidgetUIBackGround.new({width = 556 , height = 116},WidgetUIBackGround.STYLE_TYPE.STYLE_5)
         :align(display.TOP_CENTER, b_size.width/2, b_size.height - 30)
         :addTo(body)
     UIKit:ttfLabel({

@@ -44,28 +44,56 @@ if __name__=="__main__":
 			assert False, "unhandled option"
 
 	if jpg:
+		# with codecs.open(dest_dir + dest_file, 'wb', 'utf-8') as f:
+		# 	basename, _ = os.path.splitext(dest_file)
+		# 	for root, dirs, files in os.walk(images_dir):
+		# 		if root == images_dir:
+		# 			f.write('local %s = {}\n' % basename)
+		# 			for fileName in files:
+		# 				sufix = os.path.splitext(fileName)[1][1:]
+		# 				if sufix == "jpg":
+		# 					f.write('%s["%s"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565\n' % (basename, fileName) )
+		# 			f.write('return %s' % basename)
+		D = []
+		for root, dirs, files in os.walk(images_dir):
+			if root == images_dir:
+				for fileName in files:
+					sufix = os.path.splitext(fileName)[1][1:]
+					if sufix == "jpg" and sufix != "DS_Store":
+						D.append(fileName)
+		D.sort()
 		with codecs.open(dest_dir + dest_file, 'wb', 'utf-8') as f:
 			basename, _ = os.path.splitext(dest_file)
-			for root, dirs, files in os.walk(images_dir):
-				if root == images_dir:
-					f.write('local %s = {}\n' % basename)
-					for fileName in files:
-						sufix = os.path.splitext(fileName)[1][1:]
-						if sufix == "jpg":
-							f.write('%s["%s"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565\n' % (basename, fileName) )
-					f.write('return %s' % basename)
+			f.write('local %s = {}\n' % basename)
+			for fileName in D:
+				f.write('%s["%s"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565\n' % (basename, fileName) )
+			f.write('return %s' % basename)
 	elif rgba444:
+		# try:
+		# 	with codecs.open(dest_dir + dest_file, 'wb', 'utf-8') as f:
+		# 		_, file_name = os.path.split(resource_dir)
+		# 		f.write('local %s = {}\n' % file_name)
+		# 		for root, dirs, files in os.walk(resource_dir):
+		# 			for fileName in files:
+		# 				f.write('%s["%s"] = cc.TEXTURE2_D_PIXEL_FORMAT_RGB_A4444\n' % (file_name, fileName) )
+		# 		f.write('return %s' % file_name)
+		# except:
+		# 	sys.exit()
+		R = []
+		for root, dirs, files in os.walk(resource_dir):
+			for fileName in files:
+				if fileName != ".DS_Store":
+					R.append(fileName)
+		R.sort()
 		try:
 			with codecs.open(dest_dir + dest_file, 'wb', 'utf-8') as f:
 				_, file_name = os.path.split(resource_dir)
 				f.write('local %s = {}\n' % file_name)
-				for root, dirs, files in os.walk(resource_dir):
-					for fileName in files:
-						f.write('%s["%s"] = cc.TEXTURE2_D_PIXEL_FORMAT_RGB_A4444\n' % (file_name, fileName) )
+				for fileName in R:
+					f.write('%s["%s"] = cc.TEXTURE2_D_PIXEL_FORMAT_RGB_A4444\n' % (file_name, fileName) )
 				f.write('return %s' % file_name)
 		except:
-			sys.exit()
-
+			sys.exit(-1)
 
 
 

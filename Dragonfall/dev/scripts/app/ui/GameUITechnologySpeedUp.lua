@@ -4,7 +4,6 @@
 --
 local WidgetSpeedUp = import("..widget.WidgetSpeedUp")
 local GameUITechnologySpeedUp = class("GameUITechnologySpeedUp",WidgetSpeedUp)
-local WidgetAccelerateGroup = import("..widget.WidgetAccelerateGroup")
 local GameUtils = GameUtils
 
 function GameUITechnologySpeedUp:ctor()
@@ -17,9 +16,9 @@ function GameUITechnologySpeedUp:ctor()
     else
         local event = self.technologyEvent
         local time, percent = UtilsForEvent:GetEventInfo(event)
-        self:SetAccBtnsGroup("productionTechEvents",event.id)
+        self:SetAccBtnsGroup("productionTechEvents",event)
         self:SetUpgradeTip(string.format(_("正在研发%s到 Level %d"), UtilsForTech:GetTechLocalize(event.name), User.productionTechs[event.name].level + 1))
-        self:SetProgressInfo(GameUtils:formatTimeStyle1(time), percent)
+        self:SetProgressInfo(time, percent)
         self:CheckCanSpeedUpFree()
         self:OnFreeButtonClicked(handler(self, self.FreeSpeedUpAction))
         User:AddListenOnType(self, "productionTechEvents")
@@ -27,7 +26,7 @@ function GameUITechnologySpeedUp:ctor()
             if self.progress and User:HasProductionTechEvent() then
                 local event = User.productionTechEvents[1]
                 local time, percent = UtilsForEvent:GetEventInfo(event)
-                self:SetProgressInfo(GameUtils:formatTimeStyle1(time), percent)
+                self:SetProgressInfo(time, percent)
                 self:CheckCanSpeedUpFree()
             end
         end)

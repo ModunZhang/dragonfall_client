@@ -8,8 +8,42 @@ local WidgetPushButton = import(".WidgetPushButton")
 local Localize_item = import("..utils.Localize_item")
 local WidgetUseMutiItems = class("WidgetUseMutiItems", WidgetPopDialog)
 local item_resource = GameDatas.Items.resource
+local function create_line_item(text_1,text_2,text_3)
+    local line = display.newScale9Sprite("dividing_line.png",0,0,cc.size(444,2),cc.rect(10,2,382,2))
+    local text1 = UIKit:ttfLabel({
+        text = text_1,
+        size = 22,
+        color = 0x615b44,
+    }):align(display.LEFT_BOTTOM,8 , 2)
+        :addTo(line)
+    local text2 = UIKit:ttfLabel({
+        text = text_2,
+        size = 22,
+        color = 0x403c2f,
+    }):align(display.RIGHT_BOTTOM, 436 , 2)
+        :addTo(line)
+    local text3,green_icon
+    if text_3 then
+        text3 = UIKit:ttfLabel({
+            text = text_3,
+            size = 22,
+            color = 0x028329,
+        }):align(display.RIGHT_BOTTOM, 436 , 2)
+            :addTo(line)
+        green_icon = display.newSprite("teach_upgrade_icon_15x17.png"):align(display.BOTTOM_CENTER, text3:getPositionX() - text3:getContentSize().width - 14 , 6):addTo(line)
+        text2:align(display.RIGHT_BOTTOM, green_icon:getPositionX() - 24 , 2)
+    end
 
-function WidgetUseMutiItems:ctor(item_name)
+    function line:SetText(text_2,text_3)
+        text3:setString(text_3)
+        green_icon:setPositionX(text3:getPositionX() - text3:getContentSize().width - 14)
+        text2:setString(text_2)
+        text2:setPositionX(green_icon:getPositionX() - 24)
+    end
+
+    return line
+end
+function WidgetUseMutiItems:ctor(item_name,params)
     local resource_type
     if string.find(item_name,"wood") then
         resource_type = "wood"
@@ -20,14 +54,42 @@ function WidgetUseMutiItems:ctor(item_name)
     elseif string.find(item_name,"iron") then
         resource_type = "iron"
     end
+    local max_count = params and params.max_count or User:GetItemCount(item_name)
+    local eventType = params and params.eventType
+    local speedUpEvent = params and params.event
+
+
     self.resource_type = resource_type
-    WidgetUseMutiItems.super.ctor(self,resource_type and 348 or 282,Localize_item.item_name[item_name],display.top-298)
+    WidgetUseMutiItems.super.ctor(self,eventType and 392 or resource_type and 348 or 282,Localize_item.item_name[item_name],display.top-298)
     self.item_name = item_name
     local body = self:GetBody()
     local body_size = body:getContentSize()
+    local button = WidgetPushButton.new({normal = "yellow_btn_up_186x66.png",pressed = "yellow_btn_down_186x66.png",disabled = "grey_btn_186x66.png"})
+        :setButtonLabel(UIKit:ttfLabel({
+            text = _("确定"),
+            size = 24,
+            color = 0xffedae,
+            shadow= true
+        }))
+        :onButtonClicked(function(event)
+            if event.name == "CLICKED_EVENT" then
+                local par = {}
+                par.count = self.slider:GetValue()
+                if eventType and speedUpEvent then
+                    par.eventType = eventType
+                    par.eventId = speedUpEvent.id
+                end
+                NetManager:getUseItemPromise(item_name,{
+                    [item_name] = par
+                }):done(function ()
+                    self:LeftButtonClicked()
+                end)
+            end
+        end):align(display.BOTTOM_CENTER, body_size.width/2,30):addTo(body)
+    self.button = button
     -- 滑动条部分
     local slider_bg = display.newSprite("back_ground_580x136.png"):addTo(body)
-        :align(display.CENTER_TOP,body_size.width/2,body_size.height-30 - (resource_type and 60 or 0))
+        :align(display.CENTER_BOTTOM,body_size.width/2,button:getPositionY() + 85)
     -- title
     UIKit:ttfLabel(
         {
@@ -38,8 +100,7 @@ function WidgetUseMutiItems:ctor(item_name)
         :addTo(slider_bg)
 
     -- slider
-
-    local slider = WidgetSliderWithInput.new({max = User:GetItemCount(item_name)})
+    local slider = WidgetSliderWithInput.new({max = max_count})
         :addTo(slider_bg)
         :align(display.CENTER, slider_bg:getContentSize().width/2,  65)
         :OnSliderValueChanged(function(event)
@@ -47,26 +108,28 @@ function WidgetUseMutiItems:ctor(item_name)
             self.button:setButtonEnabled(value ~= 0)
         end)
         :LayoutValueLabel(WidgetSliderWithInput.STYLE_LAYOUT.TOP,75)
-    local button = WidgetPushButton.new({normal = "yellow_btn_up_186x66.png",pressed = "yellow_btn_down_186x66.png",disabled = "grey_btn_186x66.png"})
-        :setButtonLabel(UIKit:ttfLabel({
-            text = _("确定"),
-            size = 24,
-            color = 0xffedae,
-            shadow= true
-        }))
-        :onButtonClicked(function(event)
-            if event.name == "CLICKED_EVENT" then
-                NetManager:getUseItemPromise(item_name,{
-                    [item_name] = {count = slider:GetValue()}
-                }):done(function ()
-                    self:LeftButtonClicked()
-                end)
-            end
-        end):align(display.BOTTOM_CENTER, body_size.width/2,30):addTo(body)
-    button:setButtonEnabled(slider:GetValue() ~= 0)
-    self.button = button
-    slider:SetValue(User:GetItemCount(item_name))
+    slider:SetValue(max_count)
     self.slider = slider
+    button:setButtonEnabled(slider:GetValue() ~= 0)
+     -- 加速道具自有UI
+    if eventType then
+        local item_bg = display.newSprite("upgrade_props_box.png"):align(display.LEFT_TOP, 30, body_size.height - 30):addTo(body):scale(0.9)
+        display.newSprite("upgrade_time_"..string.split(item_name,"_")[2]..".png",item_bg:getContentSize().width/2,item_bg:getContentSize().height/2):addTo(item_bg)
+        local time_line = create_line_item(_("剩余时间"),"",""):align(display.LEFT_TOP, 140, body_size.height - 65):addTo(body)
+        local leftTime = UtilsForEvent:GetEventInfo(speedUpEvent)
+        local item_effect_time = UtilsForItem:IsSpeedUpItem(item_name).effect * 60 * self.slider:GetValue()
+        local final_time = leftTime-item_effect_time
+        time_line:SetText(GameUtils:formatTimeStyle1(leftTime),GameUtils:formatTimeStyle1(final_time > 0 and final_time or 0))
+        scheduleAt(self, function()
+            if self.slider then
+                local leftTime = UtilsForEvent:GetEventInfo(speedUpEvent)
+                local item_effect_time = UtilsForItem:IsSpeedUpItem(item_name).effect * 60 * self.slider:GetValue()
+                local final_time = leftTime-item_effect_time
+                time_line:SetText(GameUtils:formatTimeStyle1(leftTime),GameUtils:formatTimeStyle1(final_time > 0 and final_time or 0))
+            end
+        end)
+        create_line_item(_("道具数量"),User:GetItemCount(item_name)):align(display.LEFT_TOP, 140, body_size.height - 120):addTo(body)
+    end
 end
 function WidgetUseMutiItems:onEnter()
     WidgetUseMutiItems.super.onEnter(self)
@@ -195,6 +258,10 @@ function WidgetUseMutiItems:AddProgressTimer(parms)
     display.newSprite(resource_icon, icon_bg:getContentSize().width/2 , icon_bg:getContentSize().height/2):addTo(icon_bg):scale(0.5)
 end
 return WidgetUseMutiItems
+
+
+
+
 
 
 

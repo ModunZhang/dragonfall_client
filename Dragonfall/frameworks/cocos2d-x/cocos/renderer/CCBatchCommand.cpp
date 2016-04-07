@@ -69,8 +69,14 @@ void BatchCommand::execute()
     // Set material
     _shader->use();
     _shader->setUniformsForBuiltins(_mv);
+#if DIRECTX_ENABLED == 0
     GL::bindTexture2D(_textureID);
     GL::blendFunc(_blendType.src, _blendType.dst);
+#else
+	_shader->set();
+	DXStateCache::getInstance().setPSTexture(0, _textureAtlas->getTexture()->getView(), _textureAtlas->getTexture()->getSampler());
+	DXStateCache::getInstance().setBlend(_blendType.src, _blendType.dst);
+#endif
 
     // Draw
     _textureAtlas->drawQuads();

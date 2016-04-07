@@ -59,8 +59,16 @@ void DisableIdleTimer(bool disable)
  */
 //CloseKeyboard
 void CloseKeyboard(){}
-//游戏启动就会请求GCM
-void RegistereForRemoteNotifications(){}
+//Register the GCM service
+void RegistereForRemoteNotifications()
+{
+    cocos2d::JniMethodInfo t;
+    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "RegistereForRemoteNotifications", "()V")) 
+    {
+        t.env->CallStaticVoidMethod(t.classID,t.methodID);
+        t.env->DeleteLocalRef(t.classID);
+    }
+}
 //debug方法
 void ClearOpenUdidData(){}
 
@@ -187,6 +195,19 @@ void AndroidCheckFistInstall()
         t.env->DeleteLocalRef(t.classID);
     }
 }
+
+bool isGameLaunched()
+{
+    cocos2d::JniMethodInfo t;
+    bool ret = false;
+    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "isGameLaunched", "()Z")) 
+    {
+        ret = t.env->CallStaticBooleanMethod(t.classID, t.methodID);
+        t.env->DeleteLocalRef(t.classID);
+    }
+    return ret;
+}
+
 float GetBatteryLevel()
 {
     cocos2d::JniMethodInfo t;
@@ -223,12 +244,19 @@ const bool IsAppAdHocMode()
     }
     return ret;
 }
-bool isLowMemoryDevice()
+bool IsLowMemoryDevice()
 {
-    return false;
+    cocos2d::JniMethodInfo t;
+    bool ret = false;
+    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "isLowMemoryDevice", "()Z")) 
+    {
+        ret = t.env->CallStaticBooleanMethod(t.classID, t.methodID);
+        t.env->DeleteLocalRef(t.classID);
+    }
+    return ret;
 }
 
-long getAppMemoryUsage()
+long GetAppMemoryUsage()
 {
     return 0;
 }

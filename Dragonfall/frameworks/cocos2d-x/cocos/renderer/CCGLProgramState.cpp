@@ -76,8 +76,12 @@ void UniformValue::apply()
     {
         switch (_uniform->type) {
             case GL_SAMPLER_2D:
+#if DIRECTX_ENABLED == 1
+				CCASSERT(false, "Not supported.");
+#else
                 _glprogram->setUniformLocationWith1i(_uniform->location, _value.tex.textureUnit);
                 GL::bindTexture2DN(_value.tex.textureUnit, _value.tex.textureId);
+#endif
                 break;
 
             case GL_INT:
@@ -203,6 +207,7 @@ VertexAttribValue::~VertexAttribValue()
 
 void VertexAttribValue::apply()
 {
+#if DIRECTX_ENABLED == 0
     if(_enabled) {
         if(_useCallback) {
             (*_value.callback)(_vertexAttrib);
@@ -217,6 +222,7 @@ void VertexAttribValue::apply()
                                   _value.pointer.pointer);
         }
     }
+#endif
 }
 
 void VertexAttribValue::setCallback(const std::function<void(VertexAttrib*)> &callback)
@@ -307,7 +313,7 @@ bool GLProgramState::init(GLProgram* glprogram)
 
     _glprogram = glprogram;
     _glprogram->retain();
-
+#if DIRECTX_ENABLED == 0	
     for(auto &attrib : _glprogram->_vertexAttribs) {
         VertexAttribValue value(&attrib.second);
         _attributes[attrib.first] = value;
@@ -318,7 +324,15 @@ bool GLProgramState::init(GLProgram* glprogram)
         _uniforms[uniform.second.location] = value;
         _uniformsByName[uniform.first] = uniform.second.location;
     }
-
+#else
+	for (auto &uniform : _glprogram->_uniformsDescription) {
+		if (uniform.second.userDefine){
+			UniformValue value(&uniform.second, _glprogram);
+			_uniforms[uniform.second.location] = value;
+			_uniformsByName[uniform.first] = uniform.second.location;
+		}
+	}
+#endif
     return true;
 }
 
@@ -338,11 +352,14 @@ void GLProgramState::apply(const Mat4& modelView)
     applyAttributes();
 
     applyUniforms();
+
+	_glprogram->set();
 }
 
 void GLProgramState::updateUniformsAndAttributes()
 {
     CCASSERT(_glprogram, "invalid glprogram");
+#if DIRECTX_ENABLED == 0
     if(_uniformAttributeValueDirty)
     {
         for(auto& uniformLocation : _uniformsByName)
@@ -361,6 +378,17 @@ void GLProgramState::updateUniformsAndAttributes()
         _uniformAttributeValueDirty = false;
         
     }
+#else
+	if (_uniformAttributeValueDirty)
+	{
+		for (auto& uniformLocation : _uniformsByName)
+		{
+			_uniforms[uniformLocation.second]._uniform = _glprogram->getUniform(uniformLocation.first);
+		}
+		_uniformAttributeValueDirty = false;
+	}
+
+#endif
 }
 
 void GLProgramState::applyGLProgram(const Mat4& modelView)
@@ -373,6 +401,7 @@ void GLProgramState::applyGLProgram(const Mat4& modelView)
 }
 void GLProgramState::applyAttributes(bool applyAttribFlags)
 {
+#if DIRECTX_ENABLED == 0
     // Don't set attributes if they weren't set
     // Use Case: Auto-batching
     updateUniformsAndAttributes();
@@ -386,6 +415,7 @@ void GLProgramState::applyAttributes(bool applyAttribFlags)
             attribute.second.apply();
         }
     }
+#endif
 }
 void GLProgramState::applyUniforms()
 {
@@ -594,17 +624,26 @@ void GLProgramState::setUniformMat4(GLint uniformLocation, const Mat4& value)
 void GLProgramState::setUniformTexture(const std::string &uniformName, Texture2D *texture)
 {
     CCASSERT(texture, "Invalid texture");
+#if DIRECTX_ENABLED == 1
+	CCASSERT(false, "Not supported yet.");
+#endif
     setUniformTexture(uniformName, texture->getName());
 }
 
 void GLProgramState::setUniformTexture(GLint uniformLocation, Texture2D *texture)
 {
+#if DIRECTX_ENABLED == 1
+	CCASSERT(false, "Not supported yet.");
+#endif
     CCASSERT(texture, "Invalid texture");
     setUniformTexture(uniformLocation, texture->getName());
 }
 
 void GLProgramState::setUniformTexture(const std::string &uniformName, GLuint textureId)
 {
+#if DIRECTX_ENABLED == 1
+	CCASSERT(false, "Not supported yet.");
+#endif
     auto v = getUniformValue(uniformName);
     if (v)
     {
@@ -626,6 +665,9 @@ void GLProgramState::setUniformTexture(const std::string &uniformName, GLuint te
 
 void GLProgramState::setUniformTexture(GLint uniformLocation, GLuint textureId)
 {
+#if DIRECTX_ENABLED == 1
+	CCASSERT(false, "Not supported yet.");
+#endif
     auto v = getUniformValue(uniformLocation);
     if (v)
     {

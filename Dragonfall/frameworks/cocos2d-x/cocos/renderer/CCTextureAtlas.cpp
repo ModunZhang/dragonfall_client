@@ -59,6 +59,10 @@ TextureAtlas::TextureAtlas()
 #if CC_ENABLE_CACHE_TEXTURE_DATA
     ,_rendererRecreatedListener(nullptr)
 #endif
+#if (DIRECTX_ENABLED == 1)
+	, _bufferVertex(nullptr)
+	, _bufferIndex(nullptr)
+#endif
 {}
 
 TextureAtlas::~TextureAtlas()
@@ -68,6 +72,11 @@ TextureAtlas::~TextureAtlas()
     CC_SAFE_FREE(_quads);
     CC_SAFE_FREE(_indices);
 
+
+#if (DIRECTX_ENABLED == 1)
+	DXResourceManager::getInstance().remove(&_bufferVertex);
+	DXResourceManager::getInstance().remove(&_bufferIndex);
+#else
     glDeleteBuffers(2, _buffersVBO);
 
     if (Configuration::getInstance()->supportsShareableVAO())
@@ -75,6 +84,7 @@ TextureAtlas::~TextureAtlas()
         glDeleteVertexArrays(1, &_VAOname);
         GL::bindVAO(0);
     }
+#endif
     CC_SAFE_RELEASE(_texture);
     
 #if CC_ENABLE_CACHE_TEXTURE_DATA
@@ -256,6 +266,7 @@ void TextureAtlas::setupIndices()
 
 void TextureAtlas::setupVBOandVAO()
 {
+#if (DIRECTX_ENABLED == 0)
     glGenVertexArrays(1, &_VAOname);
     GL::bindVAO(_VAOname);
 
@@ -287,17 +298,51 @@ void TextureAtlas::setupVBOandVAO()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     CHECK_GL_ERROR_DEBUG();
+#endif
 }
 
 void TextureAtlas::setupVBO()
 {
+#if (DIRECTX_ENABLED == 0)
     glGenBuffers(2, &_buffersVBO[0]);
-
+#endif
     mapBuffers();
 }
 
 void TextureAtlas::mapBuffers()
 {
+#if (DIRECTX_ENABLED == 1)
+	auto view = GLViewImpl::sharedOpenGLView();
+
+	DXResourceManager::getInstance().remove(&_bufferVertex);
+	DXResourceManager::getInstance().remove(&_bufferIndex);
+
+	D3D11_SUBRESOURCE_DATA vertexBufferData = { 0 };
+	vertexBufferData.pSysMem = _quads;
+	vertexBufferData.SysMemPitch = 0;
+	vertexBufferData.SysMemSlicePitch = 0;
+	CD3D11_BUFFER_DESC vertexBufferDesc(sizeof(_quads[0]) * _capacity, D3D11_BIND_VERTEX_BUFFER, D3D11_USAGE_DYNAMIC, D3D11_CPU_ACCESS_WRITE);
+	DX::ThrowIfFailed(
+		view->GetDevice()->CreateBuffer(
+		&vertexBufferDesc,
+		&vertexBufferData,
+		&_bufferVertex));
+
+	D3D11_SUBRESOURCE_DATA indexBufferData = { 0 };
+	indexBufferData.pSysMem = _indices;
+	indexBufferData.SysMemPitch = 0;
+	indexBufferData.SysMemSlicePitch = 0;
+
+	CD3D11_BUFFER_DESC indexBufferDesc(sizeof(_indices[0]) * _capacity * 6, D3D11_BIND_INDEX_BUFFER);
+	DX::ThrowIfFailed(
+		view->GetDevice()->CreateBuffer(
+		&indexBufferDesc,
+		&indexBufferData,
+		&_bufferIndex));
+
+	DXResourceManager::getInstance().add(&_bufferVertex);
+	DXResourceManager::getInstance().add(&_bufferIndex);
+#else
     // Avoid changing the element buffer for whatever VAO might be bound.
 	GL::bindVAO(0);
     
@@ -310,6 +355,7 @@ void TextureAtlas::mapBuffers()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     CHECK_GL_ERROR_DEBUG();
+#endif
 }
 
 // TextureAtlas - Update, Insert, Move & Remove
@@ -606,6 +652,26 @@ void TextureAtlas::drawNumberOfQuads(ssize_t numberOfQuads, ssize_t start)
     if(!numberOfQuads)
         return;
     
+#if (DIRECTX_ENABLED == 1)
+	auto view = GLViewImpl::sharedOpenGLView();
+
+	if (_dirty)
+	{
+		D3D11_MAPPED_SUBRESOURCE resource;
+		view->GetContext()->Map(_bufferVertex, 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
+		memcpy(resource.pData, _quads, sizeof(_quads[0]) * numberOfQuads);
+		view->GetContext()->Unmap(_bufferVertex, 0);
+
+		_dirty = false;
+	}
+
+	DXStateCache::getInstance().setVertexBuffer(_bufferVertex, sizeof(V3F_C4B_T2F), 0);
+	DXStateCache::getInstance().setIndexBuffer(_bufferIndex);
+	DXStateCache::getInstance().setPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	DXStateCache::getInstance().setPSTexture(0, _texture->getView(), _texture->getSampler());
+
+	view->GetContext()->DrawIndexed(numberOfQuads * 6, start * 6, 0);
+#else
     GL::bindTexture2D(_texture->getName());
 
     if (Configuration::getInstance()->supportsShareableVAO())
@@ -685,6 +751,7 @@ void TextureAtlas::drawNumberOfQuads(ssize_t numberOfQuads, ssize_t start)
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
+#endif
 
     CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1,numberOfQuads*6);
     

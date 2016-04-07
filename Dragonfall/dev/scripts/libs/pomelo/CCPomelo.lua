@@ -56,4 +56,8 @@ function CCPomelo:cleanup()
 	self._pomelo:removeAllListener()
 end
 
+function CCPomelo:isReady()
+	return self._pomelo:_isReady()
+end
+
 return CCPomelo

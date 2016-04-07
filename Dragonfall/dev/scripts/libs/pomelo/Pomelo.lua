@@ -208,7 +208,8 @@ function Pomelo:_initWebSocket(host, port)
             self.initCallback(false)
             self.initCallback = nil
         end
-        self:emit('close',event)
+        -- self:emit('close',event)
+        self:emit('disconnect',event)
         self:disconnect()
     end
 

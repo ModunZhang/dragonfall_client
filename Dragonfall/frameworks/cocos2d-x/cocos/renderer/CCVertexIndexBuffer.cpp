@@ -75,11 +75,15 @@ VertexBuffer::VertexBuffer()
 
 VertexBuffer::~VertexBuffer()
 {
+#if DIRECTX_ENABLED == 0
     if(glIsBuffer(_vbo))
     {
         glDeleteBuffers(1, &_vbo);
         _vbo = 0;
     }
+#else
+	NOT_SUPPORTED();
+#endif
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_WP8 || CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
     Director::getInstance()->getEventDispatcher()->removeEventListener(_recreateVBOEventListener);
 #endif
@@ -87,6 +91,7 @@ VertexBuffer::~VertexBuffer()
 
 bool VertexBuffer::init(int sizePerVertex, int vertexNumber, GLenum usage/* = GL_STATIC_DRAW*/)
 {
+#if DIRECTX_ENABLED == 0
     if(0 == sizePerVertex || 0 == vertexNumber)
         return false;
     _sizePerVertex = sizePerVertex;
@@ -102,6 +107,9 @@ bool VertexBuffer::init(int sizePerVertex, int vertexNumber, GLenum usage/* = GL
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
     glBufferData(GL_ARRAY_BUFFER, getSize(), nullptr, _usage);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+#else
+	NOT_SUPPORTED();
+#endif
     return true;
 }
 
@@ -117,6 +125,7 @@ int VertexBuffer::getVertexNumber() const
 
 bool VertexBuffer::updateVertices(const void* verts, int count, int begin)
 {
+#if DIRECTX_ENABLED == 0
     if(count <= 0 || nullptr == verts) return false;
     
     if(begin < 0)
@@ -139,7 +148,9 @@ bool VertexBuffer::updateVertices(const void* verts, int count, int begin)
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
     glBufferSubData(GL_ARRAY_BUFFER, begin * _sizePerVertex, count * _sizePerVertex, verts);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    
+#else
+	NOT_SUPPORTED();
+#endif
     return true;
 }
 
@@ -150,6 +161,7 @@ GLuint VertexBuffer::getVBO() const
 
 void VertexBuffer::recreateVBO() const
 {
+#if DIRECTX_ENABLED == 0
     CCLOG("come to foreground of VertexBuffer");
     glGenBuffers(1, &_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
@@ -165,6 +177,9 @@ void VertexBuffer::recreateVBO() const
     {
         CCLOGERROR("recreate VertexBuffer Error");
     }
+#else
+	NOT_SUPPORTED();
+#endif
 }
 
 int VertexBuffer::getSize() const
@@ -202,11 +217,15 @@ IndexBuffer::IndexBuffer()
 
 IndexBuffer::~IndexBuffer()
 {
+#if DIRECTX_ENABLED == 0
     if(glIsBuffer(_vbo))
     {
         glDeleteBuffers(1, &_vbo);
         _vbo = 0;
     }
+#else
+	NOT_SUPPORTED();
+#endif
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_WP8 || CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
     Director::getInstance()->getEventDispatcher()->removeEventListener(_recreateVBOEventListener);
 #endif
@@ -214,6 +233,7 @@ IndexBuffer::~IndexBuffer()
 
 bool IndexBuffer::init(IndexBuffer::IndexType type, int number, GLenum usage/* = GL_STATIC_DRAW*/)
 {
+#if DIRECTX_ENABLED == 0
     if(number <=0 ) return false;
     
     _type = type;
@@ -229,7 +249,9 @@ bool IndexBuffer::init(IndexBuffer::IndexType type, int number, GLenum usage/* =
     {
         _shadowCopy.resize(getSize());
     }
-    
+#else
+	NOT_SUPPORTED();
+#endif
     return true;
 }
 
@@ -250,6 +272,7 @@ int IndexBuffer::getIndexNumber() const
 
 bool IndexBuffer::updateIndices(const void* indices, int count, int begin)
 {
+#if DIRECTX_ENABLED == 0
     if(count <= 0 || nullptr == indices) return false;
     
     if(begin < 0)
@@ -272,7 +295,9 @@ bool IndexBuffer::updateIndices(const void* indices, int count, int begin)
     {
         memcpy(&_shadowCopy[begin * getSizePerIndex()], indices, count * getSizePerIndex());
     }
-    
+#else
+	NOT_SUPPORTED();
+#endif
     return true;
 }
 
@@ -288,6 +313,7 @@ GLuint IndexBuffer::getVBO() const
 
 void IndexBuffer::recreateVBO() const
 {
+#if DIRECTX_ENABLED == 0
     CCLOG("come to foreground of IndexBuffer");
     glGenBuffers(1, &_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
@@ -303,6 +329,9 @@ void IndexBuffer::recreateVBO() const
     {
         CCLOGERROR("recreate IndexBuffer Error");
     }
+#else
+	NOT_SUPPORTED();
+#endif
 }
 
 NS_CC_END

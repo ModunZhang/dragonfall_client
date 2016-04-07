@@ -10,7 +10,7 @@ function GameUIMilitaryTechSpeedUp:ctor(event)
     local User = User
     GameUIMilitaryTechSpeedUp.super.ctor(self)
     self.militaryEvent = event
-    self:SetAccBtnsGroup(User:EventType(event),event.id)
+    self:SetAccBtnsGroup(User:EventType(event),event)
     local str
     if User:IsSoldierStarEvent(event) then
         str = UtilsForEvent:GetMilitaryTechEventLocalize(event.name, UtilsForSoldier:SoldierStarByName(User, event.name))
@@ -19,7 +19,7 @@ function GameUIMilitaryTechSpeedUp:ctor(event)
     end
     self:SetUpgradeTip(str)
     local time, percent = UtilsForEvent:GetEventInfo(event)
-    self:SetProgressInfo(GameUtils:formatTimeStyle1(time), percent)
+    self:SetProgressInfo(time, percent)
     self:CheckCanSpeedUpFree()
     self:OnFreeButtonClicked(handler(self, self.FreeSpeedUpAction))
 
@@ -28,7 +28,7 @@ function GameUIMilitaryTechSpeedUp:ctor(event)
     scheduleAt(self, function()
         if self.progress then
             local time, percent = UtilsForEvent:GetEventInfo(self:GetEvent())
-            self:SetProgressInfo(GameUtils:formatTimeStyle1(time), percent)
+            self:SetProgressInfo(time, percent)
             self:CheckCanSpeedUpFree()
         end
     end)

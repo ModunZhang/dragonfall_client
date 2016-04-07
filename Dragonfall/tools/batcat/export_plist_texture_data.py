@@ -28,8 +28,10 @@ RES_SRC_DIR = ""
 def getArgs(Platform):
     if Platform == 'iOS':
         return "%s/images/_Compressed" % RES_SRC_DIR, "%s/app/texture_data_iOS.lua" % SCRIPTS_SRC_DIR
-    elif Platform == 'Player' or Platform == 'Android':
+    elif Platform == 'Player':
         return "%s/images/_Compressed_mac" % RES_SRC_DIR, "%s/app/texture_data.lua" % SCRIPTS_SRC_DIR
+    elif Platform == 'Android':
+        return "%s/images/_Compressed_android" % RES_SRC_DIR, "%s/app/texture_data_android.lua" % SCRIPTS_SRC_DIR
     elif Platform == 'WP':
         return "%s/images/_Compressed_wp" % RES_SRC_DIR, "%s/app/texture_data_wp.lua" % SCRIPTS_SRC_DIR
 

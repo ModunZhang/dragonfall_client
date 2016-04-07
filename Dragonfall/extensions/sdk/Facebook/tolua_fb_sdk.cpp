@@ -66,6 +66,29 @@ static int tolua_fb_getUserNameAndId(lua_State *tolua_S)
     return 2;
 }
 
+static int tolua_fb_appInvite(lua_State *tolua_S)
+{
+	#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+    if (!tolua_isstring(tolua_S, 1, 0, &tolua_err)||!tolua_isstring(tolua_S, 2, 0, &tolua_err))
+        goto tolua_lerror;
+    else
+#endif
+    {
+    	std::string title = tolua_tocppstring(tolua_S,1,0);
+    	std::string msg = tolua_tocppstring(tolua_S,2,0);
+    	FacebookSDK::GetInstance()->AppInvite(title,msg);
+        return 0;
+    }
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'tolua_fb_appInvite'.",&tolua_err);
+    return 0;
+#endif
+	
+	return 0;
+}
+
 void tolua_ext_module_facebook(lua_State* tolua_S)
 {
 	tolua_module(tolua_S, EXT_MODULE_NAME_FACEBOOK, 0);
@@ -74,5 +97,6 @@ void tolua_ext_module_facebook(lua_State* tolua_S)
 	tolua_function(tolua_S, "login", tolua_fb_login);
 	tolua_function(tolua_S, "isAuthenticated", tolua_fb_isAuthenticated);
     tolua_function(tolua_S, "getPlayerNameAndId", tolua_fb_getUserNameAndId);
+    tolua_function(tolua_S, "appInvite", tolua_fb_appInvite);
 	tolua_endmodule(tolua_S);
 }

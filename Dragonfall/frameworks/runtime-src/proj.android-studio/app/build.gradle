@@ -1,0 +1,283 @@
+apply plugin: 'com.android.application'
+
+// we read the version infomation from "version.properties"
+def Properties projectVersion() {
+    def versionFile = new File(project.rootDir, 'version.properties')
+    def version = new Properties()
+    def stream
+    try {
+        stream = new FileInputStream(versionFile)
+        version.load(stream)
+    } catch (FileNotFoundException ignore) {
+    } finally {
+        if (stream != null) stream.close()
+    }
+    // safety defaults in case file is missing
+    if(!version['versionCode']) version['versionCode'] = 1
+    if(!version['versionName']) version['versionName'] = "1.0"
+    if(!version['appMinVersion']) version['appMinVersion'] = "1.0"
+    if(!version['appHoc']) version['appHoc'] = false
+    return version
+}
+
+//end for read version
+
+// read the game id for each flavors
+def String gameIdForFlavors(name) {
+    def gameIdOfFlavors = ['googleplay':'dragonfall','paypal':'dragonfall_paypal']
+    return gameIdOfFlavors[name]
+}
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
+
+    lintOptions {
+        warningsAsErrors false
+        disable 'CommitPrefEdits'
+    }
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 15
+        buildConfigField "String", "GAME_ID", "\"Batcat\"" //identity for unzip path on SD card
+    }
+    // warning: we don't want read the password form console!
+    signingConfigs {
+        googleplay {
+            storeFile file("keystore/xapcn_dragonfall_gp.keystore")
+            storePassword "twhsMbcZxJ4isvgWX4BJ"
+            keyAlias "xapcn_dragonfall"
+            keyPassword "twhsMbcZxJ4isvgWX4BJ"
+        }
+
+         paypal {
+            //TODO:replace the paypal's keystore file before release!
+            storeFile file("keystore/dragonfall_google_play.keystore")
+            storePassword "yAb7E9oJ3mooW9Il2coW"
+            keyAlias "batcatstudio"
+            keyPassword "yAb7E9oJ3mooW9Il2coW"
+        }
+    }
+    // maybe we should add some channel infomations to `manifestPlaceholders`
+    productFlavors {
+        googleplay {
+            applicationId "com.xapcn.dragonfall"
+            versionCode projectVersion()['versionCode'] as int
+            versionName projectVersion()['versionName']
+            signingConfig signingConfigs.googleplay
+            buildConfigField "String", "GAME_ID", "\"dragonfall\""
+            manifestPlaceholders = ['APP_MIN_VERSION':projectVersion()['appMinVersion'],'APP_HOC':projectVersion()['appHoc'] as String]
+        }
+        paypal {
+            applicationId "com.batcatstudio.dragonfall"
+            versionCode projectVersion()['versionCode'] as int
+            versionName projectVersion()['versionName']
+            signingConfig signingConfigs.paypal
+            buildConfigField "String", "GAME_ID", "\"dragonfall_paypal\""
+            manifestPlaceholders = ['APP_MIN_VERSION':projectVersion()['appMinVersion'],'APP_HOC':projectVersion()['appHoc'] as String]
+        }
+    }
+
+    sourceSets.main {
+        java.srcDir "src"
+        res.srcDir "res"
+        jniLibs.srcDir "libs"
+        manifest.srcFile "AndroidManifestMain.xml"
+        assets.srcDir "assets"
+        aidl.srcDir "src/com/android/vending/billing" //google play v3 billing
+    }
+
+    sourceSets.googleplay {
+        manifest.srcFile "AndroidManifest.xml"
+        res.srcDir "res-googleplay"
+        assets.srcDir "assets-googleplay"
+    }
+    sourceSets.paypal {
+        manifest.srcFile "AndroidManifestPayPal.xml"
+        res.srcDir "res-paypal"
+        assets.srcDir "assets-paypal"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'),'proguard-rules.pro'
+        }
+    }
+    packagingOptions {
+        exclude 'lib/arm64-v8a/libcardioDecider.so'
+        exclude 'lib/arm64-v8a/libcardioRecognizer.so'
+        exclude 'lib/arm64-v8a/libcardioRecognizer_tegra2.so'
+        exclude 'lib/arm64-v8a/libopencv_core.so'
+        exclude 'lib/arm64-v8a/libopencv_imgproc.so'
+        exclude 'lib/armeabi/libcardioDecider.so'
+        exclude 'lib/armeabi-v7a/libcardioDecider.so'
+        exclude 'lib/armeabi-v7a/libcardioRecognizer.so'
+        exclude 'lib/armeabi-v7a/libcardioRecognizer_tegra2.so'
+        exclude 'lib/armeabi-v7a/libopencv_core.so'
+        exclude 'lib/armeabi-v7a/libopencv_imgproc.so'
+        exclude 'lib/mips/libcardioDecider.so'
+        exclude 'lib/x86/libcardioDecider.so'
+        exclude 'lib/x86/libcardioRecognizer.so'
+        exclude 'lib/x86/libcardioRecognizer_tegra2.so'
+        exclude 'lib/x86/libopencv_core.so'
+        exclude 'lib/x86/libopencv_imgproc.so'
+        exclude 'lib/x86_64/libcardioDecider.so'
+        exclude 'lib/x86_64/libcardioRecognizer.so'
+        exclude 'lib/x86_64/libcardioRecognizer_tegra2.so'
+        exclude 'lib/x86_64/libopencv_core.so'
+        exclude 'lib/x86_64/libopencv_imgproc.so'
+    }
+}
+
+dependencies {
+    compile project(':libcocos2dx')
+    // Google Play Market
+    googleplayCompile files('libs/AF-Android-SDK-v3.3.0.jar', 'libs/Game_Analytics_SDK_Android_3.2.3.jar')
+    
+    googleplayCompile 'com.facebook.android:facebook-android-sdk:4.0.0'
+    
+    googleplayCompile 'com.google.android.gms:play-services-plus:8.1.0'
+    googleplayCompile 'com.google.android.gms:play-services-ads:8.1.0'
+
+    // Paypal Market
+
+    paypalCompile ('com.paypal.sdk:paypal-android-sdk:2.13.3') {
+        exclude group: 'io.card'
+    }
+    paypalCompile 'com.facebook.android:facebook-android-sdk:4.0.0'
+
+    paypalCompile 'com.google.android.gms:play-services-plus:8.1.0'
+}
+
+// We add some tasks to help us,use the command 'gradle tasks' see all tasks
+// warning: Our project can't build debug and release task in one chain! Just like we can't support the task 'gradle build'
+
+// JAVA tasks
+
+// def the marcos for different markets,all marcos defined in "dev_android/README.md"
+def GooglePlayMarcos = "CC_USE_FACEBOOK,CC_USE_GOOGLE_LOGIN,CC_USE_GOOGLE_PLAY_BILLING_V3,CC_USE_TALKING_DATA,CC_USE_APPSFLYER"
+def PayPalMarcos = "CC_USE_FACEBOOK,CC_USE_GOOGLE_LOGIN,CC_USE_SDK_PAYPAL"
+
+ant.properties['wtk.home'] = "tools"
+ant.taskdef( name: "wtkpreprocess", classname: "de.pleumann.antenna.WtkPreprocess", classpath:"../tools/antenna-bin-1.0.2.jar")
+
+// paypal Market,support `up-to-date`
+task PreprocessPayPal(group:'GameHelper',description:'Preprocess java source code for paypal market.') {
+    inputs.dir "src"
+    outputs.dir "src"
+    doLast {
+        ant.echo(message: "Process java codes:" + PayPalMarcos)
+        ant.wtkpreprocess(
+            srcdir: "src",
+            destdir: "src", 
+            verbose:true,
+            printsymbols:true,
+            debuglevel:"debug",
+            encoding:"UTF-8",
+            symbols:PayPalMarcos
+        )
+    }
+}
+
+// Google Play market,support `up-to-date`
+task PreprocessGooglePlay(group:'GameHelper',description:'Preprocess java source code for googleplay market.') {
+    inputs.dir "src"
+    outputs.dir "src"
+    doLast {
+        ant.echo(message: "Process java codes:" + GooglePlayMarcos)
+        ant.wtkpreprocess(
+            srcdir: "src",
+            destdir: "src", 
+            verbose:true,
+            printsymbols:true,
+            debuglevel:"debug",
+            encoding:"UTF-8",
+            symbols:GooglePlayMarcos
+        )
+    }
+}
+
+android.applicationVariants.all { variant ->
+    variant.productFlavors.each { flavor ->
+        if (flavor.name.equals('googleplay')) {
+            variant.javaCompile.dependsOn(PreprocessGooglePlay)
+        }else if(flavor.name.equals('paypal')) {
+            variant.javaCompile.dependsOn(PreprocessPayPal)
+        }
+    }
+    variant.outputs.each { output ->
+        output.outputFile = new File(
+            output.outputFile.parent,
+            output.outputFile.name.replace(".apk", "-${variant.versionName}-${variant.versionCode}.apk"))
+    }
+}
+
+// NDK tasks
+task buildNative(type:Exec,group:'GameHelper') {
+  description 'Build our native code(cpp).'
+  executable = 'shell'
+  commandLine './build_native_release.sh'
+  standardOutput = new ByteArrayOutputStream()
+  environment('ANDROID_NDK_ROOT',android.ndkDirectory.getAbsolutePath())
+  ext.output = {
+     return standardOutput.toString()
+  }
+}
+
+task backUpNativeSymbols(type:Zip,group:'GameHelper',description:'Backup our native symbols to a zip file .') {
+    appendix = 'symbols'
+    version = projectVersion()['versionName'] + '('+ projectVersion()['versionCode'] + ')'
+    from 'obj'
+    doLast {
+        println 'We created a archive file :' + backUpNativeSymbols.archivePath
+    }
+}
+
+task cleanNativeSymbols(type: Delete,group:'GameHelper',description:'Clean the native symbols.') {
+    delete 'obj'
+}
+
+backUpNativeSymbols.shouldRunAfter buildNative
+
+// check version tasks
+task checkVersionInfo(group:'GameHelper',description:'Check the project version infomation in version.properties.') {
+    doLast {
+        println '------------------------------------------------'
+        println 'version.properties:'
+        println 'versionCode:'+ projectVersion()['versionCode']
+        println 'versionName:'+ projectVersion()['versionName']
+        println 'appMinVersion:'+ projectVersion()['appMinVersion']
+        println 'appHoc:'+ projectVersion()['appHoc']
+        println '------------------------------------------------'
+    }
+}
+
+preBuild.dependsOn(checkVersionInfo)
+
+// adb helper tasks
+def adb = android.getAdbExe().toString()
+android.productFlavors.each { flavor ->
+    def replaceName = 'replaceLua' + flavor.name.capitalize()
+    def runName = 'run' + flavor.name.capitalize()
+    def stopName = 'stop' + flavor.name.capitalize()
+    def restartName = 'restart' + flavor.name.capitalize()
+
+    task(runName,type:Exec,group:'GameHelper',description:'Run the ' + flavor.name.capitalize() + ' game on connected device.') {
+        def argOfClass = flavor.applicationId + '/org.cocos2dx.lua.AppActivity'
+        commandLine "$adb",'shell','am','start','-n',argOfClass
+    }
+
+    task(stopName,type:Exec,group:'GameHelper',description:'Stop the ' + flavor.name.capitalize() + ' game on connected device.') {
+        commandLine "$adb",'shell','am','force-stop',flavor.applicationId
+    }
+
+    task(replaceName,type:Exec,group:'GameHelper',description:'Replace the ' + flavor.name.capitalize() + ' zip file of lua on connected device.') {
+        workingDir project.rootDir
+        def pathOfUnzip = '/mnt/sdcard/batcatstudio/'+ gameIdForFlavors(flavor.name)+ '/bundle/scripts'
+        commandLine "$adb", 'push','../../../update_android/scripts/game.zip',pathOfUnzip
+    }
+    
+    task(restartName,dependsOn:stopName,group:'GameHelper',description:'Restart the ' + flavor.name.capitalize() + ' game on connected device.')
+    tasks.getByPath(restartName).finalizedBy tasks.getByPath(runName)
+}

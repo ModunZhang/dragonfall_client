@@ -498,7 +498,7 @@ function UIListView:layout_()
 
 			tempHeight = tempHeight - itemH
 			content = v:getContent()
-			content:setAnchorPoint(0.5, 0.5)
+			content:setAnchorPoint(cc.p(0.5, 0.5))
 			-- content:setPosition(itemW/2, itemH/2)
 			self:setPositionByAlignment_(content, itemW, itemH, v:getMargin())
 			v:setPosition(self.viewRect_.x,
@@ -514,7 +514,7 @@ function UIListView:layout_()
 			itemH = itemH or 0
 
 			content = v:getContent()
-			content:setAnchorPoint(0.5, 0.5)
+			content:setAnchorPoint(cc.p(0.5, 0.5))
 			-- content:setPosition(itemW/2, itemH/2)
 			self:setPositionByAlignment_(content, itemW, itemH, v:getMargin())
 			v:setPosition(self.viewRect_.x + tempWidth, self.viewRect_.y)
@@ -993,7 +993,7 @@ function UIListView:loadOneItem_(originPoint, idx, bBefore)
 			posY = posY - itemH
 		end
 		content = item:getContent()
-		content:setAnchorPoint(0.5, 0.5)
+		content:setAnchorPoint(cc.p(0.5, 0.5))
 		self:setPositionByAlignment_(content, itemW, itemH, item:getMargin())
 		item:setPosition(0, posY)
 
@@ -1006,7 +1006,7 @@ function UIListView:loadOneItem_(originPoint, idx, bBefore)
 		end
 
 		content = item:getContent()
-		content:setAnchorPoint(0.5, 0.5)
+		content:setAnchorPoint(cc.p(0.5, 0.5))
 		self:setPositionByAlignment_(content, itemW, itemH, item:getMargin())
 		item:setPosition(posX, 0)
 

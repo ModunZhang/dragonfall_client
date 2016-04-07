@@ -53,12 +53,16 @@ DropShadowFilter::DropShadowFilter()
 
 GLProgram* DropShadowFilter::loadShader()
 {
-    GLProgram* __p = GLProgram::createWithByteArrays(ccFilterShader_drop_shadow_vert, ccFilterShader_drop_shadow_frag);
-    
+#if DIRECTX_ENABLED == 0
+   GLProgram* __p = GLProgram::createWithByteArrays(ccFilterShader_drop_shadow_vert, ccFilterShader_drop_shadow_frag);
+   
 //	GLProgram* __p = new GLProgram();
 //	__p->initWithByteArrays(ccFilterShader_drop_shadow_vert, 
 //		ccFilterShader_drop_shadow_frag);
 	return __p;
+#else
+	return nullptr;
+#endif
 }
 
 void DropShadowFilter::setParameter(float $resolation)

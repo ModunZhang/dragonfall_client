@@ -1,6 +1,7 @@
 local WidgetPopDialog = import(".WidgetPopDialog")
 local WidgetRequirementListview = import(".WidgetRequirementListview")
 local Localize = import("..utils.Localize")
+local UIListView = import("..ui.UIListView")
 local SpriteConfig = import("..sprites.SpriteConfig")
 
 local WidgetBuildingIntroduce = class("WidgetBuildingIntroduce", WidgetPopDialog)
@@ -20,8 +21,8 @@ function WidgetBuildingIntroduce:ctor(building)
         :addTo(body)
 
     local build_png = SpriteConfig[building:GetType()]:GetConfigByLevel(1).png
-    local building_image = display.newScale9Sprite(build_png, building_bg:getContentSize().width/2, building_bg:getContentSize().height/2):addTo(building_bg)
-    building_image:setAnchorPoint(cc.p(0.5,0.5))
+    local building_image = display.newSprite(build_png, 126/2, 126/2):addTo(building_bg)
+    -- building_image:setAnchorPoint(cc.p(0.5,0.5))
     building_image:setScale(90/math.max(building_image:getContentSize().width,building_image:getContentSize().height))
 
     local configs = SpriteConfig[building:GetType()]:GetAnimationConfigsByLevel(1)
@@ -49,13 +50,23 @@ function WidgetBuildingIntroduce:ctor(building)
         size = 24,
         color = 0xffedae
     }):align(display.LEFT_CENTER,20, 15):addTo(title_bg)
+
+    local  listview = UIListView.new{
+        viewRect = cc.rect(14,10, 390, 100),
+        direction = cc.ui.UIScrollView.DIRECTION_VERTICAL
+    }:align(display.LEFT_TOP,width/2 - 126, height - 180):addTo(body)
     local bd = Localize.building_description
     local building_introduces = UIKit:ttfLabel({
         text = bd[building:GetType()],
         size = 20,
         dimensions = cc.size(380, 0),
         color = 0x615b44
-    }):align(display.LEFT_TOP,width/2 - 116, height - 70):addTo(body)
+    })
+    local item = listview:newItem()
+    item:setItemSize(building_introduces:getContentSize().width,building_introduces:getContentSize().height)
+    item:addContent(building_introduces)
+    listview:addItem(item)
+    listview:reload()
     self:SetUpgradeRequirementListview()
 end
 

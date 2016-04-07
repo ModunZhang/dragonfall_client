@@ -14,7 +14,7 @@ function GameUITreatSoldierSpeedUp:ctor()
         self:LeftButtonClicked()
         return
     end
-    self:SetAccBtnsGroup(self:GetEventType(), event.id)
+    self:SetAccBtnsGroup(self:GetEventType(), event)
     self:SetAccTips(_("治疗伤兵不能免费加速"))
     local treat_count = 0
     for i,v in ipairs(event.soldiers) do
@@ -28,7 +28,7 @@ function GameUITreatSoldierSpeedUp:ctor()
             return 
         end
         local time, percent = UtilsForEvent:GetEventInfo(event)
-        self:SetProgressInfo(GameUtils:formatTimeStyle1(time), percent)
+        self:SetProgressInfo(time, percent)
     end)
     User:AddListenOnType(self, "treatSoldierEvents")
 end

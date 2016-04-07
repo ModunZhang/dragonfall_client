@@ -1,17 +1,22 @@
-##项目运行与自动更新发布说明
+## 项目运行与自动更新发布说明
 
-###不同平台的项目配置
+### 当前项目开发目录
+项目 		|iOS      		 | Android 			  | Windows Phone
+------------|------------    |------------        |------------
+目录名		|proj.ios_mac 	 | proj.android-studio| proj.win8.1-universal
 
-配置 		|iOS (Info.plist)            | Android (AndroidManifest.xml)  | Windows Phone
+### 不同平台的项目配置
+
+配置 		|iOS (Info.plist)            | Android (version.properties)  | Windows Phone
 ------------| ------------               | ------------- 				  | -------------
-版本号		| CFBundleShortVersionString | android:versionName 			  | Version前三位(Package.appxmanifest)
-构建版本号	| CFBundleVersion            | android:versionCode			  | Version最后一位(Package.appxmanifest)
-进入测试服	| AppHoc                     | AppHoc						  | AppHoc (App.xaml)
-最低支持版本	| AppMinVersion              | AppMinVersion 				  | AppMinVersion (App.xaml)
+版本号		| CFBundleShortVersionString | versionName 			  		  | Version前三位(Package.appxmanifest)
+构建版本号	| CFBundleVersion            | versionCode           		  | Version最后一位(Package.appxmanifest)
+进入测试服	| AppHoc                     | appHoc [false true]		      | AppHoc (App.xaml)[False True]
+最低支持版本	| AppMinVersion              | appMinVersion 				  | AppMinVersion (App.xaml)
 
 ### 自动更新说明
 
-####自动更新相关注意点
+#### 自动更新相关注意点
 	1. config.lua文件不能被自动更新
 	2. fileList.json/versions.json大版本号和小版本由项目配置的版本号和最低支持版本生成json文件
 	3. 每次发布新包的版本号必须比线上的版本号高
@@ -31,7 +36,7 @@
 
 > 发布自动更新的时候一定检查git仓库版本号,不要轻易部署
 
-####自动更新发布步骤
+#### 自动更新发布步骤
 > 自动更新生成的脚本和资源加密参数必须True
 
 * 上传所有的修改文件到develop分支,更新本地develop仓库，确保本地develop分支为最新
@@ -47,11 +52,11 @@
 * 如果是测试自动更新，最好测试完毕后还原master分支到线上版本的tag位置，如果没问题手动push项目master分支,把生成的自动更新文件推送到远端仓库
 * 为master打tag
 
-####发布新版本说明
+#### 发布新版本说明
 
 > 调整项目配置中支持的`最低版本`高于线上某app的`版本号`,关闭`进入测试服`. 然后执行自动更新的所有步骤,最后打包生成相应平台的安装包。
 
-####兼容包发布说明
+#### 兼容包发布说明
 1. 设置当前`版本号`比线上app高,`最低版本`小于或者等于线上app的`版本号`
 2. 关闭`进入测试服`。
 3. 执行自动更新的所有步骤。
@@ -64,7 +69,7 @@
 3. 执行相关脚本编译lua和资源
 4. 运行项目
 
-###打包的特殊说明
+### 打包的特殊说明
 #### Android下的特殊说明
 > **最后一步打包生成apk前需要执行`create_android_zip.py`生成zip压缩文件后执行apk的打包**
 

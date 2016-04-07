@@ -1,7 +1,11 @@
 require("cocos.cocos2d.Cocos2dConstants")
 print("加载玩家自定义函数!")
 NOT_HANDLE = function(...) print("net message not handel, please check !") end
-
+local FileUtils = cc.FileUtils:getInstance()
+function isUseSdImage()
+    return ext.isLowMemoryDevice() and device.platform == 'winrt'
+end
+local openSD = isUseSdImage()
 
 local sharedTextureCache = cc.Director:getInstance():getTextureCache()
 function showMemoryUsage(head)
@@ -22,49 +26,90 @@ end
 local texture_data_file = ".texture_data"
 if device.platform == 'ios' then
     texture_data_file = ".texture_data_iOS" 
+elseif device.platform == 'android' then
+    texture_data_file = ".texture_data_android" 
 elseif device.platform == 'winrt' then
     texture_data_file = ".texture_data_wp" 
 end
-
 plist_texture_data     = import(texture_data_file)
+
+if device.platform == 'android' and ext.isLowMemoryDevice() then
+
+    -- 定义已有的低画质图片
+    local low_ram_texture_name = {
+        ['city_only0'] = "city_only_low_ram0",
+        ['buildings0'] = "buildings_low_ram0",
+        ['ui_png0'] = "ui_png_low_ram0",
+        ['ui_png1'] = "ui_png_low_ram1",
+        ['ui_png2'] = "ui_png_low_ram2",
+        ['level0'] = "level_low_ram0",
+        ['pve_only0'] = "pve_only_low_ram0",
+        ['ui_pvr0'] = "ui_pvr_low_ram0",
+        ['ui_pvr1'] = "ui_pvr_low_ram1",
+        ['ui_pvr2'] = "ui_pvr_low_ram2",
+    }
+
+    -- 将代码中原来使用高画质的图片名字替换成低画质的文件名称
+    local FilterLowRamTexture = function( textureName )
+        if not textureName then return textureName end
+        if device.platform ~= 'android' then return textureName end
+        local fileName,fileExt = string.match(textureName,"(.*)%.(.*)")
+        if not fileExt or not fileName or not low_ram_texture_name[fileName] then return textureName end
+        if fileExt ~= 'png' and fileExt ~= 'plist' then
+            return textureName
+        else
+            return low_ram_texture_name[fileName] .. "." .. fileExt
+        end
+    end
+
+    local DEBUG_GET_ANIMATION_PATH_ = DEBUG_GET_ANIMATION_PATH
+    DEBUG_GET_ANIMATION_PATH = function (path)
+        local ret = DEBUG_GET_ANIMATION_PATH_(path)
+        return FilterLowRamTexture(ret)
+    end
+
+    -- 更新查找单张图片从低画质的大图中查询
+    for k,v in pairs(plist_texture_data) do
+        if k ~= 'sd' then 
+            local image_key = string.gsub(v,"%.png","")
+            if low_ram_texture_name[image_key] then
+                plist_texture_data[k] = low_ram_texture_name[image_key] .. ".png"
+            end
+        end
+    end
+end
+
+
+plist_texture_data_sd  = plist_texture_data.sd or {}
+local function textureResolve(texName)
+    if openSD then
+        local sdPngName = plist_texture_data_sd[texName]
+        local pngName = plist_texture_data[texName]
+        return sdPngName or pngName, sdPngName ~= nil
+    end
+    return plist_texture_data[texName]
+end
+
+
 local sharedSpriteFrameCache = cc.SpriteFrameCache:getInstance()
 local rgba4444 = import(".rgba4444")
 local jpg_rgb888 = import(".jpg_rgb888")
 
 jpg_rgb888["tmxmaps/terrain1.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
-jpg_rgb888["world_bg.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
-jpg_rgb888["world_title1.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
-jpg_rgb888["world_title2.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
-jpg_rgb888["world_terrain.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
+-- jpg_rgb888["plus_right_grassLand.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B888
+-- jpg_rgb888["plus_right_iceField.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B888
+-- jpg_rgb888["plus_right_desert.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B888
 
 
-local auto_cleanup = {
-    ["jpg_png0.png"] = 1,
-    ["jpg_png1.png"] = 1,
-    ["jpg_png2.png"] = 1,
-    ["jpg_png3.png"] = 1,
-    ["jpg_png4.png"] = 1,
-    ["jpg_png5.png"] = 1,
-    ["jpg_png6.png"] = 1,
-    ["jpg_png7.png"] = 1,
-    ["jpg_png8.png"] = 1,
-    ["jpg_png9.png"] = 1,
-    ["jpg_png10.png"] = 1,
-    ["jpg_png11.png"] = 1,
-    ["jpg_png12.png"] = 1,
-    ["jpg_png13.png"] = 1,
-    ["jpg_png14.png"] = 1,
-    ["jpg_png15.png"] = 1,
-    ["jpg_png16.png"] = 1,
-    ["start_game_292x28.png"] = 1,
-    ["background_608x678.png"] = 1,
-}
+local auto_cleanup = {}
 for k,v in pairs(jpg_rgb888) do
     auto_cleanup[k] = true
 end
--- for _,v in pairs(plist_texture_data) do
---     auto_cleanup[v] = true
--- end
+
+
+centerRect = function(width, height)
+    return cc.rect(width /3, height /3, width /3, height /3)
+end
 
 math.round = function(n)
     return math.ceil(n - 0.5)
@@ -75,12 +120,36 @@ local ipairs = ipairs
 -- 
 local cache = cc.Director:getInstance():getTextureCache()
 function removeImageByKey(key)
-    key = plist_texture_data[key] or key
-    cache:removeTextureForKey(key)
+    local cacheKey = key
+    local found_data_in_plist = textureResolve(key)
+    if found_data_in_plist then
+        cacheKey = found_data_in_plist
+    elseif openSD then
+        local prename, suffix = unpack(string.split(key, "."))
+        local sdname = string.format("%s-sd.%s", prename, suffix)
+        if FileUtils:isFileExist(sdname) then
+            cacheKey = sdname
+        end
+    end
+    
+    print("removeImageByKey", cacheKey)
+    cache:removeTextureForKey(cacheKey)
 end
 function setAliasTexParametersForKey(key)
-    key = plist_texture_data[key] or key
-    local tex = cache:getTextureForKey(key)
+    local cacheKey = key
+    local found_data_in_plist = textureResolve(key)
+    if found_data_in_plist then
+        cacheKey = found_data_in_plist
+    elseif openSD then
+        local prename, suffix = unpack(string.split(key, "."))
+        local sdname = string.format("%s-sd.%s", prename, suffix)
+        if FileUtils:isFileExist(sdname) then
+            cacheKey = sdname
+        end
+    end
+
+    print("setAliasTexParameters", cacheKey)
+    local tex = cache:getTextureForKey(cacheKey)
     if tex then
         tex:setAliasTexParameters()
     end
@@ -92,11 +161,25 @@ end
 --
 for k,v in pairs(jpg_rgb888) do
     display.setTexturePixelFormat(k, v)
+    if openSD then
+        local prename, suffix = unpack(string.split(k, "."))
+        display.setTexturePixelFormat(string.format("%s-sd.%s",prename, suffix), v)
+    end
 end
-display.setTexturePixelFormat("fte_background.jpg", cc.TEXTURE2_D_PIXEL_FORMAT_RG_B888)
+-- rgb_888
+for i,v in ipairs{
+    "fte_background.jpg",
+    "plus_right_desert.png",
+    "plus_right_iceField.png",
+    "plus_right_grassLand.png",
+} do
+    display.setTexturePixelFormat("fte_background.jpg", cc.TEXTURE2_D_PIXEL_FORMAT_RG_B888)
+end
 -- 4444
 for i,v in ipairs{
-    "emoji.png"
+    "emoji.png",
+    "rgba4444_only0.png",
+    "rgba4444_only0-sd.png",
 } do
     display.setTexturePixelFormat(v, cc.TEXTURE2_D_PIXEL_FORMAT_RGB_A4444)
 end
@@ -106,6 +189,9 @@ local _Armature = ccs.Armature
 local ccs_Armature_create = _Armature.create
 local manager = ccs.ArmatureDataManager:getInstance()
 function _Armature:create(ani)
+    if openSD then
+        ani = ani.."-sd"
+    end
     if not manager:getArmatureData(ani) then
         local path = DEBUG_GET_ANIMATION_PATH(string.format("animations/%s.ExportJson", ani))
         manager:addArmatureFileInfo(path)
@@ -114,14 +200,16 @@ function _Armature:create(ani)
 end
 
 
+
+
 local c = cc
 local Sprite = c.Sprite
 local old_setTexture = Sprite.setTexture
 function Sprite:setTexture(arg)
     if type(arg) == 'string' then
-        local found_data_in_plist = plist_texture_data[arg]
+        local found_data_in_plist, isSd = textureResolve(arg)
+        -- local found_data_in_plist = plist_texture_data[arg]
         if found_data_in_plist then
-            -- print(arg, found_data_in_plist)
             local frame = sharedSpriteFrameCache:getSpriteFrame(arg)
             if not frame then
                 local plistName = string.sub(found_data_in_plist,1,string.find(found_data_in_plist,"%.") - 1)
@@ -131,7 +219,18 @@ function Sprite:setTexture(arg)
             end
             self:setSpriteFrame(arg)
         else
+            if openSD then
+                local prename, suffix = unpack(string.split(arg, "."))
+                local sdname = string.format("%s-sd.%s", prename, suffix)
+                if FileUtils:isFileExist(sdname) then
+                    arg = sdname
+                    isSd = true
+                end 
+            end
             old_setTexture(self,arg)
+        end
+        if isSd and self.UpdateVertexRect then
+            self:UpdateVertexRect()
         end
     else
         old_setTexture(self,arg)
@@ -236,6 +335,13 @@ end
 cc.c4f = cc.c4b
 
 
+function randomArray(array)
+    local t = {}
+    for i = 1, #array do
+        table.insert(t, table.remove(array, math.random(#array)))
+    end
+    return t
+end
 
 
 local old_ctor = cc.ui.UIPushButton.ctor
@@ -468,6 +574,11 @@ function display.newScene(name)
     return scene
 end
 local Node = cc.Node
+local setAnchorPoint = Node.setAnchorPoint
+function Node:setAnchorPoint(point)
+    assert(type(point) == "table")
+    setAnchorPoint(self, point)
+end
 function Node:scheduleAt(callback, interval)
     callback()
     return self:schedule(callback, interval or 1)
@@ -493,13 +604,10 @@ display.__newSprite = display.newSprite
 function display.newSprite(...)
     local args = {...}
     local name = args[1]
-    if string.find(name, ".jpg") then
-        print(...)
-    end
-    local found_data_in_plist = plist_texture_data[name]
+    local found_data_in_plist, isSd = textureResolve(name)
+    -- local found_data_in_plist = plist_texture_data[name]
     if found_data_in_plist then
         local frame = sharedSpriteFrameCache:getSpriteFrame(name)
-        -- print(name, found_data_in_plist)
         if not frame then
             local plistName = string.sub(found_data_in_plist,1,string.find(found_data_in_plist,"%.") - 1)
             plistName = string.format("%s.plist",plistName)
@@ -507,9 +615,19 @@ function display.newSprite(...)
             printInfo("newSprite: %s load plist texture:%s",name,found_data_in_plist)
         end
         args[1] = string.format("#%s",name)
+    elseif openSD then
+        local prename, suffix = unpack(string.split(name, "."))
+        local sdname = string.format("%s-sd.%s", prename, suffix)
+        if FileUtils:isFileExist(sdname) then
+            args[1] = sdname
+            isSd = true
+        end 
     end
     local sp = display.__newSprite(unpack(args))
     sp:setCascadeOpacityEnabled(true)
+    if isSd and sp.UpdateVertexRect then
+        sp:UpdateVertexRect()
+    end
     return sp
 end
 display.__newScale9Sprite = display.newScale9Sprite

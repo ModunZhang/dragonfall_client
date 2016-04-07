@@ -8,6 +8,7 @@ local window = import("..utils.window")
 local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local WidgetPushButton = import("..widget.WidgetPushButton")
 local UIListView = import(".UIListView")
+local SpriteConfig = import("..sprites.SpriteConfig")
 local config_day60 = GameDatas.Activities.day60
 local config_online = GameDatas.Activities.online
 local config_day14 = GameDatas.Activities.day14
@@ -743,7 +744,8 @@ end
 
 function GameUIActivityRewardNew:ui_PLAYER_LEVEL_UP()
     local box = display.newSprite("alliance_item_flag_box_126X126.png"):align(display.LEFT_TOP, 20,self.height - 30):addTo(self.bg)
-    display.newSprite("keep_1.png",70,63):addTo(box):scale(120/420)
+    local keep_img = SpriteConfig["keep"]:GetConfigByLevel(City:GetFirstBuildingByType("keep"):GetLevel()).png
+    display.newSprite(keep_img,70,63):addTo(box):scale(120/420)
     local title_bg = display.newScale9Sprite("title_blue_430x30.png",0,0, cc.size(390,30), cc.rect(10,10,410,10))
         :align(display.LEFT_TOP, 180, self.height - 30):addTo(self.bg)
     UIKit:ttfLabel({

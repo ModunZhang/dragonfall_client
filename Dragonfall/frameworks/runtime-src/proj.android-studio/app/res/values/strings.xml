@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="send_mail_tip">Choose the mail client</string>
+    <string name="ok">OK</string>
+	<string name="remind_me_later">Remind me later</string>
+    <string name="exit_game_title">Are you sure to quit the game?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    
+    <!-- Unzip res start -->
+    <string name="dialog_title_unzipping_file">New game</string>
+   	<string name="sorry">Sorry</string>
+    <string name="dialog_msg_sd_space_not_enough">Not enough space of your Phone/SD card.\nYou need more space to enter the game.</string>
+    <string name="dialog_msg_unzip_failed">Unzip game resources failed.</string>
+    <string name="dialog_msg_unzipping_file">Initializing game resources…\nProcess:%1$d%%</string>
+    <!-- Unzip res end -->
+
+    <!-- Google Billing start -->
+	<string name="dialog_msg_payment_purchased">Purchase successfully ! Your Dragon Coins will arrive soon .</string>
+    <!-- Google Billing end -->
+
+	<!-- Google GCM start -->
+	<string name="dialog_title_gcm_error">Register Google Cloud Messaging Service failed</string>
+	<string name="dialog_msg_gcm_error_account_missing">You need to bind your phone with a Google account If you want to receive our game notifications.</string>
+	<string name="dialog_msg_gcm_error_authentication_failed">Your Google account is incorrect.\nPlease activate the account Sync to receive our game notifications. </string>
+	<!-- Google GCM end -->
+</resources>

@@ -89,6 +89,7 @@ local User_ = import('.entity.User')
 local MyApp = class("MyApp", cc.mvc.AppBase)
 local scheduler = require(cc.PACKAGE_NAME .. ".scheduler")
 local AllianceManager_ = import(".entity.AllianceManager")
+local GameStatesHelper = import(".utils.GameStatesHelper")
 Alliance_Manager = AllianceManager_.new()
 CLOUD_TAG = 1987
 local speed = 2
@@ -117,12 +118,22 @@ function enter_scene(scene)
         onComplete = function()
             scene:removeChildByTag(CLOUD_TAG)
             app:lockInput(false)
-            if app:getStore() then
-                app:getStore():updateTransactionStates() -- 更新内购订单状态
-            end
+            updateGameStateAfterEnterScene()
         end
     })
 end
+
+function updateGameStateAfterEnterScene()
+    if app:getStore() then
+        if device.platform == 'android' and ext.paypal.isPayPalSupport() then
+            ext.paypal.updatePaypalPayments()
+        else
+            app:getStore():updateTransactionStates() -- 更新内购订单状态
+        end
+    end
+    GameStatesHelper:getInstance():popExecute()
+end
+
 function enter_scene_transition(scene_name, ...)
     app:lockInput(true)
     local color_layer = cc.LayerColor:create(cc.c4b(255,255,255,0))
@@ -186,7 +197,7 @@ end
 
 function MyApp:run()
     cc.Director:getInstance():setProjection(0)
-    if device.platform == 'windows' or device.platform == 'winrt' then
+    if device.platform == 'winrt' then
         self:enterScene('MainScene')
     else
         self:enterScene('LogoScene')
@@ -336,11 +347,16 @@ function MyApp:retryConnectServer(need_disconnect)
         print("MyApp:debug--->1")
     end
     if UIKit:isKeyMessageDialogShow() then return end
-    --如果在登录界面并且未进入游戏忽略
+    --如果在登录界面
     if display.getRunningScene().__cname == 'MainScene' then
-        if not display.getRunningScene().startGame then
-            return
+        if display.getRunningScene().startGame then -- 如果发现点击了开始游戏,取消掉之前的所有操作,立即执行登陆操作
+            local ui = display.getRunningScene().ui
+            if ui then
+                ui:stopAllActions()
+                ui:loginAction() 
+            end
         end
+        return
     end
     NetManager.m_logicServer.host = nil
     NetManager.m_logicServer.port = nil
@@ -372,6 +388,7 @@ function MyApp:onEnterForeground()
     UIKit:closeAllUI()
     dump("onEnterForeground------>")
     local scene = display.getRunningScene()
+    if not scene then return end
     if scene and scene.__cname == "LogoScene" then
         return
     end
@@ -380,7 +397,7 @@ function MyApp:onEnterForeground()
             scene:GetHomePage():PromiseOfFteAlliance()
         end
     end
-    self:retryConnectServer(false)
+    self:retryConnectServer(true)
 end
 function MyApp:onEnterPause()
     LuaUtils:outputTable("onEnterPause", {})
@@ -390,7 +407,11 @@ function MyApp:onEnterResume()
 end
 
 function MyApp:lockInput(b)
-    cc.Director:getInstance():getEventDispatcher():setEnabled(not b)
+    if cc.EventDispatcher.setTouchEventEnabled then -- available in 1.1.3
+        cc.Director:getInstance():getEventDispatcher():setTouchEventEnabled(not b)
+    else
+        cc.Director:getInstance():getEventDispatcher():setEnabled(not b)
+    end
 end
 
 function MyApp:EnterFriendCityScene(id, location)
@@ -507,7 +528,11 @@ function MyApp:getStore()
         return Store
     elseif device.platform == 'android' then
         if not cc.storeProvider then
-            Store.init(handler(self, self.verifyGooglePlayPurchase),handler(self, self.transitionFailedInGooglePlay))
+            if ext.paypal.isPayPalSupport() then
+                ext.paypal.init(handler(self, self.verifyPaypalPurchase),handler(self, self.transitionFailedInPaypal))
+            else
+                Store.init(handler(self, self.beginVerifyGooglePlayPurchase),handler(self, self.transitionFailedInGooglePlay))
+            end
         end
         return Store
     elseif device.platform == 'winrt' then
@@ -536,7 +561,7 @@ function MyApp:verifyAdeasygoPurchase(transaction)
                 end
             end
             UIKit:showMessageDialog(_("恭喜"),
-                string.format("您已获得%s,到物品里面查看",
+                string.format(_("您已获得%s,到物品里面查看"),
                     UIKit:getIapPackageName(transaction.productIdentifier)),
                 openRewardIf)
         end
@@ -560,7 +585,7 @@ function MyApp:verifyMicrosoftPurchase(transaction)
                 end
             end
             UIKit:showMessageDialog(_("恭喜"),
-                string.format("您已获得%s,到物品里面查看",
+                string.format(_("您已获得%s,到物品里面查看"),
                     UIKit:getIapPackageName(transaction.productIdentifier)),
                 openRewardIf)
         end
@@ -589,33 +614,61 @@ end
 
 -- android
 --------------------
+function MyApp:beginVerifyGooglePlayPurchase(orderId,purchaseData,signature)
+    GameStatesHelper:getInstance():scheduleFunction(handler(self, self.verifyGooglePlayPurchase),orderId,purchaseData,signature)
+end
+
 function MyApp:verifyGooglePlayPurchase(orderId,purchaseData,signature)
     print("verifyGooglePlayPurchase---->",orderId,purchaseData,signature)
     local transaction = Store.getTransactionDataWithPurchaseData(purchaseData)
     local info = DataUtils:getIapInfo(transaction.productIdentifier)
     ext.market_sdk.onPlayerChargeRequst(transaction.transactionIdentifier,transaction.productIdentifier,info.price,info.gem,"USD")
-    device.hideActivityIndicator()
-    if true then --TODO: verify v3 in server
-        local openRewardIf = function()
-            local GameUIActivityRewardNew_instance = UIKit:GetUIInstance("GameUIActivityRewardNew")
-            if User and not GameUIActivityRewardNew_instance then
-                local countInfo = User:GetCountInfo()
-                if countInfo.iapCount > 0 and not countInfo.isFirstIAPRewardsGeted then
-                    UIKit:newGameUI("GameUIActivityRewardNew",4):AddToCurrentScene(true) -- 如果首充 弹出奖励界面
+    NetManager:getVerifyGooglePlayIAPPromise(purchaseData,signature):next(function( response )
+        device.hideActivityIndicator()
+        local msg = response.msg
+        if msg.transactionId then
+            Store.finishTransaction(transaction) --close this billing
+            local openRewardIf = function()
+                local GameUIActivityRewardNew_instance = UIKit:GetUIInstance("GameUIActivityRewardNew")
+                if User and not GameUIActivityRewardNew_instance then
+                    local countInfo = User:GetCountInfo()
+                    if countInfo.iapCount > 0 and not countInfo.isFirstIAPRewardsGeted then
+                        UIKit:newGameUI("GameUIActivityRewardNew",4):AddToCurrentScene(true) -- 如果首充 弹出奖励界面
+                    end
                 end
             end
+            UIKit:showMessageDialog(_("恭喜"),
+                string.format("您已获得%s,到物品里面查看",
+                    UIKit:getIapPackageName(transaction.productIdentifier)),
+                openRewardIf)
+            
+            ext.market_sdk.onPlayerChargeSuccess(transaction.transactionIdentifier)
         end
-        UIKit:showMessageDialog(_("恭喜"),
-            string.format("您已获得%s,到物品里面查看",
-                UIKit:getIapPackageName(transaction.productIdentifier)),
-            openRewardIf)
-        Store.finishTransaction(transaction)
-        ext.market_sdk.onPlayerChargeSuccess(transaction.transactionIdentifier)
-    end
-
+    end):catch(function( err )
+        device.hideActivityIndicator()
+        local msg,code_type = err:reason()
+        local code = msg.code
+        if code_type ~= "syntaxError" then
+            local code_key = UIKit:getErrorCodeKey(code)
+            if code_key == 'duplicateIAPTransactionId' or code_key == 'iapProductNotExist' or code_key == 'iapValidateFaild' then
+                Store.finishTransaction(transaction)
+            end
+        end
+    end)
 end
 function MyApp:transitionFailedInGooglePlay()
     print("transitionFailedInGooglePlay---->")
+    device.hideActivityIndicator()
+end
+
+-- android Paypal
+--------------------
+function MyApp:verifyPaypalPurchase(paymentID,purchaseData)
+    print("verifyPaypalPurchase---->",paymentID,purchaseData)
+end
+
+function MyApp:transitionFailedInPaypal()
+    print("transitionFailedInPaypal---->")
     device.hideActivityIndicator()
 end
 -- iOS

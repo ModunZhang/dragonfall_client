@@ -154,7 +154,9 @@ end
 --
 
 function GameUIBase:CreateBackGround()
-    return display.newSprite("common_bg_center.png"):align(display.CENTER_TOP, window.cx,window.top-40):addTo(self)
+    local backGround_1 = display.newSprite("common_bg_center_1.png"):align(display.CENTER_TOP, window.cx,window.top-40):addTo(self)
+    local backGround_2 = display.newSprite("common_bg_center_2.png"):align(display.CENTER_TOP, window.cx,window.top-40 - backGround_1:getContentSize().height):addTo(self)
+    return backGround_1
 end
 function GameUIBase:CreateTitle(title)
     local head_bg = cc.ui.UIImage.new("head_bg.png")

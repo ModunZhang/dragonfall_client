@@ -8,21 +8,21 @@ function LoadingScene:ctor(...)
 	self.args = args
 end
 
-local animation = import("..animation")
+-- local animation = import("..animation")
 function LoadingScene:onEnter()
 	display.newColorLayer(cc.c4b(255, 255, 255, 255)):addTo(self)
 	self:performWithDelay(function()
-		collectgarbage("collect")
+		-- collectgarbage("collect")
 		-- if device.platform == 'winrt' then
-		-- 	local manager = ccs.ArmatureDataManager:getInstance()
-		--     for k,v in pairs(animation) do
-		--         local path = DEBUG_GET_ANIMATION_PATH(string.format("animations/%s.ExportJson", k))
-		--         manager:removeArmatureFileInfo(path)
-		--     end
+		-- -- 	local manager = ccs.ArmatureDataManager:getInstance()
+		-- --     for k,v in pairs(animation) do
+		-- --         local path = DEBUG_GET_ANIMATION_PATH(string.format("animations/%s.ExportJson", k))
+		-- --         manager:removeArmatureFileInfo(path)
+		-- --     end
 		--     cc.Director:getInstance():purgeCachedData()
 		-- end
 	    enter_scene(app:enterScene(self.nextScene, self.args))
-	end, 0.1)
+	end, 0.01)
 end
 
 function LoadingScene:onExit()

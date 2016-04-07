@@ -56,7 +56,7 @@ static NativeIOS *s_sharedInstance;
     CCLOG("[NativeIOS] showActivityIndicator()");
     NSInteger count = [UIApplication sharedApplication].windows.count;
     UIWindow* topWindow = [[UIApplication sharedApplication].windows objectAtIndex:count - 1];
-    MBProgressHUD* hud = [MBProgressHUD showHUDAddedTo:topWindow animated:YES];
+    MBProgressHUD* hud = [MBProgressHUD showHUDAddedTo:topWindow animated:NO];
     hud.margin = 10;
 }
 
@@ -75,7 +75,7 @@ static NativeIOS *s_sharedInstance;
     CCLOG("[NativeIOS] hideActivityIndicator()");
     NSInteger count = [UIApplication sharedApplication].windows.count;
     UIWindow* topWindow = [[UIApplication sharedApplication].windows objectAtIndex:count - 1];
-    [MBProgressHUD hideAllHUDsForView:topWindow animated:YES];
+    [MBProgressHUD hideAllHUDsForView:topWindow animated:NO];
 }
 
 

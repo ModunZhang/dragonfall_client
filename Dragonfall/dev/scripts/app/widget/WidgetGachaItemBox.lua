@@ -44,14 +44,18 @@ function WidgetGachaItemBox:SetOrginStatus()
             patten = "box_gacha_112x112_%d.png"
         end
         local light_box = display.newSprite(img_1)
+        light_box:runAction(cc.RepeatForever:create(transition.sequence({
+            cc.CallFunc:create(function()
+                light_box:setTexture(string.format(patten,2))
+            end),
+            cc.DelayTime:create(0.2),
+            cc.CallFunc:create(function()
+                light_box:setTexture(string.format(patten,1))
+            end),
+            cc.DelayTime:create(0.2),
+        })))
         self:addChild(light_box)
         self.light_box = light_box
-        local frames = display.newFrames(patten, 1, 2)
-        if not frames then
-            return
-        end
-        local animation = display.newAnimation(frames, 0.2)
-        light_box:playAnimationForever(animation)
     end
 end
 -- 设置选中点或取消选中点状态 ，针对3连抽
@@ -61,22 +65,25 @@ function WidgetGachaItemBox:SetSelectedStatus()
         self:removeChild(self.select_box, true)
         self.select_box = nil
     else
-        local patten 
+        local patten
         if self.isSenior then
             patten = "box_gacha_senior_136x136_%d.png"
         else
             patten = "box_gacha_112x112_%d.png"
         end
         local select_box = display.newSprite(img_1)
+        select_box:runAction(cc.RepeatForever:create(transition.sequence({
+            cc.CallFunc:create(function()
+                select_box:setTexture(string.format(patten,2))
+            end),
+            cc.DelayTime:create(0.2),
+            cc.CallFunc:create(function()
+                select_box:setTexture(string.format(patten,1))
+            end),
+            cc.DelayTime:create(0.2),
+        })))
         self:addChild(select_box)
-
-        local frames = display.newFrames(patten, 1, 2)
         self.select_box = select_box
-        if not frames then
-            return
-        end
-        local animation = display.newAnimation(frames, 0.2)
-        select_box:playAnimationForever(animation)
     end
 end
 -- 设置经过状态或取消经过状态
@@ -123,6 +130,9 @@ function WidgetGachaItemBox:RemoveSelectStatus( )
     end
 end
 return WidgetGachaItemBox
+
+
+
 
 
 

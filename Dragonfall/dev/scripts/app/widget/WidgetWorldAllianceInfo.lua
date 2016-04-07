@@ -145,11 +145,17 @@ function WidgetWorldAllianceInfo:Located(mapIndex, x, y)
                 EnterIn(mapIndex)
                 self:LeftButtonClicked()
             else
-                scene:FetchAllianceDatasByIndex(mapIndex, function()
+                if scene:ViewIndex() == mapIndex then
                     scene:GotoAllianceByXY(scene:GetSceneLayer():IndexToLogic(mapIndex))
                     EnterIn(mapIndex)
                     self:LeftButtonClicked()
-                end)
+                else
+                    scene:FetchAllianceDatasByIndex(mapIndex, function()
+                        scene:GotoAllianceByXY(scene:GetSceneLayer():IndexToLogic(mapIndex))
+                        EnterIn(mapIndex)
+                        self:LeftButtonClicked()
+                    end)
+                end 
             end
         end
     end

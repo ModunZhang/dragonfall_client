@@ -573,24 +573,6 @@ function Alliance:GetShrineEventByid(id)
         end
     end
 end
-function Alliance:GetStarInfoBy(stage)
-    local stagesinfo = {}
-    local stages_map = {}
-    for _,v in pairs(shrineStage) do
-        if shrineStage[v.stageName].stage == stage then
-            table.insert(stagesinfo, v)
-            stages_map[v.stageName] = v
-        end
-    end
-    local total_stars = #stagesinfo * 3
-    local stars = 0
-    for i,v in ipairs(self.shrineDatas) do
-        if stages_map[v.stageName] then
-            stars = stars + v.maxStar
-        end
-    end
-    return stars,total_stars
-end
 function Alliance:GetSubStagesInfoBy(stage)
     local t = {}
     for _,v in pairs(shrineStage) do
@@ -610,6 +592,19 @@ function Alliance:IsSubStageUnlock(stageName)
         end
     end
     return false
+end
+function Alliance:IsSubStagePassed(stageName)
+    local index = shrineStage[stageName].index 
+    local next_stage_name
+    for k,v in pairs(shrineStage) do
+        if v.index == index + 1 then
+            next_stage_name = v.stageName
+        end
+    end
+    if not next_stage_name then
+        return false
+    end
+    return self:IsSubStageUnlock(next_stage_name)
 end
 function Alliance:GetSubStageStar(stageName)
     for i,v in ipairs(self.shrineDatas) do
@@ -870,7 +865,7 @@ function Alliance:CanCheckOtherAllianceCityBuildingLevel()
     return self:GetAllianceBuildingInfoByName("watchTower").level >= 12
 end
 function Alliance:GetShrinePosition()
-    return {x = 13, y = 17}
+    return {x = 8, y = 12}
 end
 function Alliance:SetIsMyAlliance(isMyAlliance)
     self.isMyAlliance = isMyAlliance

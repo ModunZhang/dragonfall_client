@@ -19,7 +19,7 @@ function GameUISplashBeta:onEnter()
     app:GetAudioManager():PlayGameMusicOnSceneEnter("MainScene",true)
     self.bottom_layer = self:CreateOneLayer():addTo(self,GLOBAL_ZORDER.BOTTOM)
     self.ui_layer = self:CreateOneLayer():addTo(self,GLOBAL_ZORDER.UI)
-    self.logo = display.newSprite("splash_logo_515x92.png")
+    self.logo = display.newSprite("splash_logo_516x92.png")
         :align(display.TOP_CENTER, display.cx, display.top - 100)
         :addTo(self.ui_layer)
     self:CreateBottomAnimate()
@@ -44,7 +44,7 @@ function GameUISplashBeta:RunNormal()
         cc.CallFunc:create(handler(self, self.OnBgSpriteStop)),
         cc.MoveBy:create(display.width/speed, cc.p(-display.width, 0)),
         cc.CallFunc:create(function()
-            self.sprite :removeFromParent()
+            self.sprite:removeFromParent()
         end),
     })
     self.sprite:runAction(sequence)
@@ -165,9 +165,19 @@ function GameUISplashBeta:GetUILayer()
 end
 
 function GameUISplashBeta:CreateBgSprite()
-    local sp = display.newSprite("splash_beta_bg_3987x1136.jpg")
-    sp:scale(display.height/1136)
-    return sp
+    if device.platform == 'android' then
+        local sp = display.newNode()
+        local sp_1 = display.newSprite("splash_beta_bg_3987x1136_01.jpg")
+        sp_1:align(display.LEFT_BOTTOM, 0, 0):addTo(sp)
+        local sp_2 = display.newSprite("splash_beta_bg_3987x1136_02.jpg")
+        sp_2:align(display.LEFT_BOTTOM, 2048, 0):addTo(sp)
+        sp:scale(display.height/1136)
+        return sp
+    else
+        local sp = display.newSprite("splash_beta_bg_3987x1136.jpg")
+        sp:scale(display.height/1136)
+        return sp
+    end
 end
 
 function GameUISplashBeta:CreateOneLayer()

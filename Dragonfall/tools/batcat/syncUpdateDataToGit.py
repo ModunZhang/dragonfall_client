@@ -2,7 +2,7 @@
 # DannyHe
 from batcat import *
 from basic import *
-import os
+import os,json
 
 Logging.DEBUG_MODE = True #debug日志的输出
 
@@ -32,12 +32,7 @@ def pullAutoUpdateRepositoty():
 
 
 def rsyncAllFiles():
-	command = ""
-	if not isWindows():
-		command = "rsync -ravc --exclude=.DS_Store* --exclude=.git/ --exclude=.gitignore ./ %s --delete-after" % (TARGET_PATH)
-	else:
-		command = "rsync -rsvc --exclude=.DS_Store* --exclude=.git/ --exclude=.gitignore ./ %s --delete-after" % TARGET_PATH
-
+	command = "rsync -ravc --exclude=.DS_Store* --exclude=.git/ --exclude=.gitignore ./ %s --delete-after" % TARGET_PATH
 	os.chdir(UPDATE_SOURCE_DIR)
 	executeCommand(command,not Logging.DEBUG_MODE)
 	os.chdir(CURRENT_DIR)
@@ -46,11 +41,19 @@ def pushAutoUpdateDataToGit():
 	os.chdir(PATH_OF_GIT_AUTOUPDATE)
 	command = "git add --all"
 	executeCommand(command,not Logging.DEBUG_MODE)
-	command = 'git commit -m "发布新的自动更新"'
-	executeCommand(command,not Logging.DEBUG_MODE)
+	msg = readVersionInfoMessage()
+	command = ["git", "commit", "-m", msg]
+	executeListCommand(command,not Logging.DEBUG_MODE)
 	command = "git push origin %s" % BRANCH_NAME
 	executeCommand(command,not Logging.DEBUG_MODE)
 	os.chdir(CURRENT_DIR)
+
+def readVersionInfoMessage():
+	filePath = formatPath("%s/res/version.json" % UPDATE_SOURCE_DIR)
+	jsonData = open(filePath).read()
+	jsonObj = json.loads(jsonData)
+	msg = "%s %s:appVersion:%s appMinVersion:%s tag:%s " % (CONFIGURATION,jsonObj['platform'],jsonObj['appVersion'],jsonObj['appMinVersion'],jsonObj['tag'])
+	return msg
 
 # main
 if __name__ == "__main__":

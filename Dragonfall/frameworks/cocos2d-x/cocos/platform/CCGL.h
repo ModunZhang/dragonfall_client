@@ -39,6 +39,8 @@ THE SOFTWARE.
 #include "platform/win32/CCGL-win32.h"
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_WP8 || CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 #include "platform/winrt/CCGL.h"
+#include <d3d11_2.h>
+#define  DIRECTX_ENABLED 0
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_LINUX
 #include "platform/linux/CCGL-linux.h"
 #endif

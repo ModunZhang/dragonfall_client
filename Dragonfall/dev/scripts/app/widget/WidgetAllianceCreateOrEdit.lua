@@ -66,7 +66,6 @@ function WidgetAllianceCreateOrEdit:onEnter()
 	    -- textfield
 	    self.textfieldPanel = self:createTextfieldPanel():addTo(self)
 	    	:pos(-10,self.landformPanel:getPositionY()+self.landformPanel:getCascadeBoundingBox().height+20)
-	    	print("self.landformPanel:getPositionY()+self.landformPanel:getCascadeBoundingBox().height+20=",self.landformPanel:getPositionY()+self.landformPanel:getCascadeBoundingBox().height+20)
 end
 
 function WidgetAllianceCreateOrEdit:Helper()

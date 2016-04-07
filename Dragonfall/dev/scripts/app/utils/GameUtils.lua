@@ -257,36 +257,38 @@ function GameUtils:Translate(text,cb)
         cb(" ")
         return
     end
-    local language = self:GetGameLanguage()
-    if language == 'en' or language == 'tw' then
-        self:Baidu_Translate(text,cb)
-    else
-        if type(self.reachableGoogle)  == nil then
-            if network.isHostNameReachable("www.google.com") then
-                self.reachableGoogle = true
-                self:Google_Translate(text,cb)
-            else
-                self.reachableGoogle = false
-                self:Baidu_Translate(text,cb)
-            end
-        elseif self.reachableGoogle then
-            self:Google_Translate(text,cb)
-        else
-            self:Baidu_Translate(text,cb)
-        end
-    end
+    -- 关闭Baidu翻译
+    self:Google_Translate(text,cb)
+    -- local language = self:GetGameLanguage()
+    -- if language == 'en' or language == 'tw' then
+    --     self:Baidu_Translate(text,cb)
+    -- else
+    --     if type(self.reachableGoogle)  == nil then
+    --         if network.isHostNameReachable("www.google.com") then
+    --             self.reachableGoogle = true
+    --             self:Google_Translate(text,cb)
+    --         else
+    --             self.reachableGoogle = false
+    --             self:Baidu_Translate(text,cb)
+    --         end
+    --     elseif self.reachableGoogle then
+    --         self:Google_Translate(text,cb)
+    --     else
+    --         self:Baidu_Translate(text,cb)
+    --     end
+    -- end
 end
 
 
 -- get method
-function GameUtils:PingBaidu(callback)
+function GameUtils:PingSearchEngine(callback)
     local request = network.createHTTPRequest(function(event)
         if event.name == "completed" then
             callback(true)
         elseif event.name == "failed" then
             callback(false)
         end
-    end, "http://www.baidu.com", "GET")
+    end, "http://global.bing.com", "GET")
     request:setTimeout(180)
     request:start()
 end
@@ -297,7 +299,7 @@ function GameUtils:getPlatformForServer()
         platform = 'wp'
     end
     if platform == 'android' then
-        platform = 'ios'
+        platform = 'android'
     end
     if platform == 'mac' then
         platform = 'ios'
@@ -530,7 +532,7 @@ function GameUtils:GetGameLanguageFromNative()
     local target_map
     if device.platform == 'ios' or device.platform == 'mac' then
         target_map = apple_language_map
-    elseif device.platform == 'winrt' then
+    elseif device.platform == 'winrt' or device.platform == 'windows' then
         target_map = windowsrt_language_map
     elseif device.platform == 'android' then
         target_map = android_language_map

@@ -121,8 +121,11 @@ function CommonUpgradeUI:Upgrading()
             local time, percent = UtilsForEvent:GetEventInfo(event)
             self.acc_layer.upgrade_time_label:setString(GameUtils:formatTimeStyle1(time))
             pro:setPercentage(percent)
-            self.acc_layer.acc_button:setButtonEnabled(
+            self.acc_layer.acc_button:setVisible(
                 DataUtils:getFreeSpeedUpLimitTime() >= time
+            )
+            self.acc_layer.speedUpButton:setVisible(
+                DataUtils:getFreeSpeedUpLimitTime() < time
             )
         end
     else
@@ -133,8 +136,11 @@ function CommonUpgradeUI:Upgrading()
             local time, percent = UtilsForEvent:GetEventInfo(event)
             self.acc_layer.upgrade_time_label:setString(GameUtils:formatTimeStyle1(time))
             pro:setPercentage(percent)
-            self.acc_layer.acc_button:setButtonEnabled(
+            self.acc_layer.acc_button:setVisible(
                 DataUtils:getFreeSpeedUpLimitTime() >= time
+            )
+            self.acc_layer.speedUpButton:setVisible(
+                DataUtils:getFreeSpeedUpLimitTime() < time
             )
         end
     end
@@ -435,7 +441,7 @@ function CommonUpgradeUI:SetUpgradeEfficiency()
 
         local efficiency = UtilsForBuilding:GetEfficiencyBy(User, "townHall")
         local next_efficiency = UtilsForBuilding:GetEfficiencyBy(User, "townHall", 1)
-        
+
         eff_node:AddItem( bd.townHall_dwelling, formatNumber(houseAdd), formatNumber(next_houseAdd - houseAdd) )
         local added = next_efficiency - efficiency
         eff_node:AddItem( _("提升任务奖励"), (efficiency*100).."%", added > 0 and added * 100 .. "%" or ""  )
@@ -467,7 +473,7 @@ function CommonUpgradeUI:SetUpgradeEfficiency()
     elseif self.building:GetType()=="wall" then
         local wallHp = UtilsForBuilding:GetPropertyBy(User, "wall", "wallHp")
         local next_wallHp = UtilsForBuilding:GetPropertyBy(User, "wall", "wallHp", 1)
-        
+
         local wallRecovery = UtilsForBuilding:GetPropertyBy(User, "wall", "wallRecovery")
         local next_wallRecovery = UtilsForBuilding:GetPropertyBy(User, "wall", "wallRecovery", 1)
 
@@ -822,17 +828,19 @@ function CommonUpgradeUI:InitAccelerationPart()
     display.newSprite("hourglass_30x38.png", display.cx - 250, display.top - 345):addTo(self.acc_layer):setScale(0.8)
     -- 免费加速按钮
     self:CreateFreeSpeedUpBuildingUpgradeButton()
+    -- 立即完成按钮
+    self:CreateFinishNowBuildingUpgradeButton()
     -- 可免费加速提示
     -- 背景框
-    WidgetUIBackGround.new({width = 546,height=90},WidgetUIBackGround.STYLE_TYPE.STYLE_3):align(display.CENTER,  display.cx, display.top - 435):addTo(self.acc_layer)
+    local tip_bg = WidgetUIBackGround.new({width = 546,height=96},WidgetUIBackGround.STYLE_TYPE.STYLE_5):align(display.CENTER,  window.cx, display.top - 432):addTo(self.acc_layer)
     self.acc_tip_label = cc.ui.UILabel.new({
         UILabelType = cc.ui.UILabel.LABEL_TYPE_TTF,
         font = UIKit:getFontFilePath(),
         size = 20,
-        dimensions = cc.size(530, 0),
+        dimensions = cc.size(350, 0),
         color = UIKit:hex2c3b(0x403c2f)
-    }):align(display.LEFT_CENTER, display.cx - 270, display.top - 435)
-        :addTo(self.acc_layer)
+    }):align(display.CENTER, tip_bg:getContentSize().width/2, tip_bg:getContentSize().height/2)
+        :addTo(tip_bg)
     self:SetAccTipLabel()
     -- 按时间加速区域
     self:CreateAccButtons()
@@ -867,24 +875,67 @@ function CommonUpgradeUI:CreateFreeSpeedUpBuildingUpgradeButton()
     if event then
         local time = UtilsForEvent:GetEventInfo(event)
         if DataUtils:getFreeSpeedUpLimitTime() >= time then
-            self.acc_layer.acc_button:setButtonEnabled(true)
+            self.acc_layer.acc_button:show()
+        else
+            self.acc_layer.acc_button:hide()
         end
     else
-        self.acc_layer.acc_button:setButtonEnabled(false)
+        self.acc_layer.acc_button:hide()
     end
+end
 
+function CommonUpgradeUI:CreateFinishNowBuildingUpgradeButton()
+    local button = cc.ui.UIPushButton.new({normal = "green_btn_up_148x76.png",pressed = "green_btn_down_148x76.png"})
+        :setButtonLabel(UIKit:ttfLabel({
+            text = _("加速"),
+            size = 20,
+            color = 0xffedae,
+            shadow = true
+        }))
+        :setButtonLabelOffset(0, 16)
+        :onButtonClicked(function(event)
+            if event.name == "CLICKED_EVENT" then
+                 NetManager:getSpeedUpPromise(self:GetEventTypeByBuilding(), self.building:UniqueUpgradingKey())
+            end
+        end)
+        :align(display.CENTER, display.cx+194, display.top - 335):addTo(self.acc_layer)
+
+    local num_bg = display.newSprite("back_ground_124x28.png"):addTo(button):align(display.CENTER,0, -18)
+    -- gem icon
+    local gem_icon = display.newSprite("gem_icon_62x61.png"):addTo(num_bg):align(display.CENTER, 20, num_bg:getContentSize().height/2):scale(0.6)
+    local price = UIKit:ttfLabel({
+        size = 18,
+        color = 0xffd200,
+    }):align(display.LEFT_CENTER, 50 , num_bg:getContentSize().height/2)
+        :addTo(num_bg)
+    scheduleAt(self, function()
+        if self.building:IsUpgrading() then
+            price:setString(string.formatnumberthousands(UtilsForEvent:GetSpeedUpPrice(self.building:GetUpgradingEvent(),self:GetEventTypeByBuilding())))
+        end
+    end)
+    local event = UtilsForBuilding:GetBuildingEventByLocation(User, self:GetCurrentLocation())
+    if event then
+        local time = UtilsForEvent:GetEventInfo(event)
+        if DataUtils:getFreeSpeedUpLimitTime() >= time then
+            button:hide()
+        else
+            button:show()
+        end
+    else
+        button:show()
+    end
+    self.acc_layer.speedUpButton = button
 end
 
 function CommonUpgradeUI:SetAccTipLabel()
-    --TODO 设置对应的提示 ，现在是临时的
-    self.acc_tip_label:setString(_("小于5分钟时，可使用免费加速.激活VIP X后，小于5分钟时可使用免费加速"))
+    self.acc_tip_label:setString(string.format(_("小于%dmin时可以使用免费加速"),UtilsForVip:GetVipFreeSpeedUpTime(User)))
 end
 function CommonUpgradeUI:GetEventTypeByBuilding()
     return City:IsFunctionBuilding(self.building) and "buildingEvents" or "houseEvents"
 end
 function CommonUpgradeUI:CreateAccButtons()
     -- 8个加速按钮单独放置在一个layer上方便处理事件
-    self.acc_button_layer = WidgetAccelerateGroup.new(self:GetEventTypeByBuilding(),self.building:UniqueUpgradingKey()):addTo(self.acc_layer):align(display.BOTTOM_CENTER,window.cx,window.bottom_top+115)
+    self.acc_button_layer = WidgetAccelerateGroup.new(self:GetEventTypeByBuilding(),self.building:GetUpgradingEvent()):addTo(self.acc_layer):align(display.BOTTOM_CENTER,window.cx,window.bottom_top+115)
     self:visibleChildLayers()
 end
 
@@ -939,56 +990,73 @@ function CommonUpgradeUI:PopNotSatisfyDialog(listener,can_not_update_type)
             }
         ):CreateCancelButton()
     elseif can_not_update_type==UpgradeBuilding.NOT_ABLE_TO_UPGRADE.BUILDINGLIST_NOT_ENOUGH then
-        if User.basicInfo.buildQueue == 2 then
-            dialog:CreateOKButtonWithPrice(
+        -- 检查最短时间的升级事件是否可以免费加速
+        if UtilsForBuilding:CouldFreeSpeedUpWithShortestBuildingEvent(User) then
+            dialog:CreateOKButton(
                 {
-                    listener = function()
-                        if owen_gem<required_gems then
-                            UIKit:showMessageDialog(_("提示"),_("金龙币不足")):CreateOKButton(
-                                {
-                                    listener = function ()
-                                        UIKit:newGameUI("GameUIStore"):AddToCurrentScene(true)
-                                    end,
-                                    btn_name= _("前往商店")
-                                })
-                        else
-                            listener()
-                        end
+                    listener = function ()
+                        local shortest_event = UtilsForBuilding:GetBuildingEventsBySeq(User)[1]
+                        local eventType = UtilsForEvent:IsHouseEvent(shortest_event) and "houseEvents" or "buildingEvents"
+                        NetManager:getFreeSpeedUpPromise(eventType, shortest_event.id)
                     end,
-                    btn_images = {normal = "green_btn_up_148x58.png",pressed = "green_btn_down_148x58.png"},
-                    price = required_gems,
+                    btn_name= _("免费加速"),
+                    btn_images = {normal = "purple_btn_up_148x58.png",pressed = "purple_btn_down_148x58.png"},
                 }
-            ):CreateCancelButton()
+            )
+            dialog:SetTitle(_("提示"))
+            dialog:SetPopMessage(_("您当前没有空闲的建筑队列,请首先将上一条队列加速完成"))
         else
-            dialog:CreateOKButtonWithPrice(
-                {
+            if User.basicInfo.buildQueue == 2 then
+                dialog:CreateOKButtonWithPrice(
+                    {
+                        listener = function()
+                            if owen_gem<required_gems then
+                                UIKit:showMessageDialog(_("提示"),_("金龙币不足")):CreateOKButton(
+                                    {
+                                        listener = function ()
+                                            UIKit:newGameUI("GameUIStore"):AddToCurrentScene(true)
+                                        end,
+                                        btn_name= _("前往商店")
+                                    })
+                            else
+                                listener()
+                            end
+                        end,
+                        btn_images = {normal = "green_btn_up_148x58.png",pressed = "green_btn_down_148x58.png"},
+                        price = required_gems,
+                    }
+                ):CreateCancelButton()
+            else
+                dialog:CreateOKButtonWithPrice(
+                    {
+                        listener = function()
+                            if owen_gem<required_gems then
+                                UIKit:showMessageDialog(_("提示"),_("金龙币不足")):CreateOKButton(
+                                    {
+                                        listener = function ()
+                                            UIKit:newGameUI("GameUIStore"):AddToCurrentScene(true)
+                                        end,
+                                        btn_name= _("前往商店")
+                                    })
+                            else
+                                listener()
+                            end
+                        end,
+                        price = required_gems,
+                        btn_name = _("立即完成")
+                    }
+                ):CreateCancelButton({
                     listener = function()
-                        if owen_gem<required_gems then
-                            UIKit:showMessageDialog(_("提示"),_("金龙币不足")):CreateOKButton(
-                                {
-                                    listener = function ()
-                                        UIKit:newGameUI("GameUIStore"):AddToCurrentScene(true)
-                                    end,
-                                    btn_name= _("前往商店")
-                                })
-                        else
-                            listener()
-                        end
+                        UIKit:newGameUI("GameUIActivityRewardNew",4):AddToCurrentScene(true)
                     end,
-                    price = required_gems,
-                    btn_name = _("立即完成")
-                }
-            ):CreateCancelButton({
-                listener = function()
-                    UIKit:newGameUI("GameUIActivityRewardNew",4):AddToCurrentScene(true)
-                end,
-                btn_name = {_("开启"),_("第2队列")},
-                btn_images = {normal = "blue_btn_up_148x58.png",pressed = "blue_btn_down_148x58.png"},
-                label_size = 20
-            })
+                    btn_name = {_("开启"),_("第2队列")},
+                    btn_images = {normal = "blue_btn_up_148x58.png",pressed = "blue_btn_down_148x58.png"},
+                    label_size = 20
+                })
+            end
+            dialog:SetTitle(_("立即开始"))
+            dialog:SetPopMessage(_("您当前没有空闲的建筑,是否花费魔法石立即完成上一个队列"))
         end
-        dialog:SetTitle(_("立即开始"))
-        dialog:SetPopMessage(_("您当前没有空闲的建筑,是否花费魔法石立即完成上一个队列"))
     elseif can_not_update_type==UpgradeBuilding.NOT_ABLE_TO_UPGRADE.BUILDINGLIST_AND_RESOURCE_NOT_ENOUGH then
         if User.basicInfo.buildQueue == 2 then
             dialog:CreateOKButtonWithPrice(
@@ -1043,7 +1111,7 @@ function CommonUpgradeUI:PopNotSatisfyDialog(listener,can_not_update_type)
     elseif can_not_update_type==UpgradeBuilding.NOT_ABLE_TO_UPGRADE.PRE_CONDITION then
         local jump_building = self.building:GetPreConditionBuilding()
         if tolua.type(jump_building) == "string" then
-            dialog:SetTitle("提示")
+            dialog:SetTitle(_("提示"))
                 :SetPopMessage(string.format(_("请首先建造%s"),Localize.building_name[jump_building]))
                 :CreateOKButton()
         else
@@ -1063,7 +1131,7 @@ function CommonUpgradeUI:PopNotSatisfyDialog(listener,can_not_update_type)
 
         local jump_building = highest_level_building or city:GetRuinsNotBeenOccupied()[1] or preName
 
-        dialog:SetTitle("提示")
+        dialog:SetTitle(_("提示"))
             :SetPopMessage(can_not_update_type)
         if tolua.type(jump_building) ~= "string" then
             dialog:CreateOKButton(
@@ -1102,6 +1170,8 @@ function CommonUpgradeUI:PopNotSatisfyDialog(listener,can_not_update_type)
 end
 
 return CommonUpgradeUI
+
+
 
 
 

@@ -921,7 +921,7 @@ function GameUIAllianceSendTroops:OnUserDataChanged_soldiers(userData, deltaData
         end
     end
 end
-local animation = import("..animation")
+-- local animation = import("..animation")
 function GameUIAllianceSendTroops:onExit()
     User:RemoveListenerOnType(self, "soldiers")
     -- display.getRunningScene():performWithDelay(function()

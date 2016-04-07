@@ -87,6 +87,7 @@ bool Primitive::init(VertexData* verts, IndexBuffer* indices, int type)
 
 void Primitive::draw()
 {
+#if DIRECTX_ENABLED == 0
     if(_verts)
     {
         _verts->use();
@@ -105,6 +106,9 @@ void Primitive::draw()
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
+#else
+	NOT_SUPPORTED();
+#endif
 }
 
 NS_CC_END

@@ -52,6 +52,9 @@ function GameUISetting:BuildUI()
 		-- {text = _("我有建议"),image = "setting_user_voice_62x63.png"},
 		{text = _("遇到问题"),image = "setting_help_64x65.png"},
 	}
+	if device.platform == "ios" or device.platform == "android" then
+		table.insert(buttons_info,{text = _("分享"),image = "setting_share_52x66.png"})
+	end
 	local x,y = window.left + 50,window.top_bottom - 80
 	for i,v in ipairs(buttons_info) do
 		if (i - 1) % 4 == 0 and i ~= 1 then
@@ -117,13 +120,13 @@ function GameUISetting:OnButtonClicked(button)
 		if self.city:GetFirstBuildingByType("keep"):GetLevel() >= 8 then
 			UIKit:newWidgetUI("WidgetRankingList", "player"):AddToCurrentScene(true)
 		else
-			GameGlobalUI:showTips("提示", _("城堡等级达到8级解锁"))
+			GameGlobalUI:showTips(_("提示"), _("城堡等级达到8级解锁"))
 		end
 	elseif tag == 6 then
 		if self.city:GetFirstBuildingByType("keep"):GetLevel() >= 8 then
 			UIKit:newWidgetUI("WidgetRankingList","alliance"):AddToCurrentScene(true)
 		else
-			GameGlobalUI:showTips("提示", _("城堡等级达到8级解锁"))
+			GameGlobalUI:showTips(_("提示"), _("城堡等级达到8级解锁"))
 		end
 	elseif tag == 7 then
 		local is_open = app:GetAudioManager():GetBackgroundMusicState()
@@ -147,6 +150,20 @@ function GameUISetting:OnButtonClicked(button)
 		-- end
        	UIKit:newGameUI("GameUISettingContactUs"):AddToCurrentScene(true)
 	elseif tag == 12 then
+		--facebook
+		if device.platform == "ios" or device.platform == "android" then
+			if not ext.facebook then return end
+			if ext.facebook.isAuthenticated() then
+				--logined 
+				ext.facebook.appInvite("Invite Friends","Come play with me")
+			else
+				ext.facebook.login(function ( data )
+	                if data.event == "login_success" then
+	                    ext.facebook.appInvite("Invite Friends","Come play with me")
+	                end
+           	 	end)
+			end
+		end
 	end
 end
 

@@ -6,7 +6,6 @@ local window = import("..utils.window")
 local WidgetPushButton = import("..widget.WidgetPushButton")
 local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local WidgetAllianceHelper = import("..widget.WidgetAllianceHelper")
-local StarBar = import(".StarBar")
 local WidgetRoundTabButtons = import("..widget.WidgetRoundTabButtons")
 local WidgetPushTransparentButton = import("..widget.WidgetPushTransparentButton")
 local WidgetPopDialog = import("..widget.WidgetPopDialog")
@@ -172,7 +171,7 @@ function GameUIMail:CreateMailControlBox()
                                 for k,v in pairs(select_map) do
                                     table.insert(ids, v.id)
                                     if self:IsRewardNotGetted(v) then
-                                       hasReward = true 
+                                        hasReward = true
                                     end
                                 end
                                 self.is_deleting = true
@@ -1764,8 +1763,6 @@ function GameUIMail:CreateReportContent()
                 }):align(display.LEFT_CENTER, report_content_bg:getContentSize().width/2-10, 25)
                 :addTo(report_content_bg)
         elseif isFromMe == "attackShrine" then
-            -- display.newScale9Sprite("alliance_watchTower.png"):addTo(report_content_bg)
-            --     :align(display.CENTER_TOP,160, 80):scale(0.6)
             display.newSprite("alliance_shrine_1.png"):addTo(report_content_bg)
                 :align(display.CENTER_TOP,160, 90):scale(0.6)
             display.newSprite("alliance_shrine_2.png"):addTo(report_content_bg)
@@ -1780,12 +1777,6 @@ function GameUIMail:CreateReportContent()
                     color = 0x403c2f
                 }):align(display.LEFT_CENTER, report_content_bg:getContentSize().width/2-20, 60)
                 :addTo(report_content_bg)
-            StarBar.new({
-                max = 3,
-                bg = "alliance_shire_star_60x58_0.png",
-                fill = "alliance_shire_star_60x58_1.png",
-                num = attackTarget.fightStar
-            }):addTo(report_content_bg):align(display.LEFT_CENTER,report_content_bg:getContentSize().width/2-20, 30):scale(0.5)
         else
             -- 战报发出方信息
             -- 旗帜
@@ -2002,8 +1993,14 @@ function GameUIMail:CreateSavedReportContent()
                     elseif report:Type() == "attackShrine" then
                         UIKit:newGameUI("GameUIShrineReportInMail", report):AddToCurrentScene(true)
                     end
-                    if report:Type() ~= "collectResource" then
+                    if report:Type() ~= "collectResource" and report:Type() ~= "attackShrine" then
                         if report:GetReportResult() then
+                            app:GetAudioManager():PlayeEffectSoundWithKey("BATTLE_VICTORY")
+                        else
+                            app:GetAudioManager():PlayeEffectSoundWithKey("BATTLE_DEFEATED")
+                        end
+                    elseif report:Type() == "attackShrine" then
+                        if report:GetAttackTarget().isWin then
                             app:GetAudioManager():PlayeEffectSoundWithKey("BATTLE_VICTORY")
                         else
                             app:GetAudioManager():PlayeEffectSoundWithKey("BATTLE_DEFEATED")
@@ -2097,8 +2094,10 @@ function GameUIMail:CreateSavedReportContent()
                 }):align(display.LEFT_CENTER, report_content_bg:getContentSize().width/2-10, 25)
                 :addTo(report_content_bg)
         elseif isFromMe == "attackShrine" then
-            display.newScale9Sprite("alliance_watchTower.png"):addTo(report_content_bg)
-                :align(display.CENTER_TOP,160, 80):scale(0.6)
+            display.newSprite("alliance_shrine_1.png"):addTo(report_content_bg)
+                :align(display.CENTER_TOP,160, 90):scale(0.6)
+            display.newSprite("alliance_shrine_2.png"):addTo(report_content_bg)
+                :align(display.CENTER_TOP,160, 90):scale(0.6)
             -- 圣地关卡名字
             local attackTarget = report:GetAttackTarget()
             UIKit:ttfLabel(
@@ -2108,12 +2107,6 @@ function GameUIMail:CreateSavedReportContent()
                     color = 0x403c2f
                 }):align(display.LEFT_CENTER, report_content_bg:getContentSize().width/2-20, 60)
                 :addTo(report_content_bg)
-            StarBar.new({
-                max = 3,
-                bg = "alliance_shire_star_60x58_0.png",
-                fill = "alliance_shire_star_60x58_1.png",
-                num = attackTarget.fightStar
-            }):addTo(report_content_bg):align(display.LEFT_CENTER,report_content_bg:getContentSize().width/2-20, 30):scale(0.5)
         else
             -- 战报发出方信息
             -- 旗帜
@@ -2581,6 +2574,7 @@ function GameUIMail:GetEnemyAllianceTag(report)
 end
 
 return GameUIMail
+
 
 
 

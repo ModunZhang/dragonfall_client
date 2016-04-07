@@ -10,11 +10,11 @@ local TILE_LENGTH = 207
 local CORNER_LENGTH = 47
 local WIDTH, HEIGHT = bigMapLength_value, bigMapLength_value
 local MAX_INDEX = WIDTH * HEIGHT - 1
-local width, height = WIDTH * TILE_LENGTH, HEIGHT * TILE_LENGTH
+local WORLD_WIDTH, WORLD_HEIGHT = WIDTH * TILE_LENGTH, HEIGHT * TILE_LENGTH
 local SCENE_OFFSET = {x = 15, y = 70}
 local worldsize = {
-    width = width + CORNER_LENGTH * 2 + SCENE_OFFSET.x * 2,
-    height = height + CORNER_LENGTH * 2 + SCENE_OFFSET.y * 2 + 45,
+    width = WORLD_WIDTH + CORNER_LENGTH * 2 + SCENE_OFFSET.x * 2,
+    height = WORLD_HEIGHT + CORNER_LENGTH * 2 + SCENE_OFFSET.y * 2 + 45,
 }
 
 
@@ -31,7 +31,7 @@ function WorldLayer:onEnter()
     self.map = self:CreateMap()
 
     local p = self:ConvertLogicPositionToMapPosition(middle_index, middle_index)
-    display.newSprite("world_middle.png"):addTo(self.map):pos(p.x + 104, p.y+1)
+    display.newSprite("world_middle.jpg"):addTo(self.map):pos(p.x + 104, p.y+1)
 
     display.newSprite("world_crown_circle2.png")
         :addTo(self.map):pos(p.x+10, p.y)
@@ -62,16 +62,11 @@ function WorldLayer:onEnter()
     math.randomseed(1)
 end
 function WorldLayer:onExit()
-    local cache = cc.Director:getInstance():getTextureCache()
-    cache:removeTextureForKey("world_bg.png")
-    cache:removeTextureForKey("world_title2.png")
-    cache:removeTextureForKey("world_title1.png")
-    cache:removeTextureForKey("world_terrain.png")
 end
 function WorldLayer:CreateBg()
     local sx, sy = math.ceil(worldsize.width / 634), math.ceil(worldsize.height / 1130)
     local offsetY = 0
-    local sprite = display.newFilteredSprite("world_bg.png", "CUSTOM", json.encode({
+    local sprite = display.newFilteredSprite("world_bg.jpg", "CUSTOM", json.encode({
         frag = "shaders/plane.fs",
         shaderName = "plane1",
         param = {1/sx, 1/sy, sx, sy}
@@ -80,13 +75,13 @@ function WorldLayer:CreateBg()
     sprite:setScaleX(sx)
     sprite:setScaleY(sy)
 
-    display.newFilteredSprite("world_title2.png", "CUSTOM", json.encode({
+    display.newFilteredSprite("world_title2.jpg", "CUSTOM", json.encode({
         frag = "shaders/plane.fs",
         shaderName = "plane2",
         param = {1/sx, 1, sx, 1}
     })):addTo(self):align(display.LEFT_TOP,0,worldsize.height):setScaleX(sx)
 
-    display.newSprite("world_title1.png")
+    display.newSprite("world_title1.jpg")
         :addTo(self):align(display.LEFT_TOP,0,worldsize.height):scale(0.7)
 end
 function WorldLayer:CreateCorner()
@@ -139,25 +134,14 @@ function WorldLayer:CreateEdge()
         :addTo(self.scene_node):setScaleY(WIDTH):rotation(-90)
 end
 function WorldLayer:CreateMap()
-    local clip = display.newNode():addTo(self.scene_node)
-        :align(display.LEFT_BOTTOM,CORNER_LENGTH,CORNER_LENGTH)
+    local clip = display.newClippingRegionNode(cc.rect(0, 0, WORLD_WIDTH, WORLD_HEIGHT))
+                    :addTo(self.scene_node)
+                    :align(display.LEFT_BOTTOM,CORNER_LENGTH,CORNER_LENGTH)
 
-    local map = display.newFilteredSprite("world_terrain.png", "CUSTOM", json.encode({
-        frag = "shaders/maptex.fs",
-        shaderName = "maptex",
-        size = {
-            WIDTH/2, --
-            HEIGHT,
-            0.5/(WIDTH/4),
-            1/HEIGHT,
-        },
-        width = bigMapLength_value,
-    })):align(display.LEFT_BOTTOM, 0, 0):addTo(clip)
-    local cache = cc.Director:getInstance():getTextureCache()
-    cache:addImage("world_map.png"):setAliasTexParameters()
-    map:getGLProgramState():setUniformTexture("terrain", cache:getTextureForKey("world_map.png"):getName())
-    map:setScaleX(WIDTH/4)
-    map:setScaleY(HEIGHT/2)
+    GameUtils:LoadImagesWithFormat(function()
+        cc.TMXTiledMap:create("tmxmaps/worldlayer.tmx")
+        :align(display.LEFT_BOTTOM, 0, 0):addTo(clip)
+    end, cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565)
 
     self.normal_map = NormalMapAnchorBottomLeftReverseY.new{
         tile_w = TILE_LENGTH,
@@ -373,25 +357,6 @@ function WorldLayer:CreateAllianceSprite(index, alliance)
         math.randomseed(tonumber(index) + 12345)
         local s_x,s_y = self:Offset(index)
         sprite:pos(s_x,s_y)
-        -- if tonumber(index) == self:LogicToIndex(middle_index-1, middle_index-1) then
-        --     sprite:pos(-40, 40)
-        -- elseif tonumber(index) == self:LogicToIndex(middle_index, middle_index-1) then
-        --     sprite:pos(0, 40)
-        -- elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index-1) then
-        --     sprite:pos(40, 40)
-        -- elseif tonumber(index) == self:LogicToIndex(middle_index-1, middle_index) then
-        --     sprite:pos(-40, 0)
-        -- elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index) then
-        --     sprite:pos(40, 0)
-        -- elseif tonumber(index) == self:LogicToIndex(middle_index-1, middle_index+1) then
-        --     sprite:pos(-40, -40)
-        -- elseif tonumber(index) == self:LogicToIndex(middle_index, middle_index+1) then
-        --     sprite:pos(0, -40)
-        -- elseif tonumber(index) == self:LogicToIndex(middle_index+1, middle_index+1) then
-        --     sprite:pos(40, -40)
-        -- else
-        --     sprite:pos(30 - math.random(30), 30 - math.random(60))
-        -- end
     end
     local size = sprite:getContentSize()
     local banner = display.newSprite("alliance_banner.png")
@@ -590,8 +555,8 @@ function WorldLayer:CreateFlag(index)
     local p = self:ConvertLogicPositionToMapPosition(self:IndexToLogic(index))
     local node
     if tonumber(index) == self:LogicToIndex(middle_index, middle_index) then
-        node = display.newNode():addTo(self.allianceLayer):pos(p.x+40, p.y + 50)
-        display.newSprite("world_crown.png"):addTo(node)
+        node = display.newNode():addTo(self.allianceLayer):pos(p.x,p.y)
+        display.newSprite("crystalThrone.png"):addTo(node):pos(15,15):scale(0.3)
     else
         math.randomseed(tonumber(index) + 12345)
         node = display.newNode():addTo(self.allianceLayer):pos(p.x, p.y)

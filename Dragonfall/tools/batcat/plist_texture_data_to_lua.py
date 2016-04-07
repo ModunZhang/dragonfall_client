@@ -52,14 +52,21 @@ if __name__ == "__main__":
     Logging.info("------开始通过plist文件生成包含大图信息的lua文件------")
     Logging.info("---资源路径:" + m_plist_dir)
     Logging.info("---导出路径:" + m_out_path)
+    sdFiles = []
     plistFiles = []
     for root, dirs, files in os.walk(m_plist_dir):
         for fileName in files:
-            if fileName.endswith((".plist")) and not "~$" in fileName:
-                plistFiles.append(os.path.join(root, fileName))
+            if fileName.endswith((".plist")) and not "~$" in fileName and not "_low_ram" in fileName:
+                path = os.path.join(root, fileName)
+                if "-sd" in fileName:
+                    sdFiles.append(path)
+                else:
+                    plistFiles.append(path)
     plistFiles.sort()
+    sdFiles.sort()
     file = open(m_out_path, "w")
     file.write("local texture_data = {}\n")
+    file.write("local sd = {}\n")
     for plistFile in plistFiles:
         dic = readPlistFile(plistFile)
         texture_name = getFileTextureName(dic)
@@ -68,5 +75,15 @@ if __name__ == "__main__":
         pngs.sort()
         for png in pngs:
             file.write("texture_data[\"%s\"] = \"%s\"\n" % (png, texture_name))
+    file.write("--------------------\n")
+    for plistFile in sdFiles:
+        dic = readPlistFile(plistFile)
+        texture_name = getFileTextureName(dic)
+        Logging.info("--处理%s" % (texture_name))
+        pngs = dic.frames.keys()
+        pngs.sort()
+        for png in pngs:
+            file.write("sd[\"%s\"] = \"%s\"\n" % (png, texture_name))
+    file.write("texture_data.sd = sd\n")
     file.write("return texture_data\n")
     Logging.info("------生成成功------")

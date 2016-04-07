@@ -11,7 +11,7 @@ local DragonSkill =  class("DragonSkill")
 local config_dragonLevel = GameDatas.Dragons.dragonLevel
 local config_dragonStar = GameDatas.Dragons.dragonStar
 local config_equipments = GameDatas.DragonEquipments.equipments
-local config_dragonSkill = GameDatas.Dragons.dragonSkills
+local config_dragonSkill = GameDatas.DragonSkills
 local Localize = import("..utils.Localize")
 local config_equipment_buffs = GameDatas.DragonEquipments.equipmentBuff
 local config_dragoneyrie = GameDatas.DragonEquipments
@@ -33,15 +33,15 @@ end
 
 --将配置表里的数据直接注入object
 function DragonSkill:LoadConfig_()
-	self.config_skill = config_dragonSkill[self:Level()]
+	self.config_skill = config_dragonSkill[self:Name()]
 end
 
 function DragonSkill:IsMaxLevel()
-	return #config_dragonSkill == self:Level()
+	return #self.config_skill == self:Level()
 end
 
 function DragonSkill:GetSkillConfig()
-	return self.config_skill
+	return self.config_skill[self:Level()]
 end
 
 function DragonSkill:IsLocked()
@@ -64,11 +64,21 @@ function DragonSkill:GetEffect()
 	end
 	return 0
 end
-
+--获取下一级技能的效果
+function DragonSkill:GetNextLevelEffect()
+	if self:IsMaxLevel() then
+		return self:GetEffect()
+	end
+	local config = self.config_skill[self:Level()+1]
+	if config then
+		return config.effect
+	end
+	return 0
+end
 function DragonSkill:GetBloodCost()
-	local config = config_dragonSkill[self:Level() + 1]
-	if config and config[self:Name() .. 'BloodCost'] then
-		return config[self:Name() .. 'BloodCost']
+	local config = self.config_skill[self:Level() + 1]
+	if config then
+		return config.bloodCost
 	end
 	return 0
 end
