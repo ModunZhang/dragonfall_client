@@ -85,6 +85,8 @@ namespace cocos2d {
              */
             virtual void onEnter(void) = 0;
             
+            //dannyhe
+            virtual void visibleText(bool isVisible) = 0;
             
             void setDelegate(EditBoxDelegate* pDelegate) { _delegate = pDelegate; };
             EditBoxDelegate* getDelegate() { return _delegate; };

@@ -115,6 +115,8 @@ namespace ui {
         virtual void openKeyboard();
         virtual void closeKeyboard();
         virtual void onEnter(void);
+
+        virtual void visibleText(bool isVisible) override {}
     private:
         Platform::String^ stringToPlatformString(std::string strSrc);
         std::string PlatformStringTostring(Platform::String^ strSrc);

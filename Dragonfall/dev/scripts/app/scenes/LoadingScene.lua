@@ -20,7 +20,7 @@ function LoadingScene:onEnter()
 		-- --         local path = DEBUG_GET_ANIMATION_PATH(string.format("animations/%s.ExportJson", k))
 		-- --         manager:removeArmatureFileInfo(path)
 		-- --     end
-		    cc.Director:getInstance():purgeCachedData()
+		    -- cc.Director:getInstance():purgeCachedData()
 		end
 		collectgarbage("collect")
 	    enter_scene(app:enterScene(self.nextScene, self.args))

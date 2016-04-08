@@ -464,7 +464,10 @@ namespace ui {
          * @lua NA
          */
         void touchDownAction(Ref *sender, TouchEventType controlEvent);
-            
+        
+        
+        //dannyhe:提供隐藏label的函数
+        void visibleText(bool isVisible);
     protected:
         virtual void adaptRenderers() override;
 
