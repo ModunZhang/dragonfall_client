@@ -232,7 +232,8 @@ function GameUIAlliance:NoAllianceTabEvent_joinIf()
     local searchIcon = display.newSprite("alliacne_search_29x33.png"):addTo(joinNode)
         :align(display.LEFT_TOP,40,self.main_content:getCascadeBoundingBox().height - 30)
     local function onEdit(event, editbox)
-        if event == "return" then
+        local eventName = device.platform == 'android' and "ended" or "return"
+        if event == eventName then
             self:SearchAllianAction(self.editbox_tag_search:getText())
         end
     end
