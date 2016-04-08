@@ -572,7 +572,7 @@ function GameUISendTroopNew:CreateBottomPart()
                     end
                     return
                 end
-                if self.dragon:IsDefenced() and not self.military_soldiers then
+                if self.dragon:IsDefenced() and not self.military_soldiers and not self.isPVE then
                     UIKit:showMessageDialog(_("提示"),_("当前选择的龙处于驻防状态，是否取消驻防将这条龙派出")):CreateOKButton(
                         {
                             listener = function ()
