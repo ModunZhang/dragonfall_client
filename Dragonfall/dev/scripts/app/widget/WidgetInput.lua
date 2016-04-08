@@ -34,11 +34,13 @@ function WidgetInput:ctor(params)
                 editbox:setText(text)
                 self.perfix_lable:setString(string.format("/ %s", GameUtils:formatNumber(max)))
             end
+            editbox:visibleText(false)
         elseif event == "changed" then
             local change_text = editbox:getText()
             local change_value = change_text == "" and min or tonumber(change_text)
             if change_value > math.floor(self.max/exchange) then
                 editbox:setText(math.floor(self.max/exchange))
+                editbox:visibleText(false)
             end
         elseif event == "ended" then
             if editbox:getText()=="" or min>text then
