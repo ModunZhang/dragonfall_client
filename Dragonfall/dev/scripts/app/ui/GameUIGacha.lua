@@ -223,7 +223,7 @@ function GameUIGacha:CreateGachaPool(layer)
         temp_box:SetPassStatus()
         current_box = temp_box
         current_index = next_index
-        if isPlayMusic then
+        if isPlayMusic and  and device.platform == 'ios' then
             app:GetAudioManager():PlayeEffectSound("sfx_gacha_2.mp3")
         end
     end
@@ -354,7 +354,7 @@ function GameUIGacha:CreateGachaPool(layer)
                 app:GetAudioManager():StopEffectSound()
                 self.hasStopMusic = true
             end
-            if self.run_steps == 0 then
+            if self.run_steps == 0 and device.platform == 'ios' then
                 app:GetAudioManager():PlayeEffectSound("sfx_gacha_1.mp3")
             end
             if left_steps < 9 and slow_time[left_steps] and gap_time >= slow_time[left_steps] then
