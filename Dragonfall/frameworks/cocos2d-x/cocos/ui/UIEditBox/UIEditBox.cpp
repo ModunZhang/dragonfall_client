@@ -526,6 +526,14 @@ void EditBox::unregisterScriptEditBoxHandler(void)
 }
 #endif
 
+//dannyhe
+void EditBox::visibleText(bool isVisible)
+{
+    if (_editBoxImpl != nullptr)
+    {
+        _editBoxImpl->visibleText(isVisible);
+    }
+}
 }
 
 NS_CC_END
