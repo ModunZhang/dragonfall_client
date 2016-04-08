@@ -25,7 +25,7 @@ function WidgetShrineRewardsInfo:CreateInfoItems(shrineStage)
         item:setItemSize(item_width, item_height)
         local content = display.newNode()
         content:setContentSize(cc.size(item_width, item_height))
-        display.newScale9Sprite(meetFlag and "back_ground_548x40_1.png" or "back_ground_548x40_2.png",item_width/2,item_height/2,cc.size(item_width,item_height),cc.rect(15,10,518,20))
+        display.newSprite(meetFlag and "back_ground_548x40_1.png" or "back_ground_548x40_2.png",item_width/2,item_height/2,cc.size(item_width,item_height),cc.rect(15,10,518,20))
             :addTo(content)
 
         local iconImage = "goldKill_icon_76x84.png"
@@ -54,7 +54,7 @@ function WidgetShrineRewardsInfo:CreateInfoItems(shrineStage)
         }
         local y = item_height/2
         for i,v in ipairs(data[2]) do
-            local item = display.newScale9Sprite("box_118x118.png"):scale(0.3)
+            local item = display.newSprite("box_118x118.png"):scale(0.3)
                 :align(display.RIGHT_CENTER,x[i],y)
                 :addTo(content)
             if v.type == 'dragonMaterials' then
