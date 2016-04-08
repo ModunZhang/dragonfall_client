@@ -254,6 +254,7 @@ function GameUIVipNew:InitVipTop()
         :addTo(top_bg)
     local progressTimer_vip_exp = UIKit:commonProgressTimer("bar_color_540x40.png"):addTo(process_bg):align(display.LEFT_BOTTOM,0,0)
     local vip_level,percent,exp = User:GetVipLevel()
+    self.vip_level = vip_level
     progressTimer_vip_exp:setPercentage(percent)
     self.vip_exp_label = UIKit:ttfLabel({
         text = string.formatnumberthousands(exp).."/"..string.formatnumberthousands(User:GetSpecialVipLevelExpTo(vip_level)),
@@ -488,7 +489,6 @@ function GameUIVipNew:CreateVipEffNodeByLevel(level,height)
     local width,height = 230, height or LuaUtils:table_size(VIP_EFFECIVE_ALL) * 86
     node:setContentSize(cc.size(width,height))
     local flag = true
-    dump(VIP_LEVEL[level],level)
     for k,v in ipairs(VIP_EFFECIVE_ALL_TYPE) do
         local effect = VIP_LEVEL[level][v]
         if effect > 0 then
@@ -595,8 +595,11 @@ function GameUIVipNew:OnUserDataChanged_basicInfo(userData, deltaData)
     end
 
     if self.vip_layer and deltaData("basicInfo.vipExp") then
-        self.vip_layer:removeAllChildren()
-        self:InitVip()
+        local c_level = User:GetVipLevel()
+        if self.vip_level ~= c_level then
+            self.vip_layer:removeAllChildren()
+            self:InitVip()
+        end
     end
 end
 function GameUIVipNew:OnVipEventTimer()
