@@ -223,7 +223,7 @@ function GameUIGacha:CreateGachaPool(layer)
         temp_box:SetPassStatus()
         current_box = temp_box
         current_index = next_index
-        if isPlayMusic and  and device.platform == 'ios' then
+        if isPlayMusic and device.platform == 'ios' then
             app:GetAudioManager():PlayeEffectSound("sfx_gacha_2.mp3")
         end
     end
