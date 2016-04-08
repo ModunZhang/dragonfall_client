@@ -750,8 +750,6 @@ function WidgetUseItems:OpenVipPointDialog(item_name)
     function dialog:OnUserDataChanged_basicInfo(userData, deltaData)
         if deltaData("basicInfo.vipExp") then
             local vip_level,percent,exp = userData:GetVipLevel()
-            self:removeChildByTag(999, true)
-            local exp_bar = UIKit:CreateVipExpBar():addTo(self,1,999):pos(self:getContentSize().width/2-287, self:getContentSize().height-230)
             exp_bar:LightLevelBar(vip_level,percent,exp, true)
         end
     end

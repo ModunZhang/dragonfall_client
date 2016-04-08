@@ -2443,12 +2443,14 @@ function UIKit:CreateVipExpBar()
             x = x + (per and math.floor(level_width*per/100+head_width/2) or 0)
             if not self.vip_exp_point then
                 self.vip_exp_point = display.newSprite("vip_point.png"):addTo(self)
-                cc.ui.UILabel.new({
+                self.exp_label = cc.ui.UILabel.new({
                     UILabelType = cc.ui.UILabel.LABEL_TYPE_TTF,
                     text = exp,
                     size = 14,
                     font = UIKit:getFontFilePath(),
                     color = UIKit:hex2c3b(0x403c2f)}):addTo(self.vip_exp_point):align(display.LEFT_CENTER, 24, 10)
+            else
+                self.exp_label:setString(exp)
             end
             self.vip_exp_point:align(display.TOP_CENTER, x, -20)
         else
