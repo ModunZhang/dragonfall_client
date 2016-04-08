@@ -35,6 +35,7 @@ end
 
 function GameUIGacha:OnMoveInStage()
     GameUIGacha.super.OnMoveInStage(self)
+    app:GetAudioManager():PlayBuildingEffectByType("farmer")
     self.tab_buttons = self:CreateTabButtons({
         {
             label = _("普通抽奖"),
