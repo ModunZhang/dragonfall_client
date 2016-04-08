@@ -74,26 +74,36 @@ function WidgetAccelerateGroup:ctor(eventType,speedUpEvent)
         local acc_button = WidgetPushButton.new({normal = "upgrade_acc_button_1.png",pressed="upgrade_acc_button_2.png"})
         time_button:onButtonClicked(function(event)
             if event.name == "CLICKED_EVENT" then
-                self:ResetAccButtons()
-                acc_button:setVisible(true)
-                time_button:setVisible(false)
-                self:addChild(SmallDialogUI.new(
-                    {
-                        listener = function ()
-                            acc_button:setVisible(false)
-                            time_button:setVisible(true)
-                        end,
-                        x = math.floor((i-1)/4)==0 and cost_bg:getPositionX() or
-                        math.floor((i-1)/4)==1 and acc_button:getPositionX(),
-                        y = math.floor((i-1)/4)==0 and cost_bg:getPositionY()-cost_bg:getContentSize().height/2 or
-                        math.floor((i-1)/4)==1 and acc_button:getPositionY()+acc_button:getCascadeBoundingBox().size.height/2,
-                        tips1 = _("使用立即减少升级时间"),
-                        tips2 = Localize_item.item_name[speedUp_item_name] ,
-                        direction = math.floor((i-1)/4), -- 0表示dialog的箭头指向上方，1反之
-                        scale_left = i==1 or i==5,
-                        scale_right = i==4 or i==8,
-                    }
-                ),2)
+                if string.find(own_label:getString(),_("拥有")) then
+                    local leftTime = UtilsForEvent:GetEventInfo(speedUpEvent)
+                    local effect = UtilsForItem:IsSpeedUpItem(speedUp_item_name).effect * 60
+                    local max_count = math.min(math.ceil(leftTime/effect), User:GetItemCount(speedUp_item_name))
+                    UIKit:newWidgetUI("WidgetUseMutiItems", speedUp_item_name,{max_count = max_count,
+                        eventType = speedUpEvent and eventType,
+                        event = speedUpEvent
+                    }):AddToCurrentScene()
+                else
+                    self:ResetAccButtons()
+                    acc_button:setVisible(true)
+                    time_button:setVisible(false)
+                    self:addChild(SmallDialogUI.new(
+                        {
+                            listener = function ()
+                                acc_button:setVisible(false)
+                                time_button:setVisible(true)
+                            end,
+                            x = math.floor((i-1)/4)==0 and cost_bg:getPositionX() or
+                            math.floor((i-1)/4)==1 and acc_button:getPositionX(),
+                            y = math.floor((i-1)/4)==0 and cost_bg:getPositionY()-cost_bg:getContentSize().height/2 or
+                            math.floor((i-1)/4)==1 and acc_button:getPositionY()+acc_button:getCascadeBoundingBox().size.height/2,
+                            tips1 = _("使用立即减少升级时间"),
+                            tips2 = Localize_item.item_name[speedUp_item_name] ,
+                            direction = math.floor((i-1)/4), -- 0表示dialog的箭头指向上方，1反之
+                            scale_left = i==1 or i==5,
+                            scale_right = i==4 or i==8,
+                        }
+                    ),2)
+                end
             end
         end):align(display.CENTER, width/2-220+gap_x*math.mod(i-1,4), 230-gap_y*math.floor((i-1)/4)):addTo(self.acc_button_layer)
         time_button:setScale(0.7)
@@ -164,6 +174,7 @@ function WidgetAccelerateGroup:OnUserDataChanged_items()
     end
 end
 return WidgetAccelerateGroup
+
 
 
 

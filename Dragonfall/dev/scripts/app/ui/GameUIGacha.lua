@@ -228,13 +228,14 @@ function GameUIGacha:CreateGachaPool(layer)
         end
     end
     function GachaPool:Stop()
+        main:unscheduleUpdate()
         current_box:ResetLigt()
         current_box:SetSelectedStatus()
         self.run_steps = 0
         -- self:ChangeDiskSpeed(1)
 
         local draw_item_box = self.draw_item_box
-        local award = display.newScale9Sprite(draw_item_box:GetGachaItemIcon()):addTo(layer,2)
+        local award = display.newSprite(draw_item_box:GetGachaItemIcon()):addTo(layer,2)
             :align(display.CENTER, draw_item_box:getPositionX()-draw_item_box:getContentSize().width/2, draw_item_box:getPositionY()-draw_item_box:getContentSize().height/2)
         award:scale(74/award:getContentSize().width)
         UIKit:addTipsToNode( award,Localize_item.item_name[draw_item_box:GetGachaItemName()] , main)
@@ -275,6 +276,7 @@ function GameUIGacha:CreateGachaPool(layer)
                                 end)
                             end
                             main.appraise = false
+                            self.isRunning = false
                         end
                         award:setLocalZOrder(1)
                     end})
@@ -292,6 +294,8 @@ function GameUIGacha:CreateGachaPool(layer)
         self.continuous_index = continuous_index + 1
     end
     function GachaPool:StartLotteryDraw(item)
+        self.isRunning = true
+        self.hasStopMusic = false
         -- 禁用ui退出home_button
         main:GetHomeButton():setButtonEnabled(false)
         main.tab_buttons:GetTabByTag("ordinary"):Enable(false)
@@ -322,63 +326,94 @@ function GameUIGacha:CreateGachaPool(layer)
         -- 总共要跳动的格子数
         self.total_steps = round_num * 16 + terminal_point - current_index
         -- 当前计时器周期
-        self.current_period = 0.003
-        if self.handle then
-            scheduler.unscheduleGlobal(self.handle)
-            self.handle = nil
-        end
-        self.handle = scheduler.scheduleGlobal(handler(self, self.Run), self.current_period, false)
-
+        -- self.current_period = 0.003
+        -- if self.handle then
+        --     scheduler.unscheduleGlobal(self.handle)
+        --     self.handle = nil
+        -- end
+        -- self.handle = scheduler.scheduleGlobal(handler(self, self.Run), self.current_period, false)
+        self.run_steps = 0
+        local passed_time,lats_step_time = 0,0
+        local slow_time = {
+            [0] = 0.5,
+            0.4,
+            0.3,
+            0.2,
+            0.1,
+            0.08,
+            0.07,
+            0.05,
+            0.05,
+        }
+        main:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
+            passed_time = passed_time + dt
+            local gap_time = passed_time - lats_step_time
+            local left_steps = self.total_steps - self.run_steps
+            local playSigleMusic = passed_time > 3
+            if playSigleMusic and not self.hasStopMusic then
+                app:GetAudioManager():StopEffectSound()
+                self.hasStopMusic = true
+            end
+            if self.run_steps == 0 then
+                app:GetAudioManager():PlayeEffectSound("sfx_gacha_1.mp3")
+            end
+            if left_steps < 9 and slow_time[left_steps] and gap_time >= slow_time[left_steps] then
+                lats_step_time = passed_time
+                self:Run(playSigleMusic)
+            elseif left_steps >= 9 and gap_time >= 0.03 then
+                lats_step_time = passed_time
+                self:Run(playSigleMusic)
+            end
+        end)
+        main:scheduleUpdate()
         -- 开始抽奖，加速转盘速度
         -- self:ChangeDiskSpeed(10)
 
     end
-    function GachaPool:Run()
+    function GachaPool:Run(playSigleMusic)
         -- 已经完成所有步数，则停止
         if self.run_steps and self.run_steps == self.total_steps then
-            if self.handle then
-                scheduler.unscheduleGlobal(self.handle)
-                self.handle = nil
-            end
-
+            -- if self.handle then
+            --     scheduler.unscheduleGlobal(self.handle)
+            --     self.handle = nil
+            -- end
             self:Stop()
-
             return
         end
-        local run_steps = self.run_steps or 0
-        local left_step = self.total_steps-run_steps
-        if run_steps == 0 then
-            app:GetAudioManager():PlayeEffectSound("sfx_gacha_1.mp3")
-        -- elseif left_step == 30 then
+        -- local run_steps = self.run_steps
+        -- local left_step = self.total_steps-run_steps
+        -- if run_steps == 0 then
+        --     app:GetAudioManager():PlayeEffectSound("sfx_gacha_1.mp3")
+        -- -- elseif left_step == 30 then
+        -- --     app:GetAudioManager():StopEffectSound()
+        -- elseif left_step == 7 then
         --     app:GetAudioManager():StopEffectSound()
-        elseif left_step == 7 then
-            app:GetAudioManager():StopEffectSound()
-        end
-        self.run_steps = run_steps + 1
-        self:SkipByStep(left_step < 8)
-        if self.handle  then
-            scheduler.unscheduleGlobal(self.handle)
-            self.handle = nil
-            if self.total_steps - self.run_steps < 8 then
-                self.current_period = self.current_period + 0.05
-            elseif self.total_steps - self.run_steps < 31 then
-                self.current_period = self.current_period + 0.002
-            end
-            self.handle = scheduler.scheduleGlobal(handler(self, self.Run), self.current_period, false)
-            -- if self.total_steps-self.run_steps<10 then
-            -- -- self:ChangeDiskSpeed(self.total_steps-self.run_steps)
-            -- end
-        end
+        -- end
+        self.run_steps = self.run_steps + 1
+        self:SkipByStep(playSigleMusic)
+        -- if self.handle  then
+        --     scheduler.unscheduleGlobal(self.handle)
+        --     self.handle = nil
+        --     if self.total_steps - self.run_steps < 8 then
+        --         self.current_period = self.current_period + 0.05
+        --     elseif self.total_steps - self.run_steps < 31 then
+        --         self.current_period = self.current_period + 0.002
+        --     end
+        --     self.handle = scheduler.scheduleGlobal(handler(self, self.Run), self.current_period, false)
+        --     -- if self.total_steps-self.run_steps<10 then
+        --     -- -- self:ChangeDiskSpeed(self.total_steps-self.run_steps)
+        --     -- end
+        -- end
     end
     function GachaPool:IsRunning()
-        return self.handle
+        return self.isRunning
     end
     function GachaPool:Destory()
         self:RemoveDiskSchedule()
-        if self.handle then
-            scheduler.unscheduleGlobal(self.handle)
-            self.handle = nil
-        end
+        -- if self.handle then
+        --     scheduler.unscheduleGlobal(self.handle)
+        --     self.handle = nil
+        -- end
     end
     -- 创建成功，转盘默然旋转
     GachaPool.disk_speed = 1

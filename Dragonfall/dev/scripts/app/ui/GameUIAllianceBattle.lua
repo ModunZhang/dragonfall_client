@@ -925,7 +925,8 @@ function GameUIAllianceBattle:InitOtherAlliance()
     local searchIcon = display.newSprite("alliacne_search_29x33.png"):addTo(layer)
         :align(display.LEFT_CENTER,window.left+50,window.top-120)
     local function onEdit(event, editbox)
-        if event == "return" then
+        local eventName = device.platform == 'android' and "ended" or "return"
+        if event == eventName then
             self:SearchAllianAction(self.editbox_tag_search:getText())
         end
     end
