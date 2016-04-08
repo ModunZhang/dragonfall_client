@@ -1,9 +1,9 @@
-# This file was generated from /Users/kennydai/Downloads/i18n(3)(1).xlsx
+# This file was generated from /Users/kennydai/Downloads/i18n(3)(2).xlsx
 msgid ""
 msgstr ""
 "Project-Id-Version: dragonfall\n"
-"POT-Creation-Date: 2016-04-08 14:27+0800\n"
-"PO-Revision-Date: 2016-04-08 14:27+0800\n"
+"POT-Creation-Date: 2016-04-08 14:38+0800\n"
+"PO-Revision-Date: 2016-04-08 14:38+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -102,7 +102,7 @@ msgstr ""
 #: ui/GameUIDragonEyrieDetail.lua:457 ui/GameUIDragonEyrieDetail.lua:462
 #: ui/GameUIDragonEyrieDetail.lua:467 ui/GameUIDragonEyrieMain.lua:397
 #: ui/GameUIDragonSkill.lua:141 ui/GameUIDragonSkill.lua:145
-#: ui/GameUIGacha.lua:261 ui/GameUIHasBeenBuild.lua:132
+#: ui/GameUIGacha.lua:262 ui/GameUIHasBeenBuild.lua:132
 #: ui/GameUIHasBeenBuild.lua:172 ui/GameUIHasBeenBuild.lua:185
 #: ui/GameUIHelp.lua:72 ui/GameUIHelp.lua:244 ui/GameUIHospital.lua:177
 #: ui/GameUIHospital.lua:254 ui/GameUIHospital.lua:256
@@ -4438,34 +4438,34 @@ msgstr "Tap to Research"
 msgid "游乐场"
 msgstr "Playground"
 
-#: ui/GameUIGacha.lua:40
+#: ui/GameUIGacha.lua:41
 msgid "普通抽奖"
 msgstr "Lottery"
 
-#: ui/GameUIGacha.lua:45
+#: ui/GameUIGacha.lua:46
 msgid "高级抽奖"
 msgstr "Advanced Lottery"
 
-#: ui/GameUIGacha.lua:261
+#: ui/GameUIGacha.lua:262
 #, lua-format
 msgid "获得%s x%d"
 msgstr "Got %s X%d"
 
-#: ui/GameUIGacha.lua:469
+#: ui/GameUIGacha.lua:470
 msgid "每日获得免费抽奖机会，激活VIP5 以上，每日可获得额外的免费抽奖机会"
 msgstr ""
 "You have one free lottery chance everyday.The higher VIP level you are,the "
 "more free chances you get."
 
-#: ui/GameUIGacha.lua:520 ui/GameUIGacha.lua:639
+#: ui/GameUIGacha.lua:521 ui/GameUIGacha.lua:640
 msgid "免费抽奖"
 msgstr "Free"
 
-#: ui/GameUIGacha.lua:537 ui/GameUIGacha.lua:583 ui/GameUIGacha.lua:652
+#: ui/GameUIGacha.lua:538 ui/GameUIGacha.lua:584 ui/GameUIGacha.lua:653
 msgid "开始抽奖"
 msgstr "Start"
 
-#: ui/GameUIGacha.lua:565
+#: ui/GameUIGacha.lua:566
 msgid "购买任意金额的金龙币可以解锁高级抽奖,高级抽奖一次可以获得三种不同的道具"
 msgstr "You can get three kinds of items each time."
 
@@ -11689,15 +11689,15 @@ msgstr "Refuse"
 
 #: utils/UIKit.lua:1743
 msgid "攻击强化"
-msgstr "Attack Enhancement"
+msgstr "Attack Power"
 
 #: utils/UIKit.lua:1743
 msgid "生命强化"
-msgstr "HP Enhancement"
+msgstr "HP Maximum"
 
 #: utils/UIKit.lua:1743
 msgid "负重强化"
-msgstr "Troop Load Enhancement"
+msgstr "Troop Load"
 
 #: utils/UtilsForEvent.lua:56
 #, lua-format
