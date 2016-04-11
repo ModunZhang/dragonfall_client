@@ -178,6 +178,7 @@ end
 -- 4444
 for i,v in ipairs{
     "emoji.png",
+    "emoji-sd.png",
     "rgba4444_only0.png",
     "rgba4444_only0-sd.png",
 } do

@@ -404,7 +404,8 @@ namespace cocos2d
 				CallLuaCallbackException("Receipt");
 			}
 			
-		}).wait();
+		});
+		// .wait();
 	}
 #endif /* WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP) */
 }

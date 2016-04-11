@@ -105,6 +105,14 @@ function GameUIReplay:GetDragonBuff(hp, hpMax)
     end
     return 0
 end
+local function getWallGrade(level)
+    if level <= 10 then
+        return 1
+    elseif level <= 20 then
+        return 2
+    end
+    return 3
+end
 function GameUIReplay:Setup()
     self.isFightWall = false
     self.roundCount = 1
@@ -169,7 +177,7 @@ function GameUIReplay:Setup()
             :pos(30, -20):SetSoldierCount(self:GetSoldierCount(false, 1, i, false))
         end
     else
-        local wallName = string.format("wall_%d", self.report:GetWallData().wall.level)
+        local wallName = string.format("wall_%d", getWallGrade(self.report:GetWallData().wall.level))
         self.defenceTroops[1] = UIKit:CreateFightTroops(wallName, {isleft = false,},self)
                                 :addTo(self.ui_map.soldierBattleNode,0,BATTLE_OBJECT_TAG)
                                 :pos(self:WallPosition()):FaceCorrect()
@@ -318,7 +326,7 @@ function GameUIReplay:OnFinishRound()
         self:OnStartRound()
     elseif #self.attackTroops > 0 and not self.isFightWall
     and self.report:IsFightWall() then
-        local wallName = string.format("wall_%d", self.report:GetWallData().wall.level)
+        local wallName = string.format("wall_%d", getWallGrade(self.report:GetWallData().wall.level))
         self.defenceTroops[1] = UIKit:CreateFightTroops(wallName, {isleft = false,},self)
             :addTo(self.ui_map.soldierBattleNode,0,BATTLE_OBJECT_TAG)
             :pos(self:WallPosition())

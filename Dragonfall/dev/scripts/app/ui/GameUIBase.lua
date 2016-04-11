@@ -32,6 +32,9 @@ function GameUIBase:onEnter()
     if ext.closeKeyboard then
         ext.closeKeyboard()
     end
+    if device.platform == 'winrt' then
+        collectgarbage("step")
+    end
 end
 
 function GameUIBase:onEnterTransitionFinish()
@@ -65,6 +68,9 @@ end
 
 function GameUIBase:onExit()
     print("onExit--->")
+    if device.platform == 'winrt' then
+        collectgarbage("step")
+    end
 end
 
 

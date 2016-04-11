@@ -2149,18 +2149,25 @@ function NetManager:downloadFile(fileInfo, cb, progressCb)
         end
     end
 
-    self.m_netService:get(downloadUrl, nil, function(success, statusCode, msg)
+    self.m_netService:get(downloadUrl, nil, function(success, statusCode, msg,request)
         if success and statusCode == 200 then
-            local file = io.open(filePath, "w")
-            if not file then
-                cb(false)
-                return
+            if device.platform == 'winrt' then
+                local fileLength = request:saveResponseData(filePath)
+                progressCb(fileLength, fileLength)
+                cb(cc.FileUtils:getInstance():isFileExist(filePath))
+            else
+                local file = io.open(filePath, "w")
+                if not file then
+                    cb(false)
+                    return
+                end
+                file:write(msg)
+                file:close()
+                local fileLength = string.len(msg)
+                progressCb(fileLength, fileLength)
+                cb(true)
             end
-            file:write(msg)
-            file:close()
-            local fileLength = string.len(msg)
-            progressCb(fileLength, fileLength)
-            cb(true)
+            
         else
             cb(false)
         end
