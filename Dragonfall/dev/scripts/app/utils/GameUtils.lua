@@ -30,6 +30,10 @@ function GameUtils:formatTimeStyle1(time)
     return string.format("%02d:%02d:%02d", hours, minutes, seconds)
 end
 
+function GameUtils:getGateServerDomain()
+    return CONFIG_GATE_SERVER_DOMAIN[device.platform] or "http://gate.batcatstudio.com"
+end
+
 function GameUtils:formatTimeStyle2(time)
     return os.date("%Y-%m-%d %H:%M:%S",time)
 end
@@ -317,7 +321,7 @@ function GameUtils:GetServerInfo(param, callback)
             callback(false)
         end
     end, 
-    string.format("http://gate.batcatstudio.com/dragonfall/check-version?env=%s&version=%s&platform=%s", string.urlencode(param.env), string.urlencode(param.version),platform), "GET")
+    string.format("%s/dragonfall/check-version?env=%s&version=%s&platform=%s",GameUtils:getGateServerDomain(),string.urlencode(param.env), string.urlencode(param.version),platform), "GET")
     request:setTimeout(6.18)
     request:start()
 end

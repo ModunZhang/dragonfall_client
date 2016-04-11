@@ -336,7 +336,7 @@ function NetManager:init()
     self.m_netService:init()
 
     self.m_updateServer = {
-        host = "http://gate.batcatstudio.com",
+        host = GameUtils:getGateServerDomain(),
         port = 80,
         name = "DragonfallAutoUpdateServer",
         basePath = "",

@@ -386,7 +386,7 @@ function GameUILoginBeta:createGameNotice()
             self.tips_ui:hide()
             self:showStartState()
         end, 0.5)
-    end, string.format("http://gate.batcatstudio.com/dragonfall/get-notice?env=%s&platform=%s", string.urlencode(CONFIG_IS_DEBUG and "development" or "production"),string.urlencode(GameUtils:getPlatformForServer())), "GET")
+    end, string.format("%s/dragonfall/get-notice?env=%s&platform=%s",GameUtils:getGateServerDomain(),string.urlencode(CONFIG_IS_DEBUG and "development" or "production"),string.urlencode(GameUtils:getPlatformForServer())), "GET")
     request:setTimeout(10)
     request:start()
 end

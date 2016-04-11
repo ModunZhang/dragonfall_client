@@ -52,6 +52,14 @@ CONFIG_APP_REVIEW = {
     android = "market://details?id=com.xapcn.dragonfall",
     winrt = "ms-windows-store:reviewapp?appid=aa155f39-6b85-4c52-a388-4eacd55bbcb5",
 }
+
+-- 大网关域名
+CONFIG_GATE_SERVER_DOMAIN = {
+    ios = "http://gate.batcatstudio.com",
+    android = "http://gate-aiyingyong.batcatstudio.com",
+    winrt = "http://gate-scmobile.batcatstudio.com"
+}
+
 CONFIG_IS_LOCAL = false
 -- 是否是测试版本 后面会删除这个变量 从plist/meta-data里面获取值，CONFIG_IS_DEBUG为true时三方sdk不会记录购买和事件信息，传到网关获取服务器信息
 CONFIG_IS_DEBUG = false 
