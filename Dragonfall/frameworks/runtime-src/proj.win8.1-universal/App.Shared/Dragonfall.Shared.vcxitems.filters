@@ -80,9 +80,6 @@
     <Filter Include="Strings">
       <UniqueIdentifier>{2dc2d35c-d2bd-4c49-9279-e15a98f2739a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Strings\en-US">
-      <UniqueIdentifier>{f6a7d550-fb0e-4a5a-afb1-a20c963b20dc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Strings\zh-Hans-CN">
       <UniqueIdentifier>{bff6d437-c3a7-4d74-a45b-be9d6e1597a4}</UniqueIdentifier>
     </Filter>
@@ -109,6 +106,9 @@
     </Filter>
     <Filter Include="shaders">
       <UniqueIdentifier>{5c9651b2-e44e-48e4-b53d-0c4e81d74a3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\en">
+      <UniqueIdentifier>{f6a7d550-fb0e-4a5a-afb1-a20c963b20dc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -169,14 +169,14 @@
     <Page Include="$(MSBuildThisFileDirectory)OpenGLESPage.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <PRIResource Include="$(MSBuildThisFileDirectory)Strings\en-US\Resources.resw">
-      <Filter>Strings\en-US</Filter>
-    </PRIResource>
     <PRIResource Include="$(MSBuildThisFileDirectory)Strings\zh-Hans-CN\Resources.resw">
       <Filter>Strings\zh-Hans-CN</Filter>
     </PRIResource>
     <PRIResource Include="$(MSBuildThisFileDirectory)Strings\zh-Hant-TW\Resources.resw">
       <Filter>Strings\zh-Hant-TW</Filter>
+    </PRIResource>
+    <PRIResource Include="$(MSBuildThisFileDirectory)Strings\en\Resources.resw">
+      <Filter>Strings\en</Filter>
     </PRIResource>
   </ItemGroup>
   <ItemGroup>
