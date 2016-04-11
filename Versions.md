@@ -24,11 +24,11 @@ Version | Git SHA-1 | Release Notes
 
 Version | Git SHA-1 | Release Notes
 ------------ | ------------- | ------------
-None | None | None
+1.1.3(1506)  | 303f31d       | 封测
 
 
 ### WindowPhone
 
 Version | Git SHA-1 | Release Notes
 ------------ | ------------- | ------------
-None | None | None
+1.1.3(1518)  | 7404977       | 

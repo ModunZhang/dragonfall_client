@@ -13,7 +13,7 @@ local MAX_INDEX = WIDTH * HEIGHT - 1
 local WORLD_WIDTH, WORLD_HEIGHT = WIDTH * TILE_LENGTH, HEIGHT * TILE_LENGTH
 local SCENE_OFFSET = {x = 15, y = 70}
 local worldsize = {
-    width = WORLD_WIDTH + CORNER_LENGTH * 2 + SCENE_OFFSET.x * 2,
+    width = WORLD_WIDTH + CORNER_LENGTH * 2 + SCENE_OFFSET.x * 2 - 18,
     height = WORLD_HEIGHT + CORNER_LENGTH * 2 + SCENE_OFFSET.y * 2 + 45,
 }
 
@@ -26,9 +26,9 @@ function WorldLayer:onEnter()
     self:CreateBg()
     self.scene_node = display.newNode():addTo(self)
         :align(display.LEFT_BOTTOM, SCENE_OFFSET.x, SCENE_OFFSET.y)
+    self.map = self:CreateMap()
     self:CreateCorner()
     self:CreateEdge()
-    self.map = self:CreateMap()
 
     local p = self:ConvertLogicPositionToMapPosition(middle_index, middle_index)
     display.newSprite("world_middle.jpg"):addTo(self.map):pos(p.x + 104, p.y+1)
@@ -134,9 +134,10 @@ function WorldLayer:CreateEdge()
         :addTo(self.scene_node):setScaleY(WIDTH):rotation(-90)
 end
 function WorldLayer:CreateMap()
-    local clip = display.newClippingRegionNode(cc.rect(0, 0, WORLD_WIDTH, WORLD_HEIGHT))
-                    :addTo(self.scene_node)
-                    :align(display.LEFT_BOTTOM,CORNER_LENGTH,CORNER_LENGTH)
+    local clip = display.newNode():addTo(self.scene_node)
+    :align(display.LEFT_BOTTOM,CORNER_LENGTH,CORNER_LENGTH)
+    -- local clip = display.newClippingRegionNode(cc.rect(0, 0, WORLD_WIDTH, TILE_LENGTH))
+        -- :addTo(self.scene_node):align(display.LEFT_BOTTOM,CORNER_LENGTH,CORNER_LENGTH)
 
     GameUtils:LoadImagesWithFormat(function()
         cc.TMXTiledMap:create("tmxmaps/worldlayer.tmx")
