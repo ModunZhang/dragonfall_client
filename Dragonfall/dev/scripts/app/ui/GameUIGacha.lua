@@ -236,7 +236,7 @@ function GameUIGacha:CreateGachaPool(layer)
         -- self:ChangeDiskSpeed(1)
 
         local draw_item_box = self.draw_item_box
-        local award = display.newScale9Sprite(draw_item_box:GetGachaItemIcon()):addTo(layer,2)
+        local award = display.newSprite(draw_item_box:GetGachaItemIcon()):addTo(layer,2)
             :align(display.CENTER, draw_item_box:getPositionX()-draw_item_box:getContentSize().width/2, draw_item_box:getPositionY()-draw_item_box:getContentSize().height/2)
         award:scale(74/award:getContentSize().width)
         UIKit:addTipsToNode( award,Localize_item.item_name[draw_item_box:GetGachaItemName()] , main)
