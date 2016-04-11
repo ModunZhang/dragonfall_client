@@ -81,13 +81,15 @@ function GameUIAllianceWatchTower:GetAllOrderedMarchEvents()
         for _,marchEvent in pairs(marchEventRoot) do
             if marchEvent ~= json.null then
                 marchEvent.eventType = eventType -- 添加一个事件类型，突袭，进攻
+                print("··eventType·",eventType)
                 if marchEvent.marchType ~= "shrine" and not string.find(eventType,"Return") then -- 过滤掉圣地事件和返回事件
                     -- 目的地是我方联盟，并且出发地不是我方联盟，或者是协防事件:来袭事件
                     if marchEvent.toAlliance.id == alliance._id and marchEvent.fromAlliance.id ~= alliance._id or marchEvent.marchType == "helpDefence" then
                         table.insert(beStrikedEvents, marchEvent)
-                else
-                    table.insert(attackEvents, marchEvent)
-                end
+                    end
+                    if marchEvent.fromAlliance.id == alliance._id and marchEvent.marchType ~= "helpDefence" then
+                        table.insert(attackEvents, marchEvent)
+                    end
                 end
             end
         end
@@ -302,6 +304,7 @@ function GameUIAllianceWatchTower:GetWatchTowerLevel()
 end
 -- 创建行军事件列表页
 function GameUIAllianceWatchTower:CreateMarchList()
+    print("··创建行军事件列表页·")
     local atack_listview,list_node  = UIKit:commonListView({
         async = true, --异步加载
         viewRect = cc.rect(display.cx-284, display.top-870, 568, 790),
