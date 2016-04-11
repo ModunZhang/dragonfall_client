@@ -1,9 +1,9 @@
-# This file was generated from /Users/kennydai/Downloads/i18n(3)(2).xlsx
+# This file was generated from /Volumes/WorkSpace/NewDragonfall/Dragonfall/tools/batcat/i18n.xlsx
 msgid ""
 msgstr ""
 "Project-Id-Version: dragonfall\n"
-"POT-Creation-Date: 2016-04-08 14:38+0800\n"
-"PO-Revision-Date: 2016-04-08 14:38+0800\n"
+"POT-Creation-Date: 2016-04-11 21:58+0800\n"
+"PO-Revision-Date: 2016-04-11 21:58+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -90,7 +90,7 @@ msgstr ""
 #: ui/GameUIAllianceSendTroops.lua:261 ui/GameUIAllianceShrineDetail.lua:246
 #: ui/GameUIAllianceVillageEnter.lua:317 ui/GameUIAllianceVillageEnter.lua:330
 #: ui/GameUIAllianceVillageEnter.lua:356 ui/GameUIAllianceVillageEnter.lua:365
-#: ui/GameUIAllianceVillageEnter.lua:394 ui/GameUIAllianceWatchTower.lua:242
+#: ui/GameUIAllianceVillageEnter.lua:394 ui/GameUIAllianceWatchTower.lua:244
 #: ui/GameUIAllianceWatchTowerOnlyMarchEvents.lua:229 ui/GameUIBuild.lua:176
 #: ui/GameUIBuild.lua:189 ui/GameUIChatChannel.lua:97
 #: ui/GameUIChatChannel.lua:103 ui/GameUIChatChannel.lua:108
@@ -189,15 +189,11 @@ msgstr ""
 #: widget/WidgetUseItems.lua:461 widget/WidgetUseItems.lua:607
 #: widget/WidgetUseItems.lua:711 widget/WidgetUseItems.lua:713
 #: widget/WidgetUseItems.lua:728 widget/WidgetUseItems.lua:730
-#: widget/WidgetUseItems.lua:1075 widget/WidgetWorldAllianceInfo.lua:338
-#: widget/WidgetWorldAllianceInfo.lua:342
-#: widget/WidgetWorldAllianceInfo.lua:346
-#: widget/WidgetWorldAllianceInfo.lua:350
-#: widget/WidgetWorldAllianceInfo.lua:452
-#: widget/WidgetWorldAllianceInfo.lua:458
-#: widget/WidgetWorldAllianceInfo.lua:465
-#: widget/WidgetWorldAllianceInfo.lua:471
-#: widget/WidgetWorldAllianceInfo.lua:475
+#: widget/WidgetUseItems.lua:1075 widget/WidgetWorldAllianceInfo.lua:457
+#: widget/WidgetWorldAllianceInfo.lua:463
+#: widget/WidgetWorldAllianceInfo.lua:470
+#: widget/WidgetWorldAllianceInfo.lua:476
+#: widget/WidgetWorldAllianceInfo.lua:480
 msgid "提示"
 msgstr "Tips"
 
@@ -1200,7 +1196,6 @@ msgstr "Tap building:%s"
 #: widget/WidgetUpgradeMilitaryTech.lua:261
 #: widget/WidgetUpgradeMilitaryTech.lua:264 widget/WidgetUseItems.lua:90
 #: widget/WidgetUseItems.lua:682 widget/WidgetUseItems.lua:1064
-#: widget/WidgetWorldAllianceInfo.lua:353
 msgid "主人"
 msgstr "My Lord"
 
@@ -1615,8 +1610,8 @@ msgstr "Free"
 
 #: ui/CommonUpgradeUI.lua:890 ui/GameUIAcademy.lua:199
 #: ui/GameUIDragonEyrieMain.lua:424 ui/GameUIHasBeenBuild.lua:362
-#: ui/GameUIQuickTechnology.lua:171 ui/GameUIReplay.lua:899
-#: ui/GameUIReplay.lua:908 ui/GameUIReplay.lua:1034
+#: ui/GameUIQuickTechnology.lua:171 ui/GameUIReplay.lua:907
+#: ui/GameUIReplay.lua:916 ui/GameUIReplay.lua:1042
 #: ui/GameUIReplayNew.lua:1673 ui/GameUITownHall.lua:273
 #: ui/GameUIWatchTower.lua:342 ui/GameUIWathTowerRegion.lua:332
 #: widget/WidgetEventTabButtons.lua:409 widget/WidgetEventTabButtons.lua:749
@@ -1801,7 +1796,7 @@ msgstr "The beginner's leveling gift"
 
 #: ui/GameUIActivityNew.lua:31 ui/GameUIActivityNew.lua:66
 msgid "活动"
-msgstr "Activities"
+msgstr "Events"
 
 #: ui/GameUIActivityNew.lua:71 ui/GameUIAlliancePalace.lua:27
 #: ui/GameUIAlliancePalace.lua:221 ui/GameUIAlliancePalaceEnter.lua:63
@@ -1975,7 +1970,7 @@ msgstr "Expired"
 
 #: ui/GameUIActivityRewardNew.lua:782
 msgid "活动期间，升级城堡获得丰厚奖励"
-msgstr "Upgrade Castle to get various rewards during the activity"
+msgstr "Upgrade Castle to get various rewards during the event"
 
 #: ui/GameUIActivityRewardNew.lua:855 ui/GameUIMail.lua:1760
 #: ui/GameUIMail.lua:2091 ui/GameUIShareReport.lua:60
@@ -2122,7 +2117,7 @@ msgstr "Overview"
 #: ui/GameUIPResourceBuilding.lua:48 ui/GameUIResource.lua:28
 #: ui/GameUIShireFightEvent.lua:80 ui/GameUITower.lua:17
 #: ui/GameUIVipNew.lua:159 widget/WidgetDragonTabButtons.lua:65
-#: widget/WidgetWorldAllianceInfo.lua:365
+#: widget/WidgetWorldAllianceInfo.lua:370
 msgid "信息"
 msgstr "Info"
 
@@ -2302,22 +2297,19 @@ msgid "开始战斗!"
 msgstr "To Battle!"
 
 #: ui/GameUIAllianceBattle.lua:271 utils/Localize.lua:117
-#: widget/WidgetWorldAllianceInfo.lua:350
 msgid "联盟操作权限不足"
 msgstr "You have no authority"
 
-#: ui/GameUIAllianceBattle.lua:275 widget/WidgetWorldAllianceInfo.lua:338
-#: widget/WidgetWorldAllianceInfo.lua:346
-#: widget/WidgetWorldAllianceInfo.lua:452
+#: ui/GameUIAllianceBattle.lua:275 widget/WidgetWorldAllianceInfo.lua:457
 msgid "联盟正在战争准备期或战争期"
 msgstr "Alliance is at the Preparation or Battle Period"
 
-#: ui/GameUIAllianceBattle.lua:279 widget/WidgetWorldAllianceInfo.lua:342
+#: ui/GameUIAllianceBattle.lua:279
 msgid "目标联盟未处于和平期，不能宣战"
 msgstr ""
 "You can't declare war when the enemy Alliance is not in the Peace period"
 
-#: ui/GameUIAllianceBattle.lua:282 widget/WidgetWorldAllianceInfo.lua:353
+#: ui/GameUIAllianceBattle.lua:282
 msgid "确定开启联盟会战吗?"
 msgstr "Are you sure to activate the Alliance Battle ?"
 
@@ -2463,8 +2455,8 @@ msgstr "Locate the enemy Alliance"
 
 #: ui/GameUIAllianceBattle.lua:832 ui/GameUIAlliancePosition.lua:110
 #: ui/GameUICrownEnter.lua:187 widget/WidgetWorldAllianceInfo.lua:332
-#: widget/WidgetWorldAllianceInfo.lua:362
-#: widget/WidgetWorldAllianceInfo.lua:492
+#: widget/WidgetWorldAllianceInfo.lua:367
+#: widget/WidgetWorldAllianceInfo.lua:497
 msgid "定位"
 msgstr "Locate"
 
@@ -2675,24 +2667,21 @@ msgstr "Get %s Loyalty"
 msgid "捐赠"
 msgstr "Donate"
 
-#: ui/GameUIAllianceContribute.lua:72 ui/GameUIAllianceLoyalty.lua:35
-#: widget/WidgetAllianceContribute.lua:69
-msgid "忠诚值是玩家自己的属性，退出联盟后依然保留"
-msgstr "You won't lose your loyalty points if you quit the Alliance"
+#: ui/GameUIAllianceContribute.lua:72
+msgid "荣耀值是联盟的属性"
+msgstr ""
 
-#: ui/GameUIAllianceContribute.lua:73 ui/GameUIAllianceLoyalty.lua:36
-#: widget/WidgetAllianceContribute.lua:70
-msgid "忠诚值可以在联盟商店中购买道具"
-msgstr "You can buy items in the Alliance shop with your Loyalty points"
+#: ui/GameUIAllianceContribute.lua:73
+msgid "荣耀值可用于升级联盟建筑"
+msgstr ""
 
-#: ui/GameUIAllianceContribute.lua:74 ui/GameUIAllianceLoyalty.lua:37
-#: widget/WidgetAllianceContribute.lua:71
-msgid "向联盟捐赠资源可以增加忠诚值"
-msgstr "You can get Loyalty points by donating to your Alliance"
+#: ui/GameUIAllianceContribute.lua:74
+msgid "进行联盟战可获得荣耀值"
+msgstr ""
 
-#: ui/GameUIAllianceContribute.lua:75 widget/WidgetAllianceContribute.lua:72
-msgid "帮助盟友加速科技研发和建筑升级可以增加忠诚值"
-msgstr "You can earn Loyalty points by helping your allies to speed up"
+#: ui/GameUIAllianceContribute.lua:75
+msgid "向联盟捐赠资源可以增加荣耀值和忠诚值"
+msgstr ""
 
 #: ui/GameUIAllianceContribute.lua:136 widget/WidgetAllianceContribute.lua:301
 #, lua-format
@@ -2783,7 +2772,7 @@ msgstr "Migrate"
 msgid "迁移冷却"
 msgstr "Cooldown"
 
-#: ui/GameUIAllianceHome.lua:501 widget/WidgetWorldAllianceInfo.lua:419
+#: ui/GameUIAllianceHome.lua:501 widget/WidgetWorldAllianceInfo.lua:424
 msgid "准备就绪"
 msgstr "Ready"
 
@@ -2921,6 +2910,18 @@ msgstr "Loyalty"
 #: utils/Localize.lua:1177
 msgid "联盟商店"
 msgstr "Alliance Shop"
+
+#: ui/GameUIAllianceLoyalty.lua:35 widget/WidgetAllianceContribute.lua:69
+msgid "忠诚值是玩家自己的属性，退出联盟后依然保留"
+msgstr "You won't lose your loyalty points if you quit the Alliance"
+
+#: ui/GameUIAllianceLoyalty.lua:36 widget/WidgetAllianceContribute.lua:70
+msgid "忠诚值可以在联盟商店中购买道具"
+msgstr "You can buy items in the Alliance shop with your Loyalty points"
+
+#: ui/GameUIAllianceLoyalty.lua:37 widget/WidgetAllianceContribute.lua:71
+msgid "向联盟捐赠资源可以增加忠诚值"
+msgstr "You can get Loyalty points by donating to your Alliance"
 
 #: ui/GameUIAllianceLoyalty.lua:38
 msgid "帮助盟友加速科技研发和建筑升级的时间"
@@ -3416,7 +3417,7 @@ msgstr "Cleared"
 
 #: ui/GameUIAllianceShrine.lua:315
 #: ui/GameUIAllianceWatchTowerTroopDetail.lua:216 ui/GameUIVipNew.lua:244
-#: ui/GameUIVipNew.lua:605 ui/GameUIWatchTowerTroopDetail.lua:251
+#: ui/GameUIVipNew.lua:608 ui/GameUIWatchTowerTroopDetail.lua:251
 msgid "已激活"
 msgstr "Activated"
 
@@ -3448,8 +3449,8 @@ msgstr "Involved Players"
 msgid "人均战斗力"
 msgstr "Average Power"
 
-#: ui/GameUIAllianceShrine.lua:575 ui/GameUIAllianceWatchTower.lua:199
-#: ui/GameUIAllianceWatchTower.lua:393
+#: ui/GameUIAllianceShrine.lua:575 ui/GameUIAllianceWatchTower.lua:201
+#: ui/GameUIAllianceWatchTower.lua:396
 #: ui/GameUIAllianceWatchTowerOnlyMarchEvents.lua:181
 #: ui/GameUIAllianceWatchTowerOnlyMarchEvents.lua:352
 #: ui/GameUIDragonEyrieMain.lua:476 ui/GameUIWatchTower.lua:429
@@ -3584,42 +3585,42 @@ msgstr "Stonehenge"
 msgid "来袭"
 msgstr "Incoming"
 
-#: ui/GameUIAllianceWatchTower.lua:182 ui/GameUIAllianceWatchTower.lua:376
+#: ui/GameUIAllianceWatchTower.lua:184 ui/GameUIAllianceWatchTower.lua:379
 #: ui/GameUIAllianceWatchTowerOnlyMarchEvents.lua:164
 #: ui/GameUIAllianceWatchTowerOnlyMarchEvents.lua:335
 msgid "来自玩家"
 msgstr "From player"
 
-#: ui/GameUIAllianceWatchTower.lua:190 ui/GameUIAllianceWatchTower.lua:384
+#: ui/GameUIAllianceWatchTower.lua:192 ui/GameUIAllianceWatchTower.lua:387
 #: ui/GameUIAllianceWatchTowerOnlyMarchEvents.lua:172
 #: ui/GameUIAllianceWatchTowerOnlyMarchEvents.lua:343
 msgid "来自坐标"
 msgstr "From coordinate"
 
-#: ui/GameUIAllianceWatchTower.lua:242
+#: ui/GameUIAllianceWatchTower.lua:244
 #: ui/GameUIAllianceWatchTowerOnlyMarchEvents.lua:229
 msgid "巨石阵等级大于3级才能查看敌军部队详情"
 msgstr "Need Lv3 Stonehenge to get the enemy info"
 
-#: ui/GameUIAllianceWatchTower.lua:274
+#: ui/GameUIAllianceWatchTower.lua:276
 #: ui/GameUIAllianceWatchTowerOnlyMarchEvents.lua:243
 #, lua-format
 msgid "%s被协防"
 msgstr "%s is under assist"
 
-#: ui/GameUIAllianceWatchTower.lua:278
+#: ui/GameUIAllianceWatchTower.lua:280
 #: ui/GameUIAllianceWatchTowerOnlyMarchEvents.lua:247
 #, lua-format
 msgid "%s遭到突袭"
 msgstr "%s is under scout"
 
-#: ui/GameUIAllianceWatchTower.lua:278
+#: ui/GameUIAllianceWatchTower.lua:280
 #: ui/GameUIAllianceWatchTowerOnlyMarchEvents.lua:247
 #, lua-format
 msgid "%s遭到进攻"
 msgstr "%s is under attack"
 
-#: ui/GameUIAllianceWatchTower.lua:287 ui/GameUIAllianceWatchTower.lua:472
+#: ui/GameUIAllianceWatchTower.lua:289 ui/GameUIAllianceWatchTower.lua:475
 #: ui/GameUIAllianceWatchTowerOnlyMarchEvents.lua:256
 #: ui/GameUIAllianceWatchTowerOnlyMarchEvents.lua:420
 #: ui/GameUIShireFightEvent.lua:33 ui/GameUIShireFightEvent.lua:190
@@ -3627,13 +3628,13 @@ msgstr "%s is under attack"
 msgid "%s后到达"
 msgstr "Arriving in %s"
 
-#: ui/GameUIAllianceWatchTower.lua:465
+#: ui/GameUIAllianceWatchTower.lua:468
 #: ui/GameUIAllianceWatchTowerOnlyMarchEvents.lua:413
 #, lua-format
 msgid "突袭%s"
 msgstr "Scout %s"
 
-#: ui/GameUIAllianceWatchTower.lua:465
+#: ui/GameUIAllianceWatchTower.lua:468
 #: ui/GameUIAllianceWatchTowerOnlyMarchEvents.lua:413
 #, lua-format
 msgid "进攻%s"
@@ -5338,7 +5339,7 @@ msgstr "Please upgrade the Castle to unlock Blacksmith first"
 msgid "战斗地形:%s"
 msgstr "Battle ground:%s"
 
-#: ui/GameUIMonsterReport.lua:105 ui/GameUIReplay.lua:1019
+#: ui/GameUIMonsterReport.lua:105 ui/GameUIReplay.lua:1027
 #: ui/GameUIReplayNew.lua:959 ui/GameUIShrineReportInMail.lua:332
 #: ui/GameUIWarReport.lua:106
 msgid "回放"
@@ -5687,29 +5688,29 @@ msgstr "Science"
 msgid "点击科技"
 msgstr "Click the Science"
 
-#: ui/GameUIReplay.lua:140 ui/GameUIWarReport.lua:647 utils/Localize.lua:719
+#: ui/GameUIReplay.lua:148 ui/GameUIWarReport.lua:647 utils/Localize.lua:719
 #: utils/Localize.lua:806 utils/Localize.lua:852
 #: widget/WidgetTreatSoldier.lua:32
 msgid "城墙"
 msgstr "Wall"
 
-#: ui/GameUIReplay.lua:902 ui/GameUIReplayNew.lua:873
+#: ui/GameUIReplay.lua:910 ui/GameUIReplayNew.lua:873
 msgid "x2"
 msgstr "x2"
 
-#: ui/GameUIReplay.lua:905 ui/GameUIReplayNew.lua:877
+#: ui/GameUIReplay.lua:913 ui/GameUIReplayNew.lua:877
 msgid "x4"
 msgstr "x4"
 
-#: ui/GameUIReplay.lua:1050 ui/GameUIReplayNew.lua:1685
+#: ui/GameUIReplay.lua:1058 ui/GameUIReplayNew.lua:1685
 msgid "关闭"
 msgstr "Close"
 
-#: ui/GameUIReplay.lua:1065 ui/GameUIReplayNew.lua:1697
+#: ui/GameUIReplay.lua:1073 ui/GameUIReplayNew.lua:1697
 msgid "跳过"
 msgstr "Skip"
 
-#: ui/GameUIReplay.lua:1127 ui/GameUIReplayNew.lua:1720
+#: ui/GameUIReplay.lua:1135 ui/GameUIReplayNew.lua:1720
 msgid "点击关闭"
 msgstr "Tap \"Close\""
 
@@ -6557,8 +6558,7 @@ msgstr "6.Join an Alliance"
 
 #: ui/GameUITips.lua:111
 msgid "解锁联盟领地，参加联盟会战，并解锁更多新奇的玩法"
-msgstr ""
-"Unlock Alliance Territory,attend the Alliance Battle and other activities"
+msgstr "Unlock Alliance Territory,attend the Alliance Battle and other events"
 
 #: ui/GameUITips.lua:149
 msgid "选择木材、石料、铁矿、粮食村落采集资源，满足发展城市和联盟的需求"
@@ -6948,23 +6948,23 @@ msgstr "VIP"
 msgid "激活VIP"
 msgstr "Activate the VIP"
 
-#: ui/GameUIVipNew.lua:244 ui/GameUIVipNew.lua:608
+#: ui/GameUIVipNew.lua:244 ui/GameUIVipNew.lua:611
 msgid "未激活VIP"
 msgstr "Inactive"
 
-#: ui/GameUIVipNew.lua:293
+#: ui/GameUIVipNew.lua:294
 msgid "+ "
 msgstr "+ "
 
-#: ui/GameUIVipNew.lua:300
+#: ui/GameUIVipNew.lua:301
 msgid "明日"
 msgstr "Tomorrow"
 
-#: ui/GameUIVipNew.lua:307
+#: ui/GameUIVipNew.lua:308
 msgid "天)"
 msgstr "days)"
 
-#: ui/GameUIVipNew.lua:319
+#: ui/GameUIVipNew.lua:320
 msgid "(连续登录"
 msgstr "(Logined"
 
@@ -7142,40 +7142,40 @@ msgstr "Mail"
 msgid "暂时没有内容"
 msgstr "No Content"
 
-#: utils/GameUtils.lua:89
+#: utils/GameUtils.lua:93
 msgid "刚刚"
 msgstr "just now"
 
-#: utils/GameUtils.lua:91 utils/GameUtils.lua:93
+#: utils/GameUtils.lua:95 utils/GameUtils.lua:97
 #, lua-format
 msgid "%d秒前"
 msgstr "%d seconds ago"
 
-#: utils/GameUtils.lua:95 utils/GameUtils.lua:98
+#: utils/GameUtils.lua:99 utils/GameUtils.lua:102
 #, lua-format
 msgid "%d分钟前"
 msgstr "%d minutes ago"
 
-#: utils/GameUtils.lua:100 utils/GameUtils.lua:103
+#: utils/GameUtils.lua:104 utils/GameUtils.lua:107
 #, lua-format
 msgid "%d小时前"
 msgstr "%d hours ago"
 
-#: utils/GameUtils.lua:105 utils/GameUtils.lua:108
+#: utils/GameUtils.lua:109 utils/GameUtils.lua:112
 #, lua-format
 msgid "%d天前"
 msgstr "%d days ago"
 
-#: utils/GameUtils.lua:108
+#: utils/GameUtils.lua:112
 msgid "很久"
 msgstr "Long ago"
 
-#: utils/GameUtils.lua:477
+#: utils/GameUtils.lua:481
 #, lua-format
 msgid "%d天%d小时"
 msgstr "%d days %d hours"
 
-#: utils/GameUtils.lua:585 utils/GameUtils.lua:603
+#: utils/GameUtils.lua:589 utils/GameUtils.lua:607
 msgid "不能删除"
 msgstr "Can not be deleted"
 
@@ -7551,7 +7551,7 @@ msgstr "You've already got the rewards"
 
 #: utils/Localize.lua:99
 msgid "冲级奖励时间已过"
-msgstr "Activity Expired"
+msgstr "Event Expired"
 
 #: utils/Localize.lua:100
 msgid "当前等级的冲级奖励已经领取"
@@ -11915,6 +11915,10 @@ msgstr "Honor"
 msgid "职位大于等于%s"
 msgstr "Position Level ≥ %s"
 
+#: widget/WidgetAllianceContribute.lua:72
+msgid "帮助盟友加速科技研发和建筑升级可以增加忠诚值"
+msgstr "You can earn Loyalty points by helping your allies to speed up"
+
 #: widget/WidgetAllianceCreateOrEdit.lua:84
 msgid "联盟名称不合法只允许字母、数字和空格，需要3~20个字符"
 msgstr "Only able to use charaters,numbers and spaces (3-20 characters)"
@@ -11963,7 +11967,7 @@ msgstr "Alliance Name"
 msgid "联盟地图BUFF"
 msgstr "Alliance Buff"
 
-#: widget/WidgetAllianceMapBuff.lua:27 widget/WidgetWorldAllianceInfo.lua:403
+#: widget/WidgetAllianceMapBuff.lua:27 widget/WidgetWorldAllianceInfo.lua:408
 #, lua-format
 msgid "第%d圈"
 msgstr "Round %d"
@@ -12643,41 +12647,41 @@ msgstr "Round %d(%d,%d)"
 msgid "定位盟主"
 msgstr "Locate"
 
-#: widget/WidgetWorldAllianceInfo.lua:404
+#: widget/WidgetWorldAllianceInfo.lua:409
 #, lua-format
 msgid "需要联盟宫殿 Lv%s"
 msgstr "Require Alliance Palace Lv%s"
 
-#: widget/WidgetWorldAllianceInfo.lua:411
+#: widget/WidgetWorldAllianceInfo.lua:416
 msgid "迁移冷却时间"
 msgstr "Migration cooldown"
 
-#: widget/WidgetWorldAllianceInfo.lua:428
+#: widget/WidgetWorldAllianceInfo.lua:433
 msgid ""
 "当迁移时间就绪时，联盟可进行一次免费的迁移。迁移联盟时，针对联盟外目标的行军"
 "事件会被强制召回。"
 msgstr "Your Alliance can migrate for free when it's ready"
 
-#: widget/WidgetWorldAllianceInfo.lua:429
+#: widget/WidgetWorldAllianceInfo.lua:434
 msgid "迁移联盟需要将军以上的权限的玩家操作。"
 msgstr "Only the Chief and General can migrate the Alliance"
 
-#: widget/WidgetWorldAllianceInfo.lua:447
+#: widget/WidgetWorldAllianceInfo.lua:452
 msgid "迁移"
 msgstr "Migrate"
 
-#: widget/WidgetWorldAllianceInfo.lua:458
+#: widget/WidgetWorldAllianceInfo.lua:463
 msgid "迁移联盟冷却中"
 msgstr "Migration is under cooldown"
 
-#: widget/WidgetWorldAllianceInfo.lua:465
+#: widget/WidgetWorldAllianceInfo.lua:470
 msgid "联盟宫殿等级不足,不能移动到目标地块"
 msgstr "Need a higher Alliance Palace level to migrate to this terrain"
 
-#: widget/WidgetWorldAllianceInfo.lua:471
+#: widget/WidgetWorldAllianceInfo.lua:476
 msgid "需盟主或将军权限才能迁移！"
 msgstr "Only the Chief and General can migrate the Alliance !"
 
-#: widget/WidgetWorldAllianceInfo.lua:475
+#: widget/WidgetWorldAllianceInfo.lua:480
 msgid "是否确认迁移联盟至该领土？"
 msgstr "Are you sure to migrate Alliance to this terrain ?"
