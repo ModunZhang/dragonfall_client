@@ -70,9 +70,9 @@ def gitBranchNameOfUpdateGit(platform,configuration):
     configuration = getConfiguration(configuration)
     brach_name = ""
     if configuration == 'Debug':
-        brach_name = "develop"
+        brach_name = "development"
     elif configuration == 'Release':
-        brach_name = "release"
+        brach_name = "production"
     elif configuration == 'Hotfix':
         brach_name = "hotfix"
     return "%s_%s" % (platform,brach_name)
