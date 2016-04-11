@@ -24,7 +24,7 @@ function LoadingScene:onEnter()
 		end
 		collectgarbage("collect")
 	    enter_scene(app:enterScene(self.nextScene, self.args))
-	end, 0.01)
+	end, 0.1)
 end
 
 function LoadingScene:onExit()
