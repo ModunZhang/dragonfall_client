@@ -151,7 +151,4 @@
 
 **自动更新上传到git的脚本只能在mac上执行**
 
-> `syncUpdateDataToGit.py`脚本在`windows`上执行时`rsync`命令拷贝时权限有bug
-
-----
-By Dannyhe 11/11/2015
+~~`syncUpdateDataToGit.py`脚本在`windows`上执行时`rsync`命令拷贝时权限有bug~~
