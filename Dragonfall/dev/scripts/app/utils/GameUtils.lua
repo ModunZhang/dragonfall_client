@@ -573,8 +573,8 @@ function GameUtils:GetGameLanguage()
 end
 
 function GameUtils:getSupportEmailAddress()
-    if device.platform == 'wp' then
-        return ""
+    if device.platform == 'winrt' then
+        return "feedback@sugarcanetechnology.com"
     else
         return "aiyingyong2015@gmail.com"
     end
