@@ -47,7 +47,7 @@ function NetService:setDeltatime(deltatime)
     self.m_deltatime = deltatime
 end
 
-function NetService:request(route, lmsg, cb)
+function NetService:request(route, lmsg, cb, count)
     if self:isDisconnected() then 
         cocos_promise.defer(function()
             cb(false,{message = _("连接服务器失败,请检测你的网络环境!"),code = 0}) 
@@ -56,9 +56,19 @@ function NetService:request(route, lmsg, cb)
     end
     lmsg = lmsg or {}
     -- lmsg.__time__ = ext.now() + self.m_deltatime
+    local count = count or 0
+    local args = {route, lmsg, cb, count + 1}
     local ret = self.m_pomelo:request(route, json.encode(lmsg), function ( success, jmsg )
             if jmsg then
                 jmsg = json.decode(jmsg)
+                if jmsg.code == 504 then
+                    if args[4] < 2 then
+                        self:request(unpack(args))
+                        return
+                    else
+                        jmsg.code = 0
+                    end
+                end
             else
                jmsg = nil 
             end
