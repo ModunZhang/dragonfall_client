@@ -70,10 +70,10 @@ function AllianceLayer:onEnter()
     --         {x = i, y = y + 10, index = 0},
     --         timer:GetServerTime(),
     --         timer:GetServerTime() + 100,
-    --         "redDragon",
-    --         {{name = "swordsman", star = 1}},
+    --         {dragon = {type = "redDragon"}, {{name = "swordsman", star = 1}}},
     --         FRIEND,
-    --         "hello"
+    --         "hello",
+    --         false
     --     )
     --     count = count + 1
     -- end
@@ -207,7 +207,7 @@ function AllianceLayer:StartCorpsTimer()
                     local line = self.map_lines[id]
                     local program = line:getFilter():getGLProgramState()
                     program:setUniformFloat("percent", math.fmod(time - math.floor(time), 1.0))
-                    program:setUniformFloat("elapse", line.is_enemy and (cc.pGetLength(cc.pSub(cur_vec, march_info.origin_start)) / march_info.origin_length) or 0)
+                    program:setUniformFloat("elapse", line.isTruncate and (cc.pGetLength(cc.pSub(cur_vec, march_info.origin_start)) / march_info.origin_length) or 0)
 
                     if self.track_id == id then
                         self:GotoMapPositionInMiddle(cur_vec.x, cur_vec.y)
@@ -252,10 +252,10 @@ function AllianceLayer:CreateOrUpdateCorpsBy(event, isreturn)
             {x = event.fromAlliance.location.x, y = event.fromAlliance.location.y, index = dest_index},
             event.startTime / 1000,
             event.arriveTime / 1000,
-            event.attackPlayerData.dragon.type,
-            event.attackPlayerData.soldiers,
+            event.attackPlayerData,
             getAllyFromEvent(event),
-            string.format("[%s]%s", event.fromAlliance.tag, event.attackPlayerData.name)
+            string.format("[%s]%s", event.fromAlliance.tag, event.attackPlayerData.name),
+            isreturn
         )
 
         if event.marchType == "monster"
@@ -282,14 +282,16 @@ function AllianceLayer:CreateOrUpdateCorpsBy(event, isreturn)
             {x = event.toAlliance.location.x, y = event.toAlliance.location.y, index = dest_index},
             event.startTime / 1000,
             event.arriveTime / 1000,
-            event.attackPlayerData.dragon.type,
-            event.attackPlayerData.soldiers,
+            event.attackPlayerData,
             getAllyFromEvent(event),
-            string.format("[%s]%s", event.fromAlliance.tag, event.attackPlayerData.name)
+            string.format("[%s]%s", event.fromAlliance.tag, event.attackPlayerData.name),
+            isreturn
         )
     end
 end
-function AllianceLayer:CreateOrUpdateCorps(id, start_pos, end_pos, start_time, finish_time, dragonType, soldiers, ally, banner_name)
+function AllianceLayer:CreateOrUpdateCorps(id,start_pos,end_pos,start_time,finish_time,troops,ally,banner,isreturn)
+    local dragonType = troops.dragon.type
+    local soldiers = troops.soldiers
     if finish_time <= timer:GetServerTime() then return end
     local march_info = self:GetMarchInfoWith(id, start_pos, end_pos)
     if start_time == march_info.start_time and
@@ -308,21 +310,21 @@ function AllianceLayer:CreateOrUpdateCorps(id, start_pos, end_pos, start_time, f
         else
             corpsNode = UIKit:CreateMoveSoldiers(march_info.degree, {dragonType = dragonType, soldiers = soldiers}):addTo(corps)
         end
-        if (ally == MINE or ally == FRIEND) and banner_name then
+        if (ally == MINE or ally == FRIEND) and banner then
             if is_strike then
-                UIKit:CreateNameBanner(banner_name, dragonType)
+                UIKit:CreateNameBanner(banner, dragonType)
                 :addTo(corps,1):pos(0, 80)
             else
                 local wp = corpsNode.dragon:convertToWorldSpace(cc.p(0,0))
                 local lp = corps:convertToNodeSpace(wp)
-                UIKit:CreateNameBanner(banner_name, dragonType)
+                UIKit:CreateNameBanner(banner, dragonType)
                 :addTo(corps,1):pos(lp.x, lp.y + 80)
             end
         end
         corps.march_info = march_info
         corps:pos(march_info.start_info.real.x, march_info.start_info.real.y)
         self.map_corps[id] = corps
-        self:CreateLine(id, march_info, ally)
+        self:CreateLine(id, march_info, ally, isreturn)
     else
         self:UpdateCorpsBy(self.map_corps[id], march_info)
     end
@@ -397,7 +399,7 @@ local line_ally_map = {
     [FRIEND] = "arrow_blue_22x32.png",
     [ENEMY] = "arrow_red_22x32.png",
 }
-function AllianceLayer:CreateLine(id, march_info, ally)
+function AllianceLayer:CreateLine(id, march_info, ally, isreturn)
     if self.map_lines[id] then
         self.map_lines[id]:removeFromParent()
     end
@@ -419,7 +421,7 @@ function AllianceLayer:CreateLine(id, march_info, ally)
         })
     ))
     line:setScaleY(scale)
-    -- line.is_enemy = ally == ENEMY
+    line.isTruncate = ally == ENEMY and isreturn
     self.map_lines[id] = line
     return line
 end
