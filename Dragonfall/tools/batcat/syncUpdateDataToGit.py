@@ -33,7 +33,7 @@ def pullAutoUpdateRepositoty():
 
 def rsyncAllFiles():
 	if isWindows():
-		command = "rsync -ravc --exclude=.DS_Store* --exclude=.git/ --exclude=.gitignore ./ %s --delete-after --perms" % TARGET_PATH
+		command = "rsync -ravc --exclude=.DS_Store* --exclude=.git/ --exclude=.gitignore ./ %s --delete-after --perms --chmod=a=rw,Da+x" % TARGET_PATH
 	else:
 		command = "rsync -ravc --exclude=.DS_Store* --exclude=.git/ --exclude=.gitignore ./ %s --delete-after" % TARGET_PATH
 	os.chdir(UPDATE_SOURCE_DIR)

@@ -52,11 +52,12 @@ function GameUISettingContactUs:RefreshListView()
 	self.list_view:reload()
 end
 function GameUISettingContactUs:GetData()
+	local address = GameUtils:getSupportEmailAddress()
 	local data = {
-		{title = _("支付遇到了问题"),mail = 'support@batcatstudio.com'},
-		{title = _("游戏老是报错"),mail = 'support@batcatstudio.com'},
-		{title = _("致命性Bug上报"),mail = 'support@batcatstudio.com',subtitle = _("查实后我们将提供奖励")},
-		{title = _("其他问题"),mail = 'support@batcatstudio.com'},
+		{title = _("支付遇到了问题"),mail = address},
+		{title = _("游戏老是报错"),mail = address},
+		{title = _("致命性Bug上报"),mail = address,subtitle = _("查实后我们将提供奖励")},
+		{title = _("其他问题"),mail = address},
 	}
 	return data
 end

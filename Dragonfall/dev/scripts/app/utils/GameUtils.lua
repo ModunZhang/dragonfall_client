@@ -572,6 +572,14 @@ function GameUtils:GetGameLanguage()
     return self.gameLanguage_
 end
 
+function GameUtils:getSupportEmailAddress()
+    if device.platform == 'winrt' then
+        return "feedback@sugarcanetechnology.com"
+    else
+        return "aiyingyong2015@gmail.com"
+    end
+end
+
 function GameUtils:getSupportMailFormat(category,logMsg)
     local UTCTime    = "UTC Time:" .. os.date('!%Y-%m-%d %H:%M:%S', app.timer:GetServerTime())
     local GameName   = "Game:" .. "Dragonfall"
