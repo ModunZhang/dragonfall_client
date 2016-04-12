@@ -209,7 +209,7 @@ function GameUILoginBeta:createContactUs()
             if event.name == "CLICKED_EVENT" then
                 local seq = transition.sequence({cc.ScaleTo:create(0.1,1.3),cc.ScaleTo:create(0.1,1),cc.CallFunc:create(function()
                     local subject,body = GameUtils:getLoginErrorMailFormat(_("登陆问题"))
-                    local canSendMail = ext.sysmail.sendMail('support@batcatstudio.com',subject,body,function()end)
+                    local canSendMail = ext.sysmail.sendMail(GameUtils:getSupportEmailAddress(),subject,body,function()end)
                     if not canSendMail then
                         UIKit:showMessageDialog(_("错误"),_("您尚未设置邮件：请前往IOS系统“设置”-“邮件、通讯录、日历”-“添加账户”处设置"),function()end)
                     end
