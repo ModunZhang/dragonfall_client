@@ -252,9 +252,9 @@ function GameUISettingServer:FillDataItem(content,data)
     content.title_label:setString(self:GetServerLocalizeName(data))
     local isNew = (app.timer:GetServerTime() * 1000 - 7 * 24 * 60 * 60 * 1000) <= data.openAt
     content.is_new_server_label:setString(isNew and "[NEW!]" or "")
-    content.topAllianceCountry:setTexture(data.serverInfo.alliance and data.serverInfo.alliance ~= json.null and UILib.alliance_language_frame[data.serverInfo.alliance.country] or "icon_unknow_country.png")
-    content.top_alliance_label:setString(data.serverInfo.alliance and data.serverInfo.alliance ~= json.null and "["..data.serverInfo.alliance.tag.."] "..data.serverInfo.alliance.name or _("无"))
-    local str,color = self:GetStateLableInfoByUserCount(data.serverInfo.activeCount or 0)
+    content.topAllianceCountry:setTexture(data.alliance and data.alliance ~= json.null and UILib.alliance_language_frame[data.alliance.country] or "icon_unknow_country.png")
+    content.top_alliance_label:setString(data.alliance and data.alliance ~= json.null and "["..data.alliance.tag.."] "..data.alliance.name or _("无"))
+    local str,color = self:GetStateLableInfoByUserCount(data.activeCount or 0)
     content.state_label:setString(str)
     content.state_label:setColor(color)
     if data.id == self.server_code then
