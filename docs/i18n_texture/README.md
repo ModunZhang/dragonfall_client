@@ -74,6 +74,3 @@ python setup.py install
 
 1. 所有的大图项目在`PackImages`文件夹下,TextPacker的项目文件也在里面,使用项目脚本`buildTexture.py`导出
 2. 所有新加的图需要用`ImageOptim.app`执行一次无损压缩再放入项目中
-
----
-By DannyHe 11/11/2015
