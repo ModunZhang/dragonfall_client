@@ -127,11 +127,11 @@ function GameUISettingServer:BuildUI()
     UIKit:addTipsToNode(ruls,{_("你只能在未加入联盟的情况传送到新的服务器。"),
         _("城堡在Lv10一下(不包括Lv10)可免费传送。"),
         _("城堡在Lv10一下(城堡在Lv10以上(包括Lv10)不能传送到新服。)可免费传送。"),
-    },tips_bg,cc.size(420,0),-200,-200)
+    },tips_bg,cc.size(420,0),-310,-190)
      UIKit:addTipsToNode(info_icon,{_("你只能在未加入联盟的情况传送到新的服务器。"),
         _("城堡在Lv10一下(不包括Lv10)可免费传送。"),
         _("城堡在Lv10一下(城堡在Lv10以上(包括Lv10)不能传送到新服。)可免费传送。"),
-    },tips_bg,cc.size(420,0),-200,-200)
+    },tips_bg,cc.size(420,0),-310,-190)
     self:FetchServers()
 
 end
