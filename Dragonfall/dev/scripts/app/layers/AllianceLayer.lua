@@ -419,7 +419,7 @@ function AllianceLayer:CreateLine(id, march_info, ally)
         })
     ))
     line:setScaleY(scale)
-    line.is_enemy = ally == ENEMY
+    -- line.is_enemy = ally == ENEMY
     self.map_lines[id] = line
     return line
 end
@@ -536,9 +536,10 @@ function AllianceLayer:AddMapObjectByIndex(index, mapObject, alliance)
     local alliance_object = self.alliance_objects[index]
     if alliance_object then
         if not alliance_object.mapObjects[mapObject.id] then
-            local object = self:AddMapObject(alliance_object, mapObject, alliance)
-            if object then
-                self:RefreshObjectInfo(object, mapObject, alliance)
+            local ltx,lty,rdx,rdy = self:GetVisibleBoundary()
+            local x,y = DataUtils:GetAbsolutePosition(index,mapObject.location.x,mapObject.location.y)
+            if x >= ltx and x <= rdx and y >= lty and y <= rdy then
+                self:AddMapObject(alliance_object, mapObject, alliance)
             end
         end
     end
@@ -557,7 +558,6 @@ function AllianceLayer:RefreshMapObjectByIndex(index, mapObject, alliance)
     if alliance_object and alliance_object.mapObjects then
         local object = alliance_object.mapObjects[mapObject.id]
         if object then
-            self:RefreshMapObjectPosition(object, mapObject)
             self:RefreshObjectInfo(object, mapObject, alliance)
         end
     end
@@ -583,6 +583,51 @@ function AllianceLayer:RefreshBuildingByIndex(index, building, alliance)
         end
     end
 end
+--
+local DataUtils = DataUtils
+function AllianceLayer:LoadVisibleMapObjects(mapIndex)
+    local ltx,lty,rdx,rdy = self:GetVisibleBoundary()
+    local mapIndexes
+    if mapIndex then
+        mapIndexes = { mapIndex }
+    else
+        mapIndexes = self:GetVisibleAllianceIndexs()
+    end
+
+    for _,index in ipairs(mapIndexes) do
+        local objects_node = self.alliance_objects[index]
+        local allianceData = Alliance_Manager:GetAllianceByCache(index)
+        if objects_node and allianceData then
+            local map_obj_id = {}
+            for k,v in pairs(allianceData.mapObjects) do
+                map_obj_id[v.id] = true
+            end
+            for _,mapObj in pairs(allianceData.mapObjects) do
+                local x,y = DataUtils:GetAbsolutePosition(index,mapObj.location.x,mapObj.location.y)
+                if x >= ltx and x <= rdx and y >= lty and y <= rdy then
+                    local object = objects_node.mapObjects[mapObj.id]
+                    if not object then
+                        object = self:AddMapObject(objects_node,mapObj,allianceData)
+                    end
+                    local mapObjects = objects_node.mapObjects
+                    for id,v in pairs(mapObjects) do
+                        if not map_obj_id[id] then
+                            self:RemoveMapObject(v)
+                            mapObjects[id] = nil
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+function AllianceLayer:GetVisibleBoundary()
+    local leftTopPoint = self.map:convertToNodeSpace(cc.p(0,display.height))
+    local ltx,lty = self:GetLogicMap():ConvertToLogicPosition(leftTopPoint.x,leftTopPoint.y)
+    local rightDownPoint = self.map:convertToNodeSpace(cc.p(display.width,0))
+    local rdx,rdy = self:GetLogicMap():ConvertToLogicPosition(rightDownPoint.x,rightDownPoint.y)
+    return ltx,lty,rdx,rdy
+end
 function AllianceLayer:LoadAllianceByIndex(index, alliance)
     local allianceData = (alliance ~= nil and alliance ~= json.null) and alliance or nil
     local isMyAlliance = index == Alliance_Manager:GetMyAlliance().mapIndex
@@ -590,26 +635,6 @@ function AllianceLayer:LoadAllianceByIndex(index, alliance)
     self:LoadBackground(index, allianceData)
     self:LoadObjects(index, allianceData, function(objects_node)
         if allianceData then
-            local map_obj_id = {}
-            for k,v in pairs(allianceData.mapObjects) do
-                map_obj_id[v.id] = true
-            end
-            for _,mapObj in pairs(allianceData.mapObjects) do
-                local object = objects_node.mapObjects[mapObj.id]
-                if not object then
-                    object = self:AddMapObject(objects_node, mapObj, allianceData)
-                end
-                if object then
-                    self:RefreshObjectInfo(object, mapObj, allianceData)
-                end
-            end
-            local mapObjects = objects_node.mapObjects
-            for id,v in pairs(mapObjects) do
-                if not map_obj_id[id] then
-                    self:RemoveMapObject(v)
-                    mapObjects[id] = nil
-                end
-            end
             for name,v in pairs(objects_node.buildings) do
                 if name ~= "bloodSpring" then
                     local b = Alliance.FindAllianceBuildingInfoByName(allianceData, name)
@@ -653,6 +678,7 @@ function AllianceLayer:RemoveMapObject(mapObj)
     mapObj:removeFromParent()
 end
 function AllianceLayer:AddMapObject(objects_node, mapObj, alliance)
+    local x,y = mapObj.location.x, mapObj.location.y
     local sprite,soldierName
     if mapObj.name == "member" then
         sprite = createEffectSprite("my_keep_1.png")
@@ -701,7 +727,7 @@ function AllianceLayer:AddMapObject(objects_node, mapObj, alliance)
     node.info = self:CreateInfoBanner()
     node.name = mapObj.name
     objects_node.mapObjects[mapObj.id] = node
-    self:RefreshMapObjectPosition(node, mapObj)
+    self:RefreshObjectInfo(node, mapObj, alliance)
     return node
 end
 local function resetStatus(sprite)
@@ -770,6 +796,11 @@ local FIRE_TAG = 11900
 local SMOKE_TAG = 12000
 local VILLAGE_TAG = 120990
 function AllianceLayer:RefreshObjectInfo(object, mapObj, alliance)
+    local x,y = mapObj.location.x, mapObj.location.y
+    object.x = x
+    object.y = y
+    object:zorder(getZorderByXY(x, y)):pos(self:GetInnerMapPosition(x, y))
+
     local info = object.info
     local isenemy = User.allianceId ~= alliance._id
     local banners = isenemy and UILib.enemy_city_banner or UILib.my_city_banner
@@ -889,12 +920,6 @@ function AllianceLayer:CreateVillageFlag(e)
             cc.RepeatForever:create(transition.sequence{cc.RotateBy:create(2, -360)})
         )
     return flag
-end
-function AllianceLayer:RefreshMapObjectPosition(object, mapObject)
-    local x,y = mapObject.location.x, mapObject.location.y
-    object.x = x
-    object.y = y
-    object:zorder(getZorderByXY(x, y)):pos(self:GetInnerMapPosition(x, y))
 end
 function AllianceLayer:FreeInvisible()
     local background = self.background_node

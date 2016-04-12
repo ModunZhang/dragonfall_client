@@ -137,6 +137,7 @@ end
 function AllianceDetailScene:OnEnterMapIndex(mapIndex, data)
     self:CreateMarchEvents(data.mapData.marchEvents)
     self:GetSceneLayer():LoadAllianceByIndex(mapIndex, data.allianceData)
+    self:GetSceneLayer():LoadVisibleMapObjects(mapIndex)
 end
 function AllianceDetailScene:OnMapDataChanged(allianceData, mapData, deltaData)
     local ok, value = deltaData("marchEvents.strikeMarchEvents")
@@ -473,7 +474,6 @@ function AllianceDetailScene:onEnter()
     Alliance_Manager:AddHandle(self)
 
     self:CreateMarchEvents(alliance.marchEvents)
-    -- self:RefreshVillageEvents(alliance.villageEvents)
     self:CreateMarchEvents(Alliance_Manager:GetMyAllianceMapData().marchEvents)
     self:RefreshVillageEvents(alliance, Alliance_Manager:GetMyAllianceMapData().villageEvents)
     self.my_terrain = alliance.basicInfo.terrain
@@ -689,9 +689,9 @@ function AllianceDetailScene:UpdateVisibleAllianceBg()
     for _,k in pairs(self:GetSceneLayer():GetVisibleAllianceIndexs()) do
         if not old_visibles[k] then
             self:GetSceneLayer():LoadAllianceByIndex(k, Alliance_Manager:GetAllianceByCache(k))
-            new_visibles[k] = true
         end
         new_visibles[k] = true
+        self:GetSceneLayer():LoadVisibleMapObjects(k)
     end
     self.visible_alliances = new_visibles
 end
