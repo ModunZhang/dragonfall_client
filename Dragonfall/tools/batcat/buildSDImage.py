@@ -12,9 +12,13 @@ if __name__=="__main__":
 		os.mkdir(dest)
 	for root, dirs, files in os.walk(source):
 		for fileName in files:
-			if "-sd" not in fileName:
-				command = "%s %s -resize 50%% %s" % (getConvertTool(), source+fileName, dest+fileName.split(".")[0]+"-sd."+fileName.split(".")[1])
-				executeCommand(command, False)
+			fileExt = fileName.split(".")[-1]
+			if "-sd" not in fileName and fileExt != 'DS_Store':
+				file1 = source+fileName
+				file2 = dest+fileName.split(".")[0]+"-sd."+fileName.split(".")[1]
+				if fileNewer(file1, file2):
+					command = "%s %s -resize 50%% %s" % (getConvertTool(), source+fileName, dest+fileName.split(".")[0]+"-sd."+fileName.split(".")[1])
+					executeCommand(command, False)
 
 
 
