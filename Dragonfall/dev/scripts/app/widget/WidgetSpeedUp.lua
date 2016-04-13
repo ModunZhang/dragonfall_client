@@ -109,7 +109,10 @@ function WidgetSpeedUp:SetAccBtnsGroup(eventType,speedUpEvent)
     self.acc_buttons = WidgetAccelerateGroup.new(eventType,speedUpEvent):addTo(self.body):align(display.BOTTOM_CENTER,self.body:getContentSize().width/2,10)
     self.speedUp_button:onButtonClicked(function(event)
         if event.name == "CLICKED_EVENT" then
-            NetManager:getSpeedUpPromise(eventType, speedUpEvent.id)
+            self.speedUp_button:setButtonEnabled(false)
+            NetManager:getSpeedUpPromise(eventType, speedUpEvent.id):done(function ()
+                self.speedUp_button:setButtonEnabled(true)
+            end)
         end
     end)
     scheduleAt(self, function()
@@ -118,6 +121,7 @@ function WidgetSpeedUp:SetAccBtnsGroup(eventType,speedUpEvent)
     return self
 end
 return WidgetSpeedUp
+
 
 
 

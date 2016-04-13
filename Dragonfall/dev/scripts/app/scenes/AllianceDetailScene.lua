@@ -6,7 +6,7 @@ local MapScene = import(".MapScene")
 local AllianceDetailScene = class("AllianceDetailScene", MapScene)
 
 function AllianceDetailScene:OnAllianceDataChanged_operation(allianceData, operationType, deltaData)
-    if operationType == "quit" and not deltaData then
+    if operationType == "quit" then
         app:EnterMyCityScene()
     end
 end

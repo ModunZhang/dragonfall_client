@@ -185,7 +185,8 @@ function GameUIAllianceShrine:TabEvent_stage()
     local insight_label = UIKit:ttfLabel({
         text = display_str,
         size = 20,
-        color = 0xfff3c7
+        color = 0xfff3c7,
+        shadow = true
     }):align(display.LEFT_CENTER,40,20):addTo(bar_bg)
     progressBar:setPercentage(value/res.limit*100)
     local perHour_label = UIKit:ttfLabel({
@@ -231,7 +232,7 @@ function GameUIAllianceShrine:TabEvent_stage()
         size = 20,
         color = 0xffedae
     })
-        :align(display.LEFT_CENTER,70,29)
+        :align(display.CENTER,title_bg:getContentSize().width/2,29)
         :addTo(title_bg)
     self.stage_ui.stage_label = stage_label
    
@@ -290,7 +291,7 @@ function GameUIAllianceShrine:GetStageListItem(index,stage_obj)
         text = is_passed and _("已通关") or "",
         size = 22,
         color=  0x403c2f,
-    }):align(display.LEFT_BOTTOM, 14, 20):addTo(bg)
+    }):align(display.LEFT_BOTTOM, 14, 26):addTo(bg)
 
     local troop_image = UILib.soldier_image[troop.type]
     if is_locked then

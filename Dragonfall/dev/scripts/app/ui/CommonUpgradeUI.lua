@@ -885,7 +885,7 @@ function CommonUpgradeUI:CreateFreeSpeedUpBuildingUpgradeButton()
 end
 
 function CommonUpgradeUI:CreateFinishNowBuildingUpgradeButton()
-    local button = cc.ui.UIPushButton.new({normal = "green_btn_up_148x76.png",pressed = "green_btn_down_148x76.png"})
+    local button = cc.ui.UIPushButton.new({normal = "green_btn_up_148x76.png",pressed = "green_btn_down_148x76.png",disabled = "grey_btn_148x78.png"})
         :setButtonLabel(UIKit:ttfLabel({
             text = _("加速"),
             size = 20,
@@ -893,11 +893,14 @@ function CommonUpgradeUI:CreateFinishNowBuildingUpgradeButton()
             shadow = true
         }))
         :setButtonLabelOffset(0, 16)
-        :onButtonClicked(function(event)
-            if event.name == "CLICKED_EVENT" then
-                 NetManager:getSpeedUpPromise(self:GetEventTypeByBuilding(), self.building:UniqueUpgradingKey())
-            end
-        end)
+    button:onButtonClicked(function(event)
+        if event.name == "CLICKED_EVENT" then
+            button:setButtonEnabled(false)
+            NetManager:getSpeedUpPromise(self:GetEventTypeByBuilding(), self.building:UniqueUpgradingKey()):done(function ()
+                button:setButtonEnabled(true)
+            end)
+        end
+    end)
         :align(display.CENTER, display.cx+194, display.top - 335):addTo(self.acc_layer)
 
     local num_bg = display.newSprite("back_ground_124x28.png"):addTo(button):align(display.CENTER,0, -18)
@@ -1170,6 +1173,7 @@ function CommonUpgradeUI:PopNotSatisfyDialog(listener,can_not_update_type)
 end
 
 return CommonUpgradeUI
+
 
 
 

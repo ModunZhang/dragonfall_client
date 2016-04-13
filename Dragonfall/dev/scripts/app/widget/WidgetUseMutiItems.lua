@@ -111,7 +111,7 @@ function WidgetUseMutiItems:ctor(item_name,params)
     slider:SetValue(max_count)
     self.slider = slider
     button:setButtonEnabled(slider:GetValue() ~= 0)
-     -- 加速道具自有UI
+    -- 加速道具自有UI
     if eventType then
         local item_bg = display.newSprite("upgrade_props_box.png"):align(display.LEFT_TOP, 30, body_size.height - 30):addTo(body):scale(0.9)
         display.newSprite("upgrade_time_"..string.split(item_name,"_")[2]..".png",item_bg:getContentSize().width/2,item_bg:getContentSize().height/2):addTo(item_bg)
@@ -122,7 +122,11 @@ function WidgetUseMutiItems:ctor(item_name,params)
         time_line:SetText(GameUtils:formatTimeStyle1(leftTime),GameUtils:formatTimeStyle1(final_time > 0 and final_time or 0))
         scheduleAt(self, function()
             if self.slider then
-                local leftTime = UtilsForEvent:GetEventInfo(speedUpEvent)
+                if not UtilsForEvent:GetEventById(User,speedUpEvent.id) then
+                    self:LeftButtonClicked()
+                    return
+                end
+                local leftTime = UtilsForEvent:GetEventInfo(UtilsForEvent:GetEventById(User,speedUpEvent.id))
                 local item_effect_time = UtilsForItem:IsSpeedUpItem(item_name).effect * 60 * self.slider:GetValue()
                 local final_time = leftTime-item_effect_time
                 time_line:SetText(GameUtils:formatTimeStyle1(leftTime),GameUtils:formatTimeStyle1(final_time > 0 and final_time or 0))
@@ -258,6 +262,7 @@ function WidgetUseMutiItems:AddProgressTimer(parms)
     display.newSprite(resource_icon, icon_bg:getContentSize().width/2 , icon_bg:getContentSize().height/2):addTo(icon_bg):scale(0.5)
 end
 return WidgetUseMutiItems
+
 
 
 

@@ -127,11 +127,11 @@ function GameUISettingServer:BuildUI()
     UIKit:addTipsToNode(ruls,{_("你只能在未加入联盟的情况传送到新的服务器。"),
         _("城堡在Lv10一下(不包括Lv10)可免费传送。"),
         _("城堡在Lv10一下(城堡在Lv10以上(包括Lv10)不能传送到新服。)可免费传送。"),
-    },tips_bg,cc.size(420,0),-200,-200)
+    },tips_bg,cc.size(420,0),-310,-190)
      UIKit:addTipsToNode(info_icon,{_("你只能在未加入联盟的情况传送到新的服务器。"),
         _("城堡在Lv10一下(不包括Lv10)可免费传送。"),
         _("城堡在Lv10一下(城堡在Lv10以上(包括Lv10)不能传送到新服。)可免费传送。"),
-    },tips_bg,cc.size(420,0),-200,-200)
+    },tips_bg,cc.size(420,0),-310,-190)
     self:FetchServers()
 
 end
@@ -180,7 +180,7 @@ function GameUISettingServer:SortServerData()
 end
 
 function GameUISettingServer:GetServerLocalizeName(server)
-    return Localize.server_name[server.id]
+    return Localize.server_name[server.serverId]
 end
 
 
@@ -252,19 +252,19 @@ function GameUISettingServer:FillDataItem(content,data)
     content.title_label:setString(self:GetServerLocalizeName(data))
     local isNew = (app.timer:GetServerTime() * 1000 - 7 * 24 * 60 * 60 * 1000) <= data.openAt
     content.is_new_server_label:setString(isNew and "[NEW!]" or "")
-    content.topAllianceCountry:setTexture(data.serverInfo.alliance and data.serverInfo.alliance ~= json.null and UILib.alliance_language_frame[data.serverInfo.alliance.country] or "icon_unknow_country.png")
-    content.top_alliance_label:setString(data.serverInfo.alliance and data.serverInfo.alliance ~= json.null and "["..data.serverInfo.alliance.tag.."] "..data.serverInfo.alliance.name or _("无"))
-    local str,color = self:GetStateLableInfoByUserCount(data.serverInfo.activeCount or 0)
+    content.topAllianceCountry:setTexture(data.alliance and data.alliance ~= json.null and UILib.alliance_language_frame[data.alliance.country] or "icon_unknow_country.png")
+    content.top_alliance_label:setString(data.alliance and data.alliance ~= json.null and "["..data.alliance.tag.."] "..data.alliance.name or _("无"))
+    local str,color = self:GetStateLableInfoByUserCount(data.activeCount or 0)
     content.state_label:setString(str)
     content.state_label:setColor(color)
-    if data.id == self.server_code then
+    if data.serverId == self.server_code then
         content.selected:show()
         content.unselected:hide()
     else
         content.selected:hide()
         content.unselected:show()
     end
-    if data.id == self.current_code then
+    if data.serverId == self.current_code then
         content.here_label:show()
     else
         content.here_label:hide()
@@ -277,7 +277,7 @@ function GameUISettingServer:listviewListener(event)
         local server = self.data[event.itemPos]
         if not server then return end
         self.server = server
-        self.server_code = server.id
+        self.server_code = server.serverId
         self:RefreshCurrentPageList()
         self:RefreshServerInfo()
     end

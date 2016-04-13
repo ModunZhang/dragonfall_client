@@ -327,7 +327,9 @@ function MyApp:retryLoginGame()
             end
         end):done(function()
             print("MyApp:debug--->fetchChats")
-            app:GetChatManager():FetchChatWhenReLogined()
+            if DataManager:getUserData().basicInfo.terrain ~= "__NONE__" then
+                app:GetChatManager():FetchChatWhenReLogined()
+            end
         end):always(function()
             print("MyApp:debug--->7")
             UIKit:NoWaitForNet()

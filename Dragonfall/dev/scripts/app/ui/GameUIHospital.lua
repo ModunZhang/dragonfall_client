@@ -365,13 +365,10 @@ function GameUIHospital:CreateCasualtyRateBar()
     pro:setMidpoint(cc.p(0,0))
     pro:align(display.LEFT_BOTTOM, 0, 0):addTo(bar)
     self:SetProgressCasualtyRate()
-    self.heal_layer.casualty_rate_label = cc.ui.UILabel.new({
-        UILabelType = cc.ui.UILabel.LABEL_TYPE_TTF,
-        -- text = "",
-        font = UIKit:getFontFilePath(),
+    self.heal_layer.casualty_rate_label = UIKit:ttfLabel({
         size = 18,
-        align = ui.TEXT_ALIGN_CENTER,
         color = UIKit:hex2c3b(0xfff3c7),
+        shadow = true
     }):addTo(bar)
     self.heal_layer.casualty_rate_label:setAnchorPoint(cc.p(0,0.5))
     self.heal_layer.casualty_rate_label:pos(self.heal_layer.casualty_rate_label:getContentSize().width/2+30, bar:getContentSize().height/2)

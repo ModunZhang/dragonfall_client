@@ -166,7 +166,7 @@ function WidgetRequirementListview:RefreshListView(contents)
                     content.resource_value[1] = UIKit:ttfLabel({
                         text = v_1,
                         size = 22,
-                        color = split_desc[2] and 0x7e0000 or 0x403c2f
+                        color = v.canNotBuy and 0x403c2f or 0x7e0000
                     }):align(display.LEFT_CENTER,-180,0):addTo(content)
                     if split_desc[2] then
                         content.resource_value[2] = UIKit:ttfLabel({
