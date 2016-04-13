@@ -1668,7 +1668,7 @@ function User:HouseLocalPush(event)
     self.local_push_map = self.local_push_map or {}
     local building = UtilsForBuilding:GetBuildingByEvent(self, event)
     local title = string.format(_("修建%s到LV%d完成"),
-        Localize.getLocaliedKeyByType(building.type),
+        Localize.building_name[building.type],
         (building.level + 1))
     push_man:UpdateBuildPush(event.finishTime/1000, title, event.id)
     self.local_push_map[event.id] = push_man.CancelBuildPush
@@ -1678,7 +1678,7 @@ function User:BuildingLocalPush(event)
     self.local_push_map = self.local_push_map or {}
     local building = UtilsForBuilding:GetBuildingByEvent(self, event)
     local title = string.format(_("修建%s到LV%d完成"),
-        Localize.getLocaliedKeyByType(building.type),
+        Localize.building_name[building.type],
         (building.level + 1))
     push_man:UpdateBuildPush(event.finishTime/1000, title, event.id)
     self.local_push_map[event.id] = push_man.CancelBuildPush
