@@ -265,7 +265,8 @@ end
 --龙相关计算
 local config_dragonLevel = GameDatas.Dragons.dragonLevel
 local config_dragonStar = GameDatas.Dragons.dragonStar
-local config_dragonSkill = GameDatas.Dragons.dragonSkills
+local config_dragonSkill = GameDatas.DragonSkills
+
 local config_equipments = GameDatas.DragonEquipments.equipments
 local config_dragoneyrie = GameDatas.DragonEquipments
 

@@ -160,7 +160,7 @@ end
 
 function GameUIWithCommonHeader:CreateBackGround()
     local backGround_1 = display.newSprite("common_bg_center_1.png"):align(display.CENTER_TOP, window.cx,window.top-40):addTo(self:GetView())
-    local backGround_2 = display.newSprite("common_bg_center_2.png"):align(display.CENTER_TOP, window.cx,0):addTo(backGround_1)
+    local backGround_2 = display.newSprite("common_bg_center_2.png"):align(display.CENTER_TOP, window.cx,window.top-40 - backGround_1:getContentSize().height):addTo(self:GetView())
     return backGround_1
 end
 

@@ -180,7 +180,7 @@ function GameUISettingServer:SortServerData()
 end
 
 function GameUISettingServer:GetServerLocalizeName(server)
-    return Localize.server_name[server.id]
+    return Localize.server_name[server.serverId]
 end
 
 
@@ -257,14 +257,14 @@ function GameUISettingServer:FillDataItem(content,data)
     local str,color = self:GetStateLableInfoByUserCount(data.activeCount or 0)
     content.state_label:setString(str)
     content.state_label:setColor(color)
-    if data.id == self.server_code then
+    if data.serverId == self.server_code then
         content.selected:show()
         content.unselected:hide()
     else
         content.selected:hide()
         content.unselected:show()
     end
-    if data.id == self.current_code then
+    if data.serverId == self.current_code then
         content.here_label:show()
     else
         content.here_label:hide()
@@ -277,7 +277,7 @@ function GameUISettingServer:listviewListener(event)
         local server = self.data[event.itemPos]
         if not server then return end
         self.server = server
-        self.server_code = server.id
+        self.server_code = server.serverId
         self:RefreshCurrentPageList()
         self:RefreshServerInfo()
     end
