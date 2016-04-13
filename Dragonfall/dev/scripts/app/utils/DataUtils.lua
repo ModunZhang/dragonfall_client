@@ -298,10 +298,10 @@ function DataUtils:getTotalVitalityFromJson(star,level,skills,equipments)
     return vitality
 end
 
-function DataUtils:getDragonSkillEffect(level)
+function DataUtils:getDragonSkillEffect(skillName,level)
     level = checkint(level)
-    if config_dragonSkill[level] then
-        return config_dragonSkill[level].effect
+    if config_dragonSkill[skillName][level] then
+        return config_dragonSkill[skillName][level].effect
     end
     return 0
 end
@@ -324,7 +324,7 @@ end
 function DataUtils:__getDragonStrengthBuff(skills)
     for __,v in pairs(skills) do
         if v.name == 'dragonBreath' then
-            return self:getDragonSkillEffect(v.level)
+            return self:getDragonSkillEffect(v.name,v.level)
         end
     end
     return 0
@@ -333,7 +333,7 @@ end
 function DataUtils:__getDragonVitalityBuff(skills)
     for __,v in pairs(skills) do
         if v.name == 'dragonBlood' then
-            return self:getDragonSkillEffect(v.level)
+            return self:getDragonSkillEffect(v.name,v.level)
         end
     end
     return 0
