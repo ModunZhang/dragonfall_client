@@ -885,7 +885,7 @@ function CommonUpgradeUI:CreateFreeSpeedUpBuildingUpgradeButton()
 end
 
 function CommonUpgradeUI:CreateFinishNowBuildingUpgradeButton()
-    local button = cc.ui.UIPushButton.new({normal = "green_btn_up_148x76.png",pressed = "green_btn_down_148x76.png",disabled = "grey_btn_148x76.png"})
+    local button = cc.ui.UIPushButton.new({normal = "green_btn_up_148x76.png",pressed = "green_btn_down_148x76.png",disabled = "grey_btn_148x78.png"})
         :setButtonLabel(UIKit:ttfLabel({
             text = _("加速"),
             size = 20,
