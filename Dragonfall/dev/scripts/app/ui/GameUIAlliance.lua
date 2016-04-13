@@ -1394,10 +1394,8 @@ function GameUIAlliance:FillDataToAllianceItem(list_data,content,item)
                 real_content.player_icon.icon:clearFilter()
                 real_content.player_icon:clearFilter()
             else
-                if not real_content.player_icon.icon:getFilter() then
-                    real_content.player_icon.icon:setFilter(filter.newFilter("CUSTOM", json.encode({frag = "shaders/ps_discoloration.fs",shaderName = "ps_discoloration"})))
-                    real_content.player_icon:setFilter(filter.newFilter("CUSTOM", json.encode({frag = "shaders/ps_discoloration.fs",shaderName = "ps_discoloration"})))
-                end
+                real_content.player_icon.icon:setFilter(filter.newFilter("CUSTOM", json.encode({frag = "shaders/ps_discoloration.fs",shaderName = "ps_discoloration"})))
+                real_content.player_icon:setFilter(filter.newFilter("CUSTOM", json.encode({frag = "shaders/ps_discoloration.fs",shaderName = "ps_discoloration"})))
             end
         end
         content:size(560,78)
