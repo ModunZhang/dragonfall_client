@@ -162,7 +162,7 @@ function GameUIWall:CreateMilitaryUIIf()
         text = self:GetDefenceDragonBuffDesc(),
         color= 0x514d3e,
         size = 20
-    }):align(display.LEFT_BOTTOM,draogn_box:getPositionX()+draogn_box:getContentSize().width + 15,  draogn_box:getPositionY()+10):addTo(military_node)
+    }):align(display.LEFT_BOTTOM,draogn_box:getPositionX()+draogn_box:getContentSize().width + 35,  draogn_box:getPositionY()+10):addTo(military_node)
     self.tips_label = tips_label
     local name_str = _("请选择一个巨龙驻防")
     local level_str = string.format(_("当前联盟地形:%s"),Alliance_Manager:GetMyAlliance():IsDefault() and _("无") or Localize.terrain[Alliance_Manager:GetMyAlliance().basicInfo.terrain])
@@ -171,7 +171,7 @@ function GameUIWall:CreateMilitaryUIIf()
         level_str=  _("攻击力")
     end
     local title_bg = display.newScale9Sprite("title_blue_430x30.png",0, 0, cc.size(416,30), cc.rect(10,10,410,10)):addTo(military_node)
-        :align(display.LEFT_TOP, tips_label:getPositionX(), draogn_box:getPositionY() + draogn_box:getContentSize().height)
+        :align(display.LEFT_TOP, tips_label:getPositionX() - 20, draogn_box:getPositionY() + draogn_box:getContentSize().height)
     local name_label = UIKit:ttfLabel({
         text = name_str,
         size = 20,
@@ -184,7 +184,7 @@ function GameUIWall:CreateMilitaryUIIf()
         text = level_str,
         size = 20,
         color= 0x615b44
-    }):align(display.LEFT_BOTTOM,title_bg:getPositionX(), title_bg:getPositionY() - title_bg:getContentSize().height - 40):addTo(military_node)
+    }):align(display.LEFT_BOTTOM,title_bg:getPositionX() + 20, title_bg:getPositionY() - title_bg:getContentSize().height - 40):addTo(military_node)
     self.level_title_label = level_title_label
     self.dragon_level_label = UIKit:ttfLabel({
         text = "",
@@ -212,12 +212,12 @@ function GameUIWall:CreateMilitaryUIIf()
         _("・驻防巨龙能防御敌方进行的突袭，获得城市的信息")
     }):addTo(military_node):align(display.CENTER_TOP,window.width/2,draogn_box:getPositionY() - 10)
     local select_button = WidgetPushButton.new({
-        normal = "yellow_btn_up_148x58.png",
-        pressed = "yellow_btn_down_148x58.png",
-        disabled = "gray_btn_148x58.png"
+        normal = "yellow_btn_up_186x66.png",
+        pressed = "yellow_btn_down_186x66.png",
+        disabled = "gray_btn_186x66.png"
     })
         :addTo(military_node)
-        :align(display.CENTER_BOTTOM, window.width/2,tips_panel:getPositionY() - tips_panel:getContentSize().height - 70)
+        :align(display.CENTER_BOTTOM, window.width/2,tips_panel:getPositionY() - tips_panel:getContentSize().height - 80)
         :setButtonLabel("normal", UIKit:ttfLabel({text = _("驻防部队"),size = 22,color = 0xffedae,shadow = true}))
         :onButtonClicked(function()
             UIKit:newGameUI('GameUISendTroopNew',function(dragonType,soldiers)
@@ -242,9 +242,9 @@ function GameUIWall:CreateMilitaryUIIf()
     self.military_troop_btn = select_button
 
     local retreat_btn = WidgetPushButton.new({
-        normal = "red_btn_up_148x58.png",
-        pressed = "red_btn_down_148x58.png",
-        disabled = "gray_btn_148x58.png"
+        normal = "red_btn_up_186x66.png",
+        pressed = "red_btn_down_186x66.png",
+        disabled = "gray_btn_186x66.png"
     })
         :addTo(military_node)
         :align(display.LEFT_BOTTOM, 50,list_node:getPositionY() - 70)

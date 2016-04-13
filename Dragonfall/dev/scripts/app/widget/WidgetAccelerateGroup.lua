@@ -75,7 +75,7 @@ function WidgetAccelerateGroup:ctor(eventType,speedUpEvent)
         time_button:onButtonClicked(function(event)
             if event.name == "CLICKED_EVENT" then
                 if string.find(own_label:getString(),_("拥有")) then
-                    local leftTime = UtilsForEvent:GetEventInfo(speedUpEvent)
+                    local leftTime = UtilsForEvent:GetEventInfo(UtilsForEvent:GetEventById(User,speedUpEvent.id))
                     local effect = UtilsForItem:IsSpeedUpItem(speedUp_item_name).effect * 60
                     local max_count = math.min(math.ceil(leftTime/effect), User:GetItemCount(speedUp_item_name))
                     UIKit:newWidgetUI("WidgetUseMutiItems", speedUp_item_name,{max_count = max_count,
@@ -112,7 +112,7 @@ function WidgetAccelerateGroup:ctor(eventType,speedUpEvent)
                 acc_button:setVisible(false)
                 time_button:setVisible(true)
                 if string.find(own_label:getString(),_("拥有")) then
-                    local leftTime = UtilsForEvent:GetEventInfo(speedUpEvent)
+                    local leftTime = UtilsForEvent:GetEventInfo(UtilsForEvent:GetEventById(User,speedUpEvent.id))
                     local effect = UtilsForItem:IsSpeedUpItem(speedUp_item_name).effect * 60
                     local max_count = math.min(math.ceil(leftTime/effect), User:GetItemCount(speedUp_item_name))
                     UIKit:newWidgetUI("WidgetUseMutiItems", speedUp_item_name,{max_count = max_count,
@@ -174,6 +174,7 @@ function WidgetAccelerateGroup:OnUserDataChanged_items()
     end
 end
 return WidgetAccelerateGroup
+
 
 
 

@@ -82,7 +82,7 @@ function GameUIThroneMain:onEnter()
             UIKit:newGameUI("GameUIAbjectAlliance",City):AddToCurrentScene(true)
         end)
     local king_notice_button = WidgetPushButton.new({normal = "blue_btn_up_148x58.png",pressed = "blue_btn_down_148x58.png"})
-        :setButtonLabel(UIKit:ttfLabel({text = _("国王通告"),
+        :setButtonLabel(UIKit:ttfLabel({text = _("编辑"),
             size = 20,
             shadow = true,
             color = 0xfff3c7

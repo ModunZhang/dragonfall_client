@@ -26,41 +26,41 @@ local GameUISendTroopNew = UIKit:createUIClass("GameUISendTroopNew","GameUIWithC
 GameUISendTroopNew.dragonType = nil
 
 local soldier_arrange = {
-    swordsman_1 = {row = 2, col = 2},
-    swordsman_2 = {row = 2, col = 2},
-    swordsman_3 = {row = 2, col = 2},
-    ranger_1 = {row = 2, col = 2},
-    ranger_2 = {row = 2, col = 2},
-    ranger_3 = {row = 2, col = 2},
-    lancer_1 = {row = 2, col = 1},
-    lancer_2 = {row = 2, col = 1},
-    lancer_3 = {row = 2, col = 1},
-    catapult_1 = {row = 1, col = 1},
-    catapult_2 = {row = 1, col = 1},
-    catapult_3 = {row = 1, col = 1},
+    swordsman_1 = {row = 2, col = 2, x = -30, y = 10},
+    swordsman_2 = {row = 2, col = 2, x = -30, y = 10},
+    swordsman_3 = {row = 2, col = 2, x = -30, y = 10},
+    ranger_1 = {row = 2, col = 2, x = -30, y = 10},
+    ranger_2 = {row = 2, col = 2, x = -30, y = 10},
+    ranger_3 = {row = 2, col = 2, x = -30, y = 10},
+    lancer_1 = {row = 2, col = 1, x = -30, y = 10},
+    lancer_2 = {row = 2, col = 1, x = -10, y = 10},
+    lancer_3 = {row = 2, col = 1, x = -30, y = 10},
+    catapult_1 = {row = 1, col = 1, x = -160, y = -20},
+    catapult_2 = {row = 1, col = 1, x = -150, y = -20},
+    catapult_3 = {row = 1, col = 1, x = -150, y = -20},
 
-    horseArcher_1 = {row = 2, col = 1},
-    horseArcher_2 = {row = 2, col = 1},
-    horseArcher_3 = {row = 2, col = 1},
-    ballista_1 = {row = 1, col = 1},
-    ballista_2 = {row = 1, col = 1},
-    ballista_3 = {row = 1, col = 1},
-    skeletonWarrior = {row = 2, col = 2},
-    skeletonArcher = {row = 2, col = 2},
+    horseArcher_1 = {row = 2, col = 1, x = -30, y = 10},
+    horseArcher_2 = {row = 2, col = 1, x = -30, y = 10},
+    horseArcher_3 = {row = 2, col = 1, x = -30, y = 10},
+    ballista_1 = {row = 1, col = 1, x = -30, y = -20},
+    ballista_2 = {row = 1, col = 1, x = -30, y = -20},
+    ballista_3 = {row = 1, col = 1, x = -30, y = -20},
+    skeletonWarrior = {row = 2, col = 2, x = -38, y = 10},
+    skeletonArcher = {row = 2, col = 2, x = -38, y = 10},
 
-    deathKnight = {row = 2, col = 1},
-    meatWagon = {row = 1, col = 1},
-    priest = {row = 2, col = 1},
-    demonHunter = {row = 2, col = 1},
+    deathKnight = {row = 2, col = 1, x = -30, y = 10},
+    meatWagon = {row = 1, col = 1, x = -150, y = -20},
+    priest = {row = 2, col = 1, x = -30, y = 10},
+    demonHunter = {row = 2, col = 1, x = -30, y = 10},
 
-    paladin = {row = 2, col = 2},
-    steamTank = {row = 1, col = 1},
-    sentinel_1 = {row = 2, col = 2},
-    sentinel_2 = {row = 2, col = 2},
-    sentinel_3 = {row = 2, col = 2},
-    crossbowman_1 = {row = 2, col = 2},
-    crossbowman_2 = {row = 2, col = 2},
-    crossbowman_3 = {row = 2, col = 2},
+    paladin = {row = 2, col = 2, x = -30, y = 10},
+    steamTank = {row = 1, col = 1, x = -30, y = 10},
+    sentinel_1 = {row = 2, col = 2, x = -30, y = 10},
+    sentinel_2 = {row = 2, col = 2, x = -30, y = 10},
+    sentinel_3 = {row = 2, col = 2, x = -30, y = 10},
+    crossbowman_1 = {row = 2, col = 2, x = -30, y = 10},
+    crossbowman_2 = {row = 2, col = 2, x = -30, y = 10},
+    crossbowman_3 = {row = 2, col = 2, x = -30, y = 10},
 }
 
 function GameUISendTroopNew:GetMyAlliance()
@@ -111,7 +111,7 @@ function GameUISendTroopNew:ctor(march_callback,params)
 end
 
 function GameUISendTroopNew:OnMoveInStage()
-    
+
     GameUISendTroopNew.super.OnMoveInStage(self)
 end
 function GameUISendTroopNew:CreateBetweenBgAndTitle()
@@ -169,25 +169,43 @@ function GameUISendTroopNew:SelectDragonPart()
     }):align(display.CENTER,dragon_name_bg:getContentSize().width/2,dragon_name_bg:getContentSize().height/2)
         :addTo(dragon_name_bg)
     -- 状态
-    self.dragon_status = UIKit:ttfLabel({
-        text = string.format("%s %s",_("状态"),dragon:GetLocalizedStatus()),
+    UIKit:ttfLabel({
+        text = _("状态"),
         size = 22,
         color = 0xffedae,
     }):align(display.LEFT_CENTER,30,dragon_name_bg:getPositionY() - 40)
         :addTo(dragon_frame)
+    self.dragon_status = UIKit:ttfLabel({
+        text = dragon:GetLocalizedStatus(),
+        size = 22,
+        color = 0xffedae,
+    }):align(display.RIGHT_CENTER,330,dragon_name_bg:getPositionY() - 40)
+        :addTo(dragon_frame)
     -- 龙生命值
-    self.dragon_hp = UIKit:ttfLabel({
-        text = string.format("%s %s",_("生命值"),string.formatnumberthousands(dragon:Hp()).."/"..string.formatnumberthousands(dragon:GetMaxHP())),
+    UIKit:ttfLabel({
+        text = _("生命值"),
         size = 22,
         color = 0xffedae,
     }):align(display.LEFT_CENTER,30,self.dragon_status:getPositionY() - 40)
         :addTo(dragon_frame)
+    self.dragon_hp = UIKit:ttfLabel({
+        text = string.formatnumberthousands(dragon:Hp()).."/"..string.formatnumberthousands(dragon:GetMaxHP()),
+        size = 22,
+        color = 0xffedae,
+    }):align(display.RIGHT_CENTER,330,self.dragon_status:getPositionY() - 40)
+        :addTo(dragon_frame)
     -- 龙攻击力
-    self.dragon_strength = UIKit:ttfLabel({
-        text = string.format("%s %s",_("攻击力"),string.formatnumberthousands(dragon:TotalStrength())),
+    UIKit:ttfLabel({
+        text = _("攻击力"),
         size = 22,
         color = 0xffedae,
     }):align(display.LEFT_CENTER,30,self.dragon_hp:getPositionY() - 40)
+        :addTo(dragon_frame)
+    self.dragon_strength = UIKit:ttfLabel({
+        text = string.formatnumberthousands(dragon:TotalStrength()),
+        size = 22,
+        color = 0xffedae,
+    }):align(display.RIGHT_CENTER,330,self.dragon_hp:getPositionY() - 40)
         :addTo(dragon_frame)
 
     local send_troops_btn = WidgetPushButton.new({normal = 'tmp_button_battle_up_234x82.png',pressed = 'tmp_button_battle_down_234x82.png'},{scale9 = true})
@@ -219,7 +237,7 @@ function GameUISendTroopNew:SelectDragonPart()
         text = "0",
         size = 22,
         color = 0xffedae,
-    }):align(display.LEFT_CENTER,soldier_power:getPositionX() + soldier_power:getContentSize().width + 25,108)
+    }):align(display.RIGHT_CENTER,310,108)
         :addTo(bottom_info_bg)
 
     local dragon_lead = UIKit:ttfLabel({
@@ -232,7 +250,7 @@ function GameUISendTroopNew:SelectDragonPart()
         text = "0/"..string.formatnumberthousands(dragon:LeadCitizen()),
         size = 22,
         color = 0xffedae,
-    }):align(display.LEFT_CENTER,dragon_lead:getPositionX() + dragon_lead:getContentSize().width + 25,68)
+    }):align(display.RIGHT_CENTER,310,68)
         :addTo(bottom_info_bg)
 
     -- 龙负重
@@ -246,7 +264,7 @@ function GameUISendTroopNew:SelectDragonPart()
         text = "0",
         size = 22,
         color = 0xffedae,
-    }):align(display.LEFT_CENTER,load:getPositionX() + load:getContentSize().width + 25,28)
+    }):align(display.RIGHT_CENTER,310,28)
         :addTo(bottom_info_bg)
 end
 function GameUISendTroopNew:SelectDragon()
@@ -262,7 +280,7 @@ function GameUISendTroopNew:SelectDragon()
                             self:RefreashDragon(selectDragon)
                             self.isMax = false
                             self.max_btn:setButtonLabel(UIKit:ttfLabel({
-                                text = _("最大"), 
+                                text = _("最大"),
                                 size = 24,
                                 color = 0xffedae,
                                 shadow= true
@@ -279,9 +297,9 @@ function GameUISendTroopNew:RefreashDragon(dragon)
     local dragon = dragon or self.dragon
     self.dragon_armature:ReloadSpriteCauseTerrainChanged(dragon:Type())
     self.dragon_name:setString(Localize.dragon[dragon:Type()].."（LV ".. dragon:Level()..")")
-    self.dragon_status:setString(string.format("%s %s",_("状态"),dragon:GetLocalizedStatus()))
-    self.dragon_hp:setString(string.format("%s %s",_("生命值"),string.formatnumberthousands(dragon:Hp()).."/"..string.formatnumberthousands(dragon:GetMaxHP())))
-    self.dragon_strength:setString(string.format("%s %s",_("攻击力"),string.formatnumberthousands(dragon:TotalStrength())))
+    self.dragon_status:setString(dragon:GetLocalizedStatus())
+    self.dragon_hp:setString(string.formatnumberthousands(dragon:Hp()).."/"..string.formatnumberthousands(dragon:GetMaxHP()))
+    self.dragon_strength:setString(string.formatnumberthousands(dragon:TotalStrength()))
     local power,load,citizen = self:GetTotalSoldierInfo()
     self.soldier_power:setString(string.formatnumberthousands(power))
     self.lead_citizen:setString(string.formatnumberthousands(citizen).."/"..string.formatnumberthousands(dragon:LeadCitizen()))
@@ -375,15 +393,11 @@ function GameUISendTroopNew:CreateSoldierNode()
         end
         local arrange = soldier_arrange[soldier_type]
         local star = UtilsForSoldier:SoldierStarByName(User,soldier_type)
-        local corp = Corps.new(soldier_type, star , arrange.row, arrange.col,120,120):align(display.CENTER, s_size.width - 30,s_size.height + 10):addTo(self):setTag(110)
+        local corp = Corps.new(soldier_type, star , arrange.row, arrange.col,120,120):align(display.CENTER, s_size.width + arrange.x,s_size.height + arrange.y):addTo(self):setTag(110)
         if not string.find(soldier_type , "catapult") and not string.find(soldier_type , "ballista") and not string.find(soldier_type , "meatWagon") then
             corp:PlayAnimation("idle_90")
         else
             corp:PlayAnimation("move_90")
-            if string.find(soldier_type , "catapult") or string.find(soldier_type , "meatWagon") then
-                corp:setPositionX(s_size.width - 150)
-            end
-            corp:setPositionY(s_size.height - 20)
         end
         power_label:setString(string.formatnumberthousands(soldier_count))
         self.soldier_type = soldier_type
@@ -758,6 +772,9 @@ end
 
 
 return GameUISendTroopNew
+
+
+
 
 
 

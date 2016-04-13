@@ -191,6 +191,7 @@ end
 
 function UtilsForItem:GetAllCityBuffTypes()
     return {
+        "masterOfDefender",
         "quarterMaster",
         "fogOfTrick",
         "woodBonus",

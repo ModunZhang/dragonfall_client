@@ -44,7 +44,7 @@ function WidgetSelectDragon:ctor(params)
             text = string.formatnumberthousands(dragon:TotalStrength()),
             size = 18,
             color = 0x403c2f,
-        }):align(display.LEFT_CENTER,dragon_vitality:getPositionX() + dragon_vitality:getContentSize().width + 45,65)
+        }):align(display.RIGHT_CENTER,260,65)
             :addTo(box_bg)
 
         local dragon_vitality = UIKit:ttfLabel({
@@ -57,7 +57,7 @@ function WidgetSelectDragon:ctor(params)
             text = string.formatnumberthousands(dragon:LeadCitizen()),
             size = 18,
             color = 0x403c2f,
-        }):align(display.LEFT_CENTER,dragon_vitality:getPositionX() + dragon_vitality:getContentSize().width + 45,40)
+        }):align(display.RIGHT_CENTER,260,40)
             :addTo(box_bg)
 
         -- 龙活力
@@ -71,7 +71,7 @@ function WidgetSelectDragon:ctor(params)
             text = string.formatnumberthousands(dragon:Hp()) .."/"..string.formatnumberthousands(dragon:GetMaxHP()),
             size = 18,
             color = 0x403c2f,
-        }):align(display.LEFT_CENTER,dragon_vitality:getPositionX() + dragon_vitality:getContentSize().width + 45,15)
+        }):align(display.RIGHT_CENTER,260,15)
             :addTo(box_bg)
         -- 龙状态
         local d_status = dragon:GetLocalizedStatus()

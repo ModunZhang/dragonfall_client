@@ -67,18 +67,25 @@ function GameUIDragonSkill:onEnter()
         :addTo(titleBar):onButtonClicked(function()
         self:LeftButtonClicked()
         end)
+    display.newSprite("alliance_item_flag_box_126X126.png")
+                :align(display.LEFT_TOP,30,titleBar:getPositionY() - 20)
+                :scale(122/126)
+                :addTo(self.backgroundImage)
     local skillBg = display.newSprite("dragon_skill_bg_110x110.png")
-        :addTo(self.backgroundImage):align(display.LEFT_TOP,30,titleBar:getPositionY() - 20)
+        :addTo(self.backgroundImage):align(display.LEFT_TOP,37,titleBar:getPositionY() - 25)
     local skill_icon = UILib.dragon_skill_icon[self.skill:Name()][self.skill:Type()]
     local skill_sp = self:GetSkillIconSprite():addTo(skillBg):pos(55,55)
     skill_sp:scale(80/skill_sp:getContentSize().width)
+    local title_bg = display.newScale9Sprite("title_blue_430x30.png",0, 0, cc.size(416,30), cc.rect(10,10,410,10)):addTo(self.backgroundImage)
+        :align(display.LEFT_TOP,skillBg:getPositionX()+skillBg:getContentSize().width+15,skillBg:getPositionY())
+    self.title_bg = title_bg
     local str = self.skill:Level() > 0 and Localize.dragon_skill[self.skill:Name()] .. " (LV" .. self.skill:Level() .. ")" or Localize.dragon_skill[self.skill:Name()]
     local titleLabel = UIKit:ttfLabel({
         text = str,
         size = 24,
-        color= 0x403c2f,
+        color= 0xffedae,
         align = cc.ui.UILabel.TEXT_ALIGN_LEFT
-    }):addTo(self.backgroundImage):align(display.LEFT_TOP,skillBg:getPositionX()+skillBg:getContentSize().width+5,skillBg:getPositionY())
+    }):addTo(title_bg):align(display.LEFT_CENTER,15,15)
     self.skillBg = skillBg
     self.titleLabel = titleLabel
     self:SetDesc()
@@ -236,7 +243,7 @@ function GameUIDragonSkill:SetDesc()
         color=0x403c2f,
         align = cc.ui.UILabel.TEXT_ALIGN_LEFT,
         dimensions = cc.size(400,0)
-    }):addTo(self.backgroundImage):align(display.LEFT_TOP, self.skillBg:getPositionX() + self.skillBg:getContentSize().width+5, self.titleLabel:getPositionY()- self.titleLabel:getContentSize().height )
+    }):addTo(self.backgroundImage):align(display.LEFT_TOP, self.skillBg:getPositionX() + self.skillBg:getContentSize().width+30, self.title_bg:getPositionY()- self.title_bg:getContentSize().height - 10 )
     self.descLabel = descLabel
     if current_effect then
         local current_effect_label = UIKit:ttfLabel({
