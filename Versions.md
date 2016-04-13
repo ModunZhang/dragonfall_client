@@ -19,6 +19,7 @@ Version | Git SHA-1 | Release Notes
 1.1.2(873)   | c8c4724
 1.1.2(851)   | 55e89b5  
 1.1.2(946)   | 40a8d19 | February 25, 2016
+1.1.2(1569)  | b2b2467 | appVersion: 1.1.3 appMinVersion:1.1.2
 
 ### Android
 
