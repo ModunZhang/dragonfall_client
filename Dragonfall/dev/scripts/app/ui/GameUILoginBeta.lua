@@ -545,9 +545,9 @@ function GameUILoginBeta:connectGateServer()
         self:getLogicServerInfo()
     end):catch(function(err)
         -- 1是连接游戏服务器失败 0是本地网络有问题
-        local errorCode = success and 1 or 0
         GameUtils:PingSearchEngine(function(success)
-            self:showErrorForReTry(string.format("%s[code:%d]",_("连接网关服务器失败!"),errorCode),function()
+            local errorCode = success and 1 or 0
+            self:showErrorForReTry(string.format("%s[%d]",_("连接网关服务器失败!"),errorCode),function()
                 self:performWithDelay(function()
                     self:loginAction()
                 end, 1)
