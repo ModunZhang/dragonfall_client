@@ -18,6 +18,28 @@ function UtilsForEvent:GetEventInfo(event)
     end
     return math.ceil(left), (time - start) * 100.0 / (finish - start)
 end
+function UtilsForEvent:GetEventById(userdata,id)
+    local all_events = {
+        "houseEvents",
+        "buildingEvents",
+        "productionTechEvents",
+        "militaryTechEvents",
+        "soldierEvents",
+        "treatSoldierEvents",
+        "soldierStarEvents",
+        "dragonDeathEvents",
+        "dragonEquipmentEvents",
+        "materialEvents",
+        "dailyQuestEvents"
+    }
+    for i,event_type in ipairs(all_events) do
+        for j,event in ipairs(userdata[event_type]) do
+            if event.id == id then
+                return event
+            end
+        end
+    end
+end
 -- 将事件加速到可免费加速需要的金龙币
 function UtilsForEvent:GetSpeedUpPrice(event,eventType,time)
     if self:CouldFreeSpeedUp(eventType) then
@@ -281,6 +303,7 @@ function UtilsForEvent:GetAllMyMarchEvents()
     end
     return events
 end
+
 
 
 

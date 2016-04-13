@@ -1210,10 +1210,10 @@ function GameUIMail:ShowSendMailDetails(mail)
         {
             text = mail.content,
             size = 20,
-            dimensions = cc.size(550,0),
+            dimensions = cc.size(530,0),
             color = 0x403c2f
-        }):align(display.LEFT_TOP)
-    content_item:setItemSize(570,content_label:getContentSize().height)
+        }):align(display.LEFT_TOP,10,0)
+    content_item:setItemSize(530,content_label:getContentSize().height)
     content_item:addContent(content_label)
     content_listview:addItem(content_item)
     content_listview:reload()

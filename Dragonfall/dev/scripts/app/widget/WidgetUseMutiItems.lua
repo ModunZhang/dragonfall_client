@@ -122,7 +122,7 @@ function WidgetUseMutiItems:ctor(item_name,params)
         time_line:SetText(GameUtils:formatTimeStyle1(leftTime),GameUtils:formatTimeStyle1(final_time > 0 and final_time or 0))
         scheduleAt(self, function()
             if self.slider then
-                local leftTime = UtilsForEvent:GetEventInfo(speedUpEvent)
+                local leftTime = UtilsForEvent:GetEventInfo(UtilsForEvent:GetEventById(User,speedUpEvent.id))
                 local item_effect_time = UtilsForItem:IsSpeedUpItem(item_name).effect * 60 * self.slider:GetValue()
                 local final_time = leftTime-item_effect_time
                 time_line:SetText(GameUtils:formatTimeStyle1(leftTime),GameUtils:formatTimeStyle1(final_time > 0 and final_time or 0))
