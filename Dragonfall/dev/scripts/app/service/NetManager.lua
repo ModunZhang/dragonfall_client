@@ -762,6 +762,28 @@ function NetManager:getConnectLogicServerPromise()
         self:InitEventsMap(base_event_map, logic_event_map)
     end)
 end
+local statistics = {}
+setmetatable(statistics, {
+    __index = function(t,seconds)
+        local seconds = math.ceil(seconds)
+        if seconds <= 1 then
+            return "loginTime:0-1"
+        end
+        if seconds <= 2 then
+            return "loginTime:1-2"
+        end
+        if seconds <= 3 then
+            return "loginTime:2-3"
+        end
+        if seconds <= 4 then
+            return "loginTime:3-4"
+        end
+        if seconds <= 5 then
+            return "loginTime:4-5"
+        end
+        return "loginTime:5<"
+    end
+})
 -- 登录
 local IS_HARD_LOGIN = true
 function NetManager:getLoginPromise(deviceId)
@@ -808,6 +830,13 @@ function NetManager:getLoginPromise(deviceId)
                 self.m_was_inited_game = true
             end
             self.is_login = true
+            if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEvent then
+                ext.market_sdk.onPlayerEvent(statistics[diff_time/1000], "empty")
+            end
+        else
+            if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEvent then
+                ext.market_sdk.onPlayerEvent("LOGIN_FAILED", "empty")
+            end
         end
         return response
     end)
