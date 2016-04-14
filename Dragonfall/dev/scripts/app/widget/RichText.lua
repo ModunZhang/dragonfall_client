@@ -7,7 +7,7 @@ local LuaUtils = LuaUtils
 
 
 local function get_first_line(label, width)
-    label:setLineBreakWithoutSpace(true)
+    label:setLineBreakWithoutSpace(false)
     label:setMaxLineWidth(width)
 
     local origin_str = label:getString()
