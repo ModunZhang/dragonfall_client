@@ -4,6 +4,8 @@ import java.util.HashMap;
 import android.app.Activity;
 //#ifdef CC_USE_TALKING_DATA
 import org.cocos2dx.lua.AppActivity;
+
+import com.batcatstudio.dragonfall.utils.CommonUtils;
 import com.tendcloud.tenddata.TDGAAccount;
 import com.tendcloud.tenddata.TDGAItem;
 import com.tendcloud.tenddata.TDGAVirtualCurrency;
@@ -24,6 +26,9 @@ public class MarketSDK {
 //#endif
 	
 	public static void initSDK() {
+		if(shouldCloseSDK()){
+			return;
+		}
 //#ifdef CC_USE_TALKING_DATA
 		TalkingDataGA.init(AppActivity.getGameActivity().getApplicationContext(), TD_APP_ID,
 				TD_CHANNEL_ID);
@@ -35,8 +40,16 @@ public class MarketSDK {
 //#endif
 	}
 
+	private static boolean shouldCloseSDK()
+	{
+		return CommonUtils.isAppHocMode();
+	}
+
 	public static void onPlayerLogin(String playerId, String playerName,
 			String serverName) {
+		if(shouldCloseSDK()){
+			return;
+		}
 //#ifdef CC_USE_TALKING_DATA
 		TDGAAccount account = TDGAAccount.setAccount(playerId);
 		account.setAccountName(playerName);
@@ -50,36 +63,54 @@ public class MarketSDK {
 	public static void onPlayerChargeRequst(String orderID, String productId,
 			double currencyAmount, double virtualCurrencyAmount,
 			String currencyType) {
+		if(shouldCloseSDK()){
+			return;
+		}
 //#ifdef CC_USE_TALKING_DATA
 		TDGAVirtualCurrency.onChargeRequest(orderID, productId, currencyAmount, currencyType, virtualCurrencyAmount, "Google");
 //#endif
 	}
 	
 	public static void onPlayerChargeSuccess(String orderID){
+		if(shouldCloseSDK()){
+			return;
+		}
 //#ifdef CC_USE_TALKING_DATA
 		TDGAVirtualCurrency.onChargeSuccess(orderID);
 //#endif
 	}
 	
 	public static void onPlayerBuyGameItems(String itemID,int count,double itemPrice){
+		if(shouldCloseSDK()){
+			return;
+		}
 //#ifdef CC_USE_TALKING_DATA
 		TDGAItem.onPurchase(itemID,count,itemPrice);
 //#endif
 	}
 
 	public static void onPlayerUseGameItems(String itemID,int count) {
+		if(shouldCloseSDK()){
+			return;
+		}
 //#ifdef CC_USE_TALKING_DATA
 		TDGAItem.onUse(itemID, count);
 //#endif
 	}
 
 	public static void onPlayerReward(double count,String reason) {
+		if(shouldCloseSDK()){
+			return;
+		}
 //#ifdef CC_USE_TALKING_DATA
 		TDGAVirtualCurrency.onReward(count,reason);
 //#endif
 	}
 
 	public static void onPlayerEvent(String event_id,String args) {
+		if(shouldCloseSDK()){
+			return;
+		}
 		HashMap<String,String>   hashmap = new HashMap<String,String>();   
 		hashmap.put("desc",args);
 //#ifdef CC_USE_TALKING_DATA
@@ -88,6 +119,9 @@ public class MarketSDK {
 	}
 
 	public static void onPlayerLevelUp(int level) {
+		if(shouldCloseSDK()){
+			return;
+		}
 //#ifdef CC_USE_TALKING_DATA
 		if (tdga_account!=null) {
 			tdga_account.setLevel(level);
@@ -96,11 +130,17 @@ public class MarketSDK {
 	}
 	//life cycle
 	public static void onResume(Activity activity) {
+		if(shouldCloseSDK()){
+			return;
+		}
 //#ifdef CC_USE_TALKING_DATA
 		TalkingDataGA.onResume(activity);
 //#endif
 	}
 	public static void onPause(Activity activity) {
+		if(shouldCloseSDK()){
+			return;
+		}
 //#ifdef CC_USE_TALKING_DATA
 		TalkingDataGA.onPause(activity);
 //#endif
