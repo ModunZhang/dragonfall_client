@@ -725,7 +725,8 @@ function GameUILoginBeta:donwLoadFilesWithFileList()
     local updateFileList = {}
     for k, v in pairs(serverFileList.files) do
         local localFile = localFileList.files[k]
-        if not localFile or localFile.tag ~= v.tag or localFile.crc32 ~= v.crc32 then
+        --不再比对tag值 
+        if not localFile or localFile.crc32 ~= v.crc32 then
             v.path = k
             table.insert(updateFileList, v)
         end

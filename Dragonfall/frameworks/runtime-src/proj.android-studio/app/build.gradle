@@ -133,7 +133,7 @@ android {
 dependencies {
     compile project(':libcocos2dx')
     // Google Play Market
-    googleplayCompile files('libs/AF-Android-SDK-v3.3.0.jar', 'libs/Game_Analytics_SDK_Android_3.2.3.jar')
+    googleplayCompile files('libs/AF-Android-SDK-v3.3.0.jar', 'libs/Game_Analytics_SDK_Android_3.2.3.jar','libs/bugly_1.2.9_release.jar','libs/bugly_cocos2dx_1.2.9_release.jar')
     
     googleplayCompile 'com.facebook.android:facebook-android-sdk:4.0.0'
     
@@ -148,6 +148,7 @@ dependencies {
     paypalCompile 'com.facebook.android:facebook-android-sdk:4.0.0'
 
     paypalCompile 'com.google.android.gms:play-services-plus:8.1.0'
+
 }
 
 // We add some tasks to help us,use the command 'gradle tasks' see all tasks

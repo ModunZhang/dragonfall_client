@@ -230,3 +230,7 @@
 
 # -- Ignoring warnings from okio based on https://github.com/square/okio/issues/60
 -dontwarn okio.*
+
+# -------- bugly --------
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
