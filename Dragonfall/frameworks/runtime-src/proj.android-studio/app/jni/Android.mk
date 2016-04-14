@@ -89,6 +89,9 @@ endif
 LOCAL_STATIC_LIBRARIES += quick_libs_static
 # _COCOS_LIB_ANDROID_END
 
+# Bugly
+LOCAL_STATIC_LIBRARIES += bugly_crashreport_cocos_static
+
 include $(BUILD_SHARED_LIBRARY)
 
 ifeq ($(CC_USE_POMELO_C_LIB),1)
@@ -102,3 +105,5 @@ endif
 # _COCOS_LIB_IMPORT_ANDROID_BEGIN
 $(call import-module,proj.android)
 # _COCOS_LIB_IMPORT_ANDROID_END
+# Bugly
+$(call import-module,external/bugly)

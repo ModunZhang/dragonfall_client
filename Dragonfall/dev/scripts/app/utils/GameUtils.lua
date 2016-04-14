@@ -31,7 +31,7 @@ function GameUtils:formatTimeStyle1(time)
 end
 
 function GameUtils:getGateServerDomain()
-    return CONFIG_GATE_SERVER_DOMAIN[device.platform] or "http://gate.batcatstudio.com"
+    return CONFIG_GATE_SERVER_DOMAIN and CONFIG_GATE_SERVER_DOMAIN[device.platform] or "http://gate.batcatstudio.com"
 end
 
 function GameUtils:formatTimeStyle2(time)

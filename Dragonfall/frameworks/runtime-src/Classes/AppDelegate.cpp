@@ -18,6 +18,7 @@
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
 #include "WinRTHelper.h"
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+#include "bugly/CrashReport.h"
 #define LOG_TAG ("AppDelegate.cpp")
 #define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__))
 #define LOGD(...) ((void)__android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__))
@@ -66,6 +67,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
     AppDelegateExtern::initLuaEngine();
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+    CrashReport::initCrashReport("900025835", false);
     AndroidCheckFistInstall();
 #else
 	//normal execute lua file
