@@ -575,6 +575,8 @@ end
 function GameUtils:getSupportEmailAddress()
     if device.platform == 'winrt' then
         return "feedback@sugarcanetechnology.com"
+    elseif device.platform == 'ios' then
+        return "support@batcatstudio.com"
     else
         return "aiyingyong2015@gmail.com"
     end
