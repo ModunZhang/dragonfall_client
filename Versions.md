@@ -25,8 +25,8 @@ Version | Git SHA-1 | Release Notes
 
 Version | Git SHA-1 | Release Notes
 ------------ | ------------- | ------------
-1.1.3(1551)  | 9377900       | 
-
+1.1.3(1551)  | 9377900       | GooglePlay apk
+1.1.3(1592)  | e6ddfc1       | update
 
 ### WindowPhone
 
