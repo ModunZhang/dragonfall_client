@@ -107,12 +107,9 @@ public class FaceBookSDK {
         // Ensure that our profile is up to date
         if(AccessToken.getCurrentAccessToken()!=null)
         {
-        	DebugUtil.LogInfo(TAG,"fetchProfileForCurrentAccessToken1");
         	if(AccessToken.getCurrentAccessToken().isExpired()){
-        		DebugUtil.LogInfo(TAG,"fetchProfileForCurrentAccessToken2");
         		AccessToken.setCurrentAccessToken(null);
         	}else {
-        		DebugUtil.LogInfo(TAG,"fetchProfileForCurrentAccessToken3");
         		Profile.fetchProfileForCurrentAccessToken();
         	}
         }
@@ -132,6 +129,10 @@ public class FaceBookSDK {
 	private static void LoginAction()
 	{
 		//#ifdef CC_USE_FACEBOOK
+		if(!isSDKInitialized()){
+			CallLuaCallBack("login_exception","","");
+			return;
+		}
 		LoginManager.getInstance().logInWithReadPermissions(AppActivity.getGameActivity(), Arrays.asList("public_profile"));
 		//#endif
 	}
@@ -152,7 +153,7 @@ public class FaceBookSDK {
 	public static boolean IsAuthenticated()
 	{
 //#ifdef CC_USE_FACEBOOK
-		return Profile.getCurrentProfile()!=null;
+		return isSDKInitialized()&&Profile.getCurrentProfile()!=null;
 //#else
 //@		return false;
 //#endif
@@ -193,7 +194,7 @@ public class FaceBookSDK {
 	{
 		//#ifdef CC_USE_FACEBOOK
 		if(!IsAuthenticated()){
-			DebugUtil.LogErr(TAG, "AppInvite login first!!!");
+			DebugUtil.LogErr(TAG, "FacebookSDK was not Initialized or Authenticated");
 			return;
 		}
 		AppActivity.getGameActivity().runOnUiThread(new Runnable() {
@@ -216,6 +217,15 @@ public class FaceBookSDK {
 		{
 			profileTracker.stopTracking();
 		}
+		//#endif
+	}
+
+	private static  boolean isSDKInitialized()
+	{
+		//#ifdef CC_USE_FACEBOOK
+		return FacebookSdk.isInitialized();
+		//#else
+//@		return false;
 		//#endif
 	}
 }
