@@ -834,15 +834,16 @@ function NetManager:getLoginPromise(deviceId)
                 if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEvent then
                     ext.market_sdk.onPlayerEvent(statistics[diff_time/1000], "empty")
                 end
-                app:GetGameDefautlt():SetFirstLogin()
             end
         else
             if app:GetGameDefautlt():IsFirstLogin() then
                 if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEvent then
                     ext.market_sdk.onPlayerEvent("LOGIN_FAILED", "empty")
                 end
-                app:GetGameDefautlt():SetFirstLogin()
             end
+        end
+        if app:GetGameDefautlt():IsFirstLogin() then
+            app:GetGameDefautlt():SetFirstLogin()
         end
         return response
     end)
