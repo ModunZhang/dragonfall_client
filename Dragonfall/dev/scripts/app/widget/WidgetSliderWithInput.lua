@@ -36,7 +36,7 @@ function WidgetSliderWithInput:ctor(params)
             if event.name == "CLICKED_EVENT" then
                 local p = {
                     current = math.floor(slider:getSliderValue()),
-                    max=max,
+                    max=slider_max,
                     min=min,
                     unit=unit,
                     callback = function ( edit_value )

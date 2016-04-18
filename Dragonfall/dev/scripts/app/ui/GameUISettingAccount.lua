@@ -28,19 +28,19 @@ function GameUISettingAccount:CheckGameCenter()
     self:RefreshUI()
 end
 function GameUISettingAccount:UpdateGcName()
-    -- 因为现在每次刷新主城的时候,会检查是否有未执行的绑定操作,所以这里不再需要主动绑定,只要绑定操作的函数被添加到GameStatesHelper中即可
-    -- if ext.gamecenter.isAuthenticated() then
-    --     local gcName,gcId = ext.gamecenter.getPlayerNameAndId()
-    --     if User.gc and User.gc.gcId == gcId and gcName ~= User.gc.gcName then
-    --         NetManager:getUpdateGcNamePromise(gcName)
-    --     end
-    -- end
-    -- if ext.facebook and ext.facebook.isAuthenticated() then
-    --     local gcName,gcId = ext.facebook.getPlayerNameAndId()
-    --     if User.gc and User.gc.gcId == gcId and gcName ~= User.gc.gcName then
-    --         NetManager:getUpdateGcNamePromise(gcName)
-    --     end
-    -- end
+-- 因为现在每次刷新主城的时候,会检查是否有未执行的绑定操作,所以这里不再需要主动绑定,只要绑定操作的函数被添加到GameStatesHelper中即可
+-- if ext.gamecenter.isAuthenticated() then
+--     local gcName,gcId = ext.gamecenter.getPlayerNameAndId()
+--     if User.gc and User.gc.gcId == gcId and gcName ~= User.gc.gcName then
+--         NetManager:getUpdateGcNamePromise(gcName)
+--     end
+-- end
+-- if ext.facebook and ext.facebook.isAuthenticated() then
+--     local gcName,gcId = ext.facebook.getPlayerNameAndId()
+--     if User.gc and User.gc.gcId == gcId and gcName ~= User.gc.gcName then
+--         NetManager:getUpdateGcNamePromise(gcName)
+--     end
+-- end
 end
 function GameUISettingAccount:CreateUI()
     self:CreateAccountPanel()
@@ -111,7 +111,9 @@ function GameUISettingAccount:CreateGameCenterPanel()
                     LuaUtils:outputTable("绑定到GameCenter ",response)
                     User.gc = response.msg.playerData[1][2]
                     GameGlobalUI:showTips(_("提示"),_("绑定账号成功"))
-                    self:LeftButtonClicked()
+                    if UIKit:GetUIInstance("GameUISettingAccount") then
+                        self:LeftButtonClicked()
+                    end
                 end)
             end,function()end)
         else
@@ -149,7 +151,9 @@ function GameUISettingAccount:CreateFacebookPanel()
                 NetManager:getBindGcPromise("facebook",gcId,gcName):done(function (response)
                     User.gc = response.msg.playerData[1][2]
                     GameGlobalUI:showTips(_("提示"),_("绑定账号成功"))
-                    self:LeftButtonClicked()
+                    if UIKit:GetUIInstance("GameUISettingAccount") then
+                        self:LeftButtonClicked()
+                    end
                 end)
             end,function()end)
         else
@@ -159,7 +163,9 @@ function GameUISettingAccount:CreateFacebookPanel()
                     NetManager:getBindGcPromise("facebook",userid,username):done(function (response)
                         User.gc = response.msg.playerData[1][2]
                         GameGlobalUI:showTips(_("提示"),_("绑定账号成功"))
-                        self:LeftButtonClicked()
+                        if UIKit:GetUIInstance("GameUISettingAccount") then
+                            self:LeftButtonClicked()
+                        end
                     end)
                 else
                     UIKit:showMessageDialog(_("提示"),_("链接失败"))
@@ -199,7 +205,9 @@ function GameUISettingAccount:CreateGooglePanel()
                 NetManager:getBindGcPromise("google",gcId,gcName):done(function (response)
                     User.gc = response.msg.playerData[1][2]
                     GameGlobalUI:showTips(_("提示"),_("绑定账号成功"))
-                    self:LeftButtonClicked()
+                    if UIKit:GetUIInstance("GameUISettingAccount") then
+                        self:LeftButtonClicked()
+                    end
                 end)
             end,function()end)
         else
@@ -209,7 +217,9 @@ function GameUISettingAccount:CreateGooglePanel()
                     NetManager:getBindGcPromise("google",userid,username):done(function (response)
                         User.gc = response.msg.playerData[1][2]
                         GameGlobalUI:showTips(_("提示"),_("绑定账号成功"))
-                        self:LeftButtonClicked()
+                        if UIKit:GetUIInstance("GameUISettingAccount") then
+                            self:LeftButtonClicked()
+                        end
                     end)
                 else
                     UIKit:showMessageDialog(_("提示"),_("链接失败"))
@@ -489,6 +499,7 @@ function GameUISettingAccount:ExchangeBindAccount()
 end
 
 return GameUISettingAccount
+
 
 
 

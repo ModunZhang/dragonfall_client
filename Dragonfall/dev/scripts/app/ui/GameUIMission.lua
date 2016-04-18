@@ -408,6 +408,9 @@ end
 
 
 function GameUIMission:RefreshDailyList()
+    if not self.daily_list then
+        return
+    end
     self.daily_list:removeAllItems()
     local sort_dailyTasks = {}
     for k,task in pairs(dailyTasksConfig) do

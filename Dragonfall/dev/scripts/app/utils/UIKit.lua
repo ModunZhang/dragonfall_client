@@ -955,6 +955,9 @@ function UIKit:GotoPreconditionBuilding(jump_building)
         return
     end
     local current_scene = display.getRunningScene()
+    if not current_scene:GetSceneLayer().FindBuildingSpriteByBuilding then
+        return
+    end
     local building_sprite = current_scene:GetSceneLayer():FindBuildingSpriteByBuilding(jump_building, city)
     local x,y = jump_building:GetMidLogicPosition()
     current_scene:GotoLogicPoint(x,y,40):next(function()

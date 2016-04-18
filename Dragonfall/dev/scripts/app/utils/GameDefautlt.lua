@@ -75,7 +75,7 @@ function GameDefautlt:getRecentContacts()
 end
 -- 添加最近联系人
 function GameDefautlt:addRecentContacts(contacts)
-    local recent_contacts = self:getRecentContacts()
+    local recent_contacts = self:getRecentContacts() or {}
     local new_contacts = {
         id = contacts.id,
         name = contacts.name,
