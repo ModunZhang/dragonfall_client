@@ -56,7 +56,7 @@ CONFIG_APP_REVIEW = {
 -- 大网关域名
 CONFIG_GATE_SERVER_DOMAIN = {
     ios = "http://gate.batcatstudio.com",
-    android = "http://gate-aiyingyong.batcatstudio.com",
+    android = "http://gate.batcatstudio.com",
     winrt = "http://gate.batcatstudio.com"
 }
 

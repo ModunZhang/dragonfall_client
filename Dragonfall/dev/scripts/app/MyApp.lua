@@ -633,14 +633,14 @@ function MyApp:verifyGooglePlayPurchase(orderId,purchaseData,signature)
             local openRewardIf = function()
                 local GameUIActivityRewardNew_instance = UIKit:GetUIInstance("GameUIActivityRewardNew")
                 if User and not GameUIActivityRewardNew_instance then
-                    local countInfo = User:GetCountInfo()
+                    local countInfo = User.countInfo
                     if countInfo.iapCount > 0 and not countInfo.isFirstIAPRewardsGeted then
                         UIKit:newGameUI("GameUIActivityRewardNew",4):AddToCurrentScene(true) -- 如果首充 弹出奖励界面
                     end
                 end
             end
             UIKit:showMessageDialog(_("恭喜"),
-                string.format("您已获得%s,到物品里面查看",
+                string.format(_("您已获得%s,到物品里面查看"),
                     UIKit:getIapPackageName(transaction.productIdentifier)),
                 openRewardIf)
             
@@ -658,8 +658,11 @@ function MyApp:verifyGooglePlayPurchase(orderId,purchaseData,signature)
         end
     end)
 end
-function MyApp:transitionFailedInGooglePlay()
-    print("transitionFailedInGooglePlay---->")
+function MyApp:transitionFailedInGooglePlay(code)
+    code = tonumber(code) or -1
+    if code == 7 then
+        UIKit:showMessageDialog(_("提示"),_("你有未完成的订单,请处理后再进行购买"))
+    end
     device.hideActivityIndicator()
 end
 

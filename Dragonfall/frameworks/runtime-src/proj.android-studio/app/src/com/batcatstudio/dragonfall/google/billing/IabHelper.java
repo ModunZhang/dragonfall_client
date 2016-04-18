@@ -200,7 +200,13 @@ public class IabHelper {
 				String packageName = mContext.getPackageName();
 				try {
 					logDebug("Checking for in-app billing 3 support.");
-
+					if (mService == null) {
+						logDebug("Checking for mService is null.");
+						mIAPSupported = false;
+						// if in-app purchases aren't supported, neither are subscriptions.
+						mSubscriptionsSupported = false;
+						return;
+					}
 					// check for in-app billing v3 support
 					int response = mService.isBillingSupported(3, packageName, ITEM_TYPE_INAPP);
 					if (response != BILLING_RESPONSE_RESULT_OK) {

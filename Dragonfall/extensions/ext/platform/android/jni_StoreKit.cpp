@@ -387,12 +387,13 @@ extern "C" {
         }
     }
 
-    JNIEXPORT void JNICALL STORE_NATIVE_FUNCTION(StoreKit_onPurchaseFailed)(JNIEnv*  env, jclass cls) 
+    JNIEXPORT void JNICALL STORE_NATIVE_FUNCTION(StoreKit_onPurchaseFailed)(JNIEnv*  env, jclass cls,jstring jResponseCode) 
     {
         if(m_listener_failed)
         {
             auto stack = cocos2d::LuaEngine::getInstance()->getLuaStack();
-            stack->executeFunctionByHandler(m_listener_failed, 0);
+            stack->pushString(cocos2d::JniHelper::jstring2string(jResponseCode).c_str());
+            stack->executeFunctionByHandler(m_listener_failed, 1);
         }
     }
 }

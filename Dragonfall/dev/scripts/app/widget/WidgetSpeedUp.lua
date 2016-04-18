@@ -111,7 +111,9 @@ function WidgetSpeedUp:SetAccBtnsGroup(eventType,speedUpEvent)
         if event.name == "CLICKED_EVENT" then
             self.speedUp_button:setButtonEnabled(false)
             NetManager:getSpeedUpPromise(eventType, speedUpEvent.id):done(function ()
-                self.speedUp_button:setButtonEnabled(true)
+                if self.speedUp_button then
+                    self.speedUp_button:setButtonEnabled(true)
+                end
             end)
         end
     end)

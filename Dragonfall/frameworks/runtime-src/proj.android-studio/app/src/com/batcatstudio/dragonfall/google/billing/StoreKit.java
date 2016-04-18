@@ -37,7 +37,7 @@ public class StoreKit {
 
 	private static native void initJNI();
 
-	private static native void onPurchaseFailed();
+	private static native void onPurchaseFailed(String responseCode);
 	
 	public static void updateTransactionStates(final ArrayList<String> skuArray) {
 //#ifdef CC_USE_GOOGLE_PLAY_BILLING_V3
@@ -94,7 +94,7 @@ public class StoreKit {
 						AppActivity.getGameActivity().runOnGLThread(new Runnable() {
 							@Override
 							public void run() {
-								onPurchaseFailed();
+								onPurchaseFailed("-1");
 							}
 						});
 					}
@@ -110,10 +110,11 @@ public class StoreKit {
 				DebugUtil.LogDebug(TAG, "Purchase finished: " + result + ", purchase: " + purchase);
 			if (result.isFailure()) {
 				DebugUtil.LogErr(TAG, String.format("Purchase failed, error info: %s", result.getMessage()));
+				final String respneseCode = String.valueOf(result.getResponse());
 				AppActivity.getGameActivity().runOnGLThread(new Runnable() {
 					@Override
 					public void run() {
-						onPurchaseFailed();
+						onPurchaseFailed(respneseCode);
 					}
 				});
 				return;

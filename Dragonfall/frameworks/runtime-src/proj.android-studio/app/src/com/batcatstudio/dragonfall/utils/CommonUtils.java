@@ -1,13 +1,5 @@
 package com.batcatstudio.dragonfall.utils;
 
-import java.util.Locale;
-
-import org.cocos2dx.lua.AppActivity;
-import org.cocos2dx.utils.PSNetwork;
-
-import com.batcatstudio.dragonfall.google.gcm.GCMUtils;
-import com.xapcn.dragonfall.R;
-
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -18,6 +10,16 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+
+import com.batcatstudio.dragonfall.google.gcm.GCMUtils;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.xapcn.dragonfall.R;
+
+import org.cocos2dx.lua.AppActivity;
+import org.cocos2dx.utils.PSNetwork;
+
+import java.util.Locale;
 
 public class CommonUtils {
 	private static String TAG = "CommonUtils";
@@ -41,7 +43,6 @@ public class CommonUtils {
 		} catch (Exception e) {
 			DebugUtil.LogException(TAG, e);
 		}
-
 	}
 
 	public static CommonUtils getInstance() {
@@ -188,9 +189,17 @@ public class CommonUtils {
 	// we want to register the GCM service if the device support
     private void RegisterGCMServiceIf()
     {
-    	if(hasInstallPackage("com.google.android.gsf"))
+    	if(isGooglePlayServiceAvailable())
     	{
     		GCMUtils.registerGCMService(AppActivity.getGameActivity());
     	}
     }
+	private  boolean isGooglePlayServiceAvailable () {
+		int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(AppActivity.getGameActivity());
+		if (status == ConnectionResult.SUCCESS) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
