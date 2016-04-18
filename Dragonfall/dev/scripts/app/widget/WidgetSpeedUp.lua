@@ -81,7 +81,7 @@ function WidgetSpeedUp:SetProgressInfo(time, percent)
         return
     end
     self.progress:SetProgressInfo(GameUtils:formatTimeStyle1(time), percent)
-    self.price_label:setString(string.formatnumberthousands(UtilsForEvent:GetSpeedUpPrice(nil,nil,time)))
+    self.price_label:setString(string.formatnumberthousands(UtilsForEvent:GetSpeedUpPrice(nil,self.eventType,time)))
     return self
 end
 function WidgetSpeedUp:SetFreeButtonEnabled(enable)
@@ -107,8 +107,19 @@ function WidgetSpeedUp:SetUpgradeTip(tip)
 end
 function WidgetSpeedUp:SetAccBtnsGroup(eventType,speedUpEvent)
     self.acc_buttons = WidgetAccelerateGroup.new(eventType,speedUpEvent):addTo(self.body):align(display.BOTTOM_CENTER,self.body:getContentSize().width/2,10)
+    self.eventType = eventType
     self.speedUp_button:onButtonClicked(function(event)
         if event.name == "CLICKED_EVENT" then
+            if User:GetGemValue() < UtilsForEvent:GetSpeedUpPrice(UtilsForEvent:GetEventById(User,speedUpEvent.id),eventType) then
+                UIKit:showMessageDialog(_("提示"),_("金龙币不足")):CreateOKButton(
+                    {
+                        listener = function ()
+                            UIKit:newGameUI("GameUIStore"):AddToCurrentScene(true)
+                        end,
+                        btn_name= _("前往商店")
+                    })
+                return
+            end
             self.speedUp_button:setButtonEnabled(false)
             NetManager:getSpeedUpPromise(eventType, speedUpEvent.id):done(function ()
                 if self.speedUp_button then
@@ -117,12 +128,10 @@ function WidgetSpeedUp:SetAccBtnsGroup(eventType,speedUpEvent)
             end)
         end
     end)
-    scheduleAt(self, function()
-        self.price_label:setString(string.formatnumberthousands(UtilsForEvent:GetSpeedUpPrice(speedUpEvent,eventType)))
-    end)
     return self
 end
 return WidgetSpeedUp
+
 
 
 

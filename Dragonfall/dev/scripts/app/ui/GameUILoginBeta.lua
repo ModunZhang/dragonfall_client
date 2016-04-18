@@ -348,7 +348,7 @@ function GameUILoginBeta:createGameNotice()
         local response = request:getResponseString()
 
         local results = json.decode(response)
-        if results.code ~= 200 then
+        if not results or results.code ~= 200 then
             self:setProgressPercent(100)
             self:performWithDelay(function()
                 self.progress_bar:hide()
