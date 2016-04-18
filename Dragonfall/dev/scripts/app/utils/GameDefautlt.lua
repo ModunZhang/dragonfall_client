@@ -49,6 +49,13 @@ function GameDefautlt:setTableForKey(key,t)
     local jsonString = json.encode(t)
     self:setStringForKey(key,jsonString)
 end
+function GameDefautlt:SetFirstGetGate()
+    self:setStringForKey("FIRST_GET_GATE", "yes")
+    self:flush()
+end
+function GameDefautlt:IsFirstGetGate()
+    return self:getStringForKey("FIRST_GET_GATE") ~= "yes"
+end
 function GameDefautlt:SetFirstLogin()
     self:setStringForKey("FIRST_LOGIN", "yes")
     self:flush()

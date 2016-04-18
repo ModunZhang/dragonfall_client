@@ -316,10 +316,21 @@ function GameUtils:GetServerInfo(param, callback)
     local request = network.createHTTPRequest(function(event)
         if event.name == "completed" then
             callback(true, json.decode(event.request:getResponseData()))
+            if app:GetGameDefautlt():IsFirstGetGate() then
+                if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEvent then
+                    ext.market_sdk.onPlayerEvent("GET_GATE_SUCCESS", "empty")
+                end
+            end
         elseif event.name == "progress" then
         else
             callback(false)
+            if app:GetGameDefautlt():IsFirstGetGate() then
+                if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEvent then
+                    ext.market_sdk.onPlayerEvent("GET_GATE_FAILED", "empty")
+                end
+            end
         end
+        app:GetGameDefautlt():SetFirstGetGate()
     end, 
     string.format("%s/dragonfall/check-version?env=%s&version=%s&platform=%s",GameUtils:getGateServerDomain(),string.urlencode(param.env), string.urlencode(param.version),platform), "GET")
     request:setTimeout(6.18)
