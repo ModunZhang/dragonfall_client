@@ -2138,12 +2138,21 @@ end
 function NetManager:getEnterMapIndexPromise(mapIndex)
     return get_none_blocking_request_promise("logic.allianceHandler.enterMapIndex",{
         mapIndex = mapIndex,
-    },"进入联盟失败!")
+    },"进入联盟失败!"):next(function(result)
+        self.enter_map_index = mapIndex
+        return result
+    end)
 end
-function NetManager:getLeaveMapIndexPromise(mapIndex)
-    return get_none_blocking_request_promise("logic.allianceHandler.leaveMapIndex",{
-        mapIndex = mapIndex,
-    },"离开联盟!")
+function NetManager:getLeaveMapIndexPromise()
+    if self.enter_map_index then
+        return get_none_blocking_request_promise("logic.allianceHandler.leaveMapIndex",{
+            mapIndex = self.enter_map_index,
+        },"离开联盟!"):next(function()
+            self.enter_map_index = nil
+        end)
+    else
+        return cocos_promise.defer()
+    end
 end
 
 

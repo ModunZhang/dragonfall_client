@@ -361,11 +361,9 @@ function AllianceDetailScene:onEnter()
     end
 end
 function AllianceDetailScene:onExit()
+    self.isexiting = true
     self.fetchtimer:stopAllActions()
-    if self.current_allinace_index
-        and not Alliance_Manager:GetMyAlliance():IsDefault() then
-        NetManager:getLeaveMapIndexPromise(self.current_allinace_index)
-    end
+    NetManager:getLeaveMapIndexPromise()
     Alliance_Manager:ClearAllHandles()
     Alliance_Manager:ClearCache()
     Alliance_Manager:ResetCurrentMapData()
@@ -404,6 +402,9 @@ function AllianceDetailScene:StartTimer(index, func)
     end
     self.fetchtimer:stopAllActions()
     self.fetchtimer:performWithDelay(function()
+        if self.isexiting then
+            return
+        end
         self.fetch_index = index
         NetManager:getEnterMapIndexPromise(index)
             :done(function(response)
