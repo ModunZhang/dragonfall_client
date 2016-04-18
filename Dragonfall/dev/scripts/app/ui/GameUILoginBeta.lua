@@ -462,6 +462,9 @@ function GameUILoginBeta:GetServerInfo()
         self:loadLocalResources()
     else -- 真机环境
         GameUtils:GetServerInfo({env = CONFIG_IS_DEBUG and "development" or "production", version = ext.getAppVersion()}, function(success, content)
+            if not content then
+                success = false
+            end
             if success then
                 -- self:setProgressText(_("获取服务器信息成功"))
                 dump(content)
@@ -564,7 +567,7 @@ function GameUILoginBeta:connectGateServer()
     NetManager:getConnectGateServerPromise():done(function()
         -- self:setProgressPercent(80)
         self:getLogicServerInfo()
-    end):catch(function(err)
+    end):fail(function()
         -- 1是连接游戏服务器失败 0是本地网络有问题
         GameUtils:PingSearchEngine(function(success)
             local errorCode = success and 1 or 0
@@ -624,7 +627,7 @@ end
 function GameUILoginBeta:connectLogicServer()
     NetManager:getConnectLogicServerPromise():done(function()
         self:login()
-    end):catch(function(err)
+    end):fail(function()
         self:showErrorForReTry(_("连接游戏服务器失败!"),function()
             self:performWithDelay(function()
                 self:connectLogicServer()

@@ -35,6 +35,9 @@ function GameUIAllianceCityEnter:onEnter()
     GameUIAllianceCityEnter.super.onEnter(self)
     self:GetProgressTimer():setPercentage(0)
     NetManager:getPlayerWallInfoPromise(self:GetMember().id):done(function(response)
+        if not UIKit:GetUIInstance("GameUIAllianceCityEnter") then
+            return
+        end
         if response.msg.wallInfo then
             local current_wall_hp = response.msg.wallInfo.wallHp
             local maxWallHp = config_wall[response.msg.wallInfo.wallLevel].wallHp
