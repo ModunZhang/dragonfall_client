@@ -896,6 +896,16 @@ function CommonUpgradeUI:CreateFinishNowBuildingUpgradeButton()
         :setButtonLabelOffset(0, 16)
     button:onButtonClicked(function(event)
         if event.name == "CLICKED_EVENT" then
+            if User:GetGemValue() < UtilsForEvent:GetSpeedUpPrice(self.building:GetUpgradingEvent(),self:GetEventTypeByBuilding()) then
+                UIKit:showMessageDialog(_("提示"),_("金龙币不足")):CreateOKButton(
+                    {
+                        listener = function ()
+                            UIKit:newGameUI("GameUIStore"):AddToCurrentScene(true)
+                        end,
+                        btn_name= _("前往商店")
+                    })
+                return
+            end
             button:setButtonEnabled(false)
             NetManager:getSpeedUpPromise(self:GetEventTypeByBuilding(), self.building:UniqueUpgradingKey()):done(function ()
                 button:setButtonEnabled(true)
@@ -1177,6 +1187,7 @@ function CommonUpgradeUI:PopNotSatisfyDialog(listener,can_not_update_type)
 end
 
 return CommonUpgradeUI
+
 
 
 

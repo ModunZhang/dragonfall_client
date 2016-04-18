@@ -1180,6 +1180,15 @@ function City:OnHouseChanged(userData, current_time, deltaData)
             -- 新建的
             table.foreach(location.houses, function(_, house)
                 -- 当前位置没有小建筑并且推送的数据里面有就认为新建小建筑
+                if type(house.location) ~= 'number' then
+                    local info = ""
+                    if deltaData then
+                        info = json.encode(deltaData)
+                    end
+                    if type(buglyReportLuaException) == 'function' then
+                        buglyReportLuaException("house.location异常", info)
+                    end
+                end
                 if not decorators[house.location] then
                     local absolute_x, absolute_y = tile:GetAbsolutePositionByLocation(house.location)
                     self:CreateDecorator(current_time, BuildingRegister[house.type].new({
@@ -1357,6 +1366,7 @@ end
 
 
 return City
+
 
 
 
