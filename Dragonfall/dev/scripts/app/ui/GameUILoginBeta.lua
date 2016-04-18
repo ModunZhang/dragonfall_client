@@ -146,6 +146,11 @@ function GameUILoginBeta:createStartGame()
     end)
 end
 function GameUILoginBeta:SetAgreeAgreement()
+    if app:GetGameDefautlt():getStringForKey("USER_AGREEMENT") == nil then
+        if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEvent then
+            ext.market_sdk.onPlayerEvent("USER_AGREEMENT", "empty")
+        end
+    end
     app:GetGameDefautlt():setStringForKey("USER_AGREEMENT","agree")
 end
 function GameUILoginBeta:SetNotAgreeAgreement()
@@ -155,6 +160,14 @@ function GameUILoginBeta:IsAgreement()
     return app:GetGameDefautlt():getStringForKey("USER_AGREEMENT") == "agree"
 end
 function GameUILoginBeta:startGame()
+    if not app:GetGameDefautlt():getStringForKey("START_GAME") then
+        app:GetGameDefautlt():setStringForKey("START_GAME", "empty")
+        app:GetGameDefautlt():flush()
+        if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEvent then
+            ext.market_sdk.onPlayerEvent("START_GAME", "empty")
+        end
+    end
+
     local button = self.start_button
     button:setButtonEnabled(false)
     display.getRunningScene().startGame = true
@@ -535,6 +548,14 @@ end
 
 function GameUILoginBeta:loginAction()
     -- self:setProgressText(_("连接网关服务器...."))
+    if not app:GetGameDefautlt():getStringForKey("LOGIN_ACTION") then
+        app:GetGameDefautlt():setStringForKey("LOGIN_ACTION", "empty")
+        app:GetGameDefautlt():flush()
+        if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEvent then
+            ext.market_sdk.onPlayerEvent("LOGIN_ACTION", "empty")
+        end
+    end
+
     UIKit:WaitForNet(5)
     self:connectGateServer()
 end
