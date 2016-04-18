@@ -44,7 +44,7 @@ public class StoreKit {
 		if (DEBUG) {
 			DebugUtil.LogInfo(TAG, "updateTransactionStates: " + skuArray);
 		}
-		if(mHelper!=null && mHelper.iapSupported() &&  skuArray.size() > 0){
+		if(isGMSSupport() &&  skuArray.size() > 0){
 			AppActivity.getGameActivity().runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
@@ -60,7 +60,7 @@ public class StoreKit {
 		if (DEBUG) {
 			DebugUtil.LogInfo(TAG, "requestProductData: " + itemSkuSet);
 		}
-		if (currentInv.getAllSkuSet().size() > 0) {
+		if (isGMSSupport() && currentInv.getAllSkuSet().size() > 0) {
 			String[] itemIds = new String[itemSkuSet.size()];
 			String[] itemPrices = new String[itemSkuSet.size()];
 			int i = 0;
@@ -82,7 +82,7 @@ public class StoreKit {
 
 	public static void buy(final String sku) {
 //#ifdef CC_USE_GOOGLE_PLAY_BILLING_V3
-		if (mHelper.iapSupported()) {
+		if (isGMSSupport()) {
 			AppActivity.getGameActivity().runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
@@ -151,6 +151,7 @@ public class StoreKit {
 
 	public static void consumePurchase(final String orderId) {
 //#ifdef CC_USE_GOOGLE_PLAY_BILLING_V3
+		if (!isGMSSupport())return;
 		if (orderId.length() != 0 && currentInv.hasPurchase(orderId)) {
 			if (DEBUG) {
 				DebugUtil.LogDebug(TAG, "consumePurchase: " + currentInv.getPurchase(orderId));
@@ -169,6 +170,7 @@ public class StoreKit {
 		}
 //#endif
 	}
+
 //#ifdef CC_USE_GOOGLE_PLAY_BILLING_V3
 	private static IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
 		public void onConsumeFinished(Purchase purchase, IabResult result) {
@@ -191,9 +193,8 @@ public class StoreKit {
 
 	// can buy ?
 	public static boolean isGMSSupport() {
-		//google play service and  billing v3  
 //#ifdef CC_USE_GOOGLE_PLAY_BILLING_V3
-		return mHelper.iapSupported();
+		return (mHelper != null) && mHelper.iapSupported();
 //#else
 //@		return false;
 //#endif
