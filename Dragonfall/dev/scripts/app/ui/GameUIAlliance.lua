@@ -307,7 +307,9 @@ function GameUIAlliance:GetMoreJoinListData()
     end):always(function()
         self.isLoadingJoin = false
     end):fail(function()
-        self.join_list_page = self.join_list_page - 1
+        if self.join_list_page then
+            self.join_list_page = self.join_list_page - 1
+        end
     end)
 end
 
@@ -505,7 +507,9 @@ function GameUIAlliance:GetJoinListItemContent()
 end
 
 function GameUIAlliance:RefreshJoinListView()
-    self.joinListView:reload()
+    if self.joinListView.reload then
+        self.joinListView:reload()
+    end
 end
 
 function GameUIAlliance:SearchAllianAction(tag)

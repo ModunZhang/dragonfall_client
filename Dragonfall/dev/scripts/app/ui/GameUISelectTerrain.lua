@@ -40,6 +40,9 @@ function GameUISelectTerrain:OnMoveInStage()
             self.select_promise:resolve()
         else
             NetManager:initPlayerData(self.terrainType):done(function()
+                if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEvent then
+                    ext.market_sdk.onPlayerEvent("SELECT_TERRAIN", "empty")
+                end
                 DataManager:getFteData().basicInfo.terrain = DataManager:getUserData().basicInfo.terrain
                 DataManager:setFteUserDeltaData()
                 self.select_promise:resolve()

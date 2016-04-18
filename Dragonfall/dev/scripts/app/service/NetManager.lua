@@ -830,13 +830,20 @@ function NetManager:getLoginPromise(deviceId)
                 self.m_was_inited_game = true
             end
             self.is_login = true
-            if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEvent then
-                ext.market_sdk.onPlayerEvent(statistics[diff_time/1000], "empty")
+            if app:GetGameDefautlt():IsFirstLogin() then
+                if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEvent then
+                    ext.market_sdk.onPlayerEvent(statistics[diff_time/1000], "empty")
+                end
             end
         else
-            if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEvent then
-                ext.market_sdk.onPlayerEvent("LOGIN_FAILED", "empty")
+            if app:GetGameDefautlt():IsFirstLogin() then
+                if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEvent then
+                    ext.market_sdk.onPlayerEvent("LOGIN_FAILED", "empty")
+                end
             end
+        end
+        if app:GetGameDefautlt():IsFirstLogin() then
+            app:GetGameDefautlt():SetFirstLogin()
         end
         return response
     end)
@@ -2131,12 +2138,21 @@ end
 function NetManager:getEnterMapIndexPromise(mapIndex)
     return get_none_blocking_request_promise("logic.allianceHandler.enterMapIndex",{
         mapIndex = mapIndex,
-    },"进入联盟失败!")
+    },"进入联盟失败!"):next(function(result)
+        self.enter_map_index = mapIndex
+        return result
+    end)
 end
-function NetManager:getLeaveMapIndexPromise(mapIndex)
-    return get_none_blocking_request_promise("logic.allianceHandler.leaveMapIndex",{
-        mapIndex = mapIndex,
-    },"离开联盟!")
+function NetManager:getLeaveMapIndexPromise()
+    if self.enter_map_index then
+        return get_none_blocking_request_promise("logic.allianceHandler.leaveMapIndex",{
+            mapIndex = self.enter_map_index,
+        },"离开联盟!"):next(function()
+            self.enter_map_index = nil
+        end)
+    else
+        return cocos_promise.defer()
+    end
 end
 
 
