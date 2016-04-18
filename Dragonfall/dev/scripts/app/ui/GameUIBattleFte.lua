@@ -21,7 +21,7 @@ function GameUIBattleFte:ctor(woldRect, title, text)
     local content = UIKit:ttfLabel({
         size = 22,
         color= 0xffedae,
-        dimensions = cc.size(400,100),
+        dimensions = cc.size(400,0),
         text = text
     })
     local size = content:getContentSize()
