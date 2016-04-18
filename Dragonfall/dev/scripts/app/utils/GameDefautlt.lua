@@ -49,6 +49,13 @@ function GameDefautlt:setTableForKey(key,t)
     local jsonString = json.encode(t)
     self:setStringForKey(key,jsonString)
 end
+function GameDefautlt:SetFirstLogin()
+    self:setStringForKey("FIRST_LOGIN", "yes")
+    self:flush()
+end
+function GameDefautlt:IsFirstLogin()
+    return self:getStringForKey("FIRST_LOGIN") ~= "yes"
+end
 function GameDefautlt:IsPassedSplash()
     return self:getStringForKey("PASS_SPLASH") == "yes"
 end
