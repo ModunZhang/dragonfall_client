@@ -88,6 +88,8 @@ function WidgetUseItems:OpenChangePlayerOrCityName(item_name)
         local newName = string.trim(editbox:getText())
         if string.len(newName) == 0 then
             UIKit:showMessageDialog(_("主人"),_("请输入新的名称"))
+        elseif newName == User.basicInfo.name then
+            UIKit:showMessageDialog(_("主人"),_("不能修改为相同的玩家名称"))
         else
             return true
         end
