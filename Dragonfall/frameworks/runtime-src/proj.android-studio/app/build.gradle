@@ -229,8 +229,8 @@ task buildNative(type:Exec,group:'GameHelper') {
 }
 
 task backUpNativeSymbols(type:Zip,group:'GameHelper',description:'Backup our native symbols to a zip file .') {
-    appendix = 'symbols'
-    version = projectVersion()['versionName'] + '('+ projectVersion()['versionCode'] + ')'
+    appendix = 'symbols-so'
+    version = projectVersion()['versionSo']
     from 'obj'
     doLast {
         println 'We created a archive file :' + backUpNativeSymbols.archivePath
