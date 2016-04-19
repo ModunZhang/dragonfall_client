@@ -271,7 +271,6 @@ function GameUIAllianceInfo:OnJoinActionClicked(joinType,sender)
             UIKit:showMessageDialog(_("提示"),_("不能加入其他服务器的联盟"))
             return
     end
-    local alliance = self:GetAllianceData()
     if alliance.members == alliance.membersMax then
         UIKit:showMessageDialog(_("提示"),
             _("联盟人数已达最大"))
@@ -287,6 +286,12 @@ function GameUIAllianceInfo:OnJoinActionClicked(joinType,sender)
         if User.serverId ~= self.serverId then
             UIKit:showMessageDialog(_("提示"),_("不能申请加入其他服务器的联盟"))
             return
+        end
+        for i,v in ipairs(User.requestToAllianceEvents) do
+            if v.id == self:GetAllianceData().id then
+                UIKit:showMessageDialog(_("提示"),_("对此联盟的申请已发出,请耐心等候审核"))
+                return
+            end
         end
         NetManager:getRequestToJoinAlliancePromise(self:GetAllianceData().id):done(function()
             UIKit:showMessageDialog(_("申请成功"),

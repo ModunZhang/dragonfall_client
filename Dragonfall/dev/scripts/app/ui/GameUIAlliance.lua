@@ -389,18 +389,23 @@ end
 function GameUIAlliance:OnJoinListActionButtonClicked(idx)
     local alliance = self.join_list_data_source[idx]
     if not alliance then return end
-    if  alliance.joinType == 'all' then --如果是直接加入
+    if alliance.joinType == 'all' then --如果是直接加入
         if alliance.members == alliance.membersMax then
-            UIKit:showMessageDialog(_("提示"),
-                _("联盟人数已达最大"))
+            UIKit:showMessageDialog(_("提示"),_("联盟人数已达最大"))
             return
-    end
-    NetManager:getJoinAllianceDirectlyPromise(alliance.id):fail(function()
-        self:SearchAllianAction(self.editbox_tag_search:getText())
-    end):done(function()
-        GameGlobalUI:showTips(_("提示"),string.format(_("加入%s联盟成功!"),alliance.name))
-    end)
+        end
+        NetManager:getJoinAllianceDirectlyPromise(alliance.id):fail(function()
+            self:SearchAllianAction(self.editbox_tag_search:getText())
+        end):done(function()
+            GameGlobalUI:showTips(_("提示"),string.format(_("加入%s联盟成功!"),alliance.name))
+        end)
     else
+        for i,v in ipairs(User.requestToAllianceEvents) do
+            if v.id == alliance.id then
+                UIKit:showMessageDialog(_("提示"),_("对此联盟的申请已发出,请耐心等候审核"))
+                return
+            end
+        end
         NetManager:getRequestToJoinAlliancePromise(alliance.id):done(function()
             UIKit:showMessageDialog(_("申请成功"),
                 string.format(_("您的申请已发送至%s,如果被接受将加入该联盟,如果被拒绝,将收到一封通知邮件."),alliance.name),
@@ -1782,6 +1787,8 @@ end
 
 
 return GameUIAlliance
+
+
 
 
 
