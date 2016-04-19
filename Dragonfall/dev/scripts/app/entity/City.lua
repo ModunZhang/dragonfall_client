@@ -1183,7 +1183,7 @@ function City:OnHouseChanged(userData, current_time, deltaData)
                 if type(house.location) ~= 'number' then
                     local info = ""
                     if deltaData then
-                        info = json.encode(deltaData)
+                        info = string.format("location:%s,deltaData:%s,house.location type:%s",json.encode(location),json.encode(deltaData),type(house.location))
                     end
                     if type(buglyReportLuaException) == 'function' then
                         buglyReportLuaException("house.location异常", info)

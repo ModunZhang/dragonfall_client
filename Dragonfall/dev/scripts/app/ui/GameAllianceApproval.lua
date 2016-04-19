@@ -147,6 +147,11 @@ end
 function GameAllianceApproval:OnAgreeButtonClicked(idx)
     local player = self.dataSource_[idx]
     if player then
+        local count,online,maxmembers = Alliance_Manager:GetMyAlliance():GetMembersCountInfo()
+        if count == maxmembers then
+            UIKit:showMessageDialog(_("提示"),_("联盟人数已达最大"))
+            return
+        end
         NetManager:getApproveJoinAllianceRequestPromise(player.id):done(function(result)
             self:RefreshListView()
         end):fail(function(msg)

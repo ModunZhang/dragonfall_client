@@ -79,7 +79,7 @@ local attackDragonSkilled2
 if get_dragon_type() == "redDragon" then
     attackDragonSkilled2 = {0}
 elseif get_dragon_type() == "blueDragon" then
-    attackDragonSkilled2 = {0,1,0}
+    attackDragonSkilled2 = {0,1}
 elseif get_dragon_type() == "greenDragon" then
     attackDragonSkilled2 = {0,1}
 end
@@ -154,7 +154,7 @@ local attackDragonSkilled3
 if get_dragon_type() == "redDragon" then
     attackDragonSkilled3 = {0}
 elseif get_dragon_type() == "blueDragon" then
-    attackDragonSkilled3 = {0,0,0}
+    attackDragonSkilled3 = {0}
 elseif get_dragon_type() == "greenDragon" then
     attackDragonSkilled3 = {0}
 end

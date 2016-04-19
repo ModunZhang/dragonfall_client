@@ -45,6 +45,14 @@ function GameUILoginBeta:onEnter()
     self:createContactUs()
     self:createVerLabel()
     self:createUserAgreement()
+
+    if #app:GetGameDefautlt():getStringForKey("FIRST_LAUNCH") == 0 then
+        app:GetGameDefautlt():setStringForKey("FIRST_LAUNCH", "empty")
+        app:GetGameDefautlt():flush()
+        if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEvent then
+            ext.market_sdk.onPlayerEvent("FIRST_LAUNCH", "empty")
+        end
+    end
 end
 
 function GameUILoginBeta:Reset()
@@ -146,9 +154,9 @@ function GameUILoginBeta:createStartGame()
     end)
 end
 function GameUILoginBeta:SetAgreeAgreement()
-    if app:GetGameDefautlt():getStringForKey("USER_AGREEMENT") == nil then
+    if #app:GetGameDefautlt():getStringForKey("USER_AGREEMENT") == 0 then
         if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEvent then
-            ext.market_sdk.onPlayerEvent("USER_AGREEMENT", "empty")
+            ext.market_sdk.onPlayerEvent("USER_AGREEMENT", "agree")
         end
     end
     app:GetGameDefautlt():setStringForKey("USER_AGREEMENT","agree")
@@ -160,7 +168,7 @@ function GameUILoginBeta:IsAgreement()
     return app:GetGameDefautlt():getStringForKey("USER_AGREEMENT") == "agree"
 end
 function GameUILoginBeta:startGame()
-    if not app:GetGameDefautlt():getStringForKey("START_GAME") then
+    if #app:GetGameDefautlt():getStringForKey("START_GAME") == 0 then
         app:GetGameDefautlt():setStringForKey("START_GAME", "empty")
         app:GetGameDefautlt():flush()
         if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEvent then
@@ -551,7 +559,7 @@ end
 
 function GameUILoginBeta:loginAction()
     -- self:setProgressText(_("连接网关服务器...."))
-    if not app:GetGameDefautlt():getStringForKey("LOGIN_ACTION") then
+    if #app:GetGameDefautlt():getStringForKey("LOGIN_ACTION") == 0 then
         app:GetGameDefautlt():setStringForKey("LOGIN_ACTION", "empty")
         app:GetGameDefautlt():flush()
         if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEvent then
