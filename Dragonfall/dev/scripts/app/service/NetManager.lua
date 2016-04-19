@@ -360,6 +360,7 @@ function NetManager:getServerTime()
 end
 
 function NetManager:disconnect()
+    self.enter_map_index = nil
     self.is_login = false
     self:removeEventListener("disconnect")
     self.m_netService:disconnect()
@@ -822,6 +823,9 @@ function NetManager:getLoginPromise(deviceId)
                 -- DataManager:setEnemyAllianceData(user_enemy_alliance_data)
             else
                 -- LuaUtils:outputTable("logic.entryHandler.login", response)
+                if playerData.countInfo.isFTEFinished then
+                    GLOBAL_FTE = false
+                end
                 self.m_netService:setDeltatime(delta_time)
                 local InitGame = import("app.service.InitGame")
                 InitGame(playerData) -- inner DataManager:setUserData ...
