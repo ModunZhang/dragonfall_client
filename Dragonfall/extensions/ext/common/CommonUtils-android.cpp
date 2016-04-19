@@ -11,7 +11,14 @@
 #define LOGE(...)
 #endif
 #define CLASS_NAME "com/batcatstudio/dragonfall/utils/CommonUtils"
+/*****VERSION****/
+//define the so version from shell
+//readelf -p .bugly_version libxxx.so
 
+#define STRINGIFY2(X) #X
+#define STRINGIFY(X) STRINGIFY2(X)
+extern "C" const char SO_FILE_VERSION[]  __attribute__ ((section (".bugly_version"))) = STRINGIFY(BUGLY_VERSION);
+/*****VERSION****/
 static char* m_UDID = NULL;
 
 void CopyText(std::string text)

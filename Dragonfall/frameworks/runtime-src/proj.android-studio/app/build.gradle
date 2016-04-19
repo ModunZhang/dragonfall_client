@@ -17,6 +17,7 @@ def Properties projectVersion() {
     if(!version['versionName']) version['versionName'] = "1.0"
     if(!version['appMinVersion']) version['appMinVersion'] = "1.0"
     if(!version['appHoc']) version['appHoc'] = false
+    if(!version['versionSo']) version['versionSo'] = version['versionCode']
     return version
 }
 
@@ -221,6 +222,7 @@ task buildNative(type:Exec,group:'GameHelper') {
   commandLine './build_native_release.sh'
   standardOutput = new ByteArrayOutputStream()
   environment('ANDROID_NDK_ROOT',android.ndkDirectory.getAbsolutePath())
+  environment('SO_FILE_VERSION',projectVersion()['versionSo'] as String)
   ext.output = {
      return standardOutput.toString()
   }
@@ -250,6 +252,7 @@ task checkVersionInfo(group:'GameHelper',description:'Check the project version 
         println 'versionName:'+ projectVersion()['versionName']
         println 'appMinVersion:'+ projectVersion()['appMinVersion']
         println 'appHoc:'+ projectVersion()['appHoc']
+        println 'versionSo:'+ projectVersion()['versionSo']
         println '------------------------------------------------'
     }
 }
