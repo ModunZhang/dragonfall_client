@@ -238,7 +238,8 @@ public class IabHelper {
 		};
 
 		Intent serviceIntent = new Intent("com.android.vending.billing.InAppBillingService.BIND");
-		//fix null crash
+		//fix null crash?
+		serviceIntent.setPackage("com.android.vending");
 		PackageManager pm = mContext.getPackageManager();
 		List<ResolveInfo> intentServices = pm.queryIntentServices(serviceIntent, 0);
 		if (intentServices != null && !intentServices.isEmpty()) {
@@ -815,49 +816,55 @@ public class IabHelper {
 		String continueToken = null;
 
 		do {
-			logDebug("Calling getPurchases with continuation token: " + continueToken);
-			Bundle ownedItems = mService.getPurchases(3, mContext.getPackageName(), itemType, continueToken);
+			try{
+				logDebug("Calling getPurchases with continuation token: " + continueToken);
+				Bundle ownedItems = mService.getPurchases(3, mContext.getPackageName(), itemType, continueToken);
 
-			int response = getResponseCodeFromBundle(ownedItems);
-			logDebug("Owned items response: " + String.valueOf(response));
-			if (response != BILLING_RESPONSE_RESULT_OK) {
-				logDebug("getPurchases() failed: " + getResponseDesc(response));
-				return response;
-			}
-			if (!ownedItems.containsKey(RESPONSE_INAPP_ITEM_LIST) || !ownedItems.containsKey(RESPONSE_INAPP_PURCHASE_DATA_LIST)
-					|| !ownedItems.containsKey(RESPONSE_INAPP_SIGNATURE_LIST)) {
-				logError("Bundle returned from getPurchases() doesn't contain required fields.");
-				return IABHELPER_BAD_RESPONSE;
-			}
+				int response = getResponseCodeFromBundle(ownedItems);
+				logDebug("Owned items response: " + String.valueOf(response));
+				if (response != BILLING_RESPONSE_RESULT_OK) {
+					logDebug("getPurchases() failed: " + getResponseDesc(response));
+					return response;
+				}
+				if (!ownedItems.containsKey(RESPONSE_INAPP_ITEM_LIST) || !ownedItems.containsKey(RESPONSE_INAPP_PURCHASE_DATA_LIST)
+						|| !ownedItems.containsKey(RESPONSE_INAPP_SIGNATURE_LIST)) {
+					logError("Bundle returned from getPurchases() doesn't contain required fields.");
+					return IABHELPER_BAD_RESPONSE;
+				}
 
-			ArrayList<String> ownedSkus = ownedItems.getStringArrayList(RESPONSE_INAPP_ITEM_LIST);
-			ArrayList<String> purchaseDataList = ownedItems.getStringArrayList(RESPONSE_INAPP_PURCHASE_DATA_LIST);
-			ArrayList<String> signatureList = ownedItems.getStringArrayList(RESPONSE_INAPP_SIGNATURE_LIST);
+				ArrayList<String> ownedSkus = ownedItems.getStringArrayList(RESPONSE_INAPP_ITEM_LIST);
+				ArrayList<String> purchaseDataList = ownedItems.getStringArrayList(RESPONSE_INAPP_PURCHASE_DATA_LIST);
+				ArrayList<String> signatureList = ownedItems.getStringArrayList(RESPONSE_INAPP_SIGNATURE_LIST);
 
-			for (int i = 0; i < purchaseDataList.size(); ++i) {
-				String purchaseData = purchaseDataList.get(i);
-				String signature = signatureList.get(i);
-				String sku = ownedSkus.get(i);
+				for (int i = 0; i < purchaseDataList.size(); ++i) {
+					String purchaseData = purchaseDataList.get(i);
+					String signature = signatureList.get(i);
+					String sku = ownedSkus.get(i);
 
-				logDebug("Sku is owned: " + sku);
-				Purchase purchase = new Purchase(itemType, purchaseData, signature);
-				inv.addPurchase(purchase);
+					logDebug("Sku is owned: " + sku);
+					Purchase purchase = new Purchase(itemType, purchaseData, signature);
+					inv.addPurchase(purchase);
 
 				/*
                  * TODO verify previous purchases if (Security.verifyPurchase(mSignatureBase64, purchaseData, signature)) {
 				 * logDebug("Sku is owned: " + sku); Purchase purchase = new Purchase(itemType, purchaseData, signature);
-				 * 
+				 *
 				 * if (TextUtils.isEmpty(purchase.getToken())) { logWarn("BUG: empty/null token!"); logDebug("Purchase data: " +
 				 * purchaseData); }
-				 * 
+				 *
 				 * // Record ownership and token inv.addPurchase(purchase); } else {
 				 * logWarn("Purchase signature verification **FAILED**. Not adding item."); logDebug("   Purchase data: " + purchaseData);
 				 * logDebug("   Signature: " + signature); verificationFailed = true; }
 				 */
+				}
+
+				continueToken = ownedItems.getString(INAPP_CONTINUATION_TOKEN);
+				logDebug("Continuation token: " + continueToken);
+			}catch (NullPointerException e){
+				logError(e.getMessage());
+				return IABHELPER_VERIFICATION_FAILED;
 			}
 
-			continueToken = ownedItems.getString(INAPP_CONTINUATION_TOKEN);
-			logDebug("Continuation token: " + continueToken);
 		} while (!TextUtils.isEmpty(continueToken));
 
 		return verificationFailed ? IABHELPER_VERIFICATION_FAILED : BILLING_RESPONSE_RESULT_OK;
@@ -875,27 +882,32 @@ public class IabHelper {
 			return BILLING_RESPONSE_RESULT_OK;
 		}
 		logDebug("start to querySkuDetails, skuList: " + skuList);
-		Bundle querySkus = new Bundle();
-		querySkus.putStringArrayList(GET_SKU_DETAILS_ITEM_LIST, skuList);
-		Bundle skuDetails = mService.getSkuDetails(3, mContext.getPackageName(), itemType, querySkus);
+		try {
+			Bundle querySkus = new Bundle();
+			querySkus.putStringArrayList(GET_SKU_DETAILS_ITEM_LIST, skuList);
+			Bundle skuDetails = mService.getSkuDetails(3, mContext.getPackageName(), itemType, querySkus);
 
-		if (!skuDetails.containsKey(RESPONSE_GET_SKU_DETAILS_LIST)) {
-			int response = getResponseCodeFromBundle(skuDetails);
-			if (response != BILLING_RESPONSE_RESULT_OK) {
-				logDebug("getSkuDetails() failed: " + getResponseDesc(response));
-				return response;
-			} else {
-				logError("getSkuDetails() returned a bundle with neither an error nor a detail list.");
-				return IABHELPER_BAD_RESPONSE;
+			if (!skuDetails.containsKey(RESPONSE_GET_SKU_DETAILS_LIST)) {
+				int response = getResponseCodeFromBundle(skuDetails);
+				if (response != BILLING_RESPONSE_RESULT_OK) {
+					logDebug("getSkuDetails() failed: " + getResponseDesc(response));
+					return response;
+				} else {
+					logError("getSkuDetails() returned a bundle with neither an error nor a detail list.");
+					return IABHELPER_BAD_RESPONSE;
+				}
 			}
-		}
 
-		ArrayList<String> responseList = skuDetails.getStringArrayList(RESPONSE_GET_SKU_DETAILS_LIST);
+			ArrayList<String> responseList = skuDetails.getStringArrayList(RESPONSE_GET_SKU_DETAILS_LIST);
 
-		for (String thisResponse : responseList) {
-			SkuDetails d = new SkuDetails(itemType, thisResponse);
-			logDebug("Got sku details: " + d);
-			inv.addSkuDetails(d);
+			for (String thisResponse : responseList) {
+				SkuDetails d = new SkuDetails(itemType, thisResponse);
+				logDebug("Got sku details: " + d);
+				inv.addSkuDetails(d);
+			}
+		}catch (NullPointerException e){
+			logError(e.getMessage());
+			return IABHELPER_BAD_RESPONSE;
 		}
 		return BILLING_RESPONSE_RESULT_OK;
 	}
