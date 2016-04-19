@@ -64,7 +64,8 @@ function GameDefautlt:IsFirstLogin()
     return self:getStringForKey("FIRST_LOGIN") ~= "yes"
 end
 function GameDefautlt:IsPassedSplash()
-    return self:getStringForKey("PASS_SPLASH") == "yes"
+    -- return self:getStringForKey("PASS_SPLASH") == "yes"
+    return true
 end
 -- 消费金龙币提醒
 function GameDefautlt:IsOpenGemRemind()
