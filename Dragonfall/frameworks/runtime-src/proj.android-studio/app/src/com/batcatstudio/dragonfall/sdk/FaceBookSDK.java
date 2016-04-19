@@ -140,6 +140,10 @@ public class FaceBookSDK {
 	public static void Login()
 	{
 //#ifdef CC_USE_FACEBOOK
+		if(!isSDKInitialized()){
+			CallLuaCallBack("login_exception","","");
+			return;
+		}
 		AccessToken.setCurrentAccessToken(null);
 		AppActivity.getGameActivity().runOnUiThread(new Runnable() {
 			@Override
