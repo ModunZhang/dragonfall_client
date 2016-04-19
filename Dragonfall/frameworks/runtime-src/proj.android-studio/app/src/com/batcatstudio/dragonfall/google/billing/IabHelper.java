@@ -229,6 +229,13 @@ public class IabHelper {
 					}
 					e.printStackTrace();
 					return;
+				}catch (NullPointerException e){
+					if (listener != null) {
+						listener.onIabSetupFinished(new IabResult(IABHELPER_REMOTE_EXCEPTION,
+								"NullPointerException while setting up in-app billing."));
+					}
+					e.printStackTrace();
+					return;
 				}
 
 				if (listener != null) {
@@ -236,22 +243,30 @@ public class IabHelper {
 				}
 			}
 		};
-
-		Intent serviceIntent = new Intent("com.android.vending.billing.InAppBillingService.BIND");
-		//fix null crash?
-		serviceIntent.setPackage("com.android.vending");
-		PackageManager pm = mContext.getPackageManager();
-		List<ResolveInfo> intentServices = pm.queryIntentServices(serviceIntent, 0);
-		if (intentServices != null && !intentServices.isEmpty()) {
-			// service available to handle that Intent
-			mContext.bindService(serviceIntent, mServiceConn, Context.BIND_AUTO_CREATE);
-		} else {
-			// no service available to handle that Intent
+		try {
+			Intent serviceIntent = new Intent("com.android.vending.billing.InAppBillingService.BIND");
+			//fix null crash?
+			serviceIntent.setPackage("com.android.vending");
+			PackageManager pm = mContext.getPackageManager();
+			List<ResolveInfo> intentServices = pm.queryIntentServices(serviceIntent, 0);
+			if (intentServices != null && !intentServices.isEmpty()) {
+				// service available to handle that Intent
+				mContext.bindService(serviceIntent, mServiceConn, Context.BIND_AUTO_CREATE);
+			} else {
+				// no service available to handle that Intent
+				if (listener != null) {
+					listener.onIabSetupFinished(new IabResult(BILLING_RESPONSE_RESULT_BILLING_UNAVAILABLE,
+							"Billing service unavailable on device."));
+				}
+			}
+		}catch (NullPointerException e){
 			if (listener != null) {
 				listener.onIabSetupFinished(new IabResult(BILLING_RESPONSE_RESULT_BILLING_UNAVAILABLE,
 						"Billing service unavailable on device."));
 			}
+			logError(e.getMessage());
 		}
+
 	}
 
 	/**
