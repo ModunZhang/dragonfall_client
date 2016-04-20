@@ -37,7 +37,7 @@ function GameUISettingFaqDetail:BuildUI()
 		text = self.data.title,
 		size = 20,
 		color= 0x615b44
-	}):align(display.TOP_CENTER, 304,732):addTo(body)
+	}):align(display.TOP_CENTER, 304,726):addTo(body)
 	local list_bg = UIKit:CreateBoxPanelWithBorder({width = 556,height = 648}):align(display.BOTTOM_CENTER, 304, 33):addTo(body)
 	self.list_view = UIListView.new{
         viewRect = cc.rect(10,10,536,628),
@@ -49,7 +49,7 @@ end
 
 function GameUISettingFaqDetail:RefreshListView()
 	 local textLabel = UIKit:ttfLabel({
-        dimensions = cc.size(536, 0),
+        dimensions = cc.size(516, 0),
         text = self.data.answer,
         size = 22,
         color = 0x403c2f,

@@ -124,12 +124,14 @@ function GameUIVIPPop:GetVipMessage()
     local info_message = {}
 	for i,v in ipairs(VIP_EFFECIVE_ALL_TYPE) do
 		if config[v] > 0 then
-			local isPercentage = v ~= "freeSpeedup" and v ~= "normalGachaAdd"
+			local isPercentage = v ~= "freeSpeedup" and v ~= "normalGachaAdd" and v ~= "helpSpeedup"
 			local text = ""
 			if isPercentage then
 				text = (config[v] * 100).."%"
 			elseif v == "freeSpeedup" then
 				text = config[v].._("分钟")
+            elseif v == "helpSpeedup" then
+                text = config[v].."%"
 			end
 			table.insert(info_message, {VIP_EFFECIVE_ALL[v],{text,0xff007c23}})
 		end
