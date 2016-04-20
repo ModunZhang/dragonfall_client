@@ -1360,6 +1360,10 @@ function NetManager:getPlayerInfoPromise(memberId,serverId)
         serverId = serverId
     }, "获取玩家信息失败!"):done(get_player_response_msg)
 end
+-- 获取服务器公告列表
+function NetManager:getServerNoticesPromise()
+    return get_blocking_request_promise("logic.playerHandler.getServerNotices", {}, "获取服务器公告列表失败!"):done(get_player_response_msg)
+end
 -- 模糊查询玩家
 function NetManager:getSearchPlayerByNamePromise(name,fromIndex)
     return get_blocking_request_promise("logic.playerHandler.searchPlayerByName", {

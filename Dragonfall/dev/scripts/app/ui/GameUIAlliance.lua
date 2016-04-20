@@ -1521,13 +1521,12 @@ function GameUIAlliance:HaveAlliaceUI_infomationIf()
         self:RefreshDescView()
         return self.informationNode
     end
-    local informationNode = WidgetUIBackGround.new({height=384,isFrame = "yes"}):addTo(self.main_content):pos(16,window.betweenHeaderAndTab - 394)
+    local giftNode = self:CreateGiftNode():align(display.TOP_LEFT, 42, window.top - 175):addTo(self.main_content)
+    local informationNode = WidgetUIBackGround.new({height=384,isFrame = "yes"}):addTo(self.main_content):pos(16,window.betweenHeaderAndTab - 554)
     self.informationNode = informationNode
     local notice_bg = display.newSprite("alliance_notice_box_580x184.png")
         :align(display.CENTER_TOP,304,395)
         :addTo(informationNode)
-
-
 
     local descView = UIListView.new {
         viewRect =  cc.rect(24,16,534,120),
@@ -1618,7 +1617,38 @@ function GameUIAlliance:HaveAlliaceUI_infomationIf()
     self:RefreshDescView()
     return self.informationNode
 end
+function GameUIAlliance:CreateGiftNode()
+    local giftNode = WidgetUIBackGround.new({width = 556,height = 130},WidgetUIBackGround.STYLE_TYPE.STYLE_5)
+    local icon_bg = display.newSprite("box_118x118.png"):align(display.LEFT_CENTER, 13, 65):addTo(giftNode)
+    local icon_gift = display.newSprite("activity_68x78.png"):align(display.CENTER,icon_bg:getContentSize().width/2 + 16, icon_bg:getContentSize().height/2):addTo(giftNode):scale(1.2)
+    local title_bg = display.newScale9Sprite("title_blue_430x30.png",340,100, cc.size(406,30), cc.rect(10,10,410,10)):addTo(giftNode)
+    UIKit:ttfLabel({
+        text = _("联盟礼包"),
+        size = 22,
+        color = 0xffedae,
+        }):align(display.LEFT_CENTER, 20, 15):addTo(title_bg)
+    local have_gift = UIKit:ttfLabel({
+        text = string.format(_("可领取：%d"),1),
+        size = 22,
+        color = 0xffedae,
+        }):align(display.RIGHT_CENTER, title_bg:getContentSize().width - 40, 15):addTo(title_bg)
 
+    UIKit:ttfLabel({
+        text = _("每当有盟友购买金龙币时你将获得宝箱"),
+        size = 20,
+        color = 0x615b44,
+        dimensions = cc.size(240,0)
+        }):align(display.LEFT_CENTER, 140,50):addTo(giftNode)
+    WidgetPushButton.new({normal = "blue_btn_up_148x58.png",pressed = "blue_btn_down_148x58.png"}):setButtonLabel(UIKit:ttfLabel({text = _("查看"),
+            size = 20,
+            shadow = true,
+            color = 0xfff3c7
+        })):align(display.RIGHT_CENTER,546,40):addTo(giftNode)
+            :onButtonClicked(function(event)
+                UIKit:newGameUI("GameUIIapGifts"):AddToCurrentScene()
+            end)
+    return giftNode 
+end
 function GameUIAlliance:IsOperateButtonEnable(index)
     local member = Alliance_Manager:GetMyAlliance():GetSelf()
     local enable = true

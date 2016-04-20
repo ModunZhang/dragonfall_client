@@ -85,7 +85,7 @@ function GameUIHome:onEnter()
     self:RefreshData()
     self:RefreshVIP()
     self:OnUserDataChanged_growUpTasks()
-
+    self:ShowVipActiveTips()
     scheduleAt(self, function()
         local User = self.city:GetUser()
         self.wood_label:SetNumString(GameUtils:formatNumber(User:GetResValueByType("wood")))
@@ -125,6 +125,11 @@ function GameUIHome:AddOrRemoveListener(isAdd)
         user:RemoveListenerOnType(self, "houseEvents")
         user:RemoveListenerOnType(self, "buildingEvents")
         user:RemoveListenerOnType(self, "productionTechEvents")
+    end
+end
+function GameUIHome:ShowVipActiveTips()
+    if app:GetGameDefautlt():CloudOpenVipTips() then
+        UIKit:newGameUI("GameUIVIPPop"):AddToCurrentScene()
     end
 end
 function GameUIHome:OnUserDataChanged_basicInfo(userData, deltaData)

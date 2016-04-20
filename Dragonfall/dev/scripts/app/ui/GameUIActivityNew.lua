@@ -68,8 +68,8 @@ function GameUIActivityNew:OnMoveInStage()
                 default = true,
             },
             {
-                label = _("奖励"),
-                tag = "award",
+                label = _("新闻"),
+                tag = "news",
             }
         },
         function(tag)
@@ -310,7 +310,7 @@ function GameUIActivityNew:GetActivityItem(item_type)
                 if  v.level <= current_level then
                     flag = self:CheckCanGetLevelUpReward(v.index)
                     if flag then
-                    	break
+                        break
                     end
                 end
             end
@@ -344,6 +344,179 @@ function GameUIActivityNew:CheckCanGetLevelUpReward(level)
         end
     end
     return true
+end
+-- 新闻
+function GameUIActivityNew:CreateTabIf_news()
+    if not self.news_list_view then
+        local list,list_node = UIKit:commonListView({
+            direction = cc.ui.UIScrollView.DIRECTION_VERTICAL,
+            viewRect = cc.rect(0,0,556,782),
+            async = true,
+        },false)
+        list_node:addTo(self:GetView()):align(display.BOTTOM_CENTER,window.cx,window.bottom_top + 20)
+        self.news_list = list
+        self.news_list_view = list_node
+        self.news_list:onTouch(handler(self, self.listviewListener))
+        self.news_list:setDelegate(handler(self, self.sourceDelegateNewsList))
+    end
+    self:ShowNews()
+    return self.news_list_view
+end
+function GameUIActivityNew:sourceDelegateNewsList(listView, tag, idx)
+    if cc.ui.UIListView.COUNT_TAG == tag then
+        return #self.newsData
+    elseif cc.ui.UIListView.CELL_TAG == tag then
+        local item
+        local content
+        local data = self.newsData[idx]
+        item = self.news_list:dequeueItem()
+        if not item then
+            item = self.news_list:newItem()
+            content = self:GetNewsListContent()
+            item:addContent(content)
+        else
+            content = item:getContent()
+        end
+        self:FillNewsItemContent(content,data,idx)
+        item:setItemSize(556,110)
+        return item
+    else
+    end
+end
+function GameUIActivityNew:listviewListener(event)
+    local listView = event.listView
+    if "clicked" == event.name then
+        local content = event.item:getContent()
+        local data = self.newsData[content.idx]
+        self:OpenNewsDetails(data,content)
+    end
+end
+function GameUIActivityNew:ShowNews()
+    if not self.newsData then
+        NetManager:getServerNoticesPromise():done(function (response)
+            self.newsData = response.msg.notices
+            self.news_list:reload()
+        end)
+    else
+        self.news_list:reload()
+    end
+end
+function GameUIActivityNew:GetNewsListContent()
+    local content = WidgetUIBackGround.new({width = 556,height = 102},WidgetUIBackGround.STYLE_TYPE.STYLE_9)
+    display.newSprite("line_550x8.png"):align(display.TOP_CENTER, content:getContentSize().width/2, content:getContentSize().height - 4):addTo(content)
+    display.newSprite("line_550x8.png"):align(display.BOTTOM_CENTER, content:getContentSize().width/2, 3):addTo(content)
+    local icon_bg = display.newSprite("box_136x136.png"):addTo(content):pos(54,51):scale(100/136)
+    local icon = display.newSprite("troopSizeBonus_128x128.png", nil, nil, {class=cc.FilteredSpriteWithOne}):addTo(content):pos(56,51):scale(94/128)
+    local news_name = UIKit:ttfLabel({
+        text = "",
+        size = 22,
+        color = 0x403c2f
+    }):addTo(content):align(display.LEFT_CENTER,126,65)
+    local news_time = UIKit:ttfLabel({
+        text = "",
+        size = 20,
+        color = 0x2b8a3f
+    }):addTo(content):align(display.LEFT_CENTER,126,30)
+    display.newSprite("next_32x38.png"):align(display.CENTER, 520, 51):addTo(content)
+    content.news_name = news_name
+    content.news_time = news_time
+    content.icon = icon
+    content.idx = nil
+    content.isRead = false
+    return content
+end
+function GameUIActivityNew:FillNewsItemContent(content,data,idx)
+    content.news_name:setString(data.title)
+    content.news_time:setString(GameUtils:formatTimeStyle2(data.time/1000))
+    content.idx = idx
+    content.isRead = false
+    content.news_time:setColor(UIKit:hex2c4b(0x2b8a3f))
+    content.icon:clearFilter()
+    local NEWS_READ = app:GetGameDefautlt():getTableForKey("NEWS_READ")
+    if NEWS_READ then
+        for i,v in ipairs(NEWS_READ) do
+            if v == data.id then
+                content.icon:setFilter(filter.newFilter("GRAY", {0.2, 0.3, 0.5, 0.1}))
+                content.news_time:setColor(UIKit:hex2c4b(0x403c2f))
+                content.isRead = true
+            end
+        end
+    end
+end
+function GameUIActivityNew:OpenNewsDetails(data,content)
+    if not content.isRead then
+        local news_read = app:GetGameDefautlt():getTableForKey("NEWS_READ") or {}
+        table.insert(news_read, data.id)
+        if #news_read > 10 then
+            for i,new in ipairs(news_read) do
+                local isLive = false
+                for j,current in ipairs(self.newsData) do
+                    if new == current.id then
+                        isLive = true
+                        break
+                    end
+                end
+                if not isLive then
+                    table.remove(news_read,i)
+                end
+            end
+        end
+        local news_read = app:GetGameDefautlt():setTableForKey("NEWS_READ", news_read)
+        content.icon:setFilter(filter.newFilter("GRAY", {0.2, 0.3, 0.5, 0.1}))
+        content.news_time:setColor(UIKit:hex2c4b(0x403c2f))
+        content.isRead = true
+    end
+
+    local dialog = UIKit:newWidgetUI("WidgetPopDialog",772,_("新闻详情"), window.top-130,"title_red_634x134.png"):addTo(self)
+    dialog.title_sprite:setPositionY(772):zorder(20)
+    dialog.title_label:setPositionY(dialog.title_sprite:getContentSize().height - 35)
+    dialog.close_btn:setPosition(dialog.title_sprite:getContentSize().width - 25,dialog.title_sprite:getContentSize().height/2+16)
+    local body = dialog:GetBody()
+    local size = body:getContentSize()
+    UIKit:ttfLabel({
+        text = data.title,
+        size = 22,
+        color = 0x403c2f
+    }):addTo(body):align(display.CENTER,size.width/2,size.height- 60)
+    display.newSprite("line_514x22.png"):align(display.CENTER, size.width/2,size.height- 90):addTo(body)
+    UIKit:ttfLabel({
+        text = GameUtils:formatTimeStyle2(data.time/1000),
+        size = 20,
+        color = 0x2b8a3f
+    }):addTo(body):align(display.CENTER,size.width/2,size.height- 120)
+    local content_bg = WidgetUIBackGround.new({width = 556,height = 526},WidgetUIBackGround.STYLE_TYPE.STYLE_5)
+        :addTo(body):align(display.TOP_CENTER,size.width/2,size.height- 140)
+    local message_label = UIKit:ttfLabel({
+        text = data.content,
+        size = 20,
+        color = 0x403c2f,
+        align = cc.ui.UILabel.TEXT_ALIGN_CENTER,
+        dimensions = cc.size(480, 0),
+    })
+    local w,h =  message_label:getContentSize().width,message_label:getContentSize().height
+    -- 提示内容
+    local listview = UIListView.new{
+        -- bgColor = UIKit:hex2c4b(0x7a100000),
+        viewRect = cc.rect(14,10, 528, 506),
+        direction = cc.ui.UIScrollView.DIRECTION_VERTICAL
+    }:addTo(content_bg)
+    local item = listview:newItem()
+    item:setItemSize(500,message_label:getContentSize().height)
+    item:addContent(message_label)
+    listview:addItem(item)
+    listview:reload()
+    local active_button = WidgetPushButton.new(
+        {normal = "yellow_btn_up_186x66.png", pressed = "yellow_btn_down_186x66.png"}
+    ):setButtonLabel(UIKit:ttfLabel({
+        text = _("我知道了"),
+        size = 20,
+        color = 0xfff3c7,
+        shadow = true
+    })):addTo(body):align(display.CENTER, size.width/2, 60)
+        :onButtonClicked(function(event)
+            if event.name == "CLICKED_EVENT" then
+            end
+        end)
 end
 function GameUIActivityNew:CreateTabIf_award()
     if not self.award_list_view then
@@ -566,4 +739,8 @@ function GameUIActivityNew:OnAwardButtonClicked(idx)
 end
 
 return GameUIActivityNew
+
+
+
+
 
