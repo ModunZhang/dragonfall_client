@@ -148,7 +148,8 @@ function GameUISetting:OnButtonClicked(button)
 		-- if ext.userVoice then
 		-- 	ext.userVoice("dannyhe.uservoice.com",280112,"example@batcat.com","DragonFall","DragonFall")
 		-- end
-       	UIKit:newGameUI("GameUISettingContactUs"):AddToCurrentScene(true)
+       	-- UIKit:newGameUI("GameUISettingContactUs"):AddToCurrentScene(true)
+       	UIKit:newGameUI("GameUISettingFaq"):AddToCurrentScene(true)
 	elseif tag == 12 then
 		--facebook
 		if device.platform == "ios" or device.platform == "android" then
