@@ -202,4 +202,9 @@ public class CommonUtils {
 			return false;
 		}
 	}
+
+	public static void killProcess(){
+		int pid = android.os.Process.myPid();
+		android.os.Process.killProcess(pid);
+	}
 }

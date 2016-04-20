@@ -181,12 +181,10 @@ public class AppActivity extends Cocos2dxActivity
 	}
 	@Override
 	protected void onDestroy() {
-		StoreKit.purge();
-		PayPalSDK.getInstance().destroy(this);
-//#ifdef CC_USE_FACEBOOK
-		FaceBookSDK.onDestroy();
-//#endif
+		releaseData();
 		super.onDestroy();
+		//如果Activity被摧毁,杀掉游戏进程,被重新创建时游戏会重启
+		CommonUtils.killProcess();
 	}
 	
 	@Override
@@ -201,6 +199,18 @@ public class AppActivity extends Cocos2dxActivity
 //#ifdef CC_USE_FACEBOOK
 		FaceBookSDK.onActivityResult(this, requestCode, resultCode, data);
 //#endif
+	}
+
+
+	private void releaseData(){
+		StoreKit.purge();
+		PayPalSDK.getInstance().destroy(this);
+//#ifdef CC_USE_FACEBOOK
+		FaceBookSDK.onDestroy();
+//#endif
+		gameHandler = null;
+		gameActivity = null;
+		System.gc();
 	}
 	/************************Dialog************************/
     
