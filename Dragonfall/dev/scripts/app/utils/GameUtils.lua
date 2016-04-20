@@ -8,6 +8,8 @@ local modf = math.modf
 local pairs = pairs
 local ipairs = ipairs
 local tonumber = tonumber
+local crypto = require(cc.PACKAGE_NAME .. ".crypto")
+
 local round = function(v)
     return floor(v + 0.5)
 end
@@ -120,6 +122,7 @@ function GameUtils:getUpdatePath(  )
 end
 
 ---------------------------------------------------------- Google Translator
+-- 已失效
 -- text :将要翻译的文本
 -- cb :回调函数,有两个参数 function(result,errText) 如果翻译成功 result将返回翻译后的结果errText为nil，如果失败result为nil，errText为错误描述
 -- 设置vpn测试！
@@ -179,14 +182,23 @@ function GameUtils:ConvertLocaleToGoogleCode()
     end
 end
 
------------------------
--- get method
+---------------------------------------------------------- Baidu Translator
+-- http://api.fanyi.baidu.com/api/trans/product/apidoc
 function GameUtils:Baidu_Translate(text,cb)
+    local q     = string.trim(text)
+    local from  = "auto"
+    local to    = self:ConvertLocaleToBaiduCode()
+    local appid = "20160419000019161"
+    local key   = "0bm2bGObxmSGg3q34Yyv"
+    local salt  = math.random(9999999999)
+    local sign  = crypto.md5(string.format("%s%s%s%s",appid,q,salt,key))
     local params = {
-        from="auto",
-        to='zh',
-        client_id='FTxAZwkrHChliZjT3g2ZYpHr',
-        q=text
+        from=from,
+        to=to,
+        appid=appid,
+        q=q,
+        salt = salt,
+        sign = sign
     }
     local str = ""
     for k,v in pairs(params) do
@@ -218,7 +230,7 @@ function GameUtils:Baidu_Translate(text,cb)
         else
             cb(nil,eventName)
         end
-    end, "http://openapi.baidu.com/public/2.0/bmt/translate?" .. str, "GET")
+    end, "http://api.fanyi.baidu.com/api/trans/vip/translate?" .. str, "GET")
     request:setTimeout(10)
     request:start()
 end
@@ -261,26 +273,8 @@ function GameUtils:Translate(text,cb)
         cb(" ")
         return
     end
-    -- 关闭Baidu翻译
-    self:Google_Translate(text,cb)
-    -- local language = self:GetGameLanguage()
-    -- if language == 'en' or language == 'tw' then
-    --     self:Baidu_Translate(text,cb)
-    -- else
-    --     if type(self.reachableGoogle)  == nil then
-    --         if network.isHostNameReachable("www.google.com") then
-    --             self.reachableGoogle = true
-    --             self:Google_Translate(text,cb)
-    --         else
-    --             self.reachableGoogle = false
-    --             self:Baidu_Translate(text,cb)
-    --         end
-    --     elseif self.reachableGoogle then
-    --         self:Google_Translate(text,cb)
-    --     else
-    --         self:Baidu_Translate(text,cb)
-    --     end
-    -- end
+    -- Google 翻译已失效
+    self:Baidu_Translate(text,cb)
 end
 
 
