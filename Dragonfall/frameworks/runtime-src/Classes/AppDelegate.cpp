@@ -67,6 +67,8 @@ bool AppDelegate::applicationDidFinishLaunching()
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
     AppDelegateExtern::initLuaEngine();
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+    std::string version = GetAppVersion() + "(" + GetAppBundleVersion() + ")";
+    CrashReport::setAppVersion(version.c_str());
     CrashReport::initCrashReport("900025835", false);
     AndroidCheckFistInstall();
 #else

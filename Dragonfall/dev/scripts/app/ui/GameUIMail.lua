@@ -1231,10 +1231,11 @@ function GameUIMail:ShowMailDetails(mail)
 
     -- player head icon
     UIKit:GetPlayerCommonIcon(mail.fromIcon):align(display.CENTER, 76, size.height - 80):addTo(body)
-
-    WidgetPushTransparentButton.new(cc.rect(0,0,114,114)):addTo(body):align(display.CENTER, 76, size.height - 80):onButtonClicked(function()
-        UIKit:newGameUI("GameUIAllianceMemberInfo",false,mail.fromId,nil,User.serverId):AddToCurrentScene(true)
-    end)
+    if mail.fromName ~= "__system" then
+        WidgetPushTransparentButton.new(cc.rect(0,0,114,114)):addTo(body):align(display.CENTER, 76, size.height - 80):onButtonClicked(function()
+            UIKit:newGameUI("GameUIAllianceMemberInfo",false,mail.fromId,nil,User.serverId):AddToCurrentScene(true)
+        end)
+    end
     -- 主题
     local subject_label = cc.ui.UILabel.new(
         {cc.ui.UILabel.LABEL_TYPE_TTF,
@@ -1662,7 +1663,7 @@ function GameUIMail:CreateReportContent()
                         UIKit:newGameUI("GameUIShrineReportInMail", report,true):AddToCurrentScene(true)
                     end
                     if report:Type() ~= "collectResource" and report:Type() ~= "attackShrine" then
-                        if report:GetReportResult() then
+                        if report:IsWin() then
                             app:GetAudioManager():PlayeEffectSoundWithKey("BATTLE_VICTORY")
                         else
                             app:GetAudioManager():PlayeEffectSoundWithKey("BATTLE_DEFEATED")
@@ -1994,7 +1995,7 @@ function GameUIMail:CreateSavedReportContent()
                         UIKit:newGameUI("GameUIShrineReportInMail", report):AddToCurrentScene(true)
                     end
                     if report:Type() ~= "collectResource" and report:Type() ~= "attackShrine" then
-                        if report:GetReportResult() then
+                        if report:IsWin() then
                             app:GetAudioManager():PlayeEffectSoundWithKey("BATTLE_VICTORY")
                         else
                             app:GetAudioManager():PlayeEffectSoundWithKey("BATTLE_DEFEATED")

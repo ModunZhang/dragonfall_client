@@ -49,8 +49,23 @@ function GameDefautlt:setTableForKey(key,t)
     local jsonString = json.encode(t)
     self:setStringForKey(key,jsonString)
 end
+function GameDefautlt:SetFirstGetGate()
+    self:setStringForKey("FIRST_GET_GATE", "yes")
+    self:flush()
+end
+function GameDefautlt:IsFirstGetGate()
+    return self:getStringForKey("FIRST_GET_GATE") ~= "yes"
+end
+function GameDefautlt:SetFirstLogin()
+    self:setStringForKey("FIRST_LOGIN", "yes")
+    self:flush()
+end
+function GameDefautlt:IsFirstLogin()
+    return self:getStringForKey("FIRST_LOGIN") ~= "yes"
+end
 function GameDefautlt:IsPassedSplash()
-    return self:getStringForKey("PASS_SPLASH") == "yes"
+    -- return self:getStringForKey("PASS_SPLASH") == "yes"
+    return true
 end
 -- 消费金龙币提醒
 function GameDefautlt:IsOpenGemRemind()
@@ -68,7 +83,7 @@ function GameDefautlt:getRecentContacts()
 end
 -- 添加最近联系人
 function GameDefautlt:addRecentContacts(contacts)
-    local recent_contacts = self:getRecentContacts()
+    local recent_contacts = self:getRecentContacts() or {}
     local new_contacts = {
         id = contacts.id,
         name = contacts.name,

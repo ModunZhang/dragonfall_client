@@ -194,7 +194,7 @@ public class CommonUtils {
     		GCMUtils.registerGCMService(AppActivity.getGameActivity());
     	}
     }
-	private  boolean isGooglePlayServiceAvailable () {
+	public static boolean isGooglePlayServiceAvailable () {
 		int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(AppActivity.getGameActivity());
 		if (status == ConnectionResult.SUCCESS) {
 			return true;

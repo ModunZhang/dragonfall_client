@@ -160,7 +160,7 @@ function GameUIHelp:GetHelpEventDesc( eventData )
     if type == "buildingEvents"
         or type == "houseEvents"
     then
-        return _("正在升级")..Localize.building_name[name].._("等级")..eventData.level
+        return _("正在升级").." "..Localize.building_name[name].." ".._("等级")..eventData.level
     elseif type == "militaryTechEvents" then
         local names = string.split(name, "_")
         if names[2] == "hpAdd" then

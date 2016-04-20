@@ -68,6 +68,8 @@ function WidgetSoldierBox:SetNumber(number)
     if self.lock_icon then
         self.lock_icon:hide()
     end
+    self.soldier_bg:setButtonEnabled(true)
+    self:removeNodeEventListenersByEvent(cc.NODE_TOUCH_EVENT)
     return self
 end
 function WidgetSoldierBox:Enable(b)
@@ -87,7 +89,8 @@ function WidgetSoldierBox:SetCondition(text)
     if not self.lock_icon then
         self.lock_icon = display.newSprite("icon_lock_14x18.png"):addTo(self.number:getParent()):align(display.LEFT_CENTER, 10, self.number:getParent():getContentSize().height/2-1)
     end
-    UIKit:addTipsToNode(self,text,self:getParent())
+    UIKit:addTipsToNode(self,text,self:getParent(),nil,nil,30)
+    self.soldier_bg:setButtonEnabled(false)
     return self
 end
 function WidgetSoldierBox:IsLocked()

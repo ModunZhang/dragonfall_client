@@ -22,6 +22,8 @@ function __G__TRACKBACK__(errorMessage)
         end
     else
         if type(buglyReportLuaException) == 'function' then
+            local version = app.client_tag or "unknown"
+            buglyPutUserData("LuaTag", version) --send autoupdate version
             buglyReportLuaException(errorMessage, debug.traceback("", 2))
         end
         -- if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEvent then

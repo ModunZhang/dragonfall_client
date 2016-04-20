@@ -96,23 +96,44 @@ public class NotificationUtils {
 		Intent gameIntent = new Intent(context, AppActivity.class);
         gameIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		PendingIntent intent = PendingIntent.getActivity(context, 0, gameIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		
-		Notification.Builder builder = new Notification.Builder(context)  
-		            .setContentTitle(title)  
-		            .setContentText(message)  
-		            .setContentIntent(intent)  
-		            .setSmallIcon(icon)  
-		            .setWhen(when);
-		Notification notification = builder.build();
-			
-		notification.defaults = Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE;
-		notification.flags |= Notification.FLAG_AUTO_CANCEL;
-		notification.flags |= Notification.FLAG_SHOW_LIGHTS;
-		notification.ledARGB = 0xFFFF0000;
-		notification.ledOnMS = 1000;
-		notification.ledOffMS = 500;
-		
-		notificationManager.notify((int) SystemClock.elapsedRealtime(), notification);
+
+        try {
+            Notification.Builder builder = new Notification.Builder(context)
+                    .setContentTitle(title)
+                    .setContentText(message)
+                    .setContentIntent(intent)
+                    .setSmallIcon(icon)
+                    .setWhen(when);
+            Notification notification = builder.build();
+
+            notification.defaults = Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE;
+            notification.flags |= Notification.FLAG_AUTO_CANCEL;
+            notification.flags |= Notification.FLAG_SHOW_LIGHTS;
+            notification.ledARGB = 0xFFFF0000;
+            notification.ledOnMS = 1000;
+            notification.ledOffMS = 500;
+
+            notificationManager.notify((int) SystemClock.elapsedRealtime(), notification);
+        }catch (SecurityException e)
+        {
+            //maybe SecurityException cause by VIBRATE
+            Notification.Builder builder = new Notification.Builder(context)
+                    .setContentTitle(title)
+                    .setContentText(message)
+                    .setContentIntent(intent)
+                    .setSmallIcon(icon)
+                    .setWhen(when);
+            Notification notification = builder.build();
+
+            notification.defaults = Notification.DEFAULT_SOUND;
+            notification.flags |= Notification.FLAG_AUTO_CANCEL;
+            notification.flags |= Notification.FLAG_SHOW_LIGHTS;
+            notification.ledARGB = 0xFFFF0000;
+            notification.ledOnMS = 1000;
+            notification.ledOffMS = 500;
+
+            notificationManager.notify((int) SystemClock.elapsedRealtime(), notification);
+        }
     }
 
 }

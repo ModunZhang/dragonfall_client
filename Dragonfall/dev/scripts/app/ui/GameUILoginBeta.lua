@@ -45,6 +45,14 @@ function GameUILoginBeta:onEnter()
     self:createContactUs()
     self:createVerLabel()
     self:createUserAgreement()
+
+    if #app:GetGameDefautlt():getStringForKey("FIRST_LAUNCH") == 0 then
+        app:GetGameDefautlt():setStringForKey("FIRST_LAUNCH", "empty")
+        app:GetGameDefautlt():flush()
+        if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEvent then
+            ext.market_sdk.onPlayerEvent("FIRST_LAUNCH", "empty")
+        end
+    end
 end
 
 function GameUILoginBeta:Reset()
@@ -146,6 +154,11 @@ function GameUILoginBeta:createStartGame()
     end)
 end
 function GameUILoginBeta:SetAgreeAgreement()
+    if #app:GetGameDefautlt():getStringForKey("USER_AGREEMENT") == 0 then
+        if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEvent then
+            ext.market_sdk.onPlayerEvent("USER_AGREEMENT", "agree")
+        end
+    end
     app:GetGameDefautlt():setStringForKey("USER_AGREEMENT","agree")
 end
 function GameUILoginBeta:SetNotAgreeAgreement()
@@ -155,6 +168,14 @@ function GameUILoginBeta:IsAgreement()
     return app:GetGameDefautlt():getStringForKey("USER_AGREEMENT") == "agree"
 end
 function GameUILoginBeta:startGame()
+    if #app:GetGameDefautlt():getStringForKey("START_GAME") == 0 then
+        app:GetGameDefautlt():setStringForKey("START_GAME", "empty")
+        app:GetGameDefautlt():flush()
+        if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEvent then
+            ext.market_sdk.onPlayerEvent("START_GAME", "empty")
+        end
+    end
+
     local button = self.start_button
     button:setButtonEnabled(false)
     display.getRunningScene().startGame = true
@@ -335,7 +356,7 @@ function GameUILoginBeta:createGameNotice()
         local response = request:getResponseString()
 
         local results = json.decode(response)
-        if results.code ~= 200 then
+        if not results or results.code ~= 200 then
             self:setProgressPercent(100)
             self:performWithDelay(function()
                 self.progress_bar:hide()
@@ -449,6 +470,9 @@ function GameUILoginBeta:GetServerInfo()
         self:loadLocalResources()
     else -- 真机环境
         GameUtils:GetServerInfo({env = CONFIG_IS_DEBUG and "development" or "production", version = ext.getAppVersion()}, function(success, content)
+            if not content then
+                success = false
+            end
             if success then
                 -- self:setProgressText(_("获取服务器信息成功"))
                 dump(content)
@@ -535,6 +559,14 @@ end
 
 function GameUILoginBeta:loginAction()
     -- self:setProgressText(_("连接网关服务器...."))
+    if #app:GetGameDefautlt():getStringForKey("LOGIN_ACTION") == 0 then
+        app:GetGameDefautlt():setStringForKey("LOGIN_ACTION", "empty")
+        app:GetGameDefautlt():flush()
+        if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEvent then
+            ext.market_sdk.onPlayerEvent("LOGIN_ACTION", "empty")
+        end
+    end
+
     UIKit:WaitForNet(5)
     self:connectGateServer()
 end
@@ -543,7 +575,7 @@ function GameUILoginBeta:connectGateServer()
     NetManager:getConnectGateServerPromise():done(function()
         -- self:setProgressPercent(80)
         self:getLogicServerInfo()
-    end):catch(function(err)
+    end):fail(function()
         -- 1是连接游戏服务器失败 0是本地网络有问题
         GameUtils:PingSearchEngine(function(success)
             local errorCode = success and 1 or 0
@@ -603,7 +635,7 @@ end
 function GameUILoginBeta:connectLogicServer()
     NetManager:getConnectLogicServerPromise():done(function()
         self:login()
-    end):catch(function(err)
+    end):fail(function()
         self:showErrorForReTry(_("连接游戏服务器失败!"),function()
             self:performWithDelay(function()
                 self:connectLogicServer()

@@ -530,8 +530,9 @@ function CommonUpgradeUI:SetUpgradeEfficiency()
 end
 
 function CommonUpgradeUI:InitUpgradePart()
+    local building = self.building
     -- 升级页
-    if self.building:GetNextLevel() == self.building:GetLevel() then
+    if building:GetNextLevel() == building:GetLevel() then
         return
     end
     self.upgrade_layer = display.newLayer()
@@ -547,16 +548,16 @@ function CommonUpgradeUI:InitUpgradePart()
             listener = function ()
                 local commend = function ()
                     local upgrade_listener = function()
-                        if self.building:GetType()=="tower" then
+                        if building:GetType()=="tower" then
                             NetManager:getInstantUpgradeTowerPromise():done(function()
                                 self:UpgradeFinished()
                             end)
-                        elseif self.building:GetType()=="wall" then
+                        elseif building:GetType()=="wall" then
                             NetManager:getInstantUpgradeWallByLocationPromise():done(function()
                                 self:UpgradeFinished()
                             end)
                         else
-                            if City:IsFunctionBuilding(self.building) then
+                            if City:IsFunctionBuilding(building) then
                                 NetManager:getInstantUpgradeBuildingByLocationPromise(self:GetCurrentLocation()):done(function()
                                     self:UpgradeFinished()
                                 end)
@@ -569,7 +570,7 @@ function CommonUpgradeUI:InitUpgradePart()
                         end
                     end
 
-                    local can_not_update_type = self.building:IsAbleToUpgrade(true)
+                    local can_not_update_type = building:IsAbleToUpgrade(true)
                     if can_not_update_type then
                         self:PopNotSatisfyDialog(upgrade_listener,can_not_update_type)
                     else
@@ -579,7 +580,7 @@ function CommonUpgradeUI:InitUpgradePart()
 
                 if app:GetGameDefautlt():IsOpenGemRemind() then
                     UIKit:showConfirmUseGemMessageDialog(_("提示"),string.format(_("是否消费%s金龙币"),
-                        string.formatnumberthousands(self.building:getUpgradeNowNeedGems())
+                        string.formatnumberthousands(building:getUpgradeNowNeedGems())
                     ), function()
                         commend()
                     end,true,true)
@@ -600,12 +601,12 @@ function CommonUpgradeUI:InitUpgradePart()
             labelParams={text = _("升级")},
             listener = function ()
                 local upgrade_listener = function()
-                    if self.building:GetType()=="tower" then
+                    if building:GetType()=="tower" then
                         NetManager:getUpgradeTowerPromise()
-                    elseif self.building:GetType()=="wall" then
+                    elseif building:GetType()=="wall" then
                         NetManager:getUpgradeWallByLocationPromise()
                     else
-                        if City:IsFunctionBuilding(self.building) then
+                        if City:IsFunctionBuilding(building) then
                             NetManager:getUpgradeBuildingByLocationPromise(self:GetCurrentLocation())
                         else
                             NetManager:getUpgradeHouseByLocationPromise(self:GetCurrentLocation())
@@ -614,7 +615,7 @@ function CommonUpgradeUI:InitUpgradePart()
                     self:getParent():getParent():LeftButtonClicked()
                 end
 
-                local can_not_update_type = self.building:IsAbleToUpgrade(false)
+                local can_not_update_type = building:IsAbleToUpgrade(false)
                 if can_not_update_type then
                     self:PopNotSatisfyDialog(upgrade_listener,can_not_update_type)
                 else
@@ -895,6 +896,16 @@ function CommonUpgradeUI:CreateFinishNowBuildingUpgradeButton()
         :setButtonLabelOffset(0, 16)
     button:onButtonClicked(function(event)
         if event.name == "CLICKED_EVENT" then
+            if User:GetGemValue() < UtilsForEvent:GetSpeedUpPrice(self.building:GetUpgradingEvent(),self:GetEventTypeByBuilding()) then
+                UIKit:showMessageDialog(_("提示"),_("金龙币不足")):CreateOKButton(
+                    {
+                        listener = function ()
+                            UIKit:newGameUI("GameUIStore"):AddToCurrentScene(true)
+                        end,
+                        btn_name= _("前往商店")
+                    })
+                return
+            end
             button:setButtonEnabled(false)
             NetManager:getSpeedUpPromise(self:GetEventTypeByBuilding(), self.building:UniqueUpgradingKey()):done(function ()
                 button:setButtonEnabled(true)
@@ -999,6 +1010,9 @@ function CommonUpgradeUI:PopNotSatisfyDialog(listener,can_not_update_type)
                 {
                     listener = function ()
                         local shortest_event = UtilsForBuilding:GetBuildingEventsBySeq(User)[1]
+                        if not shortest_event then
+                            return
+                        end
                         local eventType = UtilsForEvent:IsHouseEvent(shortest_event) and "houseEvents" or "buildingEvents"
                         NetManager:getFreeSpeedUpPromise(eventType, shortest_event.id)
                     end,
@@ -1173,6 +1187,7 @@ function CommonUpgradeUI:PopNotSatisfyDialog(listener,can_not_update_type)
 end
 
 return CommonUpgradeUI
+
 
 
 
