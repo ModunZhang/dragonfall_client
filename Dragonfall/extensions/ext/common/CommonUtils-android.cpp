@@ -267,4 +267,35 @@ long GetAppMemoryUsage()
 {
     return 0;
 }
+
+//just for android IMEI,other platform return "unknown"
+std::string GetDeviceId()
+{
+    cocos2d::JniMethodInfo t;
+    std::string ret("unknown");
+
+    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "getDeviceId", "()Ljava/lang/String;")) 
+    {
+        jstring jResult = (jstring)t.env->CallStaticObjectMethod(t.classID, t.methodID);
+        t.env->DeleteLocalRef(t.classID);
+        ret = cocos2d::JniHelper::jstring2string(jResult);
+        t.env->DeleteLocalRef(jResult);
+    }
+    return ret;
+}
+//just for android id,other platform return "unknown"
+std::string GetAndroidId()
+{
+    cocos2d::JniMethodInfo t;
+    std::string ret("unknown");
+
+    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "getAndroidId", "()Ljava/lang/String;")) 
+    {
+        jstring jResult = (jstring)t.env->CallStaticObjectMethod(t.classID, t.methodID);
+        t.env->DeleteLocalRef(t.classID);
+        ret = cocos2d::JniHelper::jstring2string(jResult);
+        t.env->DeleteLocalRef(jResult);
+    }
+    return ret;
+}
 #endif

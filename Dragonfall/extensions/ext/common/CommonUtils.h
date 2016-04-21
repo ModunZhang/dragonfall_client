@@ -50,6 +50,11 @@ bool IsLowMemoryDevice();
 
 long GetAppMemoryUsage();
 
+//just for android IMEI,other platform return "unknown"
+std::string GetDeviceId();
+//just for android id,other platform return "unknown"
+std::string GetAndroidId();
+
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 
 void OpenUrl(std::string url);

@@ -152,6 +152,8 @@
 	public static boolean isLowMemoryDevice();
 	public static java.lang.String GetDeviceToken();
 	public static boolean isGameLaunched();
+	public static java.lang.String getAndroidId();
+	public static java.lang.String getDeviceId();
 }
 
 -keep class com.batcatstudio.dragonfall.io.JniFileOperation {

@@ -185,6 +185,14 @@ public class CommonUtils {
 	public static void RegistereForRemoteNotifications() {
 		getInstance().RegisterGCMServiceIf();
 	}
+
+	public static String getAndroidId() {
+		return getInstance().getDeviceInfo().getAndroidId();
+	}
+
+	public static String getDeviceId() {
+		return getInstance().getDeviceInfo().getDeviceId();
+	}
 	
 	// we want to register the GCM service if the device support
     private void RegisterGCMServiceIf()

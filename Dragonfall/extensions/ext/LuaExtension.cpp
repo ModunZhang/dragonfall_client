@@ -914,9 +914,25 @@ tolua_lerror :
 }
 #endif
 
+static int tolua_ext_get_device_id(lua_State* tolua_S)
+{
+    std::string  id = GetDeviceId();
+    tolua_pushcppstring(tolua_S, id);
+    return 1;
+}
+
+static int tolua_ext_get_android_id(lua_State* tolua_S)
+{
+    std::string  id = GetAndroidId();
+    tolua_pushcppstring(tolua_S, id);
+    return 1;
+}
+
 static void ResgisterGlobalExtFunctions(lua_State* tolua_S)
 {
     tolua_function(tolua_S, "now", tolua_ext_now);
+    tolua_function(tolua_S, "getDeviceId", tolua_ext_get_device_id);
+    tolua_function(tolua_S, "getAndroidId", tolua_ext_get_android_id);
     tolua_function(tolua_S, "getBatteryLevel", tolua_ext_getBatteryLevel);
     tolua_function(tolua_S, "getInternetConnectionStatus", tolua_ext_getInternetConnectionStatus);
     tolua_function(tolua_S, "createDirectory", tolua_ext_createDirectory);
