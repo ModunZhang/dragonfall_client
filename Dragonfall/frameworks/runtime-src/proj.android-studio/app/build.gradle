@@ -216,8 +216,7 @@ android.applicationVariants.all { variant ->
 }
 
 // NDK tasks
-task buildNative(type:Exec,group:'GameHelper') {
-  description 'Build our native code(cpp).'
+task buildNative(type:Exec,group:'GameHelper',description:'Build our native code(cpp).') {
   executable = 'shell'
   commandLine './build_native_release.sh'
   standardOutput = new ByteArrayOutputStream()
@@ -243,8 +242,21 @@ task cleanNativeSymbols(type: Delete,group:'GameHelper',description:'Clean the n
 
 backUpNativeSymbols.shouldRunAfter buildNative
 
+def readelf = android.ndkDirectory.getAbsolutePath() + "/toolchains/arm-linux-androideabi-4.8/prebuilt/darwin-x86/bin/arm-linux-androideabi-readelf"
+
+task checkSoFileVersion(type:Exec,group:'GameHelper',description:'Check the so file version infomation.') {
+    commandLine "$readelf",'-p','.bugly_version','libs/armeabi/libcocos2dlua.so'
+    doFirst {
+        println '------------------------------------------------'
+        println 'libcocos2dlua.so version:'
+    }
+    doLast {
+        println '------------------------------------------------'
+    }
+}
+
 // check version tasks
-task checkVersionInfo(group:'GameHelper',description:'Check the project version infomation in version.properties.') {
+task checkVersionInfo(group:'GameHelper',description:'Check the project version infomation in version.properties.',dependsOn:checkSoFileVersion) {
     doLast {
         println '------------------------------------------------'
         println 'version.properties:'
