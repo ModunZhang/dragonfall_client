@@ -590,7 +590,7 @@ end
 function GameUtils:getSupportMailFormat(category,logMsg)
     local UTCTime    = "UTC Time:" .. os.date('!%Y-%m-%d %H:%M:%S', app.timer:GetServerTime())
     local GameName   = "Game:" .. "Dragonfall"
-    local Version    = "Version:" .. ext.getAppVersion()
+    local Version    = "Version:" .. ext.getAppVersion() .. string.format(" (%s)",ext.getAppBuildVersion())
     local UserID     = "User ID:" .. DataManager:getUserData()._id
     local Username   = "User name:" .. DataManager:getUserData().basicInfo.name
     local Server     = "Server:" .. "World"
@@ -599,9 +599,9 @@ function GameUtils:getSupportMailFormat(category,logMsg)
     local Language   = "Language:" .. GameUtils:GetGameLanguage()
     local DeviceType = "Device Type:" ..ext.getDeviceModel()
     local OSVersion  = "OS Version:" .. ext.getOSVersion()
-
-    local format_str = "\n\n\n\n\n---------------%s---------------\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s"
-    local result_str = string.format(format_str,_("不能删除"),UTCTime,GameName,Version,Username,UserID,Server,OpenUDID,Category,Language,DeviceType,OSVersion)
+    local Tag        = "Tag:" .. app.client_tag or "unknown"
+    local format_str = "\n\n\n\n\n---------------%s---------------\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s"
+    local result_str = string.format(format_str,_("不能删除"),UTCTime,GameName,Version,Username,UserID,Server,OpenUDID,Category,Language,DeviceType,OSVersion,Tag)
     if logMsg then
         result_str = string.format("%s\n---------------Log---------------\n%s",result_str,logMsg)
     end
@@ -610,16 +610,17 @@ end
 function GameUtils:getLoginErrorMailFormat(category)
     local UTCTime    = "UTC Time:" .. os.date('!%Y-%m-%d %H:%M:%S', app.timer:GetServerTime())
     local GameName   = "Game:" .. "Dragonfall"
-    local Version    = "Version:" .. ext.getAppVersion()
+    local Version    = "Version:" .. ext.getAppVersion() .. string.format(" (%s)",ext.getAppBuildVersion())
     local OpenUDID   = "Open UDID:" .. device.getOpenUDID()
     local Category   = "Category:" .. category or ""
     local Language   = "Language:" .. GameUtils:GetGameLanguage()
     local DeviceType = "Device Type:" ..ext.getDeviceModel()
     local OSVersion  = "OS Version:" .. ext.getOSVersion()
+    local Tag        = "Tag:" .. app.client_tag or "unknown"
     print("....---",UTCTime,GameName,Version,OpenUDID,Category,Language,DeviceType,OSVersion)
 
-    local format_str = "\n\n\n\n\n---------------%s---------------\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s"
-    local result_str = string.format(format_str,_("不能删除"),UTCTime,GameName,Version,OpenUDID,Category,Language,DeviceType,OSVersion)
+    local format_str = "\n\n\n\n\n---------------%s---------------\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s"
+    local result_str = string.format(format_str,_("不能删除"),UTCTime,GameName,Version,OpenUDID,Category,Language,DeviceType,OSVersion,Tag)
     if logMsg then
         result_str = string.format("%s\n---------------Log---------------\n%s",result_str,logMsg)
     end
@@ -649,4 +650,7 @@ function GameUtils:InitGamei18N()
 end
 -- init the i18n file after requeired this file
 GameUtils:InitGamei18N()
+if type(buglySetUserId) == 'function' then
+    buglySetUserId(device.getOpenUDID())
+end
 return GameUtils
