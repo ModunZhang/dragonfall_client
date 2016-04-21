@@ -132,7 +132,7 @@ public class MarketSDK {
 		HashMap<String,Object>  hashmap = new HashMap<String,Object>();
 		hashmap.put(AFInAppEventParameterName.DESCRIPTION,args);
 		AppsFlyerLib.trackEvent(AppActivity.getGameActivity(),event_id,hashmap);
-		//#enfif
+		//#endif
 	}
 
 	public static void onPlayerLevelUp(int level) {
