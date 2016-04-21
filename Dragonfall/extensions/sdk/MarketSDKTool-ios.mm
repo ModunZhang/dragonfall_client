@@ -122,6 +122,10 @@ void MarketSDKTool::onPlayerEvent(const char *event_id,const char*arg)
     [TalkingDataGA onEvent:[NSString stringWithUTF8String:event_id] eventData:@{@"desc":[NSString stringWithUTF8String:arg]}];
 #endif
 }
+void MarketSDKTool::onPlayerEventAF(const char *event_id,const char*arg)
+{
+    NSLog("TODO:onPlayerEventAF");
+}
 
 void MarketSDKTool::onPlayerLevelUp(int level)
 {
@@ -295,6 +299,28 @@ tolua_lerror:
     return 0;
 }
 
+static int tolua_market_onPlayerEventAF(lua_State *tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+    if (!tolua_isstring(tolua_S, 1, 0, &tolua_err) ||
+        !tolua_isstring(tolua_S, 2, 0, &tolua_err)        )
+        goto tolua_lerror;
+    else
+#endif
+    {
+        MarketSDKTool::getInstance()->onPlayerEventAF(tolua_tostring(tolua_S, 1, 0),tolua_tostring(tolua_S, 2, 0));
+        return 0;
+    }
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'tolua_market_onPlayerEvent'.",&tolua_err);
+    return 0;
+#endif
+    
+    return 0;
+}
+
 static int tolua_market_onPlayerLevelUp(lua_State *tolua_S)
 {
 #ifndef TOLUA_RELEASE
@@ -328,6 +354,7 @@ void tolua_ext_module_market(lua_State* tolua_S)
     tolua_function(tolua_S,"onPlayerUseGameItems",tolua_market_onPlayerUseGameItems);
     tolua_function(tolua_S,"onPlayerReward",tolua_market_onPlayerReward);
     tolua_function(tolua_S,"onPlayerEvent",tolua_market_onPlayerEvent);
+    tolua_function(tolua_S,"onPlayerEventAF",tolua_market_onPlayerEventAF);
     tolua_function(tolua_S,"onPlayerLevelUp",tolua_market_onPlayerLevelUp);
     tolua_endmodule(tolua_S);
 }

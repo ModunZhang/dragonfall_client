@@ -129,6 +129,7 @@
 	public static void onPlayerUseGameItems(...);
 	public static void onPlayerReward(...);
 	public static void onPlayerEvent(...);
+	public static void onPlayerEventAF(...);
 	public static void onPlayerLevelUp(...);
 }
 

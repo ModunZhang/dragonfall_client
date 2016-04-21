@@ -5,7 +5,10 @@ import android.app.Activity;
 //#ifdef CC_USE_TALKING_DATA
 import org.cocos2dx.lua.AppActivity;
 
+import com.appsflyer.AFInAppEventParameterName;
+import com.appsflyer.AFInAppEventType;
 import com.batcatstudio.dragonfall.utils.CommonUtils;
+import com.batcatstudio.dragonfall.utils.DebugUtil;
 import com.tendcloud.tenddata.TDGAAccount;
 import com.tendcloud.tenddata.TDGAItem;
 import com.tendcloud.tenddata.TDGAVirtualCurrency;
@@ -24,7 +27,8 @@ public class MarketSDK {
 	private static String TD_CHANNEL_ID = "All";
 	private static TDGAAccount tdga_account = null;
 //#endif
-	
+
+	private static String TAG = "MarketSDK";
 	public static void initSDK() {
 		if(shouldCloseSDK()){
 			return;
@@ -85,7 +89,7 @@ public class MarketSDK {
 			return;
 		}
 //#ifdef CC_USE_TALKING_DATA
-		TDGAItem.onPurchase(itemID,count,itemPrice);
+		TDGAItem.onPurchase(itemID, count, itemPrice);
 //#endif
 	}
 
@@ -103,19 +107,32 @@ public class MarketSDK {
 			return;
 		}
 //#ifdef CC_USE_TALKING_DATA
-		TDGAVirtualCurrency.onReward(count,reason);
+		TDGAVirtualCurrency.onReward(count, reason);
 //#endif
 	}
 
+	//just send event to TalkingData
 	public static void onPlayerEvent(String event_id,String args) {
 		if(shouldCloseSDK()){
 			return;
 		}
-		HashMap<String,String>   hashmap = new HashMap<String,String>();   
-		hashmap.put("desc",args);
 //#ifdef CC_USE_TALKING_DATA
-		TalkingDataGA.onEvent(event_id,hashmap);
+		HashMap<String,String>   hashmap = new HashMap<String,String>();
+		hashmap.put("desc",args);
+		TalkingDataGA.onEvent(event_id, hashmap);
 //#endif
+	}
+
+	//just send event to AppsFlyer
+	public static void onPlayerEventAF(String event_id,String args) {
+		if(shouldCloseSDK()){
+			return;
+		}
+		//#ifdef CC_USE_APPSFLYER
+		HashMap<String,Object>  hashmap = new HashMap<String,Object>();
+		hashmap.put(AFInAppEventParameterName.DESCRIPTION,args);
+		AppsFlyerLib.trackEvent(AppActivity.getGameActivity(),event_id,hashmap);
+		//#enfif
 	}
 
 	public static void onPlayerLevelUp(int level) {
