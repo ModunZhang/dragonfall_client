@@ -437,8 +437,13 @@ function User:GetFoodRealOutput()
     return upkeep + self.resources_cache.food.output
 end
 --[[end]]
-
-
+-- 把未读的新闻数量存在User中
+function User:SetNewsCount(count)
+    self.news_unread_count = count
+end
+function User:GetNewsCount()
+    return self.news_unread_count
+end
 -- [[ dailyQuests begin]]
 function User:GetDailyQuests()
     local quests = {}
