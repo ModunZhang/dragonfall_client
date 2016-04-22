@@ -22,6 +22,7 @@ GameDatas.ClientInitGame = {
 	["alliance_name_fixed"] = {},
 	["pve_level"] = {},
 	["pve_wanted"] = {},
+	["FAQ"] = {},
 }
 require("app.datas.ClientInitGame_ruins")
 require("app.datas.ClientInitGame_locations")
@@ -44,6 +45,7 @@ require("app.datas.ClientInitGame_alliance_name_noun")
 require("app.datas.ClientInitGame_alliance_name_fixed")
 require("app.datas.ClientInitGame_pve_level")
 require("app.datas.ClientInitGame_pve_wanted")
+require("app.datas.ClientInitGame_FAQ")
 
 GameDatas.NoManMap = {
 	["noManMap_1"] = {},

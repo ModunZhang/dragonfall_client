@@ -123,6 +123,31 @@ function UtilsForItem:GetAdvanceItems()
     end
     return item
 end
+-- 能否买到
+local function CheckItemSell(unlock_items, item_type)
+    return unlock_items[item_type]
+end
+function UtilsForItem:GetUnLockAdvanceItems()
+    local shop_config = GameDatas.AllianceBuilding.shop
+    local shop_level = Alliance_Manager:GetMyAlliance():GetAllianceBuildingInfoByName('shop').level
+    local advanceItems = self:GetAdvanceItems()
+    local unlock_items = {}
+    for i=1,shop_level do
+        local unlock = string.split(shop_config[i].itemsUnlock, ",")
+        for i,v in ipairs(unlock) do
+            unlock_items[v] = true
+        end
+    end
+    local unlock_sell_items = {}
+    for i,v in ipairs(advanceItems) do
+        if CheckItemSell(unlock_items,v.name) then
+            table.insert(unlock_sell_items, v)
+        end
+    end
+    return unlock_sell_items
+end
+
+
 function UtilsForItem:__order(items_info)
     local order_items_info = {}
     for k,v in pairs(items_info) do

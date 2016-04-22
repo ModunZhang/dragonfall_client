@@ -9,15 +9,14 @@ local NORMAL = GameDatas.Soldiers.normal
 local SPECIAL = GameDatas.Soldiers.special
 
 function WidgetSoldierBox:ctor(soldier_png, cb)
-    self.soldier_bg = WidgetPushButton.new({normal = "back_ground_130x166.png",
-        pressed = "back_ground_130x166.png"}):addTo(self)
-        :onButtonClicked(cb)
+    self.soldier_bg = display.newSprite("back_ground_130x166.png"):addTo(self)
         :align(display.CENTER, 0,0)
+    self.cb = cb
 
-    local rect = self.soldier_bg:getCascadeBoundingBox()
-
+    local rect = self.soldier_bg:getContentSize()
+    self.rect = rect
     local number_bg = display.newScale9Sprite("back_ground_166x84.png",0 , 0,cc.size(118,36),cc.rect(15,10,136,64)):addTo(self.soldier_bg)
-        :align(display.CENTER, 0, - rect.height / 2 +28)
+        :align(display.CENTER, rect.width/2, 28)
 
     local size = number_bg:getContentSize()
     self.number = cc.ui.UILabel.new({
@@ -39,12 +38,12 @@ function WidgetSoldierBox:SetSoldier(soldier_type, star)
             self.soldier_bg:removeChild(self.soldier_color_bg)
         end
         self.soldier_color_bg = display.newSprite(UILib.soldier_color_bg_images[soldier_type], nil, nil, {class=cc.FilteredSpriteWithOne}):addTo(self.soldier_bg)
-            :align(display.CENTER, 0, 20):scale(104/128)
+            :align(display.CENTER, self.rect.width/2, self.rect.height/2 + 20):scale(104/128)
         self.soldier = display.newSprite(soldier_ui_config, nil, nil, {class=cc.FilteredSpriteWithOne}):addTo(self.soldier_bg)
-            :align(display.CENTER, 0, 20)
+            :align(display.CENTER, self.rect.width/2, self.rect.height/2 + 20)
         self.soldier:scale(104/self.soldier:getContentSize().height)
 
-        self.soldier_star_bg = display.newSprite("tmp_back_ground_102x22.png"):addTo(self.soldier_bg):align(display.BOTTOM_CENTER,0, -28)
+        self.soldier_star_bg = display.newSprite("tmp_back_ground_102x22.png"):addTo(self.soldier_bg):align(display.BOTTOM_CENTER,self.rect.width/2, self.rect.height/2-28)
         display.newSprite("i_icon_20x20.png"):addTo(self.soldier_star_bg):align(display.LEFT_CENTER,0, 11)
         self.soldier_star = StarBar.new({
             max = 3,
@@ -68,8 +67,15 @@ function WidgetSoldierBox:SetNumber(number)
     if self.lock_icon then
         self.lock_icon:hide()
     end
-    self.soldier_bg:setButtonEnabled(true)
     self:removeNodeEventListenersByEvent(cc.NODE_TOUCH_EVENT)
+    if not self.button then
+        local button = WidgetPushButton.new()
+            :addTo(self)
+            :align(display.CENTER, 0,0)
+            :onButtonClicked(self.cb)
+        button:setContentSize(self.soldier_bg:getContentSize())
+        self.button = button
+    end
     return self
 end
 function WidgetSoldierBox:Enable(b)
@@ -90,7 +96,6 @@ function WidgetSoldierBox:SetCondition(text)
         self.lock_icon = display.newSprite("icon_lock_14x18.png"):addTo(self.number:getParent()):align(display.LEFT_CENTER, 10, self.number:getParent():getContentSize().height/2-1)
     end
     UIKit:addTipsToNode(self,text,self:getParent(),nil,nil,30)
-    self.soldier_bg:setButtonEnabled(false)
     return self
 end
 function WidgetSoldierBox:IsLocked()
@@ -107,8 +112,8 @@ function WidgetSoldierBox:alignByPoint(point, x, y)
     return self
 end
 function WidgetSoldierBox:SetButtonListener( cb )
-    self.soldier_bg:removeAllEventListeners()
-    self.soldier_bg:onButtonClicked(cb)
+    self.button:removeAllEventListeners()
+    self.button:onButtonClicked(cb)
 end
 
 return WidgetSoldierBox

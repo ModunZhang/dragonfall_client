@@ -48,7 +48,7 @@ function GameUISearchPlayer:onEnter()
     editbox_tag_search:setFont(UIKit:getEditBoxFont(),18)
     editbox_tag_search:setFontColor(cc.c3b(0,0,0))
     editbox_tag_search:setReturnType(cc.KEYBOARD_RETURNTYPE_SEARCH)
-    editbox_tag_search:setInputMode(cc.EDITBOX_INPUT_MODE_ASCII_CAPABLE)
+    -- editbox_tag_search:setInputMode(cc.EDITBOX_INPUT_MODE_ASCII_CAPABLE)
     editbox_tag_search:align(display.LEFT_TOP,window.left + 40,window.top - 100):addTo(view)
     self.editbox_tag_search = editbox_tag_search
     local list,list_node = UIKit:commonListView({

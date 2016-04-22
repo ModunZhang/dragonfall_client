@@ -76,17 +76,17 @@ function FullScreenPopDialogUI:SetPopMessage(message)
         size = 20,
         color = 0x403c2f,
         align = cc.ui.UILabel.TEXT_ALIGN_CENTER,
-        dimensions = cc.size(310, 0),
+        dimensions = cc.size(300, 0),
     })
     local w,h =  message_label:getContentSize().width,message_label:getContentSize().height
     -- 提示内容
     local  listview = UIListView.new{
         -- bgColor = UIKit:hex2c4b(0x7a100000),
-        viewRect = cc.rect(14,10, w, self.tip_bg:getContentSize().height - 60),
+        viewRect = cc.rect(14,10, 310, self.tip_bg:getContentSize().height - 60),
         direction = cc.ui.UIScrollView.DIRECTION_VERTICAL
     }:addTo(self.tip_bg)
     local item = listview:newItem()
-    item:setItemSize(w,h)
+    item:setItemSize(300,h)
     item:addContent(message_label)
     listview:addItem(item)
     listview:reload()

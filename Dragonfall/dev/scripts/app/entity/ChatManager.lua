@@ -361,7 +361,21 @@ function ChatManager:SendChat(channel,msg,cb)
         if cb then cb() end
     end)
 end
-
+-- GM 聊天
+function ChatManager:GetAllGMChat()
+    return self.gm_chat_list
+end
+-- 添加聊天记录
+function ChatManager:AddGMChatRecord(chat_record)
+    self.gm_chat_list = self.gm_chat_list or {}
+    table.insert(self.gm_chat_list, chat_record)
+end
+function ChatManager:SendGMChat(msg,cb)
+    NetManager:getSendGMChatPromise(msg):done(function(response)
+        if cb then cb(response) end
+    end)
+end
+-- GM 聊天
 function ChatManager:Reset()
     self:emptyChannel_()
     self:emptyPushQueue_()

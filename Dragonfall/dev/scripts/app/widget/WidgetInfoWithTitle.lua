@@ -8,8 +8,10 @@ function WidgetInfoWithTitle:ctor(params)
     local info = params.info -- 显示信息
     local width = params.w or 548
     local height = params.h or 266
+    local style = params.style -- 显示格式
     self.width = width
     self.height = height
+    self.style = style
     self:setContentSize(cc.size(width,height))
     self.info_bg = display.newScale9Sprite("back_ground_540x64.png",0 , 0,cc.size(width - 8 ,height - 50),cc.rect(15,10,510,44))
         :align(display.LEFT_BOTTOM)
@@ -45,6 +47,7 @@ function WidgetInfoWithTitle:CreateInfoItems(info_message)
     local meetFlag = true
 
     local item_width, item_height = self.width-10,40
+    self.item_width = item_width
     for k,v in pairs(info_message) do
         local item = self.info_listview:newItem()
         item:setItemSize(item_width, item_height)
@@ -53,30 +56,36 @@ function WidgetInfoWithTitle:CreateInfoItems(info_message)
         display.newScale9Sprite(meetFlag and "back_ground_548x40_1.png" or "back_ground_548x40_2.png",item_width/2,item_height/2,cc.size(item_width,item_height),cc.rect(15,10,518,20))
             :addTo(content)
 
-        UIKit:ttfLabel({
+        local text_1 = UIKit:ttfLabel({
             text = v[1],
             size = 20,
             color = 0x615b44,
         }):align(display.LEFT_CENTER, 20, item_height/2):addTo(content)
 
         local text_2
+        local x = item_width-20
+        local align_text = display.RIGHT_CENTER
+        if self.style == "beside" then
+            x = text_1:getPositionX() + text_1:getContentSize().width + 10
+            align_text = display.LEFT_CENTER
+        end
         if tolua.type(v[2]) == "table" then
             text_2 = UIKit:ttfLabel({
                 text = v[2][1],
                 size = 20,
                 color = v[2][2],
-            }):align(display.RIGHT_CENTER, item_width-20, item_height/2):addTo(content)
+            }):align(align_text, x, item_height/2):addTo(content)
         else
             text_2 = UIKit:ttfLabel({
                 text = v[2],
                 size = 20,
                 color = 0x403c2f,
-            }):align(display.RIGHT_CENTER, item_width-20, item_height/2):addTo(content)
+            }):align(align_text, x, item_height/2):addTo(content)
         end
 
         if v[3] then
             if tolua.type(v[3]) == "table" then
-                 text_3 = UIKit:ttfLabel({
+                text_3 = UIKit:ttfLabel({
                     text = v[3][1],
                     size = 20,
                     color = v[3][2],
@@ -98,6 +107,7 @@ function WidgetInfoWithTitle:GetListView()
     return self.info_listview
 end
 return WidgetInfoWithTitle
+
 
 
 

@@ -557,7 +557,7 @@ function GameUIAllianceBattle:RefreshFightInfoList(info_bg_y)
 end
 
 function GameUIAllianceBattle:CreateInfoItem(info_message,index)
-    local content =display.newScale9Sprite("tmp_background_red_612x58.png")
+    local content =display.newSprite("tmp_background_red_612x58.png")
     UIKit:ttfLabel({
         text = info_message[1],
         size = 22,

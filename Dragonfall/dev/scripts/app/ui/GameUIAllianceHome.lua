@@ -67,6 +67,7 @@ function GameUIAllianceHome:onEnter()
     self:InitArrow()
     -- 中间按钮
     local buttons = UIKit:newWidgetUI("WidgetShortcutButtons",self.city):addTo(self)
+    self.order_shortcut = buttons
     local size = buttons.world_map_btn_bg:getCascadeBoundingBox()
     self.loading = display.newSprite("loading.png"):addTo(buttons.world_map_btn_bg)
         :pos(size.width-20,10):scale(0.9)
@@ -77,6 +78,9 @@ end
 function GameUIAllianceHome:onExit()
     self:AddOrRemoveListener(false)
     GameUIAllianceHome.super.onExit(self)
+end
+function GameUIAllianceHome:GetShortcutNode()
+    return self.order_shortcut
 end
 function GameUIAllianceHome:AddOrRemoveListener(isAdd)
     local alliance = self.alliance

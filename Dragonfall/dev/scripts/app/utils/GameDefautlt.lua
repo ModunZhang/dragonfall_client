@@ -77,6 +77,28 @@ end
 function GameDefautlt:CloseGemRemind()
     return self:setStringForKey("USE_GEM_TIPS","no")
 end
+--是否能打开vip提示
+function GameDefautlt:CloudOpenVipTips()
+    local now = app.timer:GetServerTime()
+    local lastTipTime = now - (tonumber(self:getStringForKey("OPEN_VIP_TIPS")) or 0)
+    local one_day =  24 * 60 * 60
+    local isPassOneDay = lastTipTime > one_day
+    local isVipActived = UtilsForVip:IsVipActived(User)
+    local isupgrading = #User.buildingEvents > 0 or #User.houseEvents > 0
+    local could_open = isPassOneDay and not isVipActived and isupgrading
+    if could_open then
+        self:setStringForKey("OPEN_VIP_TIPS",now.."")
+    end
+    return could_open
+end
+function GameDefautlt:IsReadNews(news_id)
+    local news = self:getTableForKey("NEWS_READ") or {}
+    for i,v in ipairs(news) do
+        if news_id == v then
+            return true
+        end
+    end
+end
 -- 邮件最近联系人
 function GameDefautlt:getRecentContacts()
     return self:getTableForKey("RECENT_CONTACTS:"..User:Id(),{})
@@ -127,6 +149,7 @@ function GameDefautlt:getGameBasicInfo()
 end
 
 return GameDefautlt
+
 
 
 

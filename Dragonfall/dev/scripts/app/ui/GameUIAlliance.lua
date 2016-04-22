@@ -58,7 +58,8 @@ end
 function GameUIAlliance:OnAllianceDataChanged_joinRequestEvents(alliance)
     if Alliance_Manager:GetMyAlliance():GetSelf():IsTitleEqualOrGreaterThan("quartermaster") then
         local num = #alliance.joinRequestEvents or 0
-        self.tab_buttons:SetButtonTipNumber("infomation",num)
+        -- self.tab_buttons:SetButtonTipNumber("infomation",num)
+        self:RefreshInformationTips()
         if self.join_request_count then
             self.join_request_count:SetNumber(num)
         end
@@ -88,7 +89,12 @@ function GameUIAlliance:OnUserDataChanged_inviteToAllianceEvents()
         self.tab_buttons:SetButtonTipNumber("invite",#User.inviteToAllianceEvents or 0)
     end
 end
-
+function GameUIAlliance:OnUserDataChanged_iapGifts()
+    if not Alliance_Manager:GetMyAlliance():IsDefault() then
+        self:RefreshInformationTips()
+        self.have_gift_tip:SetNumber(#User.iapGifts)
+    end
+end
 function GameUIAlliance:AddListenerOfMyAlliance()
     local myAlliance = Alliance_Manager:GetMyAlliance()
     -- join or quit
@@ -99,13 +105,14 @@ function GameUIAlliance:AddListenerOfMyAlliance()
     myAlliance:AddListenOnType(self, "events")
     myAlliance:AddListenOnType(self, "joinRequestEvents")
     User:AddListenOnType(self, "inviteToAllianceEvents")
-
+    User:AddListenOnType(self, "iapGifts")
 end
 
 function GameUIAlliance:Reset()
     self.createScrollView = nil
     self.joinNode = nil
     self.invateNode = nil
+    self.buildings_node = nil
     self.applyNode = nil
     self.overviewNode = nil
     self.memberListView = nil
@@ -153,6 +160,7 @@ function GameUIAlliance:OnMoveOutStage()
     myAlliance:RemoveListenerOnType(self, "events")
     myAlliance:RemoveListenerOnType(self, "joinRequestEvents")
     User:RemoveListenerOnType(self, "inviteToAllianceEvents")
+    User:RemoveListenerOnType(self, "iapGifts")
 
     GameUIAlliance.super.OnMoveOutStage(self)
 end
@@ -393,12 +401,12 @@ function GameUIAlliance:OnJoinListActionButtonClicked(idx)
         if alliance.members == alliance.membersMax then
             UIKit:showMessageDialog(_("提示"),_("联盟人数已达最大"))
             return
-        end
-        NetManager:getJoinAllianceDirectlyPromise(alliance.id):fail(function()
-            self:SearchAllianAction(self.editbox_tag_search:getText())
-        end):done(function()
-            GameGlobalUI:showTips(_("提示"),string.format(_("加入%s联盟成功!"),alliance.name))
-        end)
+    end
+    NetManager:getJoinAllianceDirectlyPromise(alliance.id):fail(function()
+        self:SearchAllianAction(self.editbox_tag_search:getText())
+    end):done(function()
+        GameGlobalUI:showTips(_("提示"),string.format(_("加入%s联盟成功!"),alliance.name))
+    end)
     else
         for i,v in ipairs(User.requestToAllianceEvents) do
             if v.id == alliance.id then
@@ -796,6 +804,10 @@ function GameUIAlliance:CreateHaveAlliaceUI()
                 tag = "members",
             },
             {
+                label = _("建筑"),
+                tag = "buildings",
+            },
+            {
                 label = _("信息"),
                 tag = "infomation",
             }
@@ -810,11 +822,17 @@ function GameUIAlliance:CreateHaveAlliaceUI()
             end
         end
     ):pos(window.cx, window.bottom + 34)
-    if Alliance_Manager:GetMyAlliance():GetSelf():IsTitleEqualOrGreaterThan("quartermaster") then
-        self.tab_buttons:SetButtonTipNumber("infomation",#Alliance_Manager:GetMyAlliance().joinRequestEvents or 0)
+    self:RefreshInformationTips()
+end
+function GameUIAlliance:RefreshInformationTips()
+    if self.tab_buttons then
+        if Alliance_Manager:GetMyAlliance():GetSelf():IsTitleEqualOrGreaterThan("quartermaster") then
+            self.tab_buttons:SetButtonTipNumber("infomation",(#Alliance_Manager:GetMyAlliance().joinRequestEvents + #User.iapGifts) or 0)
+        else
+            self.tab_buttons:SetButtonTipNumber("infomation",#User.iapGifts or 0)
+        end
     end
 end
-
 --总览
 function GameUIAlliance:HaveAlliaceUI_overviewIf()
     if self.overviewNode then
@@ -1150,6 +1168,260 @@ function GameUIAlliance:OnAllianceSettingButtonClicked(event)
         return
     end
     UIKit:newGameUI('GameUIAllianceBasicSetting',true):AddToCurrentScene(true)
+end
+-- 建筑
+function GameUIAlliance:HaveAlliaceUI_buildingsIf()
+    if self.buildings_node then
+        self.buildings_node:removeFromParent()
+        self.buildings_node = nil
+    end
+    local list,buildings_node = UIKit:commonListView({
+        direction = cc.ui.UIScrollView.DIRECTION_VERTICAL,
+        viewRect = cc.rect(0,0,568,760),
+    -- bgColor = UIKit:hex2c4b(0x7a100000),
+    })
+    buildings_node:addTo(self.main_content):align(display.LEFT_BOTTOM, 36, window.bottom_top - 50)
+    local allianceBuildings = {
+        {
+            name = "palace",
+            x = 66,
+            y = 66,
+            scale =0.5
+        },
+        {
+            name = "orderHall",
+            x = 66,
+            y = 66,
+            scale =0.6
+        },
+        {
+            name = "shrine",
+            x = 66,
+            y = 66,
+            scale =0.9
+        },
+        {
+            name = "shop",
+            x = 66,
+            y = 66,
+            scale =0.8
+        },
+        {
+            name = "watchTower",
+            x = 66,
+            y = 66,
+            scale =0.8
+        },
+    }
+    for i,v in ipairs(allianceBuildings) do
+        local content = self:CreateBuildingNode(v)
+        local item = list:newItem()
+        item:setItemSize(568,152)
+        item:addContent(content)
+        list:addItem(item)
+    end
+    list:reload()
+    self.buildings_node = buildings_node
+    return self.buildings_node
+end
+function GameUIAlliance:CreateBuildingNode(buildingInfo)
+    local item_width ,item_height= 568,152
+    local content = WidgetUIBackGround.new({width = item_width,height = item_height},WidgetUIBackGround.STYLE_TYPE.STYLE_2)
+    local filp_bg = display.newSprite("alliance_item_flag_box_126X126.png")
+        :align(display.LEFT_CENTER, 16, item_height/2)
+        :addTo(content)
+        :scale(122/126)
+    local images = self:GetBuildingImage(buildingInfo.name)
+    if tolua.type(images) ~= "table" then
+        local building_image = display.newSprite(images)
+        building_image:addTo(filp_bg):align(display.CENTER,buildingInfo.x,buildingInfo.y)
+        building_image:setScale(buildingInfo.scale)
+    else
+        for i,image in ipairs(images) do
+            local building_image = display.newSprite(image)
+            building_image:addTo(filp_bg):align(display.CENTER,buildingInfo.x,buildingInfo.y)
+            building_image:setScale(buildingInfo.scale)
+        end
+    end
+    local title_bg = display.newScale9Sprite("title_blue_430x30.png",0,0, cc.size(400,30), cc.rect(10,10,410,10))
+        :align(display.LEFT_CENTER, filp_bg:getPositionX() + 122 + 5, item_height - 26)
+        :addTo(content)
+    UIKit:ttfLabel({
+        text = Localize.building_name[buildingInfo.name],
+        size = 22,
+        color = 0xffedae
+    }):align(display.LEFT_CENTER, 20, 15)
+        :addTo(title_bg)
+    local info = self:GetBuildingInfo(buildingInfo.name)
+    local original_y = 60
+    local gap_y = 40
+    local info_count = 0
+    for k,v in pairs(info) do
+        local node = self:CreateItemWithLine(v)
+            :align(display.CENTER, 340, original_y - gap_y*info_count)
+            :addTo(content)
+        info_count = info_count + 1
+    end
+    display.newSprite("next_32x38.png"):align(display.CENTER, 540, 60):addTo(content, 10)
+        :runAction(
+            cc.RepeatForever:create(transition.sequence{cc.ScaleTo:create(1/2, 1.5),
+                cc.ScaleTo:create(1/2, 1.0),})
+        )
+    local button = WidgetPushButton.new()
+        :addTo(content):align(display.CENTER, item_width/2 ,item_height/2)
+        :onButtonClicked(function(event)
+            if event.name == "CLICKED_EVENT" then
+                local b_name = buildingInfo.name
+                local b_info = Alliance_Manager:GetMyAlliance():GetAllianceBuildingInfoByName(b_name)
+                if b_name == "palace" then
+                    UIKit:newGameUI('GameUIAlliancePalace',City,"impose",b_info):AddToCurrentScene(true)
+                elseif b_name == "orderHall" then
+                    UIKit:newGameUI('GameUIOrderHall',City,"village",b_info):AddToCurrentScene(true)
+                elseif b_name == "shop" then
+                    UIKit:newGameUI('GameUIAllianceShop',City,"goods",b_info):AddToCurrentScene(true)
+                elseif b_name == "shrine" then
+                    UIKit:newGameUI('GameUIAllianceShrine',City,"stage",b_info):AddToCurrentScene(true)
+                elseif b_name == "watchTower" then
+                    UIKit:newGameUI('GameUIAllianceWatchTower',City,"beStriked",b_info):AddToCurrentScene(true)
+                end
+            end
+        end)
+    button:setContentSize(cc.size(item_width ,item_height))
+
+    return content
+end
+function GameUIAlliance:GetBuildingInfo(buildingName)
+    if buildingName == "palace" then
+        local member_count = _("未知")
+        local count,online,maxCount = Alliance_Manager:GetMyAlliance():GetMembersCountInfo()
+        member_count = count.."/"..maxCount
+        local label_2 = {
+            {_("成员"),0x615b44},
+            {member_count,0x403c2f},
+        }
+        return {label_2}
+    elseif buildingName == "orderHall" then
+        local village_count = LuaUtils:table_size(Alliance_Manager:GetMyAlliance():Villages())
+        local label_2 = {
+            {_("当前村落数量"),0x615b44},
+            {village_count,0x403c2f},
+        }
+        return {label_2}
+    elseif buildingName == "shop" then
+        local label_2 = {
+            {_("高级道具数量"),0x615b44},
+            {#UtilsForItem:GetUnLockAdvanceItems(),0x403c2f},
+        }
+        if Alliance_Manager:GetMyAlliance().isNewGoodsCome then
+            local label_3 =
+                {
+                    {_("有新的货物补充"),0x007c23}
+                }
+            return {label_2,label_3}
+        end
+        return {label_2}
+    elseif buildingName == "shrine" then
+        local running_event = _("未知")
+        local people_count =   _("未知")
+        running_event,people_count = self:GetTroopsInfo()
+        local doing_event = {
+            {_("正在进行的事件"),0x615b44},
+            {running_event,0x403c2f},
+        }
+        local join_people =
+            {
+                {_("参与部队"),0x615b44},
+                {people_count,0x403c2f},
+            }
+        return {doing_event,join_people}
+    elseif buildingName == "watchTower" then
+        local beStrikeCount = _("未知")
+        beStrikeCount = #self:GetAllBeStrikedEvents()
+        local label_2 = {
+            {_("来袭事件"),0x615b44},
+            {beStrikeCount,0x403c2f},
+        }
+        return {label_2}
+    end
+end
+function GameUIAlliance:GetAllBeStrikedEvents()
+    local alliance = Alliance_Manager:GetMyAlliance()
+    local marchEvents = clone(alliance.marchEvents)
+    local beStrikedEvents = {}
+    for eventType,marchEventRoot in pairs(marchEvents) do
+        for _,marchEvent in ipairs(marchEventRoot) do
+            marchEvent.eventType = eventType -- 添加一个事件类型，突袭，进攻
+            if marchEvent.marchType ~= "shrine" and not string.find(eventType,"Return") then -- 过滤掉圣地事件和返回事件
+                -- 目的地是我方联盟，并且出发地不是我方联盟，或者是协防事件:来袭事件
+                if marchEvent.toAlliance.id == alliance._id and marchEvent.fromAlliance.id ~= alliance._id or marchEvent.marchType == "helpDefence" then
+                    table.insert(beStrikedEvents, marchEvent)
+            end
+            end
+        end
+    end
+    local other_marchEvents = Alliance_Manager:GetMyAllianceMarchEvents()
+    for eventType,marchEventRoot in pairs(other_marchEvents) do
+        for _,marchEvent in pairs(marchEventRoot) do
+            if marchEvent ~= json.null then
+                marchEvent.eventType = eventType -- 添加一个事件类型，突袭，进攻
+                if marchEvent.marchType ~= "shrine" and not string.find(eventType,"Return") then -- 过滤掉圣地事件和返回事件
+                    -- 目的地是我方联盟，并且出发地不是我方联盟，或者是协防事件:来袭事件
+                    if marchEvent.toAlliance.id == alliance._id and marchEvent.fromAlliance.id ~= alliance._id or marchEvent.marchType == "helpDefence" then
+                        table.insert(beStrikedEvents, marchEvent)
+                end
+                end
+            end
+        end
+    end
+    return beStrikedEvents
+end
+function GameUIAlliance:GetTroopsInfo()
+    local events = Alliance_Manager:GetMyAlliance():GetShrineEventsBySeq()
+    local event_count = 0
+    local total_count = 0
+    local running_event_names = {}
+    for __,event in ipairs(events) do
+        event_count = event_count + 1
+        total_count = total_count + #event.playerTroops
+    end
+    if event_count > 0 then
+        return event_count,total_count
+    else
+        return _("暂无"),_("暂无")
+    end
+end
+function GameUIAlliance:CreateItemWithLine(params)
+    local line = display.newScale9Sprite("dividing_line.png",0,0,cc.size(360,2),cc.rect(10,2,382,2))
+    local size = line:getContentSize()
+    UIKit:ttfLabel({
+        text = params[1][1],
+        size = 20,
+        color = params[1][2],
+    }):align(display.LEFT_BOTTOM, 0, 6)
+        :addTo(line)
+    if params[2] then
+        local label = UIKit:ttfLabel({
+            text = params[2][1],
+            size = 20,
+            color = params[2][2],
+        }):align(display.RIGHT_BOTTOM, size.width, 6)
+            :addTo(line)
+        label:setTag(100)
+    end
+    if params[2] and params[2][3] then
+        line:setTag(params[2][3])
+    end
+    return line
+end
+function GameUIAlliance:GetBuildingImage(buildingName)
+    local images = {
+        ["palace"] = UILib.alliance_building.palace,
+        ["orderHall"] = UILib.alliance_building.orderHall,
+        ["shop"] = UILib.alliance_building.shop,
+        ["shrine"] = {UILib.alliance_building.shrine,"alliance_shrine_2.png"},
+        ["watchTower"] = UILib.alliance_building.watchTower,
+    }
+    return images[buildingName]
 end
 
 --成员
@@ -1530,13 +1802,12 @@ function GameUIAlliance:HaveAlliaceUI_infomationIf()
         self:RefreshDescView()
         return self.informationNode
     end
-    local informationNode = WidgetUIBackGround.new({height=384,isFrame = "yes"}):addTo(self.main_content):pos(16,window.betweenHeaderAndTab - 394)
+    local informationNode = WidgetUIBackGround.new({height=384,isFrame = "yes"}):addTo(self.main_content):pos(16,window.betweenHeaderAndTab - 554)
     self.informationNode = informationNode
+    local giftNode = self:CreateGiftNode():align(display.TOP_LEFT, 26, 550):addTo(informationNode)
     local notice_bg = display.newSprite("alliance_notice_box_580x184.png")
         :align(display.CENTER_TOP,304,395)
         :addTo(informationNode)
-
-
 
     local descView = UIListView.new {
         viewRect =  cc.rect(24,16,534,120),
@@ -1627,7 +1898,41 @@ function GameUIAlliance:HaveAlliaceUI_infomationIf()
     self:RefreshDescView()
     return self.informationNode
 end
+function GameUIAlliance:CreateGiftNode()
+    local giftNode = WidgetUIBackGround.new({width = 556,height = 130},WidgetUIBackGround.STYLE_TYPE.STYLE_5)
+    local icon_bg = display.newSprite("box_118x118.png"):align(display.LEFT_CENTER, 13, 65):addTo(giftNode)
+    local icon_gift = display.newSprite("activity_68x78.png"):align(display.CENTER,icon_bg:getContentSize().width/2 + 16, icon_bg:getContentSize().height/2):addTo(giftNode):scale(1.2)
+    local title_bg = display.newScale9Sprite("title_blue_430x30.png",340,100, cc.size(406,30), cc.rect(10,10,410,10)):addTo(giftNode)
+    UIKit:ttfLabel({
+        text = _("联盟礼包"),
+        size = 22,
+        color = 0xffedae,
+    }):align(display.LEFT_CENTER, 20, 15):addTo(title_bg)
+    print("#User.iapGifts=",#User.iapGifts)
+    local have_gift_tip = WidgetNumberTips.new():addTo(icon_bg):pos(110,110):SetNumber(#User.iapGifts)
+    self.have_gift_tip = have_gift_tip
+    -- local have_gift = UIKit:ttfLabel({
+    --     text = #User.iapGifts > 0 and string.format(_("可领取：%d"),#User.iapGifts) or "",
+    --     size = 22,
+    --     color = 0xffedae,
+    -- }):align(display.RIGHT_CENTER, title_bg:getContentSize().width - 40, 15):addTo(title_bg)
 
+    UIKit:ttfLabel({
+        text = _("每当有盟友购买金龙币时你将获得宝箱"),
+        size = 20,
+        color = 0x615b44,
+        dimensions = cc.size(240,0)
+    }):align(display.LEFT_CENTER, 140,50):addTo(giftNode)
+    WidgetPushButton.new({normal = "blue_btn_up_148x58.png",pressed = "blue_btn_down_148x58.png"}):setButtonLabel(UIKit:ttfLabel({text = _("查看"),
+        size = 20,
+        shadow = true,
+        color = 0xfff3c7
+    })):align(display.RIGHT_CENTER,546,40):addTo(giftNode)
+        :onButtonClicked(function(event)
+            UIKit:newGameUI("GameUIIapGifts"):AddToCurrentScene()
+        end)
+    return giftNode
+end
 function GameUIAlliance:IsOperateButtonEnable(index)
     local member = Alliance_Manager:GetMyAlliance():GetSelf()
     local enable = true
@@ -1787,6 +2092,23 @@ end
 
 
 return GameUIAlliance
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
