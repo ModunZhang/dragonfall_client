@@ -1180,7 +1180,7 @@ function GameUIAlliance:HaveAlliaceUI_buildingsIf()
         viewRect = cc.rect(0,0,568,760),
     -- bgColor = UIKit:hex2c4b(0x7a100000),
     })
-    buildings_node:addTo(self.main_content):align(display.LEFT_BOTTOM, 36, window.bottom_top - 50)
+    buildings_node:addTo(self.main_content):align(display.LEFT_BOTTOM, 36, 22)
     local allianceBuildings = {
         {
             name = "palace",

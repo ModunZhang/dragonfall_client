@@ -10,6 +10,7 @@ local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local StarBar = import("..ui.StarBar")
 local UILib = import(".UILib")
 local Localize = import("..utils.Localize")
+local scheduler = require(cc.PACKAGE_NAME .. ".scheduler")
 local intInit = GameDatas.PlayerInitData.intInit
 local WidgetInfo = import("..widget.WidgetInfo")
 local dailyQuests_config = GameDatas.DailyQuests.dailyQuests
@@ -100,18 +101,17 @@ function GameUITownHall:CreateAdministration()
     })
     listnode:align(display.BOTTOM_CENTER, layer_width/2, 20):addTo(admin_layer)
     self.quest_list_view = list_view
-    self:ResetQuest()
+    self:CreateAllQuests(User:GetDailyQuests())
     -- 获取任务
     User:AddListenOnType(self, "dailyQuests")
     User:AddListenOnType(self, "dailyQuestEvents")
     User:AddListenOnType(self, "buildingEvents")
+    self.handle = scheduler.scheduleGlobal(handler(self, self.RefreshQuests), 1.0, false)
     self:performWithDelay(function()
         scheduleAt(self, function()
             local current_time = app.timer:GetServerTime()
             if self.refresh_time then
-                if (User:GetNextDailyQuestsRefreshTime()-current_time) <= 0 then
-                    self:ResetQuest()
-                else
+                if (User:GetNextDailyQuestsRefreshTime()-current_time) >= 0 then
                     self.refresh_time:setString(GameUtils:formatTimeStyle1(User:GetNextDailyQuestsRefreshTime()-current_time))
                 end
             end
@@ -126,7 +126,20 @@ function GameUITownHall:CreateAdministration()
         end)
     end, 1)
 end
-
+-- 刷新任务
+function GameUITownHall:RefreshQuests()
+    local current_time = app.timer:GetServerTime()
+    if (User:GetNextDailyQuestsRefreshTime()-current_time) <= 0 then
+        if self.handle then
+            scheduler.unscheduleGlobal(self.handle)
+            self.handle = nil
+        end
+        NetManager:getDailyQuestsPromise():done(function ()
+            self:ResetQuest()
+            self.handle = scheduler.scheduleGlobal(handler(self, self.RefreshQuests), 1.0, false)
+        end)
+    end
+end
 function GameUITownHall:CreateAllQuests(daily_quests)
     if daily_quests then
         for _,quest in pairs(daily_quests) do
@@ -501,6 +514,9 @@ function GameUITownHall:OnUserDataChanged_buildingEvents(userData, deltaData)
 end
 
 return GameUITownHall
+
+
+
 
 
 

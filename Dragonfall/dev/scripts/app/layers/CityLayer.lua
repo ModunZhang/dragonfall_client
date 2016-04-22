@@ -36,6 +36,9 @@ local BuildingSpriteRegister = setmetatable({
     academy         = import("..sprites.AcademySprite"),
     townHall        = import("..sprites.TownHallSprite"),
     tradeGuild      = import("..sprites.TradeGuildSprite"),
+    trainingGround  = import("..sprites.TrainingGroundSprite"),
+    hunterHall      = import("..sprites.HunterHallSprite"),
+    stable          = import("..sprites.StableSprite"),
     workshop        = import("..sprites.WorkShopSprite"),
 }, {__index = function(t, k)
     return FunctionUpgradingSprite
