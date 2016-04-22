@@ -14,8 +14,10 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.os.PowerManager;
 
 public class LocalNotificationService extends Service {
 
@@ -95,7 +97,10 @@ public class LocalNotificationService extends Service {
             @Override
             public void run() {
                 Notification notification = getNotification(content, notifyTime);
-                if(null!=notification) notificationManager.notify(id, notification);
+                if(null!=notification) {
+                    notificationManager.notify(id, notification);
+                    acquireWakeLock();
+                }
                 if (notifyTime >= latestTime) { // 所有通知已发送完，关闭自己
                     LocalNotificationService.this.stopSelf();
                 }
@@ -112,10 +117,10 @@ public class LocalNotificationService extends Service {
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setWhen(notifyTime);
             Notification notification = builder.getNotification();
-
             notification.defaults = Notification.DEFAULT_SOUND;
             notification.flags |= Notification.FLAG_AUTO_CANCEL;
             notification.flags |= Notification.FLAG_SHOW_LIGHTS;
+
             return notification;
         }
         catch(SecurityException e)
@@ -125,6 +130,11 @@ public class LocalNotificationService extends Service {
         return null;
     }
 
+    private void acquireWakeLock() {
+        PowerManager pm = (PowerManager) AppActivity.getGameActivity().getSystemService(Context.POWER_SERVICE);
+        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, TAG);
+        wl.acquire(2000);
+    }
     private PendingIntent getPendingIntent() {
         Intent intent = new Intent(this, AppActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
