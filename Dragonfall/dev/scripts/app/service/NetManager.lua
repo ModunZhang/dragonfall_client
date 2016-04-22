@@ -652,6 +652,21 @@ local logic_event_map = {
             end
         end
     end,
+    onSysChat = function(success, response)
+        if success then
+            local chatManager = app:GetChatManager()
+            local gm_chat = chatManager:GetAllGMChat()
+            if gm_chat then
+                chatManager:AddGMChatRecord(response)
+            end
+            local uiInstance = UIKit:GetUIInstance("GameUIGMChat")
+            if uiInstance then
+                uiInstance:OnNewChatComing()
+            else
+                UIKit:newGameUI("GameUIGMChat",response):AddToCurrentScene()
+            end
+        end
+    end,
 }
 ---
 function NetManager:InitEventsMap(...)
@@ -1473,6 +1488,16 @@ function NetManager:getSendChatPromise(channel,text)
         ["channel"] = channel
     }, "发送聊天信息失败!")
 end
+--获取GM聊天记录
+function NetManager:getAllGMChatPromise()
+    return get_none_blocking_request_promise("http.httpHandler.getAll", {}, "获取GM聊天记录信息失败!")
+end
+--发送GM聊天信息
+function NetManager:getSendGMChatPromise(text)
+    return get_none_blocking_request_promise("http.httpHandler.send", {
+        ["text"] = text,
+    }, "发送GM聊天信息失败!")
+end
 --获取所有聊天信息
 function NetManager:getFetchChatPromise(channel)
     return get_none_blocking_request_promise("chat.chatHandler.getAll",{channel = channel}, "获取聊天信息失败!")
@@ -1666,8 +1691,8 @@ function NetManager:getSetDefenceTroopPromise(dragonType,soldiers)
     return get_blocking_request_promise("logic.playerHandler.setDefenceTroop",
         {dragonType=dragonType,soldiers=soldiers},
         "设置驻防使用的龙失败!"):done(get_player_response_msg):done(function()
-            GameGlobalUI:showTips(_("提示"),_("驻防成功"))
-            app:GetAudioManager():PlayeEffectSoundWithKey("TROOP_RECRUIT")
+        GameGlobalUI:showTips(_("提示"),_("驻防成功"))
+        app:GetAudioManager():PlayeEffectSoundWithKey("TROOP_RECRUIT")
         end)
 end
 --取消龙驻防
@@ -2230,7 +2255,7 @@ function NetManager:downloadFile(fileInfo, cb, progressCb)
                 progressCb(fileLength, fileLength)
                 cb(true)
             end
-            
+
         else
             cb(false)
         end
@@ -2238,6 +2263,7 @@ function NetManager:downloadFile(fileInfo, cb, progressCb)
         progressCb(totalSize, currentSize)
     end)
 end
+
 
 
 
