@@ -40,6 +40,7 @@ public class DeviceInfo {
 
 	public DeviceInfo() {
 		deviceId = initDeviceID();
+		androidId =  initAndroidID();
 		udid = initUDID();
 		osVersion = String.format("Android %s", Build.VERSION.RELEASE);
 		deviceModel = String.format("%s_%s_%s", Build.BRAND, Build.MODEL, Build.PRODUCT);
@@ -71,10 +72,13 @@ public class DeviceInfo {
 
 	// private
 	private String initUDID() {
-		androidId = Settings.Secure.getString(AppActivity.getGameActivity().getContentResolver(),
-				Settings.Secure.ANDROID_ID);
-		androidId = androidId == null ? "" : androidId;
 		return new UUID(androidId.hashCode(), deviceId.hashCode()).toString();
+	}
+
+	private String initAndroidID(){
+		String id = Settings.Secure.getString(AppActivity.getGameActivity().getContentResolver(),
+				Settings.Secure.ANDROID_ID);
+		return id == null ? "" : id;
 	}
 
 	private String initDeviceID() {
@@ -160,5 +164,13 @@ public class DeviceInfo {
 
 	public boolean isLowMemoryDevice() {
 		return getTotalMem()/1024 < 1024;
+	}
+
+	public String getAndroidId() {
+		return androidId;
+	}
+
+	public String getDeviceId() {
+		return deviceId;
 	}
 }

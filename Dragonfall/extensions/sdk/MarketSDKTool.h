@@ -73,6 +73,13 @@ public:
      */
     virtual void onPlayerEvent(const char* event_id,const char * arg = "");
     /**
+     *  记录自定义事件到AppsFlyer
+     *
+     *  @param event_id 事件名称或id
+     *  @param arg      额外参数
+     */
+    virtual void onPlayerEventAF(const char* event_id,const char * arg = "");
+    /**
      *  用户等级升级
      *
      *  @param level 等级

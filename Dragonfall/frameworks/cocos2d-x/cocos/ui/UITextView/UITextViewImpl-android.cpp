@@ -91,17 +91,7 @@ void UITextViewImplAndroid::setNativeFont(const char* pFontName, int fontSize)
 {
     auto director = cocos2d::Director::getInstance();
     auto glView = director->getOpenGLView();
-    auto fileUtils = FileUtils::getInstance();
-    if(fileUtils->isFileExist(pFontName))
-    {   
-        std::string reallyFontName("");
-        reallyFontName = fileUtils->fullPathForFilename(pFontName);
-        setFontEditBoxJNI(_textViewIndex, reallyFontName.c_str(), fontSize * glView->getScaleX());
-    }
-    else
-    {
-        setFontEditBoxJNI(_textViewIndex, pFontName, fontSize * glView->getScaleX());
-    }
+    setFontEditBoxJNI(_textViewIndex, pFontName, fontSize * glView->getScaleX());
 }
 
 void UITextViewImplAndroid::setNativeFontColor(const Color4B& color)

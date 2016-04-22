@@ -108,19 +108,7 @@ void EditBoxImplAndroid::setNativeFont(const char* pFontName, int fontSize)
 {
     auto director = cocos2d::Director::getInstance();
     auto glView = director->getOpenGLView();
-    auto fileUtils = FileUtils::getInstance();
-    if(fileUtils->isFileExist(pFontName))
-    {   
-        std::string reallyFontName("");
-        reallyFontName = fileUtils->fullPathForFilename(pFontName);
-        LOGD("get font path:%s",reallyFontName.c_str());
-        setFontEditBoxJNI(_editBoxIndex, reallyFontName.c_str(), fontSize * glView->getScaleX());
-    }
-    else
-    {
-        LOGD("get font path failed");
-        setFontEditBoxJNI(_editBoxIndex, pFontName, fontSize * glView->getScaleX());
-    }
+    setFontEditBoxJNI(_editBoxIndex, pFontName, fontSize * glView->getScaleX());
 }
 
 void EditBoxImplAndroid::setNativeFontColor(const Color4B& color)

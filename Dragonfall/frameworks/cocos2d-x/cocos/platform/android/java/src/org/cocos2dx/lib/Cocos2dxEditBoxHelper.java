@@ -267,14 +267,7 @@ public class Cocos2dxEditBoxHelper {
                 if (editBox != null) {
                     Typeface tf;
                     if (!fontName.isEmpty()) {
-                    	//dannyhe  find ttf font with path
-                    	File file = new File(fontName);
-                		if (!file.exists()) {
-                			tf  =  Typeface.create(fontName, Typeface.NORMAL);
-                		}
-                		else {
-                			tf = Typeface.createFromFile(file);
-                		}
+                        tf  =  Typeface.create(fontName, Typeface.NORMAL);
                     }else{
                         tf = Typeface.DEFAULT;
                     }

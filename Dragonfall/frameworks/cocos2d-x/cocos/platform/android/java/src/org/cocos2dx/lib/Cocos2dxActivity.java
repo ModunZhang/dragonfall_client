@@ -111,6 +111,7 @@ public abstract class Cocos2dxActivity extends Activity implements Cocos2dxHelpe
     private Cocos2dxWebViewHelper mWebViewHelper = null;
     private Cocos2dxEditBoxHelper mEditBoxHelper = null;
     private boolean hasFocus = false;
+    private boolean hasDeviceHasNavigationBar = false; //flag: the device has the NavigationBar
 
     public Cocos2dxGLSurfaceView getGLSurfaceView(){
         return  mGLSurfaceView;
@@ -310,6 +311,7 @@ public abstract class Cocos2dxActivity extends Activity implements Cocos2dxHelpe
         Cocos2dxHelper.init(this);
         
         this.mGLContextAttrs = getGLContextAttrs();
+        this.hasDeviceHasNavigationBar = PSNative.checkDeviceHasNavigationBar(this);
         this.init();
 
         if (mVideoHelper == null) {
@@ -438,7 +440,7 @@ public abstract class Cocos2dxActivity extends Activity implements Cocos2dxHelpe
     
     public Cocos2dxGLSurfaceView onCreateView() {
         Cocos2dxGLSurfaceView glSurfaceView = new Cocos2dxGLSurfaceView(this);
-        if (PSNative.checkDeviceHasNavigationBar(Cocos2dxActivity.this)){
+        if (this.hasDeviceHasNavigationBar){
             glSurfaceView.setSystemUiVisibility(
                     Cocos2dxGLSurfaceView.SYSTEM_UI_FLAG_LAYOUT_STABLE
                             | Cocos2dxGLSurfaceView.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -482,7 +484,7 @@ public abstract class Cocos2dxActivity extends Activity implements Cocos2dxHelpe
         // Set the IMMERSIVE flag.
         // Set the content to appear under the system bars so that the content
         // doesn't resize when the system bars hide and show.
-        if (PSNative.checkDeviceHasNavigationBar(Cocos2dxActivity.this)){
+        if (this.hasDeviceHasNavigationBar){
             this.mGLSurfaceView.setSystemUiVisibility(
                     Cocos2dxGLSurfaceView.SYSTEM_UI_FLAG_LAYOUT_STABLE
                             | Cocos2dxGLSurfaceView.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
