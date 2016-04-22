@@ -94,7 +94,8 @@ public class LocalNotificationService extends Service {
         return new TimerTask() {
             @Override
             public void run() {
-                notificationManager.notify(id, getNotification(content, notifyTime));
+                Notification notification = getNotification(content, notifyTime);
+                if(null!=notification) notificationManager.notify(id, notification);
                 if (notifyTime >= latestTime) { // 所有通知已发送完，关闭自己
                     LocalNotificationService.this.stopSelf();
                 }
@@ -103,29 +104,7 @@ public class LocalNotificationService extends Service {
     }
     @SuppressLint("NewApi")
     private Notification getNotification(String content, long notifyTime) {
-//        Notification notify = new Notification(R.drawable.icon, content, notifyTime);
-//        notify.defaults = Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE;
-//        notify.flags |= Notification.FLAG_AUTO_CANCEL;
-//        notify.flags |= Notification.FLAG_SHOW_LIGHTS;
-//        notify.setLatestEventInfo(this, notifyTitle, content, getPendingIntent());
-//        return notify;
         try{
-            Notification.Builder builder = new Notification.Builder(this)
-                    .setContentTitle(notifyTitle)
-                    .setContentText(content)
-                    .setContentIntent(getPendingIntent())
-                    .setSmallIcon(R.mipmap.ic_launcher)
-                    .setWhen(notifyTime);
-            Notification notification = builder.getNotification();
-
-            notification.defaults = Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE;
-            notification.flags |= Notification.FLAG_AUTO_CANCEL;
-            notification.flags |= Notification.FLAG_SHOW_LIGHTS;
-            return notification;
-        }
-        catch(SecurityException e)
-        {
-            //maybe SecurityException cause by VIBRATE
             Notification.Builder builder = new Notification.Builder(this)
                     .setContentTitle(notifyTitle)
                     .setContentText(content)
@@ -139,6 +118,11 @@ public class LocalNotificationService extends Service {
             notification.flags |= Notification.FLAG_SHOW_LIGHTS;
             return notification;
         }
+        catch(SecurityException e)
+        {
+            DebugUtil.LogException(TAG,e);
+        }
+        return null;
     }
 
     private PendingIntent getPendingIntent() {
