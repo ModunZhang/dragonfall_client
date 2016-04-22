@@ -5,7 +5,11 @@
 local WidgetPopDialog = import("..widget.WidgetPopDialog")
 local window = import("..utils.window")
 local RichText = import("..widget.RichText")
+local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local WidgetPushButton = import("..widget.WidgetPushButton")
+local UILib = import(".UILib")
+local Localize_item = import("..utils.Localize_item")
+
 
 local GameUIIapGifts = class("GameUIIapGifts", WidgetPopDialog)
 
@@ -18,10 +22,10 @@ function GameUIIapGifts:onEnter()
     local b_size = body:getContentSize()
     local list,list_node = UIKit:commonListView({
         direction = cc.ui.UIScrollView.DIRECTION_VERTICAL,
-        viewRect = cc.rect(0,0,556,700),
+        viewRect = cc.rect(0,0,586,700),
         async = true,
     })
-    list_node:addTo(body):pos(25,28)
+    list_node:addTo(body):pos(10,28)
     self.award_list = list
     self.award_list_view = list_node
     self.award_list:setDelegate(handler(self, self.sourceDelegateAwardList))
@@ -106,14 +110,14 @@ function GameUIIapGifts:sourceDelegateAwardList(listView, tag, idx)
             content = item:getContent()
         end
         self:FillAwardItemContent(content,data,idx)
-        item:setItemSize(556,164)
+        item:setItemSize(576,160)
         return item
     else
     end
 end
 
 function GameUIIapGifts:GetAwardListContent()
-    local content = WidgetUIBackGround.new({width = 556,height = 149},WidgetUIBackGround.STYLE_TYPE.STYLE_2)
+    local content = WidgetUIBackGround.new({width = 576,height = 149},WidgetUIBackGround.STYLE_TYPE.STYLE_2)
     local title_bg = display.newSprite("activity_title_552x42.png"):align(display.TOP_CENTER,288,145):addTo(content)
     local title_label = UIKit:ttfLabel({
         text = "",

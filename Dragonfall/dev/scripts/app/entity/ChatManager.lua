@@ -363,7 +363,7 @@ function ChatManager:SendChat(channel,msg,cb)
 end
 -- GM 聊天
 function ChatManager:GetAllGMChat()
-    return self.gm_chat_list or {}
+    return self.gm_chat_list
 end
 -- 添加聊天记录
 function ChatManager:AddGMChatRecord(chat_record)

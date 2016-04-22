@@ -489,9 +489,9 @@ end
 @return UIListView
 
 ]]
-function UIListView:reloadSyn(begin_idx,end_idx)
+function UIListView:reloadSyn()
     if self.bAsyncLoad then
-        self:asyncLoad_(begin_idx,end_idx)
+        self:asyncLoadWithEnd_()
     end
 
     return self
@@ -936,7 +936,7 @@ end
 @return UIListView
 
 ]]
-function UIListView:asyncLoad_(begin_idx,end_idx)
+function UIListView:asyncLoad_()
     self:removeAllItems()
     self.container:setPosition(0, 0)
     self.container:setContentSize(cc.size(0, 0))
@@ -948,11 +948,7 @@ function UIListView:asyncLoad_(begin_idx,end_idx)
     local item
     local containerW, containerH = 0, 0
     local posX, posY = 0, 0
-    begin_idx = begin_idx or 1
-    end_idx = end_idx or count
-    begin_idx = begin_idx < 1 and 1 or begin_idx
-    end_idx = end_idx > count and count or end_idx
-    for i=begin_idx,end_idx do
+    for i=1,count do
         item, itemW, itemH = self:loadOneItem_(cc.p(posX, posY), i)
 
         if UIScrollView.DIRECTION_VERTICAL == self.direction then
@@ -982,7 +978,78 @@ function UIListView:asyncLoad_(begin_idx,end_idx)
 
     return self
 end
+--[[--
 
+异步加载列表数据 
+从最后加载
+@return UIListView
+
+]]
+function UIListView:asyncLoadWithEnd_()
+    self:removeAllItems()
+    self.container:setPosition(0, 0)
+    self.container:setContentSize(cc.size(0, 0))
+
+    local count = self:callAsyncLoadDelegate_(self, UIListView.COUNT_TAG)
+
+    self.items_ = {}
+    local itemW, itemH = 0, 0
+    local item
+    local containerW, containerH = 0, 0
+    local posX, posY = 0, 0
+    -- 首先计算出能加载的数量
+    local begin_idx = 1
+    for i = count,1,-1 do
+        -- 初始布局,最多保证可隐藏的区域大于显示区域就可以了
+        if containerW > self.viewRect_.width + self.redundancyViewVal
+            or containerH > self.viewRect_.height + self.redundancyViewVal then
+            break
+        end
+        item, itemW, itemH = self:loadOneItem_(cc.p(posX, posY), i)
+        begin_idx = i
+        if UIScrollView.DIRECTION_VERTICAL == self.direction then
+            posY = posY - itemH
+
+            containerH = containerH + itemH
+        else
+            posX = posX + itemW
+
+            containerW = containerW + itemW
+        end
+    end
+
+    self:removeAllItems()
+    self.container:setPosition(0, 0)
+    self.container:setContentSize(cc.size(0, 0))
+    self.items_ = {}
+    local itemW, itemH = 0, 0
+    local item
+    local containerW, containerH = 0, 0
+    local posX, posY = 0, 0
+    for i=begin_idx,count do
+        item, itemW, itemH = self:loadOneItem_(cc.p(posX, posY), i)
+
+        if UIScrollView.DIRECTION_VERTICAL == self.direction then
+            posY = posY - itemH
+
+            containerH = containerH + itemH
+        else
+            posX = posX + itemW
+
+            containerW = containerW + itemW
+        end
+    end
+    -- self.container:setPosition(self.viewRect_.x, self.viewRect_.y)
+    if UIScrollView.DIRECTION_VERTICAL == self.direction then
+        local final_height = containerH > self.viewRect_.height and containerH or self.viewRect_.height
+        self.container:setPosition(self.viewRect_.x,
+            self.viewRect_.y + final_height)
+    else
+        self.container:setPosition(self.viewRect_.x, self.viewRect_.y)
+    end
+
+    return self
+end
 --[[--
 
 依据当前位置

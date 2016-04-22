@@ -90,7 +90,10 @@ function GameUIAlliance:OnUserDataChanged_inviteToAllianceEvents()
     end
 end
 function GameUIAlliance:OnUserDataChanged_iapGifts()
-    self:RefreshInformationTips()
+    if not Alliance_Manager:GetMyAlliance():IsDefault() then
+        self:RefreshInformationTips()
+        self.have_gift_tip:SetNumber(#User.iapGifts)
+    end
 end
 function GameUIAlliance:AddListenerOfMyAlliance()
     local myAlliance = Alliance_Manager:GetMyAlliance()
@@ -109,6 +112,7 @@ function GameUIAlliance:Reset()
     self.createScrollView = nil
     self.joinNode = nil
     self.invateNode = nil
+    self.buildings_node = nil
     self.applyNode = nil
     self.overviewNode = nil
     self.memberListView = nil
@@ -1280,7 +1284,6 @@ function GameUIAlliance:CreateBuildingNode(buildingInfo)
                 elseif b_name == "watchTower" then
                     UIKit:newGameUI('GameUIAllianceWatchTower',City,"beStriked",b_info):AddToCurrentScene(true)
                 end
-                self:LeftButtonClicked()
             end
         end)
     button:setContentSize(cc.size(item_width ,item_height))
@@ -1905,11 +1908,14 @@ function GameUIAlliance:CreateGiftNode()
         size = 22,
         color = 0xffedae,
     }):align(display.LEFT_CENTER, 20, 15):addTo(title_bg)
-    local have_gift = UIKit:ttfLabel({
-        text = #User.iapGifts > 0 and string.format(_("可领取：%d"),#User.iapGifts) or "",
-        size = 22,
-        color = 0xffedae,
-    }):align(display.RIGHT_CENTER, title_bg:getContentSize().width - 40, 15):addTo(title_bg)
+    print("#User.iapGifts=",#User.iapGifts)
+    local have_gift_tip = WidgetNumberTips.new():addTo(icon_bg):pos(110,110):SetNumber(#User.iapGifts)
+    self.have_gift_tip = have_gift_tip
+    -- local have_gift = UIKit:ttfLabel({
+    --     text = #User.iapGifts > 0 and string.format(_("可领取：%d"),#User.iapGifts) or "",
+    --     size = 22,
+    --     color = 0xffedae,
+    -- }):align(display.RIGHT_CENTER, title_bg:getContentSize().width - 40, 15):addTo(title_bg)
 
     UIKit:ttfLabel({
         text = _("每当有盟友购买金龙币时你将获得宝箱"),

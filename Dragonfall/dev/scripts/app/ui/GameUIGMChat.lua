@@ -20,7 +20,7 @@ local NAME_COLOR_NORMAL = UIKit:hex2c3b(0x005e6c)
 local GameUIGMChat = class("GameUIGMChat", WidgetPopDialog)
 
 function GameUIGMChat:ctor()
-    GameUIGMChat.super.ctor(self,514,_("GM聊天"),window.top - 130)
+    GameUIGMChat.super.ctor(self,514,_("GM聊天"),window.top - 170)
     self.chatManager = app:GetChatManager()
 end
 function GameUIGMChat:GetChatManager()
@@ -30,6 +30,19 @@ function GameUIGMChat:onEnter()
     GameUIGMChat.super.onEnter(self)
     self:CreateChatList()
     self:CreateTextFieldBody()
+    self:DisableAutoClose(true)
+    self.close_btn:removeAllEventListeners()
+    self.close_btn:onButtonClicked(function (event)
+        if event.name == "CLICKED_EVENT" then
+            app:GetAudioManager():PlayeEffectSoundWithKey("NORMAL_DOWN")
+            UIKit:showMessageDialog(_("提示"),
+                _("关闭该窗口后将无法继续与GM聊天，确认关闭吗？"),
+                function ()
+                    self:LeftButtonClicked()
+                end,function ()
+                end)
+        end
+    end)
 end
 function GameUIGMChat:CreateChatList()
     local body = self.body
@@ -47,7 +60,7 @@ function GameUIGMChat:CreateChatList()
     self.record_list = record_list
     local chat_record = self:GetAllListData()
     if chat_record and type(chat_record) == "table" then
-        self.record_list:reloadSyn(#self:GetAllListData() - 3,#self:GetAllListData())
+        self.record_list:reloadSyn()
     else
         NetManager:getAllGMChatPromise():done(function(response)
             dump(response)
@@ -55,13 +68,13 @@ function GameUIGMChat:CreateChatList()
             for i,chat in ipairs(response.msg.chats) do
                 self:GetChatManager():AddGMChatRecord(chat)
             end
-            self.record_list:reloadSyn(#self:GetAllListData() - 3,#self:GetAllListData())
+            self.record_list:reloadSyn()
         end)
     end
 end
 function GameUIGMChat:DelegateChatRecord( listView, tag, idx )
     if cc.ui.UIListView.COUNT_TAG == tag then
-        return #self:GetAllListData()
+        return self:GetAllListData() and #self:GetAllListData() or 0
     elseif cc.ui.UIListView.CELL_TAG == tag then
         local item
         local content
@@ -81,7 +94,7 @@ function GameUIGMChat:DelegateChatRecord( listView, tag, idx )
 end
 -- 收到新消息
 function GameUIGMChat:OnNewChatComing()
-    self.record_list:reloadSyn(#self:GetAllListData() - 3,#self:GetAllListData())
+    self.record_list:reloadSyn()
 end
 function GameUIGMChat:GetAllListData()
     return self:GetChatManager():GetAllGMChat()
@@ -129,7 +142,7 @@ function GameUIGMChat:GetChatItemCell()
         align = cc.TEXT_ALIGNMENT_RIGHT,
     }):align(display.BOTTOM_RIGHT, 440, 16):addTo(header)
 
-    local content_label = RichText.new({width = 430,size = 22,color = 0x403c2f})
+    local content_label = RichText.new({width = 420,size = 22,color = 0x403c2f})
     content_label:Text("")
     content_label:align(display.LEFT_BOTTOM, 10, 0):addTo(middle)
 
@@ -183,7 +196,7 @@ function GameUIGMChat:GetChatItemCell()
     }):align(display.BOTTOM_RIGHT, 458, 16):addTo(header)
 
 
-    local content_label = RichText.new({width = 430,size = 22,color = 0x403c2f})
+    local content_label = RichText.new({width = 420,size = 22,color = 0x403c2f})
     content_label:Text("")
     content_label:align(display.LEFT_BOTTOM, 10, 0):addTo(middle)
 
@@ -413,7 +426,7 @@ function GameUIGMChat:AddSelfChat(msg)
         ["allianceTag"] = Alliance_Manager:GetMyAlliance():IsDefault() and "" or Alliance_Manager:GetMyAlliance().basicInfo.tag,
         ["serverId"] = User.serverId,
         ["name"] = User.basicInfo.name,
-        ["time"] = app.timer:GetServerTime(),
+        ["time"] = app.timer:GetServerTime()*1000,
         ["allianceId"] = Alliance_Manager:GetMyAlliance():IsDefault() and "" or Alliance_Manager:GetMyAlliance()._id,
         ["icon"] = User.basicInfo.icon,
         ["vip"] = User.basicInfo.vipExp,}
@@ -429,4 +442,7 @@ function GameUIGMChat:CreateEmojiPanel()
     UIEmojiSelect:getChildByTag(2101):setPositionY(window.bottom+400)
 end
 return GameUIGMChat
+
+
+
 

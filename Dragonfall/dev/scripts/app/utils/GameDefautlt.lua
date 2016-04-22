@@ -91,6 +91,14 @@ function GameDefautlt:CloudOpenVipTips()
     end
     return could_open
 end
+function GameDefautlt:IsReadNews(news_id)
+    local news = self:getTableForKey("NEWS_READ") or {}
+    for i,v in ipairs(news) do
+        if news_id == v then
+            return true
+        end
+    end
+end
 -- 邮件最近联系人
 function GameDefautlt:getRecentContacts()
     return self:getTableForKey("RECENT_CONTACTS:"..User:Id(),{})

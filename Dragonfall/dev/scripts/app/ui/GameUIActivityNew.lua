@@ -55,6 +55,7 @@ end
 function GameUIActivityNew:onCleanup()
     User:RemoveListenerOnType(self, "countInfo")
     -- User:RemoveListenerOnType(self, "iapGifts")
+    User:RemoveListenerOnType(self, "buildings")
     GameUIActivityNew.super.onCleanup(self)
 end
 
@@ -77,6 +78,7 @@ function GameUIActivityNew:OnMoveInStage()
         end
     ):pos(window.cx, window.bottom + 34)
     self:RefreshNewsCountTips()
+    self:RefreshActivityCountTips()
 end
 
 
@@ -100,6 +102,7 @@ function GameUIActivityNew:CreateTabIf_activity()
         self.activity_list_view = list
         self:RefreshActivityListView()
         User:AddListenOnType(self, "countInfo")
+        User:AddListenOnType(self, "buildings")
     end
     self:RefreshActivityListView()
     return self.activity_list_view
@@ -146,6 +149,7 @@ function GameUIActivityNew:CheckFinishAllLevelUpActiIf()
 end
 function GameUIActivityNew:OnUserDataChanged_countInfo()
     self:RefreshActivityListView()
+    self:RefreshActivityCountTips()
 end
 
 function GameUIActivityNew:OnActivityListViewTouch(event)
@@ -601,7 +605,27 @@ function GameUIActivityNew:RefreshNewsCountTips()
         end
     end
 end
+function GameUIActivityNew:RefreshActivityCountTips()
+    if self.tab_buttons then
+        local award_num = 0
+        if User:HaveEveryDayLoginReward() then
+            award_num = award_num + 1
+        end
+        if User:HaveContinutyReward() then
+            award_num = award_num + 1
+        end
+        if User:HavePlayerLevelUpReward() then
+            award_num = award_num + 1
+        end
+        self.tab_buttons:SetButtonTipNumber('activity', award_num)
+    end
+end
 
+function GameUIActivityNew:OnUserDataChanged_buildings(userData, deltaData)
+    if deltaData("buildings.location_1") then
+        self:RefreshActivityCountTips()
+    end
+end
 function GameUIActivityNew:OnIapGiftTimer(iapGift)
     if not self.award_logic_index_map then return end
     local index = self.award_logic_index_map[iapGift.id]
@@ -771,6 +795,7 @@ function GameUIActivityNew:OnAwardButtonClicked(idx)
 end
 
 return GameUIActivityNew
+
 
 
 
