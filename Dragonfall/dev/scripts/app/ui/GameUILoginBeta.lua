@@ -49,8 +49,8 @@ function GameUILoginBeta:onEnter()
     if #app:GetGameDefautlt():getStringForKey("FIRST_LAUNCH") == 0 then
         app:GetGameDefautlt():setStringForKey("FIRST_LAUNCH", "empty")
         app:GetGameDefautlt():flush()
-        if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEvent then
-            ext.market_sdk.onPlayerEvent("FIRST_LAUNCH", "empty")
+        if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEventAF then
+            ext.market_sdk.onPlayerEventAF("FIRST_LAUNCH", "empty")
         end
     end
 end
@@ -155,8 +155,8 @@ function GameUILoginBeta:createStartGame()
 end
 function GameUILoginBeta:SetAgreeAgreement()
     if #app:GetGameDefautlt():getStringForKey("USER_AGREEMENT") == 0 then
-        if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEvent then
-            ext.market_sdk.onPlayerEvent("USER_AGREEMENT", "agree")
+        if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEventAF then
+            ext.market_sdk.onPlayerEventAF("USER_AGREEMENT", "agree")
         end
     end
     app:GetGameDefautlt():setStringForKey("USER_AGREEMENT","agree")
@@ -171,8 +171,8 @@ function GameUILoginBeta:startGame()
     if #app:GetGameDefautlt():getStringForKey("START_GAME") == 0 then
         app:GetGameDefautlt():setStringForKey("START_GAME", "empty")
         app:GetGameDefautlt():flush()
-        if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEvent then
-            ext.market_sdk.onPlayerEvent("START_GAME", "empty")
+        if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEventAF then
+            ext.market_sdk.onPlayerEventAF("START_GAME", "empty")
         end
     end
 
@@ -562,8 +562,8 @@ function GameUILoginBeta:loginAction()
     if #app:GetGameDefautlt():getStringForKey("LOGIN_ACTION") == 0 then
         app:GetGameDefautlt():setStringForKey("LOGIN_ACTION", "empty")
         app:GetGameDefautlt():flush()
-        if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEvent then
-            ext.market_sdk.onPlayerEvent("LOGIN_ACTION", "empty")
+        if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEventAF then
+            ext.market_sdk.onPlayerEventAF("LOGIN_ACTION", "empty")
         end
     end
 

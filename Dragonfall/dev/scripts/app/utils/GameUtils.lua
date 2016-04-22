@@ -317,16 +317,16 @@ function GameUtils:GetServerInfo(param, callback)
         if event.name == "completed" then
             callback(true, json.decode(event.request:getResponseData()))
             if app:GetGameDefautlt():IsFirstGetGate() then
-                if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEvent then
-                    ext.market_sdk.onPlayerEvent("GET_GATE_SUCCESS", "empty")
+                if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEventAF then
+                    ext.market_sdk.onPlayerEventAF("GET_GATE_SUCCESS", "empty")
                 end
             end
         elseif event.name == "progress" then
         else
             callback(false)
             if app:GetGameDefautlt():IsFirstGetGate() then
-                if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEvent then
-                    ext.market_sdk.onPlayerEvent("GET_GATE_FAILED", "empty")
+                if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEventAF then
+                    ext.market_sdk.onPlayerEventAF("GET_GATE_FAILED", "empty")
                 end
             end
         end
