@@ -48,7 +48,7 @@ function GameUIWorldHome:onEnter()
     }):align(display.CENTER, top_bg:getContentSize().width/2, top_bg:getContentSize().height/2)
         :addTo(top_bg)
 
-    UIKit:newWidgetUI("WidgetShortcutButtons",city):addTo(self)
+    self.order_shortcut = UIKit:newWidgetUI("WidgetShortcutButtons",city):addTo(self)
 
     self.bottom = self:CreateBottom()
 
@@ -58,6 +58,9 @@ function GameUIWorldHome:onEnter()
     local x, y = rect1.x, rect1.y + rect1.height - 2
     self.event_tab:addTo(self,0):pos(x, y)
     -- self:AddOrRemoveListener(true)
+end
+function GameUIWorldHome:GetShortcutNode()
+    return self.order_shortcut
 end
 function GameUIWorldHome:onExit()
 -- self:AddOrRemoveListener(false)

@@ -172,19 +172,20 @@ function WidgetShortcutButtons:ctor(city)
     end
     right_top_order:AddElement(button)
     button.tips_button_count = WidgetNumberTips.new():addTo(button):pos(20,-20)
-    local award_num = 0
+    -- local award_num = 0
 
-    if User:HaveEveryDayLoginReward() then
-        award_num = award_num + 1
-    end
-    if User:HaveContinutyReward() then
-        award_num = award_num + 1
-    end
-    if User:HavePlayerLevelUpReward() then
-        award_num = award_num + 1
-    end
-    button.tips_button_count:SetNumber(#User.iapGifts + award_num)
+    -- if User:HaveEveryDayLoginReward() then
+    --     award_num = award_num + 1
+    -- end
+    -- if User:HaveContinutyReward() then
+    --     award_num = award_num + 1
+    -- end
+    -- if User:HavePlayerLevelUpReward() then
+    --     award_num = award_num + 1
+    -- end
+    -- button.tips_button_count:SetNumber(#User.iapGifts + award_num)
     self.tips_button = button
+    self:CheckAllianceRewardCount()
 
     --在线活动
     local activity_button = WidgetAutoOrderAwardButton.new():scale(SCALE)
@@ -262,7 +263,7 @@ function WidgetShortcutButtons:onEnter()
     User:AddListenOnType(self, "soldierStarEvents")
     User:AddListenOnType(self, "militaryTechEvents")
     User:AddListenOnType(self, "productionTechEvents")
-    User:AddListenOnType(self, "iapGifts")
+    -- User:AddListenOnType(self, "iapGifts")
     User:AddListenOnType(self, "vipEvents")
     self.city:GetDragonEyrie():GetDragonManager():AddListenOnType(self,DragonManager.LISTEN_TYPE.OnBasicChanged)
 
@@ -282,7 +283,7 @@ function WidgetShortcutButtons:onExit()
     User:RemoveListenerOnType(self, "soldierStarEvents")
     User:RemoveListenerOnType(self, "militaryTechEvents")
     User:RemoveListenerOnType(self, "productionTechEvents")
-    User:RemoveListenerOnType(self, "iapGifts")
+    -- User:RemoveListenerOnType(self, "iapGifts")
     User:RemoveListenerOnType(self, "vipEvents")
     self.city:GetDragonEyrie():GetDragonManager():RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnBasicChanged)
 
@@ -341,9 +342,9 @@ end
 function WidgetShortcutButtons:OnAllianceDataChanged_basicInfo(alliance, deltaData)
     self:RefreshHelpButtonVisible()
 end
-function WidgetShortcutButtons:OnUserDataChanged_iapGifts()
-    self:CheckAllianceRewardCount()
-end
+-- function WidgetShortcutButtons:OnUserDataChanged_iapGifts()
+--     self:CheckAllianceRewardCount()
+-- end
 function WidgetShortcutButtons:OnAllianceDataChanged_helpEvents()
     self:RefreshHelpButtonVisible()
     self.request_count:SetNumber(Alliance_Manager:GetMyAlliance():GetOtherRequestEventsNum())
@@ -369,22 +370,30 @@ function WidgetShortcutButtons:OnMapAllianceChanged()
 end
 function WidgetShortcutButtons:CheckAllianceRewardCount()
     if not self.tips_button then return end
-    local count = #User.iapGifts
-    local award_num = 0
-
-    if User:HaveEveryDayLoginReward() then
-        award_num = award_num + 1
-    end
-    if User:HaveContinutyReward() then
-        award_num = award_num + 1
-    end
-    if User:HavePlayerLevelUpReward() then
-        award_num = award_num + 1
-    end
-    self.tips_button.tips_button_count:SetNumber(count + award_num)
+    NetManager:getServerNoticesPromise():done(function (response)
+        local newsData = response.msg.notices
+        local unReadCount = 0
+        for i,v in ipairs(newsData) do
+            if not app:GetGameDefautlt():IsReadNews(v.id) then
+                unReadCount = unReadCount + 1
+            end
+        end
+        local award_num = 0
+        if User:HaveEveryDayLoginReward() then
+            award_num = award_num + 1
+        end
+        if User:HaveContinutyReward() then
+            award_num = award_num + 1
+        end
+        if User:HavePlayerLevelUpReward() then
+            award_num = award_num + 1
+        end
+        self.tips_button.tips_button_count:SetNumber(unReadCount + award_num)
+    end)
 end
 
 return WidgetShortcutButtons
+
 
 
 

@@ -68,12 +68,14 @@ function WidgetSoldierBox:SetNumber(number)
         self.lock_icon:hide()
     end
     self:removeNodeEventListenersByEvent(cc.NODE_TOUCH_EVENT)
-    local button = WidgetPushButton.new()
-        :addTo(self)
-        :align(display.CENTER, 0,0)
-        :onButtonClicked(self.cb)
-    button:setContentSize(self.soldier_bg:getContentSize())
-    self.button = button
+    if not self.button then
+        local button = WidgetPushButton.new()
+            :addTo(self)
+            :align(display.CENTER, 0,0)
+            :onButtonClicked(self.cb)
+        button:setContentSize(self.soldier_bg:getContentSize())
+        self.button = button
+    end
     return self
 end
 function WidgetSoldierBox:Enable(b)

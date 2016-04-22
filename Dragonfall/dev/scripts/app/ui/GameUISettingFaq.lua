@@ -2,26 +2,29 @@
 -- Author: Danny He
 -- Date: 2015-02-24 18:14:14
 --
-local GameUISettingFaq = UIKit:createUIClass("GameUISettingFaq")
+local GameUISettingFaq = UIKit:createUIClass("GameUISettingFaq","GameUIWithCommonHeader")
 local window = import("..utils.window")
 local WidgetPushButton = import("..widget.WidgetPushButton")
 local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local UIScrollView = import(".UIScrollView")
 local FAQ = GameDatas.ClientInitGame.FAQ
+function GameUISettingFaq:ctor()
+    GameUISettingFaq.super.ctor(self,City, _("遇到问题"))
 
+end
 function GameUISettingFaq:onEnter()
 	GameUISettingFaq.super.onEnter(self)
-	self:CreateBackGround()
-    self:CreateTitle(_("遇到问题"))
-    self.home_btn = self:CreateHomeButton()
-    local gem_button = cc.ui.UIPushButton.new({
-    	normal = "contact_n_148x60.png", pressed = "contact_h_148x60.png"
-    }):onButtonClicked(function(event)
-       	UIKit:newGameUI("GameUISettingContactUs"):AddToCurrentScene(true)
-    end):addTo(self):setButtonLabel("normal", UIKit:commonButtonLable({
-    	text = _("联系我们"),
-    }))
-    gem_button:align(display.RIGHT_TOP, window.cx+314, window.top-5)
+	-- self:CreateBackGround()
+ --    self:CreateTitle(_("遇到问题"))
+ --    self.home_btn = self:CreateHomeButton()
+ --    local gem_button = cc.ui.UIPushButton.new({
+ --    	normal = "contact_n_148x60.png", pressed = "contact_h_148x60.png"
+ --    }):onButtonClicked(function(event)
+ --       	UIKit:newGameUI("GameUISettingContactUs"):AddToCurrentScene(true)
+ --    end):addTo(self):setButtonLabel("normal", UIKit:commonButtonLable({
+ --    	text = _("联系我们"),
+ --    }))
+ --    gem_button:align(display.RIGHT_TOP, window.cx+314, window.top-5)
     self:BuildUI()
 end
 
@@ -32,7 +35,7 @@ function GameUISettingFaq:BuildUI()
         viewRect = cc.rect(0, 0,562,840),
     },false)
     list:setDelegate(handler(self, self.DelegateFaq))
-    list_node:addTo(self):pos(window.left + 40,window.bottom+30)
+    list_node:addTo(self:GetView()):pos(window.left + 40,window.bottom+30)
     self.list_view = list
     list:onTouch(handler(self, self.listviewListener))
     self.list_data = self:GetAllListData()
@@ -69,6 +72,7 @@ function GameUISettingFaq:listviewListener(event)
     if "clicked" == event.name then
         local data = self.list_data[event.itemPos]
         if not data then return end
+        app:GetAudioManager():PlayeEffectSoundWithKey("OPEN_MAIL")
         UIKit:newGameUI("GameUISettingFaqDetail", data):AddToCurrentScene(true)
     end
 end

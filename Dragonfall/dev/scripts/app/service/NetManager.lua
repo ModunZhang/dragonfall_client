@@ -642,6 +642,16 @@ local logic_event_map = {
             end
         end
     end,
+    onServerNoticeChanged = function(success, response)
+        if success then
+            if display.getRunningScene():GetHomePage().GetShortcutNode then
+                display.getRunningScene():GetHomePage():GetShortcutNode():CheckAllianceRewardCount()
+            end
+            if UIKit:GetUIInstance("GameUIActivityNew") then
+                UIKit:GetUIInstance("GameUIActivityNew"):ReloadNews()
+            end
+        end
+    end,
 }
 ---
 function NetManager:InitEventsMap(...)

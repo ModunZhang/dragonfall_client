@@ -125,6 +125,9 @@ function GameUIHome:AddOrRemoveListener(isAdd)
         user:RemoveListenerOnType(self, "productionTechEvents")
     end
 end
+function GameUIHome:GetShortcutNode()
+    return self.order_shortcut
+end
 function GameUIHome:ShowVipActiveTips()
     if app:GetGameDefautlt():CloudOpenVipTips() then
         UIKit:newGameUI("GameUIVIPPop"):AddToCurrentScene()

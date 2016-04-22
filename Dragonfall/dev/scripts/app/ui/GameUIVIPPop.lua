@@ -77,7 +77,7 @@ function GameUIVIPPop:onEnter()
 
     local vip_level = User:GetVipLevel()
     
-    local contenet_label = RichText.new({width = 180,size = 24,color = 0x403c2f})
+    local contenet_label = RichText.new({width = 300,size = 24,color = 0x403c2f})
         local str = "[{\"type\":\"text\",\"color\":\"0xffffd200\", \"value\":\"≤\"},{\"type\":\"text\", \"color\":\"0xff7eff00\", \"value\":\"%d\"},{\"type\":\"text\", \"color\":\"0xffffd200\", \"value\":\"%s\"}]"
         str = string.format(str,VIP_LEVEL[vip_level].freeSpeedup,_("分钟免费加速"))
         contenet_label:Text(str):align(display.LEFT_CENTER,b_size.width/2 - 126,b_size.height - 96):addTo(body)
