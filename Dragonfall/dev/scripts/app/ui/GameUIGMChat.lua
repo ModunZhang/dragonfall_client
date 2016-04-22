@@ -20,7 +20,7 @@ local NAME_COLOR_NORMAL = UIKit:hex2c3b(0x005e6c)
 local GameUIGMChat = class("GameUIGMChat", WidgetPopDialog)
 
 function GameUIGMChat:ctor()
-    GameUIGMChat.super.ctor(self,514,_("GM私聊"),window.top - 130)
+    GameUIGMChat.super.ctor(self,514,_("GM聊天"),window.top - 130)
     self.chatManager = app:GetChatManager()
 end
 function GameUIGMChat:GetChatManager()
