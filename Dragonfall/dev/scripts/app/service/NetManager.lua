@@ -645,7 +645,7 @@ local logic_event_map = {
     onServerNoticeChanged = function(success, response)
         if success then
             if display.getRunningScene():GetHomePage().GetShortcutNode then
-                display.getRunningScene():GetHomePage():GetShortcutNode():CheckAllianceRewardCount()
+                display.getRunningScene():GetHomePage():GetShortcutNode():CheckAllianceRewardCount(true)
             end
             if UIKit:GetUIInstance("GameUIActivityNew") then
                 UIKit:GetUIInstance("GameUIActivityNew"):ReloadNews()
