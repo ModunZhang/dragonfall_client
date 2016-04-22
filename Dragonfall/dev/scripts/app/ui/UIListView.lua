@@ -482,6 +482,20 @@ function UIListView:reload()
 
     return self
 end
+--[[--
+
+通过指定数据idx加载异步列表
+
+@return UIListView
+
+]]
+function UIListView:reloadSyn(begin_idx,end_idx)
+    if self.bAsyncLoad then
+        self:asyncLoad_(begin_idx,end_idx)
+    end
+
+    return self
+end
 
 --[[--
 
@@ -922,7 +936,7 @@ end
 @return UIListView
 
 ]]
-function UIListView:asyncLoad_()
+function UIListView:asyncLoad_(begin_idx,end_idx)
     self:removeAllItems()
     self.container:setPosition(0, 0)
     self.container:setContentSize(cc.size(0, 0))
@@ -934,7 +948,11 @@ function UIListView:asyncLoad_()
     local item
     local containerW, containerH = 0, 0
     local posX, posY = 0, 0
-    for i=1,count do
+    begin_idx = begin_idx or 1
+    end_idx = end_idx or count
+    begin_idx = begin_idx < 1 and 1 or begin_idx
+    end_idx = end_idx > count and count or end_idx
+    for i=begin_idx,end_idx do
         item, itemW, itemH = self:loadOneItem_(cc.p(posX, posY), i)
 
         if UIScrollView.DIRECTION_VERTICAL == self.direction then
