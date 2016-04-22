@@ -11,7 +11,14 @@
 #define LOGE(...)
 #endif
 #define CLASS_NAME "com/batcatstudio/dragonfall/utils/CommonUtils"
+/*****VERSION****/
+//define the so version from shell
+//readelf -p .bugly_version libxxx.so
 
+#define STRINGIFY2(X) #X
+#define STRINGIFY(X) STRINGIFY2(X)
+extern "C" const char SO_FILE_VERSION[]  __attribute__ ((section (".bugly_version"))) = STRINGIFY(BUGLY_VERSION);
+/*****VERSION****/
 static char* m_UDID = NULL;
 
 void CopyText(std::string text)
@@ -259,5 +266,36 @@ bool IsLowMemoryDevice()
 long GetAppMemoryUsage()
 {
     return 0;
+}
+
+//just for android IMEI,other platform return "unknown"
+std::string GetDeviceId()
+{
+    cocos2d::JniMethodInfo t;
+    std::string ret("unknown");
+
+    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "getDeviceId", "()Ljava/lang/String;")) 
+    {
+        jstring jResult = (jstring)t.env->CallStaticObjectMethod(t.classID, t.methodID);
+        t.env->DeleteLocalRef(t.classID);
+        ret = cocos2d::JniHelper::jstring2string(jResult);
+        t.env->DeleteLocalRef(jResult);
+    }
+    return ret;
+}
+//just for android id,other platform return "unknown"
+std::string GetAndroidId()
+{
+    cocos2d::JniMethodInfo t;
+    std::string ret("unknown");
+
+    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "getAndroidId", "()Ljava/lang/String;")) 
+    {
+        jstring jResult = (jstring)t.env->CallStaticObjectMethod(t.classID, t.methodID);
+        t.env->DeleteLocalRef(t.classID);
+        ret = cocos2d::JniHelper::jstring2string(jResult);
+        t.env->DeleteLocalRef(jResult);
+    }
+    return ret;
 }
 #endif

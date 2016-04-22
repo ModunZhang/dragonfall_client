@@ -112,7 +112,7 @@ public class Cocos2dxEditBoxHelper {
                 final Cocos2dxEditBox editBox = new Cocos2dxEditBox(mCocos2dxActivity);
                 editBox.setFocusable(true);
                 editBox.setFocusableInTouchMode(true);
-                editBox.setInputFlag(4); //kEditBoxInputFlagInitialCapsAllCharacters
+                editBox.setInputFlag(1); //kEditBoxInputFlagSensitive
                 editBox.setInputMode(6); //kEditBoxInputModeSingleLine
                 editBox.setReturnType(0);  //kKeyboardReturnTypeDefault
                 editBox.setHintTextColor(Color.GRAY);
@@ -267,14 +267,7 @@ public class Cocos2dxEditBoxHelper {
                 if (editBox != null) {
                     Typeface tf;
                     if (!fontName.isEmpty()) {
-                    	//dannyhe  find ttf font with path
-                    	File file = new File(fontName);
-                		if (!file.exists()) {
-                			tf  =  Typeface.create(fontName, Typeface.NORMAL);
-                		}
-                		else {
-                			tf = Typeface.createFromFile(file);
-                		}
+                        tf  =  Typeface.create(fontName, Typeface.NORMAL);
                     }else{
                         tf = Typeface.DEFAULT;
                     }

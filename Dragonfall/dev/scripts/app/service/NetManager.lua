@@ -739,10 +739,21 @@ function NetManager:tryGetAppTag()
 end
 
 
+function NetManager:getDeviceInfoForServer()
+    if ext.getAndroidId then
+        local androidId = ext.getAndroidId() 
+        local deviceId  = ext.getDeviceId()
+        return string.format("%s|%s",androidId,deviceId)
+    else
+        return "unknown"
+    end
+end
+
 -- 获取服务器列表
 function NetManager:getLogicServerInfoPromise()
     local device_id = device.getOpenUDID()
     local device_tag = app.client_tag
+    local identity = self:getDeviceInfoForServer()
     local platform = ''
     if device.platform == 'windows' then
         platform = 'wp'
@@ -765,7 +776,7 @@ function NetManager:getLogicServerInfoPromise()
             end)
         end
     end
-    return get_none_blocking_request_promise("gate.gateHandler.queryEntry", {platform = platform,deviceId = device_id,tag = device_tag}, "获取逻辑服务器失败",true)
+    return get_none_blocking_request_promise("gate.gateHandler.queryEntry", {platform = platform,deviceId = device_id,tag = device_tag,identity = identity}, "获取逻辑服务器失败",true)
         :done(function(result)
             self:CleanAllEventListeners()
             self.m_netService:disconnect()

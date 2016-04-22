@@ -280,4 +280,15 @@ bool IsGoogleStore()
 {
     return false;
 }
+
+//just for android IMEI,other platform return "unknown"
+std::string GetDeviceId()
+{
+    return "unknown";
+}
+//just for android id,other platform return "unknown"
+std::string GetAndroidId()
+{
+    return "unknown";
+}
 #endif

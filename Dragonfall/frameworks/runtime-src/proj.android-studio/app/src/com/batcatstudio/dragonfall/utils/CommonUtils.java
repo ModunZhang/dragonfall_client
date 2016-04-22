@@ -185,6 +185,14 @@ public class CommonUtils {
 	public static void RegistereForRemoteNotifications() {
 		getInstance().RegisterGCMServiceIf();
 	}
+
+	public static String getAndroidId() {
+		return getInstance().getDeviceInfo().getAndroidId();
+	}
+
+	public static String getDeviceId() {
+		return getInstance().getDeviceInfo().getDeviceId();
+	}
 	
 	// we want to register the GCM service if the device support
     private void RegisterGCMServiceIf()
@@ -194,12 +202,17 @@ public class CommonUtils {
     		GCMUtils.registerGCMService(AppActivity.getGameActivity());
     	}
     }
-	private  boolean isGooglePlayServiceAvailable () {
+	public static boolean isGooglePlayServiceAvailable () {
 		int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(AppActivity.getGameActivity());
 		if (status == ConnectionResult.SUCCESS) {
 			return true;
 		} else {
 			return false;
 		}
+	}
+
+	public static void killProcess(){
+		int pid = android.os.Process.myPid();
+		android.os.Process.killProcess(pid);
 	}
 }

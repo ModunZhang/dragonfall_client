@@ -129,6 +129,7 @@
 	public static void onPlayerUseGameItems(...);
 	public static void onPlayerReward(...);
 	public static void onPlayerEvent(...);
+	public static void onPlayerEventAF(...);
 	public static void onPlayerLevelUp(...);
 }
 
@@ -152,6 +153,8 @@
 	public static boolean isLowMemoryDevice();
 	public static java.lang.String GetDeviceToken();
 	public static boolean isGameLaunched();
+	public static java.lang.String getAndroidId();
+	public static java.lang.String getDeviceId();
 }
 
 -keep class com.batcatstudio.dragonfall.io.JniFileOperation {

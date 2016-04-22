@@ -56,7 +56,6 @@ function GameUIActivityRewardNew:ctor(reward_type)
                     local diff_time = config_online[k].onLineMinutes * 60 - time
                     if diff_time > 0 then
                         v.time_label:setString(GameUtils:formatTimeStyle1(diff_time))
-                        print("GameUtils:formatTimeStyle1(time)---->",GameUtils:formatTimeStyle1(time),GameUtils:formatTimeStyle1(diff_time))
                     else
                         self:RefreshOnLineList(false)
                         break

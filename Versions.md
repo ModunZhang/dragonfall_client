@@ -28,6 +28,8 @@ Version | Git SHA-1 | Release Notes
 1.1.3(1551)  | 9377900       | apk
 1.1.3(1592)  | e6ddfc1       | update
 1.1.3(1632)  | 9ad4b87       | apk
+1.1.3(1671)  | 83edb57       | apk 117
+1.1.3(1695)  | 87d97cc       | apk 118
 
 ### WindowPhone
 
