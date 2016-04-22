@@ -98,8 +98,8 @@ public class LocalNotificationService extends Service {
             public void run() {
                 Notification notification = getNotification(content, notifyTime);
                 if(null!=notification) {
-                    notificationManager.notify(id, notification);
                     acquireWakeLock();
+                    notificationManager.notify(id, notification);
                 }
                 if (notifyTime >= latestTime) { // 所有通知已发送完，关闭自己
                     LocalNotificationService.this.stopSelf();
