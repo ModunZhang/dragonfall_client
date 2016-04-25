@@ -134,7 +134,7 @@ android {
 dependencies {
     compile project(':libcocos2dx')
     // Google Play Market
-    googleplayCompile files('libs/AF-Android-SDK-v3.3.0.jar', 'libs/Game_Analytics_SDK_Android_3.2.4.jar','libs/bugly_1.2.9_release.jar','libs/bugly_cocos2dx_1.2.9_release.jar')
+    googleplayCompile files('libs/AF-Android-SDK-v3.3.0.jar', 'libs/Game_Analytics_SDK_Android_3.2.4.jar','libs/bugly_1.2.9_release.jar','libs/bugly_cocos2dx_1.2.9_path.jar')
     
     googleplayCompile 'com.facebook.android:facebook-android-sdk:4.0.0'
     

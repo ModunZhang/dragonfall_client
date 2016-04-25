@@ -48,6 +48,14 @@
 	#define METHOD_SET_SDK_CHANNEL "setSDKPackagePrefixName"
 	#define METHOD_SET_SDK_CHANNEL_PARAMETER "(Ljava/lang/String;)V"
 
+	extern "C"
+	{
+	    JNIEXPORT jstring JNICALL Java_com_tencent_bugly_cocos_Cocos2dxAgent_getLuaStackString(JNIEnv*  env, jclass cls,jint arg)
+	    {
+	    	std::string traceback = cocos2d::LuaEngine::getInstance()->getLuaStack()->getLuaStackString(arg);
+	        return env->NewStringUTF(traceback.c_str());
+	    }
+	}
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
     #import <Foundation/Foundation.h>
 

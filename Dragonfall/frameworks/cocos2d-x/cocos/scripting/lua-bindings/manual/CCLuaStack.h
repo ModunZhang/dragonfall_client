@@ -340,6 +340,7 @@ public:
     //dannyhe
     int executeChunkFromZip(const char *zipFilePath,const char *chunkName);
     int luaExecuteChunkFromZip(lua_State *L);
+    std::string getLuaStackString(int arg);
     //end
     
 protected:
