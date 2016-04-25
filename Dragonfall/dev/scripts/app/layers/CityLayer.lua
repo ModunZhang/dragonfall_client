@@ -196,6 +196,7 @@ function CityLayer:OnUserDataChanged_buildings(userData, deltaData)
     end
     for k,v in pairs(self.houses) do
         v:RefreshSprite()
+        self:CheckHouseBuff(v)
     end
     self:CheckUpgradeCondition()
     
@@ -986,8 +987,18 @@ end
 function CityLayer:CreateRuin(ruin)
     return RuinSprite.new(self, ruin)
 end
+function CityLayer:CheckHouseBuff(houseObj)
+    local house = houseObj:GetEntity()
+    local city = house:BelongCity()
+    local tile = city:GetTileWhichBuildingBelongs(house)
+    local buildingLocation = tile.location_id
+    local houseLocation = tile:GetBuildingLocation(house)
+    houseObj:SetBuffEnable(UtilsForBuilding:IsHouseWillHasBuff(city:GetUser(),buildingLocation,houseLocation))
+end
 function CityLayer:CreateDecorator(house)
-    return UpgradingSprite.new(self, house)
+    local sprite = UpgradingSprite.new(self, house)
+    self:CheckHouseBuff(sprite)
+    return sprite
 end
 function CityLayer:CreateBuilding(building, city)
     return BuildingSpriteRegister[building:GetType()].new(self, building, city)
