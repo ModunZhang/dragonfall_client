@@ -31,6 +31,10 @@ function GameUITownHall:onExit()
     User:RemoveListenerOnType(self, "dailyQuests")
     User:RemoveListenerOnType(self, "dailyQuestEvents")
     User:RemoveListenerOnType(self, "buildingEvents")
+    if self.handle then
+        scheduler.unscheduleGlobal(self.handle)
+        self.handle = nil
+    end
     GameUITownHall.super.onExit(self)
 end
 
@@ -135,8 +139,10 @@ function GameUITownHall:RefreshQuests()
             self.handle = nil
         end
         NetManager:getDailyQuestsPromise():done(function ()
-            self:ResetQuest()
-            self.handle = scheduler.scheduleGlobal(handler(self, self.RefreshQuests), 1.0, false)
+            if self.ResetQuest then
+                self:ResetQuest()
+                self.handle = scheduler.scheduleGlobal(handler(self, self.RefreshQuests), 1.0, false)
+            end
         end)
     end
 end
@@ -514,6 +520,7 @@ function GameUITownHall:OnUserDataChanged_buildingEvents(userData, deltaData)
 end
 
 return GameUITownHall
+
 
 
 

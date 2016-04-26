@@ -386,9 +386,11 @@ end
 function GameUIActivityNew:listviewListener(event)
     local listView = event.listView
     if "clicked" == event.name then
-        local content = event.item:getContent()
-        local data = self.newsData[content.idx]
-        self:OpenNewsDetails(data,content)
+        if event.item then
+            local content = event.item:getContent()
+            local data = self.newsData[content.idx]
+            self:OpenNewsDetails(data,content)
+        end
     end
 end
 function GameUIActivityNew:ShowNews()
