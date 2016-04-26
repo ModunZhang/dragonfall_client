@@ -62,6 +62,22 @@ function UpgradingSprite:StopBuildingAnimation()
     end
     -- self.level_bg:pos(self:GetSpriteTopPosition())
 end
+local houseBuffTag = 123
+local houseBuff = import("..particles.houseBuff")
+function UpgradingSprite:SetBuffEnable(enable)
+    if enable then
+        if not self:getChildByTag(houseBuffTag) then
+            local size = self.sprite:getContentSize()
+            local x,y = self:GetSpriteOffset()
+            houseBuff():addTo(self,2,houseBuffTag):pos(x, y-size.height/2+15)
+        end
+    else
+        if self:getChildByTag(houseBuffTag) then
+            self:removeChildByTag(houseBuffTag)
+        end
+    end
+    return self
+end
 -- function UpgradingSprite:CheckCondition()
 --     if not self.level_bg then return end
 --     local building = self:GetEntity():GetRealEntity()

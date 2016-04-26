@@ -222,6 +222,13 @@ multilinetext(const std::u16string& _currentUTF16String,
                 
                 isStartOfLine = false;
                 startOfLine = -1;
+
+                // gz
+                if(posRight - startOfWord > lineWidth){
+                    isStartOfWord = false;
+                    startOfWord = -1;
+                    last_word.push_back('\n');
+                }
             }
             else
             {
@@ -627,6 +634,13 @@ bool LabelTextFormatter::multilineText(Label *theLabel)
 
                 isStartOfLine = false;
                 startOfLine = -1;
+
+                // gz
+                if(posRight - startOfWord > lineWidth){
+                    isStartOfWord = false;
+                    startOfWord = -1;
+                    last_word.push_back('\n');
+                }
             }
             else
             {

@@ -582,17 +582,19 @@ function GameUIActivityNew:RefreshNewsCountTips()
     if self.tab_buttons then
         if not self.newsData then
             NetManager:getServerNoticesPromise():done(function (response)
-                self.newsData = response.msg.notices
-                table.sort( self.newsData, function ( a,b )
-                    return a.time > b.time
-                end )
-                local unReadCount = 0
-                for i,v in ipairs(self.newsData) do
-                    if not app:GetGameDefautlt():IsReadNews(v.id) then
-                        unReadCount = unReadCount + 1
+                if self.tab_buttons then
+                    self.newsData = response.msg.notices
+                    table.sort( self.newsData, function ( a,b )
+                        return a.time > b.time
+                    end )
+                    local unReadCount = 0
+                    for i,v in ipairs(self.newsData) do
+                        if not app:GetGameDefautlt():IsReadNews(v.id) then
+                            unReadCount = unReadCount + 1
+                        end
                     end
+                    self.tab_buttons:SetButtonTipNumber('news', unReadCount)
                 end
-                self.tab_buttons:SetButtonTipNumber('news', unReadCount)
             end)
         else
             local unReadCount = 0
