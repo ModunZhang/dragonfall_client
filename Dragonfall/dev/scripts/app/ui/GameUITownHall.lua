@@ -135,8 +135,10 @@ function GameUITownHall:RefreshQuests()
             self.handle = nil
         end
         NetManager:getDailyQuestsPromise():done(function ()
-            self:ResetQuest()
-            self.handle = scheduler.scheduleGlobal(handler(self, self.RefreshQuests), 1.0, false)
+            if self.ResetQuest then
+                self:ResetQuest()
+                self.handle = scheduler.scheduleGlobal(handler(self, self.RefreshQuests), 1.0, false)
+            end
         end)
     end
 end
