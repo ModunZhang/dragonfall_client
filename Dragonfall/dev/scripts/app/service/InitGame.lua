@@ -2,6 +2,7 @@ local BuildingRegister = import("..entity.BuildingRegister")
 local City_ = import("..entity.City")
 local User_ = import("..entity.User")
 local MailManager_ = import("..entity.MailManager")
+local NewsManager_ = import("..entity.NewsManager")
 local check = import("..fte.check")
 local initData = import("..fte.initData")
 
@@ -23,10 +24,12 @@ return function(userData)
         User = User_.new(initData._id)
         City = City_.new(User):InitWithJsonData(initData)
         DataManager:setFteUserDeltaData()
+        NewsManager = NewsManager_.new()
     else
         User = User_.new(userData._id)
         City = City_.new(User):InitWithJsonData(userData)
         DataManager:setUserData(userData)
+        NewsManager = NewsManager_.new()
     end
 
     timer:AddListener(City)
