@@ -24,11 +24,13 @@ return function(userData)
         User = User_.new(initData._id)
         City = City_.new(User):InitWithJsonData(initData)
         DataManager:setFteUserDeltaData()
-        NewsManager = NewsManager_.new()
     else
         User = User_.new(userData._id)
         City = City_.new(User):InitWithJsonData(userData)
         DataManager:setUserData(userData)
+    end
+
+    if userData.basicInfo.terrain ~= "__NONE__" and not NewsManager then
         NewsManager = NewsManager_.new()
     end
 
