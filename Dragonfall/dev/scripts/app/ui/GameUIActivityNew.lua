@@ -56,6 +56,7 @@ function GameUIActivityNew:onCleanup()
     User:RemoveListenerOnType(self, "countInfo")
     -- User:RemoveListenerOnType(self, "iapGifts")
     User:RemoveListenerOnType(self, "buildings")
+    NewsManager:RemoveListenerOnType(self,NewsManager.LISTEN_TYPE.NEWS_CHANGED)
     GameUIActivityNew.super.onCleanup(self)
 end
 
@@ -358,6 +359,7 @@ function GameUIActivityNew:CreateTabIf_news()
         self.news_list:setDelegate(handler(self, self.sourceDelegateNewsList))
     end
     self:ShowNews()
+    NewsManager:AddListenOnType(self,NewsManager.LISTEN_TYPE.NEWS_CHANGED)    
     return self.news_list_view
 end
 function GameUIActivityNew:sourceDelegateNewsList(listView, tag, idx)
@@ -390,29 +392,15 @@ function GameUIActivityNew:listviewListener(event)
     end
 end
 function GameUIActivityNew:ShowNews()
-    if not self.newsData then
-        NetManager:getServerNoticesPromise():done(function (response)
-            self.newsData = response.msg.notices
-            table.sort( self.newsData, function ( a,b )
-                return a.time > b.time
-            end )
-            self.news_list:reload()
-        end)
-    else
-        self.news_list:reload()
-    end
+    self.newsData = clone(NewsManager:GetNewsData())
+    table.sort( self.newsData, function ( a,b )
+        return a.time > b.time
+    end )
+    self.news_list:reload()
 end
 function GameUIActivityNew:ReloadNews()
-    NetManager:getServerNoticesPromise():done(function (response)
-        self.newsData = response.msg.notices
-        table.sort( self.newsData, function ( a,b )
-            return a.time > b.time
-        end )
-        if self.news_list then
-            self.news_list:reload()
-        end
-        self:RefreshNewsCountTips()
-    end)
+    self:ShowNews()
+    self:RefreshNewsCountTips()
 end
 function GameUIActivityNew:GetNewsListContent()
     local content = WidgetUIBackGround.new({width = 556,height = 102},WidgetUIBackGround.STYLE_TYPE.STYLE_9)
@@ -454,29 +442,10 @@ end
 function GameUIActivityNew:OpenNewsDetails(data,content)
     app:GetAudioManager():PlayeEffectSoundWithKey("OPEN_MAIL")
     if not content.isRead then
-        local news_read = app:GetGameDefautlt():getTableForKey("NEWS_READ") or {}
-        table.insert(news_read, data.id)
-        if #news_read > 10 then
-            for i,new in ipairs(news_read) do
-                local isLive = false
-                for j,current in ipairs(self.newsData) do
-                    if new == current.id then
-                        isLive = true
-                        break
-                    end
-                end
-                if not isLive then
-                    table.remove(news_read,i)
-                end
-            end
-        end
-        local news_read = app:GetGameDefautlt():setTableForKey("NEWS_READ", news_read)
+        NewsManager:ReadNews(data.id)
         content.icon:setFilter(filter.newFilter("GRAY", {0.2, 0.3, 0.5, 0.1}))
         content.news_time:setColor(UIKit:hex2c4b(0x403c2f))
         content.isRead = true
-        if display.getRunningScene():GetHomePage().GetShortcutNode then
-            display.getRunningScene():GetHomePage():GetShortcutNode():CheckAllianceRewardCount()
-        end
         self:RefreshNewsCountTips()
     end
 
@@ -532,6 +501,9 @@ function GameUIActivityNew:OpenNewsDetails(data,content)
             end
         end)
 end
+function GameUIActivityNew:OnNewsChanged()
+    self:ReloadNews()
+end
 function GameUIActivityNew:CreateTabIf_award()
     if not self.award_list_view then
         local list,list_node = UIKit:commonListView({
@@ -580,31 +552,7 @@ end
 
 function GameUIActivityNew:RefreshNewsCountTips()
     if self.tab_buttons then
-        if not self.newsData then
-            NetManager:getServerNoticesPromise():done(function (response)
-                if self.tab_buttons then
-                    self.newsData = response.msg.notices
-                    table.sort( self.newsData, function ( a,b )
-                        return a.time > b.time
-                    end )
-                    local unReadCount = 0
-                    for i,v in ipairs(self.newsData) do
-                        if not app:GetGameDefautlt():IsReadNews(v.id) then
-                            unReadCount = unReadCount + 1
-                        end
-                    end
-                    self.tab_buttons:SetButtonTipNumber('news', unReadCount)
-                end
-            end)
-        else
-            local unReadCount = 0
-            for i,v in ipairs(self.newsData) do
-                if not app:GetGameDefautlt():IsReadNews(v.id) then
-                    unReadCount = unReadCount + 1
-                end
-            end
-            self.tab_buttons:SetButtonTipNumber('news', unReadCount)
-        end
+        self.tab_buttons:SetButtonTipNumber('news', NewsManager:GetUnreadCount())
     end
 end
 function GameUIActivityNew:RefreshActivityCountTips()
@@ -797,6 +745,7 @@ function GameUIActivityNew:OnAwardButtonClicked(idx)
 end
 
 return GameUIActivityNew
+
 
 
 

@@ -185,7 +185,7 @@ function WidgetShortcutButtons:ctor(city)
     -- end
     -- button.tips_button_count:SetNumber(#User.iapGifts + award_num)
     self.tips_button = button
-    self:CheckAllianceRewardCount(not User:GetNewsCount())
+    self:CheckAllianceRewardCount()
 
     --在线活动
     local activity_button = WidgetAutoOrderAwardButton.new():scale(SCALE)
@@ -267,6 +267,8 @@ function WidgetShortcutButtons:onEnter()
     User:AddListenOnType(self, "vipEvents")
     self.city:GetDragonEyrie():GetDragonManager():AddListenOnType(self,DragonManager.LISTEN_TYPE.OnBasicChanged)
 
+    NewsManager:AddListenOnType(self,NewsManager.LISTEN_TYPE.UNREAD_NEWS_CHANGED)
+
     local my_allaince = Alliance_Manager:GetMyAlliance()
     my_allaince:AddListenOnType(self, "operation")
     my_allaince:AddListenOnType(self, "basicInfo")
@@ -286,6 +288,7 @@ function WidgetShortcutButtons:onExit()
     -- User:RemoveListenerOnType(self, "iapGifts")
     User:RemoveListenerOnType(self, "vipEvents")
     self.city:GetDragonEyrie():GetDragonManager():RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnBasicChanged)
+    NewsManager:RemoveListenerOnType(self,NewsManager.LISTEN_TYPE.UNREAD_NEWS_CHANGED)
 
     local my_allaince = Alliance_Manager:GetMyAlliance()
     my_allaince:RemoveListenerOnType(self, "operation")
@@ -368,47 +371,27 @@ function WidgetShortcutButtons:OnEnterMapIndex()
 end
 function WidgetShortcutButtons:OnMapAllianceChanged()
 end
-function WidgetShortcutButtons:CheckAllianceRewardCount(isNews)
+function WidgetShortcutButtons:NewsUnreadChanged()
+    self:CheckAllianceRewardCount()
+end
+function WidgetShortcutButtons:CheckAllianceRewardCount()
     if not self.tips_button then return end
-    if isNews then
-        NetManager:getServerNoticesPromise():done(function (response)
-            local newsData = response.msg.notices
-            local unReadCount = 0
-            for i,v in ipairs(newsData) do
-                if not app:GetGameDefautlt():IsReadNews(v.id) then
-                    unReadCount = unReadCount + 1
-                end
-            end
-            User:SetNewsCount(unReadCount)
-            local award_num = 0
-            if User:HaveEveryDayLoginReward() then
-                award_num = award_num + 1
-            end
-            if User:HaveContinutyReward() then
-                award_num = award_num + 1
-            end
-            if User:HavePlayerLevelUpReward() then
-                award_num = award_num + 1
-            end
-            self.tips_button.tips_button_count:SetNumber(unReadCount + award_num)
-        end)
-    else
-        local newsCount = User:GetNewsCount() or 0
-        local award_num = 0
-        if User:HaveEveryDayLoginReward() then
-            award_num = award_num + 1
-        end
-        if User:HaveContinutyReward() then
-            award_num = award_num + 1
-        end
-        if User:HavePlayerLevelUpReward() then
-            award_num = award_num + 1
-        end
-        self.tips_button.tips_button_count:SetNumber(newsCount + award_num)
+    local newsCount = NewsManager:GetUnreadCount()
+    local award_num = 0
+    if User:HaveEveryDayLoginReward() then
+        award_num = award_num + 1
     end
+    if User:HaveContinutyReward() then
+        award_num = award_num + 1
+    end
+    if User:HavePlayerLevelUpReward() then
+        award_num = award_num + 1
+    end
+    self.tips_button.tips_button_count:SetNumber(newsCount + award_num)
 end
 
 return WidgetShortcutButtons
+
 
 
 
