@@ -146,7 +146,7 @@ function GameUISplashBeta:RunFte(func)
 end
 
 function GameUISplashBeta:OnBgSpriteStop()
-    local sp2 = self:CreateBgSprite():align(display.LEFT_BOTTOM, display.width - 4, 0)
+    local sp2 = self:CreateBgSprite():align(display.LEFT_BOTTOM, display.width - 1, 0)
         :addTo(self.bottom_layer,self:GetMaxZorder())
     local x = -(sp2:getCascadeBoundingBox().width - display.width)
     local sequence = transition.sequence({
