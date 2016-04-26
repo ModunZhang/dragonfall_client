@@ -363,7 +363,9 @@ end
 function AllianceDetailScene:onExit()
     self.isexiting = true
     self.fetchtimer:stopAllActions()
-    NetManager:getLeaveMapIndexPromise()
+    if not Alliance_Manager:GetMyAlliance():IsDefault() then
+        NetManager:getLeaveMapIndexPromise()
+    end
     Alliance_Manager:ClearAllHandles()
     Alliance_Manager:ClearCache()
     Alliance_Manager:ResetCurrentMapData()
