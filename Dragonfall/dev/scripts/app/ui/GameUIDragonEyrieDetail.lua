@@ -3,6 +3,7 @@
 -- Date: 2014-10-31 15:08:59
 --
 local GameUIDragonEyrieDetail = UIKit:createUIClass("GameUIDragonEyrieDetail","GameUIWithCommonHeader")
+local promise = import("..utils.promise")
 local cocos_promise = import('..utils.cocos_promise')
 local window = import('..utils.window')
 local StarBar = import(".StarBar")
@@ -213,8 +214,10 @@ end
 function GameUIDragonEyrieDetail:OnMoveOutStage()
     local User = User
     User:RemoveListenerOnType(self, "dragonEquipments")
-    self.dragon_manager:RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnBasicChanged)
     GameUIDragonEyrieDetail.super.OnMoveOutStage(self)
+end
+function GameUIDragonEyrieDetail:onExit()
+    self.dragon_manager:RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnBasicChanged)
 end
 
 function GameUIDragonEyrieDetail:VisibleStarBar(v)
@@ -837,6 +840,33 @@ function GameUIDragonEyrieDetail:OnHeroBloodUseItemClicked()
     })
     widgetUseItems:AddToCurrentScene()
 end
+
+
+local WidgetFteArrow = import("..widget.WidgetFteArrow")
+function GameUIDragonEyrieDetail:FindSkillBtn()
+    return self.firstSkillBtn
+end
+function GameUIDragonEyrieDetail:PromiseOfFte()
+    self.tab_buttons:SelectButtonByTag("skill")
+    return self:PromiseOfLearnSkill()
+end
+function GameUIDragonEyrieDetail:PromiseOfLearnSkill()
+    local p = promise.new()
+    local r = self:FindSkillBtn():getCascadeBoundingBox()
+    self:GetFteLayer():SetTouchObject(self:FindSkillBtn())
+    WidgetFteArrow.new(_("点击技能")):addTo(self:GetFteLayer())
+    :TurnLeft():align(display.LEFT_CENTER, r.x + r.width + 10, r.y + r.height/2)
+
+    UIKit:PromiseOfOpen("GameUIDragonSkill")
+    :next(function(ui)
+        ui:PromiseOfFte():next(function()
+            self:LeftButtonClicked()
+            p:resolve()
+        end)
+    end)
+    return p
+end
+
 
 return GameUIDragonEyrieDetail
 

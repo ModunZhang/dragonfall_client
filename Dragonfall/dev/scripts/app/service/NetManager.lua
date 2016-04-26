@@ -859,9 +859,9 @@ function NetManager:getLoginPromise(deviceId)
                 -- DataManager:setEnemyAllianceData(user_enemy_alliance_data)
             else
                 -- LuaUtils:outputTable("logic.entryHandler.login", response)
-                if playerData.countInfo.isFTEFinished then
-                    GLOBAL_FTE = false
-                end
+                -- if playerData.countInfo.isFTEFinished then
+                    -- GLOBAL_FTE = false
+                -- end
                 self.m_netService:setDeltatime(delta_time)
                 local InitGame = import("app.service.InitGame")
                 InitGame(playerData) -- inner DataManager:setUserData ...
@@ -2117,9 +2117,9 @@ end
 
 
 -- 完成fte
-function NetManager:getFinishFTE()
-    return get_blocking_request_promise("logic.playerHandler.finishFTE", nil,"完成fte失败!"):done(get_player_response_msg)
-end
+-- function NetManager:getFinishFTE()
+--     return get_blocking_request_promise("logic.playerHandler.finishFTE", nil,"完成fte失败!"):done(get_player_response_msg)
+-- end
 
 
 --获取服务器列表

@@ -14,7 +14,7 @@ local function mock(t)
     local delta = DiffFunction(DataManager:getFteData(), t)
     -- LuaUtils:outputTable(t)
     -- LuaUtils:outputTable(delta)
-    DataManager:setFteUserDeltaData(delta)
+    -- DataManager:setFteUserDeltaData(delta)
 end
 local function remove_global_shceduler()
     if DataManager.handle__ then

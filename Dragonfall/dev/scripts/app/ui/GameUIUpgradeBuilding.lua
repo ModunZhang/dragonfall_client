@@ -47,42 +47,42 @@ end
 
 
 --
-local mockData = import("..fte.mockData")
-local WidgetFteArrow = import("..widget.WidgetFteArrow")
-function GameUIUpgradeBuilding:Find()
-    return self.upgrade_layer.upgrade_btn
-end
-function GameUIUpgradeBuilding:PromiseOfFte()
-    self.tabs:SelectTab("upgrade")
-    self.upgrade_layer.acc_layer.acc_button:setButtonEnabled(false)
-    self:GetFteLayer():SetTouchObject(self:Find())
+-- local mockData = import("..fte.mockData")
+-- local WidgetFteArrow = import("..widget.WidgetFteArrow")
+-- function GameUIUpgradeBuilding:Find()
+--     return self.upgrade_layer.upgrade_btn
+-- end
+-- function GameUIUpgradeBuilding:PromiseOfFte()
+--     self.tabs:SelectTab("upgrade")
+--     self.upgrade_layer.acc_layer.acc_button:setButtonEnabled(false)
+--     self:GetFteLayer():SetTouchObject(self:Find())
 
 
-    self:Find():removeEventListenersByEvent("CLICKED_EVENT")
-    self:Find():onButtonClicked(function()
-        if self.upgrade_layer.acc_layer.speedUpButton then
-            self.upgrade_layer.acc_layer.speedUpButton:setButtonEnabled(false)
-        end
-        self.upgrade_layer.acc_layer.acc_button:setButtonEnabled(false)
-        self:Find():setButtonEnabled(false)
-        if self.building:IsHouse() then
-            local tile = self.building:BelongCity():GetTileWhichBuildingBelongs(self.building)
-            mockData.UpgradeHouseTo(tile.location_id, tile:GetBuildingLocation(self.building),
-                self.building:GetType(), self.building:GetNextLevel())
-        else
-            mockData.UpgradeBuildingTo(self.building:GetType(), self.building:GetNextLevel())
-        end
+--     self:Find():removeEventListenersByEvent("CLICKED_EVENT")
+--     self:Find():onButtonClicked(function()
+--         if self.upgrade_layer.acc_layer.speedUpButton then
+--             self.upgrade_layer.acc_layer.speedUpButton:setButtonEnabled(false)
+--         end
+--         self.upgrade_layer.acc_layer.acc_button:setButtonEnabled(false)
+--         self:Find():setButtonEnabled(false)
+--         if self.building:IsHouse() then
+--             local tile = self.building:BelongCity():GetTileWhichBuildingBelongs(self.building)
+--             mockData.UpgradeHouseTo(tile.location_id, tile:GetBuildingLocation(self.building),
+--                 self.building:GetType(), self.building:GetNextLevel())
+--         else
+--             mockData.UpgradeBuildingTo(self.building:GetType(), self.building:GetNextLevel())
+--         end
 
-        self:LeftButtonClicked()
-        self.upgrade_layer.acc_layer.acc_button:setButtonEnabled(false)
-    end)
+--         self:LeftButtonClicked()
+--         self.upgrade_layer.acc_layer.acc_button:setButtonEnabled(false)
+--     end)
 
-    local r = self:Find():getCascadeBoundingBox()
-    self:GetFteLayer().arrow = WidgetFteArrow.new(_("点击升级"))
-        :addTo(self:GetFteLayer()):TurnDown():align(display.BOTTOM_CENTER, r.x + r.width/2, r.y + r.height + 10)
+--     local r = self:Find():getCascadeBoundingBox()
+--     self:GetFteLayer().arrow = WidgetFteArrow.new(_("点击升级"))
+--         :addTo(self:GetFteLayer()):TurnDown():align(display.BOTTOM_CENTER, r.x + r.width/2, r.y + r.height + 10)
 
-    return self.building:BelongCity():GetUser():PromiseOfBeginUpgrading()
-end
+--     return self.building:BelongCity():GetUser():PromiseOfBeginUpgrading()
+-- end
 
 return GameUIUpgradeBuilding
 

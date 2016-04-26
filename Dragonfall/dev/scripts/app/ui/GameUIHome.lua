@@ -502,119 +502,119 @@ function GameUIHome:ScaleIcon(ccnode, s, ds)
 end
 
 -- fte
-local mockData = import("..fte.mockData")
+-- local mockData = import("..fte.mockData")
 local WidgetFteArrow = import("..widget.WidgetFteArrow")
 local WidgetFteMark = import("..widget.WidgetFteMark")
-function GameUIHome:Find()
-    local item
-    self.event_tab:IteratorAllItem(function(_, v)
-        if v.GetSpeedUpButton then
-            item = v:GetSpeedUpButton()
-            return true
-        end
-    end)
-    return item
-end
-function GameUIHome:FindVip()
-    return self.vip_btn
-end
-function GameUIHome:PromiseOfFteWaitFinish()
-    if UtilsForBuilding:GetBuildingEventsCount(self.city:GetUser()) > 0 then
-        if not self.event_tab:IsShow() then
-            self.event_tab:EventChangeOn("build", true)
-        end
-        self:GetFteLayer()
-        return self.city:GetUser():PromiseOfFinishUpgrading()
-            :next(function()self:GetFteLayer():Reset()end)
-            :next(cocos_promise.delay(1))
-            :next(function()self:GetFteLayer():removeFromParent()end)
-    end
-    return cocos_promise.defer()
-end
-function GameUIHome:PromiseOfFteFreeSpeedUp()
-    if UtilsForBuilding:GetBuildingEventsCount(self.city:GetUser()) > 0 then
-        self:GetFteLayer()
-        self.event_tab:PromiseOfPopUp():next(function()
-            self:GetFteLayer():SetTouchObject(self:Find())
-            self:Find():removeEventListenersByEvent("CLICKED_EVENT")
-            self:Find():onButtonClicked(function()
-                self:Find():setButtonEnabled(false)
+-- function GameUIHome:Find()
+--     local item
+--     self.event_tab:IteratorAllItem(function(_, v)
+--         if v.GetSpeedUpButton then
+--             item = v:GetSpeedUpButton()
+--             return true
+--         end
+--     end)
+--     return item
+-- end
+-- function GameUIHome:FindVip()
+--     return self.vip_btn
+-- end
+-- function GameUIHome:PromiseOfFteWaitFinish()
+--     if UtilsForBuilding:GetBuildingEventsCount(self.city:GetUser()) > 0 then
+--         if not self.event_tab:IsShow() then
+--             self.event_tab:EventChangeOn("build", true)
+--         end
+--         self:GetFteLayer()
+--         return self.city:GetUser():PromiseOfFinishUpgrading()
+--             :next(function()self:GetFteLayer():Reset()end)
+--             :next(cocos_promise.delay(1))
+--             :next(function()self:GetFteLayer():removeFromParent()end)
+--     end
+--     return cocos_promise.defer()
+-- end
+-- function GameUIHome:PromiseOfFteFreeSpeedUp()
+--     if UtilsForBuilding:GetBuildingEventsCount(self.city:GetUser()) > 0 then
+--         self:GetFteLayer()
+--         self.event_tab:PromiseOfPopUp():next(function()
+--             self:GetFteLayer():SetTouchObject(self:Find())
+--             self:Find():removeEventListenersByEvent("CLICKED_EVENT")
+--             self:Find():onButtonClicked(function()
+--                 self:Find():setButtonEnabled(false)
 
-                local event = UtilsForBuilding:GetBuildingEventsBySeq(self.city:GetUser())[1]
-                if event then
-                    local building = UtilsForBuilding:GetBuildingByEvent(self.city:GetUser(), event)
-                    if event.buildingLocation then
-                        mockData.FinishBuildHouseAt(event.buildingLocation, building.level + 1)
-                    else
-                        mockData.FinishUpgradingBuilding(building.type, building.level + 1)
-                    end
-                end
-            end)
+--                 local event = UtilsForBuilding:GetBuildingEventsBySeq(self.city:GetUser())[1]
+--                 if event then
+--                     local building = UtilsForBuilding:GetBuildingByEvent(self.city:GetUser(), event)
+--                     if event.buildingLocation then
+--                         mockData.FinishBuildHouseAt(event.buildingLocation, building.level + 1)
+--                     else
+--                         mockData.FinishUpgradingBuilding(building.type, building.level + 1)
+--                     end
+--                 end
+--             end)
 
-            local r = self:Find():getCascadeBoundingBox()
-            WidgetFteArrow.new(_("5分钟以下免费加速")):addTo(self:GetFteLayer())
-                :TurnDown(true):align(display.RIGHT_BOTTOM, r.x + r.width/2 + 30, r.y + 50)
-        end)
+--             local r = self:Find():getCascadeBoundingBox()
+--             WidgetFteArrow.new(_("5分钟以下免费加速")):addTo(self:GetFteLayer())
+--                 :TurnDown(true):align(display.RIGHT_BOTTOM, r.x + r.width/2 + 30, r.y + 50)
+--         end)
 
-        return self.city:GetUser():PromiseOfFinishUpgrading()
-            :next(function()
-                self:GetFteLayer():removeFromParent()
-                self:GetFteLayer()
-            end)
-            :next(cocos_promise.delay(1))
-            :next(function()self:GetFteLayer():removeFromParent()end)
-    end
-    return cocos_promise.defer()
-end
-function GameUIHome:PromiseOfFteInstantSpeedUp()
-    if UtilsForBuilding:GetBuildingEventsCount(self.city:GetUser()) > 0 then
-        self:GetFteLayer()
-        self.event_tab:PromiseOfPopUp():next(function()
-            self:GetFteLayer():SetTouchObject(self:Find())
-            self:Find():removeEventListenersByEvent("CLICKED_EVENT")
-            self:Find():onButtonClicked(function()
-                self:Find():setButtonEnabled(false)
+--         return self.city:GetUser():PromiseOfFinishUpgrading()
+--             :next(function()
+--                 self:GetFteLayer():removeFromParent()
+--                 self:GetFteLayer()
+--             end)
+--             :next(cocos_promise.delay(1))
+--             :next(function()self:GetFteLayer():removeFromParent()end)
+--     end
+--     return cocos_promise.defer()
+-- end
+-- function GameUIHome:PromiseOfFteInstantSpeedUp()
+--     if UtilsForBuilding:GetBuildingEventsCount(self.city:GetUser()) > 0 then
+--         self:GetFteLayer()
+--         self.event_tab:PromiseOfPopUp():next(function()
+--             self:GetFteLayer():SetTouchObject(self:Find())
+--             self:Find():removeEventListenersByEvent("CLICKED_EVENT")
+--             self:Find():onButtonClicked(function()
+--                 self:Find():setButtonEnabled(false)
 
-                local event = UtilsForBuilding:GetBuildingEventsBySeq(self.city:GetUser())[1]
-                if event then
-                    local building = UtilsForBuilding:GetBuildingByEvent(self.city:GetUser(), event)
-                    if event.buildingLocation then
-                        mockData.FinishBuildHouseAt(event.buildingLocation, building.level + 1)
-                    else
-                        mockData.FinishUpgradingBuilding(building.type, building.level + 1)
-                    end
-                end
-            end)
+--                 local event = UtilsForBuilding:GetBuildingEventsBySeq(self.city:GetUser())[1]
+--                 if event then
+--                     local building = UtilsForBuilding:GetBuildingByEvent(self.city:GetUser(), event)
+--                     if event.buildingLocation then
+--                         mockData.FinishBuildHouseAt(event.buildingLocation, building.level + 1)
+--                     else
+--                         mockData.FinishUpgradingBuilding(building.type, building.level + 1)
+--                     end
+--                 end
+--             end)
 
-            local r = self:Find():getCascadeBoundingBox()
-            WidgetFteArrow.new(_("立即完成升级"))
-                :addTo(self:GetFteLayer()):TurnDown(true)
-                :align(display.RIGHT_BOTTOM, r.x + r.width/2 + 30, r.y + 50)
+--             local r = self:Find():getCascadeBoundingBox()
+--             WidgetFteArrow.new(_("立即完成升级"))
+--                 :addTo(self:GetFteLayer()):TurnDown(true)
+--                 :align(display.RIGHT_BOTTOM, r.x + r.width/2 + 30, r.y + 50)
 
-        end)
+--         end)
 
-        return self.city:GetUser():PromiseOfFinishUpgrading()
-            :next(function()
-                self:GetFteLayer():removeFromParent()
-                self:GetFteLayer()
-            end)
-            :next(cocos_promise.delay(1))
-            :next(function()self:GetFteLayer():removeFromParent()end)
-    end
-    return cocos_promise.defer()
-end
-function GameUIHome:PromiseOfActivePromise()
-    self:GetFteLayer():SetTouchObject(self:FindVip())
-    local r = self:FindVip():getCascadeBoundingBox()
+--         return self.city:GetUser():PromiseOfFinishUpgrading()
+--             :next(function()
+--                 self:GetFteLayer():removeFromParent()
+--                 self:GetFteLayer()
+--             end)
+--             :next(cocos_promise.delay(1))
+--             :next(function()self:GetFteLayer():removeFromParent()end)
+--     end
+--     return cocos_promise.defer()
+-- end
+-- function GameUIHome:PromiseOfActivePromise()
+--     self:GetFteLayer():SetTouchObject(self:FindVip())
+--     local r = self:FindVip():getCascadeBoundingBox()
 
-    WidgetFteArrow.new(_("点击VIP，免费激活VIP")):addTo(self:GetFteLayer())
-        :TurnUp():align(display.TOP_CENTER, r.x + r.width/2, r.y)
+--     WidgetFteArrow.new(_("点击VIP，免费激活VIP")):addTo(self:GetFteLayer())
+--         :TurnUp():align(display.TOP_CENTER, r.x + r.width/2, r.y)
 
-    return UIKit:PromiseOfOpen("GameUIVipNew"):next(function(ui)
-        self:GetFteLayer():removeFromParent()
-        return ui:PromiseOfFte()
-    end)
-end
+--     return UIKit:PromiseOfOpen("GameUIVipNew"):next(function(ui)
+--         self:GetFteLayer():removeFromParent()
+--         return ui:PromiseOfFte()
+--     end)
+-- end
 function GameUIHome:PromiseOfFteAlliance()
     self.bottom:TipsOnAlliance()
 end

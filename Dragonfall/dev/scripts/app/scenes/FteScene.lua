@@ -51,12 +51,12 @@ function FteScene:onEnterTransitionFinish()
     end):next(self:PormiseOfSchedule(1, function(percent)
         self.several:setString(utf8.substr(text, 1, math.ceil(utf8.len(text) * percent)))
     end)):next(cocos_promise.delay(1)):next(function()
-        if GLOBAL_FTE then
-            app:EnterMyCityFteScene()
-        else
-            app:EnterUserMode()
+        -- if GLOBAL_FTE then
+            -- app:EnterMyCityFteScene()
+        -- else
+            -- app:EnterUserMode()
             app:EnterMyCityScene()
-        end
+        -- end
     end)
     self.npc:StartDialog()
     self.npc.ui_map.background:hide()

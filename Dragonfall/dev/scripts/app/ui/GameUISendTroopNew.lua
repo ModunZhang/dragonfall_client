@@ -727,9 +727,9 @@ end
 -- fte
 local promise = import("..utils.promise")
 local WidgetFteArrow = import("..widget.WidgetFteArrow")
-function GameUISendTroopNew:PormiseOfFte(need_fte)
+function GameUISendTroopNew:PromiseOfFte()
     return self:PromiseOfMax():next(function()
-        return self:PromiseOfAttack(need_fte)
+        return self:PromiseOfAttack()
     end)
 end
 function GameUISendTroopNew:PromiseOfMax()
@@ -746,27 +746,32 @@ function GameUISendTroopNew:PromiseOfMax()
     end)
     return p
 end
-function GameUISendTroopNew:PromiseOfAttack(need_fte)
+function GameUISendTroopNew:PromiseOfAttack()
     local r = self.march_btn:getCascadeBoundingBox()
     self:GetFteLayer():SetTouchObject(self.march_btn)
 
-    self.march_btn:removeEventListenersByEvent("CLICKED_EVENT")
-    self.march_btn:onButtonClicked(function(event)
-        if event.name == "CLICKED_EVENT" then
-            assert(tolua.type(self.march_callback)=="function")
-            self.march_callback(self.dragon:Type(), self:GetSettingSoldiers())
-            self:LeftButtonClicked()
-        end
-    end)
+    local r = self.march_btn:getCascadeBoundingBox()
+    self:GetFteLayer():SetTouchObject(self.march_btn)
+    WidgetFteArrow.new(_("点击按钮：驻防")):addTo(self:GetFteLayer())
+    :TurnRight():align(display.RIGHT_CENTER, r.x - 10, r.y + r.height/2)
 
-    WidgetFteArrow.new(_("点击进攻")):addTo(self:GetFteLayer())
-        :TurnDown():align(display.CENTER_BOTTOM, r.x + r.width/2, r.y + 70)
+    -- self.march_btn:removeEventListenersByEvent("CLICKED_EVENT")
+    -- self.march_btn:onButtonClicked(function(event)
+    --     if event.name == "CLICKED_EVENT" then
+    --         assert(tolua.type(self.march_callback)=="function")
+    --         self.march_callback(self.dragon:Type(), self:GetSettingSoldiers())
+    --         self:LeftButtonClicked()
+    --     end
+    -- end)
 
-    return UIKit:PromiseOfOpen(need_fte and "GameUIReplayFte" or "GameUIReplay"):next(function(ui)
-        ui:DestroyFteLayer()
-        ui:DoFte()
-        return UIKit:PromiseOfClose(need_fte and "GameUIReplayFte" or "GameUIReplay")
-    end)
+    -- WidgetFteArrow.new(_("点击进攻")):addTo(self:GetFteLayer())
+    --     :TurnDown():align(display.CENTER_BOTTOM, r.x + r.width/2, r.y + 70)
+
+    -- return UIKit:PromiseOfOpen(need_fte and "GameUIReplayFte" or "GameUIReplay"):next(function(ui)
+    --     ui:DestroyFteLayer()
+    --     ui:DoFte()
+    --     return UIKit:PromiseOfClose(need_fte and "GameUIReplayFte" or "GameUIReplay")
+    -- end)
 end
 
 

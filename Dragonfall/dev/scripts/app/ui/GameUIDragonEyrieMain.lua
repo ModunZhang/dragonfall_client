@@ -20,6 +20,11 @@ local WidgetUseItems = import("..widget.WidgetUseItems")
 local GameUIDragonDeathSpeedUp = import(".GameUIDragonDeathSpeedUp")
 local UICheckBoxButton = import(".UICheckBoxButton")
 
+local terrain_map = {
+    grassLand = "greenDragon",
+    desert= "redDragon",
+    iceField = "blueDragon",
+}
 -- lockDragon: 是否锁定选择龙的操作,默认不锁定
 function GameUIDragonEyrieMain:ctor(city,building,default_tab,lockDragon,fte_dragon_type,show_setDefence_tip)
     GameUIDragonEyrieMain.super.ctor(self,city,_("龙巢"),building,default_tab)
@@ -30,7 +35,11 @@ function GameUIDragonEyrieMain:ctor(city,building,default_tab,lockDragon,fte_dra
     self.dragon_manager = building:GetDragonManager()
     if type(lockDragon) ~= "boolean" then lockDragon = false end
     self.lockDragon = lockDragon
-    self.fte_dragon_type = fte_dragon_type
+
+    if not UtilsForFte:IsHatedAnyDragon(city:GetUser()) then
+        self.fte_dragon_type = terrain_map[city:GetUser().basicInfo.terrain]
+    end
+    -- self.fte_dragon_type = fte_dragon_type
 end
 
 function GameUIDragonEyrieMain:IsDragonLock()
@@ -111,12 +120,18 @@ function GameUIDragonEyrieMain:OnMoveInStage()
 end
 
 function GameUIDragonEyrieMain:OnMoveOutStage()
-    self.dragon_manager:RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnHPChanged)
-    self.dragon_manager:RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnBasicChanged)
-    self.dragon_manager:RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnDragonHatched)
+    -- self.dragon_manager:RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnHPChanged)
+    -- self.dragon_manager:RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnBasicChanged)
+    -- self.dragon_manager:RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnDragonHatched)
     User:RemoveListenerOnType(self, "buildings")
     User:RemoveListenerOnType(self, "dragonDeathEvents")
     GameUIDragonEyrieMain.super.OnMoveOutStage(self)
+end
+
+function GameUIDragonEyrieMain:onExit()
+    self.dragon_manager:RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnHPChanged)
+    self.dragon_manager:RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnBasicChanged)
+    self.dragon_manager:RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnDragonHatched)
 end
 
 function GameUIDragonEyrieMain:CreateUI()
@@ -383,6 +398,9 @@ function GameUIDragonEyrieMain:CreateDragonContentNodeIf()
                                 NetManager:getSetDefenceTroopPromise(dragonType,soldiers):done(function ()
                                     if self:GetCurrentDragon():Type() == dragonType then
                                         self.garrison_button:setButtonSelected(true)
+                                    end
+                                    if self.defencePromise then
+                                        self.defencePromise:resolve()
                                     end
                                 end)
                             end
@@ -691,39 +709,101 @@ function GameUIDragonEyrieMain:OnDragonDeathSpeedUpClicked()
 end
 
 
+
+
+
+-- fte
+local promise = import("..utils.promise")
+local cocos_promise = import("..utils.cocos_promise")
+local WidgetFteArrow = import("..widget.WidgetFteArrow")
+function GameUIDragonEyrieMain:FindHateBtn()
+    return self.hate_button
+end
+function GameUIDragonEyrieMain:FindGarrisonBtn()
+    return self.garrison_button
+end
+function GameUIDragonEyrieMain:FindDetailBtn()
+    return self.detailButton
+end
+function GameUIDragonEyrieMain:PromiseOfFte()
+    local p = cocos_promise.defer()
+    local user = self.city:GetUser()
+    if not UtilsForFte:IsHatedAnyDragon(user) then
+        p:next(function()
+            return self:PromiseOfHate()
+        end)
+    end
+    p:next(function()
+        return GameUINpc:PromiseOfSay({words = _("不可思议，传说是真的？！觉醒者过让能够号令龙族。。。大人您真是厉害！"), brow = "shy"})
+    end):next(function()
+        return GameUINpc:PromiseOfLeave()
+    end)
+    if not UtilsForFte:IsStudyAnyDragonSkill(user) then
+        p:next(function()
+            return self:PormiseOfLearnSkill()
+        end)
+    end
+    if not UtilsForFte:IsDefencedWithTroops(user) then
+        p:next(function()
+            return self:PormiseOfDefence()
+        end)
+    end
+    p:next(function()
+        return self:PromsieOfExit("GameUIDragonEyrieMain")
+    end)
+    return p
+end
+function GameUIDragonEyrieMain:PromiseOfHate()
+    local r = self:FindHateBtn():getCascadeBoundingBox()
+    self:GetFteLayer():SetTouchObject(self:FindHateBtn())
+    WidgetFteArrow.new(_("点击按钮：孵化")):addTo(self:GetFteLayer())
+    :TurnUp():pos(r.x + r.width/2, r.y - 40)
+
+    return self.dragon_manager:PromiseOfHate():next(function() self:DestroyFteLayer() end)
+end
+function GameUIDragonEyrieMain:PormiseOfDefence()
+    self:FindGarrisonBtn():setTouchSwallowEnabled(true)
+    self:GetFteLayer():SetTouchObject(self:FindGarrisonBtn())
+
+    UIKit:PromiseOfOpen("GameUISendTroopNew")
+    :next(function(ui)
+        ui:PromiseOfFte()
+        self:DestroyFteLayer()
+    end)
+
+    local r = self:FindGarrisonBtn():getCascadeBoundingBox()
+    WidgetFteArrow.new(_("点击设置：巨龙在城市驻防，如果敌军入侵，巨龙会自动带领士兵进行防御"))
+        :addTo(self:GetFteLayer()):TurnUp(false):align(display.LEFT_TOP, r.x + 30, r.y - 20)
+        
+    self.defencePromise = promise.new()
+    return self.defencePromise:next(function()
+            self:FindGarrisonBtn():setButtonEnabled(false)
+            self:DestroyFteLayer()
+        end)
+end
+function GameUIDragonEyrieMain:PormiseOfLearnSkill()
+    local p = promise.new()
+    self:GetFteLayer():SetTouchObject(self:FindDetailBtn())
+    local r = self:FindDetailBtn():getCascadeBoundingBox()
+    WidgetFteArrow.new(_("点击详情:学习技能"))
+        :addTo(self:GetFteLayer()):TurnRight():align(display.RIGHT_CENTER, r.x - 10, r.y + r.height/2)
+
+    self:FindDetailBtn():removeEventListenersByEvent("CLICKED_EVENT")
+    self:FindDetailBtn():onButtonClicked(function()
+        UIKit:newGameUI("GameUIDragonEyrieDetail",self.city,self.building,self:GetCurrentDragon():Type()):AddToCurrentScene(false)
+    end)
+
+    UIKit:PromiseOfOpen("GameUIDragonEyrieDetail")
+    :next(function(ui)
+        self:DestroyFteLayer()
+        ui:PromiseOfFte():next(function()
+            p:resolve()
+        end)
+    end)
+    return p
+end
+
+
 return GameUIDragonEyrieMain
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

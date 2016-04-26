@@ -4,15 +4,15 @@ DataManager = {
 local initData = import("..fte.initData")
 function DataManager:setUserData( userData, deltaData )
     self.user = userData
-    if not GLOBAL_FTE then
+    -- if not GLOBAL_FTE then
         LuaUtils:TimeCollect(function()
             self:OnUserDataChanged(self.user, app.timer:GetServerTime(), deltaData)
         end, "DataManager:setUserData")
-    end
+    -- end
 end
 function DataManager:setUserAllianceData(allianceData,deltaData)
     self.allianceData = allianceData
-    if GLOBAL_FTE then return end
+    -- if GLOBAL_FTE then return end
     if allianceData == json.null then return end
     if not Alliance_Manager then
         print(debug.traceback("", 2))
@@ -34,11 +34,11 @@ function DataManager:hasUserData()
 end
 
 function DataManager:setFteUserDeltaData(deltaData)
-    if GLOBAL_FTE then
-        LuaUtils:TimeCollect(function()
-            self:OnUserDataChanged(self:getFteData(), app.timer:GetServerTime(), deltaData)
-        end, "DataManager:setFteUserDeltaData")
-    end
+    -- if GLOBAL_FTE then
+    --     LuaUtils:TimeCollect(function()
+    --         self:OnUserDataChanged(self:getFteData(), app.timer:GetServerTime(), deltaData)
+    --     end, "DataManager:setFteUserDeltaData")
+    -- end
 end
 function DataManager:getFteData()
     return initData
