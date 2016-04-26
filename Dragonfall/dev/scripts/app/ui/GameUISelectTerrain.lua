@@ -4,6 +4,7 @@ local UILib = import("..ui.UILib")
 local UICanCanelCheckBoxButtonGroup = import('.UICanCanelCheckBoxButtonGroup')
 local UICheckBoxButton = import(".UICheckBoxButton")
 local WidgetPopDialog = import("..widget.WidgetPopDialog")
+local NewsManager_ = import("..entity.NewsManager")
 local GameUISelectTerrain = class("GameUISelectTerrain", WidgetPopDialog)
 local intInit = GameDatas.PlayerInitData.intInit
 
@@ -43,6 +44,7 @@ function GameUISelectTerrain:OnMoveInStage()
                 if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEventAF then
                     ext.market_sdk.onPlayerEventAF("SELECT_TERRAIN", "empty")
                 end
+                NewsManager = NewsManager_.new()
                 DataManager:getFteData().basicInfo.terrain = DataManager:getUserData().basicInfo.terrain
                 DataManager:setFteUserDeltaData()
                 self.select_promise:resolve()

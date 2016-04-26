@@ -182,104 +182,120 @@ function GameUIMail:CreateMailControlBox()
                                     end
                                     MailManager:DecreaseUnReadMailsNumByIds(ids)
                                     NetManager:getDeleteMailsPromise(ids):done(function ()
-                                        self:SelectAllMailsOrReports(false)
-                                        self.mail_control_box:hide()
+                                        if self.inbox_layer then
+                                            self:SelectAllMailsOrReports(false)
+                                            self.mail_control_box:hide()
 
-                                        if self.inbox_layer:isVisible() then
-                                            -- 批量删除结束后获取
-                                            if #self.manager:GetMails() < 10 then
-                                                local response = self.manager:FetchMailsFromServer(#self.manager:GetMails())
-                                                if response then
-                                                    response:done(function ( response )
-                                                        self.inbox_listview:asyncLoadWithCurrentPosition_()
+                                            if self.inbox_layer:isVisible() then
+                                                -- 批量删除结束后获取
+                                                if #self.manager:GetMails() < 10 then
+                                                    local response = self.manager:FetchMailsFromServer(#self.manager:GetMails())
+                                                    if response then
+                                                        response:done(function ( response )
+                                                            if self.inbox_listview then
+                                                                self.inbox_listview:asyncLoadWithCurrentPosition_()
+                                                                self.is_deleting = false
+                                                            end
+                                                            return response
+                                                        end)
+                                                    else
                                                         self.is_deleting = false
-                                                        return response
-                                                    end)
+                                                    end
                                                 else
                                                     self.is_deleting = false
                                                 end
-                                            else
-                                                self.is_deleting = false
                                             end
-                                        end
-                                        if self.saved_layer:isVisible() then
-                                            -- 批量删除结束后获取
-                                            if #self.manager:GetSavedMails() < 10 then
-                                                local response = self.manager:FetchSavedMailsFromServer(#self.manager:GetSavedMails())
-                                                if response then
-                                                    response:done(function ( response )
-                                                        self.save_mails_listview:asyncLoadWithCurrentPosition_()
+                                            if self.saved_layer:isVisible() then
+                                                -- 批量删除结束后获取
+                                                if #self.manager:GetSavedMails() < 10 then
+                                                    local response = self.manager:FetchSavedMailsFromServer(#self.manager:GetSavedMails())
+                                                    if response then
+                                                        response:done(function ( response )
+                                                            if self.save_mails_listview then
+                                                                self.save_mails_listview:asyncLoadWithCurrentPosition_()
+                                                                self.is_deleting = false
+                                                            end
+                                                            return response
+                                                        end)
+                                                    else
                                                         self.is_deleting = false
-                                                        return response
-                                                    end)
+                                                    end
                                                 else
                                                     self.is_deleting = false
                                                 end
-                                            else
-                                                self.is_deleting = false
                                             end
                                         end
                                     end)
                                 elseif control_type == "report" then
                                     MailManager:DecreaseUnReadReportsNumByIds(ids)
                                     NetManager:getDeleteReportsPromise(ids):done(function ()
-                                        self:SelectAllMailsOrReports(false)
-                                        self.mail_control_box:hide()
-                                        if self.report_layer:isVisible() then
-                                            -- 批量删除结束后获取
-                                            if #self.manager:GetReports()<10 then
-                                                local response = self.manager:FetchReportsFromServer(#self.manager:GetReports())
-                                                if response then
-                                                    response:done(function ( response )
-                                                        self.report_listview:asyncLoadWithCurrentPosition_()
+                                        if self.report_layer then
+                                            self:SelectAllMailsOrReports(false)
+                                            self.mail_control_box:hide()
+                                            if self.report_layer:isVisible() then
+                                                -- 批量删除结束后获取
+                                                if #self.manager:GetReports()<10 then
+                                                    local response = self.manager:FetchReportsFromServer(#self.manager:GetReports())
+                                                    if response then
+                                                        response:done(function ( response )
+                                                            if self.report_listview then
+                                                                self.report_listview:asyncLoadWithCurrentPosition_()
+                                                                self.is_deleting = false
+                                                            end
+                                                            return response
+                                                        end)
+                                                    else
                                                         self.is_deleting = false
-                                                        return response
-                                                    end)
+                                                    end
                                                 else
                                                     self.is_deleting = false
                                                 end
-                                            else
-                                                self.is_deleting = false
                                             end
-                                        end
-                                        if self.saved_layer:isVisible() then
-                                            -- 批量删除结束后获取
-                                            if #self.manager:GetSavedReports()<10 then
-                                                local response self.manager:FetchSavedReportsFromServer(#self.manager:GetSavedReports())
-                                                if response then
-                                                    response:done(function ( response )
-                                                        self.saved_reports_listview:asyncLoadWithCurrentPosition_()
+                                            if self.saved_layer:isVisible() then
+                                                -- 批量删除结束后获取
+                                                if #self.manager:GetSavedReports()<10 then
+                                                    local response self.manager:FetchSavedReportsFromServer(#self.manager:GetSavedReports())
+                                                    if response then
+                                                        response:done(function ( response )
+                                                            if self.saved_reports_listview then
+                                                                self.saved_reports_listview:asyncLoadWithCurrentPosition_()
+                                                                self.is_deleting = false
+                                                            end
+                                                            return response
+                                                        end)
+                                                    else
                                                         self.is_deleting = false
-                                                        return response
-                                                    end)
+                                                    end
                                                 else
                                                     self.is_deleting = false
                                                 end
-                                            else
-                                                self.is_deleting = false
                                             end
                                         end
                                     end)
                                 elseif control_type == "send_mails" then
                                     NetManager:getDeleteSendMailsPromise(ids):done(function ()
-                                        self:SelectAllMailsOrReports(false)
-                                        self.mail_control_box:hide()
+                                        if self.sent_layer then
+                                            self:SelectAllMailsOrReports(false)
+                                            self.mail_control_box:hide()
 
-                                        if self.sent_layer:isVisible() then
-                                            -- 批量删除结束后获取
-                                            if #self.manager:GetSendMails() < 10 then
-                                                local response = self.manager:FetchSendMailsFromServer(#self.manager:GetSendMails())
-                                                if response then
-                                                    response:done(function ( response )
-                                                        self.send_mail_listview:asyncLoadWithCurrentPosition_()
+                                            if self.sent_layer:isVisible() then
+                                                -- 批量删除结束后获取
+                                                if #self.manager:GetSendMails() < 10 then
+                                                    local response = self.manager:FetchSendMailsFromServer(#self.manager:GetSendMails())
+                                                    if response then
+                                                        response:done(function ( response )
+                                                            if self.send_mail_listview then
+                                                                self.send_mail_listview:asyncLoadWithCurrentPosition_()
+                                                                self.is_deleting = false
+                                                            end
+                                                            return response
+                                                        end)
+                                                    else
                                                         self.is_deleting = false
-                                                        return response
-                                                    end)
+                                                    end
                                                 else
                                                     self.is_deleting = false
                                                 end
-                                            else
-                                                self.is_deleting = false
                                             end
                                         end
                                     end)

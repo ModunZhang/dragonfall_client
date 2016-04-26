@@ -31,6 +31,10 @@ function GameUITownHall:onExit()
     User:RemoveListenerOnType(self, "dailyQuests")
     User:RemoveListenerOnType(self, "dailyQuestEvents")
     User:RemoveListenerOnType(self, "buildingEvents")
+    if self.handle then
+        scheduler.unscheduleGlobal(self.handle)
+        self.handle = nil
+    end
     GameUITownHall.super.onExit(self)
 end
 
@@ -516,6 +520,7 @@ function GameUITownHall:OnUserDataChanged_buildingEvents(userData, deltaData)
 end
 
 return GameUITownHall
+
 
 
 
