@@ -14,6 +14,7 @@ Android上的修改:
 尝试修复游戏有小几率从后台进入前台会丢失纹理的bug(黑屏)
 修复在一些设备上初始化iap的时候会crash的bug
 GCM使用google play services的api进行检测是否可用
+自定义bugly cocos部分的java代码,在崩溃时尽可能的上传lua调用堆栈,具体的项目为external/Android/bugly_cocos2dx(Android Studio)
 
 --------------------------------------------------
 1.1.3
