@@ -1,16 +1,16 @@
-local errorMessages = {}
-local MAX_ERRORS = 10
-local SEND_TIME = 120
-local sharedScheduler
-if device.platform == 'winrt' then
-    sharedScheduler = cc.Director:getInstance():getScheduler()
-    sharedScheduler:scheduleScriptFunc(function()
-        if #errorMessages > 0 then
-            GameUtils:UploadErrors(table.concat(errorMessages, string.format("\n%s\n", string.rep("-", 30))))
-            errorMessages = {}
-        end
-    end, SEND_TIME, false)
-end
+-- local errorMessages = {}
+-- local MAX_ERRORS = 10
+-- local SEND_TIME = 120
+-- local sharedScheduler
+-- if device.platform == 'winrt' then
+--     sharedScheduler = cc.Director:getInstance():getScheduler()
+--     sharedScheduler:scheduleScriptFunc(function()
+--         if #errorMessages > 0 then
+--             GameUtils:UploadErrors(table.concat(errorMessages, string.format("\n%s\n", string.rep("-", 30))))
+--             errorMessages = {}
+--         end
+--     end, SEND_TIME, false)
+-- end
 function __G__TRACKBACK__(errorMessage)
     if CONFIG_LOG_DEBUG_FILE then
         print("----------------------------------------")
@@ -29,14 +29,14 @@ function __G__TRACKBACK__(errorMessage)
             buglyPutUserData("LuaTag", version) --send autoupdate version
             buglyReportLuaException(errorMessage, debug.traceback("", 2))
         end
-        if device.platform == 'winrt' then
-            local errDesc = string.format("[%s]\n[%s]\n[%s] %s\n%s",json.encode(DataManager.latestUserData),json.encode(DataManager.latestDeltaData),os.date("%Y-%m-%d %H:%M:%S",math.floor(ext.now()/1000)), tostring(errorMessage), debug.traceback("", 2))
-            print(errDesc)
-            table.insert(errorMessages, errDesc)
-            if #errorMessages > MAX_ERRORS then
-                table.remove(errorMessages, 1)
-            end
-        end
+        -- if device.platform == 'winrt' then
+        --     local errDesc = string.format("[%s]\n[%s]\n[%s] %s\n%s",json.encode(DataManager.latestUserData),json.encode(DataManager.latestDeltaData),os.date("%Y-%m-%d %H:%M:%S",math.floor(ext.now()/1000)), tostring(errorMessage), debug.traceback("", 2))
+        --     print(errDesc)
+        --     table.insert(errorMessages, errDesc)
+        --     if #errorMessages > MAX_ERRORS then
+        --         table.remove(errorMessages, 1)
+        --     end
+        -- end
     end
 end
 function _(text)
