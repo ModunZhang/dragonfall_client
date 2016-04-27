@@ -499,9 +499,9 @@ function WidgetRecruitSoldier:onEnter()
 
     self.slider_input:SetValue(self:GetCurrentMaxRecruitNum(self.res_total_map))
     self:OnCountChanged(self.slider_input:GetValue())
-    if #WidgetRecruitSoldier.open_callbacks > 0 then
-        table.remove(WidgetRecruitSoldier.open_callbacks, 1)(self)
-    end
+    -- if #WidgetRecruitSoldier.open_callbacks > 0 then
+    --     table.remove(WidgetRecruitSoldier.open_callbacks, 1)(self)
+    -- end
 end
 function WidgetRecruitSoldier:onExit()
     User:RemoveListenerOnType(self, "soldierStars")
