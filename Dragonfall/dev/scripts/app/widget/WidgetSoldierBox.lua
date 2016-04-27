@@ -94,7 +94,7 @@ function WidgetSoldierBox:SetCondition(text)
     if not self.lock_icon then
         self.lock_icon = display.newSprite("icon_lock_14x18.png"):addTo(self.number:getParent()):align(display.LEFT_CENTER, 10, self.number:getParent():getContentSize().height/2-1)
     end
-    UIKit:addTipsToNode(self,text,self:getParent(),nil,nil,-60)
+    UIKit:addTipsToNode(self,text,self:getParent(),nil,nil,-50)
     return self
 end
 function WidgetSoldierBox:IsLocked()
