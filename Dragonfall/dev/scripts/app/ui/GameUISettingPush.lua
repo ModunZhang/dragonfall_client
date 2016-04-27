@@ -166,7 +166,7 @@ function GameUISettingPush:onRemindButtonStateChanged(button)
         if isOn then
             app:GetGameDefautlt():OpenGemRemind()
         else
-            app:GetGameDefautlt():CloseGemRemind()()
+            app:GetGameDefautlt():CloseGemRemind()
         end
     end
 end
