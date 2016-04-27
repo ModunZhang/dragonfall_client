@@ -141,7 +141,7 @@ function enter_scene_transition(scene_name, ...)
     cc.LayerColor:create(cc.c4b(255,255,255,0))
     :addTo(display.getRunningScene(),MAX_ZORDER,CLOUD_TAG)
     local animation = ccs.Armature:create("Cloud_Animation")
-        :addTo(self:getChildByTag(CLOUD_TAG),-1)
+        :addTo(display.getRunningScene():getChildByTag(CLOUD_TAG),-1)
         :pos(display.cx, display.cy):getAnimation()
 
     animation:play("Animation1", -1, 0)
@@ -149,7 +149,7 @@ function enter_scene_transition(scene_name, ...)
 
     local args = {...}
     table.insert(args, 1, scene_name)
-    transition.fadeIn(self:getChildByTag(CLOUD_TAG), {
+    transition.fadeIn(display.getRunningScene():getChildByTag(CLOUD_TAG), {
         time = 0.75/speed,
         onComplete = function()
             app:enterScene("LoadingScene", args)
