@@ -111,11 +111,12 @@ function GameUISetting:OnButtonClicked(button)
 	elseif tag == 3 then
 		UIKit:newGameUI("GameUISettingLanguage"):AddToCurrentScene(true)
 	elseif tag == 4 then
-		if CONFIG_LOG_DEBUG_FILE then
-			UIKit:newGameUI('GameUIShop', City):AddToCurrentScene(true)
-		else
-			UIKit:newGameUI("GameUITips"):AddToCurrentScene(true)
-		end
+		-- if CONFIG_LOG_DEBUG_FILE then
+		-- 	UIKit:newGameUI('GameUIShop', City):AddToCurrentScene(true)
+		-- else
+       		UIKit:newGameUI("GameUISettingFaq"):AddToCurrentScene(true)
+			-- UIKit:newGameUI("GameUITips"):AddToCurrentScene(true)
+		-- end
 	elseif tag == 5 then
 		if self.city:GetFirstBuildingByType("keep"):GetLevel() >= 8 then
 			UIKit:newWidgetUI("WidgetRankingList", "player"):AddToCurrentScene(true)

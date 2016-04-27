@@ -2,41 +2,43 @@
 -- Author: Danny He
 -- Date: 2015-02-25 11:49:26
 --
-local GameUISettingFaqDetail = UIKit:createUIClass("GameUISettingFaqDetail")
+local WidgetPopDialog = import("..widget.WidgetPopDialog")
 local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local window = import("..utils.window")
 local WidgetPushButton = import("..widget.WidgetPushButton")
 local UIListView = import(".UIListView")
+local GameUISettingFaqDetail = class("GameUISettingFaqDetail", WidgetPopDialog)
 
 function GameUISettingFaqDetail:ctor(data)
-	GameUISettingFaqDetail.super.ctor(self)
+	GameUISettingFaqDetail.super.ctor(self,762,_("具体问题"),window.top - 130)
 	self.data = data
 	self:BuildUI()
 end
 
 function GameUISettingFaqDetail:BuildUI()
-	local shadowLayer = UIKit:shadowLayer():addTo(self)
-	local bg = WidgetUIBackGround.new({height=762}):addTo(shadowLayer)
-	bg:pos(((display.width - bg:getContentSize().width)/2),window.bottom_top)
-	local titleBar = display.newSprite("title_blue_600x56.png"):align(display.LEFT_BOTTOM,3,747):addTo(bg)
-	local closeButton = cc.ui.UIPushButton.new({normal = "X_1.png",pressed = "X_2.png"}, {scale9 = false})
-	   	:addTo(titleBar)
-	   	:align(display.BOTTOM_RIGHT,titleBar:getContentSize().width,0)
-	   	:onButtonClicked(function ()
-	   		self:LeftButtonClicked()
-	   	end)
-	UIKit:ttfLabel({
-		text = _("遇到问题"),
-		size = 22,
-		shadow = true,
-		color = 0xffedae
-	}):addTo(titleBar):align(display.CENTER,300,28)
+	-- local shadowLayer = UIKit:shadowLayer():addTo(self)
+	-- local bg = WidgetUIBackGround.new({height=762}):addTo(shadowLayer)
+	-- bg:pos(((display.width - bg:getContentSize().width)/2),window.bottom_top)
+	-- local titleBar = display.newSprite("title_blue_600x56.png"):align(display.LEFT_BOTTOM,3,747):addTo(bg)
+	-- local closeButton = cc.ui.UIPushButton.new({normal = "X_1.png",pressed = "X_2.png"}, {scale9 = false})
+	--    	:addTo(titleBar)
+	--    	:align(display.BOTTOM_RIGHT,titleBar:getContentSize().width,0)
+	--    	:onButtonClicked(function ()
+	--    		self:LeftButtonClicked()
+	--    	end)
+	-- UIKit:ttfLabel({
+	-- 	text = _("遇到问题"),
+	-- 	size = 22,
+	-- 	shadow = true,
+	-- 	color = 0xffedae
+	-- }):addTo(titleBar):align(display.CENTER,300,28)
+	local body = self.body
 	UIKit:ttfLabel({
 		text = self.data.title,
 		size = 20,
 		color= 0x615b44
-	}):align(display.TOP_CENTER, 304,732):addTo(bg)
-	local list_bg = UIKit:CreateBoxPanelWithBorder({width = 556,height = 648}):align(display.BOTTOM_CENTER, 304, 33):addTo(bg)
+	}):align(display.TOP_CENTER, 304,726):addTo(body)
+	local list_bg = UIKit:CreateBoxPanelWithBorder({width = 556,height = 648}):align(display.BOTTOM_CENTER, 304, 33):addTo(body)
 	self.list_view = UIListView.new{
         viewRect = cc.rect(10,10,536,628),
         direction = cc.ui.UIScrollView.DIRECTION_VERTICAL,
@@ -47,11 +49,11 @@ end
 
 function GameUISettingFaqDetail:RefreshListView()
 	 local textLabel = UIKit:ttfLabel({
-        dimensions = cc.size(536, 0),
-        text = self.data.content,
+        dimensions = cc.size(516, 0),
+        text = self.data.answer,
         size = 22,
         color = 0x403c2f,
-        align=cc.TEXT_ALIGNMENT_CENTER
+        align=cc.TEXT_ALIGNMENT_LEFT
     })
     local content = display.newNode()
     content:size(536,textLabel:getContentSize().height)

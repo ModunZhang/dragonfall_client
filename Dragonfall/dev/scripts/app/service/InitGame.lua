@@ -2,6 +2,7 @@ local BuildingRegister = import("..entity.BuildingRegister")
 local City_ = import("..entity.City")
 local User_ = import("..entity.User")
 local MailManager_ = import("..entity.MailManager")
+local NewsManager_ = import("..entity.NewsManager")
 local check = import("..fte.check")
 local initData = import("..fte.initData")
 
@@ -27,6 +28,10 @@ return function(userData)
         User = User_.new(userData._id)
         City = City_.new(User):InitWithJsonData(userData)
         DataManager:setUserData(userData)
+    end
+
+    if userData.basicInfo.terrain ~= "__NONE__" and not NewsManager then
+        NewsManager = NewsManager_.new()
     end
 
     timer:AddListener(City)

@@ -10,6 +10,7 @@ import shutil
 Platform = ""
 NEED_ENCRYPT_SCRIPTS = ""
 SCRIPT_COMPILE_TOOL = getScriptsTool()
+RES_COMPILE_TOOL = getResourceTool()  # 加密工具
 SCRIPTS_SRC_DIR = getScriptsDir()
 SCRIPTS_DEST_DIR = ""
 XXTEAKey = getXXTEAKey()
@@ -17,6 +18,7 @@ XXTEASign = getXXTEASign()
 TEMP_RES_DIR = getTempDir()
 ProjDir = getProjDir()
 DEBUG_BUILD_USE_LUA_FILE = True  # 不加密的情况下不编译lua为字节码
+ENCRYPT_LUA_TO_BYTES = False # 加密的情况下,是否将lua文件编译为字节码
 QUIET_MODE = True  # 安静模式
 VERSION_FILE = formatPath("%s/dev/scripts/debug_version.lua" % ProjDir)
 CONFIGURATION = ""
@@ -58,18 +60,44 @@ def gitDebugVersion():
     versionFile.write(versionData)
     versionFile.close()
 
+def CompileResources(in_file_path, out_dir_path):
+    comand = "%s -i %s -o %s -ek %s -es %s" % (
+        RES_COMPILE_TOOL, in_file_path, out_dir_path, XXTEAKey, XXTEASign)
+    if QUIET_MODE:
+        comand = "%s -q" % comand
+    code, ret = executeCommand(comand, QUIET_MODE)
+    return code == 0
 
+
+
+# 1.1 如果需要加密,ENCRYPT_LUA_TO_BYTES为True.将lua编译成字节码文件,然后打包成zip.最后后加密zip文件
+# 1.2 如果需要加密,ENCRYPT_LUA_TO_BYTES为False.
+# 2.1 如果不需要加密,如果DEBUG_BUILD_USE_LUA_FILE为True,将lua源码打包为zip
+# 2.2 如果不需要加密,如果DEBUG_BUILD_USE_LUA_FILE为False,将lua编译成字节码文件，然后打包成zip
 def exportScriptsEncrypt():
     outdir = SCRIPTS_DEST_DIR
     outfile = formatPath("%s/game.zip" % outdir)
     tempfile = formatPath("%s/game.zip" % TEMP_RES_DIR)
     if NEED_ENCRYPT_SCRIPTS:
-        Logging.warning("开始lua编译")
-        comand = "%s -i %s -o %s -e xxtea_zip -ex lua -ek %s -es %s" % (
-            SCRIPT_COMPILE_TOOL, SCRIPTS_SRC_DIR, tempfile, XXTEAKey, XXTEASign)
-        if QUIET_MODE:
-            comand = "%s -q" % comand
-        executeCommand(comand, QUIET_MODE)
+        if ENCRYPT_LUA_TO_BYTES:
+            Logging.warning("开始lua编译")
+            comand = "%s -i %s -o %s -e xxtea_zip -ex lua -ek %s -es %s" % (
+                SCRIPT_COMPILE_TOOL, SCRIPTS_SRC_DIR, tempfile, XXTEAKey, XXTEASign)
+            if QUIET_MODE:
+                comand = "%s -q" % comand
+            executeCommand(comand, QUIET_MODE)
+        else:
+            Logging.info("不编译lua为字节码")
+            if not createZipFileWithDirPath(SCRIPTS_SRC_DIR, tempfile, getTempFileExtensions()):
+                die("压缩lua文件错误")
+            Logging.info("加密打包后的lua源码")
+            if not CompileResources(tempfile,outdir):
+                die("加密打包后的lua源码失败")
+            Logging.info("清理临时文件")
+            removeTempFiles(SCRIPTS_SRC_DIR, "bytes")
+            removeTempDir(TEMP_RES_DIR)
+            Logging.warning("lua编译完成")
+            return
     else:
         if DEBUG_BUILD_USE_LUA_FILE:
             Logging.info("不编译lua为字节码")

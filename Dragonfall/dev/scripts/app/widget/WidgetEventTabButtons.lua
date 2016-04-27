@@ -689,7 +689,7 @@ function WidgetEventTabButtons:UpgradeBuildingHelpOrSpeedup(event)
     local eventType = event.location and "buildingEvents" or "houseEvents"
     if self:IsAbleToFreeSpeedup(event) then
         local time = UtilsForEvent:GetEventInfo(event)
-        if time > 2 then
+        if time > 1 then
             NetManager:getFreeSpeedUpPromise(eventType, event.id)
         end
     else
@@ -708,7 +708,7 @@ function WidgetEventTabButtons:MiliTaryTechUpgradeOrSpeedup(event)
     local User = self.city:GetUser()
     local time, percent = UtilsForEvent:GetEventInfo(event)
 
-    if DataUtils:getFreeSpeedUpLimitTime() > time and time > 2 then
+    if DataUtils:getFreeSpeedUpLimitTime() > time and time > 1 then
         NetManager:getFreeSpeedUpPromise(User:EventType(event), event.id)
     else
         if not Alliance_Manager:GetMyAlliance():IsDefault() then
@@ -1006,7 +1006,7 @@ end
 function WidgetEventTabButtons:ProductionTechnologyEventUpgradeOrSpeedup(event)
     local time = UtilsForEvent:GetEventInfo(event)
     local User = self.city:GetUser()
-    if DataUtils:getFreeSpeedUpLimitTime() > time and time > 2 then
+    if DataUtils:getFreeSpeedUpLimitTime() > time and time > 1 then
         NetManager:getFreeSpeedUpPromise("productionTechEvents", event.id)
     else
         if not Alliance_Manager:GetMyAlliance():IsDefault() then

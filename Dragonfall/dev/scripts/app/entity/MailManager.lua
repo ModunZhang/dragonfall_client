@@ -307,11 +307,13 @@ function MailManager:GetSavedReportByServerIndex(serverIndex)
     end
 end
 function MailManager:FetchMailsFromServer(fromIndex)
-    if self.is_last_mail then
+    if self.is_last_mail or self.requesting then
         return
     end
+    self.requesting = ture
     return NetManager:getFetchMailsPromise(fromIndex):done(function(response)
         if response.msg.mails then
+            self.requesting = false
             local user_data = DataManager:getUserData()
             local fetch_mails = response.msg.mails
             if #fetch_mails < 10 then
@@ -335,11 +337,13 @@ function MailManager:GetSavedMails()
     return self.savedMails
 end
 function MailManager:FetchSavedMailsFromServer(fromIndex)
-    if self.is_last_saved_mail then
+    if self.is_last_saved_mail or self.requesting then
         return
     end
+    self.requesting = true
     return NetManager:getFetchSavedMailsPromise(fromIndex):done(function (response)
         if response.msg.mails then
+            self.requesting = false
             local user_data = DataManager:getUserData()
             local fetch_mails = response.msg.mails
             if #fetch_mails < 10 then
@@ -368,11 +372,13 @@ function MailManager:GetSendMails()
     return clone_send_mails
 end
 function MailManager:FetchSendMailsFromServer(fromIndex)
-    if self.is_last_send_mail then
+    if self.is_last_send_mail or self.requesting then
         return
     end
+    self.requesting = true
     return NetManager:getFetchSendMailsPromise(fromIndex):done(function(response)
         if response.msg.mails then
+            self.requesting = false
             local user_data = DataManager:getUserData()
             local mails = response.msg.mails
             if #mails < 10 then
@@ -734,12 +740,14 @@ function MailManager:GetReports()
     return self.reports
 end
 function MailManager:FetchReportsFromServer(fromIndex)
-    if self.is_last_report then
+    if self.is_last_report or self.requesting then
         return
     end
+    self.requesting = true
     return NetManager:getReportsPromise(fromIndex)
         :done(function (response)
             if response.msg.reports then
+                self.requesting = false
                 local user_data = DataManager:getUserData()
                 local fetch_reports = response.msg.reports
                 if #fetch_reports < 10 then
@@ -762,11 +770,13 @@ function MailManager:GetSavedReports()
     return self.savedReports
 end
 function MailManager:FetchSavedReportsFromServer(fromIndex)
-    if self.is_last_saved_report then
+    if self.is_last_saved_report or self.requesting then
         return
     end
+    self.requesting = true
     return NetManager:getSavedReportsPromise(fromIndex):done(function (response)
         if response.msg.reports then
+            self.requesting = false
             local user_data = DataManager:getUserData()
             local fetch_reports = response.msg.reports
             if #fetch_reports < 10 then

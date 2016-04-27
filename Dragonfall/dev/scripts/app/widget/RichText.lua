@@ -7,7 +7,6 @@ local LuaUtils = LuaUtils
 
 
 local function get_first_line(label, width)
-    label:setLineBreakWithoutSpace(true)
     label:setMaxLineWidth(width)
 
     local origin_str = label:getString()
@@ -130,6 +129,7 @@ function RichText:Text(str, line , url_handle)
                     align = cc.ui.UILabel.TEXT_ALIGN_CENTER,
                 }):align(display.LEFT_CENTER)
                 head, tail, is_newline = get_first_line(label, width - cur_x)
+                head = string.trim(head or "")
                 label:removeFromParent()
 
                 local label = UIKit:ttfLabel({

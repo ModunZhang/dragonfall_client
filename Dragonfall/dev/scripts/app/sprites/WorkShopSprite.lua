@@ -1,4 +1,3 @@
-local smoke = import("..particles.smoke")
 local FunctionUpgradingSprite = import(".FunctionUpgradingSprite")
 local WorkShopSprite = class("WorkShopSprite", FunctionUpgradingSprite)
 
@@ -10,8 +9,6 @@ function WorkShopSprite:OnUserDataChanged_militaryTechEvents()
 end
 
 
-
-local WORK_TAG = 11201
 function WorkShopSprite:ctor(city_layer, entity, city)
     WorkShopSprite.super.ctor(self, city_layer, entity, city)
     local User = city:GetUser()
@@ -26,15 +23,40 @@ function WorkShopSprite:DoAni()
     if self:GetEntity():IsUnlocked() then
         if self:GetEntity():BelongCity():GetUser():HasMilitaryTechEventBy("workshop") then
             self:PlayWorkAnimation()
+            self:RemoveEmtpyAnimation()
         else
-            self:removeChildByTag(WORK_TAG)
+            self:RemoveWorkAnimation()
+            self:PlayEmptyAnimation()
         end
     end
 end
+
+local WORK_TAG = 11201
+local smoke = import("..particles.smoke")
 function WorkShopSprite:PlayWorkAnimation()
     if not self:getChildByTag(WORK_TAG) then
         local x,y = self:GetSprite():getPosition()
         smoke():addTo(self,1,WORK_TAG):pos(x - 65,y + 80)
+    end
+end
+function WorkShopSprite:RemoveWorkAnimation()
+    if self:getChildByTag(WORK_TAG) then
+        self:removeChildByTag(WORK_TAG)
+    end
+end
+
+
+local EMPTY_TAG = 11400
+local zz = import("..particles.zz")
+function WorkShopSprite:PlayEmptyAnimation()
+    if not self:getChildByTag(EMPTY_TAG) then
+        local x,y = self:GetSprite():getPosition()
+        zz():addTo(self,1,EMPTY_TAG):pos(x + 50,y + 50)
+    end
+end
+function WorkShopSprite:RemoveEmtpyAnimation()
+    if self:getChildByTag(EMPTY_TAG) then
+        self:removeChildByTag(EMPTY_TAG)
     end
 end
 

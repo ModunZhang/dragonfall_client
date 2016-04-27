@@ -437,26 +437,19 @@ function User:GetFoodRealOutput()
     return upkeep + self.resources_cache.food.output
 end
 --[[end]]
-
-
 -- [[ dailyQuests begin]]
 function User:GetDailyQuests()
-    if self:GetNextDailyQuestsRefreshTime() <= app.timer:GetServerTime() then
-        -- 达成刷新每日任务条件
-        NetManager:getDailyQuestsPromise()
-    else
-        local quests = {}
-        for k,v in pairs(self.dailyQuestEvents) do
-            table.insert(quests, v)
-        end
-        table.sort( quests, function( a,b )
-            return a.finishTime < b.finishTime
-        end )
-        for k,v in pairs(self.dailyQuests.quests) do
-            table.insert(quests, v)
-        end
-        return quests
+    local quests = {}
+    for k,v in pairs(self.dailyQuestEvents) do
+        table.insert(quests, v)
     end
+    table.sort( quests, function( a,b )
+        return a.finishTime < b.finishTime
+    end )
+    for k,v in pairs(self.dailyQuests.quests) do
+        table.insert(quests, v)
+    end
+    return quests
 end
 -- 判定是否完成所有任务
 function User:IsFinishedAllDailyQuests()
@@ -1829,6 +1822,7 @@ function User:PromiseOfFinishTreat()
     return p
 end
 return User
+
 
 
 

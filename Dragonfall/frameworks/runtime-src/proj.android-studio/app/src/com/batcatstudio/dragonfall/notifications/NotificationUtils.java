@@ -106,7 +106,7 @@ public class NotificationUtils {
                     .setWhen(when);
             Notification notification = builder.build();
 
-            notification.defaults = Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE;
+            notification.defaults = Notification.DEFAULT_SOUND;
             notification.flags |= Notification.FLAG_AUTO_CANCEL;
             notification.flags |= Notification.FLAG_SHOW_LIGHTS;
             notification.ledARGB = 0xFFFF0000;
@@ -116,23 +116,7 @@ public class NotificationUtils {
             notificationManager.notify((int) SystemClock.elapsedRealtime(), notification);
         }catch (SecurityException e)
         {
-            //maybe SecurityException cause by VIBRATE
-            Notification.Builder builder = new Notification.Builder(context)
-                    .setContentTitle(title)
-                    .setContentText(message)
-                    .setContentIntent(intent)
-                    .setSmallIcon(icon)
-                    .setWhen(when);
-            Notification notification = builder.build();
-
-            notification.defaults = Notification.DEFAULT_SOUND;
-            notification.flags |= Notification.FLAG_AUTO_CANCEL;
-            notification.flags |= Notification.FLAG_SHOW_LIGHTS;
-            notification.ledARGB = 0xFFFF0000;
-            notification.ledOnMS = 1000;
-            notification.ledOffMS = 500;
-
-            notificationManager.notify((int) SystemClock.elapsedRealtime(), notification);
+            DebugUtil.LogException(TAG,e);
         }
     }
 

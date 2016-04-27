@@ -265,7 +265,7 @@ public abstract class GCMBaseIntentService extends IntentService {
 			if (sWakeLock == null) {
 				// This is called from BroadcastReceiver, there is no init.
 				PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-				sWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, WAKELOCK_KEY);
+				sWakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, WAKELOCK_KEY);
 			}
 		}
 		DebugUtil.LogVerbose(TAG, "Acquiring wakelock");

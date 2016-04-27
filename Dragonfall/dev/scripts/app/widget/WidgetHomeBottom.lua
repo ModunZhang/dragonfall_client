@@ -64,11 +64,14 @@ function WidgetHomeBottom:ctor(city)
             local alliance = Alliance_Manager:GetMyAlliance()
             self.join_request_count = WidgetNumberTips.new():addTo(self):pos(x+20, first_row+20)
             self.join_request_count:setLocalZOrder(11)
-            if not alliance:IsDefault() and
-                alliance:GetSelf():IsTitleEqualOrGreaterThan("quartermaster") then
-                self.join_request_count:SetNumber(#Alliance_Manager:GetMyAlliance().joinRequestEvents or 0)
+            if not alliance:IsDefault() then
+                if alliance:GetSelf():IsTitleEqualOrGreaterThan("quartermaster") then
+                    self.join_request_count:SetNumber((#Alliance_Manager:GetMyAlliance().joinRequestEvents + #User.iapGifts) or 0)
+                else
+                    self.join_request_count:SetNumber(#User.iapGifts or 0)
+                end
             else
-                self.join_request_count:SetNumber(#alliance.joinRequestEvents or 0)
+                self.join_request_count:SetNumber(#User.inviteToAllianceEvents or 0)
             end
 
             if not User.countInfo.firstJoinAllianceRewardGeted then
@@ -86,6 +89,7 @@ function WidgetHomeBottom:onEnter()
     user:AddListenOnType(self, "growUpTasks")
     user:AddListenOnType(self, "countInfo")
     user:AddListenOnType(self, "inviteToAllianceEvents")
+    user:AddListenOnType(self, "iapGifts")
     Alliance_Manager:GetMyAlliance():AddListenOnType(self, "joinRequestEvents")
 
     self:OnUserDataChanged_growUpTasks()
@@ -97,6 +101,7 @@ function WidgetHomeBottom:onExit()
     user:RemoveListenerOnType(self, "growUpTasks")
     user:RemoveListenerOnType(self, "countInfo")
     user:RemoveListenerOnType(self, "inviteToAllianceEvents")
+    user:RemoveListenerOnType(self, "iapGifts")
     Alliance_Manager:GetMyAlliance():RemoveListenerOnType(self, "joinRequestEvents")
 end
 function WidgetHomeBottom:OnBottomButtonClicked(event)
@@ -134,12 +139,17 @@ function WidgetHomeBottom:OnUserDataChanged_countInfo(userData, deltaData)
 end
 function WidgetHomeBottom:OnAllianceDataChanged_joinRequestEvents(alliance,deltaData)
     if self.join_request_count then
-        self.join_request_count:SetNumber(#alliance.joinRequestEvents or 0)
+        self.join_request_count:SetNumber((#Alliance_Manager:GetMyAlliance().joinRequestEvents + #User.iapGifts) or 0)
     end
 end
 function WidgetHomeBottom:OnUserDataChanged_inviteToAllianceEvents()
-    if self.join_request_count then
+    if self.join_request_count and Alliance_Manager:GetMyAlliance():IsDefault() then
         self.join_request_count:SetNumber(#User.inviteToAllianceEvents or 0)
+    end
+end
+function WidgetHomeBottom:OnUserDataChanged_iapGifts()
+     if self.join_request_count then
+        self.join_request_count:SetNumber((#Alliance_Manager:GetMyAlliance().joinRequestEvents + #User.iapGifts) or 0)
     end
 end
 -- fte

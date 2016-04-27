@@ -1062,6 +1062,25 @@ int LuaStack::luaExecuteChunkFromZip(lua_State *L)
     
     return 1;
 }
+
+std::string LuaStack::getLuaStackString(int arg)
+{
+    lua_getglobal(_state, "debug");  
+    lua_getfield(_state, -1, "traceback");  
+    int iError = lua_pcall(
+        _state,    //VMachine    
+        0,    //Argument Count    
+        1,    //Return Value Count    
+        0);
+    if(iError)
+    {
+        return std::string("");
+    }   
+    else
+    {
+        return tolua_tocppstring(_state, -1, 0);
+    }
+}
 //end
 
 

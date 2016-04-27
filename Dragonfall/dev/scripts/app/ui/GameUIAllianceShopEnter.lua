@@ -35,7 +35,7 @@ function GameUIAllianceShopEnter:GetBuildingInfo()
         }
         local label_2 = {
             {_("高级道具数量"),0x615b44},
-            {"50",0x403c2f},
+            {#UtilsForItem:GetUnLockAdvanceItems(),0x403c2f},
         }
 
         if Alliance_Manager:GetMyAlliance().isNewGoodsCome then

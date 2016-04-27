@@ -271,6 +271,7 @@ function GameUIAllianceInfo:OnJoinActionClicked(joinType,sender)
             UIKit:showMessageDialog(_("提示"),_("不能加入其他服务器的联盟"))
             return
     end
+    local alliance = self:GetAllianceData()
     if alliance.members == alliance.membersMax then
         UIKit:showMessageDialog(_("提示"),
             _("联盟人数已达最大"))

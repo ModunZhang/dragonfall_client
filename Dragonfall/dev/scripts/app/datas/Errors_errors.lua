@@ -1025,11 +1025,6 @@ errors["noFreeMapArea"] = {
 	["code"] = 707,
 	["message"] = "没有空闲的地图区域"
 }
-errors["playerNotViewThisMapIndex"] = {
-	["key"] = "playerNotViewThisMapIndex",
-	["code"] = 708,
-	["message"] = "玩家未观察此地块"
-}
 errors["canNotMoveAllianceRightNow"] = {
 	["key"] = "canNotMoveAllianceRightNow",
 	["code"] = 709,

@@ -242,7 +242,6 @@ function UIKit:ttfLabel( params )
     end
     local label = cc.ui.UILabel.new(params)
     if params.ellipsis then
-        label:setLineBreakWithoutSpace(true)
         label:setEllipsisEabled(true)
     end
     if params.shadow then
