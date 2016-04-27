@@ -3,14 +3,13 @@ local UILib = import("..ui.UILib")
 local StarBar = import("..ui.StarBar")
 local WidgetPushButton = import(".WidgetPushButton")
 local WidgetSoldierBox = class("WidgetSoldierBox", function()
-    return display.newNode()
+    return display.newSprite("back_ground_130x166.png")
 end)
 local NORMAL = GameDatas.Soldiers.normal
 local SPECIAL = GameDatas.Soldiers.special
 
 function WidgetSoldierBox:ctor(soldier_png, cb)
-    self.soldier_bg = display.newSprite("back_ground_130x166.png"):addTo(self)
-        :align(display.CENTER, 0,0)
+    self.soldier_bg = self
     self.cb = cb
 
     local rect = self.soldier_bg:getContentSize()
@@ -71,7 +70,7 @@ function WidgetSoldierBox:SetNumber(number)
     if not self.button then
         local button = WidgetPushButton.new()
             :addTo(self)
-            :align(display.CENTER, 0,0)
+            :align(display.CENTER, 65,84)
             :onButtonClicked(self.cb)
         button:setContentSize(self.soldier_bg:getContentSize())
         self.button = button
@@ -95,19 +94,14 @@ function WidgetSoldierBox:SetCondition(text)
     if not self.lock_icon then
         self.lock_icon = display.newSprite("icon_lock_14x18.png"):addTo(self.number:getParent()):align(display.LEFT_CENTER, 10, self.number:getParent():getContentSize().height/2-1)
     end
-    UIKit:addTipsToNode(self,text,self:getParent(),nil,nil,30)
+    UIKit:addTipsToNode(self,text,self:getParent(),nil,nil,-60)
     return self
 end
 function WidgetSoldierBox:IsLocked()
     return self.soldier:getFilter()
 end
-function WidgetSoldierBox:align(anchorPoint, x, y)
-    self.soldier_bg:align(anchorPoint)
-    if x and y then self:setPosition(x, y) end
-    return self
-end
 function WidgetSoldierBox:alignByPoint(point, x, y)
-    self.soldier_bg:setAnchorPoint(point)
+    self:setAnchorPoint(point)
     if x and y then self:setPosition(x, y) end
     return self
 end
