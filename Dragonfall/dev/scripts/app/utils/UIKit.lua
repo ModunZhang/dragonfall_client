@@ -1800,7 +1800,7 @@ function UIKit:CreateFightDragon(param, gameController)
     local fightDragonNode = display.newNode()
 
     local level = UIKit:ttfLabel({
-        text = 1,
+        text = param.level,
         size = 20,
         color = 0xffedae,
         shadow = true,
