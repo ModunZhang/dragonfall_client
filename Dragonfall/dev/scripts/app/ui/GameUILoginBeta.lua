@@ -655,12 +655,7 @@ function GameUILoginBeta:login()
             if DataManager:getUserData().basicInfo.terrain == "__NONE__" then
                 app:EnterFteScene()
             else
-                -- self:checkFte()
-                -- if GLOBAL_FTE then
-                    -- app:EnterMyCityFteScene()
-                -- else
-                    app:EnterMyCityScene(true)
-                -- end
+                app:EnterMyCityScene(true)
             end
         end, 0.3)
     end):catch(function(err)
