@@ -613,6 +613,17 @@ local location_buff_type_map = {
     [19] = 12,
     [20] = 13,
 }
+function UtilsForBuilding:IsHouseTypeWillHasBuff(userData, buildingLocation, hosueType)
+    local buildingType
+    local houses = userData.buildings[string.format("location_%d",buildingLocation)].houses
+    local neighbourLocation = location_buff_type_map[buildingLocation]
+    if neighbourLocation then
+        buildingType = userData.buildings[string.format("location_%d",neighbourLocation)].type
+    else
+        buildingType = userData.buildings[string.format("location_%d",buildingLocation)].type
+    end
+    return house_map[hosueType] == buildingType
+end
 function UtilsForBuilding:IsHouseWillHasBuff(userData,buildingLocation,houseLocation)
     local buildingType
     local houses = userData.buildings[string.format("location_%d",buildingLocation)].houses
@@ -624,7 +635,7 @@ function UtilsForBuilding:IsHouseWillHasBuff(userData,buildingLocation,houseLoca
     end
     for i,v in ipairs(houses) do
         if v.location == houseLocation then
-            if house_map[v.type] == buildingType then
+            if self:IsHouseTypeWillHasBuff(userData,buildingLocation,v.type) then
                 return true
             end
         end

@@ -6,6 +6,7 @@ local WidgetFteArrow = import("..widget.WidgetFteArrow")
 local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local WidgetPushButton = import("..widget.WidgetPushButton")
 local SpriteConfig = import("..sprites.SpriteConfig")
+local houseBuff = import("..particles.houseBuff")
 local house_levelup_config = GameDatas.HouseLevelUp
 
 local GameUIBuild = UIKit:createUIClass('GameUIBuild', "GameUIWithCommonHeader")
@@ -38,6 +39,11 @@ function GameUIBuild:OnMoveInStage()
     listnode:addTo(self:GetView()):align(display.BOTTOM_CENTER,window.cx,window.bottom_top - 60)
     self.base_resource_building_items = {}
     self.base_list_view = list_view
+    
+    local tile = self.build_city:GetTileWhichBuildingBelongs(self.select_ruins)
+    local buildingLocation = tile.location_id
+    local houseLocation = tile:GetBuildingLocation(self.select_ruins)
+
     for i, v in ipairs(base_items) do
         local item = self:CreateItemWithListView(self.base_list_view)
         item.building = v
@@ -47,6 +53,10 @@ function GameUIBuild:OnMoveInStage()
         if self.need_tips and self.build_name == v.building_type then
             WidgetFteArrow.new(_("点击建造小屋"))
                 :addTo(item, 100):TurnRight():align(display.RIGHT_CENTER, 380, 40)
+        end
+        if UtilsForBuilding:IsHouseTypeWillHasBuff(self.build_city:GetUser(),buildingLocation,v.building_type) then
+            local size = item.building_icon:getContentSize()
+            houseBuff():addTo(item.building_icon):pos(size.width/2,15)
         end
     end
     self.base_list_view:reload()
@@ -350,7 +360,7 @@ function GameUIBuild:CreateItemWithListView(list_view)
     function item:GetBuildButton()
         return build_btn
     end
-
+    item.building_icon = building_icon
     return item
 end
 

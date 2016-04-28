@@ -104,6 +104,7 @@ function GameUIPveAttack:BuildNormalUI()
             png = UILib.resource[v.name]
         elseif v.type == "soldierMaterials" then
             png = UILib.soldier_metarial[v.name]
+            self.isDropMaterials = true
         end
         display.newSprite(png)
             :addTo(
@@ -202,6 +203,7 @@ function GameUIPveAttack:BuildBossUI()
             png = UILib.item[v.name]
         elseif v.type == "soldierMaterials" then
             png = UILib.soldier_metarial[v.name]
+            self.isDropMaterials = true
         end
         display.newSprite(png)
             :addTo(
@@ -347,6 +349,11 @@ function GameUIPveAttack:CreateAttackButton()
                 return
             end
             -- event.target:setTouchEnabled(false)
+            if self.isDropMaterials and 
+                #UtilsForBuilding:GetBuildingsBy(self.user, "materialDepot", 1) == 0 then
+                UIKit:showMessageDialog(_("提示"),_("解锁材料库房，激活此关卡!"))
+                return
+            end
             self:Attack()
             -- self:UseStrength(function()
             -- event.target:setTouchEnabled(true)

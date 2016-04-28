@@ -226,6 +226,10 @@ void ClearOpenUdidData()
 #ifdef DEBUG
     UICKeyChainStore *store = [UICKeyChainStore keyChainStoreWithService:kKeychainBatcatStudioKeyChainService];
     [store removeItemForKey:kKeychainBatcatStudioIdentifier];
+    
+    NSUserDefaults *appleDefaults = [NSUserDefaults standardUserDefaults];
+    [appleDefaults removeObjectForKey:kKeychainBatcatStudioIdentifier];
+    [appleDefaults synchronize];
 #endif
 
 }
