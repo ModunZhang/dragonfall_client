@@ -376,12 +376,6 @@ function GameUIPveAttack:Attack()
                 new_level = dragon:Level(),
                 reward = {},
             }
-            local task = City:GetRecommendTask()
-            if task then
-                if task:TaskType() == "explore" then
-                    City:SetBeginnersTaskFlag(task:Index())
-                end
-            end
             local be_star = self.user:GetPveSectionStarByName(self.pve_name)
 
             NetManager:getAttackPveSectionPromise(self.pve_name, dragonType, soldiers):done(function()

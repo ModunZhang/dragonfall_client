@@ -36,8 +36,8 @@ function GameUISelectTerrain:OnMoveInStage()
     self.ui_map.select:onButtonClicked(function(event)
         self.ui_map.select:setButtonEnabled(false)
         if DataManager:getUserData().basicInfo.terrain ~= "__NONE__" then
-            DataManager:getFteData().basicInfo.terrain = DataManager:getUserData().basicInfo.terrain
-            DataManager:setFteUserDeltaData()
+            -- DataManager:getFteData().basicInfo.terrain = DataManager:getUserData().basicInfo.terrain
+            -- DataManager:setFteUserDeltaData()
             self.select_promise:resolve()
         else
             NetManager:initPlayerData(self.terrainType):done(function()
@@ -45,8 +45,6 @@ function GameUISelectTerrain:OnMoveInStage()
                     ext.market_sdk.onPlayerEventAF("SELECT_TERRAIN", "empty")
                 end
                 NewsManager = NewsManager_.new()
-                DataManager:getFteData().basicInfo.terrain = DataManager:getUserData().basicInfo.terrain
-                DataManager:setFteUserDeltaData()
                 self.select_promise:resolve()
             end):fail(function()
                 self.ui_map.select:setButtonEnabled(true)

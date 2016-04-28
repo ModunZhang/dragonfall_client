@@ -68,6 +68,7 @@ require("app.utils.UtilsForDragon")
 require("app.utils.UtilsForBuilding")
 require("app.utils.UtilsForShrine")
 require("app.utils.UtilsForVip")
+require("app.utils.UtilsForFte")
 require("app.utils.UIKit")
 require("app.utils.window")
 require("app.service.NetManager")
@@ -473,31 +474,31 @@ function MyApp:pushScene(sceneName, args, transitionType, time, more)
     local scene = sceneClass.new(unpack(checktable(args)))
     display.pushScene(scene, transitionType, time, more)
 end
-local scheduler = require(cc.PACKAGE_NAME .. ".scheduler")
-function MyApp:EnterUserMode()
-    GLOBAL_FTE = false
-    if DataManager.handle__ then
-        scheduler.unscheduleGlobal(DataManager.handle__)
-        DataManager.handle__ = nil
-    end
-    if DataManager.handle_soldier__ then
-        scheduler.unscheduleGlobal(DataManager.handle_soldier__)
-        DataManager.handle_soldier__ = nil
-    end
-    if DataManager.handle_treat__ then
-        scheduler.unscheduleGlobal(DataManager.handle_treat__)
-        DataManager.handle_treat__ = nil
-    end
-    if DataManager.handle_tech__ then
-        scheduler.unscheduleGlobal(DataManager.handle_tech__)
-        DataManager.handle_tech__ = nil
-    end
-    local InitGame = import("app.service.InitGame")
-    assert(DataManager:hasUserData())
-    InitGame(DataManager:getUserData())
-    DataManager:setUserAllianceData(DataManager.allianceData)
-    -- DataManager:setEnemyAllianceData(DataManager.enemyAllianceData)
-end
+-- local scheduler = require(cc.PACKAGE_NAME .. ".scheduler")
+-- function MyApp:EnterUserMode()
+--     GLOBAL_FTE = false
+--     if DataManager.handle__ then
+--         scheduler.unscheduleGlobal(DataManager.handle__)
+--         DataManager.handle__ = nil
+--     end
+--     if DataManager.handle_soldier__ then
+--         scheduler.unscheduleGlobal(DataManager.handle_soldier__)
+--         DataManager.handle_soldier__ = nil
+--     end
+--     if DataManager.handle_treat__ then
+--         scheduler.unscheduleGlobal(DataManager.handle_treat__)
+--         DataManager.handle_treat__ = nil
+--     end
+--     if DataManager.handle_tech__ then
+--         scheduler.unscheduleGlobal(DataManager.handle_tech__)
+--         DataManager.handle_tech__ = nil
+--     end
+--     local InitGame = import("app.service.InitGame")
+--     assert(DataManager:hasUserData())
+--     InitGame(DataManager:getUserData())
+--     DataManager:setUserAllianceData(DataManager.allianceData)
+--     -- DataManager:setEnemyAllianceData(DataManager.enemyAllianceData)
+-- end
 
 function MyApp:EnterViewModelAllianceScene(alliance_id)
     NetManager:getFtechAllianceViewDataPromose(alliance_id):done(function(response)

@@ -272,48 +272,8 @@ function MyCityScene:onEnterTransitionFinish()
     if Alliance_Manager:HasBeenJoinedAlliance() then
         return
     end
-    self:FteEditName(function()
-        self:FteAlliance()
-    end)
-end
-function MyCityScene:FteEditName(func)
-    if DataManager:getUserData().countInfo.isFTEFinished then
-        if type(func) == "function" then
-            func()
-        end
-    else
-        if User:GetItemCount("changePlayerName") == 0 then
-            NetManager:getFinishFTE()
-            if type(func) == "function" then
-                func()
-            end
-        else
-            UIKit:newGameUI("GameUIEditName", func):AddToCurrentScene(true)
-        end
-    end
-end
-function MyCityScene:FteAlliance()
-    local userdefault = cc.UserDefault:getInstance()
-    local city_key = DataManager:getUserData()._id.."_first_in_city_scene"
-    if not userdefault:getBoolForKey(city_key) and
-        Alliance_Manager:GetMyAlliance():IsDefault() then
-
-        userdefault:setBoolForKey(city_key, true)
-        userdefault:flush()
-
-        app:lockInput(true)
-        cocos_promise.defer(function()app:lockInput(false);end)
-            :next(function()
-                return GameUINpc:PromiseOfSay(
-                    {words = _("领主大人，这个世界上的觉醒者并不只有你一人。介入他们或者创建联盟邀请他们加入，会让我们发展得更顺利")}
-                )
-            end):next(function()
-            self:GetHomePage():PromiseOfFteAlliance()
-            return GameUINpc:PromiseOfLeave()
-            end)
-    else
-        self:GetHomePage():PromiseOfFteAlliance()
-    end
+    
+    self:RunFteIfNeeded()
 end
 function MyCityScene:CreateHomePage()
     if UIKit:GetUIInstance("GameUIHome") then
@@ -403,7 +363,9 @@ function MyCityScene:OnTouchClicked(pre_x, pre_y, x, y)
                 self:GetSceneUILayer():getChildByTag(WidgetMoveHouse.ADD_TAG):SetMoveToRuins(building)
                 return
             end
-            self:OpenUI(building)
+            self:CheckClickPromise(building, function()
+                self:OpenUI(building)
+            end)
         end)
     elseif self:IsEditMode() then
         self:LeaveEditMode()
@@ -484,6 +446,183 @@ function MyCityScene:OpenUI(building, default_tab, need_tips, build_name)
         else
             UIKit:newGameUI("GameUIUnlockBuilding", city, city:GetTileWhichBuildingBelongs(entity)):AddToScene(self, true)
         end
+    end
+end
+
+
+
+-- fte
+
+function MyCityScene:RunFteIfNeeded()
+    local p = cocos_promise.defer()
+    if (not UtilsForFte:IsHatedAnyDragon(self:GetCity():GetUser())
+    or not UtilsForFte:IsStudyAnyDragonSkill(self:GetCity():GetUser())
+    or not UtilsForFte:IsDefencedWithTroops(self:GetCity():GetUser()))
+    -- and not self:GetCity():GetUser().countInfo.isFTEFinished
+     then
+        p:next(function()
+            return self:PromiseOfHateDragonAndDefence()
+        end)
+    end
+
+    if not self:GetCity():GetUser().countInfo.isFTEFinished then
+        p:next(function()
+            self:FteEditName(function()
+                self:FteAlliance()
+            end)
+        end)
+    end
+end
+function MyCityScene:PromiseOfHateDragonAndDefence()
+    return GameUINpc:PromiseOfSay(
+        {words = _("我们到了。。。现在你的伤也恢复的差不多了，让我们来测试一下你觉醒者的能力吧。。。"), brow = "smile"}
+    ):next(function()
+        return GameUINpc:PromiseOfLeave()
+    end):next(function()
+        return self:PromiseOfClickBuilding(18, 8)
+    end):next(function()
+        return UIKit:PromiseOfOpen("GameUIDragonEyrieMain")
+    end):next(function(ui)
+        return ui:PromiseOfFte()
+    end)
+end
+function MyCityScene:FteEditName(func)
+    if DataManager:getUserData().countInfo.isFTEFinished then
+        if type(func) == "function" then
+            func()
+        end
+    else
+        if User:GetItemCount("changePlayerName") == 0 then
+            if type(func) == "function" then
+                func()
+            end
+        else
+            UIKit:newGameUI("GameUIEditName", func):AddToCurrentScene(true)
+        end
+    end
+end
+function MyCityScene:FteAlliance()
+    if Alliance_Manager:GetMyAlliance():IsDefault() then
+        app:lockInput(true)
+        cocos_promise.defer(function()app:lockInput(false);end)
+            :next(function()
+                return GameUINpc:PromiseOfSay(
+                    {words = _("领主大人，这个世界上的觉醒者并不只有你一人。介入他们或者创建联盟邀请他们加入，会让我们发展得更顺利")}
+                )
+            end):next(function()
+                self:GetHomePage():PromiseOfFteAlliance()
+                return GameUINpc:PromiseOfLeave()
+            end)
+    else
+        self:GetHomePage():PromiseOfFteAlliance()
+    end
+end
+
+local ARROW_TAG = 11901
+function MyCityScene:PromiseOfClickBuilding(x, y, for_build, msg, arrow_param)
+    self:BeginClickFte()
+    self:GetSceneLayer()
+        :FindBuildingBy(x, y)
+        :next(function(building)
+            local __,top = building:GetWorldPosition()
+            local info_layer = self:GetSceneLayer():GetInfoLayer()
+            local top_point = info_layer:convertToNodeSpace(top)
+
+            local str
+            if not msg then
+                if building:GetEntity():GetType() == "ruins" then
+                    str = string.format(_("点击空地：建造%s"), Localize.building_name[for_build])
+                else
+                    str = string.format(_("点击建筑：%s"), Localize.building_name[building:GetEntity():GetType()])
+                end
+            end
+
+            info_layer:removeAllChildren()
+            local arrow = WidgetFteArrow.new(msg or str)
+                :addTo(info_layer, 1, ARROW_TAG):TurnDown():pos(top_point.x, top_point.y + 50)
+            if arrow_param then
+                if arrow_param.direction == "up" then
+                    arrow:TurnUp()
+                end
+                arrow:pos(top_point.x + (arrow_param.x or 0), top_point.y + (arrow_param.y or -300))
+            end
+
+
+            local mx, my = building:GetEntity():GetMidLogicPosition()
+            self:GotoLogicPoint(mx, my, 5)
+                :next(function()
+                    info_layer:removeAllChildren()
+
+                    local __,top = building:GetWorldPosition()
+                    local tp = self:GetFteLayer():convertToNodeSpace(top)
+                    local arrow = WidgetFteArrow.new(msg or str)
+                        :addTo(self:GetFteLayer(), 1, ARROW_TAG)
+                        :TurnDown():pos(tp.x, tp.y + 50)
+                    if arrow_param then
+                        if arrow_param.direction == "up" then
+                            arrow:TurnUp()
+                        end
+                        arrow:pos(tp.x + (arrow_param.x or 0), tp.y + (arrow_param.y or -300))
+                    end
+                    local rect = building:GetSprite():getBoundingBox()
+                    local x,y,x1,y1 = rect.x,rect.y,rect.x + rect.width,rect.y + rect.height
+                    if building:GetEntity():GetType() == "keep" then
+                        x1 = x1 - 50
+                    elseif building:GetEntity():GetType() == "barracks" then
+                        x1 = x1 - 40
+                    elseif building:GetEntity():GetType() == "hospital" then
+                        x1 = x1 - 60
+                    elseif building:GetEntity():GetType() == "academy" then
+                        x1 = x1 - 20
+                    elseif building:GetEntity():GetType() == "materialDepot" then
+                        x1 = x1 - 20
+                    elseif building:GetEntity():GetType() == "airship" then
+                        y = y + 80
+                        x = x - 50
+                    end
+
+                    local lp = building:GetSprite():getParent():convertToWorldSpace(cc.p(x,y))
+                    local rp = building:GetSprite():getParent():convertToWorldSpace(cc.p(x1,y1))
+
+                    self:GetFteLayer():FocusOnRect(cc.rect(lp.x, lp.y, rp.x - lp.x, rp.y - lp.y))
+                end)
+
+        end)
+
+    local p = promise.new()
+    table.insert(self.clicked_callbacks, function(building)
+        local x_, y_ = building:GetEntity():GetLogicPosition()
+        if x == x_ and y == y_ then
+            p:resolve()
+            return true
+        end
+    end)
+    return p
+end
+function MyCityScene:BeginClickFte()
+    self.clicked_callbacks = {}
+    self:GetFteLayer():removeChildByTag(ARROW_TAG, true)
+    self:GetFteLayer():FocusOnRect()
+    self:GetFteLayer():Enable()
+    self:GetSceneLayer():GetInfoLayer():removeAllChildren()
+end
+function MyCityScene:EndClickFte()
+    self.clicked_callbacks = {}
+    self:GetFteLayer():removeChildByTag(ARROW_TAG, true)
+    self:GetFteLayer():FocusOnRect()
+    self:GetFteLayer():Disable()
+    self:GetSceneLayer():GetInfoLayer():removeAllChildren()
+end
+function MyCityScene:CheckClickPromise(building, func)
+    if self.clicked_callbacks and 
+        #self.clicked_callbacks > 0 then
+        if self.clicked_callbacks[1](building) then
+            table.remove(self.clicked_callbacks, 1)
+            func()
+            self:EndClickFte()
+        end
+    else
+        func()
     end
 end
 

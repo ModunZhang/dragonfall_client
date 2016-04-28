@@ -207,14 +207,18 @@ function GameUIBarracks:TabButtons()
     end):pos(window.cx, window.bottom + 34)
 end
 local arrow_left_dir_map = {
-    swordsman = true,
-    sentinel = true,
-    ranger = true,
-    crossbowman = true,
-    lancer = false,
-    horseArcher = false,
-    catapult = false,
-    ballista = false,
+    swordsman_1     = true,
+    swordsman_2     = true,
+    swordsman_3     = true,
+    sentinel_1      = true,
+    sentinel_2      = true,
+    sentinel_3      = true,
+    ranger_1        = true,
+    ranger_2        = true,
+    ranger_3        = true,
+    crossbowman_1   = true,
+    crossbowman_2   = true,
+    crossbowman_3   = true,
 }
 function GameUIBarracks:CreateItemWithListView(list_view, soldiers)
     local rect = list_view:getViewRect()
@@ -270,6 +274,7 @@ function GameUIBarracks:CreateSpecialItemWithListView( list_view, soldiers ,titl
     local gap_x = (widget_width - unit_width * 4-origin_x*2) / 3
     local row_height = desc and 264 or 230
     local row_item = WidgetUIBackGround.new({height = row_height,width = widget_width},WidgetUIBackGround.STYLE_TYPE.STYLE_2)
+    local need_up_view = false
     for i, soldier_name in pairs(soldiers) do
         self.soldier_map[soldier_name] =
             WidgetSoldierBox.new(nil, function(event)
@@ -289,6 +294,20 @@ function GameUIBarracks:CreateSpecialItemWithListView( list_view, soldiers ,titl
                     soldier_name, 
                     UtilsForSoldier:SoldierStarByName(self.barracks_city:GetUser(), soldier_name)
                 )
+
+        if self.need_recruit_soldier == soldier_name then
+            if arrow_left_dir_map[soldier_name] then
+                WidgetFteArrow.new(_("点击士兵"))
+                :addTo(self.soldier_map[soldier_name],1,111)
+                :TurnLeft():align(display.LEFT_CENTER, 50, 20)    
+            else
+                WidgetFteArrow.new(_("点击士兵"))
+                :addTo(self.soldier_map[soldier_name],1,111)
+                :TurnRight():align(display.RIGHT_CENTER, -50, 20)
+            end
+            self.soldier_map[soldier_name]:zorder(10)
+            need_up_view = true
+        end
     end
 
     -- title
@@ -318,6 +337,9 @@ function GameUIBarracks:CreateSpecialItemWithListView( list_view, soldiers ,titl
 
     local item = list_view:newItem()
     item:addContent(row_item)
+    if need_up_view then 
+        item:zorder(100)
+    end
     item:setItemSize(widget_width, row_height)
     return item
 end

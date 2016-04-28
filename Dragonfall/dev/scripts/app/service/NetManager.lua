@@ -853,10 +853,10 @@ function NetManager:getLoginPromise(deviceId)
                 DataManager:setUserAllianceData(user_alliance_data)
                 -- DataManager:setEnemyAllianceData(user_enemy_alliance_data)
             else
-                -- LuaUtils:outputTable("logic.entryHandler.login", response)
-                if playerData.countInfo.isFTEFinished then
-                    GLOBAL_FTE = false
-                end
+                LuaUtils:outputTable("logic.entryHandler.login", response)
+                -- if playerData.countInfo.isFTEFinished then
+                    -- GLOBAL_FTE = false
+                -- end
                 self.m_netService:setDeltatime(delta_time)
                 local InitGame = import("app.service.InitGame")
                 InitGame(playerData) -- inner DataManager:setUserData ...
@@ -1044,13 +1044,6 @@ function NetManager:getInstantMakeDragonEquipmentPromise(equipment_name)
 end
 -- 招募士兵
 local function get_recruitNormalSoldier_promise(soldierName, count, finish_now)
-    local task = City:GetRecommendTask()
-    if task then
-        if task:TaskType() == "recruit"
-            and string.find(soldierName, task.name) then
-            City:SetBeginnersTaskFlag(task:Index())
-        end
-    end
     return get_blocking_request_promise("logic.playerHandler.recruitNormalSoldier", {
         soldierName = soldierName,
         count = count,
@@ -2044,12 +2037,6 @@ function NetManager:getPassSelinasTestPromise()
 end
 -- 获取成就任务奖励
 function NetManager:getGrowUpTaskRewardsPromise(taskType, taskId)
-    local task = City:GetRecommendTask()
-    if task then
-        if task:TaskType() == "reward" then
-            City:SetBeginnersTaskFlag(task:Index())
-        end
-    end
     return get_blocking_request_promise("logic.playerHandler.getGrowUpTaskRewards",{
         taskType = taskType,
         taskId = taskId
@@ -2112,9 +2099,9 @@ end
 
 
 -- 完成fte
-function NetManager:getFinishFTE()
-    return get_blocking_request_promise("logic.playerHandler.finishFTE", nil,"完成fte失败!"):done(get_player_response_msg)
-end
+-- function NetManager:getFinishFTE()
+--     return get_blocking_request_promise("logic.playerHandler.finishFTE", nil,"完成fte失败!"):done(get_player_response_msg)
+-- end
 
 
 --获取服务器列表

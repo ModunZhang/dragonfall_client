@@ -499,9 +499,9 @@ function WidgetRecruitSoldier:onEnter()
 
     self.slider_input:SetValue(self:GetCurrentMaxRecruitNum(self.res_total_map))
     self:OnCountChanged(self.slider_input:GetValue())
-    if #WidgetRecruitSoldier.open_callbacks > 0 then
-        table.remove(WidgetRecruitSoldier.open_callbacks, 1)(self)
-    end
+    -- if #WidgetRecruitSoldier.open_callbacks > 0 then
+    --     table.remove(WidgetRecruitSoldier.open_callbacks, 1)(self)
+    -- end
 end
 function WidgetRecruitSoldier:onExit()
     User:RemoveListenerOnType(self, "soldierStars")
@@ -699,100 +699,99 @@ function WidgetRecruitSoldier:OnUserDataChanged_soldierStars(userData, deltaData
         end
     end
 end
-
--- fte
-local mockData = import("..fte.mockData")
-local promise = import("..utils.promise")
-local WidgetFteArrow = import("..widget.WidgetFteArrow")
-WidgetRecruitSoldier.open_callbacks = {}
-function WidgetRecruitSoldier:PormiseOfOpen()
-    local p = promise.new()
-    WidgetRecruitSoldier.open_callbacks = {}
-    table.insert(WidgetRecruitSoldier.open_callbacks, function(ui)
-        p:resolve(ui)
-    end)
-    return p
-end
-function WidgetRecruitSoldier:Find()
-    return self.instant_button
-end
-function WidgetRecruitSoldier:PormiseOfFte()
-    local fte_layer = self:getParent():GetFteLayer()
-    fte_layer:Enable():SetTouchObject(self:Find())
-    self.gem_label:setString(0)
-
-
-    local p = promise.new()
-    self:Find():removeEventListenersByEvent("CLICKED_EVENT")
-    self:Find():onButtonClicked(function()
-        self:Find():setButtonEnabled(false)
-
-        if iskindof(display.getRunningScene(), "CityScene") then
-            display.getRunningScene():GetSceneLayer()
-                :MoveBarracksSoldiers(self.soldier_name, true)
-        end
-
-        mockData.InstantRecruitSoldier(self.soldier_name, self.count)
-
-
-
-        self:getParent():LeftButtonClicked()
-
-        p:resolve()
-    end)
-
-    local r = self:Find():getCascadeBoundingBox()
-    WidgetFteArrow.new(_("立即开始招募，招募士兵会消耗城民")):addTo(fte_layer)
-        :TurnLeft():align(display.LEFT_CENTER, r.x + r.width + 20, r.y + r.height/2 + 20)
-
-    return p
-end
-
-function WidgetRecruitSoldier:FindNormal()
-    return self.normal_button
-end
-function WidgetRecruitSoldier:PromiseOfFteSpecial()
-    if not self.instant_button then
-        self:AddButtons()
-        self:OnCountChanged(self.count)
-    end
-    self.gem_label:setString(0)
-
-    local fte_layer = self:getParent():GetFteLayer()
-    fte_layer:Enable():SetTouchObject(self:Find())
-
-
-    local p = promise.new()
-    self:Find():removeEventListenersByEvent("CLICKED_EVENT")
-    self:Find():onButtonClicked(function()
-        self:Find():setButtonEnabled(false)
-
-        if iskindof(display.getRunningScene(), "CityScene") then
-            display.getRunningScene():GetSceneLayer()
-                :MoveBarracksSoldiers(self.soldier_name, true)
-        end
-
-
-        mockData.InstantRecruitSoldier(self.soldier_name, self.count)
-
-
-
-        self:getParent():LeftButtonClicked()
-
-        p:resolve()
-    end)
-
-    local r = self:Find():getCascadeBoundingBox()
-    WidgetFteArrow.new(_("点击招募")):addTo(fte_layer)
-        :TurnLeft():align(display.LEFT_CENTER, r.x + r.width + 20, r.y + r.height/2 + 20)
-
-    return p
-end
-
 function WidgetRecruitSoldier:GetRecruitSpecialTime()
     local re_time = DataUtils:GetNextRecruitTime()
     return tolua.type(re_time) == "boolean", re_time
 end
+
+-- fte
+-- local mockData = import("..fte.mockData")
+-- local promise = import("..utils.promise")
+-- local WidgetFteArrow = import("..widget.WidgetFteArrow")
+-- WidgetRecruitSoldier.open_callbacks = {}
+-- function WidgetRecruitSoldier:PormiseOfOpen()
+--     local p = promise.new()
+--     WidgetRecruitSoldier.open_callbacks = {}
+--     table.insert(WidgetRecruitSoldier.open_callbacks, function(ui)
+--         p:resolve(ui)
+--     end)
+--     return p
+-- end
+-- function WidgetRecruitSoldier:Find()
+--     return self.instant_button
+-- end
+-- function WidgetRecruitSoldier:PormiseOfFte()
+--     local fte_layer = self:getParent():GetFteLayer()
+--     fte_layer:Enable():SetTouchObject(self:Find())
+--     self.gem_label:setString(0)
+
+
+--     local p = promise.new()
+--     self:Find():removeEventListenersByEvent("CLICKED_EVENT")
+--     self:Find():onButtonClicked(function()
+--         self:Find():setButtonEnabled(false)
+
+--         if iskindof(display.getRunningScene(), "CityScene") then
+--             display.getRunningScene():GetSceneLayer()
+--                 :MoveBarracksSoldiers(self.soldier_name, true)
+--         end
+
+--         mockData.InstantRecruitSoldier(self.soldier_name, self.count)
+
+
+
+--         self:getParent():LeftButtonClicked()
+
+--         p:resolve()
+--     end)
+
+--     local r = self:Find():getCascadeBoundingBox()
+--     WidgetFteArrow.new(_("立即开始招募，招募士兵会消耗城民")):addTo(fte_layer)
+--         :TurnLeft():align(display.LEFT_CENTER, r.x + r.width + 20, r.y + r.height/2 + 20)
+
+--     return p
+-- end
+
+-- function WidgetRecruitSoldier:FindNormal()
+--     return self.normal_button
+-- end
+-- function WidgetRecruitSoldier:PromiseOfFteSpecial()
+--     if not self.instant_button then
+--         self:AddButtons()
+--         self:OnCountChanged(self.count)
+--     end
+--     self.gem_label:setString(0)
+
+--     local fte_layer = self:getParent():GetFteLayer()
+--     fte_layer:Enable():SetTouchObject(self:Find())
+
+
+--     local p = promise.new()
+--     self:Find():removeEventListenersByEvent("CLICKED_EVENT")
+--     self:Find():onButtonClicked(function()
+--         self:Find():setButtonEnabled(false)
+
+--         if iskindof(display.getRunningScene(), "CityScene") then
+--             display.getRunningScene():GetSceneLayer()
+--                 :MoveBarracksSoldiers(self.soldier_name, true)
+--         end
+
+
+--         mockData.InstantRecruitSoldier(self.soldier_name, self.count)
+
+
+
+--         self:getParent():LeftButtonClicked()
+
+--         p:resolve()
+--     end)
+
+--     local r = self:Find():getCascadeBoundingBox()
+--     WidgetFteArrow.new(_("点击招募")):addTo(fte_layer)
+--         :TurnLeft():align(display.LEFT_CENTER, r.x + r.width + 20, r.y + r.height/2 + 20)
+
+--     return p
+-- end
 
 
 return WidgetRecruitSoldier

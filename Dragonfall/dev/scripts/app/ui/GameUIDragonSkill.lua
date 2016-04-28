@@ -17,6 +17,7 @@ local WidgetRequirementListview = import("..widget.WidgetRequirementListview")
 function GameUIDragonSkill:ctor(building,skill)
     GameUIDragonSkill.super.ctor(self)
     self.skill = skill
+    self.city = building:BelongCity()
     self.dragon_manager = building:GetDragonManager()
     self.dragon_manager:AddListenOnType(self,DragonManager.LISTEN_TYPE.OnBasicChanged)
     if self:SkillIsMaxLevel() then
@@ -149,8 +150,12 @@ function GameUIDragonSkill:UpgradeButtonClicked()
         return
     end
     NetManager:getUpgradeDragonDragonSkillPromise(self.skill:Type(),self.skill:Key()):done(function()
+        if self.learnPromise then
+            self.learnPromise:resolve()
+        end
         GameGlobalUI:showTips(_("提示"),_("技能学习成功!"))
-        if self:SkillIsMaxLevel() then
+        if self:SkillIsMaxLevel() 
+            or self.learnPromise then
             self:LeftButtonClicked()
         else
             self:RefreshUI()
@@ -276,6 +281,25 @@ function GameUIDragonSkill:OnUserDataChanged_resources(userData, deltaData)
         self:RefreshUI()
     end
 end
+
+
+-- fte
+local promise = import("..utils.promise")
+local WidgetFteArrow = import("..widget.WidgetFteArrow")
+function GameUIDragonSkill:FindLearnBtn()
+    return self.upgradeButton
+end
+function GameUIDragonSkill:PromiseOfFte()
+    self.learnPromise = promise.new()
+    local r = self:FindLearnBtn():getCascadeBoundingBox()
+    self:GetFteLayer():SetTouchObject(self:FindLearnBtn())
+    WidgetFteArrow.new(_("点击学习")):addTo(self:GetFteLayer())
+    :TurnDown():align(display.BOTTOM_CENTER, r.x + r.width/2, r.y + r.height + 10)
+    return self.learnPromise
+end
+
+
+
 return GameUIDragonSkill
 
 

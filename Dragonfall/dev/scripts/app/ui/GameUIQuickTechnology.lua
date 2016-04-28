@@ -244,7 +244,7 @@ end
 
 function GameUIQuickTechnology:CreateScrollNode()
     local node = display.newNode():size(window.width - 80,(math.ceil(LuaUtils:table_size(self.techNodes)/3) - 1) *(142+46) + 142)
-    for _,v in pairs(self.techNodes) do
+    for i,v in pairs(self.techNodes) do
         local item = self:GetItem(v:Data()):align(display.CENTER,v:Pos().x,v:Pos().y):addTo(node)
         if v:hasChild() then
             if v:CheckDirection(self:GetNodeForKey(v:Child())) == 1 then
@@ -259,6 +259,12 @@ function GameUIQuickTechnology:CreateScrollNode()
                 line:setRotation(90)
                 line:addTo(node):pos(v:Pos().x ,v:Pos().y - 13+71):zorder(2)
             end
+        end
+
+        if self.need_tips_tech_name == v:Data()[1] then
+           WidgetFteArrow.new(_("点击科技"), 22 * 1.3)
+            :addTo(node, 10, 111):TurnUp()
+            :pos(v:Pos().x,v:Pos().y-80):scale(0.7)
         end
     end
     return node
@@ -288,14 +294,10 @@ function GameUIQuickTechnology:GetItem(data)
     end
     item.changeState(User:IsTechEnable(tech_name, tech))
     item:onButtonClicked(function(event)
-        event.target:removeChildByTag(111)
+        event.target:getParent():removeChildByTag(111)
         UIKit:newGameUI("GameUIUpgradeTechnology",tech):AddToCurrentScene(true)
     end)
     item:setTag(tech.index)
-    if self.need_tips_tech_name == tech_name then
-        WidgetFteArrow.new(_("点击科技"), 22 * 1.3):addTo(item, 10, 111)
-        :TurnUp():align(display.TOP_CENTER, 0, -80):scale(0.7)
-    end
     return item
 end
 

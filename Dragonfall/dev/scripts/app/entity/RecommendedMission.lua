@@ -1,156 +1,160 @@
-return {	{ type = "reward"  	   	, is_record = true         },
-			{ type = "upgrade"		, name = "warehouse"			, min = 2 },
-			{ type = "technology"	, name = "forestation"			, min = 2 },
-			{ type = "recruit"		, name = "swordsman"			, is_record = true },
-			{ type = "explore"      , is_record = true         },
-			{ type = "build"		, name = "dwelling"			, min = 2 },
-			{ type = "build"		, name = "dwelling"	 		, min = 3 },
-			{ type = "build"		, name = "woodcutter"			, min = 2 },
-			{ type = "build"		, name = "woodcutter"			, min = 3 },
-			{ type = "build"		, name = "quarrier"			, min = 2 },
-			{ type = "build"		, name = "quarrier"	    		, min = 3 },
-			{ type = "build"		, name = "miner"	    		, min = 2 },
-			{ type = "build"		, name = "miner"	    		, min = 3 },
-			{ type = "build"		, name = "farmer"	    		, min = 2 },
-			{ type = "build"		, name = "farmer"	    		, min = 3 },
-			{ type = "explore"		, is_record = true         },
-			{ type = "upgrade"		, name = "barracks"			, min = 4 },
-			{ type = "recruit"		, name = "ranger"	    		, is_record = true },
-			{ type = "explore"		, is_record = true         },
-			{ type = "upgrade"		, name = "hospital"			, min = 4 },
-			{ type = "reward"  	    , is_record = true         },
-			{ type = "upgrade"		, name = "materialDepot"		, min = 3 },
-			{ type = "explore"		, is_record = true         },
-			{ type = "upgrade"		, name = "wall"				, min = 4 },
-			{ type = "upgrade"		, name = "tower"        		, min = 4 },
-			{ type = "upgrade"		, name = "dragonEyrie"			, min = 2 },
-			{ type = "reward"  	    , is_record = true         },
-			{ type = "explore"		, is_record = true         },
-			{ type = "upgrade"		, name = "dragonEyrie"			, min = 3 },
-			{ type = "reward"  	    , is_record = true         },
-			{ type = "upgrade"		, name = "keep"	 			, min = 6 },
-			{ type = "upgrade"		, name = "blackSmith"			, min = 1 },
-			{ type = "encourage"   },
-			{ type = "explore"		, is_record = true         },
-			{ type = "upgrade"		, name = "dwelling"			, min = 5 },
-			{ type = "upgrade"		, name = "woodcutter"			, min = 5 },
-			{ type = "upgrade"		, name = "quarrier"			, min = 5 },
-			{ type = "upgrade"		, name = "miner"			, min = 5 },
-			{ type = "upgrade"		, name = "farmer"			, min = 5 },
-			{ type = "reward"  	    , is_record = true         },
-			{ type = "upgrade"		, name = "barracks"			, min = 5 },
-			{ type = "explore"		, is_record = true         },
-			{ type = "upgrade"		, name = "dwelling"			, min = 6 },
-			{ type = "upgrade"		, name = "woodcutter"			, min = 6 },
-			{ type = "upgrade"		, name = "quarrier"			, min = 6 },
-			{ type = "upgrade"		, name = "miner"			, min = 6 },
-			{ type = "upgrade"		, name = "farmer"			, min = 6 },
-			{ type = "reward"  	    , is_record = true         },
-			{ type = "upgrade"		, name = "barracks"			, min = 6 },
-			{ type = "recruit"		, name = "lancer"	    		, is_record = true },
-			{ type = "upgrade"		, name = "wall"				, min = 6 },
-			{ type = "upgrade"		, name = "keep"				, min = 7 },
-			{ type = "unlock"		, name = "15,10,11,12,13,14,16" 		  },
-			{ type = "upgrade"		, name = "dwelling"			, min = 7 },
-			{ type = "upgrade"		, name = "woodcutter"			, min = 7 },
-			{ type = "upgrade"		, name = "quarrier"			, min = 7 },
-			{ type = "upgrade"		, name = "miner"			, min = 7 },
-			{ type = "upgrade"		, name = "farmer"			, min = 7 },
-			{ type = "upgrade"		, name = "barracks"			, min = 7 },
-			{ type = "explore"		, is_record = true     	   },
-			{ type = "upgrade"		, name = "wall"				, min = 7 },
-			{ type = "upgrade"		, name = "keep"				, min = 8 },
-			{ type = "unlock"		, name = "15,10,11,12,13,14,16"  	  },
-			{ type = "upgrade"		, name = "dwelling"			, min = 8 },
-			{ type = "upgrade"		, name = "woodcutter"			, min = 8 },
-			{ type = "upgrade"		, name = "quarrier"			, min = 8 },
-			{ type = "upgrade"		, name = "miner"			, min = 8 },
-			{ type = "upgrade"		, name = "farmer"			, min = 8 },
-			{ type = "upgrade"		, name = "barracks"			, min = 8 },
-			{ type = "recruit"		, name = "catapult"			, is_record = true },
-			{ type = "upgrade"		, name = "wall"				, min = 8 },
-			{ type = "upgrade"		, name = "keep"				, min = 9 },
-			{ type = "unlock"		, name = "15,10,11,12,13,14,16"  		  },
-			{ type = "upgrade"		, name = "dwelling"			, min = 9 },
-			{ type = "upgrade"		, name = "woodcutter"			, min = 9 },
-			{ type = "upgrade"		, name = "quarrier"			, min = 9 },
-			{ type = "upgrade"		, name = "miner"			, min = 9 },
-			{ type = "upgrade"		, name = "farmer"			, min = 9 },
-			{ type = "upgrade"		, name = "barracks"			, min = 9 },
-			{ type = "explore"		, is_record = true     	  			 },
-			{ type = "upgrade"		, name = "wall"				, min = 9  },
-			{ type = "upgrade"		, name = "keep"				, min = 10 },
-			{ type = "unlock"		, name = "15,10,11,12,13,14,16"  		   },
-			{ type = "upgrade"		, name = "dwelling"			, min = 10 },
-			{ type = "upgrade"		, name = "woodcutter"			, min = 10 },
-			{ type = "upgrade"		, name = "quarrier"			, min = 10 },
-			{ type = "upgrade"		, name = "miner"			, min = 10 },
-			{ type = "upgrade"		, name = "farmer"			, min = 10 },
-			{ type = "upgrade"		, name = "barracks"			, min = 10 },
-			{ type = "recruit"		, name = "sentinel"	    		, is_record = true },
-			{ type = "upgrade"		, name = "wall"				, min = 10 },
-			{ type = "upgrade"		, name = "keep"				, min = 11 },
-			{ type = "unlock"		, name = "15,10,11,12,13,14,16"  		   },
-			{ type = "upgrade"		, name = "dwelling"			, min = 11 },
-			{ type = "upgrade"		, name = "woodcutter"			, min = 11 },
-			{ type = "upgrade"		, name = "quarrier"			, min = 11 },
-			{ type = "upgrade"		, name = "miner"			, min = 11 },
-			{ type = "upgrade"		, name = "farmer"			, min = 11 },
-			{ type = "upgrade"		, name = "barracks"			, min = 11 },
-			{ type = "explore"		, is_record = true     	 			  },
-			{ type = "upgrade"		, name = "wall"				, min = 11 },
-			{ type = "upgrade"		, name = "keep"				, min = 12 },
-			{ type = "unlock"		, name = "15,10,11,12,13,14,16"  		   },
-			{ type = "upgrade"		, name = "dwelling"			, min = 12 },
-			{ type = "upgrade"		, name = "woodcutter"			, min = 12 },
-			{ type = "upgrade"		, name = "quarrier"			, min = 12 },
-			{ type = "upgrade"		, name = "miner"			, min = 12 },
-			{ type = "upgrade"		, name = "farmer"			, min = 12 },
-			{ type = "upgrade"		, name = "barracks"			, min = 12 },
-			{ type = "recruit"		, name = "crossbowman"			, is_record = true },
-			{ type = "upgrade"		, name = "wall"				, min = 12 },
-			{ type = "upgrade"		, name = "keep"				, min = 13 },
-			{ type = "unlock"		, name = "15,10,11,12,13,14,16"  		   },
-			{ type = "upgrade"		, name = "dwelling"			, min = 13 },
-			{ type = "upgrade"		, name = "woodcutter"			, min = 13 },
-			{ type = "upgrade"		, name = "quarrier"			, min = 13 },
-			{ type = "upgrade"		, name = "miner"			, min = 13 },
-			{ type = "upgrade"		, name = "farmer"			, min = 13 },
-			{ type = "upgrade"		, name = "barracks"			, min = 13 },
-			{ type = "explore"		, is_record = true     	   			},
-			{ type = "upgrade"		, name = "wall"				, min = 13 },
-			{ type = "upgrade"		, name = "keep"				, min = 14 },
-			{ type = "upgrade"		, name = "trainingGround" 		, min = 1 },
-			{ type = "upgrade"		, name = "dwelling"			, min = 14 },
-			{ type = "upgrade"		, name = "woodcutter"			, min = 14 },
-			{ type = "upgrade"		, name = "quarrier"			, min = 14 },
-			{ type = "upgrade"		, name = "miner"			, min = 14 },
-			{ type = "upgrade"		, name = "farmer"			, min = 14 },
-			{ type = "upgrade"		, name = "barracks"			, min = 14 },
-			{ type = "recruit"		, name = "horseArcher"	    		, is_record = true },
-			{ type = "upgrade"		, name = "wall"				, min = 14 },
-			{ type = "upgrade"		, name = "keep"				, min = 15 },
-			{ type = "upgrade"		, name = "hunterHall" 			, min = 1 },
-			{ type = "upgrade"		, name = "dwelling"			, min = 15 },
-			{ type = "upgrade"		, name = "woodcutter"			, min = 15 },
-			{ type = "upgrade"		, name = "quarrier"			, min = 15 },
-			{ type = "upgrade"		, name = "miner"			, min = 15 },
-			{ type = "upgrade"		, name = "farmer"			, min = 15 },
-			{ type = "upgrade"		, name = "barracks"			, min = 15 },
-			{ type = "explore"		, is_record = true     	  			 },
-			{ type = "upgrade"		, name = "wall"				, min = 15 },
-			{ type = "upgrade"		, name = "keep"				, min = 16 },
-			{ type = "upgrade"		, name = "stable" 			, min = 1 },
-			{ type = "upgrade"		, name = "dwelling"			, min = 16 },
-			{ type = "upgrade"		, name = "woodcutter"			, min = 16 },
-			{ type = "upgrade"		, name = "quarrier"			, min = 16 },
-			{ type = "upgrade"		, name = "miner"			, min = 16 },
-			{ type = "upgrade"		, name = "farmer"			, min = 16 },
-			{ type = "upgrade"		, name = "barracks"			, min = 16 },
-			{ type = "recruit"		, name = "ballista"	    		, is_record = true },
-			{ type = "upgrade"		, name = "wall"				, min = 16 },
-			{ type = "upgrade"		, name = "keep"				, min = 17 },
-			{ type = "upgrade"		, name = "workshop" 			, min = 1  }, }
+local cityBuild = GameDatas.GrowUpTasks.cityBuild
+local function cityBuildIdBy(name,level)
+	for i,v in pairs(cityBuild) do
+		if v.name == name and v.level == level then
+			return v.id
+		end
+	end
+	print(name,level)
+	assert(false, "没有找到cityBuild成长任务!")
+end
+
+local soldierCount = GameDatas.GrowUpTasks.soldierCount
+local function soldierCountIdBy(name,index)
+	for i,v in pairs(soldierCount) do
+		if v.name == name and v.index == index then
+			return v.id
+		end
+	end
+	assert(false, "没有找到soldierCount成长任务!")
+end
+
+local pveCount = GameDatas.GrowUpTasks.pveCount
+local function pveCountIdBy(index)
+	for i,v in pairs(pveCount) do
+		if v.index == index then
+			return v.id
+		end
+	end
+	assert(false, "没有找到pveCount成长任务!")
+end
+
+
+local productionTech = GameDatas.GrowUpTasks.productionTech
+local function productionTechIdBy(name, level)
+	for i,v in pairs(productionTech) do
+		if v.name == name and v.level == level then
+			return v.id
+		end
+	end
+	assert(false, "没有找到productionTech成长任务!")
+end
+
+local recommands = {	
+	{ type = "cityBuild"		, id = cityBuildIdBy("dwelling", 1)		  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("keep", 2) 		  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("barracks", 1) 	  	},
+	{ type = "soldierCount"		, id = soldierCountIdBy("swordsman_1", 1) 	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("farmer", 1)		  	},
+	{ type = "pveCount"			, id = pveCountIdBy(1) 					  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("keep", 3) 		  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("hospital", 1) 	  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("woodcutter", 1)	  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("keep", 4) 		  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("academy", 1) 	  	  	},
+	{ type = "productionTech"	, id = productionTechIdBy("forestation",1)	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("barracks", 2) 	  	},
+	{ type = "soldierCount"		, id = soldierCountIdBy("ranger_1", 1) 	  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("warehouse", 2)	  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("keep", 5)	  		  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("materialDepot", 1)  	},
+	{ type = "pveCount"			, id = pveCountIdBy(2) 	  				  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("quarrier", 1)		  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("miner", 1)		  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("hospital", 2)		  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("academy", 2)		  	},
+	{ type = "productionTech"	, id = productionTechIdBy("crane",1)		},
+	{ type = "cityBuild"		, id = cityBuildIdBy("materialDepot", 2)  	},
+	{ type = "pveCount"			, id = pveCountIdBy(3) 	  				  	},
+	{ type = "soldierCount"		, id = soldierCountIdBy("swordsman_1", 2) 	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("wall", 2)		  		},
+	{ type = "cityBuild"		, id = cityBuildIdBy("dragonEyrie", 2) 		},
+	{ type = "cityBuild"		, id = cityBuildIdBy("tower", 2) 			},
+	{ type = "pveCount"			, id = pveCountIdBy(4) 	  				  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("dwelling", 2)		  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("quarrier", 2)		  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("woodcutter", 2)		},
+	{ type = "cityBuild"		, id = cityBuildIdBy("miner", 2)		  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("farmer", 2)		  	},
+	{ type = "pveCount"			, id = pveCountIdBy(5) 	  				  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("barracks", 3) 	  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("academy", 3) 	  		},
+	{ type = "cityBuild"		, id = cityBuildIdBy("warehouse", 3) 	  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("materialDepot", 3) 	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("wall", 3) 			},
+	{ type = "cityBuild"		, id = cityBuildIdBy("dwelling", 4) 		},
+	{ type = "soldierCount"		, id = soldierCountIdBy("ranger_1", 2) 	  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("quarrier", 4)		  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("woodcutter", 4)		},
+	{ type = "cityBuild"		, id = cityBuildIdBy("miner", 4)		  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("barracks", 4) 	  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("barracks", 5) 	  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("warehouse", 4) 	  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("warehouse", 5) 	  	},
+	{ type = "pveCount"			, id = pveCountIdBy(6) 	  				  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("hospital", 3) 	  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("dragonEyrie", 3) 	  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("wall", 4) 	  		},
+	{ type = "productionTech"	, id = productionTechIdBy("stoneCarving", 2)},
+	{ type = "cityBuild"		, id = cityBuildIdBy("wall", 5) 	  		},
+	
+	{ type = "cityBuild"		, id = cityBuildIdBy("keep", 6) 	  		},
+	{ type = "cityBuild"		, id = cityBuildIdBy("blackSmith", 1) 	  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("dwelling", 6) 	  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("quarrier", 6) 	  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("woodcutter", 6) 	  	},
+	{ type = "pveCount"			, id = pveCountIdBy(7) 	  				  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("warehouse", 6) 	  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("academy", 4) 	  		},
+	{ type = "cityBuild"		, id = cityBuildIdBy("dragonEyrie", 4) 	  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("miner", 6) 	  		},
+	{ type = "cityBuild"		, id = cityBuildIdBy("farmer", 6) 	  		},
+	{ type = "pveCount"			, id = pveCountIdBy(8) 	  				  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("barracks", 6) 	  	},
+	{ type = "soldierCount"		, id = soldierCountIdBy("ranger_1", 1) 	  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("blackSmith", 2) 		},
+	{ type = "cityBuild"		, id = cityBuildIdBy("wall", 6) 			},
+}
+
+
+
+for i = 1, 11 do
+	table.insert(recommands,
+	{ type = "cityBuild"		, id = cityBuildIdBy("keep", 6 + i) 		})
+	table.insert(recommands,
+	{ type = "cityBuild"		, id = cityBuildIdBy("dwelling", 6 + i) 	})
+	table.insert(recommands,
+	{ type = "cityBuild"		, id = cityBuildIdBy("quarrier", 6 + i) 	})
+	table.insert(recommands,
+	{ type = "cityBuild"		, id = cityBuildIdBy("woodcutter", 6 + i) 	})
+	table.insert(recommands,
+	{ type = "pveCount"			, id = pveCountIdBy(8 + (i-1) * 2 + 1) 		})
+	table.insert(recommands,
+	{ type = "cityBuild"		, id = cityBuildIdBy("warehouse", 6 + i) 	})
+	table.insert(recommands,
+	{ type = "cityBuild"		, id = cityBuildIdBy("academy", 4 + i) 		})
+	table.insert(recommands,
+	{ type = "cityBuild"		, id = cityBuildIdBy("dragonEyrie", 4 + i) 	})
+	table.insert(recommands,
+	{ type = "cityBuild"		, id = cityBuildIdBy("miner", 6 + i) 		})
+	table.insert(recommands,
+	{ type = "cityBuild"		, id = cityBuildIdBy("farmer", 6 + i) 		})
+	table.insert(recommands,
+	{ type = "pveCount"			, id = pveCountIdBy(8 + (i-1) * 2 + 2) 		})
+	table.insert(recommands,
+	{ type = "cityBuild"		, id = cityBuildIdBy("barracks", 6 + i) 	})
+	table.insert(recommands,
+	{ type = "cityBuild"		, id = cityBuildIdBy("hospital", 3 + i)		})
+	table.insert(recommands,
+	{ type = "cityBuild"		, id = cityBuildIdBy("blackSmith", 3 + i)	})
+	table.insert(recommands,
+	{ type = "cityBuild"		, id = cityBuildIdBy("wall", 6 + i)			})
+end
+
+
+
+
+return recommands
 
 
 
