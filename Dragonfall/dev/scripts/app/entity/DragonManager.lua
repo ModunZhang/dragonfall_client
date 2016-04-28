@@ -182,7 +182,9 @@ function DragonManager:RefreshDragonData( dragons,resource_refresh_time,hp_recov
                     end
                 else
                     self:NotifyListeneOnType(DragonManager.LISTEN_TYPE.OnBasicChanged,function(listener)
-                        listener.OnBasicChanged(listener,dragon,star_chaned)
+                        if listener and type(listener.OnBasicChanged) == 'function' then
+                            listener.OnBasicChanged(listener,dragon,star_chaned)
+                        end
                     end)
                 end
                 if level_chaned then
