@@ -116,7 +116,7 @@ function enter_scene(scene)
             self.onEnterTransitionFinish = onEnterTransitionFinish__
         end
     end
-    transition.fadeOut(self:getChildByTag(CLOUD_TAG), {
+    transition.fadeOut(scene:getChildByTag(CLOUD_TAG), {
         time = 0.75/speed,
         onComplete = function()
             scene:removeChildByTag(CLOUD_TAG)
