@@ -20,6 +20,7 @@ Version | Git SHA-1 | Release Notes
 1.1.2(851)   | 55e89b5  
 1.1.2(946)   | 40a8d19 | February 25, 2016
 1.1.2(1569)  | b2b2467 | appVersion: 1.1.3 appMinVersion:1.1.2
+1.1.2(1640)  | 12d0a3f | appVersion: 1.1.3 appMinVersion:1.1.2
 
 ### Android
 
@@ -31,6 +32,7 @@ Version | Git SHA-1 | Release Notes
 1.1.3(1671)  | 83edb57       | apk 117
 1.1.3(1695)  | 87d97cc       | apk 118
 1.1.3(1744)  | c0c8853       | apk 119
+1.1.3(1783)  | 13a9220       | apk 120
 
 ### WindowPhone
 
