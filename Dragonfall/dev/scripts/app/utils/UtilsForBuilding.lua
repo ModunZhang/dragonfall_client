@@ -3,14 +3,16 @@ UtilsForBuilding = {}
 function UtilsForBuilding:GetHousesBy(userData, name, level)
     level = level or 0
     local t = {}
+    local buildingLocations = {}
     for _,building in pairs(userData.buildings) do
         for _,house in pairs(building.houses) do
             if house.level >= level and (not name or house.type == name) then
                 table.insert(t, house)
+                table.insert(buildingLocations, building.location)
             end
         end
     end
-    return t
+    return t, buildingLocations
 end
 
 function UtilsForBuilding:GetBuildingsBy(userData, nameOrLocation, level)
@@ -598,6 +600,24 @@ end
 --     end
 -- end
 
+
+function UtilsForBuilding:IsUpgrading(userData, buildingLocation, houseOrBuilding)
+    if type(houseOrBuilding.houses) == "table" then
+        for i,v in ipairs(userData.buildingEvents) do
+            if v.location == houseOrBuilding.location then
+                return true
+            end
+        end
+    else
+        for i,v in ipairs(userData.houseEvents) do
+            if v.buildingLocation == buildingLocation and
+                v.houseLocation == houseOrBuilding.location then
+                return true
+            end
+        end
+    end
+    return false
+end
 
 
 

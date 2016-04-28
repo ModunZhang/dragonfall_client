@@ -72,7 +72,7 @@ function GameUIDragonEyrieMain:OnBasicChanged(dragon)
 end
 function GameUIDragonEyrieMain:OnUserDataChanged_buildings(userData, deltaData)
     local ok,value = deltaData("buildings.location_4")
-    if ok then
+    if ok and self.hate_button then 
         self.hate_button:setButtonEnabled(self.building:CheckIfHateDragon())
     end
 end

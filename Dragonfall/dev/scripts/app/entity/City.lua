@@ -1,6 +1,5 @@
 local intInit = GameDatas.PlayerInitData.intInit
 local Localize = import("..utils.Localize")
-local RecommendedMission = import(".RecommendedMission")
 local BuildingRegister = import(".BuildingRegister")
 local promise = import("..utils.promise")
 local Enum = import("..utils.Enum")
@@ -22,7 +21,6 @@ local format = string.format
 City.LISTEN_TYPE = Enum(
     "LOCK_TILE",
     "UNLOCK_TILE",
-    -- "UNLOCK_ROUND",
     "CREATE_DECORATOR",
     "OCCUPY_RUINS",
     "DESTROY_DECORATOR",
@@ -70,12 +68,9 @@ function City:ctor(user)
 end
 --------------------
 function City:GetRecommendTask()
-    -- 2015-8-13之后进入游戏的才有新推荐任务
-    if self:GetUser().countInfo.registerTime > 1439476527805 then
-        local task = self:GetBeginnersTask()
-        if task then
-            return task
-        end
+    local task = UtilsForTask:GetBeginnersTask(self:GetUser())
+    if task then
+        return task
     end
     local building_map = self:GetHighestCanUpgradeBuildingMap()
     local tasks = UtilsForTask:GetAvailableTasksByCategory(
@@ -83,7 +78,7 @@ function City:GetRecommendTask()
     )
     local re_task
     for i,v in pairs(tasks.tasks) do
-        if building_map[v:BuildingType()] then
+        if building_map[v:Config().name] then
             re_task = not re_task and v or (v.index < re_task.index and v or re_task)
         end
     end
@@ -107,173 +102,6 @@ function City:GetHighestCanUpgradeBuildingMap()
         end
     end
     return building_map
-end
----------
--- 领取奖励
-local reward_meta = {}
-reward_meta.__index = reward_meta
-function reward_meta:Index()
-    return self.index
-end
-function reward_meta:Title()
-    return _("领取一次奖励")
-end
-function reward_meta:TaskType()
-    return "reward"
-end
--- 解锁建筑
-local unlock_meta = {}
-unlock_meta.__index = unlock_meta
-function unlock_meta:Title()
-    return string.format(_("解锁建筑%s"), Localize.building_name[self.name])
-end
-function unlock_meta:Location()
-    return self.location_id
-end
-function unlock_meta:TaskType()
-    return "unlock"
-end
-function unlock_meta:BuildingType()
-    return self.name
-end
--- 城市建设
-local upgrade_meta = {}
-upgrade_meta.__index = upgrade_meta
-function upgrade_meta:Title()
-    if self.level == 1 then
-        return string.format(_("解锁建筑%s"), Localize.building_name[self.name])
-    end
-    return string.format(_("将%s升级到等级%d"), Localize.building_name[self.name], self.level)
-end
-function upgrade_meta:TaskType()
-    return "cityBuild"
-end
-function upgrade_meta:BuildingType()
-    return self.name
-end
--- 科技研发
-local tech_meta = {}
-tech_meta.__index = tech_meta
-function tech_meta:Title()
-    return string.format(_("研发%s到等级%d"), Localize.productiontechnology_name[self.name], self.level)
-end
-function tech_meta:TaskType()
-    return "productionTech"
-end
--- 招募士兵
-local recruit_meta = {}
-recruit_meta.__index = recruit_meta
-function recruit_meta:Index()
-    return self.index
-end
-function recruit_meta:Title()
-    return string.format(_("招募一次%s"), Localize.soldier_name[self.name])
-end
-function recruit_meta:TaskType()
-    return "recruit"
-end
--- 探索pve
-local explore_meta = {}
-explore_meta.__index = explore_meta
-function explore_meta:Index()
-    return self.index
-end
-function explore_meta:Title()
-    return _("搭乘飞艇进行一次探险")
-end
-function explore_meta:TaskType()
-    return "explore"
-end
--- 建造小屋
-local build_meta = {}
-build_meta.__index = build_meta
-function build_meta:Title()
-    return string.format(_("建造一个%s"), Localize.building_name[self.name])
-end
-function build_meta:TaskType()
-    return "build"
-end
--- 领取新手冲级奖励
-local encourage_meta = {}
-encourage_meta.__index = encourage_meta
-function encourage_meta:Title()
-    return _("领取新手冲级奖励")
-end
-function encourage_meta:TaskType()
-    return "encourage"
-end
----
-
-local default = {}
-for i,v in ipairs(RecommendedMission) do
-    default[i] = false
-end
-function City:GetBeginnersTask()
-    local count = UtilsForTask:GetCompleteTaskCount(self:GetUser().growUpTasks)
-    local key = string.format("recommend_tasks_%s", self:GetUser():Id())
-    local flag = app:GetGameDefautlt():getTableForKey(key, default)
-    for i,v in ipairs(RecommendedMission) do
-        if v.type == "reward" and not flag[i] and count > 0 then
-            return setmetatable({ index = i }, reward_meta)
-        elseif v.type == "unlock" then
-            if UtilsForBuilding:GetFreeUnlockPoint(self:GetUser()) > 0 then
-                for i,lstr in ipairs(string.split(v.name, ",")) do
-                    local location_id = tonumber(lstr)
-                    local building = self:GetBuildingByLocationId(location_id)
-                    if not building:IsUnlocked() and not building:IsUnlocking() then
-                        return setmetatable({ name = building:GetType(), location_id = location_id }, unlock_meta)
-                    end
-                end
-            end
-        elseif v.type == "upgrade" then
-            local building = self:GetHighestBuildingByType(v.name)
-            if building then
-                if building:GetLevel() < v.min then
-                    if building:IsUpgrading() then
-                        if building:GetNextLevel() < v.min then
-                            return setmetatable({ name = v.name, level = building:GetNextLevel() + 1 }, upgrade_meta)
-                        end
-                    else
-                        return setmetatable({ name = v.name, level = building:GetLevel() + 1 }, upgrade_meta)
-                    end
-                end
-            end
-        elseif v.type == "technology" then
-            local event
-            for i,t in ipairs(self:GetUser().productionTechEvents) do
-                if v.name == t.name then
-                    event = t
-                end
-            end
-            local level = self:GetUser().productionTechs[v.name].level
-            if level < v.min then
-                if event then
-                    if level + 1 < v.min then
-                        return setmetatable({ name = v.name, level = level + 2 }, tech_meta)
-                    end
-                else
-                    return setmetatable({ name = v.name, level = level + 1 }, tech_meta)
-                end
-            end
-        elseif v.type == "recruit" and not flag[i] then
-            return setmetatable({ name = v.name, index = i }, recruit_meta)
-        elseif v.type == "explore" and not flag[i] then
-            return setmetatable({ index = i }, explore_meta)
-        elseif v.type == "build" then
-            if #self:GetDecoratorsByType(v.name) < v.min and self:GetLeftBuildingCountsByType(v.name) > 0 then
-                return setmetatable({ name = v.name }, build_meta)
-            end
-        elseif v.type == "encourage" and self:GetUser():HavePlayerLevelUpReward() then
-            return setmetatable({}, encourage_meta)
-        end
-    end
-end
-function City:SetBeginnersTaskFlag(index)
-    local key = string.format("recommend_tasks_%s", self:GetUser():Id())
-    local flag = app:GetGameDefautlt():getTableForKey(key, default)
-    flag[index] = true
-    app:GetGameDefautlt():setTableForKey(key, flag)
-    app:GetGameDefautlt():flush()
 end
 --------------------
 function City:GetUser()

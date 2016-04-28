@@ -303,21 +303,21 @@ function GameUIHome:CreateTop()
     ):addTo(top_bg):pos(255, -10):onButtonClicked(function(event)
         if self.task then
             if self.task:TaskType() == "cityBuild" then
-                self:GotoOpenBuildingUI(self.city:PreconditionByBuildingType(self.task:BuildingType()))
-            elseif self.task:TaskType() == "unlock" then
-                self:GotoUnlockBuilding(self.task:Location())
-            elseif self.task:TaskType() == "reward" then
-                UIKit:newGameUI("GameUIMission", self.city, nil, true):AddToCurrentScene(true)
+                if self.task:IsBuild() then
+                    self:GotoOpenBuildUI(self.task)
+                elseif self.task:IsUnlock() then
+                    local buildings = UtilsForBuilding:GetBuildingsBy(self.city:GetUser(), self.task:Config().name)
+                    self:GotoUnlockBuilding(buildings[1].location)
+                elseif self.task:IsUpgrade() then
+                    self:GotoOpenBuildingUI(self.city:PreconditionByBuildingType(self.task:Config().name))
+                end
             elseif self.task:TaskType() == "productionTech" then
-                UIKit:newGameUI("GameUIQuickTechnology", self.city, self.task.name):AddToCurrentScene(true)
-            elseif self.task:TaskType() == "recruit" then
-                UIKit:newGameUI('GameUIBarracks', self.city, self.city:GetFirstBuildingByType("barracks"), "recruit", self.task.name):AddToCurrentScene(true)
-            elseif self.task:TaskType() == "explore" then
+                UIKit:newGameUI("GameUIQuickTechnology", self.city, self.task:Config().name):AddToCurrentScene(true)
+            elseif self.task:TaskType() == "soldierCount" then
+                local barracks = self.city:GetFirstBuildingByType("barracks")
+                UIKit:newGameUI('GameUIBarracks', self.city, barracks, "recruit", self.task:Config().name):AddToCurrentScene(true)
+            elseif self.task:TaskType() == "pveCount" then
                 self:GotoExplore()
-            elseif self.task:TaskType() == "build" then
-                self:GotoOpenBuildUI(self.task)
-            elseif self.task:TaskType() == "encourage" then
-                UIKit:newGameUI("GameUIActivityRewardNew", GameUIActivityRewardNew.REWARD_TYPE.PLAYER_LEVEL_UP):AddToCurrentScene(true)
             end
         end
     end)
@@ -332,21 +332,30 @@ function GameUIHome:CreateTop()
 
     return top_bg
 end
-function GameUIHome:GotoUnlockBuilding(location_id)
-    self:GotoOpenBuildingUI(self.city:GetBuildingByLocationId(location_id))
+function GameUIHome:GotoUnlockBuilding(location)
+    self:GotoOpenBuildingUI(self.city:GetBuildingByLocationId(location))
 end
 function GameUIHome:GotoOpenBuildUI(task)
-    for i,v in ipairs(self.city:GetDecoratorsByType(task.name)) do
-        local location_id = self.city:GetLocationIdByBuilding(v)
-        local houses = self.city:GetDecoratorsByLocationId(location_id)
+    for i,v in ipairs(self.city:GetDecoratorsByType(task:Config().name)) do
+        local location = self.city:GetLocationIdByBuilding(v)
+        local houses = self.city:GetDecoratorsByLocationId(location)
         for i = 3, 1, -1 do
             if not houses[i] then
-                self:GotoOpenBuildingUI(self.city:GetRuinByLocationIdAndHouseLocationId(location_id, i), task.name)
+                self:GotoOpenBuildingUI(self.city:GetRuinByLocationIdAndHouseLocationId(location, i), task.name)
                 return
             end
         end
     end
-    self:GotoOpenBuildingUI(self.city:GetRuinsNotBeenOccupied()[1], task.name)
+    local maxneighbours = {}
+    local ruins = self.city:GetRuinsNotBeenOccupied()
+    for i,v in ipairs(ruins) do
+        local neighbours = self.city:GetNeighbourRuinWithSpecificRuin(v)
+        if #neighbours == 2 then
+            self:GotoOpenBuildingUI(neighbours[1], task:Config().name)
+            return
+        end
+    end
+    self:GotoOpenBuildingUI(ruins[1], task:Config().name)
 end
 function GameUIHome:GotoOpenBuildingUI(building, build_name)
     if not building then return end

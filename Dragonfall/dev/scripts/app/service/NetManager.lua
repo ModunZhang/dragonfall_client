@@ -858,7 +858,7 @@ function NetManager:getLoginPromise(deviceId)
                 DataManager:setUserAllianceData(user_alliance_data)
                 -- DataManager:setEnemyAllianceData(user_enemy_alliance_data)
             else
-                -- LuaUtils:outputTable("logic.entryHandler.login", response)
+                LuaUtils:outputTable("logic.entryHandler.login", response)
                 -- if playerData.countInfo.isFTEFinished then
                     -- GLOBAL_FTE = false
                 -- end
@@ -1049,13 +1049,6 @@ function NetManager:getInstantMakeDragonEquipmentPromise(equipment_name)
 end
 -- 招募士兵
 local function get_recruitNormalSoldier_promise(soldierName, count, finish_now)
-    local task = City:GetRecommendTask()
-    if task then
-        if task:TaskType() == "recruit"
-            and string.find(soldierName, task.name) then
-            City:SetBeginnersTaskFlag(task:Index())
-        end
-    end
     return get_blocking_request_promise("logic.playerHandler.recruitNormalSoldier", {
         soldierName = soldierName,
         count = count,
@@ -2049,12 +2042,6 @@ function NetManager:getPassSelinasTestPromise()
 end
 -- 获取成就任务奖励
 function NetManager:getGrowUpTaskRewardsPromise(taskType, taskId)
-    local task = City:GetRecommendTask()
-    if task then
-        if task:TaskType() == "reward" then
-            City:SetBeginnersTaskFlag(task:Index())
-        end
-    end
     return get_blocking_request_promise("logic.playerHandler.getGrowUpTaskRewards",{
         taskType = taskType,
         taskId = taskId

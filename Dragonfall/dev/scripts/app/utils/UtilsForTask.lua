@@ -2,6 +2,14 @@ UtilsForTask = {}
 local Enum = import(".Enum")
 local Localize = import(".Localize")
 local NotifyItem = import(".NotifyItem")
+local RecommendedMission = import("..entity.RecommendedMission")
+
+local default = {}
+for i,v in ipairs(RecommendedMission) do
+    default[i] = false
+end
+
+
 local CATEGORY = Enum("BUILD", "DRAGON", "TECHNOLOGY", "SOLDIER", "EXPLORE")
 UtilsForTask.TASK_CATEGORY = CATEGORY
 local category_map = {
@@ -87,6 +95,13 @@ local cityBuild_meta = {}
 cityBuild_meta.__index = cityBuild_meta
 function cityBuild_meta:Title()
     local config = self:Config()
+    if config.level == 1 then
+        if GameDatas.HouseLevelUp[config.name] then
+            return string.format(_("建造一个%s"), Localize.building_name[config.name])
+        else
+            return string.format(_("解锁建筑%s"), Localize.building_name[config.name]) 
+        end
+    end
     return string.format(_("将%s升级到等级%d"), Localize.building_name[config.name], config.level)
 end
 function cityBuild_meta:Desc()
@@ -101,8 +116,16 @@ end
 function cityBuild_meta:TaskType()
     return "cityBuild"
 end
-function cityBuild_meta:BuildingType()
-    return self:Config().name
+function cityBuild_meta:IsBuild()
+    local config = self:Config()
+    return config.level == 1 and GameDatas.HouseLevelUp[config.name]
+end
+function cityBuild_meta:IsUnlock()
+    local config = self:Config()
+    return config.level == 1 and not GameDatas.HouseLevelUp[config.name]
+end
+function cityBuild_meta:IsUpgrade()
+    return self:Config().level > 1
 end
 
 ----------------------
@@ -260,10 +283,10 @@ end
 local pveCount_meta = {}
 pveCount_meta.__index = pveCount_meta
 function pveCount_meta:Title()
-    return string.format(_("探索步数达到%s"), string.formatnumberthousands(self:Config().count))
+    return string.format(_("探索%s次PVE"), string.formatnumberthousands(self:Config().count))
 end
 function pveCount_meta:Desc()
-    return string.format(_("探索步数达到%s描述"), string.formatnumberthousands(self:Config().count))
+    return string.format(_("探索次数达到%s描述"), string.formatnumberthousands(self:Config().count))
 end
 function pveCount_meta:GetRewards()
     return get_rewards(self:Config())
@@ -372,39 +395,39 @@ local meta_map = {
     playerKill = playerKill_meta,
     playerPower = playerPower_meta,
 }
-local find_gap = function(tag, diff_field)
-    local a = GrowUpTasks[tag]
-    if not diff_field then
-        return #a + 1
+
+local function getKeyFunc(type)
+    if type == "cityBuild"
+    or type == "productionTech"
+    or type == "militaryTech"
+    or type == "soldierStar"
+    or type == "soldierCount" then
+        return function(task) return task.name end
     end
-    for i = 0, #a do
-        local before,current = a[i], a[i+1]
-        if before then
-            if not current or (current and before[diff_field] ~= current[diff_field]) then
-                return before.index
-            end
+
+    if type == "dragonStar"
+    or type == "dragonLevel" then
+        return function(task) return task.type end
+    end
+
+    if type == "dragonSkill" then
+        return function(task) return string.format("%s_%s",task.type,task.name) end
+    end
+    return function(task) return type end
+end
+local firstTaskMap = {}
+for k,configs in pairs(GrowUpTasks) do
+    local t = {}
+    local keyFunc = getKeyFunc(k)
+    for i = 0, #configs do
+        local config = configs[i]
+        local key = keyFunc(config)
+        if not t[key] then
+            t[key] = config.id
         end
     end
-    assert(false)
+    firstTaskMap[k] = t
 end
-local config_gap_map = {
-    cityBuild = find_gap("cityBuild", "name"),
-    dragonLevel = find_gap("dragonLevel", "type"),
-    dragonStar = find_gap("dragonStar", "type"),
-    dragonSkill = find_gap("dragonSkill", "name"),
-    productionTech = find_gap("productionTech", "name"),
-    militaryTech = find_gap("militaryTech", "name"),
-    soldierStar = find_gap("soldierStar", "name"),
-    soldierCount = find_gap("soldierCount", "name"),
-    pveCount = find_gap("pveCount"),
-    attackWin = find_gap("attackWin"),
-    strikeWin = find_gap("strikeWin"),
-    playerKill = find_gap("playerKill"),
-    playerPower = find_gap("playerPower"),
-}
-
-
----
 
 ---
 local category_meta = {}
@@ -476,60 +499,16 @@ function UtilsForTask:GetAvailableTasksByCategory(growUpTasks, category)
     local r = {}
     local p = 0
     if category == CATEGORY.BUILD then
-        local r1,count1,total1 = self:GetAvailableTaskByTag(growUpTasks, "cityBuild", function(available, is_init, cur, next_task)
-            local name = cur.name
-            if is_init then
-                available[name] = cur.id
-            else
-                if next_task and next_task.name == name then
-                    available[name] = next_task.id
-                else
-                    available[name] = nil
-                end
-            end
-        end)
+        local r1,count1,total1 = self:GetAvailableTaskByTag(growUpTasks, "cityBuild")
         table.sort(r1, function(a, b)
             return a.id < b.id
         end)
         r = r1
         p = count1 / total1
     elseif category == CATEGORY.DRAGON then
-        local r1,count1,total1 = self:GetAvailableTaskByTag(growUpTasks, "dragonLevel", function(available, is_init, cur, next_task)
-            local type = cur.type
-            if is_init then
-                available[type] = cur.id
-            else
-                if next_task and next_task.type == type then
-                    available[type] = next_task.id
-                else
-                    available[type] = nil
-                end
-            end
-        end)
-        local r2,count2,total2 = self:GetAvailableTaskByTag(growUpTasks, "dragonStar", function(available, is_init, cur, next_task)
-            local type = cur.type
-            if is_init then
-                available[type] = cur.id
-            else
-                if next_task and next_task.type == type then
-                    available[type] = next_task.id
-                else
-                    available[type] = nil
-                end
-            end
-        end)
-        local r3,count3,total3 = self:GetAvailableTaskByTag(growUpTasks, "dragonSkill", function(available, is_init, cur, next_task)
-            local name = cur.type.."_"..cur.name
-            if is_init then
-                available[name] = cur.id
-            else
-                if next_task and next_task.name == name then
-                    available[name] = next_task.id
-                else
-                    available[name] = nil
-                end
-            end
-        end)
+        local r1,count1,total1 = self:GetAvailableTaskByTag(growUpTasks, "dragonLevel")
+        local r2,count2,total2 = self:GetAvailableTaskByTag(growUpTasks, "dragonStar")
+        local r3,count3,total3 = self:GetAvailableTaskByTag(growUpTasks, "dragonSkill")
         local dragons = {
             redDragon = {
                 dragonLevel = {}, dragonStar = {}, dragonSkill = {}
@@ -571,17 +550,7 @@ function UtilsForTask:GetAvailableTasksByCategory(growUpTasks, category)
     elseif category == CATEGORY.TECHNOLOGY then
         local count, total = 0, 0
         for i,tag in ipairs(category_map[category]) do
-            local r1,count1,total1 = self:GetAvailableTaskByTag(growUpTasks, tag, function(available, is_init, cur, next_task)
-                if is_init then
-                    available[cur.name] = cur.id
-                else
-                    if next_task and next_task.name == cur.name then
-                        available[cur.name] = next_task.id
-                    else
-                        available[cur.name] = nil
-                    end
-                end
-            end)
+            local r1,count1,total1 = self:GetAvailableTaskByTag(growUpTasks, tag)
             table.sort(r1, function(a, b)
                 return a.id < b.id
             end)
@@ -593,17 +562,7 @@ function UtilsForTask:GetAvailableTasksByCategory(growUpTasks, category)
         end
         p = count / total
     elseif category == CATEGORY.SOLDIER then
-        local r1,count1,total1 = self:GetAvailableTaskByTag(growUpTasks, "soldierCount", function(available, is_init, cur, next_task)
-            if is_init then
-                available[cur.name] = cur.id
-            else
-                if next_task and next_task.name == cur.name then
-                    available[cur.name] = next_task.id
-                else
-                    available[cur.name] = nil
-                end
-            end
-        end)
+        local r1,count1,total1 = self:GetAvailableTaskByTag(growUpTasks, "soldierCount")
         table.sort(r1, function(a, b)
             return a.id < b.id
         end)
@@ -612,17 +571,7 @@ function UtilsForTask:GetAvailableTasksByCategory(growUpTasks, category)
     elseif category == CATEGORY.EXPLORE then
         local count, total = 0, 0
         for i,tag in ipairs(category_map[category]) do
-            local r1,count1,total1 = self:GetAvailableTaskByTag(growUpTasks, tag, function(available, is_init, cur, next_task)
-                if is_init then
-                    if cur.id == 0 then
-                        available[1] = cur.id
-                    end
-                elseif next_task then
-                    available[1] = next_task.id
-                elseif available[1] == 0 then
-                    available[1] = nil
-                end
-            end)
+            local r1,count1,total1 = self:GetAvailableTaskByTag(growUpTasks, tag)
             table.sort(r1, function(a, b)
                 return a.id < b.id
             end)
@@ -636,30 +585,36 @@ function UtilsForTask:GetAvailableTasksByCategory(growUpTasks, category)
     end
     return setmetatable({tasks = r, available = p, category = category}, category_meta)
 end
-function UtilsForTask:GetAvailableTaskByTag(growUpTasks, tag, func)
-    func = func or function()end
-    local r = {}
+function UtilsForTask:GetAvailableTaskByTag(growUpTasks, tag)
+    -- 找到每个任务类型的第一个
     local available_map = {}
-    local config = GrowUpTasks[tag]
-    -- 默认初始化第一个任务
-    local gap = config_gap_map[tag]
-    for i = 0, #config, gap do
-        func(available_map, true, config[i])
+    for tasKey,id in pairs(firstTaskMap[tag]) do
+        available_map[tasKey] = id
     end
 
     -- 找到未完成的任务id
+    local keyFunc = getKeyFunc(tag)
+    local configs = GrowUpTasks[tag]
     for i,v in ipairs(growUpTasks[tag]) do
-        func(available_map, false, v, config[v.id + 1])
+        local key      = keyFunc(configs[v.id])
+        local nextTask = configs[v.id + 1]
+        -- 还有没做完的此类型的任务
+        if nextTask then
+            available_map[key] = nextTask.id
+        else -- 没有所有此类型的任务已经做完
+            available_map[key] = nil
+        end
     end
 
     -- 找到未完成的任务
+    local r = {}
     local count = 0
-    for k,v in pairs(available_map) do
-        local t = config[v]
-        count = count + (gap - t.index + 1)
+    for k,id in pairs(available_map) do
+        local t = configs[id]
+        count = count + t.index - 1
         table.insert(r, setmetatable(t, meta_map[tag]))
     end
-    return r, #config + 1 - count, #config + 1
+    return r, count, #configs + 1
 end
 function UtilsForTask:GetCompleteTaskCount(growUpTasks)
     local count = 0
@@ -679,16 +634,31 @@ function UtilsForTask:IsGetAnyCityBuildRewards(growUpTasks)
         end
     end
 end
-
+function UtilsForTask:CheckIsComplete(userData, mission)
+    local growUpTasks = userData.growUpTasks
+    local GrowUpTasks = GameDatas.GrowUpTasks
+    local tasks = growUpTasks[mission.type]
+    local configs = GrowUpTasks[mission.type]
+    local config = configs[mission.id]
+    for i = #tasks, 1, -1 do
+        local task = tasks[i]
+        if task.name == config.name and task.id >= config.id then
+            return true
+        end
+    end
+    return false
+end
+function UtilsForTask:GetBeginnersTask(userData)
+    local growUpTasks = userData.growUpTasks
+    local GrowUpTasks = GameDatas.GrowUpTasks
+    for _,mission in ipairs(RecommendedMission) do
+        if not self:CheckIsComplete(userData, mission) then
+            return setmetatable({ id = mission.id }, meta_map[mission.type])
+        end
+    end
+end
 
 
 return UtilsForTask
-
-
-
-
-
-
-
 
 

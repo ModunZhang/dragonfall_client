@@ -12,5 +12,8 @@ function UtilsForFte:IsStudyAnyDragonSkill(userData)
 	return false
 end
 function UtilsForFte:IsDefencedWithTroops(userData)
-	return userData.defenceTroop and userData.defenceTroop ~= json.null and userData.countInfo.isFTEFinished
+	if userData.countInfo.isFTEFinished then
+		return true
+	end
+	return userData.defenceTroop and userData.defenceTroop ~= json.null
 end
