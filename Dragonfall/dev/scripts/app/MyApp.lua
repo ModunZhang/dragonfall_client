@@ -91,29 +91,31 @@ local scheduler = require(cc.PACKAGE_NAME .. ".scheduler")
 local AllianceManager_ = import(".entity.AllianceManager")
 local GameStatesHelper = import(".utils.GameStatesHelper")
 Alliance_Manager = AllianceManager_.new()
-CLOUD_TAG = 1987
+local CLOUD_TAG = 1987
 local speed = 2
 local MAX_ZORDER = 999999999
 
 function enter_scene(scene)
-    local color_layer = cc.LayerColor:create(cc.c4b(255,255,255,255))
-        :addTo(scene,MAX_ZORDER,CLOUD_TAG)
+    cc.LayerColor:create(cc.c4b(255,255,255,255))
+    :addTo(scene,MAX_ZORDER,CLOUD_TAG)
     local onEnterTransitionFinish__ = scene.onEnterTransitionFinish
     if onEnterTransitionFinish__ then
         scene.onEnterTransitionFinish = function(self)
             onEnterTransitionFinish__(self)
             self:performWithDelay(function()
-                local armature = ccs.Armature:create("Cloud_Animation")
-                    :pos(display.cx, display.cy)
-                    :addTo(color_layer,-1)
-                local animation = armature:getAnimation()
-                animation:play("Animation4", -1, 0)
-                animation:setSpeedScale(speed)
+                local cloud = self:getChildByTag(CLOUD_TAG)
+                if cloud then
+                    local armature = ccs.Armature:create("Cloud_Animation")
+                        :pos(display.cx, display.cy):addTo(cloud,-1)
+                    local animation = armature:getAnimation()
+                    animation:play("Animation4", -1, 0)
+                    animation:setSpeedScale(speed)
+                end
             end, 0.01)
             self.onEnterTransitionFinish = onEnterTransitionFinish__
         end
     end
-    transition.fadeOut(color_layer, {
+    transition.fadeOut(scene:getChildByTag(CLOUD_TAG), {
         time = 0.75/speed,
         onComplete = function()
             scene:removeChildByTag(CLOUD_TAG)
