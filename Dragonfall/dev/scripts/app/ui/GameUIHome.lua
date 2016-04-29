@@ -201,7 +201,7 @@ function GameUIHome:CreateTop()
         size = 14,
         color = 0x9a946b,
     -- shadow = true
-    }):addTo(power_button):align(display.CENTER, 0, -16)
+    }):addTo(power_button):align(display.CENTER, 0, -14)
 
     -- 玩家战斗值数字
     self.power_label = UIKit:CreateNumberImageNode({
@@ -231,7 +231,7 @@ function GameUIHome:CreateTop()
     self.res_icon_map = {}
     local first_col = 18
     local label_padding = 15
-    local padding_width = 100
+    local padding_width = 105
     for i, v in ipairs({
         {"res_wood_82x73.png", "wood_label", "wood"},
         {"res_stone_88x82.png", "stone_label", "stone"},
@@ -252,11 +252,11 @@ function GameUIHome:CreateTop()
     end
 
     -- 玩家信息背景
-    -- local player_bg = display.newSprite("player_info_bg_120x120.png")
-    --     :align(display.LEFT_BOTTOM, display.width>640 and 58 or 60, 10)
-    --     :addTo(top_bg, 2):scale(106/120):setCascadeOpacityEnabled(true)
     self.player_icon = UIKit:GetPlayerIconOnly(User.basicInfo.icon)
-        :addTo(top_bg):align(display.LEFT_CENTER,64, top_bg:getContentSize().height/2 + 10):scale(0.7)
+        :addTo(top_bg):align(display.LEFT_CENTER,69, top_bg:getContentSize().height/2 + 10):scale(0.65)
+    local black_bg = display.newColorLayer(UIKit:hex2c4b(0xff000000))
+    black_bg:setContentSize(cc.size(58,8))
+    black_bg:addTo(top_bg):pos(95, 21)
     self.exp = display.newProgressTimer("player_exp_bar_62x12.png",
         display.PROGRESS_TIMER_BAR):addTo(top_bg):align(display.LEFT_CENTER,94, 24)
     self.exp:setBarChangeRate(cc.p(1,0))
@@ -269,7 +269,6 @@ function GameUIHome:CreateTop()
         size = 14,
         color = 0xf3f0b6,
     }):addTo(level_bg):align(display.CENTER, 12, 9)
-
     -- vip
     local vip_btn = cc.ui.UIPushButton.new(
         {normal = "vip_btn_136x48.png"},
@@ -286,7 +285,7 @@ function GameUIHome:CreateTop()
         text =  "VIP "..User:GetVipLevel(),
         size = 20,
         shadow = true
-    }):addTo(vip_btn):align(display.LEFT_CENTER, self.vip_icon:getPositionX() + 20, self.vip_icon:getPositionY())
+    }):addTo(vip_btn):align(display.CENTER, self.vip_icon:getPositionX() + 55, self.vip_icon:getPositionY())
     if UtilsForVip:IsVipActived(User) then
         self.vip_level:setColor(UIKit:hex2c3b(0xffb400))
     else

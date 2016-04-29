@@ -249,17 +249,17 @@ function GameUIChatChannel:ShowTipsIf()
 end
 
 function GameUIChatChannel:GetChatIcon(icon)
-    if device.platform == 'winrt' then
-        local bg = display.newSprite("dragon_bg_68x68.png")
-        local icon = UIKit:GetPlayerIconOnly(icon):addTo(bg):align(display.LEFT_BOTTOM,-3, 1):scale(66/114)
+    -- if device.platform == 'winrt' then
+    --     local bg = display.newSprite("dragon_bg_68x68.png")
+    --     local icon = UIKit:GetPlayerIconOnly(icon):addTo(bg):align(display.LEFT_BOTTOM,-3, 1):scale(66/114)
+    --     bg.icon = icon
+    --     return bg
+    -- else
+        local bg = display.newSprite("box_102x102.png"):scale(62/114)
+        local icon = UIKit:GetPlayerIconOnly(icon):addTo(bg):align(display.LEFT_BOTTOM,4, 4):scale(0.72)
         bg.icon = icon
         return bg
-    else
-        local bg = display.newSprite("dragon_bg_114x114.png"):scale(66/114)
-        local icon = UIKit:GetPlayerIconOnly(icon):addTo(bg):align(display.LEFT_BOTTOM,-5, 1)
-        bg.icon = icon
-        return bg
-    end
+    -- end
 end
 
 function GameUIChatChannel:GetChatItemCell()

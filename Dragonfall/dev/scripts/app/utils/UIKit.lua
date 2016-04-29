@@ -407,9 +407,10 @@ end
 
 function UIKit:GetPlayerCommonIcon(key,isOnline)
     isOnline = type(isOnline) ~= 'boolean' and true or isOnline
-    local heroBg = isOnline and display.newSprite("dragon_bg_114x114.png") or self:getDiscolorrationSprite("dragon_bg_114x114.png")
+    local heroBg = isOnline and display.newSprite("box_102x102.png") or self:getDiscolorrationSprite("box_102x102.png")
     self:GetPlayerIconOnly(key,isOnline):addTo(heroBg)
-        :align(display.CENTER,56,65)
+        :align(display.CENTER,51,51)
+        :scale(0.72)
     return heroBg
 end
 
