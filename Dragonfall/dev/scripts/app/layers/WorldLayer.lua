@@ -648,6 +648,9 @@ function WorldLayer:GetClickedObject(world_x, world_y)
     local index = self:LogicToIndex(logic_x, logic_y)
     return self.allainceSprites[tostring(index)] , index
 end
+function WorldLayer:GetWorldObjectByIndex(index)
+    return self.allainceSprites[tostring(index)]
+end
 function WorldLayer:getContentSize()
     return worldsize
 end

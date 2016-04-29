@@ -2,7 +2,7 @@ local WidgetNumberTips = import(".WidgetNumberTips")
 local WidgetChangeMap = import(".WidgetChangeMap")
 local fire_var = import("app.particles.fire_var")
 local WidgetHomeBottom = class("WidgetHomeBottom", function()
-    local bottom_bg = display.newSprite("bottom_bg_768x136.png")
+    local bottom_bg = display.newSprite("bottom_bg_768x122.png")
     if display.width >640 then
         bottom_bg:scale(display.width/768)
     end

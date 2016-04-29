@@ -205,7 +205,7 @@ function GameUIWithCommonHeader:CreateShopButton(on_clicked)
         size = 20,
         color = 0xffd200,
         shadow = true
-    }):addTo(gem_button):align(display.CENTER, -102, -32)
+    }):addTo(gem_button):align(display.CENTER, -102, -29)
 
     return gem_button,gem_label
 end

@@ -176,7 +176,7 @@ end
 
 function GameUICityInfo:CreateBottom()
     -- 底部背景
-    local bottom_bg = display.newSprite("bottom_bg_768x136.png")
+    local bottom_bg = display.newSprite("bottom_bg_768x122.png")
         :align(display.BOTTOM_CENTER, display.cx, display.bottom)
         :addTo(self)
     bottom_bg:setTouchEnabled(true)
@@ -185,7 +185,7 @@ function GameUICityInfo:CreateBottom()
     end
 
     self.chat = WidgetChat.new():addTo(bottom_bg)
-        :align(display.CENTER, bottom_bg:getContentSize().width/2, bottom_bg:getContentSize().height-11)
+        :align(display.CENTER, bottom_bg:getContentSize().width/2, bottom_bg:getContentSize().height)
 
     cc.ui.UILabel.new({text = _("您正在访问其他玩家的城市, 无法使用其他功能, 点击左下角返回城市"),
         size = 20,

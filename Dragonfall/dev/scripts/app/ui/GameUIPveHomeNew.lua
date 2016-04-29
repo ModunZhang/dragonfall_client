@@ -159,7 +159,7 @@ function GameUIPveHomeNew:CreateBottom()
         :align(display.BOTTOM_CENTER, display.cx, display.bottom)
 
     self.chat = WidgetChat.new():addTo(bottom_bg)
-        :align(display.CENTER, bottom_bg:getContentSize().width/2, bottom_bg:getContentSize().height-11)
+        :align(display.CENTER, bottom_bg:getContentSize().width/2, bottom_bg:getContentSize().height)
 
     self.change_map = WidgetChangeMap.new(WidgetChangeMap.MAP_TYPE.PVE):addTo(self)
 
