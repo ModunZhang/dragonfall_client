@@ -421,13 +421,26 @@ function GameUIHome:CreateBottom()
         end
     end)
     self.quest_bar_bg = quest_bar_bg
+    local light = display.newSprite("quest_light_36x34.png"):addTo(quest_bar_bg):pos(-302, 2)
+    light:runAction(
+        cc.RepeatForever:create(
+            transition.sequence{
+                cc.MoveTo:create(0.8, cc.p(200, 2)),
+                cc.CallFunc:create(function() light:setPositionX(-302) end),
+                cc.DelayTime:create(2)
+            }
+        )
+    )
     display.newSprite("icon_quest_bg_50x50.png"):addTo(quest_bar_bg):pos(-302, 2)
     self.quest_status_icon = display.newSprite("icon_warning_22x42.png"):addTo(quest_bar_bg):pos(-302, 2)
     self.quest_label = UIKit:ttfLabel({
         size = 20,
         color = 0xfffeb3,
+        shadow = true
     }):addTo(quest_bar_bg):align(display.LEFT_CENTER, -260, 4)
     self.quest_label:runAction(UIKit:ScaleAni())
+
+    
 
     self.change_map = WidgetChangeMap.new(WidgetChangeMap.MAP_TYPE.OUR_CITY):addTo(self, 1)
 
@@ -510,7 +523,7 @@ local icon_map = {
 }
 function GameUIHome:ShowResourceAni(resource, wp)
     if not icon_map[resource] then
-        return 
+        return
     end
     local pnt = self.top
     pnt:removeChildByTag(RES_ICON_TAG[resource])
@@ -697,6 +710,7 @@ end
 
 
 return GameUIHome
+
 
 
 
