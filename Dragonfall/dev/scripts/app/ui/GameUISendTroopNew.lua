@@ -728,9 +728,7 @@ end
 local promise = import("..utils.promise")
 local WidgetFteArrow = import("..widget.WidgetFteArrow")
 function GameUISendTroopNew:PromiseOfFte()
-    return self:PromiseOfMax():next(function()
-        return self:PromiseOfAttack()
-    end)
+    return self:PromiseOfAttack()
 end
 function GameUISendTroopNew:PromiseOfMax()
     local r = self.max_btn:getCascadeBoundingBox()

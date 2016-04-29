@@ -381,6 +381,10 @@ function GameUIDragonEyrieMain:CreateDragonContentNodeIf()
                         return
                     end
                     if dragon:IsFree() then
+                        local military_soldiers
+                        if not UtilsForFte:IsDefencedWithTroops(self.city:GetUser()) then
+                            military_soldiers = {{name = "swordsman_1", count = 10}}
+                        end
                         UIKit:newGameUI('GameUISendTroopNew',function(dragonType,soldiers)
                             if self.dragon_manager:GetDragon(dragonType):IsDead() then
                                 UIKit:showMessageDialog(nil,_("选择的龙已经死亡"))
@@ -404,7 +408,13 @@ function GameUIDragonEyrieMain:CreateDragonContentNodeIf()
                                     end
                                 end)
                             end
-                        end,{dragon = dragon,isMilitary = true,terrain = Alliance_Manager:GetMyAlliance().basicInfo.terrain,title = _("驻防部队")}):AddToCurrentScene(true)
+                        end,{
+                            dragon = dragon,
+                            isMilitary = true,
+                            terrain = Alliance_Manager:GetMyAlliance().basicInfo.terrain,
+                            title = _("驻防部队"),
+                            military_soldiers = military_soldiers,
+                        }):AddToCurrentScene(true)
                     else
                         UIKit:showMessageDialog(nil,_("龙未处于空闲状态"))
                         self.garrison_button:setButtonSelected(not target,false)
