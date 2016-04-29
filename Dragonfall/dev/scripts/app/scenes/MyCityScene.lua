@@ -14,7 +14,7 @@ local MyCityScene = class("MyCityScene", CityScene)
 local GameUIActivityRewardNew = import("..ui.GameUIActivityRewardNew")
 local ipairs = ipairs
 
-function MyCityScene:ctor(city,isFromLogin,operetion)
+function MyCityScene:ctor(city,isFromLogin,operetion,callback)
     self.util_node = display.newNode():addTo(self)
     MyCityScene.super.ctor(self,city)
     if type(isFromLogin) == 'boolean' then
@@ -23,6 +23,7 @@ function MyCityScene:ctor(city,isFromLogin,operetion)
         self.isFromLogin = false
     end
     self.operetion = operetion
+    self.callback = callback
 end
 function MyCityScene:onEnter()
     MyCityScene.super.onEnter(self)
@@ -69,8 +70,7 @@ function MyCityScene:onEnter()
             end
         end
     end
-
-    showMemoryUsage()
+    -- showMemoryUsage()
 end
 function MyCityScene:onExit()
     self.home_page = nil
@@ -267,13 +267,12 @@ function MyCityScene:onEnterTransitionFinish()
         end
 
     end
-
     app:GetChatManager():FetMessageFirstStartGame()
-    if Alliance_Manager:HasBeenJoinedAlliance() then
-        return
-    end
-    
     self:RunFteIfNeeded()
+
+    if type(self.callback) == "function" then
+        self:callback()
+    end
 end
 function MyCityScene:CreateHomePage()
     if UIKit:GetUIInstance("GameUIHome") then

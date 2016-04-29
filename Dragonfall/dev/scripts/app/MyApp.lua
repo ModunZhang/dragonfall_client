@@ -160,7 +160,7 @@ end
 
 local is_debug_cloud = true
 
-local enter_next_scene = function(new_scene_name, ...)
+local function enter_next_scene(new_scene_name, ...)
     if is_debug_cloud then
         enter_scene_transition(new_scene_name, ...)
     else
@@ -436,15 +436,13 @@ function MyApp:EnterCitySceneByPlayerAndAlliance(id, is_my_alliance, location)
     end)
 end
 function MyApp:EnterMyCityFteScene()
-    -- app:enterScene("MyCityFteScene", {City}, "custom", -1, transition_)
     enter_next_scene("MyCityFteScene", City)
 end
-function MyApp:EnterMyCityScene(isFromFte,operetion)
-    -- app:enterScene("MyCityScene", {City,isFromFte}, "custom", -1, transition_)
-    enter_next_scene("MyCityScene", City, isFromFte,operetion)
+function MyApp:EnterMyCityScene(isFromLogin,operetion,callback)
+    print("EnterMyCityScene", isFromLogin,operetion,callback)
+    enter_next_scene("MyCityScene", City, isFromLogin,operetion,callback)
 end
 function MyApp:EnterFteScene()
-    -- app:enterScene("FteScene", nil, "custom", -1, transition_)
     enter_next_scene("FteScene")
 end
 function MyApp:EnterMyAllianceScene(location)

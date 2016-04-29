@@ -10,6 +10,33 @@ local WidgetHomeBottom = import("..widget.WidgetHomeBottom")
 local GameUIPveHomeNew = UIKit:createUIClass('GameUIPveHomeNew')
 local stages = GameDatas.PvE.stages
 local timer = app.timer
+
+
+
+function GameUIPveHomeNew:OnUserDataChanged_growUpTasks()
+    local growUpTasks = User.growUpTasks
+    local completeTask = UtilsForTask:GetFirstCompleteTasks(growUpTasks)[1]
+    if completeTask then
+        self.isFinished = true
+        self.task = completeTask
+    else
+        self.isFinished = false
+        self.task = City:GetRecommendTask()
+    end
+
+    if self.task then
+        self.quest_bar_bg:show()
+        self.quest_label:setString(self.task:Title())
+    else
+        self.quest_bar_bg:hide()
+        self.quest_label:setString(_("当前没有推荐任务!"))
+    end
+
+    self:RefreshTaskStatus(self.isFinished)
+end
+
+
+
 function GameUIPveHomeNew:DisplayOn()
     self.visible_count = self.visible_count + 1
     self:FadeToSelf(self.visible_count > 0)
@@ -44,6 +71,10 @@ function GameUIPveHomeNew:onEnter()
     self.visible_count = 1
     self:CreateTop()
     self.bottom = self:CreateBottom()
+
+
+    User:AddListenOnType(self, "growUpTasks")
+    self:OnUserDataChanged_growUpTasks()
     display.newNode():addTo(self):schedule(function()
         local star = User:GetStageStarByIndex(self.level)
         self.stars:setString(string.format("%d/%d", star, User:GetStageTotalStars()))
@@ -63,6 +94,9 @@ function GameUIPveHomeNew:onEnter()
         end
         self:TipsOnReward(false)
     end, 1)
+end
+function GameUIPveHomeNew:onExit()
+    User:RemoveListenerOnType(self, "growUpTasks")
 end
 function GameUIPveHomeNew:CreateTop()
     local top_bg = display.newSprite("head_bg.png")
@@ -161,9 +195,91 @@ function GameUIPveHomeNew:CreateBottom()
     self.chat = WidgetChat.new():addTo(bottom_bg)
         :align(display.CENTER, bottom_bg:getContentSize().width/2, bottom_bg:getContentSize().height)
 
+
+        -- 任务条
+    local quest_bar_bg = cc.ui.UIPushButton.new(
+        {normal = "quest_btn_unfinished_566x46.png",pressed = "quest_btn_unfinished_566x46.png"},
+        {scale9 = false}
+    ):addTo(bottom_bg):pos(420, bottom_bg:getContentSize().height + 56):onButtonClicked(function(event)
+        local task = self.task
+        if task then
+            if self.isFinished then
+                NetManager:getGrowUpTaskRewardsPromise(task:TaskType(), task.id):done(function()
+                    GameGlobalUI:showTips(_("获得奖励"), task:GetRewards())
+                    if not self.is_hooray_on then
+                        self.is_hooray_on = true
+                        app:GetAudioManager():PlayeEffectSoundWithKey("COMPLETE")
+
+                        self:performWithDelay(function()
+                            self.is_hooray_on = false
+                        end, 1.5)
+                    end
+                end)
+            else
+                if task:TaskType() == "pveCount" then
+                    return
+                end
+                app:EnterMyCityScene(false,"nil",function(scene)
+                    local homePage = scene:GetHomePage()
+                    if not homePage then
+                        return
+                    end
+                    if task:TaskType() == "cityBuild" then
+                        if task:IsBuild() then
+                            homePage:GotoOpenBuildUI(task)
+                        elseif task:IsUnlock() then
+                            local buildings = UtilsForBuilding:GetBuildingsBy(User, task:Config().name)
+                            homePage:GotoUnlockBuilding(buildings[1].location)
+                        elseif task:IsUpgrade() then
+                            homePage:GotoOpenBuildingUI(City:PreconditionByBuildingType(task:Config().name))
+                        end
+                    elseif task:TaskType() == "productionTech" then
+                        UIKit:newGameUI("GameUIQuickTechnology", City, task:Config().name):AddToCurrentScene(true)
+                    elseif task:TaskType() == "soldierCount" then
+                        local barracks = City:GetFirstBuildingByType("barracks")
+                        UIKit:newGameUI('GameUIBarracks', City, barracks, "recruit", task:Config().name):AddToCurrentScene(true)
+                    elseif task:TaskType() == "pveCount" then
+                        homePage:GotoExplore()
+                    end
+                end)
+            end
+        end
+    end)
+    self.quest_bar_bg = quest_bar_bg
+    local light = display.newSprite("quest_light_36x34.png"):addTo(quest_bar_bg):pos(-302, 2)
+    light:runAction(
+        cc.RepeatForever:create(
+            transition.sequence{
+                cc.MoveTo:create(0.8, cc.p(200, 2)),
+                cc.CallFunc:create(function() light:setPositionX(-302) end),
+                cc.DelayTime:create(2)
+            }
+        )
+    )
+    display.newSprite("icon_quest_bg_50x50.png"):addTo(quest_bar_bg):pos(-302, 2)
+    self.quest_status_icon = display.newSprite("icon_warning_22x42.png"):addTo(quest_bar_bg):pos(-302, 2)
+    self.quest_label = UIKit:ttfLabel({
+        size = 20,
+        color = 0xfffeb3,
+        shadow = true
+    }):addTo(quest_bar_bg):align(display.LEFT_CENTER, -260, 4)
+    self.quest_label:runAction(UIKit:ScaleAni())
+
+
     self.change_map = WidgetChangeMap.new(WidgetChangeMap.MAP_TYPE.PVE):addTo(self)
 
     return bottom_bg
+end
+function GameUIPveHomeNew:RefreshTaskStatus(finished)
+    if finished then -- 任务已经完成
+        self.quest_bar_bg:setButtonImage(cc.ui.UIPushButton.NORMAL, "quest_btn_finished_566x46.png", true)
+        self.quest_bar_bg:setButtonImage(cc.ui.UIPushButton.PRESSED, "quest_btn_finished_566x46.png", true)
+        self.quest_status_icon:setTexture("icon_query_34x44.png")
+    else
+        self.quest_bar_bg:setButtonImage(cc.ui.UIPushButton.NORMAL, "quest_btn_unfinished_566x46.png", true)
+        self.quest_bar_bg:setButtonImage(cc.ui.UIPushButton.PRESSED, "quest_btn_unfinished_566x46.png", true)
+        self.quest_status_icon:setTexture("icon_warning_22x42.png")
+    end
 end
 function GameUIPveHomeNew:ChangeChatChannel(channel_index)
     self.chat:ChangeChannel(channel_index)
