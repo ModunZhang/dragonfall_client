@@ -24,7 +24,16 @@ function GameUIHome:OnUserDataChanged_productionTechEvents()
     self:OnUserDataChanged_growUpTasks()
 end
 function GameUIHome:OnUserDataChanged_growUpTasks()
-    self.task = self.city:GetRecommendTask()
+    local growUpTasks = self.city:GetUser().growUpTasks
+    local completeTask = UtilsForTask:GetFirstCompleteTasks(growUpTasks)[1]
+    if completeTask then
+        self.isFinished = true
+        self.task = completeTask
+    else
+        self.isFinished = false
+        self.task = self.city:GetRecommendTask()
+    end
+
     if self.task then
         self.quest_bar_bg:show()
         self.quest_label:setString(self.task:Title())
@@ -32,6 +41,8 @@ function GameUIHome:OnUserDataChanged_growUpTasks()
         self.quest_bar_bg:hide()
         self.quest_label:setString(_("当前没有推荐任务!"))
     end
+
+    self:RefreshTaskStatus(self.isFinished)
 end
 function GameUIHome:OnUserDataChanged_vipEvents()
     self:RefreshVIP()
@@ -156,7 +167,7 @@ end
 
 
 function GameUIHome:CreateTop()
-    local top_bg = display.newSprite("top_bg_768x117.png"):addTo(self)
+    local top_bg = display.newSprite("top_bg_768x117.png"):addTo(self,2)
         :align(display.TOP_CENTER, display.cx, display.top ):setCascadeOpacityEnabled(true)
     if display.width>640 then
         top_bg:scale(display.width/768)
@@ -366,23 +377,46 @@ function GameUIHome:CreateBottom()
         {normal = "quest_btn_unfinished_566x46.png",pressed = "quest_btn_unfinished_566x46.png"},
         {scale9 = false}
     ):addTo(bottom_bg):pos(420, bottom_bg:getContentSize().height + 56):onButtonClicked(function(event)
-        if self.task then
-            if self.task:TaskType() == "cityBuild" then
-                self:GotoOpenBuildingUI(self.city:PreconditionByBuildingType(self.task:BuildingType()))
-            elseif self.task:TaskType() == "unlock" then
-                self:GotoUnlockBuilding(self.task:Location())
-            elseif self.task:TaskType() == "reward" then
-                UIKit:newGameUI("GameUIMission", self.city, nil, true):AddToCurrentScene(true)
-            elseif self.task:TaskType() == "productionTech" then
-                UIKit:newGameUI("GameUIQuickTechnology", self.city, self.task.name):AddToCurrentScene(true)
-            elseif self.task:TaskType() == "recruit" then
-                UIKit:newGameUI('GameUIBarracks', self.city, self.city:GetFirstBuildingByType("barracks"), "recruit", self.task.name):AddToCurrentScene(true)
-            elseif self.task:TaskType() == "explore" then
-                self:GotoExplore()
-            elseif self.task:TaskType() == "build" then
-                self:GotoOpenBuildUI(self.task)
-            elseif self.task:TaskType() == "encourage" then
-                UIKit:newGameUI("GameUIActivityRewardNew", GameUIActivityRewardNew.REWARD_TYPE.PLAYER_LEVEL_UP):AddToCurrentScene(true)
+        local task = self.task
+        if task then
+            if self.isFinished then
+                NetManager:getGrowUpTaskRewardsPromise(task:TaskType(), task.id):done(function()
+                    if self.ShowResourceAni then
+                        local x,y = self.quest_status_icon:getPosition()
+                        local wp = self.quest_status_icon:getParent():convertToWorldSpace(cc.p(x,y))
+                        for i,v in ipairs(task:GetRewards()) do
+                            if v.type == "resources" then
+                                self:ShowResourceAni(v.name,wp)
+                            end
+                        end
+                        if not self.is_hooray_on then
+                            self.is_hooray_on = true
+                            app:GetAudioManager():PlayeEffectSoundWithKey("COMPLETE")
+
+                            self:performWithDelay(function()
+                                self.is_hooray_on = false
+                            end, 1.5)
+                        end
+                    end
+                end)
+            else
+                if task:TaskType() == "cityBuild" then
+                    if task:IsBuild() then
+                        self:GotoOpenBuildUI(task)
+                    elseif task:IsUnlock() then
+                        local buildings = UtilsForBuilding:GetBuildingsBy(self.city:GetUser(), task:Config().name)
+                        self:GotoUnlockBuilding(buildings[1].location)
+                    elseif task:IsUpgrade() then
+                        self:GotoOpenBuildingUI(self.city:PreconditionByBuildingType(task:Config().name))
+                    end
+                elseif task:TaskType() == "productionTech" then
+                    UIKit:newGameUI("GameUIQuickTechnology", self.city, task:Config().name):AddToCurrentScene(true)
+                elseif task:TaskType() == "soldierCount" then
+                    local barracks = self.city:GetFirstBuildingByType("barracks")
+                    UIKit:newGameUI('GameUIBarracks', self.city, barracks, "recruit", task:Config().name):AddToCurrentScene(true)
+                elseif task:TaskType() == "pveCount" then
+                    self:GotoExplore()
+                end
             end
         end
     end)
@@ -393,18 +427,22 @@ function GameUIHome:CreateBottom()
         size = 20,
         color = 0xfffeb3,
     }):addTo(quest_bar_bg):align(display.LEFT_CENTER, -260, 4)
-    if true then -- 任务已经完成
-        quest_bar_bg:setButtonImage(cc.ui.UIPushButton.NORMAL, "quest_btn_finished_566x46.png", true)
-        quest_bar_bg:setButtonImage(cc.ui.UIPushButton.PRESSED, "quest_btn_finished_566x46.png", true)
-        self.quest_status_icon:setTexture("icon_ query_34x44.png")
-    else
-        self.quest_status_icon:setTexture("icon_warning_22x42.png")
-    end
     self.quest_label:runAction(UIKit:ScaleAni())
 
     self.change_map = WidgetChangeMap.new(WidgetChangeMap.MAP_TYPE.OUR_CITY):addTo(self, 1)
 
     return bottom_bg
+end
+function GameUIHome:RefreshTaskStatus(finished)
+    if finished then -- 任务已经完成
+        self.quest_bar_bg:setButtonImage(cc.ui.UIPushButton.NORMAL, "quest_btn_finished_566x46.png", true)
+        self.quest_bar_bg:setButtonImage(cc.ui.UIPushButton.PRESSED, "quest_btn_finished_566x46.png", true)
+        self.quest_status_icon:setTexture("icon_query_34x44.png")
+    else
+        self.quest_bar_bg:setButtonImage(cc.ui.UIPushButton.NORMAL, "quest_btn_unfinished_566x46.png", true)
+        self.quest_bar_bg:setButtonImage(cc.ui.UIPushButton.PRESSED, "quest_btn_unfinished_566x46.png", true)
+        self.quest_status_icon:setTexture("icon_warning_22x42.png")
+    end
 end
 function GameUIHome:ChangeChatChannel(channel_index)
     self.chat:ChangeChannel(channel_index)
@@ -470,15 +508,18 @@ local icon_map = {
     stone = "res_stone_88x82.png",
 -- citizen = "res_citizen_88x82.png",
 }
-function GameUIHome:ShowResourceAni(resource)
+function GameUIHome:ShowResourceAni(resource, wp)
+    if not icon_map[resource] then
+        return 
+    end
     local pnt = self.top
     pnt:removeChildByTag(RES_ICON_TAG[resource])
 
     local s1 = self.res_icon_map[resource]:getContentSize()
+    local lp = pnt:convertToNodeSpace(wp or cc.p(display.cx, display.cy))
     local tp = pnt:convertToNodeSpace(self.res_icon_map[resource]:convertToWorldSpace(cc.p(s1.width/2,s1.height/2)))
-    local lp = pnt:convertToNodeSpace(cc.p(display.cx, display.cy))
 
-    local x,y,tx,ty = lp.x,lp.y,tp.x, tp.y
+    local x,y,tx,ty = lp.x,lp.y,tp.x,tp.y
     local icon = display.newSprite(icon_map[resource])
         :addTo(pnt):pos(x,y):scale(0.8)
 
