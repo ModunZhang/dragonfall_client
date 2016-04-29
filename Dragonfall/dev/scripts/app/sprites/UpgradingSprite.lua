@@ -35,7 +35,9 @@ function UpgradingSprite:UpgradeFinished()
         local _,tp = self:GetWorldPosition()
         local reses = UtilsForBuilding:GetHouseResType(self:GetEntity():GetType())
         for i,resType in ipairs(string.split(reses, ",")) do
-            running_scene:GetHomePage():ShowResourceAni(resType, tp)
+            if resType ~= "citizen" then
+                running_scene:GetHomePage():ShowResourceAni(resType, tp)
+            end
         end
     end
 end

@@ -561,7 +561,7 @@ function GameUIAllianceHome:CreateBottom()
     local bottom_bg = WidgetHomeBottom.new(self.city):addTo(self)
         :align(display.BOTTOM_CENTER, display.cx, display.bottom)
     self.chat = WidgetChat.new():addTo(bottom_bg)
-        :align(display.CENTER, bottom_bg:getContentSize().width/2, bottom_bg:getContentSize().height-11)
+        :align(display.CENTER, bottom_bg:getContentSize().width/2, bottom_bg:getContentSize().height)
     return bottom_bg
 end
 function GameUIAllianceHome:ChangeChatChannel(channel_index)

@@ -122,10 +122,9 @@ end
 function WidgetAutoOrderAwardButton:CheckVisible()
 	local countInfo = User.countInfo
     local onlineTime = (countInfo.todayOnLineTime - countInfo.lastLoginTime)/1000
-    print("CheckVisible------>",onlineTime)
 	self.online_time = onlineTime
 	self:CheckState()
-	return self.visible___ 
+	return self.visible___ and display.getRunningScene().__cname == "MyCityScene"
 end
 
 function WidgetAutoOrderAwardButton:GetElementSize()

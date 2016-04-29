@@ -133,6 +133,14 @@ function AllianceManager:GetVillageEventsByMapId(alliance, mapId)
         end
     end
 end
+-- 获取无人采集的村落
+function AllianceManager:GetAllianceFreeVillageOrOnEventVillage(alliance)
+    for i,village in ipairs(alliance.villages) do
+        if village.villageEvent == json.null then
+            return village
+        end
+    end
+end
 function AllianceManager:GetMyAllianceVillageEventsByMapId(alliance, mapId)
     for k,v in pairs(alliance.villageEvents) do
         if v.villageData.id == mapId then

@@ -4,7 +4,6 @@
 --
 local window = import("..utils.window")
 local Localize = import("..utils.Localize")
-local WidgetSoldierBox = import("..widget.WidgetSoldierBox")
 local WidgetSoldierDetails = import('..widget.WidgetSoldierDetails')
 local WidgetUIBackGround = import('..widget.WidgetUIBackGround')
 local UIScrollView = import(".UIScrollView")

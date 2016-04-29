@@ -27,39 +27,115 @@ end)
 function WidgetShortcutButtons:ctor(city)
     self.city = city
     local order = WidgetAutoOrder.new(WidgetAutoOrder.ORIENTATION.TOP_TO_BOTTOM,50,true)
-        :addTo(self):pos(display.left + 50, display.top-200)
+        :addTo(self):pos(display.left + 50, display.top - 580)
+    --行军事件按钮
+    local alliance_belvedere_button = cc.ui.UIPushButton.new({normal = 'fight_62x70.png'})
+    alliance_belvedere_button.alliance_belvedere_events_count = WidgetNumberTips.new():addTo(alliance_belvedere_button):pos(20,-20)
+    alliance_belvedere_button:onButtonClicked(function()
+        UIKit:newGameUI("GameUIWatchTower", City, "march"):AddToCurrentScene(true)
+    end):scale(SCALE)
+    function alliance_belvedere_button:CheckVisible()
+        local to_my_events,out_march_events = Alliance_Manager:GetAboutMyMarchEvents()
+        local count = #to_my_events + #out_march_events
+        if count == 0 then
+            return false
+        end
+        alliance_belvedere_button.alliance_belvedere_events_count:SetNumber(count)
+        return true
+    end
+    function alliance_belvedere_button:GetElementSize()
+        return alliance_belvedere_button:getCascadeBoundingBox().size
+    end
+    order:AddElement(alliance_belvedere_button)
+
+    -- if not UtilsForDragon:IsDragonAllHated(self.city:GetUser()) then
+    --     local this = self
+    --     local dragon_egg_btn = display.newNode():scale(SCALE)
+
+    --     UIKit:ButtonAddScaleAction(cc.ui.UIPushButton.new(
+    --         {normal = "dragon_eggs_68x80.png", pressed = "dragon_eggs_68x80.png"}
+    --     ):onButtonClicked(function(event)
+    --         if not dragon_egg_btn:CheckVisible() then
+    --             dragon_egg_btn:hide()
+    --         else
+    --             local dragon = UtilsForDragon:GetCanHatedDragon(this.city:GetUser())
+    --             if dragon then
+    --                 UIKit:newGameUI("GameUIDragonEyrieMain", self.city, self.city:GetFirstBuildingByType("dragonEyrie"), "dragon", false, dragon.type):AddToCurrentScene(true)
+    --             end
+    --         end
+    --     end)):addTo(dragon_egg_btn)
+
+    --     function dragon_egg_btn:CheckVisible()
+    --         return not not UtilsForDragon:GetCanHatedDragon(this.city:GetUser())
+    --     end
+    --     function dragon_egg_btn:GetElementSize()
+    --         return {width = 68,height = 80}
+    --     end
+    --     order:AddElement(dragon_egg_btn)
+    -- end
+    -- local gacha_button = WidgetAutoOrderGachaButton.new():scale(SCALE)
+    -- order:AddElement(gacha_button)
+
+    --在线活动
+    local activity_button = WidgetAutoOrderAwardButton.new():scale(SCALE)
+    order:AddElement(activity_button)
+
+    --进入三级地图按钮
+    local world_map_btn_bg = display.newSprite("background_86x86.png")
+    local world_map_btn = UIKit:ButtonAddScaleAction(cc.ui.UIPushButton.new({normal = 'icon_world_88x88.png'})
+        :onButtonClicked(function()
+            if display.getRunningScene().__cname == "AllianceDetailScene" then
+                local x,y = display.getRunningScene():GetSceneLayer():GetMiddlePosition()
+                local mapIndex = DataUtils:GetAlliancePosition(x, y)
+                UIKit:newGameUI("GameUIWorldMap", nil, nil, mapIndex):AddToCurrentScene()
+            end
+        end)
+    ):align(display.CENTER,world_map_btn_bg:getContentSize().width/2 , world_map_btn_bg:getContentSize().height/2)
+        :addTo(world_map_btn_bg)
+
+    function world_map_btn_bg:CheckVisible()
+        return not Alliance_Manager:GetMyAlliance():IsDefault() and (display.getRunningScene().__cname == "WorldScene" or display.getRunningScene().__cname == "AllianceDetailScene")
+    end
+    function world_map_btn_bg:GetElementSize()
+        return world_map_btn_bg:getContentSize()
+    end
+    function world_map_btn_bg:GetXY()
+        return {x = 0 ,y =  875 - display.top }
+    end
+    self.world_map_btn_bg = world_map_btn_bg
+    order:AddElement(world_map_btn_bg)
+
+
+    order:RefreshOrder()
+
+    self.left_order_group = order
+
+    local right_top_order = WidgetAutoOrder.new(WidgetAutoOrder.ORIENTATION.TOP_TO_BOTTOM,50,true):addTo(self):pos(display.right - 50, display.top-260)
+    right_top_order:EnableDropBtn()
+    -- 活动按钮
+    local button = cc.ui.UIPushButton.new(
+        {normal = "tips_66x64.png", pressed = "tips_66x64.png"},
+        {scale9 = false}
+    ):scale(SCALE)
+    WidgetLight.new():addTo(button, -1001):scale(0.6)
+    button:onButtonClicked(function(event)
+        if event.name == "CLICKED_EVENT" then
+            UIKit:newGameUI("GameUIActivityNew",self.city):AddToCurrentScene(true)
+        end
+    end)
+    function button:CheckVisible()
+        return true
+    end
+    function button:GetElementSize()
+        return {width = 66,height = 64}
+    end
+    right_top_order:AddElement(button)
+    button.tips_button_count = WidgetNumberTips.new():addTo(button):pos(20,-20)
+    self.tips_button = button
+    self:CheckAllianceRewardCount(not User:GetNewsCount())
     -- BUFF按钮
     local buff_button = WidgetAutoOrderBuffButton.new():scale(SCALE)
-    order:AddElement(buff_button)
-
-    if not UtilsForDragon:IsDragonAllHated(self.city:GetUser()) then
-        local this = self
-        local dragon_egg_btn = display.newNode():scale(SCALE)
-
-        UIKit:ButtonAddScaleAction(cc.ui.UIPushButton.new(
-            {normal = "dragon_eggs_68x80.png", pressed = "dragon_eggs_68x80.png"}
-        ):onButtonClicked(function(event)
-            if not dragon_egg_btn:CheckVisible() then
-                dragon_egg_btn:hide()
-            else
-                local dragon = UtilsForDragon:GetCanHatedDragon(this.city:GetUser())
-                if dragon then
-                    UIKit:newGameUI("GameUIDragonEyrieMain", self.city, self.city:GetFirstBuildingByType("dragonEyrie"), "dragon", false, dragon.type):AddToCurrentScene(true)
-                end
-            end
-        end)):addTo(dragon_egg_btn)
-
-        function dragon_egg_btn:CheckVisible()
-            return not not UtilsForDragon:GetCanHatedDragon(this.city:GetUser())
-        end
-        function dragon_egg_btn:GetElementSize()
-            return {width = 68,height = 80}
-        end
-        order:AddElement(dragon_egg_btn)
-    end
-    local gacha_button = WidgetAutoOrderGachaButton.new():scale(SCALE)
-    order:AddElement(gacha_button)
-
+    right_top_order:AddElement(buff_button)
     -- 龙驻防按钮
     local dragon_defence_btn = cc.ui.UIPushButton.new({normal = 'back_ground_defence_58x74.png'})
         :onButtonClicked(function()
@@ -82,12 +158,6 @@ function WidgetShortcutButtons:ctor(city)
             }
         )
     )
-    -- local status_bg = display.newScale9Sprite("online_time_bg_96x36.png",0,0,cc.size(96,36),cc.rect(10,5,76,26))
-    --     :addTo(dragon_defence_btn):align(display.CENTER,0,-55):scale(SCALE)
-    -- local label = UIKit:ttfLabel({
-    --     size = 20,
-    --     align = cc.TEXT_ALIGNMENT_CENTER,
-    -- }):addTo(status_bg):align(display.CENTER,48,18)
     local this = self
     function dragon_defence_btn:CheckVisible()
         local defenceDragon = UtilsForDragon:GetDefenceDragon(this.city:GetUser())
@@ -96,9 +166,6 @@ function WidgetShortcutButtons:ctor(city)
             dragon_img:show()
             warning_icon:hide()
             dragon_defence_btn:stopAllActions()
-            -- label:setString(_("已驻防"))
-            -- status_bg:size(label:getContentSize().width+4,label:getContentSize().height+4)
-            -- label:setPosition(status_bg:getContentSize().width/2,status_bg:getContentSize().height/2)
         else
             dragon_img:hide()
             warning_icon:show()
@@ -110,9 +177,6 @@ function WidgetShortcutButtons:ctor(city)
                     }
                 )
             )
-            -- label:setString(_("未驻防"))
-            -- status_bg:size(label:getContentSize().width+4,label:getContentSize().height+4)
-            -- label:setPosition(status_bg:getContentSize().width/2,status_bg:getContentSize().height/2)
         end
         return true
     end
@@ -120,77 +184,21 @@ function WidgetShortcutButtons:ctor(city)
         return {width = dragon_defence_btn:getCascadeBoundingBox().size.width,height = dragon_defence_btn:getCascadeBoundingBox().size.height+30}
     end
 
-    order:AddElement(dragon_defence_btn)
+    right_top_order:AddElement(dragon_defence_btn)
 
-    --进入三级地图按钮
-    local world_map_btn_bg = display.newSprite("background_86x86.png")
-    local world_map_btn = UIKit:ButtonAddScaleAction(cc.ui.UIPushButton.new({normal = 'icon_world_88x88.png'})
-        :onButtonClicked(function()
-            if display.getRunningScene().__cname == "AllianceDetailScene" then
-                local x,y = display.getRunningScene():GetSceneLayer():GetMiddlePosition()
-                local mapIndex = DataUtils:GetAlliancePosition(x, y)
-                UIKit:newGameUI("GameUIWorldMap", nil, nil, mapIndex):AddToCurrentScene()
-            end
-        end)
-    ):align(display.CENTER,world_map_btn_bg:getContentSize().width/2 , world_map_btn_bg:getContentSize().height/2)
-        :addTo(world_map_btn_bg)
 
-    function world_map_btn_bg:CheckVisible()
-        return not Alliance_Manager:GetMyAlliance():IsDefault() and (display.getRunningScene().__cname == "WorldScene" or display.getRunningScene().__cname == "AllianceDetailScene")
+    -- 圣地时间按钮
+    local shrine_event_button = cc.ui.UIPushButton.new({normal = 'tmp_btn_shrine_74x90.png'})
+    shrine_event_button:onButtonClicked(function()
+        UIKit:newGameUI("GameUIAllianceShrine",self.city,"fight_event",Alliance_Manager:GetMyAlliance():GetAllianceBuildingInfoByName("shrine")):AddToCurrentScene(true)
+    end):scale(SCALE)
+    function shrine_event_button:CheckVisible()
+        return not Alliance_Manager:GetMyAlliance():IsDefault() and Alliance_Manager:GetMyAlliance().shrineEvents and #Alliance_Manager:GetMyAlliance().shrineEvents > 0
     end
-    function world_map_btn_bg:GetElementSize()
-        return world_map_btn_bg:getContentSize()
+    function shrine_event_button:GetElementSize()
+        return shrine_event_button:getCascadeBoundingBox().size
     end
-    function world_map_btn_bg:GetXY()
-        return {x = 0 ,y =  495 - display.top }
-    end
-    self.world_map_btn_bg = world_map_btn_bg
-    order:AddElement(world_map_btn_bg)
-
-    order:RefreshOrder()
-
-    self.left_order_group = order
-
-    local right_top_order = WidgetAutoOrder.new(WidgetAutoOrder.ORIENTATION.TOP_TO_BOTTOM,50,true):addTo(self):pos(display.right - 50, display.top-200)
-
-    -- 活动按钮
-    local button = cc.ui.UIPushButton.new(
-        {normal = "tips_66x64.png", pressed = "tips_66x64.png"},
-        {scale9 = false}
-    ):scale(SCALE)
-    WidgetLight.new():addTo(button, -1001):scale(0.6)
-    button:onButtonClicked(function(event)
-        if event.name == "CLICKED_EVENT" then
-            UIKit:newGameUI("GameUIActivityNew",self.city):AddToCurrentScene(true)
-        end
-    end)
-    function button:CheckVisible()
-        return true
-    end
-    function button:GetElementSize()
-        return {width = 66,height = 64}
-    end
-    right_top_order:AddElement(button)
-    button.tips_button_count = WidgetNumberTips.new():addTo(button):pos(20,-20)
-    -- local award_num = 0
-
-    -- if User:HaveEveryDayLoginReward() then
-    --     award_num = award_num + 1
-    -- end
-    -- if User:HaveContinutyReward() then
-    --     award_num = award_num + 1
-    -- end
-    -- if User:HavePlayerLevelUpReward() then
-    --     award_num = award_num + 1
-    -- end
-    -- button.tips_button_count:SetNumber(#User.iapGifts + award_num)
-    self.tips_button = button
-    self:CheckAllianceRewardCount(not User:GetNewsCount())
-
-    --在线活动
-    local activity_button = WidgetAutoOrderAwardButton.new():scale(SCALE)
-    right_top_order:AddElement(activity_button)
-
+    right_top_order:AddElement(shrine_event_button)
 
     -- 协助加速按钮
     self.help_button = cc.ui.UIPushButton.new(
@@ -218,41 +226,9 @@ function WidgetShortcutButtons:ctor(city)
     end
     right_top_order:AddElement(help_button)
 
-    --行军事件按钮
-    local alliance_belvedere_button = cc.ui.UIPushButton.new({normal = 'fight_62x70.png'})
-    alliance_belvedere_button.alliance_belvedere_events_count = WidgetNumberTips.new():addTo(alliance_belvedere_button):pos(20,-20)
-    alliance_belvedere_button:onButtonClicked(function()
-        UIKit:newGameUI("GameUIWatchTower", City, "march"):AddToCurrentScene(true)
-    end):scale(SCALE)
-    function alliance_belvedere_button:CheckVisible()
-        local to_my_events,out_march_events = Alliance_Manager:GetAboutMyMarchEvents()
-        local count = #to_my_events + #out_march_events
-        if count == 0 then
-            return false
-        end
-        alliance_belvedere_button.alliance_belvedere_events_count:SetNumber(count)
-        return true
-    end
-    function alliance_belvedere_button:GetElementSize()
-        return alliance_belvedere_button:getCascadeBoundingBox().size
-    end
-    right_top_order:AddElement(alliance_belvedere_button)
-
-    -- 圣地时间按钮
-    local shrine_event_button = cc.ui.UIPushButton.new({normal = 'tmp_btn_shrine_74x90.png'})
-    shrine_event_button:onButtonClicked(function()
-        UIKit:newGameUI("GameUIAllianceShrine",self.city,"fight_event",Alliance_Manager:GetMyAlliance():GetAllianceBuildingInfoByName("shrine")):AddToCurrentScene(true)
-    end):scale(SCALE)
-    function shrine_event_button:CheckVisible()
-        return not Alliance_Manager:GetMyAlliance():IsDefault() and Alliance_Manager:GetMyAlliance().shrineEvents and #Alliance_Manager:GetMyAlliance().shrineEvents > 0
-    end
-    function shrine_event_button:GetElementSize()
-        return shrine_event_button:getCascadeBoundingBox().size
-    end
-    right_top_order:AddElement(shrine_event_button)
-
     right_top_order:RefreshOrder()
     self.right_top_order = right_top_order
+
 end
 
 function WidgetShortcutButtons:onEnter()
@@ -350,16 +326,17 @@ function WidgetShortcutButtons:OnAllianceDataChanged_helpEvents()
     self.request_count:SetNumber(Alliance_Manager:GetMyAlliance():GetOtherRequestEventsNum())
 end
 function WidgetShortcutButtons:OnAllianceDataChanged_marchEvents(alliance, deltaData)
-    self.right_top_order:RefreshOrder()
+    self.left_order_group:RefreshOrder()
 end
 function WidgetShortcutButtons:OnAllianceDataChanged_shrineEvents(alliance, deltaData)
     self.right_top_order:RefreshOrder()
 end
 function WidgetShortcutButtons:OnUserDataChanged_vipEvents()
-    self.left_order_group:RefreshOrder()
+    -- self.left_order_group:RefreshOrder()
 end
 function WidgetShortcutButtons:OnBasicChanged()
-    self.left_order_group:RefreshOrder()
+    self.right_top_order:RefreshOrder()
+    -- self.left_order_group:RefreshOrder()
 end
 function WidgetShortcutButtons:OnMapDataChanged()
     self.right_top_order:RefreshOrder()

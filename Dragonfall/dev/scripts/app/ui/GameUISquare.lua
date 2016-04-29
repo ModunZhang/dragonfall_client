@@ -48,11 +48,13 @@ function GameUISquare:CreateSoldierUI()
             count = count + 1
         end
     end
-    content:setContentSize(cc.size(568,(count%4) * 166 + (count%4 -1) * 10))
+    local content_height = math.floor(count/4) * 166 + (math.floor(count/4) -1) * 10
+    content:setContentSize(cc.size(568,content_height))
+    content:setAnchorPoint(cc.p(0,0))
     local total_width = 568
     local unit_width = 130
     local unit_height = 166
-    local origin_y = (count%4) * 166 + (count%4 -1) * 10 - unit_height/2
+    local origin_y = content_height - unit_height/2
     local origin_x =  unit_width/2
     local gap_x = (total_width - unit_width * 4) / 3
     local add_count = 0
@@ -66,14 +68,14 @@ function GameUISquare:CreateSoldierUI()
         "sentinel_3", "crossbowman_3", "horseArcher_3", "ballista_3",
         "skeletonWarrior", "skeletonArcher", "deathKnight", "meatWagon",
     }) do
-    
+
         local soldier_star = UtilsForSoldier:SoldierStarByName(User, soldier_name)
         local soldier_num =  User.soldiers[soldier_name]
         if soldier_num > 0 then
             self.soldier_map[soldier_name] = WidgetSoldierBox.new(nil, function()
                 WidgetSoldierDetails.new(soldier_name, soldier_star):addTo(self)
             end):addTo(content)
-                :alignByPoint(cc.p(0.5, 0.5), origin_x + (unit_width + gap_x) * (add_count % 4) , origin_y - math.floor(add_count/4) *(unit_height + 10))
+                :alignByPoint(cc.p(0.5, 0.5), origin_x + (unit_width + gap_x) * (add_count % 4) , origin_y - math.floor(add_count/4) * (unit_height + 10))
                 :SetSoldier(soldier_name, soldier_star)
                 :SetNumber(soldier_num)
             add_count = add_count + 1
@@ -82,7 +84,7 @@ function GameUISquare:CreateSoldierUI()
         end
     end
     local item = list:newItem()
-    item:setItemSize(568,(count%4) * 166 + (count%4 -1) * 10)
+    item:setItemSize(568,content_height)
     item:addContent(content)
     list:addItem(item)
     list:reload()
@@ -117,6 +119,7 @@ function GameUISquare:OnUserDataChanged_soldierStarEvents()
     self:CreateSoldierUI()
 end
 return GameUISquare
+
 
 
 

@@ -290,6 +290,9 @@ local buildingName = GameDatas.AllianceMap.buildingName
 function Alliance:GetMapObjectType(mapobj)
     return buildingName[mapobj.name] and buildingName[mapobj.name].type or mapobj.name
 end
+function Alliance:GetMapObjectById(mapId)
+    return buildingName[mapobj.name] and buildingName[mapobj.name].type or mapobj.name
+end
 function Alliance:GetSizeWithMapObj(mapobj)
     local size = buildingName[mapobj.name]
     return size.width, size.height
@@ -383,6 +386,13 @@ function Alliance:IteratorCities(func)
 end
 function Alliance:IteratorVillages(func)
     for k,v in pairs(self:GetMapObjectsByType("village")) do
+        if func(k,v) then
+            return
+        end
+    end
+end
+function Alliance:IteratorMonsters(func)
+    for k,v in pairs(self:GetMapObjectsByType("monster")) do
         if func(k,v) then
             return
         end

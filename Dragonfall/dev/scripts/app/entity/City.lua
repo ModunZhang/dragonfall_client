@@ -684,6 +684,32 @@ function City:GetLowestestBuildingByType(type_)
     end
     return lowest
 end
+function City:GetLowestLeveltHouse()
+    local all_find_house = {}
+    local dwelling
+    local house_type = {
+        "dwelling",
+        "farmer",
+        "miner",
+        "quarrier",
+        "woodcutter",
+    }
+    for i,h_type in ipairs(house_type) do
+        local house
+        for _,v in ipairs(self:GetBuildingByType(h_type)) do
+            if not house or house:GetLevel() > v:GetLevel() then
+                house = v
+            end
+        end
+        if house then
+            table.insert(all_find_house, house)
+        end
+    end
+    table.sort( all_find_house, function ( a,b )
+        return a:GetLevel() < b:GetLevel()
+    end )
+    return all_find_house[1]
+end
 function City:GetBuildingByType(type_)
     local find_buildings = {}
     local filter = function(_, building)
@@ -1366,6 +1392,7 @@ end
 
 
 return City
+
 
 
 
