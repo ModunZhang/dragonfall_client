@@ -243,19 +243,20 @@ function GameUIBarracks:CreateItemWithListView(list_view, soldiers)
                     soldier_name, 
                     UtilsForSoldier:SoldierStarByName(self.barracks_city:GetUser(), soldier_name)
                 )
-        if self.need_recruit_soldier == soldier_name then
-            if arrow_left_dir_map[soldier_name] then
-                WidgetFteArrow.new(_("点击士兵"))
-                :addTo(self.soldier_map[soldier_name],1,111)
-                :TurnLeft():align(display.LEFT_CENTER, 50, 20)    
-            else
-                WidgetFteArrow.new(_("点击士兵"))
-                :addTo(self.soldier_map[soldier_name],1,111)
-                :TurnRight():align(display.RIGHT_CENTER, -50, 20)
-            end
-            self.soldier_map[soldier_name]:zorder(10)
-            need_up_view = true
-        end
+        -- if self.need_recruit_soldier == soldier_name then
+        --     if arrow_left_dir_map[soldier_name] then
+        --         WidgetFteArrow.new(_("点击士兵"))
+        --         :addTo(self.soldier_map[soldier_name],1,111)
+        --         :TurnLeft():align(display.LEFT_CENTER, 50, 40)    
+        --         assert(false)
+        --     else
+        --         WidgetFteArrow.new(_("点击士兵"))
+        --         :addTo(self.soldier_map[soldier_name],1,111)
+        --         :TurnRight():align(display.RIGHT_CENTER, -50, 40)
+        --     end
+        --     self.soldier_map[soldier_name]:zorder(10)
+        --     need_up_view = true
+        -- end
     end
 
     local item = list_view:newItem()
@@ -281,6 +282,7 @@ function GameUIBarracks:CreateSpecialItemWithListView( list_view, soldiers ,titl
                 if self.soldier_map[soldier_name]:IsLocked() then
                     return
                 end
+                self.soldier_map[soldier_name]:removeChildByTag(111)
                 WidgetRecruitSoldier.new(
                     self.barracks, 
                     self.barracks_city, 
@@ -299,11 +301,11 @@ function GameUIBarracks:CreateSpecialItemWithListView( list_view, soldiers ,titl
             if arrow_left_dir_map[soldier_name] then
                 WidgetFteArrow.new(_("点击士兵"))
                 :addTo(self.soldier_map[soldier_name],1,111)
-                :TurnLeft():align(display.LEFT_CENTER, 50, 20)    
+                :TurnLeft():align(display.LEFT_CENTER, 100, 80)    
             else
                 WidgetFteArrow.new(_("点击士兵"))
                 :addTo(self.soldier_map[soldier_name],1,111)
-                :TurnRight():align(display.RIGHT_CENTER, -50, 20)
+                :TurnRight():align(display.RIGHT_CENTER, -100, 80)
             end
             self.soldier_map[soldier_name]:zorder(10)
             need_up_view = true
