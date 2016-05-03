@@ -135,7 +135,9 @@ function WidgetEventsList:CreateListView()
             end
         end
         preEventIdx = preEventIdx or currentEvent.idx
-        listview:showItemWithPos(preEventIdx)
+        if preEventIdx then
+            listview:showItemWithPos(preEventIdx)
+        end
         self:ResetCurrentEvent()
     end
     listview:hide()
