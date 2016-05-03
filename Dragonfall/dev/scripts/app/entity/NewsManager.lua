@@ -19,7 +19,7 @@ function NewsManager:GetAllNewsFromServer()
 end
 -- 所有新闻
 function NewsManager:GetNewsData()
-    return self.newsData
+    return self.newsData or {} -- 如果未从服务器取到数据使其为空表
 end
 function NewsManager:OnNewsChanged(changeData)
     for i,change in ipairs(changeData) do
