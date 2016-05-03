@@ -571,7 +571,9 @@ function AllianceDetailScene:OnTouchClicked(pre_x, pre_y, x, y)
         local type_ = Alliance:GetMapObjectType(mapObj)
         app:GetAudioManager():PlayeEffectSoundWithKey("HOME_PAGE")
         if alliance then
-            mapObj.obj:removeChildByTag(INFO_TAG)
+            if mapObj.obj then
+                mapObj.obj:removeChildByTag(INFO_TAG)
+            end
             if type_ == "member"
                 or type_ == "village"
                 or type_ == "building" then
