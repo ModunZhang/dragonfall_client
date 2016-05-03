@@ -652,9 +652,7 @@ function GameUIActivityRewardNew:ui_FIRST_IN_PURGURE()
         emitter:setLife(math.random(1) + 1)
         emitter:setEmissionRate(1)
         emitter:addTo(bar):pos(126,585)
-        for i = 1, index * 25 do
-            emitter:update(0.01)
-        end
+        emitter:update(0.01)
     end))
 
 
