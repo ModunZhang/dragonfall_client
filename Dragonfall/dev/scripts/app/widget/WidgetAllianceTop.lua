@@ -14,7 +14,11 @@ local WidgetAllianceTop = class("WidgetAllianceTop", function ()
 end)
 
 function WidgetAllianceTop:ctor(alliance)
+    self.enable = true
     self.alliance = alliance
+end
+function WidgetAllianceTop:EnableAnimation(enable)
+    self.enable = enable
 end
 function WidgetAllianceTop:onEnter()
     local size = self:getContentSize()
@@ -71,6 +75,9 @@ function WidgetAllianceTop:OnUserDataChanged_allianceData(userData, deltaData)
     self:SetLoyalty(GameUtils:formatNumber(userData.allianceData.loyalty))
 end
 function WidgetAllianceTop:Change()
+    if not self.enable then
+        return
+    end
     local pv = self.pv
     if pv and not pv:IsOnTouch() and pv:getNumberOfRunningActions() < 1 then
         pv:setTouchEnabled(false)
@@ -144,6 +151,7 @@ function WidgetAllianceTop:CreateBtnsPageItem()
             color = 0xf5e8c4
         }):align(display.LEFT_CENTER, 0,-8)
         :addTo(honour_btn)
+    self.honour_btn = honour_btn
 
     -- 忠诚按钮
     local loyalty_btn = WidgetPushButton.new({normal = "dark_blue_btn_up_176x44.png",
@@ -246,7 +254,6 @@ function WidgetAllianceTop:CreateResourcesPageItem()
         }):addTo(resource_btn):pos(x + 20, 0)
     end
 end
-
 function WidgetAllianceTop:UIAllianceContributeClose()
     self.auto_change_page = scheduler.scheduleGlobal(handler(self, self.Change), 20.0, false)
     self.uiAllianceContribute:RemoveIsOpenObserver(self)

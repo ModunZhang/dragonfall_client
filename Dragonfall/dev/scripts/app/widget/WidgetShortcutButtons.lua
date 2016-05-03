@@ -92,6 +92,7 @@ function WidgetShortcutButtons:ctor(city)
         end)
     ):align(display.CENTER,world_map_btn_bg:getContentSize().width/2 , world_map_btn_bg:getContentSize().height/2)
         :addTo(world_map_btn_bg)
+    self.world_map_btn = world_map_btn
 
     function world_map_btn_bg:CheckVisible()
         return not Alliance_Manager:GetMyAlliance():IsDefault() and (display.getRunningScene().__cname == "WorldScene" or display.getRunningScene().__cname == "AllianceDetailScene")
