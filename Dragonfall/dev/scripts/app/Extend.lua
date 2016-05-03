@@ -36,47 +36,15 @@ plist_texture_data     = import(texture_data_file)
 if device.platform == 'android' and ext.isLowMemoryDevice() then
 
     -- 定义已有的低画质图片
-    local low_ram_texture_name = {
-        ['city_only0'] = "city_only_low_ram0",
-        ['buildings0'] = "buildings_low_ram0",
-        ['ui_png0'] = "ui_png_low_ram0",
-        ['ui_png1'] = "ui_png_low_ram1",
-        ['ui_png2'] = "ui_png_low_ram2",
-        ['level0'] = "level_low_ram0",
-        ['pve_only0'] = "pve_only_low_ram0",
-        ['ui_pvr0'] = "ui_pvr_low_ram0",
-        ['ui_pvr1'] = "ui_pvr_low_ram1",
-        ['ui_pvr2'] = "ui_pvr_low_ram2",
-    }
-
-    -- 将代码中原来使用高画质的图片名字替换成低画质的文件名称
-    local FilterLowRamTexture = function( textureName )
-        if not textureName then return textureName end
-        if device.platform ~= 'android' then return textureName end
-        local fileName,fileExt = string.match(textureName,"(.*)%.(.*)")
-        if not fileExt or not fileName or not low_ram_texture_name[fileName] then return textureName end
-        if fileExt ~= 'png' and fileExt ~= 'plist' then
-            return textureName
-        else
-            return low_ram_texture_name[fileName] .. "." .. fileExt
-        end
-    end
+    local low_ram_texture_name = plist_texture_data.low_raw_map
 
     local DEBUG_GET_ANIMATION_PATH_ = DEBUG_GET_ANIMATION_PATH
     DEBUG_GET_ANIMATION_PATH = function (path)
         local ret = DEBUG_GET_ANIMATION_PATH_(path)
-        return FilterLowRamTexture(ret)
+        return low_ram_texture_name[ret] or ret
     end
-
     -- 更新查找单张图片从低画质的大图中查询
-    for k,v in pairs(plist_texture_data) do
-        if k ~= 'sd' then 
-            local image_key = string.gsub(v,"%.png","")
-            if low_ram_texture_name[image_key] then
-                plist_texture_data[k] = low_ram_texture_name[image_key] .. ".png"
-            end
-        end
-    end
+    plist_texture_data = plist_texture_data.low_raw_texture
 end
 
 
