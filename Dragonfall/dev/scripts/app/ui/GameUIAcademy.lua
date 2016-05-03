@@ -96,15 +96,13 @@ function GameUIAcademy:OnMoveInStage()
 
     scheduleAt(self, function()
         if not User:HasProductionTechEvent() then return end
+        if not (self.tabs:GetSelectedButtonTag() == "technology") then return end
         local event = User.productionTechEvents[1]
         local time, percent = UtilsForEvent:GetEventInfo(event)
-        if time > DataUtils:getFreeSpeedUpLimitTime() then
-            self.speedButton:show()
-            self.freeSpeedUpButton:hide()
-        else
-            self.speedButton:hide()
-            self.freeSpeedUpButton:show()
-        end
+        local isvisible = time > DataUtils:getFreeSpeedUpLimitTime()
+        self.speedButton:setVisible(isvisible)
+        self.freeSpeedUpButton:setVisible(not isvisible)
+
         local str = UtilsForTech:GetTechLocalize(event.name)
         local next_level = User.productionTechs[event.name].level + 1
         self.upgrade_label:setString(string.format(_("正在研发%s到 Level %d"), str, next_level))

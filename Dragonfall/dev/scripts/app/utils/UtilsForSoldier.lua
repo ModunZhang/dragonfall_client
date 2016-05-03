@@ -75,3 +75,18 @@ function UtilsForSoldier:SoldierStarByName(userData, soldier_name)
         and soldiers_special[soldier_name].star
          or userData.soldierStars[soldier_name] or 1
 end
+function UtilsForSoldier:TotalSoldiers(userData)
+    local soldierCountMap = {}
+    for k,v in pairs(userData.soldiers) do
+        soldierCountMap[k] = (soldierCountMap[k] or 0) + v
+    end
+    for i,troop in ipairs(userData.troopsOut) do
+        for k,v in pairs(troop.soldiers) do
+            soldierCountMap[v.name] = soldierCountMap[v.name] + v.count
+        end
+    end
+    for i,event in ipairs(userData.soldierEvents) do
+        soldierCountMap[event.name] = soldierCountMap[event.name] + event.count
+    end
+    return soldierCountMap
+end

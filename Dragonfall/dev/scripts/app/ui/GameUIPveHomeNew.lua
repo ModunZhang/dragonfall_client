@@ -13,6 +13,13 @@ local timer = app.timer
 
 
 
+function GameUIPveHomeNew:OnUserDataChanged_countInfo(userData, deltaData)
+    if self.task and self.task:TaskType() == "pveCount" then
+        if deltaData("countInfo.pveCount") then
+            self:OnUserDataChanged_growUpTasks()
+        end
+    end
+end
 function GameUIPveHomeNew:OnUserDataChanged_growUpTasks()
     local growUpTasks = User.growUpTasks
     local completeTask = UtilsForTask:GetFirstCompleteTasks(growUpTasks)[1]
@@ -74,6 +81,7 @@ function GameUIPveHomeNew:onEnter()
 
 
     User:AddListenOnType(self, "growUpTasks")
+    User:AddListenOnType(self, "countInfo")
     self:OnUserDataChanged_growUpTasks()
     display.newNode():addTo(self):schedule(function()
         local star = User:GetStageStarByIndex(self.level)
@@ -97,6 +105,7 @@ function GameUIPveHomeNew:onEnter()
 end
 function GameUIPveHomeNew:onExit()
     User:RemoveListenerOnType(self, "growUpTasks")
+    User:RemoveListenerOnType(self, "countInfo")
 end
 function GameUIPveHomeNew:CreateTop()
     local top_bg = display.newSprite("head_bg.png")

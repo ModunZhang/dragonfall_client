@@ -806,6 +806,62 @@ function GameUIAllianceHome:GetAlliancePeriod()
     return period
 end
 
+
+local WidgetFteArrow = import("..widget.WidgetFteArrow")
+local WidgetFteMark = import("..widget.WidgetFteMark")
+local UILib = import("..ui.UILib")
+local FTE_TAG = 10018
+function GameUIAllianceHome:ShowHonorFte(isshow)
+    self:removeChildByTag(FTE_TAG)
+    if not isshow then
+        self.page_top:EnableAnimation(true)
+        return
+    end
+    self.page_top:EnableAnimation(false)
+    local fteNode = display.newNode():addTo(self,10,FTE_TAG)
+    local r = self.page_top.honour_btn:getCascadeBoundingBox()
+    local mark = WidgetFteMark.new():addTo(fteNode)
+    :size(r.width+30, r.height+30)
+    :pos(r.x + r.width/2, r.y + r.height/2)
+
+    local content = display.newNode()
+    local totalsize = 0
+    local maxheight = 0
+    for i,v in ipairs({
+        UILib.resource.iron,
+        UILib.resource.food,
+        UILib.resource.wood,
+        UILib.resource.coin,
+        UILib.resource.stone,
+        UILib.resource.gem,
+    }) do
+        local scale = UILib.resource.gem ~= v and 0.5 or 0.8
+        local sprite = display.newSprite(v):addTo(content)
+        :align(display.LEFT_CENTER,totalsize,0):scale(scale)
+        local size = sprite:getContentSize()
+        if maxheight < size.height * scale then
+            maxheight = size.height * scale
+        end
+        totalsize = totalsize + size.width * scale + 15
+    end
+    content:setContentSize(cc.size(totalsize-15,maxheight))
+    WidgetFteArrow.new(content):TurnDown(false):addTo(fteNode):scale(0.8)
+    :pos(r.x + r.width/2+(totalsize-15)/2, r.y + r.height/2+maxheight+20)
+end
+function GameUIAllianceHome:ShowWorldMap(isshow)
+    self:GetShortcutNode().world_map_btn:removeChildByTag(FTE_TAG)
+    if not isshow then
+        return
+    end
+    self:GetShortcutNode().world_map_btn:onButtonClicked(function()
+        self:ShowWorldMap()
+    end)
+    WidgetFteArrow.new(_("世界地图")):TurnLeft()
+    :addTo(self:GetShortcutNode().world_map_btn,100,FTE_TAG)
+    :pos(200,0)
+
+end
+
 return GameUIAllianceHome
 
 

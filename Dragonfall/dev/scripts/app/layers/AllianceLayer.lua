@@ -645,8 +645,6 @@ function AllianceLayer:RemoveMapObject(mapObj)
     mapObj:removeFromParent()
 end
 function AllianceLayer:AddMapObject(objects_node, mapObj, alliance)
-    local x,y = mapObj.location.x, mapObj.location.y
-    local mapObject = objects_node.mapObjects[mapObj.id]
     local sprite
     if mapObj.name == "member" then
         sprite = createEffectSprite("my_keep_1.png")
@@ -1524,9 +1522,73 @@ function AllianceLayer:RemoveCorpsCircle(corps)
         corps:removeChildByTag(CIRCLE_TAG)
     end
 end
+
+
 --
 function AllianceLayer:getContentSize()
     return worldsize
+end
+
+--
+local WidgetFteMark = import("..widget.WidgetFteMark")
+local FTE_TAG = 10231
+function AllianceLayer:AddUpgradeFlag(index)
+    local objects = self.alliance_objects[index]
+    if objects then
+        local fte_node = display.newNode():addTo(objects,999999999,FTE_TAG)
+        
+        local size = objects.buildings["palace"]:getCascadeBoundingBox()
+        local x,y = objects.buildings["palace"]:getPosition()
+        WidgetFteMark.new():addTo(fte_node,0,FTE_TAG)
+        :Size(size.width*1.1,size.height*1.1):pos(x,y):stopAllActions()
+        display.newSprite("upgrade.png"):addTo(fte_node):pos(x-size.width/2+5,y+90)
+        
+        -- local size = objects.buildings["orderHall"]:getCascadeBoundingBox()
+        local x,y = objects.buildings["orderHall"]:getPosition()
+        WidgetFteMark.new():addTo(fte_node,0,FTE_TAG)
+        :Size(size.width*1.1,size.height*1.1):pos(x,y):stopAllActions()
+        display.newSprite("upgrade.png"):addTo(fte_node):pos(x-size.width/2+5,y+90)
+    end
+end
+local WidgetFteArrow = import("..widget.WidgetFteArrow")
+function AllianceLayer:AddShrineFlag(index)
+    local objects = self.alliance_objects[index]
+    if objects then
+        local fte_node = display.newNode():addTo(objects,999999999,FTE_TAG)
+
+        local size = objects.buildings["shrine"]:getCascadeBoundingBox()
+        local x,y = objects.buildings["shrine"]:getPosition()
+        local mark = WidgetFteMark.new():addTo(fte_node,0,FTE_TAG)
+        :Size(size.width*1.1,size.height*1.1):pos(x,y):stopAllActions()
+
+
+        local content = display.newNode()
+        local totalsize = 0
+        local maxheight = 0
+        for i,v in ipairs({
+            UILib.dragon_material_pic_map.greenCrystal_1,
+            UILib.dragon_material_pic_map.greenCrystal_2,
+            UILib.dragon_material_pic_map.greenCrystal_3,
+            UILib.dragon_material_pic_map.greenCrystal_4,
+        }) do
+            local scale = 0.3
+            local sprite = display.newSprite(v):addTo(content)
+            :align(display.LEFT_CENTER,totalsize,0):scale(scale)
+            local size = sprite:getContentSize()
+            if maxheight < size.height * scale then
+                maxheight = size.height * scale
+            end
+            totalsize = totalsize + size.width * scale + 10
+        end
+        content:setContentSize(cc.size(totalsize-10,maxheight))
+        WidgetFteArrow.new(content):TurnDown():addTo(mark):pos(size.width/2,size.height+80)
+    end
+end
+function AllianceLayer:RemoveFlag(index)
+    local objects = self.alliance_objects[index]
+    if objects then
+        objects:removeChildByTag(FTE_TAG)
+    end
 end
 
 
