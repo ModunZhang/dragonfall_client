@@ -363,18 +363,18 @@ function GameUIActivityRewardNew:ui_CONTINUITY()
         color= 0xffedae,
     }):align(display.LEFT_CENTER,20,15):addTo(title_bg)
     UIKit:ttfLabel({
-        text = _("七天后可激活"),
+        text = _("三天后可激活"),
         size = 20,
         color= 0x403c2f,
     }):align(display.LEFT_CENTER,title_bg:getPositionX(),self.height - 90):addTo(self.bg)
     local text_1 = UIKit:ttfLabel({
-        text = User.countInfo.day14 > 7 and 7 or User.countInfo.day14,
+        text = User.countInfo.day14 > 3 and 3 or User.countInfo.day14,
         size = 22,
         color= 0x238700,
     }):align(display.LEFT_CENTER,title_bg:getPositionX(),self.height - 130):addTo(self.bg)
     self.march_queue_text = text_1
     UIKit:ttfLabel({
-        text = "/7",
+        text = "/3",
         size = 22,
         color= 0x403c2f,
     }):align(display.LEFT_CENTER,text_1:getPositionX()+text_1:getContentSize().width,self.height - 130):addTo(self.bg)
@@ -392,7 +392,6 @@ function GameUIActivityRewardNew:ui_CONTINUITY()
             end)
         end)
         :setButtonEnabled(User.countInfo.day14==7)
-    print("User.basicInfo.marchQueue=",User.basicInfo.marchQueue)
     if User.basicInfo.marchQueue == 2 then
         button:setVisible(false)
         local title_label = UIKit:ttfLabel({
