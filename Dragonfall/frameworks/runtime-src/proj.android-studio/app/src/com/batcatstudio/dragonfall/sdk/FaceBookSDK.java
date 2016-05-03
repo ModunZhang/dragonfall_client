@@ -39,8 +39,22 @@ public class FaceBookSDK {
 		initJNI();
 		//#endif
 	}
-	
+
+
 	public static void Initialize()
+	{
+//#ifdef CC_USE_FACEBOOK
+	AppActivity.getGameActivity().runOnGLThread(new Runnable() {
+		@Override
+		public void run() {
+			InitializeAction();
+		}
+	});
+//#endif
+	}
+
+
+	public static void InitializeAction()
 	{
 //#ifdef CC_USE_FACEBOOK
 		FacebookSdk.sdkInitialize(AppActivity.getGameActivity().getApplicationContext());

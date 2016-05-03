@@ -183,7 +183,7 @@ function GameUIHome:CreateTop()
         end):addTo(top_bg):align(display.LEFT_CENTER,64, top_bg:getContentSize().height/2)
     button:setContentSize(cc.size(90,100))
     -- 玩家名字背景加文字
-    local ox = 150
+    -- local ox = 150
     -- local name_bg = display.newSprite("player_name_bg_168x30.png"):addTo(top_bg)
     --     :align(display.TOP_LEFT, ox, top_bg:getContentSize().height-10):setCascadeOpacityEnabled(true)
     -- self.name_label = cc.ui.UILabel.new({
@@ -320,8 +320,8 @@ function GameUIHome:CreateTop()
     self.gem_label = UIKit:CreateNumberImageNode({
         size = 20,
         color = 0xffd200,
-    }):addTo(button):align(display.CENTER, -14, 0)
-    WidgetEventsList.new():addTo(top_bg):align(display.LEFT_TOP, 60, 15)
+    }):addTo(button):align(display.CENTER, -14, -1)
+    WidgetEventsList.new():addTo(self):align(display.LEFT_TOP, window.left + (display.width>640 and 14 or 0), display.top - 100)
     return top_bg
 end
 function GameUIHome:GotoUnlockBuilding(location)

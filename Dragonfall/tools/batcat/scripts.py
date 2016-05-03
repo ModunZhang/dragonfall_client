@@ -87,6 +87,15 @@ def exportScriptsEncrypt():
                 comand = "%s -q" % comand
             executeCommand(comand, QUIET_MODE)
         else:
+            check_file = formatPath("%s/game_check.zip" % TEMP_RES_DIR)
+            Logging.warning("开始lua编译检测Lua代码")
+            comand = "%s -i %s -o %s -e xxtea_zip -ex lua -ek %s -es %s" % (
+                SCRIPT_COMPILE_TOOL, SCRIPTS_SRC_DIR, check_file, XXTEAKey, XXTEASign)
+            if QUIET_MODE:
+                comand = "%s -q" % comand
+            executeCommand(comand, QUIET_MODE)
+            Logging.info("清理临时文件")
+            removeTempFiles(SCRIPTS_SRC_DIR, "bytes")
             Logging.info("不编译lua为字节码")
             if not createZipFileWithDirPath(SCRIPTS_SRC_DIR, tempfile, getTempFileExtensions()):
                 die("压缩lua文件错误")

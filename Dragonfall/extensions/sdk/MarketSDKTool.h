@@ -12,6 +12,11 @@
  */
 class MarketSDKTool
 {
+private:
+    /**
+     *  内置方法是否关闭sdk的功能
+     */
+    bool shouldCloseSDK();
 public:
     static MarketSDKTool *getInstance();
     virtual void destroyInstance();
@@ -66,7 +71,7 @@ public:
      */
     virtual void initSDK();
     /**
-     *  记录自定义事件
+     *  记录自定义事件到TD
      *
      *  @param event_id 事件名称或id
      *  @param arg      额外参数

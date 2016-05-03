@@ -322,8 +322,9 @@ function WidgetMarchEvents:GetDragonHead(dragon_type)
 end
 -- 只有加速按钮和部队
 function WidgetMarchEvents:CreateReturnItem(event, eventType)
-    local node = display.newSprite("tab_event_bar.png"):align(display.LEFT_CENTER)
+    local node = display.newScale9Sprite("background_event_42x42.png"):size(638,47):align(display.LEFT_CENTER)
     local half_height = node:getContentSize().height / 2
+    display.newScale9Sprite("line_1x42.png"):pos(478, half_height):addTo(node):size(2,44)
     node.progress = display.newProgressTimer("tab_progress_bar.png",
         display.PROGRESS_TIMER_BAR):addTo(node)
         :align(display.LEFT_CENTER, 4, half_height)
@@ -354,43 +355,45 @@ function WidgetMarchEvents:CreateReturnItem(event, eventType)
         shadow = true,
     }):addTo(node):align(display.RIGHT_CENTER, WIDGET_WIDTH - 170, half_height)
     node.speed_btn = WidgetPushButton.new({
-        normal = "march_speedup_btn_up.png",
-        pressed = "march_speedup_btn_down.png",
+        normal = "green_btn_up_108x38.png",
+        pressed = "green_btn_down_108x38.png",
         disabled= "disable_75x39.png",
-    }):addTo(node):align(display.RIGHT_CENTER, WIDGET_WIDTH - 6, half_height)
-        :setButtonLabel(UIKit:commonButtonLable({
-            text = _("加速"),
-            size = 16,
-            color= 0xfff3c7,
-            shadow = true,
-        }))
+    },{scale9 = true}):addTo(node):align(display.RIGHT_CENTER, WIDGET_WIDTH - 6, half_height)
         :onButtonClicked(function()
             self:OnSpeedUpButtonClicked(event, eventType)
         end)
-
+    node.speed_btn:setButtonSize(75, 39)
+    UIKit:commonButtonLable({
+        text = _("加速"),
+        size = 16,
+        color= 0xfff3c7,
+        shadow = true,
+    }):addTo(node.speed_btn):pos(-55,0)
 
     node.return_btn = WidgetPushButton.new({
-        normal = "yellow_btn_up_75x39.png",
-        pressed = "yellow_btn_down_75x39.png",
+        normal = "yellow_btn_up_108x38.png",
+        pressed = "yellow_btn_down_108x38.png",
         disabled= "disable_75x39.png",
-    }):addTo(node):align(display.RIGHT_CENTER, WIDGET_WIDTH - 84, half_height)
-        :setButtonLabel(UIKit:commonButtonLable({
-            text = _("部队"),
-            size = 16,
-            color= 0xfff3c7,
-            shadow = true,
-        }))
+    },{scale9 = true}):addTo(node):align(display.RIGHT_CENTER, WIDGET_WIDTH - 84, half_height)
         :onButtonClicked(function()
             self:OnInfoButtonClicked(event, eventType)
         end)
+    node.return_btn:setButtonSize(75, 39)
+    UIKit:commonButtonLable({
+        text = _("部队"),
+        size = 16,
+        color= 0xfff3c7,
+        shadow = true,
+    }):addTo(node.return_btn):pos(-55,0)
     node.eventType = eventType
     node.event = event
     return node
 end
 --加速和撤退
 function WidgetMarchEvents:CreateAttackItem(event, eventType)
-    local node = display.newSprite("tab_event_bar.png"):align(display.LEFT_CENTER)
+    local node = display.newScale9Sprite("background_event_42x42.png"):size(638,47):align(display.LEFT_CENTER)
     local half_height = node:getContentSize().height / 2
+    display.newScale9Sprite("line_1x42.png"):pos(478, half_height):addTo(node):size(2,44)
     node.progress = display.newProgressTimer("tab_progress_bar.png",
         display.PROGRESS_TIMER_BAR):addTo(node)
         :align(display.LEFT_CENTER, 4, half_height)
@@ -422,43 +425,46 @@ function WidgetMarchEvents:CreateAttackItem(event, eventType)
     }):addTo(node):align(display.RIGHT_CENTER, WIDGET_WIDTH - 170, half_height)
 
     node.speed_btn = WidgetPushButton.new({
-        normal = "march_speedup_btn_up.png",
-        pressed = "march_speedup_btn_down.png",
-        disabled= "disable_75x39.png",
-    }):addTo(node):align(display.RIGHT_CENTER, WIDGET_WIDTH - 6, half_height)
-        :setButtonLabel(UIKit:commonButtonLable({
-            text = _("加速"),
-            size = 16,
-            color= 0xfff3c7,
-            shadow = true,
-        }))
+        normal = "green_btn_up_108x38.png",
+        pressed = "green_btn_down_108x38.png",
+        disabled= "grey_btn_108x38.png",
+    },{scale9 = true}):addTo(node):align(display.RIGHT_CENTER, WIDGET_WIDTH - 6, half_height)
         :onButtonClicked(function()
             self:OnSpeedUpButtonClicked(event, eventType)
         end)
+    node.speed_btn:setButtonSize(75, 39)
+    UIKit:commonButtonLable({
+        text = _("加速"),
+        size = 16,
+        color= 0xfff3c7,
+        shadow = true,
+    }):addTo(node.speed_btn):pos(-55,0)
 
 
     node.return_btn = WidgetPushButton.new({
-        normal = "march_return_btn_up.png",
-        pressed = "march_return_btn_down.png",
-        disabled= "disable_75x39.png",
-    }):addTo(node):align(display.RIGHT_CENTER, WIDGET_WIDTH - 84, half_height)
-        :setButtonLabel(UIKit:commonButtonLable({
-            text = _("撤退"),
-            size = 16,
-            color= 0xfff3c7,
-            shadow = true,
-        }))
+        normal = "red_btn_up_108x38.png",
+        pressed = "red_btn_down_108x38.png",
+        disabled= "grey_btn_108x38.png",
+    },{scale9 = true}):addTo(node):align(display.RIGHT_CENTER, WIDGET_WIDTH - 84, half_height)
         :onButtonClicked(function()
             self:OnRetreatButtonClicked(event, eventType)
         end)
+    node.return_btn:setButtonSize(75, 39)
+    UIKit:commonButtonLable({
+        text = _("撤退"),
+        size = 16,
+        color= 0xfff3c7,
+        shadow = true,
+    }):addTo(node.return_btn):pos(-55,0)
     node.eventType = eventType
     node.event = event
     return node
 end
 --只有撤退和部队
 function WidgetMarchEvents:CreateDefenceItem(event, eventType)
-    local node = display.newSprite("tab_event_bar.png"):align(display.LEFT_CENTER)
+    local node = display.newScale9Sprite("background_event_42x42.png"):size(638,47):align(display.LEFT_CENTER)
     local half_height = node:getContentSize().height / 2
+    display.newScale9Sprite("line_1x42.png"):pos(478, half_height):addTo(node):size(2,44)
     node.progress = display.newProgressTimer("tab_progress_bar.png",
         display.PROGRESS_TIMER_BAR):addTo(node)
         :align(display.LEFT_CENTER, 4, half_height)
@@ -516,35 +522,36 @@ function WidgetMarchEvents:CreateDefenceItem(event, eventType)
     }):addTo(node):align(display.RIGHT_CENTER, WIDGET_WIDTH - 170, half_height)
 
     node.speed_btn = WidgetPushButton.new({
-        normal = "march_return_btn_up.png",
-        pressed = "march_return_btn_down.png",
-        disabled= "disable_75x39.png",
-    }):addTo(node):align(display.RIGHT_CENTER, WIDGET_WIDTH - 6, half_height)
-        :setButtonLabel(UIKit:commonButtonLable({
-            text = _("撤军"),
-            size = 16,
-            color= 0xfff3c7,
-            shadow = true,
-        }))
+        normal = "red_btn_up_108x38.png",
+        pressed = "red_btn_down_108x38.png",
+        disabled= "grey_btn_108x38.png",
+    },{scale9 = true}):addTo(node):align(display.RIGHT_CENTER, WIDGET_WIDTH - 6, half_height)
         :onButtonClicked(function()
             self:OnRetreatButtonClicked(event, eventType)
         end):setButtonEnabled(eventType ~= "shrineEvents")
-
+    node.speed_btn:setButtonSize(75, 39)
+    UIKit:commonButtonLable({
+        text = _("撤军"),
+        size = 16,
+        color= 0xfff3c7,
+        shadow = true,
+    }):addTo(node.speed_btn):pos(-55,0)
 
     node.return_btn = WidgetPushButton.new({
-        normal = "yellow_btn_up_75x39.png",
-        pressed = "yellow_btn_down_75x39.png",
-        disabled= "disable_75x39.png",
-    }):addTo(node):align(display.RIGHT_CENTER, WIDGET_WIDTH - 84, half_height)
-        :setButtonLabel(UIKit:commonButtonLable({
-            text = _("部队"),
-            size = 16,
-            color= 0xfff3c7,
-            shadow = true,
-        }))
+        normal = "yellow_btn_up_108x38.png",
+        pressed = "yellow_btn_down_108x38.png",
+        disabled= "grey_btn_108x38.png",
+    },{scale9 = true}):addTo(node):align(display.RIGHT_CENTER, WIDGET_WIDTH - 84, half_height)
         :onButtonClicked(function()
             self:OnInfoButtonClicked(event, eventType)
         end)
+    node.return_btn:setButtonSize(75, 39)
+    UIKit:commonButtonLable({
+        text = _("部队"),
+        size = 16,
+        color= 0xfff3c7,
+        shadow = true,
+    }):addTo(node.return_btn):pos(-55,0)
     node.eventType = eventType
     node.event = event
     return node
@@ -650,6 +657,10 @@ function WidgetMarchEvents:OnInfoButtonClicked(event, eventType)
     UIKit:newGameUI("GameUIWatchTowerMyTroopsDetail", event, eventType):AddToCurrentScene(true)
 end
 return WidgetMarchEvents
+
+
+
+
 
 
 
