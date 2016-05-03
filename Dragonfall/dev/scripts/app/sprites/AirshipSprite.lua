@@ -60,6 +60,12 @@ function AirshipSprite:CreateSprite()
         display.newSprite("battery_cell.png")
             :addTo(self.battery,0, 5 + i):pos((i-1) * 7 + x, (i-1) * 4 + y)
     end
+    display.newSprite("back_ground_134x42.png"):addTo(sprite):pos(p.x - 36, p.y - 100)
+    UIKit:ttfLabel({
+        text = _("探索"),
+        size = 20,
+        color = 0xffedae
+        }):addTo(sprite):align(display.CENTER, p.x - 36, p.y - 100)
     return sprite
 end
 function AirshipSprite:GetSpriteOffset()
