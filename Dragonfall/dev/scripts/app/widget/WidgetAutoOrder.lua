@@ -85,9 +85,9 @@ function WidgetAutoOrder:RefreshOrder()
                 end
                 -- 只有从上到下的形式支持下拉收缩
                 if self.order_type == WidgetAutoOrder.ORIENTATION.TOP_TO_BOTTOM and self.isEnableDrop then
-                    self.final_y = v:getPositionY() - self.default_gap
+                    self.final_y = v:getPositionY() - self.default_gap - 20
                     if i == 1 then
-                        self.first_y = v:getPositionY() - self.default_gap
+                        self.first_y = v:getPositionY() - self.default_gap - 20
                     end
                 end
             else
