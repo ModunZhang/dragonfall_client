@@ -74,7 +74,7 @@ function WidgetInput:ctor(params)
 
                 self.current_value = e_value
             end
-            callback(self.current_value)
+            callback(math.floor(self.current_value/exchange))
         end
     end
 
@@ -112,7 +112,7 @@ function WidgetInput:ctor(params)
         color = 0x403c2f
     }):addTo(body)
         :align(display.LEFT_CENTER, editbox:getPositionX()+70,editbox:getPositionY())
-    -- 升级按钮
+    
     WidgetPushButton.new({normal = "yellow_btn_up_148x58.png",pressed = "yellow_btn_down_148x58.png"})
         :setButtonLabel(UIKit:ttfLabel({
             text = _("确定"),
@@ -122,7 +122,7 @@ function WidgetInput:ctor(params)
         }))
         :onButtonClicked(function(event)
             if event.name == "CLICKED_EVENT" then
-                callback(self.current_value)
+                callback(math.floor(self.current_value/exchange))
                 self:LeftButtonClicked()
             end
         end):align(display.CENTER, editbox:getPositionX(),editbox:getPositionY()-80):addTo(body)
