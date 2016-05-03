@@ -78,8 +78,7 @@ end
 function UtilsForSoldier:TotalSoldiers(userData)
     local soldierCountMap = {}
     for k,v in pairs(userData.soldiers) do
-        soldierCountMap[v.name] = soldierCountMap[v.name] or 0
-        soldierCountMap[v.name] = soldierCountMap[v.name] + v.count
+        soldierCountMap[k] = (soldierCountMap[k] or 0) + v
     end
     for i,troop in ipairs(userData.troopsOut) do
         for k,v in pairs(troop.soldiers) do
