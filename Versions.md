@@ -21,6 +21,7 @@ Version | Git SHA-1 | Release Notes
 1.1.2(946)   | 40a8d19 | February 25, 2016
 1.1.2(1569)  | b2b2467 | appVersion: 1.1.3 appMinVersion:1.1.2
 1.1.2(1640)  | 12d0a3f | appVersion: 1.1.3 appMinVersion:1.1.2
+1.1.2(1796)  | f1a0ade | appVersion: 1.1.3 appMinVersion:1.1.2
 
 ### Android
 
@@ -39,3 +40,4 @@ Version | Git SHA-1 | Release Notes
 Version | Git SHA-1 | Release Notes
 ------------ | ------------- | ------------
 1.1.3(1560)  | a043190       | 
+1.1.3(1815)  | 442e2df       | appx 1.1.3.3
