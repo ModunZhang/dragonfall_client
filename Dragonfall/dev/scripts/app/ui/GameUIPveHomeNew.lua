@@ -119,7 +119,8 @@ function GameUIPveHomeNew:CreateTop()
         color = 0xffedae,
     }):addTo(top_bg):align(display.LEFT_CENTER, 130, size.height/2 + 10)
 
-    local star = display.newSprite("tmp_pve_star_bg.png"):addTo(top_bg):pos(size.width - 210, 55):scale(0.6)
+    local stars_bg = display.newSprite("online_time_bg_96x36.png"):addTo(top_bg):align(display.LEFT_CENTER,size.width - 124, -95):scale(0.8)
+    local star = display.newSprite("tmp_pve_star_bg.png"):addTo(top_bg):pos(size.width - 124, -95):scale(0.6)
                  display.newSprite("tmp_pve_star.png"):addTo(star):pos(32,32)
 
     self.stars = UIKit:ttfLabel({
@@ -127,34 +128,34 @@ function GameUIPveHomeNew:CreateTop()
         size = 20,
         color = 0xffedae,
         shadow = true,
-    }):addTo(top_bg):align(display.LEFT_CENTER, size.width - 210 + 25, 55)
+    }):addTo(top_bg):align(display.LEFT_CENTER, size.width - 124 + 20, -95)
 
 
 
-    local reward_btn = cc.ui.UIPushButton.new(
-        {normal = "back_ground_box.png", pressed = "back_ground_box.png"}
-        ,{})
-        :addTo(top_bg, 1):align(display.CENTER, size.width - 80, 55):scale(0.8)
+    local reward_btn = cc.ui.UIPushButton.new()
+        :addTo(top_bg, 1)
         :onButtonClicked(function(event)
             UIKit:newGameUI("GameUIPveReward", self.level):AddToCurrentScene(true)
         end)
+    reward_btn:setContentSize(cc.size(66,66))
+    reward_btn:align(display.CENTER, size.width - 55, 0)
+    self.reward_icon = display.newSprite("bottom_icon_package_66x66.png"):addTo(reward_btn)
 
-    self.reward_icon = display.newSprite("bottom_icon_package_66x66.png"):addTo(reward_btn):scale(1.3)
 
     local button = cc.ui.UIPushButton.new(
-        {normal = "gem_btn_up_196x68.png", pressed = "gem_btn_down_196x68.png"},
+        {normal = "gem_btn_up.png", pressed = "gem_btn_down.png"},
         {scale9 = false}
     ):onButtonClicked(function(event)
         UIKit:newGameUI("GameUIStore"):AddToCurrentScene(true)
-    end):addTo(top_bg):pos(top_bg:getContentSize().width - 130, -20)
-    local gem_icon = display.newSprite("store_gem_260x116.png"):addTo(button):pos(59, 6):scale(0.5)
+    end):addTo(top_bg):pos(top_bg:getContentSize().width - 130,55)
+    local gem_icon = display.newSprite("store_gem_260x116.png"):addTo(button):pos(55, 2):scale(0.5)
     light_gem():addTo(gem_icon, 1022):pos(260/2, 116/2)
 
     self.gem_label = UIKit:ttfLabel({
         text = string.formatnumberthousands(City:GetUser():GetGemValue()),
         size = 20,
         color = 0xffd200,
-    }):addTo(button):align(display.CENTER, -30, 8)
+    }):addTo(button):align(display.CENTER, -18, 0)
 
 
     local pve_back = display.newSprite("back_ground_pve.png"):addTo(top_bg)
