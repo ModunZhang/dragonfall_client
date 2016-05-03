@@ -95,21 +95,21 @@ function WidgetEventsList:ChangeDropStatus()
 end
 -- 创建列表
 function WidgetEventsList:CreateListView()
-    if not self.listview then
-        local listview = UIListView.new{
-            -- bgColor = UIKit:hex2c4b(0x7a10ff00),
-            viewRect = cc.rect(0,0, WIDGET_WIDTH, 180),
-            direction = cc.ui.UIScrollView.DIRECTION_VERTICAL,
-            scrollbarImgV = "line_4x40.png"
-        -- }:addTo(display.getRunningScene()):pos(150,600)
-        }:addTo(self):pos(0, 34)
-        self.listview = listview
+    if self.listview then
+        self.listview:removeFromParent()
+        self.listview = nil
     end
-
-    local listview = self.listview
+    local all_events = self:GetAllUpgradeEvents()
+    local listview = UIListView.new{
+        -- bgColor = UIKit:hex2c4b(0x7a10ff00),
+        viewRect = cc.rect(0,0, WIDGET_WIDTH, #all_events == 2 and 135 or 180),
+        direction = cc.ui.UIScrollView.DIRECTION_VERTICAL,
+        scrollbarImgV = "line_4x40.png"
+    }:addTo(self):pos(0, #all_events == 2 and 79 or 34)
+    self.listview = listview
+    self.listview = listview
     listview:removeAllItems()
     self.listEventsItem = {}
-    local all_events = self:GetAllUpgradeEvents()
     for i,v in ipairs(all_events) do
         local item = listview:newItem()
         item:setItemSize(440, 45)
@@ -457,14 +457,14 @@ end
 function WidgetEventsList:RefreshByStatus()
     local all_events = self:GetAllUpgradeEvents()
     local dropStatus = self:GetDropStatus()
-    -- 当处于列表状态，事件数量减少到小于3个时，切换回非列表状态
-    if dropStatus and #all_events < 3 then
+    -- 当处于列表状态，事件数量减少到小于2个时，切换回非列表状态
+    if dropStatus and #all_events < 2 then
         self:ChangeDropStatus()
     end
     dropStatus = self:GetDropStatus()
     if dropStatus then
         self.dropBtn:SkewIcon(false)
-        self.dropBtn:setPositionY(16)
+        self.dropBtn:setPositionY(#all_events == 2 and 61 or 16)
         self:CreateListView():show()
         self.preNode:hide()
     else
@@ -474,7 +474,7 @@ function WidgetEventsList:RefreshByStatus()
         self.dropBtn:setPositionY(#self.preNode:getChildren() == 1 and WIDGET_HEIGHT - 70 or WIDGET_HEIGHT - 115)
         self.listview:hide()
     end
-    self.dropBtn:setVisible(#all_events > 2)
+    self.dropBtn:setVisible(#all_events > 1)
     self.dropBtn:SetActiveEventNumber(#all_events)
 end
 function WidgetEventsList:BuildingDescribe(event)
@@ -558,3 +558,4 @@ function WidgetEventsList:OnUserDataChanged_productionTechEvents(userData, delta
     self:RefreshByStatus()
 end
 return WidgetEventsList
+
