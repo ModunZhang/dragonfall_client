@@ -101,7 +101,7 @@ function GameUIAcademy:OnMoveInStage()
         local time, percent = UtilsForEvent:GetEventInfo(event)
         local isvisible = time > DataUtils:getFreeSpeedUpLimitTime()
         self.speedButton:setVisible(isvisible)
-        self.freeSpeedUpButton:setVisible(isvisible)
+        self.freeSpeedUpButton:setVisible(not isvisible)
 
         local str = UtilsForTech:GetTechLocalize(event.name)
         local next_level = User.productionTechs[event.name].level + 1

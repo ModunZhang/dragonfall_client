@@ -264,6 +264,9 @@ soldierCount_meta.__index = soldierCount_meta
 function soldierCount_meta:Title()
     local config = self:Config()
     local count = config.count - UtilsForSoldier:TotalSoldiers(User)[config.name]
+    if count <= 0 then
+        count = config.count
+    end
     return string.format(_("招募%s个%s"), string.formatnumberthousands(count), Localize.soldier_name[config.name])
 end
 function soldierCount_meta:Desc()
@@ -285,6 +288,9 @@ local pveCount_meta = {}
 pveCount_meta.__index = pveCount_meta
 function pveCount_meta:Title()
     local count = self:Config().count - User.countInfo.pveCount
+    if count <= 0 then
+        count = self:Config().count
+    end
     return string.format(_("探索%s次PVE"), string.formatnumberthousands(count))
 end
 function pveCount_meta:Desc()
