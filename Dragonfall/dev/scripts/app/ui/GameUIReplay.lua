@@ -261,13 +261,16 @@ function GameUIReplay:Start()
     local attackToPercent = (attackRoundDragon.hp - attackRoundDragon.hpDecreased) / attackRoundDragon.hpMax * 100
     local attackStepPercent = math.abs(attackToPercent - dragonBattle:GetAttackDragon():GetPercent())
 
-
     local defenceToPercent = (defenceRoundDragon.hp - defenceRoundDragon.hpDecreased) / defenceRoundDragon.hpMax * 100
     local defenceStepPercent = math.abs(defenceToPercent - dragonBattle:GetDefenceDragon():GetPercent())
 
     dragonBattle:PromsieOfFight()
     :next(function()
         return self:OnHandle("dragonFight")
+    end):next(function()
+        return attackRoundDragon.isWin and
+            dragonBattle:PromiseOfVictory() or
+            dragonBattle:PromiseOfDefeat()
     end)
     :next(function()
         return promise.all(
@@ -279,8 +282,11 @@ function GameUIReplay:Start()
     :next(function()
     	return dragonBattle:PromiseOfShowBuff()
     end)
-    :next(function()
-    	return dragonBattle:PromsieOfHide()
+    :next(self:Delay(0.5)):next(function()
+        return promise.all(attackRoundDragon.isWin and
+            dragonBattle:PromiseOfVictoryHide() or
+            dragonBattle:PromiseOfDefeatHide(),
+            dragonBattle:PromsieOfHide())
     end)
     :next(function()
         return self:OnHandle("soldierFight")

@@ -1726,7 +1726,7 @@ function UIKit:CreateDragonBattle(attackDragon, defenceDragon, gameController)
     end
     function dragonBattleNode:PromiseOfDefeat()
         local reuslt = self:getChildByTag(RESULT_TAG)
-        reuslt:show():GetAni():playWithIndex(3, -1, 0)
+        reuslt:show():getAnimation():playWithIndex(3, -1, 0)
         self:RefreshSpeed()
         return self:PromiseOfAnimationFinished(reuslt:getAnimation())
     end
