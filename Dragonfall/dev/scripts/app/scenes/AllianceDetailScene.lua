@@ -335,7 +335,7 @@ function AllianceDetailScene:onEnter()
 
                     local village = self:GetSceneLayer()
                     :FindMapObject(alliance.mapIndex, v.location.x, v.location.y)
-                    WidgetFteArrow.new(_("击败黑龙军团"))
+                    WidgetFteArrow.new(_("占领村落"))
                     :addTo(village.obj,1,INFO_TAG):TurnDown():pos(0, 100)
 
                     GameUINpc:PromiseOfSay(
