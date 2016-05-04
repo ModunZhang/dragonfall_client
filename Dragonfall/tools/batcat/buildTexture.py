@@ -5,6 +5,7 @@ from batcat import *
 
 NATIVEPLATFORMS = ("iOS", "Player", "Android", "WP")
 
+RES_SRC_DIR = getResourceDir()  # 资源源目录
 
 def getNativePlatform(args=""):
     result = args
@@ -20,6 +21,18 @@ def getNativePlatform(args=""):
                 result = NATIVEPLATFORMS[index]
     return result
 
+def cleanImage(Platform):
+    if Platform == 'iOS':
+        DIR_PATH =  formatPath("%s/images/_Compressed" % RES_SRC_DIR)
+    elif Platform == 'Android':
+        DIR_PATH =  formatPath("%s/images/_Compressed_android" % RES_SRC_DIR)
+    elif Platform == 'WP':
+        DIR_PATH =  formatPath("%s/images/_Compressed_wp" % RES_SRC_DIR)
+    elif Platform == 'Player':
+        DIR_PATH = formatPath("%s/images/_Compressed_mac" % RES_SRC_DIR )
+    Logging.warning("清理贴图 %s" % DIR_PATH)
+    emptyDir(DIR_PATH)
+
 Platform = ""
 
 if __name__ == "__main__":
@@ -27,8 +40,7 @@ if __name__ == "__main__":
         Platform = sys.argv[1]
     Platform = getNativePlatform(Platform)
     ProjDir = getProjDir()
-    TPS_FILES_DIR = formatPath(
-        "%s/PackImages/TexturePackerProj/player" % ProjDir)
+    TPS_FILES_DIR = ""
     if Platform == 'iOS':
         TPS_FILES_DIR = formatPath(
             "%s/PackImages/TexturePackerProj/iOS" % ProjDir)
@@ -38,9 +50,12 @@ if __name__ == "__main__":
     elif Platform == 'WP':
         TPS_FILES_DIR = formatPath(
             "%s/PackImages/TexturePackerProj/wp" % ProjDir)
+    elif Platform == 'Player':
+        TPS_FILES_DIR = formatPath(
+        "%s/PackImages/TexturePackerProj/player" % ProjDir)
 
+    cleanImage(Platform)
     Logging.warning("开始导出贴图 %s" % Platform)
-
     for file in os.listdir(TPS_FILES_DIR):
         tps = os.path.join(TPS_FILES_DIR,  file)
         if tps.split('.')[-1] == 'tps':

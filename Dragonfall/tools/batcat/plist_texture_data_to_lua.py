@@ -73,7 +73,7 @@ def exportLuaFile(filePath,normalFiles,sdFiles,lowRaWFiles,lowRaWFiles_dict):
         pngs.sort()
         for png in pngs:
             file.write("texture_data[\"%s\"] = \"%s\"\n" % (png, texture_name))
-    file.write("--------------------\n")
+    file.write("-------------------- sd texture data\n")
     for plistFile in sdFiles:
         dic = readPlistFile(plistFile)
         texture_name = getFileTextureName(dic)
@@ -82,7 +82,7 @@ def exportLuaFile(filePath,normalFiles,sdFiles,lowRaWFiles,lowRaWFiles_dict):
         pngs.sort()
         for png in pngs:
             file.write("sd[\"%s\"] = \"%s\"\n" % (png, texture_name))
-    file.write("--------------------\n")
+    file.write("-------------------- low raw texture data \n")
     for plistFile in lowRaWFiles:
         dic = readPlistFile(plistFile)
         texture_name = getFileTextureName(dic)
@@ -91,7 +91,7 @@ def exportLuaFile(filePath,normalFiles,sdFiles,lowRaWFiles,lowRaWFiles_dict):
         pngs.sort()
         for png in pngs:
             file.write("low_raw_texture[\"%s\"] = \"%s\"\n" % (png, texture_name))
-    file.write("--------------------\n")
+    file.write("-------------------- low raw texture name map\n")
     for normalFile in lowRaWFiles_dict:
         file.write("low_raw_map[\"%s\"] = \"%s\"\n" % (normalFile, lowRaWFiles_dict[normalFile]))
     file.write("texture_data.sd = sd\n")
