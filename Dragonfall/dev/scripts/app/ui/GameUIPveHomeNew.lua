@@ -228,6 +228,15 @@ function GameUIPveHomeNew:CreateBottom()
                 end)
             else
                 if task:TaskType() == "pveCount" then
+                    local sindex = 1
+                    for i = 1, 21 do
+                        if User:IsPveEnable(self.level,i) then
+                            sindex = i
+                        else
+                            break
+                        end
+                    end
+                    UIKit:newGameUI("GameUIPveAttack",User,self.level.."_"..sindex):AddToCurrentScene(true)
                     return
                 end
                 app:EnterMyCityScene(false,"nil",function(scene)
@@ -258,15 +267,15 @@ function GameUIPveHomeNew:CreateBottom()
     end)
     self.quest_bar_bg = quest_bar_bg
 
-    if UtilsForBuilding:GetFreeBuildQueueCount(self.city:GetUser()) > 0 then
-        display.newSprite("finger.png")
-        :addTo(self.quest_bar_bg,10,111):pos(180, -30):runAction(
-            cc.RepeatForever:create(transition.sequence({
-                cc.Spawn:create({cc.ScaleTo:create(0.5,0.95),cc.MoveBy:create(0.5, cc.p(-5,0))}),
-                cc.Spawn:create({cc.ScaleTo:create(0.5,1.0),cc.MoveBy:create(0.5, cc.p( 5,0))})
-            }))
-        )
-    end
+    -- if UtilsForBuilding:GetFreeBuildQueueCount(User) > 0 then
+    --     display.newSprite("finger.png")
+    --     :addTo(self.quest_bar_bg,10,111):pos(180, -30):runAction(
+    --         cc.RepeatForever:create(transition.sequence({
+    --             cc.Spawn:create({cc.ScaleTo:create(0.5,0.95),cc.MoveBy:create(0.5, cc.p(-5,0))}),
+    --             cc.Spawn:create({cc.ScaleTo:create(0.5,1.0),cc.MoveBy:create(0.5, cc.p( 5,0))})
+    --         }))
+    --     )
+    -- end
 
     local light = display.newSprite("quest_light_36x34.png"):addTo(quest_bar_bg):pos(-302, 2)
     light:runAction(

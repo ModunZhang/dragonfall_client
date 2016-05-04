@@ -16,7 +16,7 @@ function PVESceneNew:onEnter()
     self:GetSceneLayer():GotoPve()
     app:GetAudioManager():PlayGameMusicOnSceneEnter("PVEScene",true)
 
-    showMemoryUsage()
+    -- showMemoryUsage()
 end
 function PVESceneNew:GetPreloadImages()
     return {
