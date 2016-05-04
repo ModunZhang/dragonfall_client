@@ -6,6 +6,8 @@ from batcat import *
 NATIVEPLATFORMS = ("iOS", "Player", "Android", "WP")
 
 RES_SRC_DIR = getResourceDir()  # 资源源目录
+CURRENT_DIR = os.getcwd()
+PNG_2_JPG_DIR = formatPath("%s/tools/png2jpg" % getProjDir())
 
 def getNativePlatform(args=""):
     result = args
@@ -32,6 +34,14 @@ def cleanImage(Platform):
         DIR_PATH = formatPath("%s/images/_Compressed_mac" % RES_SRC_DIR )
     Logging.warning("清理贴图 %s" % DIR_PATH)
     emptyDir(DIR_PATH)
+
+def exportJPGTextureIf(Platform):
+    if Platform != 'Android':
+        return None
+    command = "java -classpath ./png2jpg.jar -Xmx512m editor.MainFrame"
+    os.chdir(PNG_2_JPG_DIR)
+    executeCommand(command,not Logging.DEBUG_MODE)
+    os.chdir(CURRENT_DIR)    
 
 Platform = ""
 
@@ -61,5 +71,5 @@ if __name__ == "__main__":
         if tps.split('.')[-1] == 'tps':
             command = "TexturePacker %s" % tps
             executeCommand(command, False)
-
+    exportJPGTextureIf(Platform)
     Logging.warning("导出贴图完成 %s" % Platform)
