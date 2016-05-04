@@ -258,13 +258,12 @@ function GameUIPveHomeNew:CreateBottom()
     end)
     self.quest_bar_bg = quest_bar_bg
 
-    if UtilsForBuilding:GetFreeBuildQueueCount(User) > 0 then
-        display.newSprite("fte_icon_arrow.png")
-        :addTo(self.quest_bar_bg,10,111):pos(566/4, 5)
-        :rotation(90):scale(0.8):runAction(
+    if UtilsForBuilding:GetFreeBuildQueueCount(self.city:GetUser()) > 0 then
+        display.newSprite("finger.png")
+        :addTo(self.quest_bar_bg,10,111):pos(180, -30):runAction(
             cc.RepeatForever:create(transition.sequence({
-                cc.MoveBy:create(0.5, cc.p(-10,0)),
-                cc.MoveBy:create(0.5, cc.p(10,0))
+                cc.Spawn:create({cc.ScaleTo:create(0.5,0.95),cc.MoveBy:create(0.5, cc.p(-5,0))}),
+                cc.Spawn:create({cc.ScaleTo:create(0.5,1.0),cc.MoveBy:create(0.5, cc.p( 5,0))})
             }))
         )
     end

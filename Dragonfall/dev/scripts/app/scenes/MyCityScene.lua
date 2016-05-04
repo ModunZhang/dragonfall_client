@@ -509,7 +509,7 @@ function MyCityScene:FteAlliance()
                     {words = _("领主大人，这个世界上的觉醒者并不只有你一人。介入他们或者创建联盟邀请他们加入，会让我们发展得更顺利")}
                 )
             end):next(function()
-                self:GetHomePage():PromiseOfFteAlliance()
+                -- self:GetHomePage():PromiseOfFteAlliance()
                 return GameUINpc:PromiseOfLeave()
             end)
     else

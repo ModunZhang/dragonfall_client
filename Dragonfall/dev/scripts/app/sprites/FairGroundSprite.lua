@@ -17,6 +17,11 @@ function FairGroundSprite:ctor(city_layer, x, y)
     if User:Id() == user:Id() then
         scheduleAt(self, function()
             if self:GetSprite():getFilter() then
+                if user:GetOddFreeNormalGachaCount() <= 0 then
+                    self:GetSprite():removeNodeEventListenersByEvent(cc.NODE_ENTER_FRAME_EVENT)
+                    self:GetSprite():unscheduleUpdate()
+                    self:GetSprite():clearFilter()
+                end
                 return
             end
             self:GetSprite():removeNodeEventListenersByEvent(cc.NODE_ENTER_FRAME_EVENT)
