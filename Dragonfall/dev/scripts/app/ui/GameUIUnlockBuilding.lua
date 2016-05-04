@@ -287,25 +287,116 @@ function GameUIUnlockBuilding:PopNotSatisfyDialog(listener,can_not_update_type)
         dialog:SetTitle(_("补充资源"))
         dialog:SetPopMessage(_("您当前没有足够的资源,是否花费魔法石立即补充"))
     elseif can_not_update_type==UpgradeBuilding.NOT_ABLE_TO_UPGRADE.BUILDINGLIST_NOT_ENOUGH then
-        dialog:CreateOKButtonWithPrice(
-            {
-                listener = function()
-                    if owen_gem<required_gems then
-                        UIKit:showMessageDialog(_("提示"),_("金龙币不足")):CreateOKButton(
-                            {
-                                listener = function ()
-                                    UIKit:newGameUI("GameUIStore"):AddToCurrentScene(true)
-                                end,
-                                btn_name= _("前往商店")
-                            })
-                    else
-                        listener()
-                    end
-                end,
-                price = required_gems
-            }):CreateCancelButton()
-        dialog:SetTitle(_("立即开始"))
-        dialog:SetPopMessage(_("您当前没有空闲的建筑,是否花费魔法石立即完成上一个队列"))
+        -- 检查最短时间的升级事件是否可以免费加速
+        if UtilsForBuilding:CouldFreeSpeedUpWithShortestBuildingEvent(User) then
+            dialog:CreateOKButton(
+                {
+                    listener = function ()
+                        local shortest_event = UtilsForBuilding:GetBuildingEventsBySeq(User)[1]
+                        if not shortest_event then
+                            return
+                        end
+                        local eventType = UtilsForEvent:IsHouseEvent(shortest_event) and "houseEvents" or "buildingEvents"
+                        NetManager:getFreeSpeedUpPromise(eventType, shortest_event.id)
+                    end,
+                    btn_name= _("免费加速"),
+                    btn_images = {normal = "purple_btn_up_148x58.png",pressed = "purple_btn_down_148x58.png"},
+                }
+            )
+            dialog:SetTitle(_("提示"))
+            dialog:SetPopMessage(_("您当前没有空闲的建筑队列,请首先将上一条队列加速完成"))
+        else
+            dialog:CreateOKButtonWithPrice(
+                {
+                    listener = function()
+                        if owen_gem<required_gems then
+                            UIKit:showMessageDialog(_("提示"),_("金龙币不足")):CreateOKButton(
+                                {
+                                    listener = function ()
+                                        UIKit:newGameUI("GameUIStore"):AddToCurrentScene(true)
+                                    end,
+                                    btn_name= _("前往商店")
+                                })
+                        else
+                            listener()
+                        end
+                    end,
+                    price = required_gems
+                }):CreateCancelButton()
+            dialog:SetTitle(_("立即开始"))
+            dialog:SetPopMessage(_("您当前没有空闲的建筑,是否花费魔法石立即完成上一个队列"))
+        end
+    elseif can_not_update_type==UpgradeBuilding.NOT_ABLE_TO_UPGRADE.BUILDINGLIST_AND_RESOURCE_NOT_ENOUGH then
+        -- 检查最短时间的升级事件是否可以免费加速
+        if UtilsForBuilding:CouldFreeSpeedUpWithShortestBuildingEvent(User) then
+            dialog:CreateOKButton(
+                {
+                    listener = function ()
+                        local shortest_event = UtilsForBuilding:GetBuildingEventsBySeq(User)[1]
+                        if not shortest_event then
+                            return
+                        end
+                        local eventType = UtilsForEvent:IsHouseEvent(shortest_event) and "houseEvents" or "buildingEvents"
+                        NetManager:getFreeSpeedUpPromise(eventType, shortest_event.id)
+                    end,
+                    btn_name= _("免费加速"),
+                    btn_images = {normal = "purple_btn_up_148x58.png",pressed = "purple_btn_down_148x58.png"},
+                }
+            )
+            dialog:SetTitle(_("提示"))
+            dialog:SetPopMessage(_("您当前没有空闲的建筑队列,请首先将上一条队列加速完成"))
+        else
+            if User.basicInfo.buildQueue == 2 then
+                dialog:CreateOKButtonWithPrice(
+                    {
+                        listener = function()
+                            if owen_gem<required_gems then
+                                UIKit:showMessageDialog(_("提示"),_("金龙币不足")):CreateOKButton(
+                                    {
+                                        listener = function ()
+                                            UIKit:newGameUI("GameUIStore"):AddToCurrentScene(true)
+                                        end,
+                                        btn_name= _("前往商店")
+                                    })
+                            else
+                                listener()
+                            end
+                        end,
+                        btn_images = {normal = "green_btn_up_148x58.png",pressed = "green_btn_down_148x58.png"},
+                        price = required_gems
+                    }
+                ):CreateCancelButton()
+            else
+                dialog:CreateOKButtonWithPrice(
+                    {
+                        listener = function()
+                            if owen_gem<required_gems then
+                                UIKit:showMessageDialog(_("提示"),_("金龙币不足")):CreateOKButton(
+                                    {
+                                        listener = function ()
+                                            UIKit:newGameUI("GameUIStore"):AddToCurrentScene(true)
+                                        end,
+                                        btn_name= _("前往商店")
+                                    })
+                            else
+                                listener()
+                            end
+                        end,
+                        price = required_gems,
+                        btn_name = _("立即完成")
+                    }
+                ):CreateCancelButton({
+                    listener = function()
+                        UIKit:newGameUI("GameUIActivityRewardNew",4):AddToCurrentScene(true)
+                    end,
+                    btn_name = {_("开启"),_("第2队列")},
+                    btn_images = {normal = "blue_btn_up_148x58.png",pressed = "blue_btn_down_148x58.png"},
+                    label_size = 20
+                })
+            end
+            dialog:SetTitle(_("立即开始"))
+            dialog:SetPopMessage(can_not_update_type)
+        end
     elseif can_not_update_type==UpgradeBuilding.NOT_ABLE_TO_UPGRADE.GEM_NOT_ENOUGH then
         dialog:SetTitle(_("提示"))
             :SetPopMessage(can_not_update_type)
@@ -373,6 +464,8 @@ end
 
 
 return GameUIUnlockBuilding
+
+
 
 
 

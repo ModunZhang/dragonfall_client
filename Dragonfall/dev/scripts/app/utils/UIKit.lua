@@ -824,7 +824,11 @@ function UIKit:showSendTroopMessageDialog(attack_func,material_name,effect_str,i
         local label_1
         if is_material_overhead then
             display.newSprite("icon_warning_22x42.png"):addTo(materialDepot_bg):align(display.CENTER, 75, materialDepot_bg:getContentSize().height/2 + 15)
-            label_1 = string.format(_("%s材料已满"),effect_str)
+            if #UtilsForBuilding:GetBuildingsBy(User, "materialDepot", 1) > 0 then
+                label_1 = string.format(_("%s材料已满"),effect_str)
+            else
+                label_1 = _("未解锁")
+            end
         else
             label_1 = _("正常")
         end

@@ -274,7 +274,8 @@ function GameUIHome:CreateTop()
     self.vip_level = UIKit:ttfLabel({
         text =  "VIP "..User:GetVipLevel(),
         size = 20,
-        shadow = true
+        shadow = true,
+        color = 0xffb400
     }):addTo(vip_btn):align(display.CENTER, vip_icon:getPositionX() + 55, vip_icon:getPositionY())
     if UtilsForVip:IsVipActived(User) then
         vip_btn:setButtonImage(cc.ui.UIPushButton.NORMAL, "vip_btn_136x48.png", true)

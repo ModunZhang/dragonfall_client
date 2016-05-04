@@ -671,7 +671,11 @@ function GameUIActivityRewardNew:ui_FIRST_IN_PURGURE()
         dimensions = cc.size(300,0),
         shadow = true
     }):addTo(bar):align(display.CENTER,440,555)
-
+    UIKit:ttfLabel({
+        text = _("领取下列丰厚奖励"),
+        size = 22,
+        color = 0xffedae,
+    }):addTo(bar):align(display.CENTER,440,468)
     local countInfo = User.countInfo
     local rewards = self:GetFirstPurgureRewards()
     local x,y = 310,438
