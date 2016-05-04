@@ -351,7 +351,12 @@ public:
      *  @return True if the file exists, false if not.
      */
     virtual bool isFileExist(const std::string& filename) const;
-    
+    /**
+     * dannyhe 
+     */
+#if CC_USE_PNG_WITH_RGB_A_JPG
+    virtual bool isRgbJpgFile(const std::string& filename) const;
+#endif
 	/**
 	*  Gets filename extension is a suffix (separated from the base filename by a dot) in lower case.
 	*  Examples of filename extensions are .png, .jpeg, .exe, .dmg and .txt.

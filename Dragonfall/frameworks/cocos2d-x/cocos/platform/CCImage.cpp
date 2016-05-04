@@ -538,7 +538,25 @@ bool Image::initWithImageFileThreadSafe(const std::string& fullpath)
 {
     bool ret = false;
     _filePath = fullpath;
-    //dannyhe
+//dannyhe
+#if CC_USE_PNG_WITH_RGB_A_JPG
+    if(FileUtils::getInstance()->isRgbJpgFile(fullpath))
+    {
+        ret = initPngWithJpgFile(fullpath);
+    }
+    else
+    {
+#if CC_TARGET_PLATFORM != CC_PLATFORM_WINRT
+        Data data = HelperFunc::getData(_filePath);
+#else
+        Data data = GET_DATA_FROM_IMAGE_FILE(fullpath);
+#endif
+        if (!data.isNull())
+        {
+            ret = initWithImageData(data.getBytes(), data.getSize());
+        }
+    }
+#else
 #if CC_TARGET_PLATFORM != CC_PLATFORM_WINRT
     Data data = HelperFunc::getData(_filePath);
 #else
@@ -548,7 +566,7 @@ bool Image::initWithImageFileThreadSafe(const std::string& fullpath)
     {
         ret = initWithImageData(data.getBytes(), data.getSize());
     }
-
+#endif
     return ret;
 }
 
@@ -2208,6 +2226,76 @@ bool Image::initWithRawData(const unsigned char * data, ssize_t dataLen, int wid
     return ret;
 }
 
+
+#if CC_USE_PNG_WITH_RGB_A_JPG
+bool Image::initPngWithJpgFile(const std::string& path)
+{
+    bool bRet = false;
+    do{
+        std::string fileName = path;
+        CC_BREAK_IF(fileName.empty());
+        std::string rgbFileName;
+        std::string alphaFileName;
+        size_t startPos = fileName.find_last_of(".");
+        fileName = fileName.erase(startPos);
+        //dannyhe: we do not want the png fomat only!
+        // rgbFileName = fileName.append(".png");
+        rgbFileName = path;
+        alphaFileName = fileName.erase(startPos).append("_.jpg");
+
+        // Read rgb.jpg
+        Image * img_rgb = new Image();
+        CC_BREAK_IF(nullptr == img_rgb);
+        bRet = img_rgb->initWithImageFile(rgbFileName);
+        CC_BREAK_IF(!bRet);
+        unsigned char *data_rgb=img_rgb->getData();
+    
+        // Read alpha.jpg
+        Image * img_alpha = new Image();
+        CC_BREAK_IF(nullptr == img_alpha);
+        bRet =img_alpha->initWithImageFile(alphaFileName);
+        CC_BREAK_IF(!bRet);
+        unsigned char *data_alpha=img_alpha->getData();
+
+        // Init real data_rgba
+        int width = img_rgb->getWidth();
+        int height = img_rgb->getHeight();
+        int size = width * height;
+        unsigned int *data_rgba = new unsigned int[size];
+        CC_BREAK_IF(nullptr == data_rgba);
+        unsigned int *data_rgba_head = data_rgba;
+        memset(data_rgba, 0, size << 2);
+
+        // Merge data_rgb and data_alpha into data_rgba
+        for (int y = 0; y < height; ++y) {
+            for (int x = 0; x < width; ++x) {
+                *(data_rgba++) = ((*data_alpha) << 24) | ((*(unsigned int*)data_rgb) & 0xFFFFFF);
+                // Note: in jpg data, one pixel has only 3 bytes.
+                data_alpha += 3;
+                data_rgb += 3;
+            }
+        }
+
+        // Cleanup jpg
+        CC_SAFE_RELEASE(img_rgb);
+        CC_SAFE_RELEASE(img_alpha);
+
+        // Init image with data_rgba
+        bRet = initWithRawData((unsigned char*) data_rgba_head, (size << 2), width, height, 4, false);
+        CC_BREAK_IF(!bRet);
+        premultipliedAlpha();   // This must be called for armature, it will change the data of image
+
+        // Cleanup data_rgba
+        delete data_rgba_head;
+
+        bRet = true;
+    }while(0);
+    if(!bRet){
+        CCLOG("Image::initPngWithJpgFile(const std::string& path:%s)",path.c_str());
+    }
+    return bRet;
+}
+#endif
 
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS)
 bool Image::saveToFile(const std::string& filename, bool isToRGB)

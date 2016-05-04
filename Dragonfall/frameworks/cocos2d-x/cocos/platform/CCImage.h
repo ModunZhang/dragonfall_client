@@ -115,7 +115,10 @@ public:
 
     // @warning kFmtRawData only support RGBA8888
     bool initWithRawData(const unsigned char * data, ssize_t dataLen, int width, int height, int bitsPerComponent, bool preMulti = false);
-
+    //dannyhe
+#if CC_USE_PNG_WITH_RGB_A_JPG
+    bool initPngWithJpgFile(const std::string& path);
+#endif
     // Getters
     inline unsigned char *   getData()               { return _data; }
     inline ssize_t           getDataLen()            { return _dataLen; }
