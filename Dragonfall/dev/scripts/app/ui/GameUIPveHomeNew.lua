@@ -210,6 +210,7 @@ function GameUIPveHomeNew:CreateBottom()
         {normal = "quest_btn_unfinished_566x46.png",pressed = "quest_btn_unfinished_566x46.png"},
         {scale9 = false}
     ):addTo(bottom_bg):pos(420, bottom_bg:getContentSize().height + 56):onButtonClicked(function(event)
+        self.quest_bar_bg:removeChildByTag(111)
         local task = self.task
         if task then
             if self.isFinished then
@@ -255,6 +256,18 @@ function GameUIPveHomeNew:CreateBottom()
         end
     end)
     self.quest_bar_bg = quest_bar_bg
+
+    if UtilsForBuilding:GetFreeBuildQueueCount(User) > 0 then
+        display.newSprite("fte_icon_arrow.png")
+        :addTo(self.quest_bar_bg,10,111):pos(566/4, 5)
+        :rotation(90):scale(0.8):runAction(
+            cc.RepeatForever:create(transition.sequence({
+                cc.MoveBy:create(0.5, cc.p(-10,0)),
+                cc.MoveBy:create(0.5, cc.p(10,0))
+            }))
+        )
+    end
+
     local light = display.newSprite("quest_light_36x34.png"):addTo(quest_bar_bg):pos(-302, 2)
     light:runAction(
         cc.RepeatForever:create(
@@ -272,7 +285,7 @@ function GameUIPveHomeNew:CreateBottom()
         color = 0xfffeb3,
         shadow = true
     }):addTo(quest_bar_bg):align(display.LEFT_CENTER, -260, 4)
-    self.quest_label:runAction(UIKit:ScaleAni())
+    -- self.quest_label:runAction(UIKit:ScaleAni())
 
 
     self.change_map = WidgetChangeMap.new(WidgetChangeMap.MAP_TYPE.PVE):addTo(self)
