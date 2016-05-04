@@ -9,6 +9,7 @@ NEED_ENCRYPT_RES = ""  # 是否需要加密资源
 RES_DEST_DIR = getExportResourcesDir(Platform)
 RES_COMPILE_TOOL = getResourceTool()  # 加密工具
 RES_SRC_DIR = getResourceDir()  # 资源源目录
+JPG_DIR = formatPath("%s/images/_Compressed_android_jpg" % RES_SRC_DIR)
 XXTEAKey = getXXTEAKey()
 XXTEASign = getXXTEASign()
 TEMP_RES_DIR = getTempDir()
@@ -22,7 +23,7 @@ CONVERTTOOL = getConvertTool()
 PNGQUANTTOOL = getPngQuantTool()
 QUIET_MODE = True
 
-
+PNG_COMPRESS_WITH_JPG = True
 PNG_COMPRESS_WITH_PNGQUANT = True #使用pngquant有损压缩png图片
 ALPHA_USE_ETC = True  # alpha纹理使用etc格式压缩
 COMPRESS_ETC_FILE = True  # etc格式纹理通过自定义压缩工具再压缩
@@ -83,6 +84,18 @@ def AlphaImage(in_path, out_path):
 ########################################################################
 #这里定义的图片名称将以png格式打入android资源包(在iOS上的基础上添加了一些图不压缩)
 NORMAL_IMAGE_NAMES = ['city_only0','buildings0','ui_png0','ui_png1','ui_png2','loading_circle_yellow','loading_circle_green','loading_circle_blue','level0','pve_only0','ui_pvr0','ui_pvr1','ui_pvr2']
+
+def existsJPG(in_path):
+    if not PNG_COMPRESS_WITH_JPG:
+        return (None,None)
+    fileName,fileExt = os.path.basename(in_path).split('.')
+    jpg_rgb_file = os.path.join(JPG_DIR,"%s.jpg" % fileName)
+    jpg_alpha_file = os.path.join(JPG_DIR,"%s_.jpg" % fileName)
+    if os.path.isfile(jpg_rgb_file):
+        return (jpg_rgb_file,jpg_alpha_file)
+    else:
+        return (None,None)
+
 def NormalImages(in_path,out_path,outdir):
     fileName,fileExt = os.path.basename(in_path).split('.')
     if fileName in NORMAL_IMAGE_NAMES:
@@ -97,12 +110,26 @@ def NormalImages(in_path,out_path,outdir):
                     else:
                         die("处理png失败:%s" % in_path)
                 else:
-                    CompileResources(in_path, outdir)
+                    (jpg_rgb_file,jpg_alpha_file) = existsJPG(in_path)
+                    if jpg_rgb_file != None:
+                        temp_file_path = os.path.join(TEMP_RES_DIR, os.path.basename(in_path))
+                        shutil.copy(jpg_rgb_file, temp_file_path)
+                        CompileResources(temp_file_path, outdir)
+                        CompileResources(jpg_alpha_file, outdir)
+                    else:
+                        CompileResources(in_path, outdir)
             else:
                 if PNG_COMPRESS_WITH_PNGQUANT and ('buildings0' in fileName):
                     PngQuantImage(in_path,out_path)
                 else:
-                    shutil.copy(in_path, outdir)
+                    (jpg_rgb_file,jpg_alpha_file) = existsJPG(in_path)
+                    if jpg_rgb_file != None:
+                        temp_file_path = os.path.join(TEMP_RES_DIR, os.path.basename(in_path))
+                        shutil.copy(jpg_rgb_file, temp_file_path)
+                        shutil.copy(temp_file_path, outdir)
+                        shutil.copy(jpg_alpha_file, outdir)
+                    else:
+                        shutil.copy(in_path, outdir)
         return True
     return False
 ########################################################################
