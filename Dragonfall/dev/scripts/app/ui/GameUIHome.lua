@@ -448,6 +448,10 @@ function GameUIHome:CheckFinger()
     end
     self:HideFinger()
     self:HideClickReward()
+    if not UtilsForTask:NeedTips(self.city:GetUser()) 
+   and not Alliance_Manager:HasBeenJoinedAlliance() then
+        display.getRunningScene():FteAlliance() 
+    end
 end
 local WidgetFteArrow = import("..widget.WidgetFteArrow")
 function GameUIHome:ShowClickReward()
