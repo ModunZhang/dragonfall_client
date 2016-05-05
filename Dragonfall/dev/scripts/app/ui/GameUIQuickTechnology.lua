@@ -39,8 +39,8 @@ function GameUIQuickTechnology:GetTechsData()
     for tech_name,tech in pairs(User.productionTechs) do
         table.insert(r, {tech_name, tech})
     end
-    table.sort( r, function(a,b) 
-        return tonumber(a[2].index) <  tonumber(b[2].index) 
+    table.sort( r, function(a,b)
+        return tonumber(a[2].index) <  tonumber(b[2].index)
     end)
     return r
 end
@@ -80,7 +80,7 @@ function GameUIQuickTechnology:OnMoveInStage()
     User:AddListenOnType(self, "productionTechEvents")
     User:AddListenOnType(self, "buildingEvents")
     scheduleAt(self, function()
-        if self.time_label and self.time_label:isVisible() 
+        if self.time_label and self.time_label:isVisible()
             and User:HasProductionTechEvent() then
             local event = User.productionTechEvents[1]
             local time, percent = UtilsForEvent:GetEventInfo(event)
@@ -181,9 +181,12 @@ function GameUIQuickTechnology:BuildTipsUI(technology_node,y)
         :onButtonClicked(function()
             if User:HasProductionTechEvent() then
                 local event = User.productionTechEvents[1]
-                NetManager:getFreeSpeedUpPromise("productionTechEvents", event.id):done(function()
-                    self:CheckUIChanged()
-                end)
+                local time = UtilsForEvent:GetEventInfo(event)
+                if time > 2 then
+                    NetManager:getFreeSpeedUpPromise("productionTechEvents", event.id):done(function()
+                        self:CheckUIChanged()
+                    end)
+                end
             end
         end)
     self.freeSpeedUpButton = freeSpeedUpButton
@@ -262,9 +265,9 @@ function GameUIQuickTechnology:CreateScrollNode()
         end
 
         if self.need_tips_tech_name == v:Data()[1] then
-           WidgetFteArrow.new(_("点击科技"), 22 * 1.3)
-            :addTo(node, 10, 111):TurnUp()
-            :pos(v:Pos().x,v:Pos().y-80):scale(0.7)
+            WidgetFteArrow.new(_("点击科技"), 22 * 1.3)
+                :addTo(node, 10, 111):TurnUp()
+                :pos(v:Pos().x,v:Pos().y-80):scale(0.7)
         end
     end
     return node
@@ -308,4 +311,5 @@ end
 
 
 return GameUIQuickTechnology
+
 

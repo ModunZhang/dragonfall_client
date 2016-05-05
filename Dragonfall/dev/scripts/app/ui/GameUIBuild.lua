@@ -152,11 +152,14 @@ function GameUIBuild:OnBuildOnItem(item)
                         return
                     end
                     local eventType = UtilsForEvent:IsHouseEvent(shortest_event) and "houseEvents" or "buildingEvents"
-                    NetManager:getFreeSpeedUpPromise(eventType, shortest_event.id):done(function()
-                        if self.OnCityChanged then
-                            self:OnCityChanged()
-                        end
-                    end)
+                    local time = UtilsForEvent:GetEventInfo(shortest_event)
+                    if time > 2 then
+                        NetManager:getFreeSpeedUpPromise(eventType, shortest_event.id):done(function()
+                            if self.OnCityChanged then
+                                self:OnCityChanged()
+                            end
+                        end)
+                    end
                 end,
                 btn_name= _("免费加速"),
                 btn_images = {normal = "purple_btn_up_148x58.png",pressed = "purple_btn_down_148x58.png"},
@@ -166,7 +169,7 @@ function GameUIBuild:OnBuildOnItem(item)
         dialog:SetPopMessage(_("您当前没有空闲的建筑队列,请首先将上一条队列加速完成"))
         return
     end
-    
+
     local max = User.basicInfo.buildQueue
     local current_time = app.timer:GetServerTime()
 
@@ -398,6 +401,7 @@ function GameUIBuild:CreateItemWithListView(list_view)
 end
 
 return GameUIBuild
+
 
 
 
