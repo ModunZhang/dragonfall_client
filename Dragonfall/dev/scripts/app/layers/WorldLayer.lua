@@ -18,9 +18,10 @@ local worldsize = {
 }
 
 
-function WorldLayer:ctor(scene,mapIndex)
+function WorldLayer:ctor(scene,mapIndex,hideCurrentPosIcon)
     WorldLayer.super.ctor(self, scene, 1.0, 1.2)
     self.current_mapIndex = mapIndex
+    self.hideCurrentPosIcon = hideCurrentPosIcon
 end
 function WorldLayer:onEnter()
     self:CreateBg()
@@ -389,6 +390,7 @@ function WorldLayer:CreateAllianceSprite(index, alliance)
         display.newSprite("icon_current_position_1.png")
             :addTo(node, 0, 2):scale(0.8)
             :pos(sprite:getPositionX(), sprite:getPositionY() + sprite:getContentSize().height / 2)
+            :setVisible(not self.hideCurrentPosIcon)
     end
     local isFight, from, to = self:IsFightWithOtherAlliance(alliance, index)
     if isFight then

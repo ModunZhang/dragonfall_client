@@ -295,7 +295,6 @@ function GameUIPower:CreateFightMenu()
                 else
                     app:EnterMyAllianceScene({mapIndex = my_allaince.mapIndex,x = 8,y = 8,callback = function ( alliance_scene )
                     	local mapIndexData = Alliance_Manager.mapIndexData
-                    	print(" my_allaince.mapIndex=", my_allaince.mapIndex)
                     	-- 找到一个离自己联盟最近的联盟开战
                     	local distance = math.huge
                     	local target_mapIndex
@@ -312,7 +311,7 @@ function GameUIPower:CreateFightMenu()
                     				end
                     			end
                     		end
-                			local UIWorldMap = UIKit:newGameUI("GameUIWorldMap", nil, nil, target_mapIndex):AddToCurrentScene()
+                			local UIWorldMap = UIKit:newGameUI("GameUIWorldMap", nil, nil, target_mapIndex,true):AddToCurrentScene()
                 			local count = 0
                 			self.handle = scheduler.scheduleGlobal(function ()
                 				if LuaUtils:table_size(UIWorldMap:GetSceneLayer().allainceSprites) > 0 then

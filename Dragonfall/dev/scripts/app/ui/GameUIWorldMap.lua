@@ -9,11 +9,11 @@ local intInit = GameDatas.AllianceInitData.intInit
 local bigMapLength_value = intInit.bigMapLength.value
 local ALLIANCE_WIDTH = intInit.allianceRegionMapWidth.value
 local ALLIANCE_HEIGHT= intInit.allianceRegionMapHeight.value
-function GameUIWorldMap:ctor(fromIndex, toIndex, mapIndex)
-	GameUIWorldMap.super.ctor(self)
+function GameUIWorldMap:ctor(fromIndex, toIndex, mapIndex,hideCurrentPosIcon)
+    GameUIWorldMap.super.ctor(self)
     self.__type  = UIKit.UITYPE.BACKGROUND
     self.scene_node = display.newNode():addTo(self)
-    self.scene_layer = WorldLayer.new(self,mapIndex):addTo(self.scene_node, 0)
+    self.scene_layer = WorldLayer.new(self,mapIndex,hideCurrentPosIcon):addTo(self.scene_node, 0)
     self.touch_layer = self:CreateMultiTouchLayer():addTo(self.scene_node, 1)
     self.mask_layer = display.newLayer():addTo(self, 2):hide()
     self.event_manager = EventManager.new(self)
@@ -42,13 +42,13 @@ function GameUIWorldMap:onEnter()
     self:LoadImageIntro()
     -- 返回按钮
     local world_map_btn_bg = display.newSprite("background_86x86.png")
-    :addTo(self):align(display.LEFT_BOTTOM,display.left + 7,display.bottom + 253)
+        :addTo(self):align(display.LEFT_BOTTOM,display.left + 7,display.bottom + 253)
     local size = world_map_btn_bg:getContentSize()
     self.loading = display.newSprite("loading.png")
-                   :addTo(world_map_btn_bg,1)
-                   :pos(size.width-20,10)
+        :addTo(world_map_btn_bg,1)
+        :pos(size.width-20,10)
     self:HideLoading()
-    
+
     -- local inWorldScene = display.getRunningScene().__cname == "WorldScene"
     local world_map_btn = UIKit:ButtonAddScaleAction(cc.ui.UIPushButton.new({normal ='icon_world_retiurn_88x88.png'})
         :onButtonClicked(function()
@@ -79,7 +79,7 @@ function GameUIWorldMap:onExit()
     removeImageByKey("world_crown.png")
     removeImageByKey("world_edge.png")
     removeImageByKey("world_middle.jpg")
-    
+
     removeImageByKey("world_bg.jpg")
     removeImageByKey("world_title1.jpg")
     removeImageByKey("world_title2.jpg")
@@ -110,7 +110,7 @@ function GameUIWorldMap:InitArrow()
         up = "arrow_up_enemy.png",
         down = "arrow_down_enemy.png",
         icon = "attack_58x56.png",
-        }, function()
+    }, function()
         local mapIndex = Alliance_Manager:GetMyAlliance():GetEnemyAllianceMapIndex()
         if mapIndex then
             local x,y = self:GetSceneLayer():IndexToLogic(mapIndex)
@@ -200,9 +200,9 @@ function GameUIWorldMap:GetPointsWithScreenRect(screen_rect)
     }
 end
 function GameUIWorldMap:ShowLoading()
-    if self.loading:isVisible() and 
-        self.loading:getNumberOfRunningActions() > 0 then 
-        return 
+    if self.loading:isVisible() and
+        self.loading:getNumberOfRunningActions() > 0 then
+        return
     end
     self.loading:show():rotation(math.random(360)):stopAllActions()
     self.loading:runAction(cc.RepeatForever:create(cc.RotateBy:create(4, 360)))
@@ -221,8 +221,8 @@ function GameUIWorldMap:LoadMap()
     local last_middle_pos = self:GetSceneLayer().middle_pos
     if last_middle_pos then
         local cur_x,cur_y = self:GetSceneLayer():GetMiddleLogicPosition()
-        if math.abs(last_middle_pos.x - cur_x) > 1 
-        or math.abs(last_middle_pos.y-cur_y) > 1 then
+        if math.abs(last_middle_pos.x - cur_x) > 1
+            or math.abs(last_middle_pos.y-cur_y) > 1 then
             self:_LoadMap()
         end
     else
@@ -300,13 +300,13 @@ function GameUIWorldMap:LoadRoundInfo(mapIndex)
                 text = _("详情")
             })
         ):onButtonClicked(function()
-            UIKit:newWidgetUI("WidgetAllianceMapBuff",node.mapIndex):AddToCurrentScene()
+        UIKit:newWidgetUI("WidgetAllianceMapBuff",node.mapIndex):AddToCurrentScene()
         end)
         :align(display.CENTER,630,46)
         :addTo(node)
     -- 屏幕中心点在小地图的位置
     local current_position_sprite = display.newSprite("icon_current_position_8x10.png"):addTo(mini_map_button)
-        -- :align(display.RIGHT_CENTER)
+    -- :align(display.RIGHT_CENTER)
     current_position_sprite:runAction(
         cc.RepeatForever:create(
             transition.sequence{
@@ -359,11 +359,11 @@ function GameUIWorldMap:LoadRoundInfo(mapIndex)
 
     scheduleAt(self,function ()
         local x,y = self.scene_layer:ConvertScreenPositionToLogicPosition(display.cx,display.cy)
-        local mapIndex = self.scene_layer:LogicToIndex(x, y) 
+        local mapIndex = self.scene_layer:LogicToIndex(x, y)
         node:RefreshRoundInfo(mapIndex,x, y)
         local my_mapIndex = Alliance_Manager:GetMyAlliance().mapIndex
         local bigMapLength = bigMapLength_value
-        local x,y = self.scene_layer:IndexToLogic(my_mapIndex) 
+        local x,y = self.scene_layer:IndexToLogic(my_mapIndex)
         local offset_x,offset_y = x / bigMapLength, 1 - y / bigMapLength
         self_position_sprite:setPosition(124 * offset_x, 124 * offset_y)
     end,0.5)
@@ -376,13 +376,14 @@ function GameUIWorldMap:LoadImageIntro()
         :addTo(self)
         :scale(0.5)
     local current = display.newSprite("icon_current_position_1.png")
-            :addTo(image_intro_bg)
-            :scale(0.8)
-            :pos(image_intro_bg:getContentSize().width/2 - 70, image_intro_bg:getContentSize().height/2 - 30)
+        :addTo(image_intro_bg)
+        :scale(0.8)
+        :pos(image_intro_bg:getContentSize().width/2 - 70, image_intro_bg:getContentSize().height/2 - 30)
+
     local self_pos = display.newSprite("icon_current_position.png")
-            :addTo(image_intro_bg)
-            :scale(0.8)
-            :pos(image_intro_bg:getContentSize().width/2 - 70, image_intro_bg:getContentSize().height/2 + 30)
+        :addTo(image_intro_bg)
+        :scale(0.8)
+        :pos(image_intro_bg:getContentSize().width/2 - 70, image_intro_bg:getContentSize().height/2 + 30)
     UIKit:ttfLabel({
         text = _("当前位置"),
         size = 32,
@@ -396,8 +397,8 @@ function GameUIWorldMap:LoadImageIntro()
     }):align(display.LEFT_CENTER, self_pos:getPositionX() + 30, self_pos:getPositionY())
         :addTo(image_intro_bg)
     image_intro_bg:performWithDelay(function()
-                image_intro_bg:fadeTo(1, 0)
-            end, 5)
+        image_intro_bg:fadeTo(1, 0)
+    end, 5)
 end
 function GameUIWorldMap:GetSceneLayer()
     return self.scene_layer
@@ -463,9 +464,9 @@ function GameUIWorldMap:OnTouchBegan(pre_x, pre_y, x, y)
 
 end
 function GameUIWorldMap:OnTouchEnd(pre_x, pre_y, x, y, ismove, isclick)
-	if not ismove and not isclick then
-		self:LoadMap()
-	end
+    if not ismove and not isclick then
+        self:LoadMap()
+    end
 end
 function GameUIWorldMap:OnTouchMove(pre_x, pre_y, x, y)
     self.load_map_node:stopAllActions()
@@ -521,4 +522,5 @@ function GameUIWorldMap:OnSceneMove()
 end
 
 return GameUIWorldMap
+
 
