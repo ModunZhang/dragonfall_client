@@ -36,8 +36,8 @@ def generalLowRawFileNameDict(lowRaWFiles):
     for plistFile in lowRaWFiles:
         name = os.path.basename(plistFile)
         final_name = name.replace('_low_ram','')
-        final_name = final_name.replace('.plist','.png')
-        lowRaWFileMap[final_name] = name.replace('.plist','.png')
+        final_name = final_name.replace('.plist','')
+        lowRaWFileMap[final_name] = name.replace('.plist','')
     return lowRaWFileMap
 
 def generalPlistFileData(plist_dir):
