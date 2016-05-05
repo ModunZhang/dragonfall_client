@@ -12,10 +12,11 @@ local SpriteConfig = import("..sprites.SpriteConfig")
 
 local GameUIUnlockBuilding = class("GameUIUnlockBuilding", WidgetPopDialog)
 
-function GameUIUnlockBuilding:ctor( city, tile )
+function GameUIUnlockBuilding:ctor( city, tile , needTips )
     GameUIUnlockBuilding.super.ctor(self,650,_("解锁建筑"),display.top-160)
     self.city = city
     self.tile = tile
+    self.needTips = needTips
     self.building = city:GetBuildingByLocationId(tile.location_id)
     self:setNodeEventEnabled(true)
     self:Init()
@@ -104,7 +105,12 @@ function GameUIUnlockBuilding:Init()
             end,
         }
     ):pos(display.cx+180, display.top-380)
-        :addTo(self)
+        :addTo(self,1)
+
+    if self.needTips then
+        UIKit:FingerAni():pos(140,-20)
+        :addTo(self.upgrade_btn,10,321)
+    end
 
     -- 立即升级所需金龙币
     display.newSprite("gem_icon_62x61.png", display.cx-260, display.top-440):addTo(self):setScale(0.5)

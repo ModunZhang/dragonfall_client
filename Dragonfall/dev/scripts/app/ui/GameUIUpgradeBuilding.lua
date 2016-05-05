@@ -28,6 +28,13 @@ function GameUIUpgradeBuilding:CreateTabButtons(param, cb)
         if tag == "upgrade" then
             if not self.upgrade_layer then
                 self.upgrade_layer = CommonUpgradeUI.new(self.city, self.building):addTo(self:GetView())
+                if self.needTips then
+                    UIKit:FingerAni():pos(35,-40)
+                    :addTo(self.upgrade_layer.upgrade_btn,10,321)
+                    self.upgrade_layer.upgrade_btn:onButtonClicked(function()
+                        self.upgrade_layer.upgrade_btn:removeChildByTag(321)
+                    end)
+                end
             end
             self.upgrade_layer:setVisible(true)
         else

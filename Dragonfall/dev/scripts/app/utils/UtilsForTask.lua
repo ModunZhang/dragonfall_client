@@ -652,6 +652,23 @@ function UtilsForTask:IsGetAnyCityBuildRewards(growUpTasks)
         end
     end
 end
+function UtilsForTask:NeedTips(userData)
+    local cityBuild = GameDatas.GrowUpTasks.cityBuild
+    local index
+    for i,mission in ipairs(RecommendedMission) do
+        if  mission.type == "cityBuild" 
+        and cityBuild[mission.id].name == "materialDepot" then
+            index = i
+            break
+        end
+    end
+    for i,mission in ipairs(RecommendedMission) do
+        if not self:CheckIsComplete(userData, mission) and i < index then
+            return true
+        end
+    end
+    return false
+end
 function UtilsForTask:CheckIsComplete(userData, mission)
     local growUpTasks = userData.growUpTasks
     local GrowUpTasks = GameDatas.GrowUpTasks
@@ -667,50 +684,12 @@ function UtilsForTask:CheckIsComplete(userData, mission)
     return false
 end
 function UtilsForTask:GetBeginnersTask(userData)
-    local growUpTasks = userData.growUpTasks
-    local GrowUpTasks = GameDatas.GrowUpTasks
     for _,mission in ipairs(RecommendedMission) do
         if not self:CheckIsComplete(userData, mission) then
             return setmetatable({ id = mission.id }, meta_map[mission.type])
         end
     end
 end
--- function UtilsForTask:GetRecommendTask(userData)
---     local task = self:GetBeginnersTask(self:GetUser())
---     if task then
---         return task
---     end
---     local building_map = self:GetHighestCanUpgradeBuildingMap()
---     local tasks = self:GetAvailableTasksByCategory(
---         userData.growUpTasks, UtilsForTask.TASK_CATEGORY.BUILD
---     )
---     local re_task
---     for i,v in pairs(tasks.tasks) do
---         if building_map[v:Config().name] then
---             re_task = not re_task and v or (v.index < re_task.index and v or re_task)
---         end
---     end
---     return re_task
--- end
--- function City:GetHighestCanUpgradeBuildingMap()
---     local building_map = {}
---     self:IteratorCanUpgradeBuildings(function(building)
---         if building:IsUnlocked() then
---             local highest = building_map[building:GetType()]
---             building_map[building:GetType()] = not highest and
---                 building or
---                 (building:GetLevel() > highest:GetLevel() and
---                 building or
---                 highest)
---         end
---     end)
---     for k,v in pairs(building_map) do
---         if v:IsUpgrading() or not v:CanUpgrade() then
---             building_map[k] = nil
---         end
---     end
---     return building_map
--- end
 
 
 return UtilsForTask

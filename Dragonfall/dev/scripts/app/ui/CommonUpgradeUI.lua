@@ -624,7 +624,7 @@ function CommonUpgradeUI:InitUpgradePart()
             end,
         }
     ):pos(display.cx+180, display.top-330)
-        :addTo(self.upgrade_layer)
+        :addTo(self.upgrade_layer,1)
 
     self.upgrade_btn = btn_bg.button
 

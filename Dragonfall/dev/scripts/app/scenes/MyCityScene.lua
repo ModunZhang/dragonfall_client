@@ -223,7 +223,7 @@ end
 -- 给对应建筑添加指示动画
 function MyCityScene:AddIndicateForBuilding(building_sprite, build_name)
     Sprite:PromiseOfFlash(unpack(self:CollectBuildings(building_sprite))):next(function()
-        self:OpenUI(building_sprite, "upgrade", true, build_name)
+        self:OpenUI(building_sprite, "upgrade", UtilsForTask:NeedTips(self:GetCity():GetUser()), build_name)
     end)
 end
 function MyCityScene:GetHomePage()
@@ -441,9 +441,10 @@ function MyCityScene:OpenUI(building, default_tab, need_tips, build_name)
         UIKit:newGameUI(uiarrays[1], city, uiarrays[2]):AddToScene(self, true)
     else
         if entity:IsUnlocked() then
-            UIKit:newGameUI(uiarrays[1], city, entity, default_tab or uiarrays[2], uiarrays[3]):AddToScene(self, true)
+            local ui = UIKit:newGameUI(uiarrays[1], city, entity, default_tab or uiarrays[2], uiarrays[3]):AddToScene(self, true)
+            ui.needTips = need_tips
         else
-            UIKit:newGameUI("GameUIUnlockBuilding", city, city:GetTileWhichBuildingBelongs(entity)):AddToScene(self, true)
+            local ui = UIKit:newGameUI("GameUIUnlockBuilding", city, city:GetTileWhichBuildingBelongs(entity), need_tips):AddToScene(self, true)
         end
     end
 end
@@ -512,6 +513,8 @@ function MyCityScene:FteAlliance()
                 return GameUINpc:PromiseOfLeave()
             end):next(function()
                 self:GetHomePage():PromiseOfFteAlliance()
+            end):next(function()
+                self:GetHomePage():CheckFinger()
             end)
     else
         self:GetHomePage():PromiseOfFteAlliance()

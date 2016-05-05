@@ -436,7 +436,9 @@ function GameUIHome:CreateBottom()
     return bottom_bg
 end
 function GameUIHome:CheckFinger()
-    if self.task and UtilsForFte:ShouldFingerOnTask(self.city:GetUser()) then
+    if self.task and 
+        UtilsForFte:ShouldFingerOnTask(self.city:GetUser()) and
+        self.city:GetUser().countInfo.isFTEFinished then
         self:ShowFinger()
     else
         self:HideFinger()
@@ -446,10 +448,7 @@ function GameUIHome:ShowFinger()
     if not self.quest_bar_bg:getChildByTag(111) then
         UIKit:FingerAni():addTo(self.quest_bar_bg,10,111):pos(180, -30)
     end
-    -- UtilsForBuilding:GetFreeBuildQueueCount(self.city:GetUser()) > 0 
-    if self.city:GetUser().countInfo.isFTEFinished then
-        self.quest_bar_bg:getChildByTag(111):show()
-    end
+    self.quest_bar_bg:getChildByTag(111):show()
 end
 function GameUIHome:HideFinger()
     if self.quest_bar_bg:getChildByTag(111) then
