@@ -509,7 +509,7 @@ function MyCityScene:FteAlliance()
         cocos_promise.defer(function()app:lockInput(false);end)
             :next(function()
                 return GameUINpc:PromiseOfSay(
-                    {words = _("领主大人，这个世界上的觉醒者并不只有你一人。介入他们或者创建联盟邀请他们加入，会让我们发展得更顺利")}
+                    {words = string.format(_("%s 领主大人，这个世界上的觉醒者并不只有你一人。介入他们或者创建联盟邀请他们加入，会让我们发展得更顺利"), User.basicInfo.name)}
                 )
             end):next(function()
                 return GameUINpc:PromiseOfLeave()
