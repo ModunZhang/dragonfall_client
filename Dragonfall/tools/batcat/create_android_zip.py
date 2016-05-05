@@ -48,6 +48,8 @@ CONFIG_FILE = formatPath("%s/config.json" % APP_ROOT)
 
 JAVA_INFOMATION_FILE = formatPath("%s/src/com/batcatstudio/dragonfall/data/DataHelper.java" % ANDROID_PROJECT_ROOT)
 
+ZIP_RESOURCE_ASSETS = False
+
 SedCommand = "sed"  # mac下默认
 Win32ZipCommand = ""
 if isWindows():
@@ -113,8 +115,19 @@ def copyAndPackResources(asset_target_folder,gameId):
 def createResources(flavor = 'googleplay'):
     Logging.info("- 开始资源打包")
     asset_target_folder = formatPathCreateIf("%s/%s" % (ANDROID_PROJECT_ROOT,getAssetFolderName(CURRENT_FLAVOR)))
+    removeTempDir(asset_target_folder)
+    if ZIP_RESOURCE_ASSETS:
+        copyAndPackResources(asset_target_folder,getGameId(flavor))
+    else:
+        copyResources(asset_target_folder)
     checkConfigFile(asset_target_folder)
-    copyAndPackResources(asset_target_folder,getGameId(flavor))
+
+def copyResources(asset_target_folder):
+    Logging.info("- 拷贝项目代码和资源")
+    Logging.info(ANDROID_RES_DIR)
+    Logging.info(asset_target_folder)
+    shutil.copytree(ANDROID_RES_DIR,asset_target_folder)
+    Logging.warning("- 拷贝项目代码和资源完成")
 
 # main
 if __name__ == "__main__":
