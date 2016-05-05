@@ -42,7 +42,7 @@ function WidgetAutoOrderGachaButton:CheckVisible()
 	if not result then
 		self:stopAllActions()
 	end
-	return result
+	return result and display.getRunningScene().__cname == "MyCityScene"
 end
 
 function WidgetAutoOrderGachaButton:GetElementSize()
