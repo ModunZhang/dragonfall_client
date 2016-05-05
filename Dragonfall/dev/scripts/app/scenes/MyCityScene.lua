@@ -223,7 +223,7 @@ end
 -- 给对应建筑添加指示动画
 function MyCityScene:AddIndicateForBuilding(building_sprite, build_name)
     Sprite:PromiseOfFlash(unpack(self:CollectBuildings(building_sprite))):next(function()
-        self:OpenUI(building_sprite, "upgrade", UtilsForTask:NeedTips(self:GetCity():GetUser()), build_name)
+        self:OpenUI(building_sprite, "upgrade", true, build_name)
     end)
 end
 function MyCityScene:GetHomePage()
@@ -428,7 +428,7 @@ function MyCityScene:OpenUI(building, default_tab, need_tips, build_name)
         local dragon_manger = city:GetDragonEyrie():GetDragonManager()
         local dragon_type = dragon_manger:GetCanFightPowerfulDragonType()
         if #dragon_type > 0 or UtilsForDragon:GetDefenceDragon(User) then
-            app:EnterPVEScene(city:GetUser():GetLatestPveIndex())
+            app:EnterPVEScene(city:GetUser():GetLatestPveIndex(), need_tips)
         else
             UIKit:showMessageDialog(_("主人"),_("需要一条空闲状态的魔龙才能探险"))
         end
@@ -442,7 +442,9 @@ function MyCityScene:OpenUI(building, default_tab, need_tips, build_name)
     else
         if entity:IsUnlocked() then
             local ui = UIKit:newGameUI(uiarrays[1], city, entity, default_tab or uiarrays[2], uiarrays[3]):AddToScene(self, true)
-            ui.needTips = need_tips
+            if need_tips then
+                ui.needTips = UtilsForTask:NeedTips(self:GetCity():GetUser())
+            end
         else
             local ui = UIKit:newGameUI("GameUIUnlockBuilding", city, city:GetTileWhichBuildingBelongs(entity), need_tips):AddToScene(self, true)
         end

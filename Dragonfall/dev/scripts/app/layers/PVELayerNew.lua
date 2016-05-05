@@ -70,8 +70,9 @@ local function linerat(a,b,t)
 end
 
 
-function PVELayerNew:ctor(scene, user, level)
+function PVELayerNew:ctor(scene, user, level, needTips)
     PVELayerNew.super.ctor(self, scene, 0.5, 1.5)
+    self.needTips = needTips
     local pvemap = pvemap[level]
     self.user = user
     self.level = level
@@ -265,6 +266,13 @@ function PVELayerNew:RegisterNpc(obj,X,Y)
     local w,h = self.normal_map:GetSize()
     self.npcs[string.format("%d_%d", X, Y)] = obj
 end
+function PVELayerNew:GetNpcByPveName(pveName)
+    for k,v in pairs(self.npcs) do
+        if v:GetPveName() == pveName then
+            return v
+        end
+    end
+end
 function PVELayerNew:GetNpcBy(X, Y)
     local w,h = self.normal_map:GetSize()
     return self.npcs[string.format("%d_%d", X, Y)]
@@ -331,6 +339,9 @@ function PVELayerNew:MoveAirship(ani)
             target = self:GetNpcBy(v.x, v.y)
             map_y = v.y
         end
+    end
+    if not ani then
+        UIKit:FingerAni():addTo(target,1,12345):pos(-40,0):setScaleX(-1)
     end
     if self.airship then
         local x,y = target:getPosition()

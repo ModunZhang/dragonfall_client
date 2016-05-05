@@ -40,6 +40,8 @@ function GameUIPveHomeNew:OnUserDataChanged_growUpTasks()
         self.quest_label:setString(_("当前没有推荐任务!"))
     end
 
+    self:CheckFinger()
+
     self:RefreshTaskStatus(self.isFinished)
 end
 
@@ -86,7 +88,7 @@ function GameUIPveHomeNew:onEnter()
     self:OnUserDataChanged_growUpTasks()
     display.newNode():addTo(self):schedule(function()
         local star = User:GetStageStarByIndex(self.level)
-        self.stars:setString(string.format("%d/%d", star, math.ceil(star/15) * 15))
+        self.stars:setString(string.format("%d/%d", star, math.max(math.ceil(star/15),1) * 15))
         self.strenth_current:setString(User:GetResValueByType("stamina"))
         self.gem_label:setString(string.formatnumberthousands(User:GetGemValue()))
 
@@ -135,7 +137,7 @@ function GameUIPveHomeNew:CreateTop()
 
     local starCount = User:GetStageStarByIndex(self.level)
     self.stars = UIKit:ttfLabel({
-        text = string.format("%d/%d",starCount,math.ceil(starCount/15) * 15),
+        text = string.format("%d/%d",starCount,math.max(math.ceil(starCount/15)) * 15),
         size = 20,
         color = 0xffedae,
         shadow = true,
@@ -248,7 +250,7 @@ function GameUIPveHomeNew:CreateBottom()
                             break
                         end
                     end
-                    UIKit:newGameUI("GameUIPveAttack",User,self.level.."_"..sindex):AddToCurrentScene(true)
+                    display.getRunningScene():OpenUIByName(self.level.."_"..sindex)
                     return
                 end
                 app:EnterMyCityScene(false,"nil",function(scene)
@@ -289,7 +291,7 @@ function GameUIPveHomeNew:CreateBottom()
     --     )
     -- end
 
-    local light = display.newSprite("quest_light_36x34.png"):addTo(quest_bar_bg):pos(-302, 2)
+    local light = display.newSprite("quest_light_70x34.png"):addTo(quest_bar_bg):pos(-302, 2)
     light:runAction(
         cc.RepeatForever:create(
             transition.sequence{
@@ -312,6 +314,27 @@ function GameUIPveHomeNew:CreateBottom()
     self.change_map = WidgetChangeMap.new(WidgetChangeMap.MAP_TYPE.PVE):addTo(self)
 
     return bottom_bg
+end
+function GameUIPveHomeNew:CheckFinger()
+    if  self.task 
+    and self.task:TaskType() ~= "pveCount"
+    and UtilsForFte:ShouldFingerOnTask(User) 
+    and User.countInfo.isFTEFinished then
+        self:ShowFinger()
+    else
+        self:HideFinger()
+    end
+end
+function GameUIPveHomeNew:ShowFinger()
+    if not self.quest_bar_bg:getChildByTag(111) then
+        UIKit:FingerAni():addTo(self.quest_bar_bg,10,111):pos(180, -30)
+    end
+    self.quest_bar_bg:getChildByTag(111):show()
+end
+function GameUIPveHomeNew:HideFinger()
+    if self.quest_bar_bg:getChildByTag(111) then
+        self.quest_bar_bg:getChildByTag(111):hide()
+    end
 end
 function GameUIPveHomeNew:RefreshTaskStatus(finished)
     if finished then -- 任务已经完成

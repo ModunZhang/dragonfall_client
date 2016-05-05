@@ -313,8 +313,10 @@ function WidgetEventsList:SetProgressItemBtnLabel(canFreeSpeedUp, event_item)
     if old_status~= event_item.status then
         event_item:SetButtonLabel(btn_label)
         event_item:SetButtonImages(btn_images)
-        if event_item.status == "freeSpeedup" and not self.finger then
-            self.finger = UIKit:FingerAni():addTo(event_item):pos(410,-10)
+        if event_item.status == "freeSpeedup" 
+        and not self.finger
+        and UtilsForFte:ShouldFingerOnFree(User) then
+            self.finger = UIKit:FingerAni():addTo(event_item):pos(420,-15):scale(0.8)
         end
     end
 end
@@ -437,7 +439,7 @@ function WidgetEventsList:CreateDropDownButton()
             self:OnDropBtnClick()
         end
     end):align(display.CENTER, 48, 16)
-        :addTo(self)
+        :addTo(self,999)
 
     local up_icon = display.newSprite("icon_up_26x20.png"):addTo(dropBtn):pos(-18,0)
     up_icon:flipY(true)

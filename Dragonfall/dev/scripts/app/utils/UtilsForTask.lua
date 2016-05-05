@@ -652,18 +652,19 @@ function UtilsForTask:IsGetAnyCityBuildRewards(growUpTasks)
         end
     end
 end
-function UtilsForTask:NeedTips(userData)
-    local cityBuild = GameDatas.GrowUpTasks.cityBuild
-    local index
-    for i,mission in ipairs(RecommendedMission) do
-        if  mission.type == "cityBuild" 
-        and cityBuild[mission.id].name == "materialDepot" then
-            index = i
-            break
-        end
+local cityBuild = GameDatas.GrowUpTasks.cityBuild
+local materialDepot_index
+for i,mission in ipairs(RecommendedMission) do
+    if  mission.type == "cityBuild" 
+    and cityBuild[mission.id].name == "materialDepot" then
+        materialDepot_index = i
+        break
     end
+end
+function UtilsForTask:NeedTips(userData)
     for i,mission in ipairs(RecommendedMission) do
-        if not self:CheckIsComplete(userData, mission) and i < index then
+        if not self:CheckIsComplete(userData, mission) 
+        and i < materialDepot_index then
             return true
         end
     end

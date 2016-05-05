@@ -459,8 +459,8 @@ function MyApp:EnterMyAllianceScene(location)
     -- app:enterScene(alliance_name, {location}, "custom", -1, transition_)
     enter_next_scene(alliance_name, location)
 end
-function MyApp:EnterPVEScene(level)
-    enter_next_scene("PVESceneNew", User, level)
+function MyApp:EnterPVEScene(level,needTips)
+    enter_next_scene("PVESceneNew", User, level, needTips)
 end
 function MyApp:EnterPVEFteScene(level)
     enter_next_scene("PVESceneNewFte", User, level)
