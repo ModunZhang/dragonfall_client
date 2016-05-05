@@ -100,7 +100,7 @@ function GameUIPower:CreateMainMenu()
         self:CreateBtn(v,function ()
             menu_node:hide()
             self:ShowOrHide(i)
-        end):align(display.CENTER_TOP, 424/2, 408 - (i - 1) * 82):addTo(menu_node)
+        end):align(display.CENTER_TOP, 424/2, 393 - (i - 1) * 100):addTo(menu_node)
     end
     self.menu_node = menu_node
 end

@@ -242,9 +242,9 @@ function GameUIWall:CreateMilitaryUIIf()
     self.military_troop_btn = select_button
 
     local retreat_btn = WidgetPushButton.new({
-        normal = "red_btn_up_186x66.png",
-        pressed = "red_btn_down_186x66.png",
-        disabled = "gray_btn_186x66.png"
+        normal = "red_btn_up_148x58.png",
+        pressed = "red_btn_down_148x58.png",
+        disabled = "gray_btn_148x58.png"
     })
         :addTo(military_node)
         :align(display.LEFT_BOTTOM, 50,list_node:getPositionY() - 70)
