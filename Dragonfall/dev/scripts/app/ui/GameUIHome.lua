@@ -410,7 +410,7 @@ function GameUIHome:CreateBottom()
     end)
     self.quest_bar_bg = quest_bar_bg
 
-    local light = display.newSprite("quest_light_36x34.png"):addTo(quest_bar_bg):pos(-302, 2)
+    local light = display.newSprite("quest_light_70x34.png"):addTo(quest_bar_bg):pos(-302, 2)
     light:runAction(
         cc.RepeatForever:create(
             transition.sequence{

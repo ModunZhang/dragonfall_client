@@ -113,8 +113,9 @@ function WidgetEventsList:CreateListView()
     for i,v in ipairs(all_events) do
         local item = listview:newItem()
         item:setItemSize(440, 45)
-        local content  = self:CreateEventItem(v,false)
+        local content  = self:CreateEventItem(v,false,i)
         item:addContent(content)
+        item:zorder(#all_events - i + 3)
         listview:addItem(item)
         table.insert(self.listEventsItem, content)
     end
@@ -164,7 +165,8 @@ function WidgetEventsList:CreatePreNode()
     preNode:addTo(self):pos(5,WIDGET_HEIGHT - 94)
     local pre_events = self:GetDefaultEvents()
     for i,v in ipairs(pre_events) do
-        local item = self:CreateEventItem(v,true):align(display.LEFT_BOTTOM, 0, i == 1 and 45 or 0):addTo(preNode)
+        local item = self:CreateEventItem(v,true,i):align(display.LEFT_BOTTOM, 0, i == 1 and 45 or 0):addTo(preNode)
+        item:zorder(#pre_events + 3 - i)
         table.insert(self.preEventsItem, item)
     end
     if #pre_events < 2 then
@@ -311,6 +313,9 @@ function WidgetEventsList:SetProgressItemBtnLabel(canFreeSpeedUp, event_item)
     if old_status~= event_item.status then
         event_item:SetButtonLabel(btn_label)
         event_item:SetButtonImages(btn_images)
+        if event_item.status == "freeSpeedup" and not self.finger then
+            self.finger = UIKit:FingerAni():addTo(event_item):pos(410,-10)
+        end
     end
 end
 function WidgetEventsList:IsAbleToFreeSpeedup(event)
@@ -458,6 +463,10 @@ function WidgetEventsList:OnDropBtnClick()
     self:RefreshByStatus()
 end
 function WidgetEventsList:RefreshByStatus()
+    if self.finger then
+        self.finger:removeFromParent()
+        self.finger = nil
+    end
     local all_events = self:GetAllUpgradeEvents()
     local dropStatus = self:GetDropStatus()
     -- 当处于列表状态，事件数量减少到小于2个时，切换回非列表状态
