@@ -40,11 +40,12 @@ function GameUIHome:OnUserDataChanged_growUpTasks()
     if self.task then
         self.quest_bar_bg:show()
         self.quest_label:setString(self.task:Title())
-        self:ShowFinger()
     else
         self.quest_bar_bg:hide()
         self.quest_label:setString(_("当前没有推荐任务!"))
     end
+
+    self:CheckFinger()
 
     self:RefreshTaskStatus(self.isFinished)
 end
@@ -171,6 +172,7 @@ end
 
 
 function GameUIHome:CreateTop()
+    local User = self.city:GetUser()
     local top_bg = display.newSprite("top_bg_768x117.png"):addTo(self,2)
         :align(display.TOP_CENTER, display.cx, display.top ):setCascadeOpacityEnabled(true)
     if display.width>640 then
@@ -433,15 +435,16 @@ function GameUIHome:CreateBottom()
 
     return bottom_bg
 end
+function GameUIHome:CheckFinger()
+    if self.task and UtilsForFte:ShouldFingerOnTask(self.city:GetUser()) then
+        self:ShowFinger()
+    else
+        self:HideFinger()
+    end
+end
 function GameUIHome:ShowFinger()
     if not self.quest_bar_bg:getChildByTag(111) then
-        display.newSprite("finger.png")
-            :addTo(self.quest_bar_bg,10,111):pos(180, -30):runAction(
-                cc.RepeatForever:create(transition.sequence({
-                    cc.Spawn:create({cc.ScaleTo:create(0.5,0.95),cc.MoveBy:create(0.5, cc.p(-5,0))}),
-                    cc.Spawn:create({cc.ScaleTo:create(0.5,1.0),cc.MoveBy:create(0.5, cc.p( 5,0))})
-                }))
-            )
+        UIKit:FingerAni():addTo(self.quest_bar_bg,10,111):pos(180, -30)
     end
     -- UtilsForBuilding:GetFreeBuildQueueCount(self.city:GetUser()) > 0 
     if self.city:GetUser().countInfo.isFTEFinished then
@@ -449,7 +452,9 @@ function GameUIHome:ShowFinger()
     end
 end
 function GameUIHome:HideFinger()
-    self.quest_bar_bg:getChildByTag(111):hide()
+    if self.quest_bar_bg:getChildByTag(111) then
+        self.quest_bar_bg:getChildByTag(111):hide()
+    end
 end
 function GameUIHome:RefreshTaskStatus(finished)
     if finished then -- 任务已经完成
@@ -467,10 +472,12 @@ function GameUIHome:ChangeChatChannel(channel_index)
 end
 
 function GameUIHome:RefreshExp()
+    local User = self.city:GetUser()
     local current_level = User:GetPlayerLevelByExp(User.basicInfo.levelExp)
     self.exp:setPercentage( (User.basicInfo.levelExp - User:GetCurrentLevelExp(current_level))/(User:GetCurrentLevelMaxExp(current_level) - User:GetCurrentLevelExp(current_level)) * 100)
 end
 function GameUIHome:RefreshVIP()
+    local User = self.city:GetUser()
     local vip_btn = self.vip_btn
     self.vip_level:setString("VIP "..User:GetVipLevel())
     if UtilsForVip:IsVipActived(User) then

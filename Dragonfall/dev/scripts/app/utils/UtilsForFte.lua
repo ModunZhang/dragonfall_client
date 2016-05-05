@@ -17,3 +17,16 @@ function UtilsForFte:IsDefencedWithTroops(userData)
 	end
 	return userData.defenceTroop and userData.defenceTroop ~= json.null
 end
+
+function UtilsForFte:ShouldFingerOnFree(userData)
+	return UtilsForBuilding:CouldFreeSpeedUpWithShortestBuildingEvent(userData)
+end
+function UtilsForFte:ShouldFingerOnTask(userData)
+	if self:ShouldFingerOnFree(userData) then
+		return false
+	end
+	if UtilsForBuilding:CouldFreeSpeedUpWithShortestBuildingEvent(userData) then
+		return false
+	end
+	return true
+end
