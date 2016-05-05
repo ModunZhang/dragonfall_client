@@ -340,7 +340,7 @@ function PVELayerNew:MoveAirship(ani)
             map_y = v.y
         end
     end
-    if not ani then
+    if not ani and UtilsForTask:NeedTips(User) then
         UIKit:FingerAni():addTo(target,1,12345):pos(-40,0):setScaleX(-1)
     end
     if self.airship then

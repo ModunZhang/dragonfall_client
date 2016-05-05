@@ -36,10 +36,11 @@ local function return_vs_soldiers_map(soldier_name)
     end
     return {strong_vs = strong_vs, weak_vs = weak_vs}
 end
-function WidgetRecruitSoldier:ctor(barracks, city, soldier_name, soldier_star)
+function WidgetRecruitSoldier:ctor(barracks, city, soldier_name, soldier_star, needTips)
     UIKit:RegistUI(self)
     self.barracks = barracks
     self.soldier_name = soldier_name
+    self.needTips = needTips
     
     self.star = soldier_star or UtilsForSoldier:SoldierStarByName(city:GetUser(), soldier_name)
     local soldier_config, aaa = self:GetConfigBySoldierTypeAndStar(soldier_name, self.star)
@@ -446,6 +447,11 @@ function WidgetRecruitSoldier:AddButtons()
                 end
             end
         end)
+
+    if self.needTips and UtilsForTask:NeedTips(User) then
+        UIKit:FingerAni():addTo(self.normal_button,11,111):pos(45,-45)
+    end
+    
     local anchorNode = display.newNode():addTo(back_ground, 3):pos(size.width - 120, 110)
 
     -- 时间glass

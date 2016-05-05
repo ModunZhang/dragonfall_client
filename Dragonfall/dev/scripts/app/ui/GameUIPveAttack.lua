@@ -17,9 +17,10 @@ local titles = {
 
 
 
-function GameUIPveAttack:ctor(user, pve_name)
+function GameUIPveAttack:ctor(user, pve_name, needTips)
     self.user = user
     self.pve_name = pve_name
+    self.needTips = needTips
     local level,index = unpack(string.split(pve_name, "_"))
     self.titlename = string.format(_("第%d章-第%d节"), tonumber(level), tonumber(index))
     if self.user:IsPveBoss(self.pve_name) then
@@ -152,6 +153,11 @@ function GameUIPveAttack:BuildNormalUI()
             end)
         end)
     self.attack = self:CreateAttackButton():align(display.CENTER, size.width - 100,size.height - 580)
+
+    if self.needTips and UtilsForTask:NeedTips(User) then
+        UIKit:FingerAni():addTo(self.attack,11,111):pos(45,-45)
+    end
+
     UIKit:ttfLabel({
         text = _("关卡三星通关后，可使用扫荡"),
         size = 18,

@@ -295,7 +295,7 @@ function GameUIQuickTechnology:GetItem(data)
     item.changeState(User:IsTechEnable(tech_name, tech))
     item:onButtonClicked(function(event)
         event.target:getParent():removeChildByTag(111)
-        UIKit:newGameUI("GameUIUpgradeTechnology",tech):AddToCurrentScene(true)
+        UIKit:newGameUI("GameUIUpgradeTechnology",tech,self.need_tips_tech_name):AddToCurrentScene(true)
     end)
     item:setTag(tech.index)
     return item

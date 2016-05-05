@@ -9,8 +9,9 @@ local WidgetRequirementListview = import("..widget.WidgetRequirementListview")
 local HEIGHT = 760
 local window = import("..utils.window")
 
-function GameUIUpgradeTechnology:ctor(tech)
+function GameUIUpgradeTechnology:ctor(tech,needTips)
     self.tech = tech
+    self.needTips = needTips
     self.tech_name = User:GetProductionTech(tech.index)
     GameUIUpgradeTechnology.super.ctor(self)
 end
@@ -297,8 +298,12 @@ function GameUIUpgradeTechnology:BuildUI()
             end,
         }
     ):align(display.RIGHT_TOP, line_2:getPositionX()+line_2:getContentSize().width, line_2:getPositionY() - 30)
-        :addTo(bg_node)
+        :addTo(bg_node,10)
     self.upgrade_button = btn_bg
+    if self.needTips and UtilsForTask:NeedTips(User) then
+        UIKit:FingerAni():addTo(self.upgrade_button,11,111):pos(120,0)
+    end
+
     local gem = display.newSprite("gem_icon_62x61.png")
         :addTo(bg_node)
         :scale(0.5)

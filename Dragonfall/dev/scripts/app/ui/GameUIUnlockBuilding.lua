@@ -107,7 +107,7 @@ function GameUIUnlockBuilding:Init()
     ):pos(display.cx+180, display.top-380)
         :addTo(self,1)
 
-    if self.needTips then
+    if self.needTips and UtilsForTask:NeedTips(User) then
         UIKit:FingerAni():pos(140,-20)
         :addTo(self.upgrade_btn,10,321)
     end

@@ -78,17 +78,17 @@ function PVESceneNew:OnTouchClicked(pre_x, pre_y, x, y)
         local entity = building:GetEntity()
         if iskindof(building, "Sprite") then
             Sprite:PromiseOfFlash(building):next(function()
-                self:OpenUIByName(building:GetPveName())
+                self:OpenUIByName(building:GetPveName(), building:getChildByTag(12345))
             end)
         end
     end
 end
-function PVESceneNew:OpenUIByName(pve_name)
+function PVESceneNew:OpenUIByName(pve_name, needTips)
     local npc = self:GetSceneLayer():GetNpcByPveName(pve_name)
     if npc then
         npc:removeChildByTag(12345)
     end
-    UIKit:newGameUI("GameUIPveAttack", self.user, pve_name):AddToCurrentScene(true)
+    UIKit:newGameUI("GameUIPveAttack", self.user, pve_name, needTips):AddToCurrentScene(true)
 end
 
 

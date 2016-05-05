@@ -235,7 +235,7 @@ function GameUIBarracks:CreateItemWithListView(list_view, soldiers)
                     return
                 end
                 self.soldier_map[soldier_name]:removeChildByTag(111)
-                WidgetRecruitSoldier.new(self.barracks, self.barracks_city, soldier_name)
+                WidgetRecruitSoldier.new(self.barracks, self.barracks_city, soldier_name, self.need_recruit_soldier)
                     :addTo(self,1000, WidgetRecruitSoldier_tag):pos(0,0)
             end):addTo(row_item)
                 :alignByPoint(cc.p(0.5, 0.5), origin_x + (unit_width + gap_x) * (i - 1) + unit_width / 2, 0)
@@ -287,7 +287,8 @@ function GameUIBarracks:CreateSpecialItemWithListView( list_view, soldiers ,titl
                     self.barracks, 
                     self.barracks_city, 
                     soldier_name,
-                    UtilsForSoldier:SoldierStarByName(self.barracks_city:GetUser(), soldier_name)
+                    UtilsForSoldier:SoldierStarByName(self.barracks_city:GetUser(), soldier_name),
+                    self.need_recruit_soldier
                 ):addTo(self,1000, WidgetRecruitSoldier_tag)
                  :align(display.CENTER, window.cx, 500 / 2)
             end):addTo(row_item)
@@ -297,7 +298,8 @@ function GameUIBarracks:CreateSpecialItemWithListView( list_view, soldiers ,titl
                     UtilsForSoldier:SoldierStarByName(self.barracks_city:GetUser(), soldier_name)
                 )
 
-        if self.need_recruit_soldier == soldier_name then
+        if self.need_recruit_soldier == soldier_name 
+        and UtilsForTask:NeedTips(User) then
             if arrow_left_dir_map[soldier_name] then
                 UIKit:FingerAni():pos(120,40)
                 :addTo(self.soldier_map[soldier_name],1,111)

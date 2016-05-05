@@ -250,7 +250,7 @@ function GameUIPveHomeNew:CreateBottom()
                             break
                         end
                     end
-                    display.getRunningScene():OpenUIByName(self.level.."_"..sindex)
+                    display.getRunningScene():OpenUIByName(self.level.."_"..sindex, true)
                     return
                 end
                 app:EnterMyCityScene(false,"nil",function(scene)
