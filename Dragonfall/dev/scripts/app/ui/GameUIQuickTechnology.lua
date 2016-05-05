@@ -245,6 +245,11 @@ function GameUIQuickTechnology:CheckUIChanged()
     end
 end
 
+local desc = {
+    forestation = _("升级造林技巧的好处"),
+    crane = _("升级起重机的好处"),
+    stoneCarving = _("升级石雕技巧的好处"),
+}
 function GameUIQuickTechnology:CreateScrollNode()
     local node = display.newNode():size(window.width - 80,(math.ceil(LuaUtils:table_size(self.techNodes)/3) - 1) *(142+46) + 142)
     for i,v in pairs(self.techNodes) do
@@ -265,7 +270,8 @@ function GameUIQuickTechnology:CreateScrollNode()
         end
 
         if self.need_tips_tech_name == v:Data()[1] then
-            WidgetFteArrow.new(_("点击科技"), 22 * 1.3)
+            WidgetFteArrow.new(desc[self.need_tips_tech_name] or _("点击科技"), 
+                22 * 1.3)
                 :addTo(node, 10, 111):TurnUp()
                 :pos(v:Pos().x,v:Pos().y-80):scale(0.7)
         end

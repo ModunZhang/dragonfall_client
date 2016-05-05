@@ -317,12 +317,31 @@ function GameUIPveHomeNew:CreateBottom()
 end
 function GameUIPveHomeNew:CheckFinger()
     if  self.task 
-    and self.task:TaskType() ~= "pveCount"
     and UtilsForFte:ShouldFingerOnTask(User) 
     and User.countInfo.isFTEFinished then
-        self:ShowFinger()
-    else
-        self:HideFinger()
+        if self.isFinished then
+            self:ShowClickReward()
+        elseif self.task:TaskType() ~= "pveCount" then
+            self:ShowFinger()
+        end
+        return
+    end
+
+    self:HideFinger()
+    self:HideClickReward()
+end
+local WidgetFteArrow = import("..widget.WidgetFteArrow")
+function GameUIPveHomeNew:ShowClickReward()
+    if not self.quest_bar_bg:getChildByTag(222) then
+        WidgetFteArrow.new(_("点击领取奖励")):TurnDown()
+        :addTo(self.quest_bar_bg,10,222):pos(100,50):scale(0.8)
+    end
+    self.quest_bar_bg:getChildByTag(222):show()
+    self:HideFinger()
+end
+function GameUIPveHomeNew:HideClickReward()
+    if self.quest_bar_bg:getChildByTag(222) then
+        self.quest_bar_bg:getChildByTag(222):hide()
     end
 end
 function GameUIPveHomeNew:ShowFinger()
@@ -330,6 +349,7 @@ function GameUIPveHomeNew:ShowFinger()
         UIKit:FingerAni():addTo(self.quest_bar_bg,10,111):pos(180, -30)
     end
     self.quest_bar_bg:getChildByTag(111):show()
+    self:HideClickReward()
 end
 function GameUIPveHomeNew:HideFinger()
     if self.quest_bar_bg:getChildByTag(111) then
