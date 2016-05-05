@@ -37,23 +37,26 @@ if device.platform == 'android' and ext.isLowMemoryDevice() then
 
     -- 定义已有的低画质图片
     local low_ram_texture_name = plist_texture_data.low_raw_map
-
     local DEBUG_GET_ANIMATION_PATH_ = DEBUG_GET_ANIMATION_PATH
     DEBUG_GET_ANIMATION_PATH = function (path)
         local ret = DEBUG_GET_ANIMATION_PATH_(path)
         return low_ram_texture_name[ret] or ret
     end
-    -- 更新查找单张图片从低画质的大图中查询
-    plist_texture_data = plist_texture_data.low_raw_texture
 end
 
 
 plist_texture_data_sd  = plist_texture_data.sd or {}
+plist_texture_data_low_ram  = plist_texture_data.low_raw_texture or {}
 local function textureResolve(texName)
     if openSD then
         local sdPngName = plist_texture_data_sd[texName]
         local pngName = plist_texture_data[texName]
         return sdPngName or pngName, sdPngName ~= nil
+    end
+    if device.platform == 'android' and ext.isLowMemoryDevice() then
+        local low_ram_texture = plist_texture_data_low_ram[texName]
+        local pngName = plist_texture_data[texName]
+        return low_ram_texture or pngName,low_ram_texture ~= nil
     end
     return plist_texture_data[texName]
 end
