@@ -402,7 +402,8 @@ function GameUIHome:CreateBottom()
     end)
     self.quest_bar_bg = quest_bar_bg
 
-    if UtilsForBuilding:GetFreeBuildQueueCount(self.city:GetUser()) > 0 then
+    if UtilsForBuilding:GetFreeBuildQueueCount(self.city:GetUser()) > 0 
+    and self.city:GetUser().countInfo.isFTEFinished then
         display.newSprite("finger.png")
         :addTo(self.quest_bar_bg,10,111):pos(180, -30):runAction(
             cc.RepeatForever:create(transition.sequence({
