@@ -496,6 +496,9 @@ function UtilsForBuilding:GetBuildingEventsBySeq(userData)
 end
 function UtilsForBuilding:CouldFreeSpeedUpWithShortestBuildingEvent(userData)
     local shortest_event = self:GetBuildingEventsBySeq(userData)[1]
+    if not shortest_event then
+        return false
+    end
     local time = UtilsForEvent:GetEventInfo(shortest_event)
     return time <= DataUtils:getFreeSpeedUpLimitTime()
 end

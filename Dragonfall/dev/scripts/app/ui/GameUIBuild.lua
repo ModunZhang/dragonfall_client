@@ -39,7 +39,7 @@ function GameUIBuild:OnMoveInStage()
     listnode:addTo(self:GetView()):align(display.BOTTOM_CENTER,window.cx,window.bottom_top - 60)
     self.base_resource_building_items = {}
     self.base_list_view = list_view
-    
+
     local tile = self.build_city:GetTileWhichBuildingBelongs(self.select_ruins)
     local buildingLocation = tile.location_id
     local houseLocation = tile:GetBuildingLocation(self.select_ruins)
@@ -134,6 +134,32 @@ end
 function GameUIBuild:OnBuildOnItem(item)
     local city = self.build_city
     local User = city:GetUser()
+    if UtilsForBuilding:GetFreeBuildQueueCount(User) <= 0 and
+        UtilsForBuilding:CouldFreeSpeedUpWithShortestBuildingEvent(User) then
+        local dialog = UIKit:showMessageDialog()
+        dialog:CreateOKButton(
+            {
+                listener = function ()
+                    local shortest_event = UtilsForBuilding:GetBuildingEventsBySeq(User)[1]
+                    if not shortest_event then
+                        return
+                    end
+                    local eventType = UtilsForEvent:IsHouseEvent(shortest_event) and "houseEvents" or "buildingEvents"
+                    NetManager:getFreeSpeedUpPromise(eventType, shortest_event.id):done(function()
+                        if self.OnCityChanged then
+                            self:OnCityChanged()
+                        end
+                    end)
+                end,
+                btn_name= _("免费加速"),
+                btn_images = {normal = "purple_btn_up_148x58.png",pressed = "purple_btn_down_148x58.png"},
+            }
+        )
+        dialog:SetTitle(_("提示"))
+        dialog:SetPopMessage(_("您当前没有空闲的建筑队列,请首先将上一条队列加速完成"))
+        return
+    end
+    
     local max = User.basicInfo.buildQueue
     local current_time = app.timer:GetServerTime()
 
@@ -365,6 +391,7 @@ function GameUIBuild:CreateItemWithListView(list_view)
 end
 
 return GameUIBuild
+
 
 
 

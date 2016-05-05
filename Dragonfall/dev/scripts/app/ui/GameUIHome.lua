@@ -11,6 +11,9 @@ local WidgetEventsList = import("..widget.WidgetEventsList")
 local GameUIHome = UIKit:createUIClass('GameUIHome')
 local light_gem = import("..particles.light_gem")
 
+
+GameUIHome.ResPositionMap = {}
+
 function GameUIHome:OnUserDataChanged_buildings()
     self:OnUserDataChanged_growUpTasks()
 end
@@ -37,6 +40,7 @@ function GameUIHome:OnUserDataChanged_growUpTasks()
     if self.task then
         self.quest_bar_bg:show()
         self.quest_label:setString(self.task:Title())
+        self:ShowFinger()
     else
         self.quest_bar_bg:hide()
         self.quest_label:setString(_("当前没有推荐任务!"))
@@ -235,7 +239,8 @@ function GameUIHome:CreateTop()
         local col = (i - 1) % 3
         local x, y = first_col + (i - 1) * padding_width, 16
         self.res_icon_map[v[3]] = display.newSprite(v[1]):addTo(button):pos(x, y):scale(0.3)
-
+        local wp = self.res_icon_map[v[3]]:convertToWorldSpace(cc.p(0,0))
+        self.ResPositionMap[v[3]] = wp
         self[v[2]] = UIKit:CreateNumberImageNode({text = "",
             size = 18,
             color = 0xf3f0b6,
@@ -356,7 +361,7 @@ function GameUIHome:CreateBottom()
         {normal = "quest_btn_unfinished_566x46.png",pressed = "quest_btn_unfinished_566x46.png"},
         {scale9 = false}
     ):addTo(bottom_bg):pos(420, bottom_bg:getContentSize().height + 56):onButtonClicked(function(event)
-        self.quest_bar_bg:removeChildByTag(111)
+        self:HideFinger()
         local task = self.task
         if task then
             if self.isFinished then
@@ -372,10 +377,11 @@ function GameUIHome:CreateBottom()
                         if not self.is_hooray_on then
                             self.is_hooray_on = true
                             app:GetAudioManager():PlayeEffectSoundWithKey("COMPLETE")
-
-                            self:performWithDelay(function()
-                                self.is_hooray_on = false
-                            end, 1.5)
+                            if self.quest_bar_bg then
+                                self.quest_bar_bg:performWithDelay(function()
+                                    self.is_hooray_on = false
+                                end, 1.5)
+                            end
                         end
                     end
                 end)
@@ -402,17 +408,6 @@ function GameUIHome:CreateBottom()
     end)
     self.quest_bar_bg = quest_bar_bg
 
-    if UtilsForBuilding:GetFreeBuildQueueCount(self.city:GetUser()) > 0 
-    and self.city:GetUser().countInfo.isFTEFinished then
-        display.newSprite("finger.png")
-        :addTo(self.quest_bar_bg,10,111):pos(180, -30):runAction(
-            cc.RepeatForever:create(transition.sequence({
-                cc.Spawn:create({cc.ScaleTo:create(0.5,0.95),cc.MoveBy:create(0.5, cc.p(-5,0))}),
-                cc.Spawn:create({cc.ScaleTo:create(0.5,1.0),cc.MoveBy:create(0.5, cc.p( 5,0))})
-            }))
-        )
-    end
-
     local light = display.newSprite("quest_light_36x34.png"):addTo(quest_bar_bg):pos(-302, 2)
     light:runAction(
         cc.RepeatForever:create(
@@ -437,6 +432,24 @@ function GameUIHome:CreateBottom()
     self.change_map = WidgetChangeMap.new(WidgetChangeMap.MAP_TYPE.OUR_CITY):addTo(self, 1)
 
     return bottom_bg
+end
+function GameUIHome:ShowFinger()
+    if not self.quest_bar_bg:getChildByTag(111) then
+        display.newSprite("finger.png")
+            :addTo(self.quest_bar_bg,10,111):pos(180, -30):runAction(
+                cc.RepeatForever:create(transition.sequence({
+                    cc.Spawn:create({cc.ScaleTo:create(0.5,0.95),cc.MoveBy:create(0.5, cc.p(-5,0))}),
+                    cc.Spawn:create({cc.ScaleTo:create(0.5,1.0),cc.MoveBy:create(0.5, cc.p( 5,0))})
+                }))
+            )
+    end
+    -- UtilsForBuilding:GetFreeBuildQueueCount(self.city:GetUser()) > 0 
+    if self.city:GetUser().countInfo.isFTEFinished then
+        self.quest_bar_bg:getChildByTag(111):show()
+    end
+end
+function GameUIHome:HideFinger()
+    self.quest_bar_bg:getChildByTag(111):hide()
 end
 function GameUIHome:RefreshTaskStatus(finished)
     if finished then -- 任务已经完成
