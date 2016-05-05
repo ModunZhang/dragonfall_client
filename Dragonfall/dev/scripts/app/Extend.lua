@@ -33,14 +33,38 @@ elseif device.platform == 'winrt' then
 end
 plist_texture_data     = import(texture_data_file)
 
+local openLowRam = false
 if device.platform == 'android' and ext.isLowMemoryDevice() then
 
     -- 定义已有的低画质图片
     local low_ram_texture_name = plist_texture_data.low_raw_map
+
+    -- 将代码中原来使用高画质的图片名字替换成低画质的文件名称
+    local FilterLowRamTexture = function( textureName )
+        if not textureName then return textureName end
+        if device.platform ~= 'android' then return textureName end
+        local fileName,fileExt = string.match(textureName,"(.*)%.(.*)")
+        if not fileExt or not fileName or not low_ram_texture_name[fileName] then return textureName end
+        if fileExt ~= 'png' and fileExt ~= 'plist' then
+            return textureName
+        else
+            return low_ram_texture_name[fileName] .. "." .. fileExt
+        end
+    end
+
     local DEBUG_GET_ANIMATION_PATH_ = DEBUG_GET_ANIMATION_PATH
     DEBUG_GET_ANIMATION_PATH = function (path)
         local ret = DEBUG_GET_ANIMATION_PATH_(path)
-        return low_ram_texture_name[ret] or ret
+        return FilterLowRamTexture(ret)
+    end
+    -- 更新查找单张图片从低画质的大图中查询
+    for k,v in pairs(plist_texture_data) do
+        if type(v) == 'string' then 
+            local image_key = string.gsub(v,"%.png","")
+            if low_ram_texture_name[image_key] then
+                plist_texture_data[k] = low_ram_texture_name[image_key] .. ".png"
+            end
+        end
     end
 end
 
@@ -52,11 +76,6 @@ local function textureResolve(texName)
         local sdPngName = plist_texture_data_sd[texName]
         local pngName = plist_texture_data[texName]
         return sdPngName or pngName, sdPngName ~= nil
-    end
-    if device.platform == 'android' and ext.isLowMemoryDevice() then
-        local low_ram_texture = plist_texture_data_low_ram[texName]
-        local pngName = plist_texture_data[texName]
-        return low_ram_texture or pngName,low_ram_texture ~= nil
     end
     return plist_texture_data[texName]
 end
