@@ -343,7 +343,7 @@ function WidgetEventsList:CreateProgressItem(isTouchEnabled)
     local half_height = node:getContentSize().height / 2
     local node_1 = display.newScale9Sprite("background_event_42x42.png"):size(398,42):addTo(node):align(display.LEFT_CENTER,42,half_height)
     local type_bg = display.newSprite("background_event_head_42x42.png"):pos(21, half_height):addTo(node)
-    node.type_icon = display.newSprite("tech_42x38.png"):pos(21, 21):addTo(type_bg)
+    node.type_icon = display.newSprite("tech_42x38.png"):pos(21, 21):addTo(type_bg):scale(0.8)
 
     node.progress = display.newProgressTimer("tab_progress_bar_282x36.png",
         display.PROGRESS_TIMER_BAR):addTo(node_1)
@@ -387,6 +387,7 @@ function WidgetEventsList:CreateProgressItem(isTouchEnabled)
             shadow = true}))
     function node:SetTypeIcon(type)
         self.type_icon:setTexture(icon_map[type])
+        self.type_icon:scale(0.8)
         return self
     end
     function node:SetProgressInfo(str, percent, time)
