@@ -27,5 +27,5 @@ function UtilsForFte:ShouldFingerOnTask(userData)
 	if self:ShouldFingerOnFree(userData) then
 		return false
 	end
-	return true
+	return UtilsForTask:NeedTips(userData)
 end
