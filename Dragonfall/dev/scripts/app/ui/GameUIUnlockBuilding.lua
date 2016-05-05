@@ -109,7 +109,7 @@ function GameUIUnlockBuilding:Init()
 
     if self.needTips and UtilsForTask:NeedTips(User) then
         UIKit:FingerAni():pos(140,-20)
-        :addTo(self.upgrade_btn,10,321)
+            :addTo(self.upgrade_btn,10,321)
     end
 
     -- 立即升级所需金龙币
@@ -302,8 +302,11 @@ function GameUIUnlockBuilding:PopNotSatisfyDialog(listener,can_not_update_type)
                         if not shortest_event then
                             return
                         end
-                        local eventType = UtilsForEvent:IsHouseEvent(shortest_event) and "houseEvents" or "buildingEvents"
-                        NetManager:getFreeSpeedUpPromise(eventType, shortest_event.id)
+                        local time = UtilsForEvent:GetEventInfo(shortest_event)
+                        if time > 2 then
+                            local eventType = UtilsForEvent:IsHouseEvent(shortest_event) and "houseEvents" or "buildingEvents"
+                            NetManager:getFreeSpeedUpPromise(eventType, shortest_event.id)
+                        end
                     end,
                     btn_name= _("免费加速"),
                     btn_images = {normal = "purple_btn_up_148x58.png",pressed = "purple_btn_down_148x58.png"},
@@ -342,8 +345,11 @@ function GameUIUnlockBuilding:PopNotSatisfyDialog(listener,can_not_update_type)
                         if not shortest_event then
                             return
                         end
-                        local eventType = UtilsForEvent:IsHouseEvent(shortest_event) and "houseEvents" or "buildingEvents"
-                        NetManager:getFreeSpeedUpPromise(eventType, shortest_event.id)
+                        local time = UtilsForEvent:GetEventInfo(shortest_event)
+                        if time > 2 then
+                            local eventType = UtilsForEvent:IsHouseEvent(shortest_event) and "houseEvents" or "buildingEvents"
+                            NetManager:getFreeSpeedUpPromise(eventType, shortest_event.id)
+                        end
                     end,
                     btn_name= _("免费加速"),
                     btn_images = {normal = "purple_btn_up_148x58.png",pressed = "purple_btn_down_148x58.png"},
@@ -470,6 +476,8 @@ end
 
 
 return GameUIUnlockBuilding
+
+
 
 
 

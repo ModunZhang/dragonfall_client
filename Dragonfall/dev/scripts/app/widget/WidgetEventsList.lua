@@ -245,8 +245,10 @@ end
 function WidgetEventsList:OnEventButtonClicked(item)
     local event = item.event
     local time = UtilsForEvent:GetEventInfo(event)
-    if UtilsForEvent:CouldFreeSpeedUp(event.eventType) and DataUtils:getFreeSpeedUpLimitTime() > time and time > 2 then
-        NetManager:getFreeSpeedUpPromise(event.eventType, event.id)
+    if UtilsForEvent:CouldFreeSpeedUp(event.eventType) and DataUtils:getFreeSpeedUpLimitTime() > time then
+        if time > 2 then
+            NetManager:getFreeSpeedUpPromise(event.eventType, event.id)
+        end
     else
         if not Alliance_Manager:GetMyAlliance():IsDefault() and self:IsAbleToRequestHelp(event.eventType) and not User:IsRequestHelped(event.id) then
             NetManager:getRequestAllianceToSpeedUpPromise(event.eventType,event.id)

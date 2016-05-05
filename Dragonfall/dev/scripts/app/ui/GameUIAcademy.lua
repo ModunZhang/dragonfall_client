@@ -206,7 +206,8 @@ function GameUIAcademy:BuildTipsUI(technology_node,y)
         :onButtonClicked(function()
             if User:HasProductionTechEvent() then
                 local event = User.productionTechEvents[1]
-                if UtilsForEvent:GetEventInfo(event) > 2 then
+                local time = UtilsForEvent:GetEventInfo(event)
+                if time > 2 then
                     NetManager:getFreeSpeedUpPromise("productionTechEvents", event.id):done(function()
                         self:CheckUIChanged()
                     end)
