@@ -975,6 +975,16 @@ bool FileUtils::isFileExist(const std::string& filename) const
     }
 }
 
+#if CC_USE_PNG_WITH_RGB_A_JPG
+bool FileUtils::isRgbJpgFile(const std::string& filename) const
+{
+    std::string newPath = filename;
+    std::string alpha_file = newPath.erase(newPath.find_last_of("."));
+    alpha_file = alpha_file + "_.jpg";
+    return isFileExist(alpha_file);
+}
+#endif
+
 bool FileUtils::isAbsolutePath(const std::string& path) const
 {
     return (path[0] == '/');

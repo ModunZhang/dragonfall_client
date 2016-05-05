@@ -120,7 +120,7 @@ public class DataHelper {
 		}
 	}
 
-	private static void deleteFileRecursively(String path) throws IOException {
+	public static void deleteFileRecursively(String path) throws IOException {
 		File f = new File(path);
 		if (f.exists()) {
 			if (f.isDirectory()) {
@@ -389,5 +389,5 @@ public class DataHelper {
 		Cocos2dxHelper.setCocos2dxBundlePath(getUnZipRootPath(isInstallInSdCard) + PATH_BUNDLE_SUFFIX);
 		Cocos2dxHelper.setCocos2dxWritablePath(getUnZipRootPath(isInstallInSdCard) + PATH_DOCUMENTS_SUFFIX);
 	}
-	
+
 }

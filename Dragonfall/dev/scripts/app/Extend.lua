@@ -33,32 +33,23 @@ elseif device.platform == 'winrt' then
 end
 plist_texture_data     = import(texture_data_file)
 
+local openLowRam = false
 if device.platform == 'android' and ext.isLowMemoryDevice() then
 
     -- 定义已有的低画质图片
-    local low_ram_texture_name = {
-        ['city_only0'] = "city_only_low_ram0",
-        ['buildings0'] = "buildings_low_ram0",
-        ['ui_png0'] = "ui_png_low_ram0",
-        ['ui_png1'] = "ui_png_low_ram1",
-        ['ui_png2'] = "ui_png_low_ram2",
-        ['level0'] = "level_low_ram0",
-        ['pve_only0'] = "pve_only_low_ram0",
-        ['ui_pvr0'] = "ui_pvr_low_ram0",
-        ['ui_pvr1'] = "ui_pvr_low_ram1",
-        ['ui_pvr2'] = "ui_pvr_low_ram2",
-    }
+    local low_ram_texture_map = plist_texture_data.low_raw_map
+    local low_ram_texture_name = plist_texture_data.low_raw_texture
 
     -- 将代码中原来使用高画质的图片名字替换成低画质的文件名称
     local FilterLowRamTexture = function( textureName )
         if not textureName then return textureName end
         if device.platform ~= 'android' then return textureName end
         local fileName,fileExt = string.match(textureName,"(.*)%.(.*)")
-        if not fileExt or not fileName or not low_ram_texture_name[fileName] then return textureName end
+        if not fileExt or not fileName or not low_ram_texture_map[fileName] then return textureName end
         if fileExt ~= 'png' and fileExt ~= 'plist' then
             return textureName
         else
-            return low_ram_texture_name[fileName] .. "." .. fileExt
+            return low_ram_texture_map[fileName] .. "." .. fileExt
         end
     end
 
@@ -67,13 +58,11 @@ if device.platform == 'android' and ext.isLowMemoryDevice() then
         local ret = DEBUG_GET_ANIMATION_PATH_(path)
         return FilterLowRamTexture(ret)
     end
-
     -- 更新查找单张图片从低画质的大图中查询
     for k,v in pairs(plist_texture_data) do
-        if k ~= 'sd' then 
-            local image_key = string.gsub(v,"%.png","")
-            if low_ram_texture_name[image_key] then
-                plist_texture_data[k] = low_ram_texture_name[image_key] .. ".png"
+        if type(v) == 'string' then 
+            if low_ram_texture_name[k] then
+                plist_texture_data[k] = low_ram_texture_name[k] 
             end
         end
     end
@@ -81,6 +70,7 @@ end
 
 
 plist_texture_data_sd  = plist_texture_data.sd or {}
+plist_texture_data_low_ram  = plist_texture_data.low_raw_texture or {}
 local function textureResolve(texName)
     if openSD then
         local sdPngName = plist_texture_data_sd[texName]

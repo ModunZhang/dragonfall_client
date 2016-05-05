@@ -337,8 +337,19 @@ Texture2D * TextureCache::addImage(const std::string &path)
         {
             image = new (std::nothrow) Image();
             CC_BREAK_IF(nullptr == image);
-
+#if CC_USE_PNG_WITH_RGB_A_JPG
+            bool bRet = false;
+            if(FileUtils::getInstance()->isRgbJpgFile(fullpath))
+            {
+                bRet = image->initPngWithJpgFile(fullpath);
+            }
+            else
+            {
+                bRet = image->initWithImageFile(fullpath);
+            }
+#else
             bool bRet = image->initWithImageFile(fullpath);
+#endif
             CC_BREAK_IF(!bRet);
 
 			texture = new (std::nothrow) Texture2D(path);
@@ -429,8 +440,19 @@ bool TextureCache::reloadTexture(const std::string& fileName)
         do {
             image = new (std::nothrow) Image();
             CC_BREAK_IF(nullptr == image);
-
+#if CC_USE_PNG_WITH_RGB_A_JPG
+            bool bRet = false;
+            if(FileUtils::getInstance()->isRgbJpgFile(fullpath))
+            {
+                ret = image->initPngWithJpgFile(fullpath);
+            }
+            else
+            {
+                bRet = image->initWithImageFile(fullpath);
+            }
+#else
             bool bRet = image->initWithImageFile(fullpath);
+#endif
             CC_BREAK_IF(!bRet);
             
             ret = texture->initWithImage(image);
@@ -727,7 +749,25 @@ void VolatileTextureMgr::reloadAllTextures()
         case VolatileTexture::kImageFile:
             {
                 Image* image = new (std::nothrow) Image();
-                
+#if CC_USE_PNG_WITH_RGB_A_JPG
+                bool bRet = false;
+                if(FileUtils::getInstance()->isRgbJpgFile(vt->_fileName))
+                {
+                    bRet = (image && image->initPngWithJpgFile(vt->_fileName));
+                }
+                else
+                {
+                    Data data = FileUtils::getInstance()->getDataFromFile(vt->_fileName);
+                    bRet = (image && image->initWithImageData(data.getBytes(), data.getSize()));    
+                }
+                if(bRet)
+                {
+                    Texture2D::PixelFormat oldPixelFormat = Texture2D::getDefaultAlphaPixelFormat();
+                    Texture2D::setDefaultAlphaPixelFormat(vt->_pixelFormat);
+                    vt->_texture->initWithImage(image);
+                    Texture2D::setDefaultAlphaPixelFormat(oldPixelFormat);
+                }
+#else                
                 Data data = FileUtils::getInstance()->getDataFromFile(vt->_fileName);
                 
                 if (image && image->initWithImageData(data.getBytes(), data.getSize()))
@@ -737,7 +777,7 @@ void VolatileTextureMgr::reloadAllTextures()
                     vt->_texture->initWithImage(image);
                     Texture2D::setDefaultAlphaPixelFormat(oldPixelFormat);
                 }
-                
+#endif                
                 CC_SAFE_RELEASE(image);
             }
             break;
