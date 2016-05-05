@@ -18,6 +18,13 @@ local base_items = {
     { label = _("矿工小屋"), building_type = "miner", png = SpriteConfig["miner"]:GetConfigByLevel(1).png, scale = 1 },
     { label = _("农夫小屋"), building_type = "farmer", png = SpriteConfig["farmer"]:GetConfigByLevel(1).png, scale = 1 },
 }
+local desc = {
+    dwelling = _("建造住宅的好处"),
+    woodcutter = _("建造木工小屋的好处"),
+    quarrier = _("建造石匠小屋的好处"),
+    miner = _("建造矿工小屋的好处"),
+    farmer = _("建造农夫小屋的好处"),
+}
 function GameUIBuild:ctor(city, building, p1, p2, need_tips, build_name)
     GameUIBuild.super.ctor(self, city, _("待建地基"))
     self.build_city = city
@@ -51,7 +58,7 @@ function GameUIBuild:OnMoveInStage()
         self.base_list_view:addItem(item)
         table.insert(self.base_resource_building_items, item)
         if self.need_tips and self.build_name == v.building_type then
-            WidgetFteArrow.new(_("点击建造小屋"))
+            WidgetFteArrow.new(desc[v.building_type])
                 :addTo(item, 100):TurnRight():align(display.RIGHT_CENTER, 380, 40)
         end
         if UtilsForBuilding:IsHouseTypeWillHasBuff(self.build_city:GetUser(),buildingLocation,v.building_type) then
