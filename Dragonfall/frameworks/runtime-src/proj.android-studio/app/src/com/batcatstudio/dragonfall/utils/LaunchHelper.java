@@ -4,6 +4,7 @@ import org.cocos2dx.lib.Cocos2dxHelper;
 import org.cocos2dx.lua.AppActivity;
 
 import com.batcatstudio.dragonfall.data.DataHelper;
+import com.batcatstudio.dragonfall.sdk.PayPalSDK;
 import com.xapcn.dragonfall.BuildConfig;
 
 import java.io.File;
@@ -40,21 +41,33 @@ public class LaunchHelper {
 			}
 		}else {
 			AppActivity.getGameActivity().setKeepScreenOn(true);
-			String writePath = getWritePath();
+			final String writePath = getWritePath();
 			if (DataHelper.isAppVersionExpired() && DataHelper.hasInstallUnzip()) {
 				//clean
-				DebugUtil.LogDebug(TAG, "Clean User Data: "+writePath);
-				try {
-					DataHelper.deleteFileRecursively(writePath);
-				}catch (Exception e)
-				{
-					DebugUtil.LogException(TAG,e);
-				}
+				new Thread() {
+					@SuppressWarnings("static-access")
+					@Override
+					public void run() {
+						DebugUtil.LogDebug(TAG, "Clean User Data: "+writePath);
+						AppActivity.getGameActivity().gameHandler.sendEmptyMessage(AppActivity.AppActivityMessage.LOADING_DELETE_SHOW.ordinal());
+						try {
+							DataHelper.deleteFileRecursively(writePath);
+						}catch (Exception e)
+						{
+							DebugUtil.LogException(TAG,e);
+						}
+						DataHelper.saveIntValue(DataHelper.KEY_APP_VERSION_CODE, BuildConfig.VERSION_CODE);
+						DataHelper.saveBooleanValue(DataHelper.KEY_HAS_INSTALL_GAME, true);
+						Cocos2dxHelper.setCocos2dxWritablePath(writePath);
+						AppActivity.getGameActivity().gameHandler.sendEmptyMessage(AppActivity.AppActivityMessage.LOADING_DELETE_SUCCESS.ordinal());
+					}
+				}.start();
+			}else {
+				DataHelper.saveIntValue(DataHelper.KEY_APP_VERSION_CODE, BuildConfig.VERSION_CODE);
+				DataHelper.saveBooleanValue(DataHelper.KEY_HAS_INSTALL_GAME, true);
+				Cocos2dxHelper.setCocos2dxWritablePath(writePath);
+				runNativeLuaEngine();
 			}
-			DataHelper.saveIntValue(DataHelper.KEY_APP_VERSION_CODE, BuildConfig.VERSION_CODE);
-			DataHelper.saveBooleanValue(DataHelper.KEY_HAS_INSTALL_GAME, true);
-			Cocos2dxHelper.setCocos2dxWritablePath(writePath);
-			runNativeLuaEngine();
 		}
 	}
 	
