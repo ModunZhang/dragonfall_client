@@ -299,16 +299,17 @@ function GameUIBarracks:CreateSpecialItemWithListView( list_view, soldiers ,titl
 
         if self.need_recruit_soldier == soldier_name then
             if arrow_left_dir_map[soldier_name] then
-                WidgetFteArrow.new(_("点击士兵"))
+                UIKit:FingerAni():pos(120,40)
                 :addTo(self.soldier_map[soldier_name],1,111)
-                :TurnLeft():align(display.LEFT_CENTER, 100, 80)    
+                self.soldier_map[soldier_name]:zorder(10)
+                need_up_view = true
             else
-                WidgetFteArrow.new(_("点击士兵"))
+                UIKit:FingerAni():pos(20,40)
                 :addTo(self.soldier_map[soldier_name],1,111)
-                :TurnRight():align(display.RIGHT_CENTER, -100, 80)
+                :setScaleX(-1)
+                self.soldier_map[soldier_name]:zorder(10)
+                need_up_view = true
             end
-            self.soldier_map[soldier_name]:zorder(10)
-            need_up_view = true
         end
     end
 

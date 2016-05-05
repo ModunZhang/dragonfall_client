@@ -657,7 +657,7 @@ local materialDepot_index
 for i,mission in ipairs(RecommendedMission) do
     if  mission.type == "cityBuild" 
     and cityBuild[mission.id].name == "materialDepot" then
-        materialDepot_index = i
+        materialDepot_index = i + 1
         break
     end
 end
