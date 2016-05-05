@@ -48,7 +48,7 @@ function MyCityScene:onEnter()
     -- }):addTo(self, 1000000)
     -- :align(display.RIGHT_TOP, display.width, display.height)
 
-    alliance:AddListenOnType(self, "operation")
+    -- alliance:AddListenOnType(self, "operation")
     self:GetCity():GetUser():AddListenOnType(self, "soldierEvents")
     self:GetCity():GetUser():AddListenOnType(self, "houseEvents")
     self:GetCity():GetUser():AddListenOnType(self, "buildingEvents")
@@ -229,14 +229,14 @@ end
 function MyCityScene:GetHomePage()
     return self.home_page
 end
-function MyCityScene:OnAllianceDataChanged_operation(alliance, op)
-    if op == "join" and
-        Alliance_Manager:HasBeenJoinedAlliance() and
-        not self.firstJoinAllianceRewardGeted
-    then
-        self:GetHomePage():PromiseOfFteAllianceMap()
-    end
-end
+-- function MyCityScene:OnAllianceDataChanged_operation(alliance, op)
+--     -- if op == "join" and
+--     --     Alliance_Manager:HasBeenJoinedAlliance() and
+--     --     not self.firstJoinAllianceRewardGeted
+--     -- then
+--     --     -- self:GetHomePage():PromiseOfFteAllianceMap()
+--     -- end
+-- end
 function MyCityScene:onEnterTransitionFinish()
     MyCityScene.super.onEnterTransitionFinish(self)
     if ext.registereForRemoteNotifications then
@@ -509,8 +509,9 @@ function MyCityScene:FteAlliance()
                     {words = _("领主大人，这个世界上的觉醒者并不只有你一人。介入他们或者创建联盟邀请他们加入，会让我们发展得更顺利")}
                 )
             end):next(function()
-                self:GetHomePage():PromiseOfFteAlliance()
                 return GameUINpc:PromiseOfLeave()
+            end):next(function()
+                self:GetHomePage():PromiseOfFteAlliance()
             end)
     else
         self:GetHomePage():PromiseOfFteAlliance()

@@ -214,7 +214,7 @@ function GameUIWatchTower:GetMyEventItemWithIndex(index,isOpen,entity)
             :addTo(num_bg)
 
         UIKit:ttfLabel({
-            text =  string.format(_("累计签到%s天，永久+1进攻队列"), 7),
+            text =  string.format(_("累计签到%s天，永久+1进攻队列"), 3),
             size = 22,
             color= 0x403c2f,
             dimensions = cc.size(360,0)

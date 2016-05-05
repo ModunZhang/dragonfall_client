@@ -95,26 +95,27 @@ function WidgetEventsList:ChangeDropStatus()
 end
 -- 创建列表
 function WidgetEventsList:CreateListView()
-    if not self.listview then
-        local listview = UIListView.new{
-            -- bgColor = UIKit:hex2c4b(0x7a10ff00),
-            viewRect = cc.rect(0,0, WIDGET_WIDTH, 180),
-            direction = cc.ui.UIScrollView.DIRECTION_VERTICAL,
-            scrollbarImgV = "line_4x40.png"
-        -- }:addTo(display.getRunningScene()):pos(150,600)
-        }:addTo(self):pos(0, 34)
-        self.listview = listview
+    if self.listview then
+        self.listview:removeFromParent()
+        self.listview = nil
     end
-
-    local listview = self.listview
+    local all_events = self:GetAllUpgradeEvents()
+    local listview = UIListView.new{
+        -- bgColor = UIKit:hex2c4b(0x7a10ff00),
+        viewRect = cc.rect(0,0, WIDGET_WIDTH, #all_events == 2 and 135 or 180),
+        direction = cc.ui.UIScrollView.DIRECTION_VERTICAL,
+        scrollbarImgV = "line_4x40.png"
+    }:addTo(self):pos(0, #all_events == 2 and 79 or 34)
+    self.listview = listview
+    self.listview = listview
     listview:removeAllItems()
     self.listEventsItem = {}
-    local all_events = self:GetAllUpgradeEvents()
     for i,v in ipairs(all_events) do
         local item = listview:newItem()
         item:setItemSize(440, 45)
-        local content  = self:CreateEventItem(v,false)
+        local content  = self:CreateEventItem(v,false,i)
         item:addContent(content)
+        item:zorder(#all_events - i + 3)
         listview:addItem(item)
         table.insert(self.listEventsItem, content)
     end
@@ -135,7 +136,9 @@ function WidgetEventsList:CreateListView()
             end
         end
         preEventIdx = preEventIdx or currentEvent.idx
-        listview:showItemWithPos(preEventIdx)
+        if preEventIdx then
+            listview:showItemWithPos(preEventIdx)
+        end
         self:ResetCurrentEvent()
     end
     listview:hide()
@@ -162,7 +165,8 @@ function WidgetEventsList:CreatePreNode()
     preNode:addTo(self):pos(5,WIDGET_HEIGHT - 94)
     local pre_events = self:GetDefaultEvents()
     for i,v in ipairs(pre_events) do
-        local item = self:CreateEventItem(v,true):align(display.LEFT_BOTTOM, 0, i == 1 and 45 or 0):addTo(preNode)
+        local item = self:CreateEventItem(v,true,i):align(display.LEFT_BOTTOM, 0, i == 1 and 45 or 0):addTo(preNode)
+        item:zorder(#pre_events + 3 - i)
         table.insert(self.preEventsItem, item)
     end
     if #pre_events < 2 then
@@ -309,6 +313,9 @@ function WidgetEventsList:SetProgressItemBtnLabel(canFreeSpeedUp, event_item)
     if old_status~= event_item.status then
         event_item:SetButtonLabel(btn_label)
         event_item:SetButtonImages(btn_images)
+        if event_item.status == "freeSpeedup" and not self.finger then
+            self.finger = UIKit:FingerAni():addTo(event_item):pos(410,-10)
+        end
     end
 end
 function WidgetEventsList:IsAbleToFreeSpeedup(event)
@@ -341,7 +348,7 @@ function WidgetEventsList:CreateProgressItem(isTouchEnabled)
     local half_height = node:getContentSize().height / 2
     local node_1 = display.newScale9Sprite("background_event_42x42.png"):size(398,42):addTo(node):align(display.LEFT_CENTER,42,half_height)
     local type_bg = display.newSprite("background_event_head_42x42.png"):pos(21, half_height):addTo(node)
-    node.type_icon = display.newSprite("tech_42x38.png"):pos(21, 21):addTo(type_bg)
+    node.type_icon = display.newSprite("tech_42x38.png"):pos(21, 21):addTo(type_bg):scale(0.8)
 
     node.progress = display.newProgressTimer("tab_progress_bar_282x36.png",
         display.PROGRESS_TIMER_BAR):addTo(node_1)
@@ -385,6 +392,7 @@ function WidgetEventsList:CreateProgressItem(isTouchEnabled)
             shadow = true}))
     function node:SetTypeIcon(type)
         self.type_icon:setTexture(icon_map[type])
+        self.type_icon:scale(0.8)
         return self
     end
     function node:SetProgressInfo(str, percent, time)
@@ -455,16 +463,20 @@ function WidgetEventsList:OnDropBtnClick()
     self:RefreshByStatus()
 end
 function WidgetEventsList:RefreshByStatus()
+    if self.finger then
+        self.finger:removeFromParent()
+        self.finger = nil
+    end
     local all_events = self:GetAllUpgradeEvents()
     local dropStatus = self:GetDropStatus()
-    -- 当处于列表状态，事件数量减少到小于3个时，切换回非列表状态
-    if dropStatus and #all_events < 3 then
+    -- 当处于列表状态，事件数量减少到小于2个时，切换回非列表状态
+    if dropStatus and #all_events < 2 then
         self:ChangeDropStatus()
     end
     dropStatus = self:GetDropStatus()
     if dropStatus then
         self.dropBtn:SkewIcon(false)
-        self.dropBtn:setPositionY(16)
+        self.dropBtn:setPositionY(#all_events == 2 and 61 or 16)
         self:CreateListView():show()
         self.preNode:hide()
     else
@@ -474,7 +486,7 @@ function WidgetEventsList:RefreshByStatus()
         self.dropBtn:setPositionY(#self.preNode:getChildren() == 1 and WIDGET_HEIGHT - 70 or WIDGET_HEIGHT - 115)
         self.listview:hide()
     end
-    self.dropBtn:setVisible(#all_events > 2)
+    self.dropBtn:setVisible(#all_events > 1)
     self.dropBtn:SetActiveEventNumber(#all_events)
 end
 function WidgetEventsList:BuildingDescribe(event)
@@ -558,3 +570,4 @@ function WidgetEventsList:OnUserDataChanged_productionTechEvents(userData, delta
     self:RefreshByStatus()
 end
 return WidgetEventsList
+

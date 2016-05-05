@@ -175,6 +175,9 @@ function GameUINpc:ShowWords(dialog, ani)
             self.ui_map.woman:getAnimation():playWithIndex(0, -1, 0)
         end
     end
+    if dialog.hide_bg then
+        self.ui_map.background:hide()
+    end
     self:RefreshNpc(dialog)
     self.label = self:CreateLabel()
     self.label:setString(dialog.real_words or "")

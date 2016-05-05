@@ -11,6 +11,9 @@ local WidgetEventsList = import("..widget.WidgetEventsList")
 local GameUIHome = UIKit:createUIClass('GameUIHome')
 local light_gem = import("..particles.light_gem")
 
+
+GameUIHome.ResPositionMap = {}
+
 function GameUIHome:OnUserDataChanged_buildings()
     self:OnUserDataChanged_growUpTasks()
 end
@@ -41,6 +44,8 @@ function GameUIHome:OnUserDataChanged_growUpTasks()
         self.quest_bar_bg:hide()
         self.quest_label:setString(_("当前没有推荐任务!"))
     end
+
+    self:CheckFinger()
 
     self:RefreshTaskStatus(self.isFinished)
 end
@@ -167,6 +172,7 @@ end
 
 
 function GameUIHome:CreateTop()
+    local User = self.city:GetUser()
     local top_bg = display.newSprite("top_bg_768x117.png"):addTo(self,2)
         :align(display.TOP_CENTER, display.cx, display.top ):setCascadeOpacityEnabled(true)
     if display.width>640 then
@@ -174,28 +180,12 @@ function GameUIHome:CreateTop()
     end
     -- 玩家按钮
     local button = cc.ui.UIPushButton.new(
-        -- {normal = "tmp_text_head.png", pressed = "tmp_text_head.png"},
-        -- {scale9 = false}
         ):onButtonClicked(function(event)
             if event.name == "CLICKED_EVENT" then
                 UIKit:newGameUI('GameUIVipNew', self.city,"info"):AddToCurrentScene(true)
             end
         end):addTo(top_bg):align(display.LEFT_CENTER,64, top_bg:getContentSize().height/2)
     button:setContentSize(cc.size(90,100))
-    -- 玩家名字背景加文字
-    -- local ox = 150
-    -- local name_bg = display.newSprite("player_name_bg_168x30.png"):addTo(top_bg)
-    --     :align(display.TOP_LEFT, ox, top_bg:getContentSize().height-10):setCascadeOpacityEnabled(true)
-    -- self.name_label = cc.ui.UILabel.new({
-    --     text = "",
-    --     size = 18,
-    --     font = UIKit:getFontFilePath(),
-    --     align = cc.ui.TEXT_ALIGN_RIGHT,
-    --     color = UIKit:hex2c3b(0xf3f0b6)
-    -- }):addTo(name_bg):align(display.LEFT_CENTER, 14, name_bg:getContentSize().height/2 + 3)
-
-    -- 玩家战斗值图片
-    -- display.newSprite("dragon_strength_27x31.png"):addTo(top_bg):pos(ox + 20, 65):scale(16/27)
 
     -- 战斗力按钮
     local power_button = cc.ui.UIPushButton.new(
@@ -211,7 +201,6 @@ function GameUIHome:CreateTop()
         text = _("战斗力"),
         size = 14,
         color = 0x9a946b,
-    -- shadow = true
     }):addTo(power_button):align(display.CENTER, 0, -14)
 
     -- 玩家战斗值数字
@@ -229,8 +218,6 @@ function GameUIHome:CreateTop()
 
     -- 资源按钮
     local button = cc.ui.UIPushButton.new(
-        -- {normal = "player_btn_up_314x86.png", pressed = "player_btn_down_314x86.png"},
-        -- {scale9 = false}
         ):onButtonClicked(function(event)
             if event.name == "CLICKED_EVENT" then
                 UIKit:newGameUI("GameUIResourceOverview",self.city):AddToCurrentScene(true)
@@ -246,7 +233,6 @@ function GameUIHome:CreateTop()
     for i, v in ipairs({
         {"res_wood_82x73.png", "wood_label", "wood"},
         {"res_stone_88x82.png", "stone_label", "stone"},
-        -- {"res_citizen_88x82.png", "citizen_label", "citizen"},
         {"res_food_91x74.png", "food_label", "food"},
         {"res_iron_91x63.png", "iron_label", "iron"},
         {"res_coin_81x68.png", "coin_label", "coin"},
@@ -255,7 +241,8 @@ function GameUIHome:CreateTop()
         local col = (i - 1) % 3
         local x, y = first_col + (i - 1) * padding_width, 16
         self.res_icon_map[v[3]] = display.newSprite(v[1]):addTo(button):pos(x, y):scale(0.3)
-
+        local wp = self.res_icon_map[v[3]]:convertToWorldSpace(cc.p(0,0))
+        self.ResPositionMap[v[3]] = wp
         self[v[2]] = UIKit:CreateNumberImageNode({text = "",
             size = 18,
             color = 0xf3f0b6,
@@ -272,7 +259,6 @@ function GameUIHome:CreateTop()
         display.PROGRESS_TIMER_BAR):addTo(top_bg):align(display.LEFT_CENTER,94, 24)
     self.exp:setBarChangeRate(cc.p(1,0))
     self.exp:setMidpoint(cc.p(0,0))
-    -- self.exp:setRotationSkewY(180)
     self:RefreshExp()
 
     local level_bg = display.newSprite("level_bg_85x20.png"):addTo(top_bg):align(display.LEFT_CENTER,69, 27):setCascadeOpacityEnabled(true)
@@ -291,19 +277,19 @@ function GameUIHome:CreateTop()
             end
         end)
     local vip_btn_img = UtilsForVip:IsVipActived(User) and "vip_bg_110x124.png" or "vip_bg_disable_110x124.png"
-    self.vip_icon = display.newSprite("crown_gold_46x40.png",28,-24,{class=cc.FilteredSpriteWithOne}):addTo(vip_btn)
+    local vip_icon = display.newSprite("crown_gold_46x40.png",28,-24,{class=cc.FilteredSpriteWithOne}):addTo(vip_btn)
     self.vip_level = UIKit:ttfLabel({
         text =  "VIP "..User:GetVipLevel(),
         size = 20,
-        shadow = true
-    }):addTo(vip_btn):align(display.CENTER, self.vip_icon:getPositionX() + 55, self.vip_icon:getPositionY())
+        shadow = true,
+        color = 0xffb400
+    }):addTo(vip_btn):align(display.CENTER, vip_icon:getPositionX() + 55, vip_icon:getPositionY())
     if UtilsForVip:IsVipActived(User) then
-        self.vip_level:setColor(UIKit:hex2c3b(0xffb400))
+        vip_btn:setButtonImage(cc.ui.UIPushButton.NORMAL, "vip_btn_136x48.png", true)
+        vip_btn:setButtonImage(cc.ui.UIPushButton.PRESSED, "vip_btn_136x48.png", true)
     else
-        local my_filter = filter
-        local filters = my_filter.newFilter("GRAY", {0.2, 0.3, 0.5, 0.1})
-        self.vip_icon:setFilter(filters)
-        self.vip_level:setColor(UIKit:hex2c3b(0xbfbfbf))
+        vip_btn:setButtonImage(cc.ui.UIPushButton.NORMAL, "vip_btn_grey_136x48.png", true)
+        vip_btn:setButtonImage(cc.ui.UIPushButton.PRESSED, "vip_btn_grey_136x48.png", true)
     end
     self.vip_btn = vip_btn
 
@@ -377,6 +363,7 @@ function GameUIHome:CreateBottom()
         {normal = "quest_btn_unfinished_566x46.png",pressed = "quest_btn_unfinished_566x46.png"},
         {scale9 = false}
     ):addTo(bottom_bg):pos(420, bottom_bg:getContentSize().height + 56):onButtonClicked(function(event)
+        self:HideFinger()
         local task = self.task
         if task then
             if self.isFinished then
@@ -392,10 +379,11 @@ function GameUIHome:CreateBottom()
                         if not self.is_hooray_on then
                             self.is_hooray_on = true
                             app:GetAudioManager():PlayeEffectSoundWithKey("COMPLETE")
-
-                            self:performWithDelay(function()
-                                self.is_hooray_on = false
-                            end, 1.5)
+                            if self.quest_bar_bg then
+                                self.quest_bar_bg:performWithDelay(function()
+                                    self.is_hooray_on = false
+                                end, 1.5)
+                            end
                         end
                     end
                 end)
@@ -421,7 +409,8 @@ function GameUIHome:CreateBottom()
         end
     end)
     self.quest_bar_bg = quest_bar_bg
-    local light = display.newSprite("quest_light_36x34.png"):addTo(quest_bar_bg):pos(-302, 2)
+
+    local light = display.newSprite("quest_light_70x34.png"):addTo(quest_bar_bg):pos(-302, 2)
     light:runAction(
         cc.RepeatForever:create(
             transition.sequence{
@@ -438,13 +427,34 @@ function GameUIHome:CreateBottom()
         color = 0xfffeb3,
         shadow = true
     }):addTo(quest_bar_bg):align(display.LEFT_CENTER, -260, 4)
-    self.quest_label:runAction(UIKit:ScaleAni())
+    -- self.quest_label:runAction(UIKit:ScaleAni())
 
-    
+
 
     self.change_map = WidgetChangeMap.new(WidgetChangeMap.MAP_TYPE.OUR_CITY):addTo(self, 1)
 
     return bottom_bg
+end
+function GameUIHome:CheckFinger()
+    if self.task and UtilsForFte:ShouldFingerOnTask(self.city:GetUser()) then
+        self:ShowFinger()
+    else
+        self:HideFinger()
+    end
+end
+function GameUIHome:ShowFinger()
+    if not self.quest_bar_bg:getChildByTag(111) then
+        UIKit:FingerAni():addTo(self.quest_bar_bg,10,111):pos(180, -30)
+    end
+    -- UtilsForBuilding:GetFreeBuildQueueCount(self.city:GetUser()) > 0 
+    if self.city:GetUser().countInfo.isFTEFinished then
+        self.quest_bar_bg:getChildByTag(111):show()
+    end
+end
+function GameUIHome:HideFinger()
+    if self.quest_bar_bg:getChildByTag(111) then
+        self.quest_bar_bg:getChildByTag(111):hide()
+    end
 end
 function GameUIHome:RefreshTaskStatus(finished)
     if finished then -- 任务已经完成
@@ -462,20 +472,20 @@ function GameUIHome:ChangeChatChannel(channel_index)
 end
 
 function GameUIHome:RefreshExp()
+    local User = self.city:GetUser()
     local current_level = User:GetPlayerLevelByExp(User.basicInfo.levelExp)
     self.exp:setPercentage( (User.basicInfo.levelExp - User:GetCurrentLevelExp(current_level))/(User:GetCurrentLevelMaxExp(current_level) - User:GetCurrentLevelExp(current_level)) * 100)
 end
 function GameUIHome:RefreshVIP()
+    local User = self.city:GetUser()
     local vip_btn = self.vip_btn
-    local vip_btn_img = UtilsForVip:IsVipActived(User) and "vip_bg_110x124.png" or "vip_bg_disable_110x124.png"
+    self.vip_level:setString("VIP "..User:GetVipLevel())
     if UtilsForVip:IsVipActived(User) then
-        self.vip_icon:clearFilter()
-        self.vip_level:setColor(UIKit:hex2c3b(0xffb400))
+        vip_btn:setButtonImage(cc.ui.UIPushButton.NORMAL, "vip_btn_136x48.png", true)
+        vip_btn:setButtonImage(cc.ui.UIPushButton.PRESSED, "vip_btn_136x48.png", true)
     else
-        local my_filter = filter
-        local filters = my_filter.newFilter("GRAY", {0.2, 0.3, 0.5, 0.1})
-        self.vip_icon:setFilter(filters)
-        self.vip_level:setColor(UIKit:hex2c3b(0xbfbfbf))
+        vip_btn:setButtonImage(cc.ui.UIPushButton.NORMAL, "vip_btn_grey_136x48.png", true)
+        vip_btn:setButtonImage(cc.ui.UIPushButton.PRESSED, "vip_btn_grey_136x48.png", true)
     end
 end
 local POWER_ANI_TAG = 1001
@@ -710,6 +720,7 @@ end
 
 
 return GameUIHome
+
 
 
 

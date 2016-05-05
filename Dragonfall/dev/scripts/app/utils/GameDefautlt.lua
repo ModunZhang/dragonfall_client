@@ -67,6 +67,21 @@ function GameDefautlt:IsPassedSplash()
     -- return self:getStringForKey("PASS_SPLASH") == "yes"
     return true
 end
+-- alliance FTE
+function GameDefautlt:IsPassedAllianceFte(...)
+    local passed = true
+    for i,v in pairs({...}) do
+        local str = self:getStringForKey(string.format("pass_alliance_fte_%d", v))
+        if str ~= "yes" then
+            passed = false
+            break
+        end
+    end
+    return passed
+end
+function GameDefautlt:SetPassAllianceFte(number)
+    self:setStringForKey(string.format("pass_alliance_fte_%d", number),"yes")
+end
 -- 消费金龙币提醒
 function GameDefautlt:IsOpenGemRemind()
     return self:getStringForKey("USE_GEM_TIPS") ~= "no"

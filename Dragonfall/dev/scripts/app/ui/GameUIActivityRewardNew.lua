@@ -310,7 +310,7 @@ function GameUIActivityRewardNew:ui_EVERY_DAY_LOGIN()
                 end
             end
         end
-       
+
         local num_bg = display.newSprite("activity_num_bg_28x28.png",20,-18 + 118):addTo(button)
         UIKit:ttfLabel({
             text = i,
@@ -363,18 +363,18 @@ function GameUIActivityRewardNew:ui_CONTINUITY()
         color= 0xffedae,
     }):align(display.LEFT_CENTER,20,15):addTo(title_bg)
     UIKit:ttfLabel({
-        text = _("七天后可激活"),
+        text = _("三天后可激活"),
         size = 20,
         color= 0x403c2f,
     }):align(display.LEFT_CENTER,title_bg:getPositionX(),self.height - 90):addTo(self.bg)
     local text_1 = UIKit:ttfLabel({
-        text = User.countInfo.day14 > 7 and 7 or User.countInfo.day14,
+        text = User.countInfo.day14 > 3 and 3 or User.countInfo.day14,
         size = 22,
         color= 0x238700,
     }):align(display.LEFT_CENTER,title_bg:getPositionX(),self.height - 130):addTo(self.bg)
     self.march_queue_text = text_1
     UIKit:ttfLabel({
-        text = "/7",
+        text = "/3",
         size = 22,
         color= 0x403c2f,
     }):align(display.LEFT_CENTER,text_1:getPositionX()+text_1:getContentSize().width,self.height - 130):addTo(self.bg)
@@ -392,7 +392,6 @@ function GameUIActivityRewardNew:ui_CONTINUITY()
             end)
         end)
         :setButtonEnabled(User.countInfo.day14==7)
-    print("User.basicInfo.marchQueue=",User.basicInfo.marchQueue)
     if User.basicInfo.marchQueue == 2 then
         button:setVisible(false)
         local title_label = UIKit:ttfLabel({
@@ -639,26 +638,47 @@ end
 function GameUIActivityRewardNew:ui_FIRST_IN_PURGURE()
     local bar = display.newSprite("background_608x678.png"):align(display.TOP_CENTER, 288,self.height - 20):addTo(self.bg)
     lights():addTo(bar):pos(100, 100)
+    display.newSprite("icon_hammer.png"):align(display.CENTER, 126,585):addTo(bar)
+    -- :runAction(
+    --     cc.RepeatForever:create(transition.sequence{
+    --         cc.RotateBy:create(0.2, 60),
+    --         cc.RotateBy:create(0.2, -60)
+    --         })
+    -- )
+
+    self:runAction(cc.CallFunc:create(function()
+        local emitter = lights()
+        emitter:setSpeed(3)
+        emitter:setLife(math.random(1) + 1)
+        emitter:setEmissionRate(1)
+        emitter:addTo(bar):pos(126,585)
+        emitter:update(0.01)
+    end))
+
 
     UIKit:ttfLabel({
-        text = _("首次储值任意金额"),
-        size = 34,
+        text = _("首充后永久获得"),
+        size = 30,
         color = 0xfed36c,
         shadow = true
-    }):addTo(bar):align(display.CENTER,440,622)
+    }):addTo(bar):align(display.CENTER,440,608)
     UIKit:ttfLabel({
-        text = _("永久激活第二条建筑队列并可领取下列丰厚奖励"),
-        size = 22,
-        color = 0xffedae,
+        text = _("第二条建筑队列"),
+        size = 36,
+        color = 0xfed36c,
         align = cc.ui.TEXT_ALIGN_CENTER,
         valign = cc.ui.TEXT_VALIGN_CENTER,
         dimensions = cc.size(300,0),
         shadow = true
-    }):addTo(bar):align(display.CENTER,440,540)
-
+    }):addTo(bar):align(display.CENTER,440,555)
+    UIKit:ttfLabel({
+        text = _("领取下列丰厚奖励"),
+        size = 22,
+        color = 0xffedae,
+    }):addTo(bar):align(display.CENTER,440,468)
     local countInfo = User.countInfo
     local rewards = self:GetFirstPurgureRewards()
-    local x,y = 300,500
+    local x,y = 310,438
     self.purgure_get_button = WidgetPushButton.new({normal = 'tmp_button_battle_up_234x82.png',pressed = 'tmp_button_battle_down_234x82.png'},{scale9 = true})
         :setButtonLabel("normal", UIKit:commonButtonLable({
             text = _("领取")
@@ -681,31 +701,43 @@ function GameUIActivityRewardNew:ui_FIRST_IN_PURGURE()
     for index,reward in ipairs(rewards) do
         if index <= 6 then
             local reward_type,reward_name,count = unpack(reward)
-            table.insert(tips_list, Localize_item.item_name[reward_name] .. " x" .. count)
-            local item_bg = display.newSprite("box_118x118.png"):align(display.LEFT_TOP, x, y):addTo(bar):scale(110/118)
+            local tips = Localize_item.item_name[reward_name] .. " x" .. count
+            table.insert(tips_list, tips)
+            local item_bg = display.newSprite("box_118x118.png"):align(display.LEFT_TOP, x, y):addTo(bar):scale(50/118)
             local sp = display.newSprite(UIKit:GetItemImage(reward_type,reward_name),59,59):addTo(item_bg)
             local size = sp:getContentSize()
             sp:scale(90/math.max(size.width,size.height))
-
-            table.insert(acts, cc.CallFunc:create(function()
-                local emitter = lights()
-                emitter:setSpeed(3)
-                emitter:setLife(math.random(1) + 1)
-                emitter:setEmissionRate(1)
-                emitter:addTo(sp):pos(size.width/2,size.height/2)
-                for i = 1, index * 25 do
-                    emitter:update(0.01)
-                end
-            end))
-            UIKit:addTipsToNode(sp,Localize_item.item_name[reward_name] .. " x" .. count,self)
-            x = x  + 110 + 35
-            if index % 2 == 0 then
-                x = 300
-                y = y - 108 - 21
-            end
+            UIKit:ttfLabel({
+                text = Localize_item.item_name[reward_name],
+                size = 18,
+                color = 0xfed36c,
+                shadow = true
+            }):addTo(bar):align(display.LEFT_CENTER,x + 60,y - 24)
+            UIKit:ttfLabel({
+                text = "X" .. count,
+                size = 18,
+                color = 0xfed36c,
+                shadow = true
+            }):addTo(bar):align(display.RIGHT_CENTER,x + 270,y - 24)
+            -- table.insert(acts, cc.CallFunc:create(function()
+            --     local emitter = lights()
+            --     emitter:setSpeed(3)
+            --     emitter:setLife(math.random(1) + 1)
+            --     emitter:setEmissionRate(1)
+            --     emitter:addTo(sp):pos(size.width/2,size.height/2)
+            --     for i = 1, index * 25 do
+            --         emitter:update(0.01)
+            --     end
+            -- end))
+            -- UIKit:addTipsToNode(sp,Localize_item.item_name[reward_name] .. " x" .. count,self)
+            -- x = x  + 110 + 35
+            -- if index % 2 == 0 then
+            --     x = 300
+            y = y - 56
+            -- end
         end
     end
-    self:runAction(transition.sequence(acts))
+    -- self:runAction(transition.sequence(acts))
     local tips_str = table.concat(tips_list, ",")
     self.purgure_get_button:onButtonClicked(function()
         NetManager:getFirstIAPRewardsPromise():done(function()
@@ -1156,6 +1188,9 @@ function GameUIActivityRewardNew:GetNextOnlineTimePoint()
 end
 
 return GameUIActivityRewardNew
+
+
+
 
 
 

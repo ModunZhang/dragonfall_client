@@ -130,7 +130,7 @@ function GameUIPower:CreateGrowthMenu()
                 end
             elseif i == 3 then
                 if #UtilsForBuilding:GetBuildingsBy(User, "academy", 1) > 0 then
-                    UIKit:newGameUI("GameUIAcademy", City, City:GetFirstBuildingByType("barracks"), "upgrade"):AddToCurrentScene(true)
+                    UIKit:newGameUI("GameUIAcademy", City, City:GetFirstBuildingByType("academy"), "upgrade"):AddToCurrentScene(true)
                 else
                     UIKit:showMessageDialog(_("提示"),string.format(_("%s还未解锁"),_("学院")))
                 end
@@ -188,7 +188,8 @@ function GameUIPower:CreateStrongthMenu()
                     UIKit:showMessageDialog(_("提示"),string.format(_("%s还未解锁"),_("兵营")))
                 end
             elseif i == 2 then
-                UIKit:newGameUI("GameUIDragonEyrieMain", City, City:GetFirstBuildingByType("dragonEyrie"), "dragon"):AddToCurrentScene(true)
+                local ui = UIKit:newGameUI("GameUIDragonEyrieDetail",City,City:GetFirstBuildingByType("dragonEyrie"),City:GetFirstBuildingByType("dragonEyrie"):GetDragonManager():GetPowerfulDragonType()):AddToCurrentScene(false)
+                ui.tab_buttons:SelectButtonByTag("skill")
             elseif i == 3 then
                 if #UtilsForBuilding:GetBuildingsBy(User, "blackSmith", 1) > 0 then
                     local tabs = {

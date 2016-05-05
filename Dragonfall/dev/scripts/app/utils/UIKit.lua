@@ -824,7 +824,11 @@ function UIKit:showSendTroopMessageDialog(attack_func,material_name,effect_str,i
         local label_1
         if is_material_overhead then
             display.newSprite("icon_warning_22x42.png"):addTo(materialDepot_bg):align(display.CENTER, 75, materialDepot_bg:getContentSize().height/2 + 15)
-            label_1 = string.format(_("%s材料已满"),effect_str)
+            if #UtilsForBuilding:GetBuildingsBy(User, "materialDepot", 1) > 0 then
+                label_1 = string.format(_("%s材料已满"),effect_str)
+            else
+                label_1 = _("未解锁")
+            end
         else
             label_1 = _("正常")
         end
@@ -1726,7 +1730,7 @@ function UIKit:CreateDragonBattle(attackDragon, defenceDragon, gameController)
     end
     function dragonBattleNode:PromiseOfDefeat()
         local reuslt = self:getChildByTag(RESULT_TAG)
-        reuslt:show():GetAni():playWithIndex(3, -1, 0)
+        reuslt:show():getAnimation():playWithIndex(3, -1, 0)
         self:RefreshSpeed()
         return self:PromiseOfAnimationFinished(reuslt:getAnimation())
     end
@@ -2538,6 +2542,19 @@ function UIKit:ScaleAni()
                     }
                 )
 end
+
+function UIKit:FingerAni()
+    local node = display.newNode()
+    display.newSprite("finger.png"):addTo(node)
+            :runAction(
+                cc.RepeatForever:create(transition.sequence({
+                    cc.Spawn:create({cc.ScaleTo:create(0.5,0.95),cc.MoveBy:create(0.5, cc.p(-5,0))}),
+                    cc.Spawn:create({cc.ScaleTo:create(0.5,1.0),cc.MoveBy:create(0.5, cc.p( 5,0))})
+                }))
+            )
+    return node
+end
+
 
 
 

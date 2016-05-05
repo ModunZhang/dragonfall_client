@@ -1,6 +1,7 @@
 local Localize_pve = import("..utils.Localize_pve")
 local light_gem = import("..particles.light_gem")
 local ChatManager = import("..entity.ChatManager")
+local GameUIHome = import("..ui.GameUIHome")
 local UILib = import("..ui.UILib")
 local window = import("..utils.window")
 local WidgetChat = import("..widget.WidgetChat")
@@ -13,6 +14,13 @@ local timer = app.timer
 
 
 
+function GameUIPveHomeNew:OnUserDataChanged_countInfo(userData, deltaData)
+    if self.task and self.task:TaskType() == "pveCount" then
+        if deltaData("countInfo.pveCount") then
+            self:OnUserDataChanged_growUpTasks()
+        end
+    end
+end
 function GameUIPveHomeNew:OnUserDataChanged_growUpTasks()
     local growUpTasks = User.growUpTasks
     local completeTask = UtilsForTask:GetFirstCompleteTasks(growUpTasks)[1]
@@ -69,15 +77,16 @@ function GameUIPveHomeNew:ctor(level)
 end
 function GameUIPveHomeNew:onEnter()
     self.visible_count = 1
-    self:CreateTop()
+    self.top = self:CreateTop()
     self.bottom = self:CreateBottom()
 
 
     User:AddListenOnType(self, "growUpTasks")
+    User:AddListenOnType(self, "countInfo")
     self:OnUserDataChanged_growUpTasks()
     display.newNode():addTo(self):schedule(function()
         local star = User:GetStageStarByIndex(self.level)
-        self.stars:setString(string.format("%d/%d", star, User:GetStageTotalStars()))
+        self.stars:setString(string.format("%d/%d", star, math.ceil(star/15) * 15))
         self.strenth_current:setString(User:GetResValueByType("stamina"))
         self.gem_label:setString(string.formatnumberthousands(User:GetGemValue()))
 
@@ -97,11 +106,12 @@ function GameUIPveHomeNew:onEnter()
 end
 function GameUIPveHomeNew:onExit()
     User:RemoveListenerOnType(self, "growUpTasks")
+    User:RemoveListenerOnType(self, "countInfo")
 end
 function GameUIPveHomeNew:CreateTop()
     local top_bg = display.newSprite("head_bg.png")
         :align(display.TOP_CENTER, window.cx, window.top)
-        :addTo(self)
+        :addTo(self,2)
     local size = top_bg:getContentSize()
     top_bg:setTouchEnabled(true)
 
@@ -119,42 +129,44 @@ function GameUIPveHomeNew:CreateTop()
         color = 0xffedae,
     }):addTo(top_bg):align(display.LEFT_CENTER, 130, size.height/2 + 10)
 
-    local star = display.newSprite("tmp_pve_star_bg.png"):addTo(top_bg):pos(size.width - 210, 55):scale(0.6)
+    local stars_bg = display.newSprite("online_time_bg_96x36.png"):addTo(top_bg):align(display.LEFT_CENTER,size.width - 124, -95):scale(0.8)
+    local star = display.newSprite("tmp_pve_star_bg.png"):addTo(top_bg):pos(size.width - 124, -95):scale(0.6)
                  display.newSprite("tmp_pve_star.png"):addTo(star):pos(32,32)
 
+    local starCount = User:GetStageStarByIndex(self.level)
     self.stars = UIKit:ttfLabel({
-        text = string.format("%d/%d", User:GetStageStarByIndex(self.level), User:GetStageTotalStars()),
+        text = string.format("%d/%d",starCount,math.ceil(starCount/15) * 15),
         size = 20,
         color = 0xffedae,
         shadow = true,
-    }):addTo(top_bg):align(display.LEFT_CENTER, size.width - 210 + 25, 55)
+    }):addTo(top_bg):align(display.LEFT_CENTER, size.width - 124 + 20, -95)
 
 
 
-    local reward_btn = cc.ui.UIPushButton.new(
-        {normal = "back_ground_box.png", pressed = "back_ground_box.png"}
-        ,{})
-        :addTo(top_bg, 1):align(display.CENTER, size.width - 80, 55):scale(0.8)
+    local reward_btn = cc.ui.UIPushButton.new()
+        :addTo(top_bg, 1)
         :onButtonClicked(function(event)
             UIKit:newGameUI("GameUIPveReward", self.level):AddToCurrentScene(true)
         end)
+    reward_btn:setContentSize(cc.size(66,66))
+    reward_btn:align(display.CENTER, size.width - 55, 0)
+    self.reward_icon = display.newSprite("bottom_icon_package_66x66.png"):addTo(reward_btn)
 
-    self.reward_icon = display.newSprite("bottom_icon_package_66x66.png"):addTo(reward_btn):scale(1.3)
 
     local button = cc.ui.UIPushButton.new(
-        {normal = "gem_btn_up_196x68.png", pressed = "gem_btn_down_196x68.png"},
+        {normal = "gem_btn_up.png", pressed = "gem_btn_down.png"},
         {scale9 = false}
     ):onButtonClicked(function(event)
         UIKit:newGameUI("GameUIStore"):AddToCurrentScene(true)
-    end):addTo(top_bg):pos(top_bg:getContentSize().width - 130, -20)
-    local gem_icon = display.newSprite("store_gem_260x116.png"):addTo(button):pos(59, 6):scale(0.5)
+    end):addTo(top_bg):pos(top_bg:getContentSize().width - 130,55)
+    local gem_icon = display.newSprite("store_gem_260x116.png"):addTo(button):pos(55, 2):scale(0.5)
     light_gem():addTo(gem_icon, 1022):pos(260/2, 116/2)
 
     self.gem_label = UIKit:ttfLabel({
         text = string.formatnumberthousands(City:GetUser():GetGemValue()),
         size = 20,
         color = 0xffd200,
-    }):addTo(button):align(display.CENTER, -30, 8)
+    }):addTo(button):align(display.CENTER, -18, 0)
 
 
     local pve_back = display.newSprite("back_ground_pve.png"):addTo(top_bg)
@@ -187,6 +199,7 @@ function GameUIPveHomeNew:CreateTop()
         color = 0xffedae,
         shadow = true,
     }):addTo(pve_back):align(display.LEFT_CENTER, size.width / 2, 25)
+    return top_bg
 end
 function GameUIPveHomeNew:CreateBottom()
     local bottom_bg = WidgetHomeBottom.new(City):addTo(self)
@@ -201,22 +214,41 @@ function GameUIPveHomeNew:CreateBottom()
         {normal = "quest_btn_unfinished_566x46.png",pressed = "quest_btn_unfinished_566x46.png"},
         {scale9 = false}
     ):addTo(bottom_bg):pos(420, bottom_bg:getContentSize().height + 56):onButtonClicked(function(event)
+        self.quest_bar_bg:removeChildByTag(111)
         local task = self.task
         if task then
             if self.isFinished then
                 NetManager:getGrowUpTaskRewardsPromise(task:TaskType(), task.id):done(function()
-                    GameGlobalUI:showTips(_("获得奖励"), task:GetRewards())
-                    if not self.is_hooray_on then
-                        self.is_hooray_on = true
-                        app:GetAudioManager():PlayeEffectSoundWithKey("COMPLETE")
-
-                        self:performWithDelay(function()
-                            self.is_hooray_on = false
-                        end, 1.5)
+                    if self.ShowResourceAni then
+                        local x,y = self.quest_status_icon:getPosition()
+                        local wp = self.quest_status_icon:getParent():convertToWorldSpace(cc.p(x,y))
+                        for i,v in ipairs(task:GetRewards()) do
+                            if v.type == "resources" then
+                                self:ShowResourceAni(v.name,wp)
+                            end
+                        end
+                        if not self.is_hooray_on then
+                            self.is_hooray_on = true
+                            app:GetAudioManager():PlayeEffectSoundWithKey("COMPLETE")
+                            if self.quest_bar_bg then
+                                self.quest_bar_bg:performWithDelay(function()
+                                    self.is_hooray_on = false
+                                end, 1.5)
+                            end
+                        end
                     end
                 end)
             else
                 if task:TaskType() == "pveCount" then
+                    local sindex = 1
+                    for i = 1, 21 do
+                        if User:IsPveEnable(self.level,i) then
+                            sindex = i
+                        else
+                            break
+                        end
+                    end
+                    UIKit:newGameUI("GameUIPveAttack",User,self.level.."_"..sindex):AddToCurrentScene(true)
                     return
                 end
                 app:EnterMyCityScene(false,"nil",function(scene)
@@ -246,6 +278,17 @@ function GameUIPveHomeNew:CreateBottom()
         end
     end)
     self.quest_bar_bg = quest_bar_bg
+
+    -- if UtilsForBuilding:GetFreeBuildQueueCount(User) > 0 then
+    --     display.newSprite("finger.png")
+    --     :addTo(self.quest_bar_bg,10,111):pos(180, -30):runAction(
+    --         cc.RepeatForever:create(transition.sequence({
+    --             cc.Spawn:create({cc.ScaleTo:create(0.5,0.95),cc.MoveBy:create(0.5, cc.p(-5,0))}),
+    --             cc.Spawn:create({cc.ScaleTo:create(0.5,1.0),cc.MoveBy:create(0.5, cc.p( 5,0))})
+    --         }))
+    --     )
+    -- end
+
     local light = display.newSprite("quest_light_36x34.png"):addTo(quest_bar_bg):pos(-302, 2)
     light:runAction(
         cc.RepeatForever:create(
@@ -263,7 +306,7 @@ function GameUIPveHomeNew:CreateBottom()
         color = 0xfffeb3,
         shadow = true
     }):addTo(quest_bar_bg):align(display.LEFT_CENTER, -260, 4)
-    self.quest_label:runAction(UIKit:ScaleAni())
+    -- self.quest_label:runAction(UIKit:ScaleAni())
 
 
     self.change_map = WidgetChangeMap.new(WidgetChangeMap.MAP_TYPE.PVE):addTo(self)
@@ -298,6 +341,73 @@ function GameUIPveHomeNew:TipsOnReward(enable)
         :scale(0.6):pos(size.width/2, size.height/2)
     end
     self.reward_icon:runAction(UIKit:ShakeAction(true,2))
+end
+
+
+
+local RES_ICON_TAG = {
+    food = 1010,
+    wood = 1011,
+    iron = 1012,
+    coin = 1013,
+    stone = 1014,
+    -- citizen = 1015,
+}
+local icon_map = {
+    food = "res_food_91x74.png",
+    wood = "res_wood_82x73.png",
+    iron = "res_iron_91x63.png",
+    coin = "res_coin_81x68.png",
+    stone = "res_stone_88x82.png",
+}
+local ResPositionMap = GameUIHome.ResPositionMap
+function GameUIPveHomeNew:ShowResourceAni(resource, wp)
+    if not icon_map[resource] then
+        return
+    end
+    local pnt = self.top
+    pnt:removeChildByTag(RES_ICON_TAG[resource])
+
+    local lp = pnt:convertToNodeSpace(wp or cc.p(display.cx, display.cy))
+    local tp = pnt:convertToNodeSpace(ResPositionMap[resource])
+
+    local x,y,tx,ty = lp.x,lp.y,tp.x,tp.y
+    local icon = display.newSprite(icon_map[resource])
+        :addTo(pnt):pos(x,y):scale(0.8)
+
+    local size = icon:getContentSize()
+    local emitter = cc.ParticleFlower:createWithTotalParticles(200)
+        :addTo(icon):pos(size.width/2, size.height/2)
+
+    local time = 1
+    emitter:setPosVar(cc.p(10,10))
+    emitter:setDuration(time)
+    emitter:setCascadeOpacityEnabled(true)
+    emitter:setLife(1)
+    emitter:setLifeVar(1)
+    emitter:setStartColor(cc.c4f(1.0))
+    emitter:setStartColorVar(cc.c4f(0.0))
+    emitter:setTexture(cc.Director:getInstance():getTextureCache():addImage("stars.png"))
+
+
+    local bezier2 ={
+        cc.p(x,y),
+        cc.p((x + tx) * 0.5 + math.random(200) - 100, (y + ty) * 0.5),
+        cc.p(tx, ty)
+    }
+    icon:runAction(
+        cc.Spawn:create({
+            cc.ScaleTo:create(time, 0.3),
+            transition.sequence{
+                cc.BezierTo:create(time, bezier2),
+                cc.CallFunc:create(function()
+                    icon:opacity(0)
+                end),
+                cc.DelayTime:create(1),
+                cc.RemoveSelf:create(),
+            }
+        })
+    )
 end
 
 

@@ -10,27 +10,37 @@ function WidgetFteArrow:OnPositionChanged(x, y, tx, ty)
     self:pos(p.x, p.y)
 end
 
-function WidgetFteArrow:ctor(text, size)
+function WidgetFteArrow:ctor(textOrContent, size)
     self.back = display.newScale9Sprite("fte_label_background.png"):addTo(self)
-    local s = self.back:getContentSize()
-    self.label = UIKit:ttfLabel({
-        text = text or "",
-        size = size or 22,
-        color = 0xffedae,
-        align = cc.TEXT_ALIGNMENT_CENTER,
-    }):addTo(self.back)
-    self.label:setMaxLineWidth(s.width-80)
-    local s1 = self.label:getContentSize()
-    
-    local min = math.max(math.min(s1.width, s.width), s.width*0.6)
-    local width = s1.width > (s.width - 50) and (s1.width + 50) or min + 50
-
-    local height = s1.height > s.height and s1.height or s.height
-    self.back:setContentSize(cc.size(width, height + (self.label:getStringNumLines() > 1 and 20 or 0)))
-
-    local s = self.back:getContentSize()
-    self.label:align(display.CENTER, s.width/2, s.height/2)
     self.arrow = display.newSprite("fte_icon_arrow.png"):addTo(self.back)
+    local s = self.back:getContentSize()
+    if type(textOrContent) == "string" or type(textOrContent) == "nil" then
+        local label = UIKit:ttfLabel({
+            text = textOrContent or "",
+            size = size or 22,
+            color = 0xffedae,
+            align = cc.TEXT_ALIGNMENT_CENTER,
+        }):addTo(self.back)
+        label:setMaxLineWidth(s.width-80)
+        local s1 = label:getContentSize()
+        
+        local min = math.max(math.min(s1.width, s.width), s.width*0.6)
+        local width = s1.width > (s.width - 50) and (s1.width + 50) or min + 50
+
+        local height = s1.height > s.height and s1.height or s.height
+        self.back:setContentSize(cc.size(width, height + (label:getStringNumLines() > 1 and 20 or 0)))
+
+        local s = self.back:getContentSize()
+        label:align(display.CENTER, s.width/2, s.height/2)
+    else
+        local s1 = textOrContent:getContentSize()
+        local min = math.max(math.min(s1.width, s.width), s.width*0.6)
+        local width = s1.width > (s.width - 50) and (s1.width + 50) or min + 50
+
+        local height = s1.height > s.height and s1.height or s.height
+        textOrContent:addTo(self.back, 10):pos((width-s1.width)/2, height/2)
+        self.back:setContentSize(cc.size(width,height))
+    end
 end
 function WidgetFteArrow:TurnLeft()
     local s = self.back:getContentSize()

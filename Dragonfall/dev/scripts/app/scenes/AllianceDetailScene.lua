@@ -1,5 +1,8 @@
 local Alliance = import("..entity.Alliance")
 local Sprite = import("..sprites.Sprite")
+local GameUINpc = import("..ui.GameUINpc")
+local WidgetFteArrow = import("..widget.WidgetFteArrow")
+local WidgetFteMark = import("..widget.WidgetFteMark")
 local AllianceLayer = import("..layers.AllianceLayer")
 local GameUIAllianceHome = import("..ui.GameUIAllianceHome")
 local MapScene = import(".MapScene")
@@ -284,7 +287,7 @@ end
 
 
 -----------
-
+local INFO_TAG = 113
 
 
 
@@ -306,7 +309,7 @@ function AllianceDetailScene:onEnter()
     AllianceDetailScene.super.onEnter(self)
 
     display.newSprite("city_filter.png"):addTo(self,10):opacity(110)
-    :scale(display.width / 640):pos(display.cx, display.cy)
+        :scale(display.width / 640):pos(display.cx, display.cy)
 
     Alliance_Manager:ClearCache()
     Alliance_Manager:UpdateAllianceBy(Alliance_Manager:GetMyAlliance().mapIndex, Alliance_Manager:GetMyAlliance())
@@ -323,9 +326,118 @@ function AllianceDetailScene:onEnter()
             self.location.callback(self)
         end
     else
-        local mapObj = alliance:FindMapObjectById(alliance:GetSelf().mapId)
-        local x,y = DataUtils:GetAbsolutePosition(alliance.mapIndex, mapObj.location.x, mapObj.location.y)
-        self:GotoPosition(x,y)
+        while true do
+            -- step 1
+            if not app:GetGameDefautlt():IsPassedAllianceFte(1) then
+                alliance:IteratorVillages(function(k,v)
+                    local x,y = DataUtils:GetAbsolutePosition(alliance.mapIndex, v.location.x, v.location.y)
+                    self:GotoPosition(x,y)
+
+                    local village = self:GetSceneLayer()
+                    :FindMapObject(alliance.mapIndex, v.location.x, v.location.y)
+                    WidgetFteArrow.new(_("占领村落"))
+                    :addTo(village.obj,1,INFO_TAG):TurnDown():pos(0, 100)
+
+                    GameUINpc:PromiseOfSay(
+                        {npc = "man", words = _("大人, 占领村落可以采集资源。")}
+                    ):next(function()
+                        return GameUINpc:PromiseOfLeave()
+                    end)
+                    return true
+                end)
+                app:GetGameDefautlt():SetPassAllianceFte(1)
+                break
+            end
+            
+
+            -- step 2
+            if app:GetGameDefautlt():IsPassedAllianceFte(1) and
+            not app:GetGameDefautlt():IsPassedAllianceFte(2) then
+                local x,y = DataUtils:GetAbsolutePosition(alliance.mapIndex,8,10)
+                self:GotoPosition(x,y)
+                self:GetSceneLayer():AddUpgradeFlag(alliance.mapIndex)
+                if self:GetHomePage() then
+                    self:GetHomePage():ShowHonorFte(true)
+                end
+                GameUINpc:PromiseOfSay({
+                    hide_bg = true,
+                    words = _("大人，将多余的资源捐献给联盟获得联盟荣誉值，联盟荣誉值用于升级联盟建筑。"),
+                }):next(function()
+                    if self:GetHomePage() then
+                        self:GetHomePage():ShowHonorFte()
+                    end
+                    self:GetSceneLayer():RemoveFlag(alliance.mapIndex)
+                    return GameUINpc:PromiseOfLeave()
+                end)
+                app:GetGameDefautlt():SetPassAllianceFte(2)
+                break
+            end
+
+            -- step 3
+             if app:GetGameDefautlt():IsPassedAllianceFte(1,2) and
+             not app:GetGameDefautlt():IsPassedAllianceFte(3) then
+                local monster,mapobj
+                alliance:IteratorMonsters(function(k,v)
+                    local mon = alliance:GetAllianceMonsterInfosById(v.id)
+                    if not monster or (monster.level > mon.level) then
+                        monster = mon
+                        mapobj = v
+                    end
+                end)
+                if monster and mapobj then
+                    local x,y = DataUtils:GetAbsolutePosition(alliance.mapIndex, mapobj.location.x, mapobj.location.y)
+                    self:GotoPosition(x,y)
+
+                    local monster = self:GetSceneLayer():FindMapObject(alliance.mapIndex, mapobj.location.x, mapobj.location.y)
+                    WidgetFteArrow.new(_("击败黑龙军团"))
+                    :addTo(monster.obj,1,INFO_TAG):TurnDown():pos(0, 100)
+
+                    GameUINpc:PromiseOfSay(
+                        {npc = "man", words = _("大人, 击败黑龙军团的探子可以获得道具和材料。")}
+                    ):next(function()
+                        return GameUINpc:PromiseOfLeave()
+                    end)
+                end
+                app:GetGameDefautlt():SetPassAllianceFte(3)
+                break
+            end
+
+            -- step 4
+            if app:GetGameDefautlt():IsPassedAllianceFte(1,2,3) and
+             not app:GetGameDefautlt():IsPassedAllianceFte(4) then
+                local x,y = DataUtils:GetAbsolutePosition(alliance.mapIndex,8,12)
+                self:GotoPosition(x,y)
+                self:GetSceneLayer():AddShrineFlag(alliance.mapIndex)
+                GameUINpc:PromiseOfSay({
+                    hide_bg = true,
+                    words = _("联盟的将军和领主可以激活圣地时间。参加并完成后，可获得巨龙装备的材料。"),
+                }):next(function()
+                    self:GetSceneLayer():RemoveFlag(alliance.mapIndex)
+                    return GameUINpc:PromiseOfLeave()
+                end)
+                app:GetGameDefautlt():SetPassAllianceFte(4)
+                break
+            end
+
+            -- step 5
+            if app:GetGameDefautlt():IsPassedAllianceFte(1,2,3,4) and
+             not app:GetGameDefautlt():IsPassedAllianceFte(5) then
+                local mapObj = alliance:FindMapObjectById(alliance:GetSelf().mapId)
+                local x,y = DataUtils:GetAbsolutePosition(alliance.mapIndex, mapObj.location.x, mapObj.location.y)
+                self:GotoPosition(x,y)
+                if self:GetHomePage() then
+                    self:GetHomePage():ShowWorldMap(true)
+                end
+                app:GetGameDefautlt():SetPassAllianceFte(5)
+                break
+            end
+
+            -- normal
+            local mapObj = alliance:FindMapObjectById(alliance:GetSelf().mapId)
+            local x,y = DataUtils:GetAbsolutePosition(alliance.mapIndex, mapObj.location.x, mapObj.location.y)
+            self:GotoPosition(x,y)
+            break
+        end
     end
     self:GetSceneLayer():ZoomTo(0.65)
     alliance:AddListenOnType(self, "mapIndex")
@@ -459,6 +571,9 @@ function AllianceDetailScene:OnTouchClicked(pre_x, pre_y, x, y)
         local type_ = Alliance:GetMapObjectType(mapObj)
         app:GetAudioManager():PlayeEffectSoundWithKey("HOME_PAGE")
         if alliance then
+            if mapObj.obj then
+                mapObj.obj:removeChildByTag(INFO_TAG)
+            end
             if type_ == "member"
                 or type_ == "village"
                 or type_ == "building" then
@@ -500,14 +615,14 @@ function AllianceDetailScene:OnTouchClicked(pre_x, pre_y, x, y)
             }
             self.util_node:performWithDelay(function()app:lockInput(false)end,0.5)
             self:GetSceneLayer()
-            :PromiseOfFlashEmptyGround(mapObj.index,mapObj.x,mapObj.y,scale_map[type_])
-            :next(function()
-                if type_ == "crown" then
-                    UIKit:newGameUI("GameUIThroneMain"):AddToCurrentScene()
-                elseif type_ == "tower1" or type_ == "tower2" then
-                    UIKit:showMessageDialog(_("提示"), _("即将开放"))
-                end
-            end)
+                :PromiseOfFlashEmptyGround(mapObj.index,mapObj.x,mapObj.y,scale_map[type_])
+                :next(function()
+                    if type_ == "crown" then
+                        UIKit:newGameUI("GameUIThroneMain"):AddToCurrentScene()
+                    elseif type_ == "tower1" or type_ == "tower2" then
+                        UIKit:showMessageDialog(_("提示"), _("即将开放"))
+                    end
+                end)
         end
     else
         app:GetAudioManager():PlayeEffectSoundWithKey("NORMAL_DOWN")
@@ -609,6 +724,7 @@ function AllianceDetailScene:TwinkleShrine()
     end, 1)
 end
 return AllianceDetailScene
+
 
 
 

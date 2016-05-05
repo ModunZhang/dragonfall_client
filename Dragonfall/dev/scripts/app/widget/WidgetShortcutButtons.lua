@@ -26,8 +26,14 @@ end)
 
 function WidgetShortcutButtons:ctor(city)
     self.city = city
-    local order = WidgetAutoOrder.new(WidgetAutoOrder.ORIENTATION.TOP_TO_BOTTOM,50,true)
-        :addTo(self):pos(display.left + 50, display.top - 580)
+    local order = WidgetAutoOrder.new(WidgetAutoOrder.ORIENTATION.BOTTOM_TO_TOP,50,false)
+        :addTo(self):pos(display.left + 50, display.bottom + 250)
+
+    --在线活动
+    local activity_button = WidgetAutoOrderAwardButton.new():scale(SCALE)
+    order:AddElement(activity_button)
+    local gacha_button = WidgetAutoOrderGachaButton.new():scale(SCALE)
+    order:AddElement(gacha_button)
     --行军事件按钮
     local alliance_belvedere_button = cc.ui.UIPushButton.new({normal = 'fight_62x70.png'})
     alliance_belvedere_button.alliance_belvedere_events_count = WidgetNumberTips.new():addTo(alliance_belvedere_button):pos(20,-20)
@@ -73,12 +79,7 @@ function WidgetShortcutButtons:ctor(city)
     --     end
     --     order:AddElement(dragon_egg_btn)
     -- end
-    -- local gacha_button = WidgetAutoOrderGachaButton.new():scale(SCALE)
-    -- order:AddElement(gacha_button)
 
-    --在线活动
-    local activity_button = WidgetAutoOrderAwardButton.new():scale(SCALE)
-    order:AddElement(activity_button)
 
     --进入三级地图按钮
     local world_map_btn_bg = display.newSprite("background_86x86.png")
@@ -92,6 +93,7 @@ function WidgetShortcutButtons:ctor(city)
         end)
     ):align(display.CENTER,world_map_btn_bg:getContentSize().width/2 , world_map_btn_bg:getContentSize().height/2)
         :addTo(world_map_btn_bg)
+    self.world_map_btn = world_map_btn
 
     function world_map_btn_bg:CheckVisible()
         return not Alliance_Manager:GetMyAlliance():IsDefault() and (display.getRunningScene().__cname == "WorldScene" or display.getRunningScene().__cname == "AllianceDetailScene")
@@ -100,7 +102,7 @@ function WidgetShortcutButtons:ctor(city)
         return world_map_btn_bg:getContentSize()
     end
     function world_map_btn_bg:GetXY()
-        return {x = 0 ,y =  875 - display.top }
+        return {x = 0 ,y = 46}
     end
     self.world_map_btn_bg = world_map_btn_bg
     order:AddElement(world_map_btn_bg)
@@ -368,6 +370,7 @@ function WidgetShortcutButtons:CheckAllianceRewardCount()
 end
 
 return WidgetShortcutButtons
+
 
 
 

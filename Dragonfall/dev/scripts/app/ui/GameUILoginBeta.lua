@@ -320,17 +320,14 @@ function GameUILoginBeta:OpenUserAgreement()
         end):align(display.LEFT_CENTER, 20, 44):addTo(body)
 end
 function GameUILoginBeta:createGameNotice()
-    self:setProgressPercent(0)
     self:setProgressText(_("正在获取游戏公告..."))
     local request = network.createHTTPRequest(function(event)
         local ok = (event.name == "completed")
         local request = event.request
-        self:setProgressPercent(50)
         if not ok then
             -- 请求失败，显示错误代码和错误消息
             -- print(request:getErrorCode(), request:getErrorMessage())
             if request:getErrorCode() ~= 0 and request:getErrorMessage() then
-                self:setProgressPercent(100)
                 self:performWithDelay(function()
                     self.progress_bar:hide()
                     self.tips_ui:hide()
@@ -343,7 +340,6 @@ function GameUILoginBeta:createGameNotice()
         if code ~= 200 then
             -- 请求结束，但没有返回 200 响应代码
             -- print("code===",code)
-            self:setProgressPercent(100)
             self:performWithDelay(function()
                 self.progress_bar:hide()
                 self.tips_ui:hide()
@@ -357,7 +353,6 @@ function GameUILoginBeta:createGameNotice()
 
         local results = json.decode(response)
         if not results or results.code ~= 200 then
-            self:setProgressPercent(100)
             self:performWithDelay(function()
                 self.progress_bar:hide()
                 self.tips_ui:hide()
@@ -401,7 +396,6 @@ function GameUILoginBeta:createGameNotice()
             listview:addItem(item)
             listview:reload()
         end
-        self:setProgressPercent(100)
         self:performWithDelay(function()
             self.progress_bar:hide()
             self.tips_ui:hide()

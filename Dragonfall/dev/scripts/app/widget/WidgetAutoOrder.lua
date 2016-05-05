@@ -107,7 +107,7 @@ function WidgetAutoOrder:CreateDropDownButton()
         if event.name == "CLICKED_EVENT" then
             self:OnDropBtnClick()
         end
-    end)
+    end):scale(0.6)
 
     local up_icon = display.newSprite("icon_up_26x20.png"):addTo(dropBtn):pos(0,0)
     dropBtn.isOnDrop = true

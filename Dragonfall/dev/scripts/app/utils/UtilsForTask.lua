@@ -262,8 +262,17 @@ end
 local soldierCount_meta = {}
 soldierCount_meta.__index = soldierCount_meta
 function soldierCount_meta:Title()
-    local config = self:Config()
-    return string.format(_("招募%s个%s"), string.formatnumberthousands(config.count), Localize.soldier_name[config.name])
+    local leftCount = self:Config().count - UtilsForSoldier:TotalSoldiers(User)[self:Config().name]
+    if leftCount <= 0 then
+        local str = string.formatnumberthousands(self:Config().count)
+        return string.format(_("招募%s个%s(%s/%s)"),str,Localize.soldier_name[self:Config().name],str,str)
+    else
+        return string.format(_("招募%s个%s(%s/%s)"), 
+            string.formatnumberthousands(self:Config().count),
+            Localize.soldier_name[self:Config().name],
+            string.formatnumberthousands(self:Config().count - leftCount),
+            string.formatnumberthousands(self:Config().count))
+    end
 end
 function soldierCount_meta:Desc()
     return Localize.soldier_name[self:Config().name]
@@ -283,7 +292,16 @@ end
 local pveCount_meta = {}
 pveCount_meta.__index = pveCount_meta
 function pveCount_meta:Title()
-    return string.format(_("探索%s次PVE"), string.formatnumberthousands(self:Config().count))
+    local leftCount = self:Config().count - User.countInfo.pveCount
+    if leftCount <= 0 then
+        local str = string.formatnumberthousands(self:Config().count)
+        return string.format(_("探索%s次PVE(%s/%s)"),str,str,str)
+    else
+        return string.format(_("探索%s次PVE(%s/%s)"), 
+            string.formatnumberthousands(self:Config().count),
+            string.formatnumberthousands(self:Config().count - leftCount),
+            string.formatnumberthousands(self:Config().count))
+    end
 end
 function pveCount_meta:Desc()
     return string.format(_("探索次数达到%s描述"), string.formatnumberthousands(self:Config().count))
@@ -657,6 +675,42 @@ function UtilsForTask:GetBeginnersTask(userData)
         end
     end
 end
+-- function UtilsForTask:GetRecommendTask(userData)
+--     local task = self:GetBeginnersTask(self:GetUser())
+--     if task then
+--         return task
+--     end
+--     local building_map = self:GetHighestCanUpgradeBuildingMap()
+--     local tasks = self:GetAvailableTasksByCategory(
+--         userData.growUpTasks, UtilsForTask.TASK_CATEGORY.BUILD
+--     )
+--     local re_task
+--     for i,v in pairs(tasks.tasks) do
+--         if building_map[v:Config().name] then
+--             re_task = not re_task and v or (v.index < re_task.index and v or re_task)
+--         end
+--     end
+--     return re_task
+-- end
+-- function City:GetHighestCanUpgradeBuildingMap()
+--     local building_map = {}
+--     self:IteratorCanUpgradeBuildings(function(building)
+--         if building:IsUnlocked() then
+--             local highest = building_map[building:GetType()]
+--             building_map[building:GetType()] = not highest and
+--                 building or
+--                 (building:GetLevel() > highest:GetLevel() and
+--                 building or
+--                 highest)
+--         end
+--     end)
+--     for k,v in pairs(building_map) do
+--         if v:IsUpgrading() or not v:CanUpgrade() then
+--             building_map[k] = nil
+--         end
+--     end
+--     return building_map
+-- end
 
 
 return UtilsForTask
