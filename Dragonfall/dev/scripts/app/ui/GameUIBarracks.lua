@@ -16,8 +16,7 @@ function GameUIBarracks:ctor(city, barracks,default_tab,need_recruit_soldier)
     GameUIBarracks.super.ctor(self, city, _("兵营"),barracks,default_tab)
     self.barracks_city = city
     self.barracks = barracks
-    self.need_recruit_soldier = "lancer_1"
-    -- self.need_recruit_soldier = need_recruit_soldier
+    self.need_recruit_soldier = need_recruit_soldier
 
 end
 function GameUIBarracks:OnMoveInStage()
