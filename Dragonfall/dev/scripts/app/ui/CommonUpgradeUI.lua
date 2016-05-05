@@ -918,6 +918,7 @@ function CommonUpgradeUI:CreateFinishNowBuildingUpgradeButton()
     -- gem icon
     local gem_icon = display.newSprite("gem_icon_62x61.png"):addTo(num_bg):align(display.CENTER, 20, num_bg:getContentSize().height/2):scale(0.6)
     local price = UIKit:ttfLabel({
+        text = "",
         size = 18,
         color = 0xffd200,
     }):align(display.LEFT_CENTER, 50 , num_bg:getContentSize().height/2)
