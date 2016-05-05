@@ -230,6 +230,9 @@ public class AppActivity extends Cocos2dxActivity
 		LOADING_UNZIP_SHOW,//the loading of unzip resources 
 		LOADING_UNZIP_SET_PROGRESS,
 		LOADING_UNZIP_SUCCESS,
+		LOADING_DELETE_SHOW,
+		LOADING_DELETE_SUCCESS,
+
 	}
 	
 
@@ -266,9 +269,15 @@ public class AppActivity extends Cocos2dxActivity
 				case LOADING_UNZIP_SUCCESS:
 					gameActivity.dismissLoadingDialog();
 					System.gc();
-					LaunchHelper.initNativeLuaEngine();
+					LaunchHelper.runNativeLuaEngine();
 					break;
-				
+				case LOADING_DELETE_SHOW:
+					gameActivity.showDeleteLoadingDialog();
+					break;
+				case LOADING_DELETE_SUCCESS:
+					gameActivity.dismissLoadingDialog();
+					LaunchHelper.runNativeLuaEngine();
+					break;
 				default:
 					break;
 				}
@@ -349,6 +358,15 @@ public class AppActivity extends Cocos2dxActivity
 	}
 	
 	//loading
+
+	private void showDeleteLoadingDialog() {
+		loadingDialog = new ProgressDialog(this);
+		loadingDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		loadingDialog.setTitle(R.string.dialog_title_delete_file);
+		loadingDialog.setMessage(getString(R.string.dialog_msg_delete_file));
+		loadingDialog.setCancelable(false);
+		loadingDialog.show();
+	}
 
 	private void showLoadingDialog() {
 		loadingDialog = new ProgressDialog(this);

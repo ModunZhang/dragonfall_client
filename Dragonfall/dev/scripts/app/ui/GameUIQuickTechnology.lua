@@ -269,9 +269,9 @@ function GameUIQuickTechnology:CreateScrollNode()
             end
         end
 
-        if self.need_tips_tech_name == v:Data()[1] then
-            WidgetFteArrow.new(desc[self.need_tips_tech_name] or _("点击科技"), 
-                22 * 1.3)
+        if self.need_tips_tech_name == v:Data()[1] 
+        and desc[self.need_tips_tech_name] then
+            WidgetFteArrow.new(desc[self.need_tips_tech_name],22 * 1.3)
                 :addTo(node, 10, 111):TurnUp()
                 :pos(v:Pos().x,v:Pos().y-80):scale(0.7)
         end
