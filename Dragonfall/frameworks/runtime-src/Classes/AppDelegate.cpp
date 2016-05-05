@@ -396,6 +396,10 @@ extern "C"
         default_file_util_search_pahts = paths;
         AppDelegateExtern::initLuaEngine();
     }
+    void Java_com_batcatstudio_dragonfall_utils_LaunchHelper_nativeInitLuaEngineNoBundlePath(JNIEnv *env, jobject thisz)
+    {
+        AppDelegateExtern::initLuaEngine();
+    }
     //音乐结束回调
     void Java_org_cocos2dx_lib_Cocos2dxMusic_onBackgroundMusicCompletion(JNIEnv *env, jobject thisz)
     {

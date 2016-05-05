@@ -266,7 +266,7 @@ public class AppActivity extends Cocos2dxActivity
 				case LOADING_UNZIP_SUCCESS:
 					gameActivity.dismissLoadingDialog();
 					System.gc();
-					LaunchHelper.initNativeLuaEngine();
+					LaunchHelper.runNativeLuaEngine();
 					break;
 				
 				default:
