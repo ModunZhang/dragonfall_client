@@ -2545,14 +2545,14 @@ end
 
 function UIKit:FingerAni()
     local node = display.newNode()
-    display.newSprite("finger.png"):addTo(node)
-            :runAction(
-                cc.RepeatForever:create(transition.sequence({
-                    cc.Spawn:create({cc.ScaleTo:create(0.5,0.95),cc.MoveBy:create(0.5, cc.p(-5,0))}),
-                    cc.Spawn:create({cc.ScaleTo:create(0.5,1.0),cc.MoveBy:create(0.5, cc.p( 5,0))})
-                }))
-            )
+    display.newSprite("finger.png"):addTo(node,1,1):runAction(self:GetFingerAni())
     return node
+end
+function UIKit:GetFingerAni()
+    return cc.RepeatForever:create(transition.sequence({
+        cc.Spawn:create({cc.ScaleTo:create(0.5,0.95),cc.MoveBy:create(0.5, cc.p(-5,0))}),
+        cc.Spawn:create({cc.ScaleTo:create(0.5,1.0),cc.MoveBy:create(0.5, cc.p( 5,0))})
+    }))
 end
 
 

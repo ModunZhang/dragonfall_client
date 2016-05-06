@@ -473,7 +473,7 @@ function MyCityScene:RunFteIfNeeded()
                 if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEventAF then
                     ext.market_sdk.onPlayerEventAF("强制引导-玩家改名", "empty")
                 end
-                self:GetHomePage():CheckFinger()
+                self:GetHomePage():CheckFinger(true)
             end)
         end)
     end

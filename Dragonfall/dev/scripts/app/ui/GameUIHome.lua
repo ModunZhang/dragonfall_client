@@ -435,14 +435,14 @@ function GameUIHome:CreateBottom()
 
     return bottom_bg
 end
-function GameUIHome:CheckFinger()
+function GameUIHome:CheckFinger(isFirst)
     if self.task and 
         UtilsForFte:ShouldFingerOnTask(self.city:GetUser()) and
         self.city:GetUser().countInfo.isFTEFinished then
         if self.isFinished then
             self:ShowClickReward()
         else
-            self:ShowFinger()
+            self:ShowFinger(isFirst)
         end
         return
     end
@@ -457,7 +457,7 @@ local WidgetFteArrow = import("..widget.WidgetFteArrow")
 function GameUIHome:ShowClickReward()
     if not self.quest_bar_bg:getChildByTag(222) then
         WidgetFteArrow.new(_("点击领取奖励")):TurnDown()
-        :addTo(self.quest_bar_bg,10,222):pos(100,50):scale(0.8)
+        :addTo(self.quest_bar_bg,10,222):pos(100,60)
     end
     self.quest_bar_bg:getChildByTag(222):show()
     self:HideFinger()
@@ -467,12 +467,24 @@ function GameUIHome:HideClickReward()
         self.quest_bar_bg:getChildByTag(222):hide()
     end
 end
-function GameUIHome:ShowFinger()
+function GameUIHome:ShowFinger(isFirst)
     if not self.quest_bar_bg:getChildByTag(111) then
         UIKit:FingerAni():addTo(self.quest_bar_bg,10,111):pos(180, -30)
     end
     self.quest_bar_bg:getChildByTag(111):show()
     self:HideClickReward()
+
+    -- if isFirst then
+    --     local finger = self.quest_bar_bg:getChildByTag(111):getChildByTag(1)
+    --     finger:stopAllActions()
+    --     self.quest_bar_bg:getChildByTag(111)
+    --     :pos(200,400):runAction(transition.sequence{
+    --         cc.MoveTo:create(1.5, cc.p(180, -30)),
+    --         cc.CallFunc:create(function()
+    --             finger:runAction(UIKit:GetFingerAni())
+    --         end)
+    --     })
+    -- end
 end
 function GameUIHome:HideFinger()
     if self.quest_bar_bg:getChildByTag(111) then
