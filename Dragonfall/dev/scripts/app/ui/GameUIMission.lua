@@ -28,18 +28,19 @@ GameUIMission.MISSION_TYPE = Enum("achievement","daily")
 function GameUIMission:OnUserDataChanged_dailyTasks(userData, deltaData)
     if not self:CurrentIsDailyMission() then return end
     self:RefreshDailyList()
-    local points = self:GetDailyTasksFinishedPoints()
+    local points = UtilsForTask:GetDailyTasksFinishedPoints(self.city:GetUser())
     self.dailyTaskRewardCount_progress:setPercentage(points/self:GetMaxPoint() * 100)
     self.my_points:setString(string.format(_("我的积分:%d"),points))
 end
 function GameUIMission:OnUserDataChanged_countInfo()
-    local points = self:GetDailyTasksFinishedPoints()
+    local points = UtilsForTask:GetDailyTasksFinishedPoints(self.city:GetUser())
     self.dailyTaskRewardCount_progress:setPercentage(points/self:GetMaxPoint() * 100)
     self.boxed_node:RefreshBoxes()
-    self:RefreshDisplayGreenPoint()
+    self:RefreshDisplayDailyReward()
 end
 function GameUIMission:OnUserDataChanged_growUpTasks()
     self:RefreshAchievementList()
+    self:RefreshDisplayAchievementReward()
 end
 function GameUIMission:GetMaxPoint()
     return dailyTaskRewardsConfig[#dailyTaskRewardsConfig].score
@@ -48,7 +49,7 @@ function GameUIMission:ctor(city,mission_type, need_tips)
     GameUIMission.super.ctor(self,city, _("任务"))
     self.city = city
     self.need_tips = need_tips
-    self.init_mission_type = mission_type or self.MISSION_TYPE.achievement
+    self.init_mission_type = mission_type or self.MISSION_TYPE.daily
     self.action_node = display.newNode():addTo(self)
 end
 function GameUIMission:OnMoveInStage()
@@ -67,21 +68,22 @@ end
 function GameUIMission:CreateTabButtons()
     local tab_buttons = WidgetBackGroundTabButtons.new({
         {
-            label = _("成就任务"),
-            tag = "achievement",
-            default = self.init_mission_type == self.MISSION_TYPE.achievement,
-        },
-        {
             label = _("日常任务"),
             tag = "daily",
             default = self.init_mission_type == self.MISSION_TYPE.daily,
+        },
+        {
+            label = _("成就任务"),
+            tag = "achievement",
+            default = self.init_mission_type == self.MISSION_TYPE.achievement,
         }
     },
     function(tag)
         self:OnTabButtonClicked(tag)
     end):addTo(self:GetView()):pos(window.cx, window.bottom + 34)
     self.tab_buttons = tab_buttons
-    self:RefreshDisplayGreenPoint()
+    self:RefreshDisplayDailyReward()
+    self:RefreshDisplayAchievementReward()
 end
 
 function GameUIMission:OnTabButtonClicked(tag)
@@ -360,7 +362,7 @@ function GameUIMission:CreateUIIf_daily()
         :align(display.CENTER_TOP, 308, 16)
         :addTo(header_bg)
 
-    local points = self:GetDailyTasksFinishedPoints()
+    local points = UtilsForTask:GetDailyTasksFinishedPoints(self.city:GetUser())
     local my_points = UIKit:ttfLabel({
         text = string.format(_("我的积分:%d"),points),
         size = 22,
@@ -482,7 +484,7 @@ function GameUIMission:GetRewardsNode()
                 box_image = "icon_box_open_66x60.png"
                 flag = 2
             else
-                if parent:GetDailyTasksCanGetRewardCount() >= i then
+                if UtilsForTask:GetDailyTasksCanGetRewardCount(parent.city:GetUser()) >= i then
                     box_image = "icon_box_light_66x60.png"
                     flag = 1
                 else
@@ -588,33 +590,15 @@ function GameUIMission:OpenGetDailyRewardDialog(reward_index,flag)
     end
     ta:setVisible(flag == 2)
 end
--- 获取当前能够领取日常任务奖励的数量
-function GameUIMission:GetDailyTasksCanGetRewardCount()
-    local points = self:GetDailyTasksFinishedPoints()
-    local count = -1
-    for i=0,4 do
-        local reward = dailyTaskRewardsConfig[i]
-        if points >= reward.score then
-            count = i
-        end
-    end
-    return count
-end
-function GameUIMission:GetDailyTasksFinishedPoints()
-    local points = 0
-    for k,task in pairs(dailyTasksConfig) do
-        local user_task_data = self.city:GetUser():GetAllDailyTasks()[task.index + 1]
-        if user_task_data and task.maxCount <= user_task_data then
-            points = points + task.score
-        end
-    end
-    return points
-end
-function GameUIMission:RefreshDisplayGreenPoint()
-    if not self.tab_buttons then return end
-    self.tab_buttons:SetGreenTipsShow("daily",self:GetDailyTasksFinishedPoints() < self:GetMaxPoint())
-end
 
+function GameUIMission:RefreshDisplayDailyReward()
+    if not self.tab_buttons then return end
+    self.tab_buttons:SetButtonTipNumber("daily",UtilsForTask:GetDailyTasksRewardCount(self.city:GetUser()))
+end
+function GameUIMission:RefreshDisplayAchievementReward()
+    if not self.tab_buttons then return end
+    self.tab_buttons:SetButtonTipNumber("achievement",UtilsForTask:GetCompleteTaskCount(User.growUpTasks))
+end
 function GameUIMission:dailyListviewListener(event)
     local city = self.city
     local User = city:GetUser()

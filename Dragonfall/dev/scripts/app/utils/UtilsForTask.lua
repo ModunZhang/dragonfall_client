@@ -692,7 +692,36 @@ function UtilsForTask:GetBeginnersTask(userData)
     end
 end
 
+-- 日常任务
+local dailyTasksConfig = GameDatas.PlayerInitData.dailyTasks
+local dailyTaskRewardsConfig = GameDatas.PlayerInitData.dailyTaskRewards
 
+-- 获取当前能够领取日常任务奖励的数量
+function UtilsForTask:GetDailyTasksCanGetRewardCount(userData)
+    local points = self:GetDailyTasksFinishedPoints(userData)
+    local count = -1
+    for i=0,4 do
+        local reward = dailyTaskRewardsConfig[i]
+        if points >= reward.score then
+            count = i
+        end
+    end
+    return count
+end
+function UtilsForTask:GetDailyTasksFinishedPoints(userData)
+    local points = 0
+    for k,task in pairs(dailyTasksConfig) do
+        local user_task_data = userData.dailyTasks[task.index + 1]
+        if user_task_data and task.maxCount <= user_task_data then
+            points = points + task.score
+        end
+    end
+    return points
+end
+-- 获取当前除去已经领取了的能够领取日常任务奖励的数量
+function UtilsForTask:GetDailyTasksRewardCount(userData)
+    return self:GetDailyTasksCanGetRewardCount(userData) - userData.countInfo.dailyTaskRewardCount + 1
+end
 return UtilsForTask
 
 

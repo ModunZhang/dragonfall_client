@@ -19,7 +19,8 @@ function WidgetHomeBottom:MailUnreadChanged(...)
     self.mail_count:SetNumber(MailManager:GetUnReadMailsNum()+MailManager:GetUnReadReportsNum())
 end
 function WidgetHomeBottom:OnUserDataChanged_growUpTasks()
-    self.task_count:SetNumber(UtilsForTask:GetCompleteTaskCount(self.city:GetUser().growUpTasks))
+    local user = self.city:GetUser()
+    self.task_count:SetNumber(UtilsForTask:GetCompleteTaskCount(user.growUpTasks) + UtilsForTask:GetDailyTasksRewardCount(user))
 end
 function WidgetHomeBottom:ctor(city)
     self.city = city
@@ -136,6 +137,9 @@ function WidgetHomeBottom:OnUserDataChanged_countInfo(userData, deltaData)
     if User.countInfo.firstJoinAllianceRewardGeted then
         self.alliance_btn:removeChildByTag(321, cleanup)
     end
+    if deltaData("countInfo.dailyTaskRewardCount") then
+        self.task_count:SetNumber(UtilsForTask:GetCompleteTaskCount(self.city:GetUser().growUpTasks) + UtilsForTask:GetDailyTasksRewardCount(self.city:GetUser()))
+    end
 end
 function WidgetHomeBottom:OnAllianceDataChanged_joinRequestEvents(alliance,deltaData)
     if self.join_request_count then
@@ -148,7 +152,7 @@ function WidgetHomeBottom:OnUserDataChanged_inviteToAllianceEvents()
     end
 end
 function WidgetHomeBottom:OnUserDataChanged_iapGifts()
-     if self.join_request_count then
+    if self.join_request_count then
         self.join_request_count:SetNumber((#Alliance_Manager:GetMyAlliance().joinRequestEvents + #User.iapGifts) or 0)
     end
 end
@@ -171,6 +175,7 @@ end
 
 
 return WidgetHomeBottom
+
 
 
 
