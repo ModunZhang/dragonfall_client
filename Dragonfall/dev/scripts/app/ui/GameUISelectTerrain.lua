@@ -42,7 +42,7 @@ function GameUISelectTerrain:OnMoveInStage()
         else
             NetManager:initPlayerData(self.terrainType):done(function()
                 if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEventAF then
-                    ext.market_sdk.onPlayerEventAF("SELECT_TERRAIN", "empty")
+                    ext.market_sdk.onPlayerEventAF("强制引导-选择地形", "empty")
                 end
                 NewsManager = NewsManager_.new()
                 self.select_promise:resolve()

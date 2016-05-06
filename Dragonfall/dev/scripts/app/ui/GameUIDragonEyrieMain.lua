@@ -769,7 +769,12 @@ function GameUIDragonEyrieMain:PromiseOfHate()
     WidgetFteArrow.new(_("点击按钮：孵化")):addTo(self:GetFteLayer())
     :TurnUp():pos(r.x + r.width/2, r.y - 40)
 
-    return self.dragon_manager:PromiseOfHate():next(function() self:DestroyFteLayer() end)
+    return self.dragon_manager:PromiseOfHate():next(function() 
+        if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEventAF then
+            ext.market_sdk.onPlayerEventAF("强制引导-孵化巨龙", "empty")
+        end
+        self:DestroyFteLayer() 
+    end)
 end
 function GameUIDragonEyrieMain:PormiseOfDefence()
     self:FindGarrisonBtn():setTouchSwallowEnabled(true)
@@ -787,9 +792,13 @@ function GameUIDragonEyrieMain:PormiseOfDefence()
         
     self.defencePromise = promise.new()
     return self.defencePromise:next(function()
-            self:FindGarrisonBtn():setButtonEnabled(false)
-            self:DestroyFteLayer()
-        end)
+        if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEventAF then
+            ext.market_sdk.onPlayerEventAF("强制引导-部队驻防", "empty")
+        end
+
+        self:FindGarrisonBtn():setButtonEnabled(false)
+        self:DestroyFteLayer()
+    end)
 end
 function GameUIDragonEyrieMain:PormiseOfLearnSkill()
     local p = promise.new()

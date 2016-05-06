@@ -295,7 +295,11 @@ function GameUIDragonSkill:PromiseOfFte()
     self:GetFteLayer():SetTouchObject(self:FindLearnBtn())
     WidgetFteArrow.new(_("点击学习")):addTo(self:GetFteLayer())
     :TurnDown():align(display.BOTTOM_CENTER, r.x + r.width/2, r.y + r.height + 10)
-    return self.learnPromise
+    return self.learnPromise:next(function()
+        if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEventAF then
+            ext.market_sdk.onPlayerEventAF("强制引导-学习技能", "empty")
+        end
+    end)
 end
 
 
