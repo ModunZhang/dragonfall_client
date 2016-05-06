@@ -566,7 +566,9 @@ function GameUILoginBeta:loginAction()
 end
 
 function GameUILoginBeta:connectGateServer()
-    NetManager:getConnectGateServerPromise():done(function()
+    NetManager:getConnectGateServerPromise():catch(function(err)
+        
+    end):done(function()
         -- self:setProgressPercent(80)
         self:getLogicServerInfo()
     end):fail(function()
@@ -627,7 +629,9 @@ end
 
 
 function GameUILoginBeta:connectLogicServer()
-    NetManager:getConnectLogicServerPromise():done(function()
+    NetManager:getConnectLogicServerPromise():catch(function(err)
+
+    end):done(function()
         self:login()
     end):fail(function()
         self:showErrorForReTry(_("连接游戏服务器失败!"),function()
