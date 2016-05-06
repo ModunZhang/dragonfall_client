@@ -48,7 +48,7 @@ function MyCityScene:onEnter()
     -- }):addTo(self, 1000000)
     -- :align(display.RIGHT_TOP, display.width, display.height)
 
-    -- alliance:AddListenOnType(self, "operation")
+    alliance:AddListenOnType(self, "operation")
     self:GetCity():GetUser():AddListenOnType(self, "soldierEvents")
     self:GetCity():GetUser():AddListenOnType(self, "houseEvents")
     self:GetCity():GetUser():AddListenOnType(self, "buildingEvents")
@@ -229,14 +229,14 @@ end
 function MyCityScene:GetHomePage()
     return self.home_page
 end
--- function MyCityScene:OnAllianceDataChanged_operation(alliance, op)
---     -- if op == "join" and
---     --     Alliance_Manager:HasBeenJoinedAlliance() and
---     --     not self.firstJoinAllianceRewardGeted
---     -- then
---     --     -- self:GetHomePage():PromiseOfFteAllianceMap()
---     -- end
--- end
+function MyCityScene:OnAllianceDataChanged_operation(alliance, op)
+    if op == "join" and
+        Alliance_Manager:HasBeenJoinedAlliance() and
+        not self.firstJoinAllianceRewardGeted
+    then
+        self:GetHomePage():PromiseOfFteAllianceMap()
+    end
+end
 function MyCityScene:onEnterTransitionFinish()
     MyCityScene.super.onEnterTransitionFinish(self)
     if ext.registereForRemoteNotifications then
@@ -470,7 +470,8 @@ function MyCityScene:RunFteIfNeeded()
     if not self:GetCity():GetUser().countInfo.isFTEFinished then
         p:next(function()
             self:FteEditName(function()
-                self:FteAlliance()
+                -- self:FteAlliance()
+                self:GetHomePage():CheckFinger()
             end)
         end)
     end
@@ -506,20 +507,17 @@ end
 function MyCityScene:FteAlliance()
     if Alliance_Manager:GetMyAlliance():IsDefault() then
         app:lockInput(true)
-        cocos_promise.defer(function()app:lockInput(false);end)
-            :next(function()
-                return GameUINpc:PromiseOfSay(
-                    {words = string.format(_("%s 领主大人，这个世界上的觉醒者并不只有你一人。加入其他觉醒者的联盟或创建自己的联盟，会让我们发展得更迅速。"), User.basicInfo.name)}
-                )
-            end):next(function()
-                return GameUINpc:PromiseOfLeave()
-            end):next(function()
-                self:GetHomePage():PromiseOfFteAlliance()
-            end):next(function()
-                self:GetHomePage():CheckFinger()
-            end)
-    else
-        self:GetHomePage():PromiseOfFteAlliance()
+        cocos_promise.defer(function()
+            app:lockInput(false)
+        end):next(function()
+            return GameUINpc:PromiseOfSay(
+                {words = string.format(_("%s 领主大人，这个世界上的觉醒者并不只有你一人。加入其他觉醒者的联盟或创建自己的联盟，会让我们发展得更迅速。"), User.basicInfo.name)}
+            )
+        end):next(function()
+            return GameUINpc:PromiseOfLeave()
+        end):next(function()
+            self:GetHomePage():PromiseOfFteAlliance()
+        end)
     end
 end
 
