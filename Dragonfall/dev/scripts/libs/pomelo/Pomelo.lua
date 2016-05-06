@@ -32,17 +32,15 @@ function Pomelo:ctor()
 
     self.heartbeatInterval = 0
     self.heartbeatTimeout = 0
-    self.nextHeartbeatTimeout = 0
-    self.gapThreshold = 1       -- heartbeat gap threashold
     self.heartbeatId = nil
     self.heartbeatTimeoutId = nil
+    self.nextPushIndex = 0;
     
     self.handshakeBuffer = {
         sys = {
             type = LUA_CLIENT_TYPE,
             version = LUA_CLIENT_VERSION,
-        },
-        user = {}
+        }
     }
 
     self.handlers = {}
@@ -51,7 +49,6 @@ function Pomelo:ctor()
     self.handlers[Package.TYPE_DATA] = handler(self,self._onData)
     self.handlers[Package.TYPE_KICK] = handler(self,self._onKick)
 
-    -- self._callbacks = {}
     self._messagePool = {}
 end
 
@@ -65,17 +62,15 @@ function Pomelo:init(params, cb)
 
     self.connectType = connectType
     self.initCallback = cb
-    self.handshakeBuffer.user = params.user
-    self.handshakeCallback = params.handshakeCallback
 
     dhcrypt.createdh()
     self.handshakeBuffer.sys.clientKey = dhcrypt.base64encode(dhcrypt.getpublickey())
     self.secret = nil
 
     if connectType == Pomelo.CONNECT_TYPE.WEBSOCKET then
-        self:_initWebSocket(host, port, cb)
+        self:_initWebSocket(host, port)
     else
-        self:_initTcpSocket(host, port, cb)
+        self:_initTcpSocket(host, port)
     end
 
 end
@@ -92,17 +87,8 @@ function Pomelo:request(route, msg, cb)
         return false
     end
 
-    self.reqId = self.reqId + 2
-    -- if math.fmod(self.reqId, 128) == 0  then
-    --     self.reqId = self.reqId + 1
-    -- end
-    -- self.reqId = self.reqId+1
-    -- if self.reqId > 127 then
-    --     self.reqId = 1
-    -- end
-
+    self.reqId = self.reqId + 1
     self:_sendMessage(self.reqId, route, msg)
-
     self._callbacks[self.reqId] = cb
     self.routeMap[self.reqId] = route
     return true
@@ -121,7 +107,9 @@ end
 
 function Pomelo:disconnect()
     printf("Pomelo:disconnect()")
+
     if self:_isReady() then
+        self:_unregisterHandler()
         self.socket:close()
         self.socket = nil
     end
@@ -135,15 +123,9 @@ function Pomelo:disconnect()
         self:_clearTimeout(self.heartbeatTimeoutId)
         self.heartbeatTimeoutId = nil
     end
-    self.data = nil
-    self:removeAllListener()
-end
 
-function Pomelo:reconnect()
-    local params = self.params
-    params.reconnect = true
-    self:init(params)
-    params.reconnect = nil
+    self:removeAllListener()
+    self.data = nil
 end
 
 -- 用于外部文件缓存dict/protos, 减少数据流量
@@ -157,45 +139,29 @@ end
 
 
 function Pomelo:_initWebSocket(host, port)
-
-    local _bin2hex = function(binary)
-        local t = {}
-        for i = 1, string.len(binary) do
-            t[i] = string.byte(binary,i)
-        end
-        return t
+    local url = 'ws://' .. host
+    if port then
+        url = url .. ':' .. port
     end
 
+    self.socket = cc.WebSocket:create(url)
+    self.socket.send = self.socket.sendString
+    self:_registerHandler()
+end
+
+function Pomelo:_registerHandler( )
     local onopen = function(event)
-        self:emit('open')
-
-        if self.data then
-            if self.data.dict and self.data.dictVersion then
-                self.handshakeBuffer.sys.dictVersion = self.data.dictVersion
-            end
-
-            if self.data.protos and self.data.protos.version then
-                self.handshakeBuffer.sys.protoVersion = self.data.protos.version
-            end
-        end
-
         local obj = Package.encode(Package.TYPE_HANDSHAKE, Protocol.strencode(json.encode(self.handshakeBuffer)))
         self:_send(obj)
     end
 
     local onmessage = function(message)
-        -- if type(message) == "string" then
-        --     message = _bin2hex(message)
-        -- end
         self:_processPackage(Package.decode(message))
-        -- new package arrived,update the heartbeat timeout
-        if self.heartbeatTimeout ~= 0 then
-            self.nextHeartbeatTimeout = os.time() + self.heartbeatTimeout
-        end
     end
 
     local onerror = function(event)
-        self:emit('io-error',event)
+        printf('onerror')
+        self:emit('disconnect', event)
         self:disconnect()
         if self.initCallback then
             self.initCallback(false)
@@ -204,29 +170,26 @@ function Pomelo:_initWebSocket(host, port)
     end
 
     local onclose = function(event)
+        printf('onclose')
+        self:emit('disconnect', event)
+        self:disconnect()
         if self.initCallback then
             self.initCallback(false)
             self.initCallback = nil
         end
-        -- self:emit('close',event)
-        self:emit('disconnect',event)
-        self:disconnect()
     end
-
-    local url = 'ws://' .. host
-    if port then
-        url = url .. ':' .. port
-    end
-
-    self.socket = cc.WebSocket:create(url)
 
     self.socket:registerScriptHandler(onopen, cc.WEBSOCKET_OPEN)
     self.socket:registerScriptHandler(onmessage,cc.WEBSOCKET_MESSAGE)
     self.socket:registerScriptHandler(onclose,cc.WEBSOCKET_CLOSE)
     self.socket:registerScriptHandler(onerror,cc.WEBSOCKET_ERROR)
+end
 
-    self.socket.send = self.socket.sendString
-
+function Pomelo:_unregisterHandler( )
+    self.socket:unregisterScriptHandler(cc.WEBSOCKET_OPEN)
+    self.socket:unregisterScriptHandler(cc.WEBSOCKET_MESSAGE)
+    self.socket:unregisterScriptHandler(cc.WEBSOCKET_CLOSE)
+    self.socket:unregisterScriptHandler(cc.WEBSOCKET_ERROR)
 end
 
 function Pomelo:_initTcpSocket(host, port)
@@ -237,23 +200,27 @@ function Pomelo:_initTcpSocket(host, port)
     self.buffer = ""
 
     socket:addEventListener(Socket.EVENT_CONNECTED, function()
-        self:emit("open")
-        -- 握手
-        dump(self.handshakeBuffer)
         local obj = Package.encode(Package.TYPE_HANDSHAKE, Protocol.strencode(json.encode(self.handshakeBuffer)))
         self:_send(obj)
-
-
     end)
 
     socket:addEventListener(Socket.EVENT_CLOSED, function(event)
-        self:emit('close', event)
-        -- self:disconnect()
+        printf('onclose')
+        self:emit('disconnect', event)
+        self:disconnect()
+        if self.initCallback then
+            self.initCallback(false)
+            self.initCallback = nil
+        end
     end)
 
     socket:addEventListener(Socket.EVENT_CONNECT_FAILURE, function(event)
-        self:emit('io-error')
-        -- self:disconnect()
+        self:emit('onerror', event)
+        self:disconnect()
+        if self.initCallback then
+            self.initCallback(false)
+            self.initCallback = nil
+        end
     end)
 
     socket:addEventListener(Socket.EVENT_DATA, function(event)
@@ -281,9 +248,6 @@ function Pomelo:_initTcpSocket(host, port)
 
 
             self:_processPackage(Package.decode(bytes))
-            if self.heartbeatTimeout ~= 0 then
-                self.nextHeartbeatTimeout = os.time() + self.heartbeatTimeout
-            end
 
             self.buffer = string.sub(self.buffer, packLen + 1)
             -- console.log("#self.buffer len", #self.buffer)
@@ -295,9 +259,7 @@ function Pomelo:_initTcpSocket(host, port)
 
 
     socket:connect()
-
 end
-
 
 function Pomelo:_processPackage(msg)
     if not msg then return end
@@ -316,7 +278,6 @@ function Pomelo:_processMessage(msg)
     --    printf("msg.id=%s,msg.route=%s,msg.body=%s",msg.id,msg.route,msg.body)
     --    printf("json.encode(msg.body)=%s",json.encode(msg.body))
     if msg.id==0 then
-        -- server push message
         self:emit(msg.route, msg.body)
     end
 
@@ -330,8 +291,6 @@ function Pomelo:_processMessage(msg)
 
     --    --printf("type(msg.body)=%s",type(msg.body))
     cb(msg.body)
-
-    --    return self
 end
 
 function Pomelo:_processMessageBatch(msgs)
@@ -356,18 +315,7 @@ function Pomelo:_sendMessage(reqId,route,msg)
         _type = Message.TYPE_NOTIFY
     end
 
-    --compress message by Protobuf
-    -- TODO 暂时不支持 Protobuf
-    local protos = {}
-    if self.data.protos then
-        protos = self.data.protos.client
-    end
-
-    if protos[route] then
-        msg = Protobuf.encode(route, msg)
-    else
-        msg = Protocol.strencode(json.encode(msg))
-    end
+    msg = Protocol.strencode(json.encode(msg))
 
     local compressRoute = 0
     if self.data.dict and self.data.dict[route] then
@@ -394,21 +342,11 @@ function Pomelo:_send(packet)
         local str = Protocol.strdecode(packet)
 
         self.socket:send(str)
-        -- dump(msg)
-
-        -- dump(packet)
-        if(#str ==11) then
-        -- dump(packet)
-        -- local msg = Package.decode(Protocol.strencode(str))
-        -- dump(msg)
-        -- dump(Message.decode(msg.body))
-        end
     end
 end
 
 function Pomelo:heartbeat(data)
     --    printf("Pomelo:heartbeat(data)")
-
     if self.heartbeatInterval == 0 then
         -- no heartbeat
         return
@@ -419,37 +357,24 @@ function Pomelo:heartbeat(data)
         return
     end
 
-    if self.heartbeatTimeoutId ~= nil then
-        self:_clearTimeout(self.heartbeatTimeoutId)
-        self.heartbeatTimeoutId = nil
-    end
-
-    local obj = Package.encode(Package.TYPE_HEARTBEAT)
-
     self.heartbeatId = self:_setTimeout(
         function()
+            printf('heartbeat')
+            local obj = Package.encode(Package.TYPE_HEARTBEAT)
             self:_send(obj)
-
-            self.nextHeartbeatTimeout = os.time() + self.heartbeatTimeout
-            self.heartbeatTimeoutId = self:_setTimeout(handler(self, self.heartbeatTimeoutCb), self.heartbeatTimeout)
-
             self:_clearTimeout(self.heartbeatId)
             self.heartbeatId = nil
-        end,
-        self.heartbeatInterval)
-end
-
-function Pomelo:heartbeatTimeoutCb()
-    local gap = self.nextHeartbeatTimeout - os.time()
-    -- printf("Pomelo:heartbeatTimeoutCb() os.time()=%s",os.time())
-    -- printf("gap=%s,self.gapThreshold=%s",gap,self.gapThreshold)
-    if gap > self.gapThreshold then
-        self.heartbeatTimeoutId = self:_setTimeout(handler(self,self.heartbeatTimeoutCb),gap)
-    else
-        printf('heartbeat timeout')
-        self:emit('heartbeat timeout')
-        self:disconnect()
+        end, self.heartbeatInterval)
+    
+    if self.heartbeatTimeoutId ~= nil then
+        self:_clearTimeout(self.heartbeatTimeoutId)
     end
+    self.heartbeatTimeoutId = self:_setTimeout(
+        function ()
+            printf('heartbeat timeout')
+            self:emit('disconnect', event)
+            self:disconnect()
+        end, self.heartbeatTimeout)
 end
 
 function Pomelo:_handshake(data)
@@ -484,7 +409,6 @@ function Pomelo:_handshake(data)
         self:initCallback(self.socket)
         self.initCallback = nil
     end
-
 end
 
 
@@ -531,13 +455,7 @@ function Pomelo:_deCompose(msg)
         route = msg.route
     end
 
-    if Protobuf and protos[route] then
-        return Protobuf.decode(route,msg.body)
-    else
-        return json.decode(Protocol.strdecode(msg.body))
-    end
-
-    return msg
+    return json.decode(Protocol.strdecode(msg.body))
 end
 
 function Pomelo:_handshakeInit(data)
@@ -547,17 +465,7 @@ function Pomelo:_handshakeInit(data)
         self.heartbeatTimeout = self.heartbeatInterval * 2  -- max heartbeat timeout
     end
 
-    if data.user and data.user.heartbeat then
-        self.heartbeatInterval = data.user.heartbeat         -- heartbeat interval
-        self.heartbeatTimeout = self.heartbeatInterval * 5   -- max heartbeat timeout
-    end
-
     self:_initData(data)
-
-    if type(self.handshakeCallback) == 'function' then
-        self:handshakeCallback(data.user)
-    end
-
 end
 
 --Initilize data used in pomelo client
@@ -569,8 +477,6 @@ function Pomelo:_initData(data)
     self.data = self.data or {}
 
     local dict = data.sys.dict
-    local protos = data.sys.protos
-
     --Init compress dict
     if data.sys.useDict and dict then
         self.data.dict = dict
@@ -581,19 +487,6 @@ function Pomelo:_initData(data)
     end
 
     self.data.dictVersion = data.sys.dictVersion
-
-
-    -- Init Protobuf protos
-    if  data.sys.useProto and protos then
-        self.data.protos = data.sys.protos
-        Protobuf.init({
-            encoderProtos = self.data.protos.client,
-            decoderProtos = self.data.protos.server
-        })
-
-    end
-
-
 end
 
 function Pomelo:_setTimeout(fn,delay)
