@@ -2129,7 +2129,7 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         return self
     end
     function troopsNode:Return(x, y, time, func)
-        self.infoNode:hide()
+        -- self.infoNode:hide()
         self:Play("move_90", -1)
 
         local moveActs = transition.sequence({
@@ -2160,7 +2160,7 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         return self
     end
     function troopsNode:Move(x, y, time, func, delayTime)
-        self.infoNode:hide()
+        -- self.infoNode:hide()
 
         local moveActs = transition.sequence{
             cc.MoveTo:create(time, cc.p(x, y)),
@@ -2224,7 +2224,7 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         return self
     end
     function troopsNode:Idle()
-        self.infoNode:show()
+        -- self.infoNode:show()
         local animationData = self.soldiers[1]:getAnimation():getAnimationData()
         if not not animationData:getMovement("idle_90") then
             self:Play("idle_90", -1)
