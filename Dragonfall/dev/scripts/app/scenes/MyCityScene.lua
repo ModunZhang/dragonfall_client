@@ -473,7 +473,7 @@ function MyCityScene:RunFteIfNeeded()
                 if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEventAF then
                     ext.market_sdk.onPlayerEventAF("强制引导-玩家改名", "empty")
                 end
-                self:GetHomePage():CheckFinger()
+                self:GetHomePage():CheckFinger(true)
             end)
         end)
     end
@@ -548,15 +548,15 @@ function MyCityScene:PromiseOfClickBuilding(x, y, for_build, msg, arrow_param)
                 end
             end
 
-            info_layer:removeAllChildren()
-            local arrow = WidgetFteArrow.new(msg or str)
-                :addTo(info_layer, 1, ARROW_TAG):TurnDown():pos(top_point.x, top_point.y + 50)
-            if arrow_param then
-                if arrow_param.direction == "up" then
-                    arrow:TurnUp()
-                end
-                arrow:pos(top_point.x + (arrow_param.x or 0), top_point.y + (arrow_param.y or -300))
-            end
+            -- info_layer:removeAllChildren()
+            -- local arrow = WidgetFteArrow.new(msg or str)
+            --     :addTo(info_layer, 1, ARROW_TAG):TurnDown():pos(top_point.x, top_point.y + 50)
+            -- if arrow_param then
+            --     if arrow_param.direction == "up" then
+            --         arrow:TurnUp()
+            --     end
+            --     arrow:pos(top_point.x + (arrow_param.x or 0), top_point.y + (arrow_param.y or -300))
+            -- end
 
 
             local mx, my = building:GetEntity():GetMidLogicPosition()

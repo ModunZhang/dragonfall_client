@@ -274,7 +274,7 @@ function GameUIQuickTechnology:CreateScrollNode()
         and desc[self.need_tips_tech_name] then
             WidgetFteArrow.new(desc[self.need_tips_tech_name],22 * 1.3)
                 :addTo(node, 10, 111):TurnUp()
-                :pos(v:Pos().x,v:Pos().y-80):scale(0.7)
+                :pos(v:Pos().x,v:Pos().y-110):scale(0.7)
         end
     end
     return node
