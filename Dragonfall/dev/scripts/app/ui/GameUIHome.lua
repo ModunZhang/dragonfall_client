@@ -467,6 +467,7 @@ function GameUIHome:HideClickReward()
         self.quest_bar_bg:getChildByTag(222):hide()
     end
 end
+local WidgetMaskFilter = import("..widget.WidgetMaskFilter")
 function GameUIHome:ShowFinger(isFirst)
     if not self.quest_bar_bg:getChildByTag(111) then
         UIKit:FingerAni():addTo(self.quest_bar_bg,10,111):pos(180, -30)
@@ -474,17 +475,33 @@ function GameUIHome:ShowFinger(isFirst)
     self.quest_bar_bg:getChildByTag(111):show()
     self:HideClickReward()
 
-    -- if isFirst then
-    --     local finger = self.quest_bar_bg:getChildByTag(111):getChildByTag(1)
-    --     finger:stopAllActions()
-    --     self.quest_bar_bg:getChildByTag(111)
-    --     :pos(200,400):runAction(transition.sequence{
-    --         cc.MoveTo:create(1.5, cc.p(180, -30)),
-    --         cc.CallFunc:create(function()
-    --             finger:runAction(UIKit:GetFingerAni())
-    --         end)
-    --     })
-    -- end
+    if isFirst then
+        local rect = self.quest_bar_bg:getChildByTag(111):getCascadeBoundingBox()
+        rect.x = rect.x - rect.width/3
+        rect.width = rect.width * 1.5
+        rect.height = rect.height * 1.3
+        local mask = WidgetMaskFilter.new()
+        :addTo(self,2000,123456789):pos(display.cx, display.cy)
+        mask:FocusOnRect(rect)
+        mask:setTouchEnabled(true)
+        mask:setTouchSwallowEnabled(false)
+        mask:addNodeEventListener(cc.NODE_TOUCH_EVENT, function(event)
+            if event.name == "began" then
+                self:removeChildByTag(123456789)
+            end
+            return true
+        end)
+        -- self:GetFteLayer():Enable():SetTouchRect(rect)
+        -- local finger = self.quest_bar_bg:getChildByTag(111):getChildByTag(1)
+        -- finger:stopAllActions()
+        -- self.quest_bar_bg:getChildByTag(111)
+        -- :pos(200,400):runAction(transition.sequence{
+        --     cc.MoveTo:create(1.5, cc.p(180, -30)),
+        --     cc.CallFunc:create(function()
+        --         finger:runAction(UIKit:GetFingerAni())
+        --     end)
+        -- })
+    end
 end
 function GameUIHome:HideFinger()
     if self.quest_bar_bg:getChildByTag(111) then

@@ -333,6 +333,12 @@ function AllianceDetailScene:onEnter()
                     local x,y = DataUtils:GetAbsolutePosition(alliance.mapIndex, v.location.x, v.location.y)
                     self:GotoPosition(x,y)
 
+                    local up = self:GetSceneLayer()
+                    :FindMapObject(alliance.mapIndex, v.location.x, v.location.y-1)
+                    if up and up.info then
+                        up.info:hide()
+                    end
+
                     local village = self:GetSceneLayer()
                     :FindMapObject(alliance.mapIndex, v.location.x, v.location.y)
                     WidgetFteArrow.new(_("占领村落"))
@@ -571,8 +577,13 @@ function AllianceDetailScene:OnTouchClicked(pre_x, pre_y, x, y)
         local type_ = Alliance:GetMapObjectType(mapObj)
         app:GetAudioManager():PlayeEffectSoundWithKey("HOME_PAGE")
         if alliance then
-            if mapObj.obj then
+            if mapObj.obj and mapObj.obj:getChildByTag(INFO_TAG) then
                 mapObj.obj:removeChildByTag(INFO_TAG)
+                local up = self:GetSceneLayer()
+                :FindMapObject(alliance.mapIndex, mapObj.x, mapObj.y-1)
+                if up and up.info then
+                    up.info:show()
+                end
             end
             if type_ == "member"
                 or type_ == "village"

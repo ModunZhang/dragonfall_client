@@ -473,7 +473,13 @@ function MyCityScene:RunFteIfNeeded()
                 if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEventAF then
                     ext.market_sdk.onPlayerEventAF("强制引导-玩家改名", "empty")
                 end
-                self:GetHomePage():CheckFinger(true)
+                GameUINpc:PromiseOfSay(
+                    {words = string.format(_("%s 大人，接下来请按照推荐任务发展城市，完成后可以获得大量的资源和其他奖励！"), User.basicInfo.name)}
+                ):next(function()
+                    return GameUINpc:PromiseOfLeave()
+                end):next(function()
+                    self:GetHomePage():CheckFinger(true)
+                end)
             end)
         end)
     end
