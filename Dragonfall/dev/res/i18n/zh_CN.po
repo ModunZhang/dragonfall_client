@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: dragonfall\n"
-"POT-Creation-Date: 2016-05-06 17:48+0800\n"
-"PO-Revision-Date: 2016-05-06 17:48+0800\n"
+"POT-Creation-Date: 2016-05-06 18:30+0800\n"
+"PO-Revision-Date: 2016-05-06 18:30+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zh_CN\n"
@@ -39,7 +39,7 @@ msgstr "服务器连接断开,请检测你的网络环境后重试!"
 #: MyApp.lua:450 MyApp.lua:637 entity/Alliance.lua:793
 #: entity/MailManager.lua:39 entity/User.lua:1238 entity/User.lua:1266
 #: entity/User.lua:1452 entity/User.lua:1517
-#: scenes/AllianceDetailScene.lua:623 scenes/AllianceDetailScene.lua:674
+#: scenes/AllianceDetailScene.lua:634 scenes/AllianceDetailScene.lua:685
 #: scenes/AllianceScene.lua:198 scenes/MyCityFteScene.lua:292
 #: service/NetManager.lua:395 service/NetManager.lua:943
 #: service/NetManager.lua:962 service/NetManager.lua:975
@@ -1748,39 +1748,39 @@ msgstr "制造%s装备完成"
 msgid "联盟地形已经改变"
 msgstr "联盟地形已经改变"
 
-#: scenes/AllianceDetailScene.lua:338
+#: scenes/AllianceDetailScene.lua:344
 msgid "占领村落"
 msgstr "占领村落"
 
-#: scenes/AllianceDetailScene.lua:342
+#: scenes/AllianceDetailScene.lua:348
 msgid "大人, 占领村落可以采集资源。"
 msgstr "大人, 占领村落可以采集资源。"
 
-#: scenes/AllianceDetailScene.lua:364
+#: scenes/AllianceDetailScene.lua:370
 msgid ""
 "大人，将多余的资源捐献给联盟获得联盟荣誉值，联盟荣誉值用于升级联盟建筑。"
 msgstr ""
 "大人，将多余的资源捐献给联盟获得联盟荣誉值，联盟荣誉值用于升级联盟建筑。"
 
-#: scenes/AllianceDetailScene.lua:392
+#: scenes/AllianceDetailScene.lua:398
 msgid "击败黑龙军团"
 msgstr "击败黑龙军团"
 
-#: scenes/AllianceDetailScene.lua:396
+#: scenes/AllianceDetailScene.lua:402
 msgid "大人, 击败黑龙军团的探子可以获得道具和材料。"
 msgstr "大人, 击败黑龙军团的探子可以获得道具和材料。"
 
-#: scenes/AllianceDetailScene.lua:413
+#: scenes/AllianceDetailScene.lua:419
 msgid "联盟的将军和领主可以激活圣地时间。参加并完成后，可获得巨龙装备的材料。"
 msgstr "联盟的将军和领主可以激活圣地事件，参加并完成后，可获得巨龙装备材料。"
 
-#: scenes/AllianceDetailScene.lua:623 ui/GameUIAllianceBattle.lua:42
+#: scenes/AllianceDetailScene.lua:634 ui/GameUIAllianceBattle.lua:42
 #: ui/GameUIAllianceHome.lua:600 ui/GameUIThroneMain.lua:167
 #: ui/GameUIThroneMain.lua:194
 msgid "即将开放"
 msgstr "即将开放"
 
-#: scenes/AllianceDetailScene.lua:674
+#: scenes/AllianceDetailScene.lua:685
 msgid "此建筑即将开放"
 msgstr "此建筑即将开放"
 
@@ -1823,12 +1823,12 @@ msgstr ""
 msgid "我知道你好友很多疑问，不过首先，我们需要前往寻找一个安全的地方？"
 msgstr "我知道你还有很多疑问，不过首先，我们需要寻找一个安全的地方落脚。"
 
-#: scenes/MyCityFteScene.lua:42 scenes/MyCityScene.lua:545
+#: scenes/MyCityFteScene.lua:42 scenes/MyCityScene.lua:551
 #, lua-format
 msgid "点击空地：建造%s"
 msgstr "点击空地：建造%s"
 
-#: scenes/MyCityFteScene.lua:44 scenes/MyCityScene.lua:547
+#: scenes/MyCityFteScene.lua:44 scenes/MyCityScene.lua:553
 #, lua-format
 msgid "点击建筑：%s"
 msgstr "点击建筑：%s"
@@ -1877,7 +1877,7 @@ msgstr "是否跳过新手引导？"
 msgid "建造矿工小屋"
 msgstr "建造矿工小屋"
 
-#: scenes/MyCityFteScene.lua:404 scenes/MyCityScene.lua:483
+#: scenes/MyCityFteScene.lua:404 scenes/MyCityScene.lua:489
 msgid ""
 "我们到了。。。现在你的伤也恢复的差不多了，让我们来测试一下你觉醒者的能力"
 "吧。。。"
@@ -2001,7 +2001,13 @@ msgstr ""
 msgid "选择一个空地,将小屋移动到这里"
 msgstr "选择一处空地,将小屋移动到那里"
 
-#: scenes/MyCityScene.lua:522
+#: scenes/MyCityScene.lua:477
+#, lua-format
+msgid ""
+"%s 大人，接下来请按照推荐任务发展城市，完成后可以获得大量的资源和其他奖励！"
+msgstr ""
+
+#: scenes/MyCityScene.lua:528
 #, lua-format
 msgid ""
 "%s 领主大人，这个世界上的觉醒者并不只有你一人。加入其他觉醒者的联盟或创建自"
@@ -5268,7 +5274,7 @@ msgstr "当前没有推荐任务!"
 msgid "点击领取奖励"
 msgstr "点击领取奖励"
 
-#: ui/GameUIHome.lua:737
+#: ui/GameUIHome.lua:766
 msgid ""
 "进入联盟地图\n"
 "体验更多玩法"
