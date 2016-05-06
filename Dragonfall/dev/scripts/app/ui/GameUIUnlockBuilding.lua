@@ -427,7 +427,7 @@ function GameUIUnlockBuilding:PopNotSatisfyDialog(listener,can_not_update_type)
                     local building_sprite = display.getRunningScene():GetSceneLayer():FindBuildingSpriteByBuilding(self.city:GetFirstBuildingByType("keep"), self.city)
                     local x,y = self.city:GetFirstBuildingByType("keep"):GetMidLogicPosition()
                     display.getRunningScene():GotoLogicPoint(x,y,40):next(function()
-                        display.getRunningScene():AddIndicateForBuilding(building_sprite)
+                        display.getRunningScene():AddIndicateForBuilding(building_sprite,nil,false)
                     end)
                     self:LeftButtonClicked()
                 end,

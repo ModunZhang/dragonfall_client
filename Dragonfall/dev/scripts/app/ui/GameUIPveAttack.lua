@@ -156,6 +156,9 @@ function GameUIPveAttack:BuildNormalUI()
 
     if self.needTips and UtilsForTask:NeedTips(User) then
         UIKit:FingerAni():addTo(self.attack,11,111):pos(45,-45)
+        self.attack:onButtonClicked(function()
+            self.attack:removeChildByTag(111)
+        end)
     end
 
     UIKit:ttfLabel({

@@ -221,9 +221,9 @@ function MyCityScene:IteratorLockButtons(func)
     end
 end
 -- 给对应建筑添加指示动画
-function MyCityScene:AddIndicateForBuilding(building_sprite, build_name)
+function MyCityScene:AddIndicateForBuilding(building_sprite, build_name,needTips)
     Sprite:PromiseOfFlash(unpack(self:CollectBuildings(building_sprite))):next(function()
-        self:OpenUI(building_sprite, "upgrade", true, build_name)
+        self:OpenUI(building_sprite, "upgrade", needTips == nil and true or needTips, build_name)
     end)
 end
 function MyCityScene:GetHomePage()
@@ -470,7 +470,6 @@ function MyCityScene:RunFteIfNeeded()
     if not self:GetCity():GetUser().countInfo.isFTEFinished then
         p:next(function()
             self:FteEditName(function()
-                -- self:FteAlliance()
                 self:GetHomePage():CheckFinger()
             end)
         end)
@@ -504,8 +503,14 @@ function MyCityScene:FteEditName(func)
         end
     end
 end
+MyCityScene.fteAlliance = false
 function MyCityScene:FteAlliance()
-    if Alliance_Manager:GetMyAlliance():IsDefault() then
+    if MyCityScene.fteAlliance then
+        return
+    end
+    if Alliance_Manager:GetMyAlliance():IsDefault() 
+    and not UIKit:GetUIInstance("GameUINpc") then
+        MyCityScene.fteAlliance = true
         app:lockInput(true)
         cocos_promise.defer(function()
             app:lockInput(false)

@@ -1187,7 +1187,7 @@ function CommonUpgradeUI:PopNotSatisfyDialog(listener,can_not_update_type)
                         local x,y = jump_building:GetMidLogicPosition()
                         current_scene:GotoLogicPoint(x,y,40):next(function()
                             if current_scene.AddIndicateForBuilding then
-                                current_scene:AddIndicateForBuilding(building_sprite)
+                                current_scene:AddIndicateForBuilding(building_sprite,nil,false)
                             end
                         end)
                     end,
