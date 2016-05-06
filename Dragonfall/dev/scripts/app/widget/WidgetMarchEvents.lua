@@ -368,7 +368,7 @@ function WidgetMarchEvents:CreateReturnItem(event, eventType)
         size = 16,
         color= 0xfff3c7,
         shadow = true,
-    }):addTo(node.speed_btn):pos(-55,0)
+    }):addTo(node.speed_btn):align(display.CENTER, -37,0)
 
     node.return_btn = WidgetPushButton.new({
         normal = "yellow_btn_up_108x38.png",
@@ -384,7 +384,7 @@ function WidgetMarchEvents:CreateReturnItem(event, eventType)
         size = 16,
         color= 0xfff3c7,
         shadow = true,
-    }):addTo(node.return_btn):pos(-55,0)
+    }):addTo(node.return_btn):align(display.CENTER, -37,0)
     node.eventType = eventType
     node.event = event
     return node
@@ -438,7 +438,7 @@ function WidgetMarchEvents:CreateAttackItem(event, eventType)
         size = 16,
         color= 0xfff3c7,
         shadow = true,
-    }):addTo(node.speed_btn):pos(-55,0)
+    }):addTo(node.speed_btn):align(display.CENTER, -37,0)
 
 
     node.return_btn = WidgetPushButton.new({
@@ -455,7 +455,7 @@ function WidgetMarchEvents:CreateAttackItem(event, eventType)
         size = 16,
         color= 0xfff3c7,
         shadow = true,
-    }):addTo(node.return_btn):pos(-55,0)
+    }):addTo(node.return_btn):align(display.CENTER, -37,0)
     node.eventType = eventType
     node.event = event
     return node
@@ -535,7 +535,7 @@ function WidgetMarchEvents:CreateDefenceItem(event, eventType)
         size = 16,
         color= 0xfff3c7,
         shadow = true,
-    }):addTo(node.speed_btn):pos(-55,0)
+    }):addTo(node.speed_btn):align(display.CENTER, -37,0)
 
     node.return_btn = WidgetPushButton.new({
         normal = "yellow_btn_up_108x38.png",
@@ -551,7 +551,7 @@ function WidgetMarchEvents:CreateDefenceItem(event, eventType)
         size = 16,
         color= 0xfff3c7,
         shadow = true,
-    }):addTo(node.return_btn):pos(-55,0)
+    }):addTo(node.return_btn):align(display.CENTER, -37,0)
     node.eventType = eventType
     node.event = event
     return node

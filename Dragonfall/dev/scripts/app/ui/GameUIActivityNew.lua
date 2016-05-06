@@ -168,7 +168,7 @@ function GameUIActivityNew:GetFirstPurgureTips()
     local str = _("首次充值%s金额")
     local s,e = string.find(str,"%%s")
     return string.format("[{\"type\":\"text\", \"value\":\"%s\"},{\"type\":\"text\",\"color\":0xa2ff00,\"size\":22,\"value\":\"%s\"},{\"type\":\"text\", \"value\":\"%s\"}]",
-        string.sub(str,1,s - 1),_("任意"),string.sub(str,e+1))
+        string.sub(str,1,s - 1).." ",_("任意"),string.sub(str,e+1))
 end
 
 function GameUIActivityNew:GetActivityItem(item_type)
