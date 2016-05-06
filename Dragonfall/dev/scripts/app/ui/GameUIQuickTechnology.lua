@@ -198,7 +198,8 @@ function GameUIQuickTechnology:BuildTechnologyUI(height)
     self:BuildTipsUI(technology_node,height)
     display.newSprite("technology_magic_549x538.png"):align(display.LEFT_CENTER,40, height/2):addTo(technology_node)
     self.scrollView = UIScrollView.new({
-        viewRect = cc.rect(40,0,window.width - 80, height - 116), -- 116 = 106 + 10
+        -- bgColor = UIKit:hex2c4b(0x7a100000),
+        viewRect = cc.rect(0,0,window.width, height - 116), -- 116 = 106 + 10
     })
         :addScrollNode(self:CreateScrollNode():pos(40, 0))
         :setDirection(UIScrollView.DIRECTION_VERTICAL)
