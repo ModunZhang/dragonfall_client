@@ -637,7 +637,7 @@ end
 -----------------------
 function GameUIActivityRewardNew:ui_FIRST_IN_PURGURE()
     local bar = display.newSprite("background_608x678.png"):align(display.TOP_CENTER, 288,self.height - 20):addTo(self.bg)
-    lights():addTo(bar):pos(100, 100)
+    -- lights():addTo(bar):pos(100, 100)
     display.newSprite("icon_hammer.png"):align(display.CENTER, 126,585):addTo(bar)
     -- :runAction(
     --     cc.RepeatForever:create(transition.sequence{
