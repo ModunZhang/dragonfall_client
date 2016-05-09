@@ -111,7 +111,7 @@ local recommands = {
 	{ type = "cityBuild"		, id = cityBuildIdBy("farmer", 6) 	  		},
 	{ type = "pveCount"			, id = pveCountIdBy(8) 	  				  	},
 	{ type = "cityBuild"		, id = cityBuildIdBy("barracks", 6) 	  	},
-	{ type = "soldierCount"		, id = soldierCountIdBy("ranger_1", 1) 	  	},
+	{ type = "soldierCount"		, id = soldierCountIdBy("lancer_1", 1) 	  	},
 	{ type = "cityBuild"		, id = cityBuildIdBy("blackSmith", 2) 		},
 	{ type = "cityBuild"		, id = cityBuildIdBy("wall", 6) 			},
 }

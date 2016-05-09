@@ -263,7 +263,7 @@ local soldierCount_meta = {}
 soldierCount_meta.__index = soldierCount_meta
 function soldierCount_meta:Title()
     local leftCount = self:Config().count - UtilsForSoldier:TotalSoldiers(User)[self:Config().name]
-    if leftCount <= 0 then
+    if leftCount <= 0 or self.finished then
         local str = string.formatnumberthousands(self:Config().count)
         return string.format(_("招募%s个%s(%s/%s)"),str,Localize.soldier_name[self:Config().name],str,str)
     else
@@ -293,7 +293,7 @@ local pveCount_meta = {}
 pveCount_meta.__index = pveCount_meta
 function pveCount_meta:Title()
     local leftCount = self:Config().count - User.countInfo.pveCount
-    if leftCount <= 0 then
+    if leftCount <= 0 or self.finished then
         local str = string.formatnumberthousands(self:Config().count)
         return string.format(_("探索%s次PVE(%s/%s)"),str,str,str)
     else
@@ -497,7 +497,7 @@ function UtilsForTask:GetFirstCompleteTasksByCategory(growUpTasks, category)
             end
             if not v.rewarded and not mark_map[category_name] then
                 mark_map[category_name] = true
-                table.insert(r, setmetatable(v, meta_map[tag]))
+                table.insert(r, setmetatable({ type = v.type, id = v.id, finished = true }, meta_map[tag]))
                 if index_map[tag] then
                     break
                 end
@@ -690,6 +690,14 @@ function UtilsForTask:GetBeginnersTask(userData)
             return setmetatable({ id = mission.id }, meta_map[mission.type])
         end
     end
+end
+local taskIndexMap = {}
+for i,v in ipairs(RecommendedMission) do
+    taskIndexMap[v.type] = taskIndexMap[v.type] or {}
+    taskIndexMap[v.type][v.id] = i
+end
+function UtilsForTask:GetTaskIndex(type,id)
+    return taskIndexMap[type][id] or #RecommendedMission + 1
 end
 
 -- 日常任务
