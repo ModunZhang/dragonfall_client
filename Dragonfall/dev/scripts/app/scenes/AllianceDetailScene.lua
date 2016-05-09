@@ -335,8 +335,8 @@ function AllianceDetailScene:onEnter()
 
                     local up = self:GetSceneLayer()
                     :FindMapObject(alliance.mapIndex, v.location.x, v.location.y-1)
-                    if up and up.info then
-                        up.info:hide()
+                    if up and up.obj and up.obj.info then
+                        up.obj.info:hide()
                     end
 
                     local village = self:GetSceneLayer()
@@ -581,8 +581,8 @@ function AllianceDetailScene:OnTouchClicked(pre_x, pre_y, x, y)
                 mapObj.obj:removeChildByTag(INFO_TAG)
                 local up = self:GetSceneLayer()
                 :FindMapObject(alliance.mapIndex, mapObj.x, mapObj.y-1)
-                if up and up.info then
-                    up.info:show()
+                if up and up.obj and up.obj.info then
+                    up.obj.info:show()
                 end
             end
             if type_ == "member"
