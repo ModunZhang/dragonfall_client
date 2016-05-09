@@ -442,7 +442,7 @@ function MyCityScene:OpenUI(building, default_tab, need_tips, build_name)
     else
         if entity:IsUnlocked() then
             local ui = UIKit:newGameUI(uiarrays[1], city, entity, default_tab or uiarrays[2], uiarrays[3]):AddToScene(self, true)
-            if need_tips then
+            if ui and need_tips then
                 ui.needTips = UtilsForTask:NeedTips(self:GetCity():GetUser())
             end
         else
