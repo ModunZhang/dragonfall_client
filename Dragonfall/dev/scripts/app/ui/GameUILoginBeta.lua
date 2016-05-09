@@ -648,7 +648,9 @@ function GameUILoginBeta:login()
         local userData = DataManager:getUserData()
         ext.market_sdk.onPlayerLogin(userData._id, userData.basicInfo.name, userData.logicServerId)
         ext.market_sdk.onPlayerLevelUp(User:GetPlayerLevelByExp(userData.basicInfo.levelExp))
-
+        if device.platform == 'winrt' and ext.adeasygo then
+            ext.adeasygo.init()
+        end
         self:performWithDelay(function()
             if DataManager:getUserData().basicInfo.terrain == "__NONE__" then
                 app:EnterFteScene()
