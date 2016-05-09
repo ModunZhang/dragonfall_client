@@ -697,7 +697,8 @@ for i,v in ipairs(RecommendedMission) do
     taskIndexMap[v.type][v.id] = i
 end
 function UtilsForTask:GetTaskIndex(type,id)
-    return taskIndexMap[type][id] or #RecommendedMission + 1
+    local m = taskIndexMap[type] or {}
+    return m[id] or #RecommendedMission + 1
 end
 
 -- 日常任务
