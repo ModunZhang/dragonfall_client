@@ -127,6 +127,7 @@ function FullScreenPopDialogUI:CreateOKButtonWithPrice(params)
         :setButtonLabelOffset(0, 16)
         :onButtonClicked(function(event)
             if event.name == "CLICKED_EVENT" then
+                self.disableCleanUpFunc = true
                 self:removeFromParent()
                 if listener then
                     listener()
@@ -207,7 +208,7 @@ end
 
 function FullScreenPopDialogUI:onCleanup()
     print("onCleanup->",self.__cname)
-    if self.cleanUP_listener then
+    if self.cleanUP_listener and not self.disableCleanUpFunc then
         self.cleanUP_listener()
     end
     if UIKit:isMessageDialogShow(self) then
