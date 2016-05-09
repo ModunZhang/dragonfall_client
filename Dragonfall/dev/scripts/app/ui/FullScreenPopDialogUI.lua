@@ -201,9 +201,15 @@ function FullScreenPopDialogUI:GetUserData()
     return self.__user_data__
 end
 
+function FullScreenPopDialogUI:SetCleanUpListener(listener)
+    self.cleanUP_listener = listener
+end
 
 function FullScreenPopDialogUI:onCleanup()
     print("onCleanup->",self.__cname)
+    if self.cleanUP_listener then
+        self.cleanUP_listener()
+    end
     if UIKit:isMessageDialogShow(self) then
         UIKit:removeMesssageDialog(self)
     end
