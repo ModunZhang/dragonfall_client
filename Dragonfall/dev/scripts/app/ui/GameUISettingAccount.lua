@@ -423,6 +423,10 @@ function GameUISettingAccount:ExchangeBindAccount()
                 if select_gamecenter and select_gamecenter:isButtonSelected() then
                     if ext.gamecenter.isAuthenticated() then -- 是否登录了GameCenter
                         local gcName,gcId = ext.gamecenter.getPlayerNameAndId()
+                        if not gcName or not gcId then
+                            UIKit:showMessageDialog(_("提示"),_("你的GameCenter账号出现异常，请稍后重试"))
+                            return
+                        end
                         if User.gc and gcId == User.gc.gcId then
                             UIKit:showMessageDialog(_("提示"),_("你的GameCenter账号绑定了当前游戏账号，在游戏外先切换其他GameCenter账号，再重试"))
                         else
@@ -485,7 +489,7 @@ function GameUISettingAccount:ExchangeBindAccount()
                     content = _("你当前的账号还未进行绑定，切换账号会导致当前账号丢失，你确定仍要执行本次造作吗？"),
                     ok_callback = exchange,
                     ok_btn_images = {normal = "red_btn_up_148x58.png",pressed = "red_btn_down_148x58.png"},
-                    ok_string = _("切换账号"),
+                    ok_string = _("切换"),
                     cancel_string = _("返回"),
                     cancel_btn_images = {normal = "yellow_btn_up_148x58.png",pressed = "yellow_btn_down_148x58.png"},
                     cancel_callback = function ()end

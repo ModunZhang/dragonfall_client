@@ -19,11 +19,6 @@ local Pomelo = class("Pomelo",function()
     return Emitter.new()
 end)
 
-Pomelo.CONNECT_TYPE = {
-    TCP = "tcp",
-    WEBSOCKET = "websocket"
-}
-
 function Pomelo:ctor()
     self.socket = nil
     self.reqId = 1
@@ -34,7 +29,6 @@ function Pomelo:ctor()
     self.heartbeatTimeout = 0
     self.heartbeatId = nil
     self.heartbeatTimeoutId = nil
-    self.nextPushIndex = 0;
     
     self.handshakeBuffer = {
         sys = {
@@ -58,7 +52,6 @@ function Pomelo:init(params, cb)
 
     local host = params.host
     local port = params.port
-    local connectType = params.connect or Pomelo.CONNECT_TYPE.WEBSOCKET
 
     self.connectType = connectType
     self.initCallback = cb
@@ -66,18 +59,10 @@ function Pomelo:init(params, cb)
     dhcrypt.createdh()
     self.handshakeBuffer.sys.clientKey = dhcrypt.base64encode(dhcrypt.getpublickey())
     self.secret = nil
-
-    if connectType == Pomelo.CONNECT_TYPE.WEBSOCKET then
-        self:_initWebSocket(host, port)
-    else
-        self:_initTcpSocket(host, port)
-    end
-
+    self:_initWebSocket(host, port)
 end
 
 function Pomelo:request(route, msg, cb)
-    --printf("Pomelo:request()")
-
     if not route then
         return false
     end
@@ -93,17 +78,6 @@ function Pomelo:request(route, msg, cb)
     self.routeMap[self.reqId] = route
     return true
 end
-
-function Pomelo:notify(route,msg)
-    if not self:_isReady() then
-        printError("Pomelo:notify() - socket not ready")
-        return
-    end
-
-    local msg = msg or {}
-    self:_sendMessage(0, route, msg)
-end
-
 
 function Pomelo:disconnect()
     printf("Pomelo:disconnect()")
@@ -192,75 +166,6 @@ function Pomelo:_unregisterHandler( )
     self.socket:unregisterScriptHandler(cc.WEBSOCKET_ERROR)
 end
 
-function Pomelo:_initTcpSocket(host, port)
-    local Socket = require("framework.cc.net.SocketTCP")
-    local socket = Socket.new(host, port, false)
-
-    self.socket = socket
-    self.buffer = ""
-
-    socket:addEventListener(Socket.EVENT_CONNECTED, function()
-        local obj = Package.encode(Package.TYPE_HANDSHAKE, Protocol.strencode(json.encode(self.handshakeBuffer)))
-        self:_send(obj)
-    end)
-
-    socket:addEventListener(Socket.EVENT_CLOSED, function(event)
-        printf('onclose')
-        self:emit('disconnect', event)
-        self:disconnect()
-        if self.initCallback then
-            self.initCallback(false)
-            self.initCallback = nil
-        end
-    end)
-
-    socket:addEventListener(Socket.EVENT_CONNECT_FAILURE, function(event)
-        self:emit('onerror', event)
-        self:disconnect()
-        if self.initCallback then
-            self.initCallback(false)
-            self.initCallback = nil
-        end
-    end)
-
-    socket:addEventListener(Socket.EVENT_DATA, function(event)
-        self.buffer = self.buffer .. event.data
-        -- self:emit("data")
-        -- console.log(#self.buffer, string.byte(event.data, 1,10))
-
-        local bufferLength = #self.buffer
-
-        while bufferLength >= 4 do
-            local type_, packLen = Package.decodeHead({string.byte(self.buffer, 1, 4)})
-
-            -- console.log("#type_, packlen", type_, packLen )
-            packLen = packLen + 4
-
-            if bufferLength < packLen then
-                break
-            end
-
-            local buff = string.sub(self.buffer, 1, packLen)
-            local bytes = {}
-            for i = 1, packLen do
-                bytes[i] = string.byte(buff, i, i+1)
-            end
-
-
-            self:_processPackage(Package.decode(bytes))
-
-            self.buffer = string.sub(self.buffer, packLen + 1)
-            -- console.log("#self.buffer len", #self.buffer)
-            bufferLength = #self.buffer
-        end
-
-    end)
-
-
-
-    socket:connect()
-end
-
 function Pomelo:_processPackage(msg)
     if not msg then return end
     if #msg > 0 then
@@ -301,12 +206,7 @@ end
 
 function Pomelo:_isReady()
     if not self.socket then return false end
-
-    if self.connectType == Pomelo.CONNECT_TYPE.WEBSOCKET then
-        return  (self.socket:getReadyState() == cc.WEBSOCKET_STATE_OPEN)
-    else
-        return self.socket.isConnected
-    end
+    return self.socket:getReadyState() == cc.WEBSOCKET_STATE_OPEN
 end
 
 function Pomelo:_sendMessage(reqId,route,msg)

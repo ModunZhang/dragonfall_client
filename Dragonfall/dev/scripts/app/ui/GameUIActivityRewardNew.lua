@@ -637,7 +637,7 @@ end
 -----------------------
 function GameUIActivityRewardNew:ui_FIRST_IN_PURGURE()
     local bar = display.newSprite("background_608x678.png"):align(display.TOP_CENTER, 288,self.height - 20):addTo(self.bg)
-    lights():addTo(bar):pos(100, 100)
+    -- lights():addTo(bar):pos(100, 100)
     display.newSprite("icon_hammer.png"):align(display.CENTER, 126,585):addTo(bar)
     -- :runAction(
     --     cc.RepeatForever:create(transition.sequence{
@@ -661,16 +661,16 @@ function GameUIActivityRewardNew:ui_FIRST_IN_PURGURE()
         size = 30,
         color = 0xfed36c,
         shadow = true
-    }):addTo(bar):align(display.CENTER,440,608)
+    }):addTo(bar):align(display.CENTER,410,608)
     UIKit:ttfLabel({
         text = _("第二条建筑队列"),
         size = 36,
         color = 0xfed36c,
         align = cc.ui.TEXT_ALIGN_CENTER,
         valign = cc.ui.TEXT_VALIGN_CENTER,
-        dimensions = cc.size(300,0),
+        -- dimensions = cc.size(300,0),
         shadow = true
-    }):addTo(bar):align(display.CENTER,440,555)
+    }):addTo(bar):align(display.CENTER,410,555)
     UIKit:ttfLabel({
         text = _("领取下列丰厚奖励"),
         size = 22,

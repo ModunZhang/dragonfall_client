@@ -1,5 +1,6 @@
 local SmallDialogUI = import(".SmallDialogUI")
 local UIListView = import(".UIListView")
+local GameUINpc = import(".GameUINpc")
 local Localize = import("..utils.Localize")
 local window = import("..utils.window")
 local UpgradeBuilding = import("..entity.UpgradeBuilding")
@@ -1004,6 +1005,7 @@ function CommonUpgradeUI:PopNotSatisfyDialog(listener,can_not_update_type)
                 price = required_gems
             }
         ):CreateCancelButton()
+            :SetCleanUpListener(handler(self, self.UpgradeDwelling))
     elseif can_not_update_type==UpgradeBuilding.NOT_ABLE_TO_UPGRADE.BUILDINGLIST_NOT_ENOUGH then
         -- 检查最短时间的升级事件是否可以免费加速
         if UtilsForBuilding:CouldFreeSpeedUpWithShortestBuildingEvent(User) then
@@ -1100,6 +1102,7 @@ function CommonUpgradeUI:PopNotSatisfyDialog(listener,can_not_update_type)
             )
             dialog:SetTitle(_("提示"))
             dialog:SetPopMessage(_("您当前没有空闲的建筑队列,请首先将上一条队列加速完成"))
+                :SetCleanUpListener(handler(self, self.UpgradeDwelling))
         else
             if User.basicInfo.buildQueue == 2 then
                 dialog:CreateOKButtonWithPrice(
@@ -1212,8 +1215,47 @@ function CommonUpgradeUI:PopNotSatisfyDialog(listener,can_not_update_type)
         dialog:SetPopMessage(can_not_update_type)
     end
 end
+function CommonUpgradeUI:UpgradeDwelling()
+    local CITIZEN_GUIDE = app:GetGameDefautlt():getStringForKey("CITIZEN_GUIDE:"..User:Id())
+    if CITIZEN_GUIDE == "" then
+        local config = self.building.config_building_levelup[self.building:GetType()]
+        local citizen = User:GetResValueByType("citizen")
+        if (config[self.building:GetNextLevel()].citizen and config[self.building:GetLevel()].citizen and citizen<(config[self.building:GetNextLevel()].citizen-config[self.building:GetLevel()].citizen))   then
+            GameUINpc:PromiseOfSay(
+                {words = string.format(_("%s 大人，你可以升级住宅来获得更多的城民！"), User.basicInfo.name)}
+            ):next(function()
+                return GameUINpc:PromiseOfLeave()
+            end):next(function()
+                local city =  self.building:BelongCity()
+                local preName = "dwelling"
+                local lowest_level_building = city:GetLowestestBuildingByType(preName)
 
+                local jump_building =  city:GetRuinsNotBeenOccupied()[1] or lowest_level_building or preName
+                if tolua.type(jump_building) ~= "string" then
+                    local current_scene = display.getRunningScene()
+                    local building_sprite = current_scene:GetSceneLayer():FindBuildingSpriteByBuilding(jump_building, city)
+                    self:getParent():getParent():LeftButtonClicked()
+                    local x,y = jump_building:GetMidLogicPosition()
+                    current_scene:GotoLogicPoint(x,y,40):next(function()
+                        if current_scene.AddIndicateForBuilding then
+                            current_scene:AddIndicateForBuilding(building_sprite,"dwelling",true)
+                        end
+                    end)
+                end
+                app:GetGameDefautlt():setStringForKey("CITIZEN_GUIDE:"..User:Id(),"true")
+                self:getParent():getParent():LeftButtonClicked()
+            end)
+        end
+    end
+end
 return CommonUpgradeUI
+
+
+
+
+
+
+
 
 
 

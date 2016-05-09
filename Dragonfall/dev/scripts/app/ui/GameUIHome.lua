@@ -28,26 +28,38 @@ function GameUIHome:OnUserDataChanged_productionTechEvents()
 end
 function GameUIHome:OnUserDataChanged_growUpTasks()
     local growUpTasks = self.city:GetUser().growUpTasks
-    local completeTask = UtilsForTask:GetFirstCompleteTasks(growUpTasks)[1]
-    if completeTask then
-        self.isFinished = true
-        self.task = completeTask
+    local finishedIndex = math.huge
+    local finishedTask
+    for i,v in ipairs(UtilsForTask:GetFirstCompleteTasks(growUpTasks)) do
+        local index = UtilsForTask:GetTaskIndex(v:TaskType(), v.id)
+        if finishedIndex > index then
+            finishedIndex = index
+            finishedTask = v
+        end
+    end
+
+    local unfinishedIndex = math.huge
+    local taskUnfinished = self.city:GetRecommendTask()
+    if taskUnfinished then
+        unfinishedIndex = UtilsForTask:GetTaskIndex(taskUnfinished:TaskType(), taskUnfinished.id)
+    end
+
+    if finishedTask and finishedIndex <= unfinishedIndex then
+        self.task = finishedTask
     else
-        self.isFinished = false
-        self.task = self.city:GetRecommendTask()
+        self.task = taskUnfinished
     end
 
     if self.task then
         self.quest_bar_bg:show()
         self.quest_label:setString(self.task:Title())
+        self:RefreshTaskStatus(self.task.finished)
     else
         self.quest_bar_bg:hide()
         self.quest_label:setString(_("当前没有推荐任务!"))
     end
 
     self:CheckFinger()
-
-    self:RefreshTaskStatus(self.isFinished)
 end
 function GameUIHome:OnUserDataChanged_vipEvents()
     self:RefreshVIP()
@@ -366,7 +378,7 @@ function GameUIHome:CreateBottom()
         self:HideFinger()
         local task = self.task
         if task then
-            if self.isFinished then
+            if task.finished then
                 NetManager:getGrowUpTaskRewardsPromise(task:TaskType(), task.id):done(function()
                     if self.ShowResourceAni then
                         local x,y = self.quest_status_icon:getPosition()
@@ -435,14 +447,14 @@ function GameUIHome:CreateBottom()
 
     return bottom_bg
 end
-function GameUIHome:CheckFinger()
+function GameUIHome:CheckFinger(isFirst)
     if self.task and 
         UtilsForFte:ShouldFingerOnTask(self.city:GetUser()) and
         self.city:GetUser().countInfo.isFTEFinished then
-        if self.isFinished then
+        if self.task.finished then
             self:ShowClickReward()
         else
-            self:ShowFinger()
+            self:ShowFinger(isFirst)
         end
         return
     end
@@ -457,7 +469,7 @@ local WidgetFteArrow = import("..widget.WidgetFteArrow")
 function GameUIHome:ShowClickReward()
     if not self.quest_bar_bg:getChildByTag(222) then
         WidgetFteArrow.new(_("点击领取奖励")):TurnDown()
-        :addTo(self.quest_bar_bg,10,222):pos(100,50):scale(0.8)
+        :addTo(self.quest_bar_bg,10,222):pos(100,60)
     end
     self.quest_bar_bg:getChildByTag(222):show()
     self:HideFinger()
@@ -467,12 +479,41 @@ function GameUIHome:HideClickReward()
         self.quest_bar_bg:getChildByTag(222):hide()
     end
 end
-function GameUIHome:ShowFinger()
+local WidgetMaskFilter = import("..widget.WidgetMaskFilter")
+function GameUIHome:ShowFinger(isFirst)
     if not self.quest_bar_bg:getChildByTag(111) then
         UIKit:FingerAni():addTo(self.quest_bar_bg,10,111):pos(180, -30)
     end
     self.quest_bar_bg:getChildByTag(111):show()
     self:HideClickReward()
+
+    if isFirst then
+        local rect = self.quest_bar_bg:getChildByTag(111):getCascadeBoundingBox()
+        rect.x = rect.x - rect.width/3
+        rect.width = rect.width * 1.5
+        rect.height = rect.height * 1.3
+        local mask = WidgetMaskFilter.new()
+        :addTo(self,2000,123456789):pos(display.cx, display.cy)
+        mask:FocusOnRect(rect)
+        mask:setTouchEnabled(true)
+        mask:setTouchSwallowEnabled(false)
+        mask:addNodeEventListener(cc.NODE_TOUCH_EVENT, function(event)
+            if event.name == "began" then
+                self:removeChildByTag(123456789)
+            end
+            return true
+        end)
+        -- self:GetFteLayer():Enable():SetTouchRect(rect)
+        -- local finger = self.quest_bar_bg:getChildByTag(111):getChildByTag(1)
+        -- finger:stopAllActions()
+        -- self.quest_bar_bg:getChildByTag(111)
+        -- :pos(200,400):runAction(transition.sequence{
+        --     cc.MoveTo:create(1.5, cc.p(180, -30)),
+        --     cc.CallFunc:create(function()
+        --         finger:runAction(UIKit:GetFingerAni())
+        --     end)
+        -- })
+    end
 end
 function GameUIHome:HideFinger()
     if self.quest_bar_bg:getChildByTag(111) then

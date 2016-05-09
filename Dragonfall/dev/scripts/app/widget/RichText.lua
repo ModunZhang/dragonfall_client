@@ -129,7 +129,7 @@ function RichText:Text(str, line , url_handle)
                     align = cc.ui.UILabel.TEXT_ALIGN_CENTER,
                 }):align(display.LEFT_CENTER)
                 head, tail, is_newline = get_first_line(label, width - cur_x)
-                head = string.trim(head or "")
+                head = string.ltrim(head or "")
                 label:removeFromParent()
 
                 local label = UIKit:ttfLabel({

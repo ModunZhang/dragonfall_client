@@ -110,7 +110,28 @@ function GameUITownHall:CreateAdministration()
     User:AddListenOnType(self, "dailyQuests")
     User:AddListenOnType(self, "dailyQuestEvents")
     User:AddListenOnType(self, "buildingEvents")
-    self.handle = scheduler.scheduleGlobal(handler(self, self.RefreshQuests), 1.0, false)
+    local current_time = app.timer:GetServerTime()
+    local refresh_time = User:GetNextDailyQuestsRefreshTime() - current_time
+    if refresh_time <= 0 then
+        NetManager:getDailyQuestsPromise():done(function ()
+            if self.ResetQuest then
+                self:ResetQuest()
+                if self.handle then
+                    scheduler.unscheduleGlobal(self.handle)
+                    self.handle = nil
+                end
+                local current_time = app.timer:GetServerTime()
+                local refresh_time = User:GetNextDailyQuestsRefreshTime() - current_time
+                self.handle = scheduler.performWithDelayGlobal(handler(self, self.RefreshQuests), refresh_time)
+            end
+        end)
+    else
+        if self.handle then
+            scheduler.unscheduleGlobal(self.handle)
+            self.handle = nil
+        end
+        self.handle = scheduler.performWithDelayGlobal(handler(self, self.RefreshQuests), refresh_time)
+    end
     self:performWithDelay(function()
         scheduleAt(self, function()
             local current_time = app.timer:GetServerTime()
@@ -132,19 +153,18 @@ function GameUITownHall:CreateAdministration()
 end
 -- 刷新任务
 function GameUITownHall:RefreshQuests()
-    local current_time = app.timer:GetServerTime()
-    if (User:GetNextDailyQuestsRefreshTime()-current_time) <= 0 then
-        if self.handle then
-            scheduler.unscheduleGlobal(self.handle)
-            self.handle = nil
-        end
-        NetManager:getDailyQuestsPromise():done(function ()
-            if self.ResetQuest then
-                self:ResetQuest()
-                self.handle = scheduler.scheduleGlobal(handler(self, self.RefreshQuests), 1.0, false)
-            end
-        end)
+    if self.handle then
+        scheduler.unscheduleGlobal(self.handle)
+        self.handle = nil
     end
+    NetManager:getDailyQuestsPromise():done(function ()
+        if self.ResetQuest then
+            self:ResetQuest()
+            local current_time = app.timer:GetServerTime()
+            local refresh_time = User:GetNextDailyQuestsRefreshTime() - current_time
+            self.handle = scheduler.performWithDelayGlobal(handler(self, self.RefreshQuests), refresh_time)
+        end
+    end)
 end
 function GameUITownHall:CreateAllQuests(daily_quests)
     if daily_quests then
@@ -520,6 +540,9 @@ function GameUITownHall:OnUserDataChanged_buildingEvents(userData, deltaData)
 end
 
 return GameUITownHall
+
+
+
 
 
 

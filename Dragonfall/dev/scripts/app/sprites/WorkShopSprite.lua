@@ -22,11 +22,11 @@ end
 function WorkShopSprite:DoAni()
     if self:GetEntity():IsUnlocked() then
         if self:GetEntity():BelongCity():GetUser():HasMilitaryTechEventBy("workshop") then
-            self:PlayWorkAnimation()
             self:RemoveEmtpyAnimation()
+            self:PlayWorkAnimation()
         else
-            self:RemoveWorkAnimation()
             self:PlayEmptyAnimation()
+            self:RemoveWorkAnimation()
         end
     end
 end
@@ -36,7 +36,9 @@ local smoke = import("..particles.smoke")
 function WorkShopSprite:PlayWorkAnimation()
     if not self:getChildByTag(WORK_TAG) then
         local x,y = self:GetSprite():getPosition()
-        smoke():addTo(self,1,WORK_TAG):pos(x - 65,y + 80)
+        local node = display.newNode():addTo(self,1,WORK_TAG)
+        smoke():addTo(node):pos(x - 65,y + 80)
+        UIKit:Gear():addTo(node):pos(x,y)
     end
 end
 function WorkShopSprite:RemoveWorkAnimation()

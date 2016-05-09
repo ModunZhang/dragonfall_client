@@ -212,9 +212,7 @@ function WidgetEventsList:GetAllUpgradeEvents()
         end
     end
     table.sort( all_events, function ( event_a,event_b )
-        local leftTime_a = UtilsForEvent:GetEventInfo(event_a)
-        local leftTime_b = UtilsForEvent:GetEventInfo(event_b)
-        return leftTime_a < leftTime_b
+        return event_a.startTime > event_b.startTime
     end )
     return all_events
 end

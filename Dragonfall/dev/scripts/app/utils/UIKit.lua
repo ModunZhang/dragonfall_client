@@ -1494,7 +1494,8 @@ local location_map = {
 }
 local normal = GameDatas.Soldiers.normal
 local special = GameDatas.Soldiers.special
-function UIKit:CreateMoveSoldiers(degree, soldier, s)
+function UIKit:CreateMoveSoldiers(degree, troop, s)
+    local soldier = troop.soldiers[1]
     local count, soldier_ani_name = unpack(soldier_config[soldier.name])
     local action_name, scalex = unpack(soldier_dir_map[GetDirIndexByDegree(degree)])
     local create_function
@@ -1503,11 +1504,22 @@ function UIKit:CreateMoveSoldiers(degree, soldier, s)
     elseif action_name == "move_-45" then
         create_function = UIKit.CreateSoldierMoveNeg45Ani
     end
+
+    local rad = math.rad(degree)
+    local ox,oy = math.sin(rad) * 50, math.cos(rad) * 50
+
     local node = display.newNode():scale(s or 1)
     for _,v in ipairs(location_map[count]) do
+        local x,y = unpack(v)
         create_function(UIKit, soldier_ani_name):addTo(node)
-            :pos(unpack(v)):setScaleX(scalex)
+            :pos(x-ox,y-oy):setScaleX(scalex)
     end
+
+    if troop.dragonType then
+        node.dragon = UIKit:CreateDragonByDegree(degree, 1.4, troop.dragonType)
+        :addTo(node):pos(ox,oy)
+    end
+
     return node
 end
 
@@ -2129,7 +2141,7 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         return self
     end
     function troopsNode:Return(x, y, time, func)
-        self.infoNode:hide()
+        -- self.infoNode:hide()
         self:Play("move_90", -1)
 
         local moveActs = transition.sequence({
@@ -2160,7 +2172,7 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         return self
     end
     function troopsNode:Move(x, y, time, func, delayTime)
-        self.infoNode:hide()
+        -- self.infoNode:hide()
 
         local moveActs = transition.sequence{
             cc.MoveTo:create(time, cc.p(x, y)),
@@ -2224,7 +2236,7 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         return self
     end
     function troopsNode:Idle()
-        self.infoNode:show()
+        -- self.infoNode:show()
         local animationData = self.soldiers[1]:getAnimation():getAnimationData()
         if not not animationData:getMovement("idle_90") then
             self:Play("idle_90", -1)
@@ -2361,11 +2373,11 @@ function UIKit:CreateNameBanner(name, dragon_type)
                 shaderName = "banner",
             })
         ))
-    local dragon_bg = display.newSprite("back_ground_43x43_1.png")
-        :addTo(node, 2):pos(-size.width/2-21, 0)
-    display.newSprite(UILib.small_dragon_head[dragon_type or "redDragon"])
-        :align(display.CENTER, dragon_bg:getContentSize().width/2, dragon_bg:getContentSize().height/2)
-        :addTo(dragon_bg)
+    -- local dragon_bg = display.newSprite("back_ground_43x43_1.png")
+    --     :addTo(node, 2):pos(-size.width/2-21, 0)
+    -- display.newSprite(UILib.small_dragon_head[dragon_type or "redDragon"])
+    --     :align(display.CENTER, dragon_bg:getContentSize().width/2, dragon_bg:getContentSize().height/2)
+    --     :addTo(dragon_bg)
     return node
 end
 
@@ -2545,13 +2557,21 @@ end
 
 function UIKit:FingerAni()
     local node = display.newNode()
-    display.newSprite("finger.png"):addTo(node)
-            :runAction(
-                cc.RepeatForever:create(transition.sequence({
-                    cc.Spawn:create({cc.ScaleTo:create(0.5,0.95),cc.MoveBy:create(0.5, cc.p(-5,0))}),
-                    cc.Spawn:create({cc.ScaleTo:create(0.5,1.0),cc.MoveBy:create(0.5, cc.p( 5,0))})
-                }))
-            )
+    display.newSprite("finger.png"):addTo(node,1,1):runAction(self:GetFingerAni())
+    return node
+end
+function UIKit:GetFingerAni()
+    return cc.RepeatForever:create(transition.sequence({
+        cc.Spawn:create({cc.ScaleTo:create(0.5,0.95),cc.MoveBy:create(0.5, cc.p(-5,0))}),
+        cc.Spawn:create({cc.ScaleTo:create(0.5,1.0),cc.MoveBy:create(0.5, cc.p( 5,0))})
+    }))
+end
+function UIKit:Gear()
+    local node = display.newNode()
+    local big = display.newSprite("gear.png"):addTo(node):pos(-20,0)
+    big:runAction(cc.RepeatForever:create(cc.RotateBy:create(10,360)))
+    local small = display.newSprite("gear.png"):scale(38/52):addTo(node):pos(22,-22)
+    small:runAction(cc.RepeatForever:create(cc.RotateBy:create(10 * 38/52,-360)))
     return node
 end
 

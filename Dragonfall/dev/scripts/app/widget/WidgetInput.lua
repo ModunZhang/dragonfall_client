@@ -27,6 +27,8 @@ function WidgetInput:ctor(params)
 
     local function edit(event, editbox)
         local text = self.current_value
+        text = text < min and min or text
+        text = text > self.max and self.max or text
         if event == "began" then
             if text == 0 then
                 editbox:setText("")
@@ -35,13 +37,6 @@ function WidgetInput:ctor(params)
                 self.perfix_lable:setString(string.format("/ %s", GameUtils:formatNumber(max)))
             end
             editbox:visibleText(false)
-        elseif event == "changed" then
-            local change_text = editbox:getText()
-            local change_value = change_text == "" and min or tonumber(change_text)
-            if change_value > math.floor(self.max/exchange) then
-                editbox:setText(math.floor(self.max/exchange))
-                editbox:visibleText(false)
-            end
         elseif event == "ended" then
             if editbox:getText()=="" or min>text then
                 local btn_value
@@ -55,10 +50,12 @@ function WidgetInput:ctor(params)
                 end
                 editbox:setText(btn_value)
                 self.perfix_lable:setString(string.format(btn_unit.."/ %s", GameUtils:formatNumber(max)))
-                self.current_value = min
+                self.current_value = min*exchange
             else
                 local change_text = editbox:getText()
                 local change_value = change_text == "" and min or tonumber(change_text)
+                change_value = change_value < min and min or change_value
+                change_value = change_value > self.max and self.max or change_value
                 local e_value = math.floor(change_value*exchange)
                 local btn_value
                 local btn_unit  = ""
@@ -112,7 +109,7 @@ function WidgetInput:ctor(params)
         color = 0x403c2f
     }):addTo(body)
         :align(display.LEFT_CENTER, editbox:getPositionX()+70,editbox:getPositionY())
-    
+
     WidgetPushButton.new({normal = "yellow_btn_up_148x58.png",pressed = "yellow_btn_down_148x58.png"})
         :setButtonLabel(UIKit:ttfLabel({
             text = _("确定"),
@@ -135,6 +132,7 @@ function WidgetInput:onEnter()
     self.editbox:touchDownAction(editbox,2)
 end
 return WidgetInput
+
 
 
 

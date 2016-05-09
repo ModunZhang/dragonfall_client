@@ -442,7 +442,7 @@ function MyCityScene:OpenUI(building, default_tab, need_tips, build_name)
     else
         if entity:IsUnlocked() then
             local ui = UIKit:newGameUI(uiarrays[1], city, entity, default_tab or uiarrays[2], uiarrays[3]):AddToScene(self, true)
-            if need_tips then
+            if ui and need_tips then
                 ui.needTips = UtilsForTask:NeedTips(self:GetCity():GetUser())
             end
         else
@@ -473,7 +473,13 @@ function MyCityScene:RunFteIfNeeded()
                 if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEventAF then
                     ext.market_sdk.onPlayerEventAF("强制引导-玩家改名", "empty")
                 end
-                self:GetHomePage():CheckFinger()
+                GameUINpc:PromiseOfSay(
+                    {words = string.format(_("%s 大人，接下来请按照推荐任务发展城市，完成后可以获得大量的资源和其他奖励！"), User.basicInfo.name)}
+                ):next(function()
+                    return GameUINpc:PromiseOfLeave()
+                end):next(function()
+                    self:GetHomePage():CheckFinger(true)
+                end)
             end)
         end)
     end
@@ -548,15 +554,15 @@ function MyCityScene:PromiseOfClickBuilding(x, y, for_build, msg, arrow_param)
                 end
             end
 
-            info_layer:removeAllChildren()
-            local arrow = WidgetFteArrow.new(msg or str)
-                :addTo(info_layer, 1, ARROW_TAG):TurnDown():pos(top_point.x, top_point.y + 50)
-            if arrow_param then
-                if arrow_param.direction == "up" then
-                    arrow:TurnUp()
-                end
-                arrow:pos(top_point.x + (arrow_param.x or 0), top_point.y + (arrow_param.y or -300))
-            end
+            -- info_layer:removeAllChildren()
+            -- local arrow = WidgetFteArrow.new(msg or str)
+            --     :addTo(info_layer, 1, ARROW_TAG):TurnDown():pos(top_point.x, top_point.y + 50)
+            -- if arrow_param then
+            --     if arrow_param.direction == "up" then
+            --         arrow:TurnUp()
+            --     end
+            --     arrow:pos(top_point.x + (arrow_param.x or 0), top_point.y + (arrow_param.y or -300))
+            -- end
 
 
             local mx, my = building:GetEntity():GetMidLogicPosition()

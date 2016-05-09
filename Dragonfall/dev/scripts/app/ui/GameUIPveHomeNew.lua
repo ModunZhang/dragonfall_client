@@ -23,26 +23,38 @@ function GameUIPveHomeNew:OnUserDataChanged_countInfo(userData, deltaData)
 end
 function GameUIPveHomeNew:OnUserDataChanged_growUpTasks()
     local growUpTasks = User.growUpTasks
-    local completeTask = UtilsForTask:GetFirstCompleteTasks(growUpTasks)[1]
-    if completeTask then
-        self.isFinished = true
-        self.task = completeTask
+    local finishedIndex = math.huge
+    local finishedTask
+    for i,v in ipairs(UtilsForTask:GetFirstCompleteTasks(growUpTasks)) do
+        local index = UtilsForTask:GetTaskIndex(v:TaskType(), v.id)
+        if finishedIndex > index then
+            finishedIndex = index
+            finishedTask = v
+        end
+    end
+
+    local unfinishedIndex = math.huge
+    local taskUnfinished = City:GetRecommendTask()
+    if taskUnfinished then
+        unfinishedIndex = UtilsForTask:GetTaskIndex(taskUnfinished:TaskType(), taskUnfinished.id)
+    end
+
+    if finishedTask and finishedIndex <= unfinishedIndex then
+        self.task = finishedTask
     else
-        self.isFinished = false
-        self.task = City:GetRecommendTask()
+        self.task = taskUnfinished
     end
 
     if self.task then
         self.quest_bar_bg:show()
         self.quest_label:setString(self.task:Title())
+        self:RefreshTaskStatus(self.task.finished)
     else
         self.quest_bar_bg:hide()
         self.quest_label:setString(_("当前没有推荐任务!"))
     end
 
     self:CheckFinger()
-
-    self:RefreshTaskStatus(self.isFinished)
 end
 
 
@@ -219,7 +231,7 @@ function GameUIPveHomeNew:CreateBottom()
         self.quest_bar_bg:removeChildByTag(111)
         local task = self.task
         if task then
-            if self.isFinished then
+            if self.task.finished then
                 NetManager:getGrowUpTaskRewardsPromise(task:TaskType(), task.id):done(function()
                     if self.ShowResourceAni then
                         local x,y = self.quest_status_icon:getPosition()
@@ -319,7 +331,7 @@ function GameUIPveHomeNew:CheckFinger()
     if  self.task 
     and UtilsForFte:ShouldFingerOnTask(User) 
     and User.countInfo.isFTEFinished then
-        if self.isFinished then
+        if self.task.finished then
             self:ShowClickReward()
         elseif self.task:TaskType() ~= "pveCount" then
             self:ShowFinger()
@@ -334,7 +346,7 @@ local WidgetFteArrow = import("..widget.WidgetFteArrow")
 function GameUIPveHomeNew:ShowClickReward()
     if not self.quest_bar_bg:getChildByTag(222) then
         WidgetFteArrow.new(_("点击领取奖励")):TurnDown()
-        :addTo(self.quest_bar_bg,10,222):pos(100,50):scale(0.8)
+        :addTo(self.quest_bar_bg,10,222):pos(100,50)
     end
     self.quest_bar_bg:getChildByTag(222):show()
     self:HideFinger()
