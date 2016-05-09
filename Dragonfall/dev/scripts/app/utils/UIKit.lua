@@ -1494,7 +1494,8 @@ local location_map = {
 }
 local normal = GameDatas.Soldiers.normal
 local special = GameDatas.Soldiers.special
-function UIKit:CreateMoveSoldiers(degree, soldier, s)
+function UIKit:CreateMoveSoldiers(degree, troop, s)
+    local soldier = troop.soldiers[1]
     local count, soldier_ani_name = unpack(soldier_config[soldier.name])
     local action_name, scalex = unpack(soldier_dir_map[GetDirIndexByDegree(degree)])
     local create_function
@@ -1503,11 +1504,22 @@ function UIKit:CreateMoveSoldiers(degree, soldier, s)
     elseif action_name == "move_-45" then
         create_function = UIKit.CreateSoldierMoveNeg45Ani
     end
+
+    local rad = math.rad(degree)
+    local ox,oy = math.sin(rad) * 50, math.cos(rad) * 50
+
     local node = display.newNode():scale(s or 1)
     for _,v in ipairs(location_map[count]) do
+        local x,y = unpack(v)
         create_function(UIKit, soldier_ani_name):addTo(node)
-            :pos(unpack(v)):setScaleX(scalex)
+            :pos(x-ox,y-oy):setScaleX(scalex)
     end
+
+    if troop.dragonType then
+        node.dragon = UIKit:CreateDragonByDegree(degree, 1.4, troop.dragonType)
+        :addTo(node):pos(ox,oy)
+    end
+
     return node
 end
 
@@ -2361,11 +2373,11 @@ function UIKit:CreateNameBanner(name, dragon_type)
                 shaderName = "banner",
             })
         ))
-    local dragon_bg = display.newSprite("back_ground_43x43_1.png")
-        :addTo(node, 2):pos(-size.width/2-21, 0)
-    display.newSprite(UILib.small_dragon_head[dragon_type or "redDragon"])
-        :align(display.CENTER, dragon_bg:getContentSize().width/2, dragon_bg:getContentSize().height/2)
-        :addTo(dragon_bg)
+    -- local dragon_bg = display.newSprite("back_ground_43x43_1.png")
+    --     :addTo(node, 2):pos(-size.width/2-21, 0)
+    -- display.newSprite(UILib.small_dragon_head[dragon_type or "redDragon"])
+    --     :align(display.CENTER, dragon_bg:getContentSize().width/2, dragon_bg:getContentSize().height/2)
+    --     :addTo(dragon_bg)
     return node
 end
 
