@@ -22,12 +22,25 @@ function TrainingGroundSprite:DoAni()
     if self:GetEntity():IsUnlocked() then
         if self:GetEntity():BelongCity():GetUser():HasMilitaryTechEventBy("trainingGround") then
             self:RemoveEmtpyAnimation()
+            self:PlayWorkAnimation()
         else
             self:PlayEmptyAnimation()
+            self:RemoveWorkAnimation()
         end
     end
 end
 local WORK_TAG = 11201
+function TrainingGroundSprite:PlayWorkAnimation()
+    if not self:getChildByTag(WORK_TAG) then
+        local x,y = self:GetSprite():getPosition()
+        UIKit:Gear():addTo(self,1,WORK_TAG):pos(x,y)
+    end
+end
+function TrainingGroundSprite:RemoveWorkAnimation()
+    if self:getChildByTag(WORK_TAG) then
+        self:removeChildByTag(WORK_TAG)
+    end
+end
 
 local EMPTY_TAG = 11400
 local zz = import("..particles.zz")
@@ -42,6 +55,8 @@ function TrainingGroundSprite:RemoveEmtpyAnimation()
         self:removeChildByTag(EMPTY_TAG)
     end
 end
+
+
 
 
 

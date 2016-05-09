@@ -2566,6 +2566,14 @@ function UIKit:GetFingerAni()
         cc.Spawn:create({cc.ScaleTo:create(0.5,1.0),cc.MoveBy:create(0.5, cc.p( 5,0))})
     }))
 end
+function UIKit:Gear()
+    local node = display.newNode()
+    local big = display.newSprite("gear.png"):addTo(node):pos(-20,0)
+    big:runAction(cc.RepeatForever:create(cc.RotateBy:create(10,360)))
+    local small = display.newSprite("gear.png"):scale(38/52):addTo(node):pos(22,-22)
+    small:runAction(cc.RepeatForever:create(cc.RotateBy:create(10 * 38/52,-360)))
+    return node
+end
 
 
 
