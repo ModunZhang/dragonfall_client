@@ -700,6 +700,35 @@ function UtilsForTask:GetTaskIndex(type,id)
     local m = taskIndexMap[type] or {}
     return m[id] or #RecommendedMission + 1
 end
+function UtilsForTask:GetFinishedUnRewardTasksBySeq(userData)
+    local t = {}
+    for type,task in pairs(userData.growUpTasks) do
+        for i,v in ipairs(task) do
+            if not v.rewarded then
+                table.insert(t, {type = type, task = setmetatable({ id = v.id, finished = true }, meta_map[type])})
+            end
+        end
+    end
+    table.sort(t, function(a,b) return self:GetTaskIndex(a.type,a.task.id) < self:GetTaskIndex(b.type,b.task.id) end)
+    return LuaUtils:table_map(t, function(k,v)
+        return k,v.task
+    end)
+end
+function UtilsForTask:SetCurrentTask(task)
+    self.currentTask = task
+end
+function UtilsForTask:IsCurrentTask(task)
+    if self.currentTask then
+        return self.currentTask:TaskType() == task:TaskType() and self.currentTask.id == task.id
+    end
+    return false
+end
+function UtilsForTask:HasCurrentTask()
+    return self.currentTask ~= nil
+end
+function UtilsForTask:GetCurrentTask()
+    return self.currentTask
+end
 
 -- 日常任务
 local dailyTasksConfig = GameDatas.PlayerInitData.dailyTasks

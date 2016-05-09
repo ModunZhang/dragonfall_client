@@ -27,27 +27,37 @@ function GameUIHome:OnUserDataChanged_productionTechEvents()
     self:OnUserDataChanged_growUpTasks()
 end
 function GameUIHome:OnUserDataChanged_growUpTasks()
-    local growUpTasks = self.city:GetUser().growUpTasks
-    local finishedIndex = math.huge
-    local finishedTask
-    for i,v in ipairs(UtilsForTask:GetFirstCompleteTasks(growUpTasks)) do
-        local index = UtilsForTask:GetTaskIndex(v:TaskType(), v.id)
-        if finishedIndex > index then
-            finishedIndex = index
-            finishedTask = v
+    local City,User = self.city, self.city:GetUser()
+
+    local currentTask = City:GetRecommendTask()
+    local finishedTasks = UtilsForTask:GetFinishedUnRewardTasksBySeq(User)
+    if not UtilsForTask:HasCurrentTask() then
+        if #finishedTasks > 0 then
+            self.task = finishedTasks[1]
+        else
+            UtilsForTask:SetCurrentTask(currentTask)
+            self.task = currentTask
         end
-    end
-
-    local unfinishedIndex = math.huge
-    local taskUnfinished = self.city:GetRecommendTask()
-    if taskUnfinished then
-        unfinishedIndex = UtilsForTask:GetTaskIndex(taskUnfinished:TaskType(), taskUnfinished.id)
-    end
-
-    if finishedTask and finishedIndex <= unfinishedIndex then
-        self.task = finishedTask
     else
-        self.task = taskUnfinished
+        if UtilsForTask:IsCurrentTask(currentTask) then
+            self.task = currentTask
+        else
+            if #finishedTasks > 0 then
+                local ct
+                local task = UtilsForTask:GetCurrentTask()
+                for i,v in ipairs(finishedTasks) do
+                    if v:TaskType() == task:TaskType() and v.id == task.id then
+                        ct = v
+                        break
+                    end
+                end
+                self.task = ct or finishedTasks[1]
+                UtilsForTask:SetCurrentTask(nil)
+            else
+                UtilsForTask:SetCurrentTask(currentTask)
+                self.task = currentTask
+            end
+        end
     end
 
     if self.task then
