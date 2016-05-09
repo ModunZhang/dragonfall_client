@@ -26,10 +26,8 @@ function Store.init(verifyFunction,failedFunction)
         printError("Store.init() - invalid listener")
         return false
     end
-
     cc.storeProvider = ext.adeasygo
     ext.adeasygo.registerPayDoneEvent(verifyFunction)
-    ext.adeasygo.init()
     return true
 end
 
