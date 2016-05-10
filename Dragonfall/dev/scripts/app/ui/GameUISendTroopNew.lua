@@ -539,10 +539,10 @@ function GameUISendTroopNew:CreateBottomPart()
     self.max_btn = max_btn
 
     if self.params.needTips then
-        UIKit:FingerAni():addTo(self.max_btn,11,111):pos(50,50):setScale(-1,-1)
+        UIKit:FingerAni():addTo(self.max_btn,11,111):rotation(-80):pos(170,30)
         self.max_btn:onButtonClicked(function()
             self.max_btn:removeChildByTag(111)
-            UIKit:FingerAni():addTo(self.march_btn,11,111):pos(-40,50):setScale(1,-1)
+            UIKit:FingerAni():addTo(self.march_btn,11,111):rotation(120):pos(-170,0)
             self.march_btn:onButtonClicked(function()
                 self.march_btn:removeChildByTag(111)
             end)
