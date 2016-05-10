@@ -711,7 +711,12 @@ function UtilsForTask:GetFinishedUnRewardTasksBySeq(userData)
             end
         end
     end
-    table.sort(t, function(a,b) return self:GetTaskIndex(a.type,a.task.id) < self:GetTaskIndex(b.type,b.task.id) end)
+    table.sort(t, function(a,b) 
+        if a.type == b.type then
+            return a.task.id < b.task.id
+        end
+        return self:GetTaskIndex(a.type,a.task.id) < self:GetTaskIndex(b.type,b.task.id) 
+    end)
     return LuaUtils:table_map(t, function(k,v)
         return k,v.task
     end)
