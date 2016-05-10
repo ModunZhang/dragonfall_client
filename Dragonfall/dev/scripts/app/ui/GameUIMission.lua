@@ -282,11 +282,11 @@ end
 function GameUIMission:GetAchievementMissionData(isFinish)
     isFinish = type(isFinish) == 'boolean' and isFinish or false
     if isFinish then
-        local tasks = UtilsForTask:GetFirstCompleteTasks(self.city:GetUser().growUpTasks)
+        local tasks = UtilsForTask:GetFirstCompleteTasks(self.city:GetUser())
         local i1, i2, i3 = unpack(tasks)
         return {i1, i2, i3}
     else
-        return UtilsForTask:GetAvailableTasksGroup(self.city:GetUser().growUpTasks)
+        return UtilsForTask:GetAvailableTasksGroup(self.city:GetUser())
     end
 end
 function GameUIMission:OnGetAchievementRewardButtonClicked(data)

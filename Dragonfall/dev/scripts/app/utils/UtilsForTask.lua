@@ -461,7 +461,8 @@ end
 function UtilsForTask:CompleteTasksByType(growUpTasks, type_)
     return growUpTasks[type_]
 end
-function UtilsForTask:GetFirstCompleteTasks(growUpTasks)
+function UtilsForTask:GetFirstCompleteTasks(userData)
+    local growUpTasks = userData.growUpTasks
     local r = {}
     for category,v in ipairs(CATEGORY) do
         for _,v in ipairs(self:GetFirstCompleteTasksByCategory(growUpTasks, category)) do
@@ -506,7 +507,8 @@ function UtilsForTask:GetFirstCompleteTasksByCategory(growUpTasks, category)
     end
     return r
 end
-function UtilsForTask:GetAvailableTasksGroup(growUpTasks)
+function UtilsForTask:GetAvailableTasksGroup(userData)
+    local growUpTasks = userData.growUpTasks
     local r = {}
     for category,v in ipairs(CATEGORY) do
         table.insert(r, self:GetAvailableTasksByCategory(growUpTasks, category))
