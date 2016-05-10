@@ -25,7 +25,7 @@ function GameUIPveHomeNew:OnUserDataChanged_growUpTasks()
     local City,User = City,User
 
     local currentTask = City:GetRecommendTask()
-    local finishedTasks = UtilsForTask:GetFirstCompleteTasks(User)
+    local finishedTasks = UtilsForTask:GetFinishedUnRewardTasksBySeq(User)
     if not UtilsForTask:HasCurrentTask() then
         if #finishedTasks > 0 then
             self.task = finishedTasks[1]

@@ -495,11 +495,11 @@ function UtilsForBuilding:GetBuildingEventsBySeq(userData)
     return events
 end
 function UtilsForBuilding:CouldFreeSpeedUpWithShortestBuildingEvent(userData)
-    local shortest_event = self:GetBuildingEventsBySeq(userData)[1]
-    if not shortest_event then
+    local shortestEvent = self:GetBuildingEventsBySeq(userData)[1]
+    if not shortestEvent then
         return false
     end
-    local time = UtilsForEvent:GetEventInfo(shortest_event)
+    local time = UtilsForEvent:GetEventInfo(shortestEvent)
     return time <= DataUtils:getFreeSpeedUpLimitTime()
 end
 function UtilsForBuilding:GetBuildingByEvent(userData, event)
@@ -663,6 +663,32 @@ function UtilsForBuilding:IsUpgrading(userData, buildingLocation, houseOrBuildin
         end
     end
     return false
+end
+
+
+function UtilsForBuilding:GetRequiredGems(userData,houseOrBuilding)
+    local required_gems = 0
+    local has_resourcce = {
+        wood = userData:GetResValueByType("wood"),
+        iron = userData:GetResValueByType("iron"),
+        stone = userData:GetResValueByType("stone"),
+        citizen = userData:GetResValueByType("citizen"),
+    }
+    local has_materials = userData.buildingMaterials
+
+    local configs = self:GetLevelUpConfig(houseOrBuilding.type)
+    local nextLevel = (houseOrBuilding.level + 1) > #configs and #configs or (houseOrBuilding.level + 1)
+    local config = DataUtils:getBuildingUpgradeRequired(houseOrBuilding.type, nextLevel)
+    required_gems = required_gems + DataUtils:buyResource(config.resources, has_resourcce)
+    required_gems = required_gems + DataUtils:buyMaterial(config.materials, has_materials)
+    --当升级队列不足时，立即完成正在升级的建筑中所剩升级时间最少的建筑
+    local shortestEvent = self:GetBuildingEventsBySeq(userData)[1]
+    if self:GetFreeBuildQueueCount(userData) == 0 and shortestEvent then
+        local time = UtilsForEvent:GetEventInfo(shortestEvent)     
+        required_gems = required_gems + DataUtils:getGemByTimeInterval(time)
+    end
+
+    return required_gems
 end
 
 
