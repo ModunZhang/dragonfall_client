@@ -41,7 +41,7 @@ function WidgetRecruitSoldier:ctor(barracks, city, soldier_name, soldier_star, n
     self.barracks = barracks
     self.soldier_name = soldier_name
     self.needTips = needTips
-    
+
     self.star = soldier_star or UtilsForSoldier:SoldierStarByName(city:GetUser(), soldier_name)
     local soldier_config, aaa = self:GetConfigBySoldierTypeAndStar(soldier_name, self.star)
     self.recruit_max = UtilsForBuilding:GetMaxRecruitSoldier(city:GetUser())
@@ -159,7 +159,7 @@ function WidgetRecruitSoldier:ctor(barracks, city, soldier_name, soldier_star, n
     if soldier_config.specialMaterials then
         local margin_x = 220
         local length = size.width - margin_x * 2
-        local origin_x, origin_y, gap_x = margin_x, 32, length 
+        local origin_x, origin_y, gap_x = margin_x, 32, length
         local specialMaterials = string.split(soldier_config.specialMaterials,",")
         table.insert(specialMaterials, { "citizen", "res_citizen_88x82.png" })
         for k,v in pairs(specialMaterials) do
@@ -302,17 +302,33 @@ function WidgetRecruitSoldier:AddButtons()
                     NetManager:getInstantRecruitSpecialSoldierPromise(self.soldier_name, self.count)
                 end
             else
-                NetManager:getInstantRecruitNormalSoldierPromise(self.soldier_name, self.count):always(function()
-                    if iskindof(display.getRunningScene(), "MyCityScene") then
-                        display.getRunningScene():GetHomePage():OnUserDataChanged_growUpTasks()
-                    end
-                end)
-            end
+                if app:GetGameDefautlt():IsOpenGemRemind() then
+                    UIKit:showConfirmUseGemMessageDialog(_("提示"),string.format(_("是否消费%s金龙币"),
+                        string.formatnumberthousands(self:GetNeedGemWithInstantRecruit(self.count))
+                    ), function()
+                        NetManager:getInstantRecruitNormalSoldierPromise(self.soldier_name, self.count):always(function()
+                            if iskindof(display.getRunningScene(), "MyCityScene") then
+                                display.getRunningScene():GetHomePage():OnUserDataChanged_growUpTasks()
+                            end
+                        end)
+                        if type(self.instant_button_clicked) == "function" then
+                            self:instant_button_clicked()
+                        end
 
-            if app:GetGameDefautlt():IsOpenGemRemind() then
-                UIKit:showConfirmUseGemMessageDialog(_("提示"),string.format(_("是否消费%s金龙币"),
-                    string.formatnumberthousands(self:GetNeedGemWithInstantRecruit(self.count))
-                ), function()
+
+                        if iskindof(display.getRunningScene(), "CityScene") then
+                            display.getRunningScene():GetSceneLayer()
+                                :MoveBarracksSoldiers(self.soldier_name)
+                        end
+
+                        self:Close()
+                    end,true,true)
+                else
+                    NetManager:getInstantRecruitNormalSoldierPromise(self.soldier_name, self.count):always(function()
+                        if iskindof(display.getRunningScene(), "MyCityScene") then
+                            display.getRunningScene():GetHomePage():OnUserDataChanged_growUpTasks()
+                        end
+                    end)
                     if type(self.instant_button_clicked) == "function" then
                         self:instant_button_clicked()
                     end
@@ -324,19 +340,7 @@ function WidgetRecruitSoldier:AddButtons()
                     end
 
                     self:Close()
-                end,true,true)
-            else
-                if type(self.instant_button_clicked) == "function" then
-                    self:instant_button_clicked()
                 end
-
-
-                if iskindof(display.getRunningScene(), "CityScene") then
-                    display.getRunningScene():GetSceneLayer()
-                        :MoveBarracksSoldiers(self.soldier_name)
-                end
-
-                self:Close()
             end
         end)
     self.instant_button = instant_button
@@ -451,7 +455,7 @@ function WidgetRecruitSoldier:AddButtons()
     if self.needTips and UtilsForTask:NeedTips(User) then
         UIKit:FingerAni():addTo(self.normal_button,11,111):pos(45,-45)
     end
-    
+
     local anchorNode = display.newNode():addTo(back_ground, 3):pos(size.width - 120, 110)
 
     -- 时间glass
@@ -801,6 +805,8 @@ end
 
 
 return WidgetRecruitSoldier
+
+
 
 
 
