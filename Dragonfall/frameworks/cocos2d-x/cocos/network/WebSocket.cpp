@@ -42,7 +42,7 @@
 #define  LOG_TAG    "WebSocket.cpp"
 
 // Since CCLOG isn't thread safe, we uses LOGD for multi-thread logging.
-#if 1
+#if COCOS2D_DEBUG > 0
     #ifdef ANDROID
         #define  LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG,__VA_ARGS__)
     #else
@@ -560,14 +560,19 @@ void WebSocket::onSubThreadLoop()
 
 void WebSocket::onSubThreadStarted()
 {
+	//dannyhe:current websocket version 1.6.0
     static const struct lws_extension exts[] = {
         {
-            "permessage-deflate",
-            lws_extension_callback_pm_deflate,
-            // iOS doesn't support client_no_context_takeover extension in the current version, it will cause iOS connection fail
-            // It may be a bug of lib websocket iOS build
+			"permessage-deflate",
+			lws_extension_callback_pm_deflate,
+			// iOS doesn't support client_no_context_takeover extension in the current version, it will cause iOS connection fail
+			// It may be a bug of lib websocket iOS build and Android build
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-            "permessage-deflate; client_max_window_bits"
+			"permessage-deflate; client_max_window_bits"
+			// dannyhe: WinRT doesn't support permessage-deflate extension in the current version, it will cause WinRT connection fail
+			// It may be a bug of lib websocket WinRT build.
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+			"client_no_context_takeover; client_max_window_bits"
 #else 
             "permessage-deflate; client_no_context_takeover; client_max_window_bits"
 #endif
