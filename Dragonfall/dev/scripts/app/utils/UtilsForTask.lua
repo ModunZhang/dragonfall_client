@@ -702,6 +702,21 @@ function UtilsForTask:GetTaskIndex(type,id)
     local m = taskIndexMap[type] or {}
     return m[id] or #RecommendedMission + 1
 end
+local taskSeqMap = {
+    cityBuild = 1,
+    soldierCount = 2,
+    pveCount = 3,
+    attackWin = 4,
+    strikeWin = 5,
+    playerKill = 6,
+    playerPower = 7,
+    dragonLevel = 8,
+    dragonStar = 9,
+    dragonSkill = 10,
+    productionTech = 11,
+    militaryTech = 12,
+    soldierStar = 13,
+}
 function UtilsForTask:GetFinishedUnRewardTasksBySeq(userData)
     local t = {}
     for type,task in pairs(userData.growUpTasks) do
@@ -714,8 +729,14 @@ function UtilsForTask:GetFinishedUnRewardTasksBySeq(userData)
     table.sort(t, function(a,b) 
         if a.type == b.type then
             return a.task.id < b.task.id
+        else
+            local aindex = self:GetTaskIndex(a.type,a.task.id)
+            local bindex = self:GetTaskIndex(b.type,b.task.id)
+            if aindex == bindex then
+                return taskSeqMap[a.type] < taskSeqMap[b.type]
+            end
+            return aindex < bindex
         end
-        return self:GetTaskIndex(a.type,a.task.id) < self:GetTaskIndex(b.type,b.task.id) 
     end)
     return LuaUtils:table_map(t, function(k,v)
         return k,v.task
