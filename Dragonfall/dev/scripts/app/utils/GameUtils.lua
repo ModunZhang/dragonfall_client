@@ -577,12 +577,25 @@ function GameUtils:GetGameLanguage()
     return self.gameLanguage_
 end
 
+function GameUtils:GetNativeLuaVersion()
+    return ext.__version__ or 0
+end
+
 function GameUtils:getSupportEmailAddress()
     if device.platform == 'winrt' then
+        if self:GetNativeLuaVersion() >= 114 then
+            return {"feedback@sugarcanetechnology.com","support@batcatstudio.com"}
+        end
         return "feedback@sugarcanetechnology.com"
     elseif device.platform == 'ios' then
+         if self:GetNativeLuaVersion() >= 114 then
+            return {"support@batcatstudio.com"}
+        end
         return "support@batcatstudio.com"
     else
+         if self:GetNativeLuaVersion() >= 114 then
+            return {"aiyingyong2015@gmail.com"}
+        end
         return "aiyingyong2015@gmail.com"
     end
 end
