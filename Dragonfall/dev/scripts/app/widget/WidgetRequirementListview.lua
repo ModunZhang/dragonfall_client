@@ -61,6 +61,8 @@ function WidgetRequirementListview:RefreshListView(contents)
                     content.bg:setTexture("upgrade_resources_background_2.png")
                 end
                 meetFlag =  not meetFlag
+                content.mark:stopAllActions()
+
                 local split_desc = string.split(v.description, "/")
                 if v.isSatisfy then
                     -- 符合条件，添加钩钩图标
@@ -77,23 +79,12 @@ function WidgetRequirementListview:RefreshListView(contents)
                     if v.canNotBuy then
                         content.bg:setTexture("upgrade_resources_background_red.png")
                         content.mark:setTexture("no_40x40.png")
-                        if v.jump_call then
-                            content.mark:stopAllActions()
-
-                            content.bg:setNodeEventEnabled(true)
-                            content.bg:setTouchEnabled(true)
-                            content.bg:removeAllNodeEventListeners()
-                            content.bg:addNodeEventListener(cc.NODE_TOUCH_EVENT, function(event)
-                                if event.name == "ended" then
-                                    v.jump_call()
-                                end
-                                return true
-                            end)
-                        end
+                        content.jump_call = v.jump_call
                     else
                         -- 不符合条提案，添加!图标
                         content.mark:setTexture("wow_40x40.png")
                     end
+                    content.mark:runAction(self:GetShakeAction())
                     -- 条件未达到，自己的数据红色显示
                     local v_1 = tonumber(split_desc[1]) and string.formatnumberthousands(tonumber(split_desc[1])) or split_desc[1]
                     content.resource_value[1]:setString(v_1)
@@ -143,23 +134,12 @@ function WidgetRequirementListview:RefreshListView(contents)
                     if v.canNotBuy then
                         content.bg = display.newSprite("upgrade_resources_background_red.png", 0, 0):addTo(content)
                         content.mark = display.newSprite("no_40x40.png", item_width/2-25, 0):addTo(content)
-                        if v.jump_call then
-                            content.mark:removeAllNodeEventListeners()
-                            content.mark:stopAllActions()
-
-                            content.mark:setNodeEventEnabled(true)
-                            content.mark:setTouchEnabled(true)
-                            content.mark:addNodeEventListener(cc.NODE_TOUCH_EVENT, function(event)
-                                if event.name == "ended" then
-                                    v.jump_call()
-                                end
-                                return true
-                            end)
-                        end
+                        content.jump_call = v.jump_call
                     else
                         -- 不符合条提案，添加X图标
                         content.mark = display.newSprite("wow_40x40.png", item_width/2-25, 0):addTo(content)
                     end
+                    content.mark:runAction(self:GetShakeAction())
                     -- 条件未达到，自己的数据红色显示
                     content.resource_value  = {}
                     local v_1 = tonumber(split_desc[1]) and string.formatnumberthousands(tonumber(split_desc[1])) or split_desc[1]
@@ -214,6 +194,11 @@ function WidgetRequirementListview:listviewListener(event)
         end
         app:GetAudioManager():PlayeEffectSoundWithKey("NORMAL_DOWN")
         local item = event.item
+        print("···item.jump_call",item.content.jump_call)
+        if item.content.jump_call then
+            item.content.jump_call()
+            return
+        end
         if not item.content.isSatisfy then
             local resource_type = item.content.resource_type
             if resource_type == _("木材") then
@@ -261,7 +246,7 @@ function WidgetRequirementListview:listviewListener(event)
                     UIKit:showMessageDialog(_("提示"),_("请先升级城堡，解锁工具作坊"),function()end)
                 end
             elseif resource_type == _("英雄之血") then
-                 WidgetUseItems.new():Create({
+                WidgetUseItems.new():Create({
                     item_name = "heroBlood_1"
                 }):AddToCurrentScene()
             elseif Localize.equip_material[resource_type] then
@@ -270,7 +255,30 @@ function WidgetRequirementListview:listviewListener(event)
         end
     end
 end
+function WidgetRequirementListview:GetShakeAction()
+    local t = 0.03
+    local r = 20
+    local action = transition.sequence({
+        cc.RotateBy:create(t, r),
+        cc.RotateBy:create(t, -r),
+        cc.RotateBy:create(t, -r),
+        cc.RotateBy:create(t, r),
+        cc.RotateBy:create(t, r),
+        cc.RotateBy:create(t, -r),
+        cc.RotateBy:create(t, -r),
+        cc.RotateBy:create(t, r),
+        cc.RotateBy:create(t, r),
+        cc.RotateBy:create(t, -r),
+        cc.RotateBy:create(t, -r),
+        cc.RotateBy:create(t, r),
+        cca.delay(1),
+    })
+    return cca.repeatForever(action)
+end
 return WidgetRequirementListview
+
+
+
 
 
 

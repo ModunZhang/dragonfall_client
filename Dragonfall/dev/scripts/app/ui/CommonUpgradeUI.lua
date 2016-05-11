@@ -697,9 +697,11 @@ function CommonUpgradeUI:SetUpgradeRequirementListview()
         {
             resource_type = _("前置条件"),
             isVisible = building:GetLevel()>5 and building:GetType() ~= "dragonEyrie",
-            isSatisfy = not pre_condition,canNotBuy=true,
+            isSatisfy = not pre_condition,
+            canNotBuy=true,
             icon="hammer_33x40.png",
-            description = building:GetPreConditionDesc(),jump_call = handler(self,self.GotoPreconditionBuilding)
+            description = building:GetPreConditionDesc(),
+            jump_call = handler(self,self.GotoPreconditionBuilding)
         },
         {
             resource_type = "building_queue",
