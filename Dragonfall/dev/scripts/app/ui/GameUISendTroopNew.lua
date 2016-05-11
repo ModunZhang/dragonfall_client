@@ -102,6 +102,7 @@ function GameUISendTroopNew:ctor(march_callback,params)
     self.alliance = self:GetMyAlliance()
     self.dragon_manager = City:GetFirstBuildingByType("dragonEyrie"):GetDragonManager()
     self.march_callback = march_callback
+    self.params = params
 
     -- 默认选中最强的并且可以出战的龙,如果都不能出战，则默认最强龙
     self.dragon = params.dragon or self.dragon_manager:GetDragon((self.isPVE and GameUISendTroopNew.dragonType) or self.dragon_manager:GetCanFightPowerfulDragonType()) or self.dragon_manager:GetDragon(self.dragon_manager:GetPowerfulDragonType())
@@ -536,6 +537,17 @@ function GameUISendTroopNew:CreateBottomPart()
             end
         end):align(display.LEFT_CENTER,30,bottom_bg:getContentSize().height/2):addTo(bottom_bg)
     self.max_btn = max_btn
+
+    if self.params.needTips then
+        UIKit:FingerAni():addTo(self.max_btn,11,111):rotation(-80):pos(170,30)
+        self.max_btn:onButtonClicked(function()
+            self.max_btn:removeChildByTag(111)
+            UIKit:FingerAni():addTo(self.march_btn,11,111):rotation(80):pos(-170,30):setScaleX(-1)
+            self.march_btn:onButtonClicked(function()
+                self.march_btn:removeChildByTag(111)
+            end)
+        end)      
+    end
     local march_btn = WidgetPushButton.new({normal = "red_btn_up_148x58.png",pressed = "red_btn_down_148x58.png"},nil,nil)
         :setButtonLabel(UIKit:ttfLabel({
             text = self.isMilitary and _("驻防") or _("行军"),
