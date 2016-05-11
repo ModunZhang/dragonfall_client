@@ -194,7 +194,6 @@ function WidgetRequirementListview:listviewListener(event)
         end
         app:GetAudioManager():PlayeEffectSoundWithKey("NORMAL_DOWN")
         local item = event.item
-        print("···item.jump_call",item.content.jump_call)
         if item.content.jump_call then
             item.content.jump_call()
             return
@@ -276,25 +275,3 @@ function WidgetRequirementListview:GetShakeAction()
     return cca.repeatForever(action)
 end
 return WidgetRequirementListview
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

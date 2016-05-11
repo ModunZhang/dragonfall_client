@@ -44,7 +44,7 @@ function GameUIUpgradeTechnology:OnUserDataChanged_productionTechs(userData, del
     if ok then
         for tech_name,v in pairs(value) do
             local tech = userData.productionTechs[tech_name]
-            if type(self.GetTech) == 'function' and 
+            if type(self.GetTech) == 'function' and
                 self:GetTech().index == tech.index then
                 if self:CheckMeIsReachLimitLevel() then
                     self:LeftButtonClicked()
@@ -59,7 +59,7 @@ end
 function GameUIUpgradeTechnology:GetTechLevelStr()
     local User = User
     local tech, tech_name = self:GetTech()
-    if self:CheckIsMeUpgrade() and 
+    if self:CheckIsMeUpgrade() and
         not self:CheckMeIsReachLimitLevel() then
         return Localize.productiontechnology_name[tech_name] .. " " .. _("等级") .. " " .. (tech.level + 1)
     end
@@ -214,7 +214,7 @@ function GameUIUpgradeTechnology:BuildUI()
         size = 22,
         color= 0xffedae
     }):align(display.LEFT_CENTER, 10, 15):addTo(title)
-     
+
     local tech, tech_name = self:GetTech()
     UIKit:ttfLabel({
         text = Localize.productiontechnology_buffer[tech_name],
@@ -386,6 +386,10 @@ function GameUIUpgradeTechnology:GetUpgradeRequirements()
                 icon= UtilsForTech:GetProductionTechImage(tech_name),
                 description= UtilsForTech:GetTechLocalize(tech_name).." ".._("等级达到") .. current_tech_info.unlockLevel,
                 canNotBuy = true,
+                jump_call = function ()
+                    self:LeftButtonClicked()
+                    UIKit:newGameUI("GameUIUpgradeTechnology",unLockByTech,true):AddToCurrentScene(true)
+                end
             })
     end
     table.insert(requirements,
@@ -396,6 +400,13 @@ function GameUIUpgradeTechnology:GetUpgradeRequirements()
             icon="academy.png",
             description = _("学院").." ".._("等级达到") .. current_tech_info.academyLevel,
             canNotBuy = true,
+            jump_call = function ()
+                local academy_ui = UIKit:GetUIInstance("GameUIAcademy")
+                if academy_ui then
+                    academy_ui.tab_btns:SelectTab("upgrade")
+                end
+                self:LeftButtonClicked()
+            end
         })
     table.insert(requirements,
         {
@@ -445,7 +456,7 @@ function GameUIUpgradeTechnology:GetUpgradeRequirements()
 end
 
 function GameUIUpgradeTechnology:OnUpgradNowButtonClicked()
-    local canUpgrade,msg = self:CheckCanUpgradeNow()
+    local canUpgrade,msg,func = self:CheckCanUpgradeNow()
     if canUpgrade then
         if app:GetGameDefautlt():IsOpenGemRemind() then
             UIKit:showConfirmUseGemMessageDialog(_("提示"),string.format(_("是否消费%s金龙币"),
@@ -459,11 +470,30 @@ function GameUIUpgradeTechnology:OnUpgradNowButtonClicked()
             NetManager:getUpgradeProductionTechPromise(current_tech_name,true)
         end
     else
-        UIKit:showMessageDialog(_("提示"),msg, function()end)
+        local dialog = UIKit:showMessageDialog(_("提示"),msg)
+        if func then
+            dialog:CreateOKButton(
+                {
+                    listener = func,
+                    btn_name= _("前往")
+                })
+        end
     end
 end
 
 function GameUIUpgradeTechnology:OnUpgradButtonClicked()
+    local can,msg,func = self:CheckAcademyLevelAndDependTech()
+    if not can then
+        local dialog = UIKit:showMessageDialog(_("提示"),msg)
+        if func then
+            dialog:CreateOKButton(
+                {
+                    listener = func,
+                    btn_name= _("前往")
+                })
+        end
+        return
+    end
     local gems_cost,msg = self:CheckCanUpgradeActionReturnGems()
     if gems_cost < 0 then
         return
@@ -537,10 +567,35 @@ function GameUIUpgradeTechnology:GetUpgradeNowGems()
     local time_gems = DataUtils:getGemByTimeInterval(time)
     return resource_gems + material_gems + time_gems
 end
-
+function GameUIUpgradeTechnology:CheckAcademyLevelAndDependTech()
+    if not self:CheckAcademyLevel() then
+        return false ,_("学院等级不足"),function ()
+            local academy_ui = UIKit:GetUIInstance("GameUIAcademy")
+            if academy_ui then
+                academy_ui.tab_btns:SelectTab("upgrade")
+            end
+            self:LeftButtonClicked()
+        end
+    end
+    if not self:CheckMeDependTechIsUnlock() then
+        local current_tech, current_tech_name = self:GetTech()
+        local current_tech_info = UtilsForTech:GetProductionTechConfig(current_tech_name)
+        local tech_name, unLockByTech = User:GetProductionTech(current_tech_info.unlockBy)
+        local msg = string.format(_("需要%s等级达到%d"),UtilsForTech:GetTechLocalize(tech_name),current_tech_info.unlockLevel)
+        return false ,msg,function ()
+            self:LeftButtonClicked()
+            UIKit:newGameUI("GameUIUpgradeTechnology",unLockByTech,true):AddToCurrentScene(true)
+        end
+    end
+    return true
+end
 function GameUIUpgradeTechnology:CheckCanUpgradeNow()
     if not self:CheckUpgradeNowButtonState() then
         return false
+    end
+    local can,msg,func = self:CheckAcademyLevelAndDependTech()
+    if not can then
+        return can,msg,func
     end
     return User:GetGemValue() >= self:GetUpgradeNowGems(),_("金龙币不足")
 end
@@ -590,9 +645,7 @@ end
 
 function GameUIUpgradeTechnology:CheckUpgradeButtonState()
     if not self:CheckMeIsOpened()
-        or not self:CheckMeDependTechIsUnlock()
         or self:CheckIsMeUpgrade()
-        or not self:CheckAcademyLevel()
     then
         return false
     end
@@ -601,9 +654,7 @@ end
 
 function GameUIUpgradeTechnology:CheckUpgradeNowButtonState()
     if not self:CheckMeIsOpened()
-        or not self:CheckMeDependTechIsUnlock()
         or self:CheckIsMeUpgrade()
-        or not self:CheckAcademyLevel()
     then
         return false
     end
@@ -652,6 +703,9 @@ function GameUIUpgradeTechnology:CheckMeIsReachLimitLevel()
 end
 
 return GameUIUpgradeTechnology
+
+
+
 
 
 

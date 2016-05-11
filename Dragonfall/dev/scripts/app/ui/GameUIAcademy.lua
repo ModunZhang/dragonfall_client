@@ -72,7 +72,7 @@ function GameUIAcademy:GetNodeForKey(key)
 end
 
 function GameUIAcademy:OnMoveInStage()
-    self:CreateTabButtons({
+    self.tab_btns = self:CreateTabButtons({
         {
             label = _("科技"),
             tag = "technology",
