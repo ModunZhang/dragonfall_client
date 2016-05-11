@@ -1,9 +1,9 @@
-# This file was generated from /Users/kennydai/Downloads/i18n(2).xlsx
+# This file was generated from /Users/kennydai/Downloads/i18n(2)(1).xlsx
 msgid ""
 msgstr ""
 "Project-Id-Version: dragonfall\n"
-"POT-Creation-Date: 2016-05-10 09:47+0800\n"
-"PO-Revision-Date: 2016-05-10 09:47+0800\n"
+"POT-Creation-Date: 2016-05-11 10:00+0800\n"
+"PO-Revision-Date: 2016-05-11 10:00+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -193,8 +193,8 @@ msgstr ""
 #: widget/WidgetManufactureNew.lua:381 widget/WidgetMarchEvents.lua:623
 #: widget/WidgetMarchEvents.lua:627 widget/WidgetMoveHouse.lua:27
 #: widget/WidgetPlayerNode.lua:222 widget/WidgetPromoteSoldier.lua:112
-#: widget/WidgetRecruitSoldier.lua:313 widget/WidgetRecruitSoldier.lua:390
-#: widget/WidgetRecruitSoldier.lua:424
+#: widget/WidgetRecruitSoldier.lua:306 widget/WidgetRecruitSoldier.lua:394
+#: widget/WidgetRecruitSoldier.lua:428
 #: widget/WidgetRequirementListview.lua:249
 #: widget/WidgetRequirementListview.lua:261
 #: widget/WidgetShortcutButtons.lua:214 widget/WidgetSpeedUp.lua:114
@@ -1750,7 +1750,7 @@ msgid "请首先提升城堡等级"
 msgstr "Upgrade Castle first"
 
 #: entity/UpgradeBuilding.lua:18 widget/WidgetManufactureNew.lua:198
-#: widget/WidgetRecruitSoldier.lua:383 widget/WidgetRecruitSoldier.lua:418
+#: widget/WidgetRecruitSoldier.lua:387 widget/WidgetRecruitSoldier.lua:422
 msgid "资源不足"
 msgstr "Need more Resources"
 
@@ -1778,8 +1778,8 @@ msgstr "Need more Resources and build queue"
 #: widget/WidgetAllianceCreateOrEdit.lua:92
 #: widget/WidgetAllianceCreateOrEdit.lua:97 widget/WidgetMakeEquip.lua:434
 #: widget/WidgetMakeEquip.lua:497 widget/WidgetManufactureNew.lua:203
-#: widget/WidgetPromoteSoldier.lua:300 widget/WidgetRecruitSoldier.lua:390
-#: widget/WidgetRecruitSoldier.lua:424 widget/WidgetSpeedUp.lua:114
+#: widget/WidgetPromoteSoldier.lua:300 widget/WidgetRecruitSoldier.lua:394
+#: widget/WidgetRecruitSoldier.lua:428 widget/WidgetSpeedUp.lua:114
 #: widget/WidgetTreatSoldier.lua:235 widget/WidgetUpgradeMilitaryTech.lua:114
 #: widget/WidgetUpgradeMilitaryTech.lua:264 widget/WidgetUseItems.lua:1066
 msgid "金龙币不足"
@@ -2374,7 +2374,7 @@ msgstr "Upgrade Now"
 #: ui/GameUIPResourceBuilding.lua:230 ui/GameUIResource.lua:419
 #: ui/GameUITownHall.lua:225 ui/GameUIUpgradeTechnology.lua:451
 #: widget/WidgetMakeEquip.lua:150 widget/WidgetPromoteSoldier.lua:112
-#: widget/WidgetRecruitSoldier.lua:313 widget/WidgetTreatSoldier.lua:246
+#: widget/WidgetRecruitSoldier.lua:306 widget/WidgetTreatSoldier.lua:246
 #: widget/WidgetUpgradeMilitaryTech.lua:123 widget/WidgetUseItems.lua:1077
 #, lua-format
 msgid "是否消费%s金龙币"
@@ -2505,8 +2505,8 @@ msgstr "Speed up"
 #: widget/WidgetAccelerateGroup.lua:130
 #: widget/WidgetAllianceCreateOrEdit.lua:109
 #: widget/WidgetManufactureNew.lua:209 widget/WidgetPromoteSoldier.lua:157
-#: widget/WidgetRecruitSoldier.lua:290 widget/WidgetRecruitSoldier.lua:396
-#: widget/WidgetRecruitSoldier.lua:430 widget/WidgetSpeedUp.lua:119
+#: widget/WidgetRecruitSoldier.lua:290 widget/WidgetRecruitSoldier.lua:400
+#: widget/WidgetRecruitSoldier.lua:434 widget/WidgetSpeedUp.lua:119
 #: widget/WidgetTreatSoldier.lua:242 widget/WidgetTreatSoldier.lua:308
 #: widget/WidgetUpgradeMilitaryTech.lua:270 widget/WidgetUseItems.lua:1072
 msgid "前往商店"
@@ -4681,7 +4681,7 @@ msgstr "Undead Army"
 msgid "此系列单位无维护费"
 msgstr "This series needs no upkeep cost"
 
-#: ui/GameUIBarracks.lua:183 widget/WidgetRecruitSoldier.lua:364
+#: ui/GameUIBarracks.lua:183 widget/WidgetRecruitSoldier.lua:368
 msgid "招募"
 msgstr "Recruit"
 
@@ -12019,7 +12019,7 @@ msgstr ""
 "and adding Game rules, which will take effect at the time of their being "
 "announced."
 
-#: utils/Localize_item.lua:19 widget/WidgetRecruitSoldier.lua:581
+#: utils/Localize_item.lua:19 widget/WidgetRecruitSoldier.lua:585
 #: widget/WidgetTreatSoldier.lua:477
 #, lua-format
 msgid "小时"
@@ -13377,7 +13377,7 @@ msgstr "Weak Against"
 msgid "维护费"
 msgstr "Upkeep"
 
-#: widget/WidgetRecruitSoldier.lua:255 widget/WidgetRecruitSoldier.lua:498
+#: widget/WidgetRecruitSoldier.lua:255 widget/WidgetRecruitSoldier.lua:502
 msgid "招募开启中"
 msgstr "Summon opening now"
 
@@ -13394,31 +13394,31 @@ msgstr "Recruit Now"
 msgid "您当前没有足够金龙币"
 msgstr "Not enough Dragon Coins"
 
-#: widget/WidgetRecruitSoldier.lua:299 widget/WidgetRecruitSoldier.lua:381
+#: widget/WidgetRecruitSoldier.lua:299 widget/WidgetRecruitSoldier.lua:385
 msgid "招募材料不足"
 msgstr "Not enough materials to recruit"
 
-#: widget/WidgetRecruitSoldier.lua:299 widget/WidgetRecruitSoldier.lua:381
+#: widget/WidgetRecruitSoldier.lua:299 widget/WidgetRecruitSoldier.lua:385
 msgid "您当前没有足够材料"
 msgstr "Not enough materials"
 
-#: widget/WidgetRecruitSoldier.lua:383 widget/WidgetRecruitSoldier.lua:418
+#: widget/WidgetRecruitSoldier.lua:387 widget/WidgetRecruitSoldier.lua:422
 msgid "队列不足"
 msgstr "Not enough queues"
 
-#: widget/WidgetRecruitSoldier.lua:384 widget/WidgetRecruitSoldier.lua:419
+#: widget/WidgetRecruitSoldier.lua:388 widget/WidgetRecruitSoldier.lua:423
 msgid "您当前没有足够的队列"
 msgstr "Not enough queues"
 
-#: widget/WidgetRecruitSoldier.lua:384 widget/WidgetRecruitSoldier.lua:419
+#: widget/WidgetRecruitSoldier.lua:388 widget/WidgetRecruitSoldier.lua:423
 msgid "您当前没有足够的资源"
 msgstr "Not enough resources"
 
-#: widget/WidgetRecruitSoldier.lua:384 widget/WidgetRecruitSoldier.lua:419
+#: widget/WidgetRecruitSoldier.lua:388 widget/WidgetRecruitSoldier.lua:423
 msgid "是否花费魔法石立即补充"
 msgstr "Do you want to get supplied by Dragon Coins?"
 
-#: widget/WidgetRecruitSoldier.lua:500
+#: widget/WidgetRecruitSoldier.lua:504
 msgid "下一次开启招募:"
 msgstr "Summon will open in:"
 
