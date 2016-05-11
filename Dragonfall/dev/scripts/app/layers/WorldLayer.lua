@@ -559,7 +559,10 @@ function WorldLayer:CreateFlag(index)
     local node
     if tonumber(index) == self:LogicToIndex(middle_index, middle_index) then
         node = display.newNode():addTo(self.allianceLayer):pos(p.x,p.y)
-        display.newSprite("crystalThrone.png"):addTo(node):pos(15,15):scale(0.3)
+        -- display.newSprite("crystalThrone.png"):addTo(node):pos(15,15):scale(0.3)
+        ccs.Armature:create("crystalThrone")
+        :addTo(node):scale(0.3):pos(15,15)
+        :getAnimation():playWithIndex(0)
     else
         math.randomseed(tonumber(index) + 12345)
         node = display.newNode():addTo(self.allianceLayer):pos(p.x, p.y)
