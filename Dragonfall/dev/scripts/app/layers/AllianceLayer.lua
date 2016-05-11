@@ -648,8 +648,35 @@ function AllianceLayer:RemoveMapObject(mapObj)
     end
     mapObj:removeFromParent()
 end
+local function AniFlashFunc(node, stencil, x, y)
+    local CLICK_EMPTY_TAG = 911
+    node:removeChildByTag(CLICK_EMPTY_TAG)
+    local clip = cc.ClippingNode:create()
+                :addTo(node,1,CLICK_EMPTY_TAG):pos(x or 0,y or 0)
+    clip:setStencil(stencil)
+    clip:setAlphaThreshold(0.05)
+
+    local empty = display.newSprite("click_empty.png")
+    local size1 = stencil:getContentSize()
+    local size2 = empty:getContentSize()
+    empty:setScale(size1.width/size2.width, size1.height/size2.height)
+    empty:addTo(clip)
+
+    local p = promise.new()
+    empty:opacity(0):runAction(
+            transition.sequence{
+                cc.FadeTo:create(0.15, 255),
+                cc.FadeTo:create(0.15, 0),
+                cc.CallFunc:create(function()
+                    p:resolve()
+                    clip:removeFromParent()
+                end)
+            }
+        )
+    return p
+end
 function AllianceLayer:AddMapObject(objects_node, mapObj, alliance)
-    local sprite
+    local sprite,soldierName
     if mapObj.name == "member" then
         sprite = createEffectSprite("my_keep_1.png")
     elseif mapObj.name == "woodVillage"
@@ -665,6 +692,7 @@ function AllianceLayer:AddMapObject(objects_node, mapObj, alliance)
         local info = Alliance.GetAllianceMonsterInfosById(alliance, mapObj.id)
         local corps = string.split(monsters[info.level].soldiers, ";")
         local soldiers = string.split(corps[info.index + 1], ",")
+        soldierName = soldiers[1]
         sprite = UIKit:CreateMonster(soldiers[1])
     else
         return 
@@ -673,6 +701,13 @@ function AllianceLayer:AddMapObject(objects_node, mapObj, alliance)
     local node = self:CreateClickableObject()
                 :addTo(objects_node)
                 :AddSprite(sprite)
+    if mapObj.name == "monster" then
+        node.soldierName = soldierName
+        function node:PromiseOfFlash()
+            return AniFlashFunc(self,UIKit:CreateMonster(self.soldierName),0,0)
+        end 
+    end
+
     node.info = self:CreateInfoBanner()
     node.name = mapObj.name
     objects_node.mapObjects[mapObj.id] = node
@@ -1241,6 +1276,18 @@ function AllianceLayer:CreateMiddleCrown(obj_node)
             end
             local node = self:CreateClickableObject():addTo(obj_node)
                         :SetAlliancePos(x,y):AddSprite(sprite)
+
+            function node:PromiseOfFlash()
+                local aniName
+                if self.name == "tower1" then
+                    aniName = "crystalTower"
+                elseif self.name == "tower2" then
+                    aniName = "guardTower"
+                elseif self.name == "crown" then
+                    aniName = "crystalThrone"
+                end
+                return AniFlashFunc(self,ccs.Armature:create(aniName),0,50)
+            end
             node.x = x
             node.y = y
             node.name = name
