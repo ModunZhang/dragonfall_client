@@ -201,7 +201,7 @@ function GameUIUnlockBuilding:SetUpgradeRequirementListview()
             isVisible = true,
             isSatisfy = buildingCount < User.basicInfo.buildQueue,
             icon="hammer_33x40.png",
-            description=_("建造队列")..(User.basicInfo.buildQueue-buildingCount).."/"..1
+            description=_("建造队列").." "..(User.basicInfo.buildQueue-buildingCount).."/"..1
         },
         {
             resource_type = _("木材"),

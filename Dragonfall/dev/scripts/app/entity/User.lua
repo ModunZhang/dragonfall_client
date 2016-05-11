@@ -1357,7 +1357,7 @@ local before_map = {
             for i,v in ipairs(value) do
                 app:GetPushManager():CancelSoldierPush(v.id)
                 GameGlobalUI:showTips(_("招募士兵完成"),
-                    Localize.soldier_name[v.name].."X"..v.count)
+                    Localize.soldier_name[v.name].." X "..v.count)
             end
         end
 
@@ -1388,7 +1388,7 @@ local before_map = {
                 for i,soldier in ipairs(v.soldiers) do
                     table.insert(soldiers_info,
                         Localize.soldier_name[soldier.name]
-                        .."X"..soldier.count)
+                        .." X "..soldier.count)
                 end
                 GameGlobalUI:showTips(_("治愈士兵完成"),
                     table.concat(soldiers_info, ","))
@@ -1491,7 +1491,7 @@ local before_map = {
                     local material_info = {}
                     for i,m in ipairs(v.materials) do
                         table.insert(material_info,
-                            Localize.materials[m.name].."X"..m.count)
+                            Localize.materials[m.name].." X "..m.count)
                     end
                     GameGlobalUI:showTips(_("制造材料完成"),
                         table.concat(material_info, ","))

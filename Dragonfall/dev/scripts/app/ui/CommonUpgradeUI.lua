@@ -708,7 +708,7 @@ function CommonUpgradeUI:SetUpgradeRequirementListview()
             isVisible = buildingEventsCount >= User.basicInfo.buildQueue,
             isSatisfy = buildingEventsCount  < User.basicInfo.buildQueue,
             icon="hammer_33x40.png",
-            description=_("建造队列已满")..(User.basicInfo.buildQueue-buildingEventsCount).."/"..User.basicInfo.buildQueue
+            description=_("建造队列已满").." "..(User.basicInfo.buildQueue-buildingEventsCount).."/"..User.basicInfo.buildQueue
         },
         {
             resource_type = _("木材"),
