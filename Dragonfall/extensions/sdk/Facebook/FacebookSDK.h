@@ -53,7 +53,7 @@ private:
 	FacebookSDK(){ m_handId = -1; m_isLogining = false; };
 
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT 
-	void saveUserProfile(Facebook::Graph::FBUser^ user);
+	void saveUserProfile(winsdkfb::Graph::FBUser^ user);
 	void clearFacebookCookies();
 #endif
 };

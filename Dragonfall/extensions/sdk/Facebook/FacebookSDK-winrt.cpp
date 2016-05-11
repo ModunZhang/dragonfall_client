@@ -9,7 +9,7 @@ using namespace Windows::Foundation;
 using namespace Windows::ApplicationModel;
 using namespace concurrency;
 using namespace Windows::Security::Authentication::Web;
-using namespace Facebook;
+using namespace winsdkfb;
 using namespace cocos2d;
 using namespace cocos2d::WinRTHelper;
 
@@ -67,20 +67,20 @@ std::string FacebookSDK::GetFBUserId()
 
 void FacebookSDK::Login()
 {
+	FBSession^ sess = FBSession::ActiveSession;
+	if (m_isLogining || sess->LoggedIn)
+	{
+		return;
+	}
+	m_isLogining = true;
 	clearFacebookCookies();//clear cookies!
+	Platform::Collections::Vector<Platform::String^>^ permissionList = ref new Platform::Collections::Vector<Platform::String^>();
+	permissionList->Append(L"public_profile");
+	FBPermissions^ permissions = ref new FBPermissions(permissionList->GetView());
+	
 	WinRTHelper::RunOnUIThread([=](){
-		FBSession^ sess = FBSession::ActiveSession;
-		if (m_isLogining || sess->LoggedIn)
-		{
-			return;
-		}
-		m_isLogining = true;
-		Platform::Collections::Vector<Platform::String^>^ permissionList = ref new Platform::Collections::Vector<Platform::String^>();
-		permissionList->Append(L"public_profile");
-		FBPermissions^ permissions = ref new FBPermissions(permissionList->GetView());
-
 		// Login to Facebook
-		create_task(sess->LoginAsync(permissions, SessionLoginBehavior::ForcingWebView)).then([=](task<FBResult^> task)
+		create_task(sess->LoginAsync(permissions, SessionLoginBehavior::WebView)).then([=](task<FBResult^> task)
 		{
 			try
 			{
@@ -126,7 +126,7 @@ void FacebookSDK::Login()
 		});
 	});
 }
-void FacebookSDK::saveUserProfile(Facebook::Graph::FBUser^ user)
+void FacebookSDK::saveUserProfile(winsdkfb::Graph::FBUser^ user)
 {
 	if (nullptr == user)return;
 	Windows::Storage::ApplicationData::Current->LocalSettings->Values->Insert("FBUser_Id", user->Id);
