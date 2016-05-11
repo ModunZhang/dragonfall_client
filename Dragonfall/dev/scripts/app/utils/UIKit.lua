@@ -1255,6 +1255,8 @@ function UIKit:CreateMonster(name)
         soldier:setScaleX((s or 1) * unit_scale)
         soldier:setScaleY(unit_scale)
     end
+    local rect = node:getCascadeBoundingBox()
+    node:setContentSize(rect)
     return node
 end
 

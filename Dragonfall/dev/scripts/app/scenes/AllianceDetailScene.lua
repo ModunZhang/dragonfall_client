@@ -611,11 +611,14 @@ function AllianceDetailScene:OnTouchClicked(pre_x, pre_y, x, y)
             elseif type_ == "monster" then
                 app:lockInput(true)
                 self.util_node:performWithDelay(function()app:lockInput(false)end,0.5)
-                self:GetSceneLayer()
-                    :PromiseOfFlashEmptyGround(mapObj.index, mapObj.x, mapObj.y)
-                    :next(function()
-                        self:OpenUI(alliance, mapObj)
-                    end)
+                mapObj.obj:PromiseOfFlash():next(function()
+                    self:OpenUI(alliance, mapObj)
+                end)
+                -- self:GetSceneLayer()
+                --     :PromiseOfFlashEmptyGround(mapObj.index, mapObj.x, mapObj.y)
+                --     :next(function()
+                --         self:OpenUI(alliance, mapObj)
+                --     end)
             elseif type_ == "nouse" then
                 return
             else
@@ -630,16 +633,24 @@ function AllianceDetailScene:OnTouchClicked(pre_x, pre_y, x, y)
                 tower2 = 1,
                 crown = 3
             }
+            app:lockInput(true)
             self.util_node:performWithDelay(function()app:lockInput(false)end,0.5)
-            self:GetSceneLayer()
-                :PromiseOfFlashEmptyGround(mapObj.index,mapObj.x,mapObj.y,scale_map[type_])
-                :next(function()
-                    if type_ == "crown" then
-                        UIKit:newGameUI("GameUIThroneMain"):AddToCurrentScene()
-                    elseif type_ == "tower1" or type_ == "tower2" then
-                        UIKit:showMessageDialog(_("提示"), _("即将开放"))
-                    end
-                end)
+            mapObj.obj:PromiseOfFlash():next(function()
+                if type_ == "crown" then
+                    UIKit:newGameUI("GameUIThroneMain"):AddToCurrentScene()
+                elseif type_ == "tower1" or type_ == "tower2" then
+                    UIKit:showMessageDialog(_("提示"), _("即将开放"))
+                end
+            end)
+            -- self:GetSceneLayer()
+            --     :PromiseOfFlashEmptyGround(mapObj.index,mapObj.x,mapObj.y,scale_map[type_])
+            --     :next(function()
+            --         if type_ == "crown" then
+            --             UIKit:newGameUI("GameUIThroneMain"):AddToCurrentScene()
+            --         elseif type_ == "tower1" or type_ == "tower2" then
+            --             UIKit:showMessageDialog(_("提示"), _("即将开放"))
+            --         end
+            --     end)
         end
     else
         app:GetAudioManager():PlayeEffectSoundWithKey("NORMAL_DOWN")
