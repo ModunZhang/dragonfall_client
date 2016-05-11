@@ -1506,7 +1506,7 @@ function UIKit:CreateMoveSoldiers(degree, troop, s)
     end
 
     local rad = math.rad(degree)
-    local ox,oy = math.sin(rad) * 50, math.cos(rad) * 50
+    local ox,oy = math.sin(rad) * 100, math.cos(rad) * 100
 
     local node = display.newNode():scale(s or 1)
     for _,v in ipairs(location_map[count]) do
@@ -1517,7 +1517,7 @@ function UIKit:CreateMoveSoldiers(degree, troop, s)
 
     if troop.dragonType then
         node.dragon = UIKit:CreateDragonByDegree(degree, 1.4, troop.dragonType)
-        :addTo(node):pos(ox,oy)
+        :addTo(node)
     end
 
     return node

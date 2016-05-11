@@ -394,6 +394,12 @@ function AllianceDetailScene:onEnter()
                     local x,y = DataUtils:GetAbsolutePosition(alliance.mapIndex, mapobj.location.x, mapobj.location.y)
                     self:GotoPosition(x,y)
 
+                    local up = self:GetSceneLayer()
+                    :FindMapObject(alliance.mapIndex, mapobj.location.x, mapobj.location.y-1)
+                    if up and up.obj and up.obj.info then
+                        up.obj.info:hide()
+                    end
+
                     local monster = self:GetSceneLayer():FindMapObject(alliance.mapIndex, mapobj.location.x, mapobj.location.y)
                     WidgetFteArrow.new(_("击败黑龙军团"))
                     :addTo(monster.obj,1,INFO_TAG):TurnDown():pos(0, 100)

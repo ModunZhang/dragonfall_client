@@ -671,7 +671,7 @@ function GameUIAllianceHome:UpdateEnemyArrow()
             self.arrow_enemy:show():pos(p.x, p.y):rotation(degree)
             self.arrow_enemy.btn:rotation(-degree)
             self.arrow_enemy.icon:rotation(-degree)
-            if pGetLength(pSub(world_point, p)) < 1400 then
+            if pGetLength(pSub(world_point, p)) < 700 then
                 self.arrow_enemy:hide()
             end
         end
