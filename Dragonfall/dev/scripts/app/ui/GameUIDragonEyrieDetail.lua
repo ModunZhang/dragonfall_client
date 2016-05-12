@@ -781,7 +781,7 @@ function GameUIDragonEyrieDetail:RefreshInfoListView()
         local item = self.info_list:newItem()
         local content = self:GetInfoListItem(index,v[1],v[2])
         item:addContent(content)
-        item:setItemSize(520, 48)
+        item:setItemSize(520, content:getContentSize().height)
         self.info_list:addItem(item)
     end
     self.info_list:reload()
@@ -808,19 +808,22 @@ function GameUIDragonEyrieDetail:GetInfomationData()
 end
 
 function GameUIDragonEyrieDetail:GetInfoListItem(index,title,val)
-    local bg = display.newScale9Sprite(string.format("back_ground_548x40_%d.png",index%2 == 0 and 1 or 2)):size(520,48)
-    UIKit:ttfLabel({
+    local desc_label = UIKit:ttfLabel({
         text = title,
         color = 0x615b44,
-        size = 20
-    }):align(display.LEFT_CENTER, 10, 24):addTo(bg)
+        size = 20,
+        dimensions = cc.size(400,0)
+    })
+    local bg_height = desc_label:getContentSize().height + 14
+    local bg = display.newScale9Sprite(string.format("back_ground_548x40_%d.png",index%2 == 0 and 1 or 2)):size(520,bg_height)
+    desc_label:align(display.LEFT_CENTER, 10, bg_height/2):addTo(bg)
 
     UIKit:ttfLabel({
         text = tonumber(val) and string.formatnumberthousands(val) or val,
         color = 0x403c2f,
         size = 20,
         align = cc.TEXT_ALIGNMENT_RIGHT,
-    }):align(display.RIGHT_CENTER, 510, 24):addTo(bg)
+    }):align(display.RIGHT_CENTER, 510, bg_height/2):addTo(bg)
     return bg
 end
 -- dragon_body ==> Dragon.DRAGON_BODY.XXX
