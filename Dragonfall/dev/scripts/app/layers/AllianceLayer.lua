@@ -648,33 +648,6 @@ function AllianceLayer:RemoveMapObject(mapObj)
     end
     mapObj:removeFromParent()
 end
-local function AniFlashFunc(node, stencil, x, y)
-    local CLICK_EMPTY_TAG = 911
-    node:removeChildByTag(CLICK_EMPTY_TAG)
-    local clip = cc.ClippingNode:create()
-                :addTo(node,1,CLICK_EMPTY_TAG):pos(x or 0,y or 0)
-    clip:setStencil(stencil)
-    clip:setAlphaThreshold(0.05)
-
-    local empty = display.newSprite("click_empty.png")
-    local size1 = stencil:getContentSize()
-    local size2 = empty:getContentSize()
-    empty:setScale(size1.width/size2.width, size1.height/size2.height)
-    empty:addTo(clip)
-
-    local p = promise.new()
-    empty:opacity(0):runAction(
-            transition.sequence{
-                cc.FadeTo:create(0.15, 255),
-                cc.FadeTo:create(0.15, 0),
-                cc.CallFunc:create(function()
-                    p:resolve()
-                    clip:removeFromParent()
-                end)
-            }
-        )
-    return p
-end
 function AllianceLayer:AddMapObject(objects_node, mapObj, alliance)
     local sprite,soldierName
     if mapObj.name == "member" then
@@ -704,7 +677,21 @@ function AllianceLayer:AddMapObject(objects_node, mapObj, alliance)
     if mapObj.name == "monster" then
         node.soldierName = soldierName
         function node:PromiseOfFlash()
-            return AniFlashFunc(self,UIKit:CreateMonster(self.soldierName),0,0)
+            local CLICK_EMPTY_TAG = 911
+            local empty = display.newSprite("click_empty.png")
+            :addTo(node,1,CLICK_EMPTY_TAG)
+            local p = promise.new()
+            empty:opacity(0):runAction(
+                    transition.sequence{
+                        cc.FadeTo:create(0.15, 255),
+                        cc.FadeTo:create(0.15, 0),
+                        cc.CallFunc:create(function()
+                            p:resolve()
+                        end),
+                        cc.RemoveSelf:create()
+                    }
+                )
+            return p
         end 
     end
 
@@ -1278,6 +1265,7 @@ function AllianceLayer:CreateMiddleCrown(obj_node)
                         :SetAlliancePos(x,y):AddSprite(sprite)
 
             function node:PromiseOfFlash()
+                local CLICK_EMPTY_TAG = 911
                 local aniName
                 if self.name == "tower1" then
                     aniName = "crystalTower"
@@ -1286,7 +1274,20 @@ function AllianceLayer:CreateMiddleCrown(obj_node)
                 elseif self.name == "crown" then
                     aniName = "crystalThrone"
                 end
-                return AniFlashFunc(self,ccs.Armature:create(aniName),0,50)
+                local empty = display.newSprite(string.format("%s_mask.png", aniName))
+                :addTo(node,1,CLICK_EMPTY_TAG):scale(8):pos(0,50)
+                local p = promise.new()
+                empty:opacity(0):runAction(
+                        transition.sequence{
+                            cc.FadeTo:create(0.15, 255),
+                            cc.FadeTo:create(0.15, 0),
+                            cc.CallFunc:create(function()
+                                p:resolve()
+                            end),
+                            cc.RemoveSelf:create()
+                        }
+                    )
+                return p
             end
             node.x = x
             node.y = y
