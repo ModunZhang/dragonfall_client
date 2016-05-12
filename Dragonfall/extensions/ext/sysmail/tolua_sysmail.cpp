@@ -13,6 +13,7 @@
 #include "CCLuaStack.h"
 #include "CCLuaEngine.h"
 #include "tolua_fix.h"
+#include "LuaBasicConversions.h"
 
 void OnSendMailEnd(int function_id,std::string event)
 {
@@ -33,15 +34,24 @@ static int tolua_sysmail_sendmail(lua_State *tolua_S)
 #ifndef TOLUA_RELEASE
     tolua_Error tolua_err;
     if (!toluafix_isfunction(tolua_S, 4, "LUA_FUNCTION", 0, &tolua_err) ||
-        !tolua_isstring(tolua_S, 1, 0, &tolua_err) ||
+        !tolua_istable(tolua_S, 1, 0, &tolua_err) ||
         !tolua_isstring(tolua_S, 2, 0, &tolua_err) ||
         !tolua_isstring(tolua_S, 3, 0, &tolua_err))
         goto tolua_lerror;
     else
 #endif
     {
+		bool ok = true;
+		std::vector<std::string> addresses;
+
+		ok &= luaval_to_std_vector_string(tolua_S, 1, &addresses, "tolua_sysmail_sendmail");
+		if (!ok)
+		{
+			tolua_error(tolua_S, "invalid arguments in function 'tolua_sysmail_sendmail'", nullptr);
+			return 0;
+		}
         cocos2d::LUA_FUNCTION func = toluafix_ref_function(tolua_S, 4, 0);
-		bool success = SendMail(tolua_tocppstring(tolua_S, 1, 0), tolua_tocppstring(tolua_S, 2, 0), tolua_tocppstring(tolua_S, 3, 0), func);
+		bool success = SendMail(addresses, tolua_tocppstring(tolua_S, 2, 0), tolua_tocppstring(tolua_S, 3, 0), func);
 		lua_pushboolean(tolua_S, success ? (1) : (0));
         return 1;
     }

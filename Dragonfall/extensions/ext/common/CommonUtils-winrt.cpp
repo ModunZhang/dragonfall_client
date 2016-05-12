@@ -10,7 +10,7 @@ using namespace cocos2d;
 using namespace concurrency;
 using namespace Windows::UI::Popups;
 static int isAppHoc = -1;
-
+static int isLowMemoryDevice = -1;
 void ShowAlert(std::string title, std::string content, std::string okString, std::function<void(void)> callbackFunc)
 {
 	auto pTitle = WinRTHelper::PlatformStringFromString(title);
@@ -195,7 +195,7 @@ void ClearOpenUdidData()
 }
 const bool IsAppAdHocMode()
 {
-	if (isAppHoc > 0)
+	if (isAppHoc != -1)
 	{
 		return isAppHoc == 1;
 	}
@@ -212,9 +212,14 @@ const bool IsAppAdHocMode()
 bool IsLowMemoryDevice()
 {
 #if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
+	if (isLowMemoryDevice != -1)
+	{
+		return isLowMemoryDevice == 1;
+	}
 	unsigned long  long usage = Windows::System::MemoryManager::AppMemoryUsageLimit;
 	auto ret = usage / (1024 * 1024);
-	return ret <= 400;
+	isLowMemoryDevice = ret <= 400 ? 1 : 0;
+	return isLowMemoryDevice == 1;
 #else
 	return false;
 #endif
