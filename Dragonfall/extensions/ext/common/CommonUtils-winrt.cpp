@@ -96,7 +96,10 @@ std::string GetAppVersion()
 
 std::string GetAppBundleVersion()
 {
-	return GetAppVersion();
+	Windows::ApplicationModel::Package^ package = Windows::ApplicationModel::Package::Current;
+	Windows::ApplicationModel::PackageId^ packageId = package->Id;
+	Windows::ApplicationModel::PackageVersion version = packageId->Version;
+	return cocos2d::WinRTHelper::PlatformStringToString(version.Revision.ToString());;
 }
 std::string GetDeviceToken()
 {
