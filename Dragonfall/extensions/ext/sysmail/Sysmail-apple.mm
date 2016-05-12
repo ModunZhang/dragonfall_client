@@ -13,7 +13,7 @@
 @property(assign,nonatomic)int lua_function_ref;
 @property(retain,nonatomic)MFMailComposeViewController *mailCompose;
 
--(BOOL)sendMail:(NSString *)to
+-(BOOL)sendMail:(NSArray *)to
         subject:(NSString*)subject
            body:(NSString*)body;
 -(instancetype)initWithLuaFunctionRef:(int)ref_id;
@@ -39,7 +39,7 @@
     return self;
 }
 
--(BOOL)sendMail:(NSString *)to
+-(BOOL)sendMail:(NSArray *)to
         subject:(NSString *)subject
            body:(NSString *)body
 {
@@ -54,7 +54,7 @@
         self.mailCompose = mailPicker;
         [mailPicker release];
         [mailPicker setMailComposeDelegate:self];
-        [mailPicker setToRecipients:[NSArray arrayWithObject:to]];
+        [mailPicker setToRecipients:to];
         [mailPicker setSubject:subject];
         [mailPicker setMessageBody:body isHTML:NO];
         [[[[UIApplication sharedApplication]keyWindow] rootViewController]presentModalViewController:mailPicker animated:YES];
@@ -95,18 +95,22 @@ extern void OnSendMailEnd(int function_id,std::string event);
 
 static sysmail* g_instance_mail = NULL;
 
-bool SendMail(std::string to,std::string subject,std::string body,int lua_function_ref)
+bool SendMail(std::vector<std::string> to,std::string subject,std::string body,int lua_function_ref)
 {
+    NSMutableArray * array = [[[NSMutableArray alloc]init]autorelease];
+    for (std::string address:to) {
+        [array addObject:[NSString stringWithUTF8String:address.c_str()]];
+    }
     if (g_instance_mail == NULL) {
         g_instance_mail = [[sysmail alloc]initWithLuaFunctionRef:lua_function_ref];
-        return [g_instance_mail sendMail:[NSString stringWithUTF8String:to.c_str()]
+        return [g_instance_mail sendMail:array
                                  subject:[NSString stringWithUTF8String:subject.c_str()]
                                     body:[NSString stringWithUTF8String:body.c_str()]];
     }
     else
     {
         g_instance_mail.lua_function_ref = lua_function_ref;
-        return [g_instance_mail sendMail:[NSString stringWithUTF8String:to.c_str()]
+        return [g_instance_mail sendMail:array
                                  subject:[NSString stringWithUTF8String:subject.c_str()]
                                     body:[NSString stringWithUTF8String:body.c_str()]];
     }
