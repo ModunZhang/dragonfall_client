@@ -179,7 +179,7 @@ function GameUISendTroopNew:SelectDragonPart()
     self.dragon_status = UIKit:ttfLabel({
         text = dragon:GetLocalizedStatus(),
         size = 22,
-        color = 0xffedae,
+        color = dragon:IsFree() and not dragon:IsDead() and 0xffedae or 0xff3c00,
     }):align(display.RIGHT_CENTER,330,dragon_name_bg:getPositionY() - 40)
         :addTo(dragon_frame)
     -- 龙生命值
@@ -299,6 +299,7 @@ function GameUISendTroopNew:RefreashDragon(dragon)
     self.dragon_armature:ReloadSpriteCauseTerrainChanged(dragon:Type())
     self.dragon_name:setString(Localize.dragon[dragon:Type()].."（LV ".. dragon:Level()..")")
     self.dragon_status:setString(dragon:GetLocalizedStatus())
+    self.dragon_status:setColor(UIKit:hex2c3b(dragon:IsFree() and not dragon:IsDead() and 0xffedae or 0xff3c00))
     self.dragon_hp:setString(string.formatnumberthousands(dragon:Hp()).."/"..string.formatnumberthousands(dragon:GetMaxHP()))
     self.dragon_strength:setString(string.formatnumberthousands(dragon:TotalStrength()))
     local power,load,citizen = self:GetTotalSoldierInfo()

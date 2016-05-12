@@ -539,7 +539,7 @@ function GameUIMission:OpenGetDailyRewardDialog(reward_index,flag)
 
         -- 道具名称
         UIKit:ttfLabel({
-            text = UtilsForItem:GetItemLocalize(data[2]).."X"..data[3],
+            text = UtilsForItem:GetItemLocalize(data[2]).." X "..data[3],
             size = 24,
             color = 0x403c2f,
         }):addTo(body_1):align(display.LEFT_CENTER,130, body_1:getContentSize().height-22)

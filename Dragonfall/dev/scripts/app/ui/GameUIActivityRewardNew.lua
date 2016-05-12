@@ -714,7 +714,7 @@ function GameUIActivityRewardNew:ui_FIRST_IN_PURGURE()
                 shadow = true
             }):addTo(bar):align(display.LEFT_CENTER,x + 60,y - 24)
             UIKit:ttfLabel({
-                text = "X" .. count,
+                text = "X " .. count,
                 size = 18,
                 color = 0xfed36c,
                 shadow = true

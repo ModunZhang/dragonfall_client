@@ -19,6 +19,7 @@ import com.xapcn.dragonfall.R;
 import org.cocos2dx.lua.AppActivity;
 import org.cocos2dx.utils.PSNetwork;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class CommonUtils {
@@ -88,10 +89,10 @@ public class CommonUtils {
 		return Locale.getDefault().toString();
 	}
 
-	public static boolean sendMail(String receiver, String subject, String content) {
+	public static boolean sendMail(ArrayList<String> receiver, String subject, String content) {
 		Intent intent = new Intent(Intent.ACTION_SEND);
 		intent.setType("plain/text");
-		intent.putExtra(Intent.EXTRA_EMAIL, new String[] { receiver });
+		intent.putExtra(Intent.EXTRA_EMAIL, (String[])receiver.toArray(new String[]{}));
 		intent.putExtra(Intent.EXTRA_SUBJECT, subject);
 		intent.putExtra(Intent.EXTRA_TEXT, content);
 		AppActivity.getGameActivity().startActivity(

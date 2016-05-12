@@ -253,7 +253,7 @@ function GameUIGacha:CreateGachaPool(layer)
                         end
                         local num_bg = display.newSprite("gacha_num_bg.png"):addTo(award,2):align(display.RIGHT_BOTTOM, award:getContentSize().width,0):scale(128/74)
                         UIKit:ttfLabel({
-                            text = "X"..draw_item_box:GetGachaItemCount(),
+                            text = "X "..draw_item_box:GetGachaItemCount(),
                             size = 16,
                             color = 0xffedae
                         }):align(display.RIGHT_CENTER, num_bg:getContentSize().width, num_bg:getContentSize().height/2)

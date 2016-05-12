@@ -127,14 +127,14 @@ function GameUIReplay:Setup()
     if self.report:IsDragonFight() then
         local attackDragonType = self.report:GetFightAttackDragonRoundData().type
         self.attackDragon = UIKit:CreateSkillDragon(attackDragonType, true, self):hide()
-        :addTo(self.ui_map.dragonSkillNode,0,BATTLE_OBJECT_TAG):pos(display.cx, display.cy)
+        :addTo(self.ui_map.dragonSkillNode,0,BATTLE_OBJECT_TAG):pos(608/2, 910/2)
 
         self.ui_map.attackDragonLabel:setString(Localize.dragon[attackDragonType])
         self.ui_map.attackDragonIcon:setTexture(UILib.dragon_head[attackDragonType])
 
         local defenceDragonType = self.report:GetFightDefenceDragonRoundData().type
         self.defenceDragon = UIKit:CreateSkillDragon(defenceDragonType, false, self):hide()
-        :addTo(self.ui_map.dragonSkillNode,0,BATTLE_OBJECT_TAG):pos(display.cx, display.cy)
+        :addTo(self.ui_map.dragonSkillNode,0,BATTLE_OBJECT_TAG):pos(608/2, 910/2)
 
         self.ui_map.defenceDragonLabel:setString(Localize.dragon[defenceDragonType])
         self.ui_map.defenceDragonIcon:setTexture(UILib.dragon_head[defenceDragonType])
@@ -793,7 +793,7 @@ function GameUIReplay:OnFight(attackTroop, defenceTroop)
         end
         local np = attackTroop:getParent():convertToNodeSpace(wp)
         local attack_x, attack_y = attackTroop:getPosition()
-        if np.x ~= attack_x or attack_y ~= np.y then
+        if math.abs(np.x - attack_x) > 5 or math.abs(np.y - attack_y) > 5 then
             attackTroop:Move(np.x, np.y, self:MovingTimeForAttack(), function(isend)
                 if isend then
                     self:OnAttacking(attackTroop, defenceTroop)

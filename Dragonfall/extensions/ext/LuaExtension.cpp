@@ -998,6 +998,7 @@ TOLUA_API int tolua_cc_lua_extension(lua_State* tolua_S)
     tolua_beginmodule(tolua_S,"ext");
     ResgisterGlobalExtFunctions(tolua_S);
     RegisterExtModules(tolua_S);
+    tolua_constant(tolua_S,"__version__",114); //dannyhe:version infomation for our lua extension
     tolua_endmodule(tolua_S);
     tolua_endmodule(tolua_S);
     return 1;

@@ -82,10 +82,14 @@ local recommands = {
 	{ type = "cityBuild"		, id = cityBuildIdBy("warehouse", 3) 	  	},
 	{ type = "cityBuild"		, id = cityBuildIdBy("materialDepot", 3) 	},
 	{ type = "cityBuild"		, id = cityBuildIdBy("wall", 3) 			},
+	{ type = "cityBuild"		, id = cityBuildIdBy("dwelling", 3) 		},
 	{ type = "cityBuild"		, id = cityBuildIdBy("dwelling", 4) 		},
 	{ type = "soldierCount"		, id = soldierCountIdBy("ranger_1", 2) 	  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("quarrier", 3)		  	},
 	{ type = "cityBuild"		, id = cityBuildIdBy("quarrier", 4)		  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("woodcutter", 3)		},
 	{ type = "cityBuild"		, id = cityBuildIdBy("woodcutter", 4)		},
+	{ type = "cityBuild"		, id = cityBuildIdBy("miner", 3)		  	},
 	{ type = "cityBuild"		, id = cityBuildIdBy("miner", 4)		  	},
 	{ type = "cityBuild"		, id = cityBuildIdBy("barracks", 4) 	  	},
 	{ type = "cityBuild"		, id = cityBuildIdBy("barracks", 5) 	  	},
@@ -100,14 +104,21 @@ local recommands = {
 	
 	{ type = "cityBuild"		, id = cityBuildIdBy("keep", 6) 	  		},
 	{ type = "cityBuild"		, id = cityBuildIdBy("blackSmith", 1) 	  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("dwelling", 5) 	  	},
 	{ type = "cityBuild"		, id = cityBuildIdBy("dwelling", 6) 	  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("quarrier", 5) 	  	},
 	{ type = "cityBuild"		, id = cityBuildIdBy("quarrier", 6) 	  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("woodcutter", 5) 	  	},
 	{ type = "cityBuild"		, id = cityBuildIdBy("woodcutter", 6) 	  	},
 	{ type = "pveCount"			, id = pveCountIdBy(7) 	  				  	},
 	{ type = "cityBuild"		, id = cityBuildIdBy("warehouse", 6) 	  	},
 	{ type = "cityBuild"		, id = cityBuildIdBy("academy", 4) 	  		},
 	{ type = "cityBuild"		, id = cityBuildIdBy("dragonEyrie", 4) 	  	},
+	{ type = "cityBuild"		, id = cityBuildIdBy("miner", 5) 	  		},
 	{ type = "cityBuild"		, id = cityBuildIdBy("miner", 6) 	  		},
+	{ type = "cityBuild"		, id = cityBuildIdBy("farmer", 3) 	  		},
+	{ type = "cityBuild"		, id = cityBuildIdBy("farmer", 4) 	  		},
+	{ type = "cityBuild"		, id = cityBuildIdBy("farmer", 5) 	  		},
 	{ type = "cityBuild"		, id = cityBuildIdBy("farmer", 6) 	  		},
 	{ type = "pveCount"			, id = pveCountIdBy(8) 	  				  	},
 	{ type = "cityBuild"		, id = cityBuildIdBy("barracks", 6) 	  	},
@@ -146,11 +157,43 @@ for i = 1, 11 do
 	table.insert(recommands,
 	{ type = "cityBuild"		, id = cityBuildIdBy("hospital", 3 + i)		})
 	table.insert(recommands,
-	{ type = "cityBuild"		, id = cityBuildIdBy("blackSmith", 3 + i)	})
+	{ type = "cityBuild"		, id = cityBuildIdBy("blackSmith", 2 + i)	})
 	table.insert(recommands,
 	{ type = "cityBuild"		, id = cityBuildIdBy("wall", 6 + i)			})
 end
 
+
+local cityBuild_checkmap = {}
+local soldierCount_checkmap = {}
+local pveCount_checkmap = {}
+for i,v in ipairs(recommands) do
+	if "cityBuild" == v.type then
+		local config = cityBuild[v.id]
+		cityBuild_checkmap[config.name] = cityBuild_checkmap[config.name] or {}
+		cityBuild_checkmap[config.name][config.index] = true
+	elseif "soldierCount" == v.type then
+		local config = soldierCount[v.id]
+		soldierCount_checkmap[config.name] = soldierCount_checkmap[config.name] or {}
+		soldierCount_checkmap[config.name][config.index] = true
+	elseif "pveCount" == v.type then
+		local config = pveCount[v.id]
+		pveCount_checkmap[config.index] = true
+	end
+end
+
+for k,v in pairs(cityBuild_checkmap) do
+	if table.nums(v) ~= #v then
+		assert(false, k.."城建任务不连续")
+	end
+end
+for k,v in pairs(soldierCount_checkmap) do
+	if table.nums(v) ~= #v then
+		assert(false, k.."士兵任务不连续")
+	end
+end
+if table.nums(pveCount_checkmap) ~= #pveCount_checkmap then
+	assert(false, "pve任务不联系")
+end
 
 
 
