@@ -17,16 +17,21 @@ function GameStatesHelper:scheduleFunction(...)
 	local func = table.remove(args, 1)
 	if type(func) ~= "function" then return end
 	local args = args
-	if device.platform ~= 'android' then
-		pcall(func,unpack(args or {}))
-	else
+	if  self:checkEnable() then
 		table.insert(self.__functions__,{f = func,args = args})
+	else
+		pcall(func,unpack(args or {}))
+		
 	end
 
 end
 
+function GameStatesHelper:checkEnable()
+	return device.platform == 'android' or (device.platform == 'winrt' and ext.isLowMemoryDevice())
+end
+
 function GameStatesHelper:popExecute()
-	if device.platform ~= 'android' or #self.__functions__ == 0 then return end
+	if not self:checkEnable() or #self.__functions__ == 0 then return end
 	local data = table.remove(self.__functions__,1)
 	pcall(data.f,unpack(data.args or {}))
 end
