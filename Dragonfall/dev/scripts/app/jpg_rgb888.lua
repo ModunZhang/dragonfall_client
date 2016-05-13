@@ -30,7 +30,6 @@ jpg_rgb888["splash_beta_bg_3987x1136_01.jpg"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B5
 jpg_rgb888["splash_beta_bg_3987x1136_02.jpg"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
 jpg_rgb888["world_bg.jpg"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
 jpg_rgb888["world_middle.jpg"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
-jpg_rgb888["world_terrain.jpg"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
 jpg_rgb888["world_title1.jpg"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
 jpg_rgb888["world_title2.jpg"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
 return jpg_rgb888
