@@ -298,7 +298,7 @@ function GameUITownHall:CreateQuestItem(quest,index)
                         for i,v in ipairs(total_rewards) do
                             re_desc = re_desc .. Localize.fight_reward[v.resource_type].." X ".. string.formatnumberthousands(v.count) .." "
                         end
-                        GameGlobalUI:showTips(_("每日任务完成"),_("获得")..re_desc)
+                        GameGlobalUI:showTips(_("每日任务完成"),_("获得").." "..re_desc)
 
                     end)
                 end)

@@ -1,9 +1,9 @@
-# This file was generated from /Users/kennydai/Downloads/i18n(3).xlsx
+# This file was generated from /Users/kennydai/Downloads/i18n(3)(1).xlsx
 msgid ""
 msgstr ""
 "Project-Id-Version: dragonfall\n"
-"POT-Creation-Date: 2016-05-12 10:10+0800\n"
-"PO-Revision-Date: 2016-05-12 10:10+0800\n"
+"POT-Creation-Date: 2016-05-13 11:56+0800\n"
+"PO-Revision-Date: 2016-05-13 11:56+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zh_TW\n"
@@ -1743,6 +1743,10 @@ msgstr "製造%d個材料完成"
 #, lua-format
 msgid "制造%s装备完成"
 msgstr "製造%s裝備完成"
+
+#: layers/AllianceLayer.lua:782
+msgid "我的城市"
+msgstr ""
 
 #: scenes/AllianceDetailScene.lua:22 scenes/AllianceScene.lua:188
 msgid "联盟地形已经改变"
@@ -4961,7 +4965,7 @@ msgstr "所有裝備未達到最高星級"
 msgid "5星上限即将开放!"
 msgstr "5星上限即將開放！"
 
-#: ui/GameUIDragonEyrieDetail.lua:857 ui/GameUIDragonEyrieDetailFte.lua:29
+#: ui/GameUIDragonEyrieDetail.lua:860 ui/GameUIDragonEyrieDetailFte.lua:29
 msgid "点击技能"
 msgstr "點擊技能"
 
@@ -7967,7 +7971,7 @@ msgstr "很久"
 msgid "%d天%d小时"
 msgstr "%d天%d小時"
 
-#: utils/GameUtils.lua:604 utils/GameUtils.lua:623
+#: utils/GameUtils.lua:617 utils/GameUtils.lua:636
 msgid "不能删除"
 msgstr "不能刪除"
 
