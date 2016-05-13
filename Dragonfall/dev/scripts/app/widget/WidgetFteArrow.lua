@@ -11,7 +11,7 @@ function WidgetFteArrow:OnPositionChanged(x, y, tx, ty)
 end
 
 function WidgetFteArrow:ctor(textOrContent, size)
-    self.back = display.newScale9Sprite("fte_label_background.png"):addTo(self)
+    self.back = display.newScale9Sprite("fte_label_background.png"):addTo(self):size(370,68)
     self.arrow = display.newSprite("fte_icon_arrow.png"):addTo(self.back)
     local s = self.back:getContentSize()
     if type(textOrContent) == "string" or type(textOrContent) == "nil" then
