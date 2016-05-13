@@ -15,10 +15,16 @@
 /* #undef USE_OLD_CYASSL */
 
 /* The Libwebsocket version */
-#define LWS_LIBRARY_VERSION "1.5"
+#define LWS_LIBRARY_VERSION "1.6.0"
+
+#define LWS_LIBRARY_VERSION_MAJOR 1
+#define LWS_LIBRARY_VERSION_MINOR 6
+#define LWS_LIBRARY_VERSION_PATCH 0
+/* LWS_LIBRARY_VERSION_NUMBER looks like 1005001 for e.g. version 1.5.1 */
+#define LWS_LIBRARY_VERSION_NUMBER (LWS_LIBRARY_VERSION_MAJOR*1000000)+(LWS_LIBRARY_VERSION_MINOR*1000)+LWS_LIBRARY_VERSION_PATCH
 
 /* The current git commit hash that we're building from */
-#define LWS_BUILD_HASH "c517f04"
+#define LWS_BUILD_HASH "4ea265b"
 
 /* Build with OpenSSL support */
 /* #undef LWS_OPENSSL_SUPPORT */
@@ -48,7 +54,7 @@
 #define LWS_NO_DAEMONIZE
 
 /* Build without server support */
-/* #undef LWS_NO_SERVER */
+#define LWS_NO_SERVER
 
 /* Build without client support */
 /* #undef LWS_NO_CLIENT */
@@ -62,4 +68,7 @@
 /* use SHA1() not internal libwebsockets_SHA1 */
 /* #undef LWS_SHA1_USE_OPENSSL_NAME */
 
-#define LWS_SIZEOFPTR 8
+/* SSL server using ECDH certificate */
+/* #undef LWS_SSL_SERVER_WITH_ECDH_CERT */
+
+

@@ -694,7 +694,6 @@ function AllianceLayer:AddMapObject(objects_node, mapObj, alliance)
             return p
         end 
     end
-
     node.info = self:CreateInfoBanner()
     node.name = mapObj.name
     objects_node.mapObjects[mapObj.id] = node
@@ -779,8 +778,12 @@ function AllianceLayer:RefreshObjectInfo(object, mapObj, alliance)
         local helpedByTroopsCount = member.beHelped and 1 or 0
         info.banner:setTexture(banners[helpedByTroopsCount])
         info.level:setString(member.keepLevel)
-        info.name:setString(string.format("%s", member.name))
-
+        if member.id == User._id then
+            info.name:setString(_("我的城市"))
+            info.name:setColor(UIKit:hex2c4b(0xa1dd00))
+        else
+            info.name:setString(string.format("%s", member.name))
+        end
         if member.isProtected then
             if object:getChildByTag(SMOKE_TAG) then
                 object:removeChildByTag(SMOKE_TAG)

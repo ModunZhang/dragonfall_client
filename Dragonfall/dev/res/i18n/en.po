@@ -1,9 +1,9 @@
-# This file was generated from /Users/kennydai/Downloads/i18n(3).xlsx
+# This file was generated from /Users/kennydai/Downloads/i18n(4).xlsx
 msgid ""
 msgstr ""
 "Project-Id-Version: dragonfall\n"
-"POT-Creation-Date: 2016-05-12 10:10+0800\n"
-"PO-Revision-Date: 2016-05-12 10:10+0800\n"
+"POT-Creation-Date: 2016-05-13 14:06+0800\n"
+"PO-Revision-Date: 2016-05-13 14:06+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -1922,6 +1922,10 @@ msgstr "Produce %d materials complete"
 msgid "制造%s装备完成"
 msgstr "%s has been produced"
 
+#: layers/AllianceLayer.lua:782
+msgid "我的城市"
+msgstr "My Castle"
+
 #: scenes/AllianceDetailScene.lua:22 scenes/AllianceScene.lua:188
 msgid "联盟地形已经改变"
 msgstr "The Alliance territory has been changed"
@@ -2557,7 +2561,7 @@ msgstr "Start now"
 msgid "您当前没有空闲的建筑,是否花费魔法石立即完成上一个队列"
 msgstr ""
 "You have no available build queues, do you want to finish the last queue "
-"instantly by using Dragon coin ?"
+"instantly by consuming Dragon coin ?"
 
 #: ui/CommonUpgradeUI.lua:1164 utils/UIKit.lua:958
 #, lua-format
@@ -5177,7 +5181,7 @@ msgstr "You've not raised all equipments to the max star level"
 msgid "5星上限即将开放!"
 msgstr "Star 5 coming soon !"
 
-#: ui/GameUIDragonEyrieDetail.lua:857 ui/GameUIDragonEyrieDetailFte.lua:29
+#: ui/GameUIDragonEyrieDetail.lua:860 ui/GameUIDragonEyrieDetailFte.lua:29
 msgid "点击技能"
 msgstr "Tap this skill"
 
@@ -5380,7 +5384,7 @@ msgstr "Got %s X%d"
 #: ui/GameUIGacha.lua:470
 msgid "每日获得免费抽奖机会，激活VIP5 以上，每日可获得额外的免费抽奖机会"
 msgstr ""
-"You have one free lottery chance everyday.The higher VIP level you are,the "
+"You have one free lottery chance everyday. The higher VIP level you are, the "
 "more free chances you get."
 
 #: ui/GameUIGacha.lua:521 ui/GameUIGacha.lua:640
@@ -8225,7 +8229,7 @@ msgstr "Long ago"
 msgid "%d天%d小时"
 msgstr "%d days %d hours"
 
-#: utils/GameUtils.lua:604 utils/GameUtils.lua:623
+#: utils/GameUtils.lua:617 utils/GameUtils.lua:636
 msgid "不能删除"
 msgstr "Can not be deleted"
 
