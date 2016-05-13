@@ -30,11 +30,6 @@ function GameUIAllianceMosterEnter:ctor(mapObj,alliance)
     local icon = string.split(soldiers[1],":")
     local soldier_type = icon[1]
     GameUIAllianceMosterEnter.super.ctor(self,286,Localize.soldier_name[soldier_type],window.top - 200,"title_red_600x56.png")
-    display.newNode():addTo(self):schedule(function()
-        if not self:GetBuildingInfo() then
-            self:LeftButtonClicked()
-        end
-    end, 1)
 end
 function GameUIAllianceMosterEnter:onCleanup()
     local scene_name = display.getRunningScene().__cname
@@ -153,40 +148,6 @@ function GameUIAllianceMosterEnter:onEnter()
             show_reward_index = end_index > #reward_table and 1 or end_index
         end,2)
     end, 0.5)
-    -- local clipNode = display.newClippingRegionNode(cc.rect(soldier_head_icon:getPositionX() + 90 ,20,380,150)):addTo(body)
-    -- local rewards_node = display.newNode():addTo(clipNode)
-    -- rewards_node:setContentSize(cc.size(#rewards * 100,100))
-    -- rewards_node:align(display.LEFT_CENTER, 0, 50)
-    -- for i,reward in ipairs(rewards) do
-    --     local info = string.split(reward,":")
-    --     display.newSprite("box_118x118.png"):addTo(rewards_node):align(display.CENTER, 44 + (i - 1) * 100, 100):scale(88/118)
-    --     local material_icon = display.newSprite(UILib.materials[info[2]] or UILib.item[info[2]])
-    --         :align(display.CENTER, 44 + (i - 1) * 100, 100)
-    --         :addTo(rewards_node)
-    --     material_icon:scale(74/math.max(material_icon:getContentSize().width,material_icon:getContentSize().height))
-    --     local num_bg = display.newSprite("gacha_num_bg.png"):addTo(rewards_node):align(display.CENTER, 64 + (i - 1) * 100,70)
-    --     UIKit:ttfLabel({
-    --         text = "X "..info[3],
-    --         size = 16,
-    --         color = 0xffedae
-    --     }):align(display.RIGHT_CENTER, num_bg:getContentSize().width, num_bg:getContentSize().height/2)
-    --         :addTo(num_bg)
-    --     UIKit:ttfLabel({
-    --         text = info[1] == "buildingMaterials" and  Localize.materials[info[2]] or Localize_item.item_name[info[2]],
-    --         -- text = "X "..info[3],
-    --         color = 0x615b44,
-    --         size = 16,
-    --     -- ellipsis = true,
-    --     -- dimensions = cc.size(90,20)
-    --     }):addTo(rewards_node):align(display.CENTER, 44 + (i - 1) * 100 ,40)
-    -- end
-
-    -- rewards_node:runAction(cc.RepeatForever:create(transition.sequence{
-    --     cc.MoveTo:create(10, cc.p(soldier_head_icon:getPositionX() + 90 - rewards_node:getContentSize().width, 50)),
-    --     cc.CallFunc:create(function()
-    --         rewards_node:setPositionX(soldier_head_icon:getPositionX() + 90 + 380)
-    --     end)
-    -- }))
 
     self.handle = scheduler.scheduleGlobal(handler(self, self.ShowReward), 1, false)
 
@@ -233,6 +194,10 @@ function GameUIAllianceMosterEnter:onEnter()
 end
 function GameUIAllianceMosterEnter:ShowReward()
     local time = self.alliance.basicInfo.monsterRefreshTime/1000 - app.timer:GetServerTime()
+    if time <= 0 then
+        self:LeftButtonClicked()
+        return
+    end
     self.time_label:setString(time >= 0 and string.format(_("即将消失:%s"),GameUtils:formatTimeStyle1(time)) or _("未知"))
 end
 
@@ -244,27 +209,3 @@ function GameUIAllianceMosterEnter:GetBelongAlliance()
 end
 
 return GameUIAllianceMosterEnter
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
