@@ -339,17 +339,11 @@ function GameUIGMChat:HandleCellUIData(mainContent,chat,update_time)
     end
 end
 function GameUIGMChat:GetChatIcon(icon)
-    if device.platform == 'winrt' then
-        local bg = display.newSprite("dragon_bg_68x68.png")
-        local icon = UIKit:GetPlayerIconOnly(icon):addTo(bg):align(display.LEFT_BOTTOM,-3, 1):scale(66/114)
-        bg.icon = icon
-        return bg
-    else
-        local bg = display.newSprite("dragon_bg_114x114.png"):scale(66/114)
-        local icon = UIKit:GetPlayerIconOnly(icon):addTo(bg):align(display.LEFT_BOTTOM,-5, 1)
-        bg.icon = icon
-        return bg
-    end
+    local bg = display.newSprite("box_102x102.png", nil, nil, {class=cc.FilteredSpriteWithOne}):scale(0.5)
+    local icon = display.newSprite(UIKit:GetPlayerIconImage(1), nil, nil, {class=cc.FilteredSpriteWithOne}):addTo(bg):align(display.CENTER,51,51)
+        :scale(0.75)
+    bg.icon = icon
+    return bg
 end
 function GameUIGMChat:CreateTextFieldBody()
     local body = self.body

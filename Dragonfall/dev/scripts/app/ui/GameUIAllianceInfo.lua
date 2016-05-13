@@ -571,9 +571,9 @@ function GameUIAllianceInfo:GetMemberItemContent()
 end
 
 function GameUIAllianceInfo:GetPlayerIconSprite()
-
-    local bg = display.newSprite("dragon_bg_114x114.png", nil, nil, {class=cc.FilteredSpriteWithOne})
-    local icon = display.newSprite(UIKit:GetPlayerIconImage(1), nil, nil, {class=cc.FilteredSpriteWithOne}):addTo(bg):align(display.CENTER,56,65)
+    local bg = display.newSprite("box_102x102.png", nil, nil, {class=cc.FilteredSpriteWithOne})
+    local icon = display.newSprite(UIKit:GetPlayerIconImage(1), nil, nil, {class=cc.FilteredSpriteWithOne}):addTo(bg):align(display.CENTER,51,51)
+        :scale(0.75)
     bg.icon = icon
     return bg
 end
@@ -675,6 +675,7 @@ function GameUIAllianceInfo:listviewListener(event)
     end
 end
 return GameUIAllianceInfo
+
 
 
 
