@@ -95,6 +95,8 @@ public:
     static const char *EVENT_PROJECTION_CHANGED;
     /** Director will trigger an event after Schedule::update() is invoked. */
     static const char* EVENT_AFTER_UPDATE;
+    /** Director will trigger an event while resetting Director */
+    static const char* EVENT_RESET;
     /** Director will trigger an event after Scene::render() is invoked. */
     static const char* EVENT_AFTER_VISIT;
     /** Director will trigger an event after a scene is drawn, the data is sent to GPU. */
@@ -527,7 +529,7 @@ protected:
      @since v3.0
      */
     EventDispatcher* _eventDispatcher;
-    EventCustom *_eventProjectionChanged, *_eventAfterDraw, *_eventAfterVisit, *_eventAfterUpdate;
+    EventCustom *_eventProjectionChanged, *_eventAfterDraw, *_eventAfterVisit, *_eventAfterUpdate,*_eventResetDirector;
         
     /* delta time since last tick to main loop */
 	float _deltaTime;
