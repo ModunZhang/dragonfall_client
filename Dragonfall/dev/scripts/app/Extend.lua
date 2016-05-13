@@ -94,6 +94,10 @@ jpg_rgb888["tmxmaps/terrain1.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565
 local auto_cleanup = {}
 for k,v in pairs(jpg_rgb888) do
     auto_cleanup[k] = true
+    if openSD then
+        local prename, suffix = unpack(string.split(k, "."))
+        auto_cleanup[string.format("%s-sd.%s",prename, suffix)] = true
+    end
 end
 
 

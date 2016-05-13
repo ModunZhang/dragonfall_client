@@ -187,8 +187,9 @@ end
 
 
 function GameUIShrineReport:GetChatIcon(icon)
-    local bg = display.newSprite("dragon_bg_114x114.png")
-    local icon = UIKit:GetPlayerIconOnly(icon):addTo(bg):align(display.LEFT_BOTTOM,-5, 1)
+    local bg = display.newSprite("box_102x102.png", nil, nil, {class=cc.FilteredSpriteWithOne})
+    local icon = display.newSprite(UIKit:GetPlayerIconImage(1), nil, nil, {class=cc.FilteredSpriteWithOne}):addTo(bg):align(display.CENTER,51,51)
+        :scale(0.75)
     bg.icon = icon
     return bg
 end
