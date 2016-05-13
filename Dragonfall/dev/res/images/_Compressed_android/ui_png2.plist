@@ -4,6 +4,32 @@
     <dict>
         <key>frames</key>
         <dict>
+            <key>alliance_apply_62x56.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{104,302},{54,54}}</string>
+                <key>offset</key>
+                <string>{-1,-1}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{3,2},{54,54}}</string>
+                <key>sourceSize</key>
+                <string>{62,56}</string>
+            </dict>
+            <key>box_gacha_92x92.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{104,204},{92,92}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{92,92}}</string>
+                <key>sourceSize</key>
+                <string>{92,92}</string>
+            </dict>
             <key>icon_ALL.png</key>
             <dict>
                 <key>frame</key>
@@ -20,7 +46,7 @@
             <key>icon_AUS.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{4,104},{94,94}}</string>
+                <string>{{104,4},{94,94}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -33,7 +59,7 @@
             <key>icon_CAN.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{104,4},{94,94}}</string>
+                <string>{{4,104},{94,94}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -56,6 +82,19 @@
                 <key>sourceSize</key>
                 <string>{112,112}</string>
             </dict>
+            <key>icon_DEU.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{4,204},{94,94}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{9,9},{94,94}}</string>
+                <key>sourceSize</key>
+                <string>{112,112}</string>
+            </dict>
         </dict>
         <key>metadata</key>
         <dict>
@@ -64,9 +103,9 @@
             <key>realTextureFileName</key>
             <string>ui_png2.png</string>
             <key>size</key>
-            <string>{256,256}</string>
+            <string>{256,512}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:1d04368e7d9180a5b94ab30073fa00e9:3/3$</string>
+            <string>$TexturePacker:SmartUpdate:f5f3a99c86208d9fb6337c95aeef6702:3/3$</string>
             <key>textureFileName</key>
             <string>ui_png2.png</string>
         </dict>

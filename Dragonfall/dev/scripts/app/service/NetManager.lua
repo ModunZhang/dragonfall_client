@@ -1059,7 +1059,7 @@ end
 function NetManager:getInstantRecruitNormalSoldierPromise(soldierName, count, cb)
     return get_recruitNormalSoldier_promise(soldierName, count, true):done(function()
         app:GetAudioManager():PlayeEffectSoundWithKey("COMPLETE")
-        GameGlobalUI:showTips(_("招募士兵完成"),Localize.soldier_name[soldierName].."X"..count)
+        GameGlobalUI:showTips(_("招募士兵完成"),Localize.soldier_name[soldierName].." X "..count)
     end)
 end
 -- 招募特殊士兵
@@ -1079,7 +1079,7 @@ end
 function NetManager:getInstantRecruitSpecialSoldierPromise(soldierName, count)
     return get_recruitSpecialSoldier_promise(soldierName, count, true):done(function()
         app:GetAudioManager():PlayeEffectSoundWithKey("COMPLETE")
-        GameGlobalUI:showTips(_("招募士兵完成"),Localize.soldier_name[soldierName].."X"..count)
+        GameGlobalUI:showTips(_("招募士兵完成"),Localize.soldier_name[soldierName].." X "..count)
     end)
 end
 -- 普通治疗士兵
@@ -1097,7 +1097,7 @@ function NetManager:getInstantTreatSoldiersPromise(soldiers)
         local get_list = ""
         for k,v in pairs(soldiers) do
             local m_name = Localize.soldier_name[v.name]
-            get_list =  get_list .. (get_list == "" and "" or ",") .. m_name .. "X"..v.count
+            get_list =  get_list .. (get_list == "" and "" or ",") .. m_name .. " X "..v.count
         end
         GameGlobalUI:showTips(_("治愈士兵完成"),get_list)
     end)

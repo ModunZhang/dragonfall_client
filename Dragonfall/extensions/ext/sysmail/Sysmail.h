@@ -9,10 +9,11 @@
 #ifndef kod_Sysmail_h
 #define kod_Sysmail_h
 #include <string>
+#include <vector>
 #include <stdlib.h>
 
 bool CanSenMail();
 
-bool SendMail(std::string to,std::string subject,std::string body,int lua_function_ref);
+bool SendMail(std::vector<std::string> to,std::string subject,std::string body,int lua_function_ref);
 
 #endif

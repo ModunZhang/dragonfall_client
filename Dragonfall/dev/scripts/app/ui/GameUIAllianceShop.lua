@@ -452,7 +452,7 @@ function GameUIAllianceShop:CreateRecordItem(item_log,index)
     local color_1 = record_type == "addItem" and 0x007c23 or 0x7e0000
     local text_1 = record_type == "addItem" and _("补充") or _("购买")
     UIKit:ttfLabel({
-        text = text_1..Localize_item.item_name[item_log.itemName].."X"..item_log.itemCount,
+        text = text_1..Localize_item.item_name[item_log.itemName].." X "..item_log.itemCount,
         size = 20,
         color = color_1,
     }):align(display.LEFT_CENTER, 120 , 80)

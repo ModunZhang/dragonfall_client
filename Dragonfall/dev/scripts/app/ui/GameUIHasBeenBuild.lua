@@ -175,21 +175,21 @@ function Item:ctor(parent_ui)
                 else
                     instant_build()
                 end
-            elseif self.status == "normal" then
+            elseif self.status == "normal" or self.status == "disable" then
                 local illegal, is_pre_condition = building:IsAbleToUpgrade(false)
                 local jump_building = building:GetPreConditionBuilding()
                 local cur_scene = display.getRunningScene()
                 if illegal and is_pre_condition
                     and type(jump_building) == "table"
                     and cur_scene.AddIndicateForBuilding then
-                    UIKit:showMessageDialog(_("提示"), _("前置建筑条件不满足, 请前往。"), function()
+                    UIKit:showMessageDialog(_("提示"), building:GetPreConditionDesc(), function()
                         local building_sprite = cur_scene:GetSceneLayer():FindBuildingSpriteByBuilding(jump_building, city)
                         local x,y = jump_building:GetMidLogicPosition()
                         cur_scene:GotoLogicPoint(x,y,40):next(function()
                             cur_scene:AddIndicateForBuilding(building_sprite)
                         end)
                         self.parent_ui:LeftButtonClicked()
-                    end)
+                    end, nil,nil,nil,nil,_("前往"))
                     return
                 end
                 local city = building:BelongCity()
@@ -350,7 +350,7 @@ function Item:ChangeStatus(status)
         button:setButtonImage(cc.ui.UIPushButton.PRESSED, "purple_btn_down_148x58.png", true)
 
         self.condition_label:hide()
-    elseif status == "normal" then
+    elseif status == "normal" or status == "disable" then
         button:setButtonEnabled(true)
         button:setButtonLabelString(_("建造"))
         button:setButtonImage(cc.ui.UIPushButton.NORMAL, "yellow_btn_up_148x58.png", true)

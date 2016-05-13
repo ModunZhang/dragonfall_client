@@ -94,7 +94,7 @@ function GameUIPveSweep:GetListItem(index,reward)
     }):addTo(bg):align(display.LEFT_CENTER, size.width - 120, size.height*3/4)
 
     UIKit:ttfLabel({
-        text = "X"..GameUtils:formatNumber(reward.count),
+        text = "X "..GameUtils:formatNumber(reward.count),
         size = 22,
         color = 0xffedae,
     }):addTo(bg):align(display.LEFT_CENTER, size.width - 120, size.height*2/5)

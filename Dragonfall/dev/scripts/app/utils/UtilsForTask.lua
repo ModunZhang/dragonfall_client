@@ -461,7 +461,8 @@ end
 function UtilsForTask:CompleteTasksByType(growUpTasks, type_)
     return growUpTasks[type_]
 end
-function UtilsForTask:GetFirstCompleteTasks(growUpTasks)
+function UtilsForTask:GetFirstCompleteTasks(userData)
+    local growUpTasks = userData.growUpTasks
     local r = {}
     for category,v in ipairs(CATEGORY) do
         for _,v in ipairs(self:GetFirstCompleteTasksByCategory(growUpTasks, category)) do
@@ -506,7 +507,8 @@ function UtilsForTask:GetFirstCompleteTasksByCategory(growUpTasks, category)
     end
     return r
 end
-function UtilsForTask:GetAvailableTasksGroup(growUpTasks)
+function UtilsForTask:GetAvailableTasksGroup(userData)
+    local growUpTasks = userData.growUpTasks
     local r = {}
     for category,v in ipairs(CATEGORY) do
         table.insert(r, self:GetAvailableTasksByCategory(growUpTasks, category))
@@ -699,6 +701,61 @@ end
 function UtilsForTask:GetTaskIndex(type,id)
     local m = taskIndexMap[type] or {}
     return m[id] or #RecommendedMission + 1
+end
+local taskSeqMap = {
+    cityBuild = 1,
+    soldierCount = 2,
+    pveCount = 3,
+    attackWin = 4,
+    strikeWin = 5,
+    playerKill = 6,
+    playerPower = 7,
+    dragonLevel = 8,
+    dragonStar = 9,
+    dragonSkill = 10,
+    productionTech = 11,
+    militaryTech = 12,
+    soldierStar = 13,
+}
+function UtilsForTask:GetFinishedUnRewardTasksBySeq(userData)
+    local t = {}
+    for type,task in pairs(userData.growUpTasks) do
+        for i,v in ipairs(task) do
+            if not v.rewarded then
+                table.insert(t, {type = type, task = setmetatable({ id = v.id, finished = true }, meta_map[type])})
+            end
+        end
+    end
+    table.sort(t, function(a,b) 
+        if a.type == b.type then
+            return a.task.id < b.task.id
+        else
+            local aindex = self:GetTaskIndex(a.type,a.task.id)
+            local bindex = self:GetTaskIndex(b.type,b.task.id)
+            if aindex == bindex then
+                return taskSeqMap[a.type] < taskSeqMap[b.type]
+            end
+            return aindex < bindex
+        end
+    end)
+    return LuaUtils:table_map(t, function(k,v)
+        return k,v.task
+    end)
+end
+function UtilsForTask:SetCurrentTask(task)
+    self.currentTask = task
+end
+function UtilsForTask:IsCurrentTask(task)
+    if self.currentTask then
+        return self.currentTask:TaskType() == task:TaskType() and self.currentTask.id == task.id
+    end
+    return false
+end
+function UtilsForTask:HasCurrentTask()
+    return self.currentTask ~= nil
+end
+function UtilsForTask:GetCurrentTask()
+    return self.currentTask
 end
 
 -- 日常任务

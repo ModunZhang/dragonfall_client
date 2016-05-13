@@ -697,16 +697,18 @@ function CommonUpgradeUI:SetUpgradeRequirementListview()
         {
             resource_type = _("前置条件"),
             isVisible = building:GetLevel()>5 and building:GetType() ~= "dragonEyrie",
-            isSatisfy = not pre_condition,canNotBuy=true,
+            isSatisfy = not pre_condition,
+            canNotBuy=true,
             icon="hammer_33x40.png",
-            description = building:GetPreConditionDesc(),jump_call = handler(self,self.GotoPreconditionBuilding)
+            description = building:GetPreConditionDesc(),
+            jump_call = handler(self,self.GotoPreconditionBuilding)
         },
         {
             resource_type = "building_queue",
             isVisible = buildingEventsCount >= User.basicInfo.buildQueue,
             isSatisfy = buildingEventsCount  < User.basicInfo.buildQueue,
             icon="hammer_33x40.png",
-            description=_("建造队列已满")..(User.basicInfo.buildQueue-buildingEventsCount).."/"..User.basicInfo.buildQueue
+            description=_("建造队列已满").." "..(User.basicInfo.buildQueue-buildingEventsCount).."/"..User.basicInfo.buildQueue
         },
         {
             resource_type = _("木材"),
@@ -1190,7 +1192,7 @@ function CommonUpgradeUI:PopNotSatisfyDialog(listener,can_not_update_type)
                         local x,y = jump_building:GetMidLogicPosition()
                         current_scene:GotoLogicPoint(x,y,40):next(function()
                             if current_scene.AddIndicateForBuilding then
-                                current_scene:AddIndicateForBuilding(building_sprite,nil,false)
+                                current_scene:AddIndicateForBuilding(building_sprite,"dwelling",true)
                             end
                         end)
                     end,

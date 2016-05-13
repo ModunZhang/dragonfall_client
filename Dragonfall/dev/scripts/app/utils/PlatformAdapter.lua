@@ -128,6 +128,20 @@ function PlatformAdapter:winrt()
     ext.getDeviceLanguage = function()
         return cc.Application:getInstance():getCurrentLanguageCode()
     end
+    if ext.facebook and ext.isLowMemoryDevice() then
+        local login = ext.facebook.login
+        ext.facebook.login = function (func)
+            cc.Director:getInstance():stopAnimation()
+            cc.Director:getInstance():pause()
+            app:onEnterBackground()
+            login(function ( ... )
+                func(...)
+                cc.Director:getInstance():resume()
+                cc.Director:getInstance():startAnimation()
+                app:onEnterForeground()
+            end)
+        end
+    end
 end
 
 function PlatformAdapter:mac()

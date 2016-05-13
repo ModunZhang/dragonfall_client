@@ -189,7 +189,7 @@
     <Image Include="Assets\SplashScreen.scale-100.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\external\WindowsPhone\FBWinSDK\FBWinSDK\FBWinSDK.Windows\FBWinSDK.Windows.vcxproj">
+    <ProjectReference Include="..\..\..\..\..\external\WindowsPhone\winsdkfb-0.9.20160315\winsdkfb\winsdkfb\winsdkfb.Windows\winsdkfb.Windows.vcxproj">
       <Project>{418fc79b-aa0f-4951-a7d9-7da89bdf8fb6}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\..\cocos2d-x\cocos\2d\libcocos2d_8_1\libcocos2d_8_1\libcocos2d_8_1.Windows\libcocos2d_8_1.Windows.vcxproj">

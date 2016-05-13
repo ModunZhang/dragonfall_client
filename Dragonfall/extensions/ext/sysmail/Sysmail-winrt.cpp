@@ -13,7 +13,7 @@ bool CanSenMail()
 	return true;
 }
 //WINRT上暂时不提供发送是否成功的回调
-bool SendMail(std::string to, std::string subject, std::string body, int lua_function_ref)
+bool SendMail(std::vector<std::string> to, std::string subject, std::string body, int lua_function_ref)
 {
 #if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
 	WinRTHelper::RunOnUIThread([=]()
@@ -21,8 +21,11 @@ bool SendMail(std::string to, std::string subject, std::string body, int lua_fun
 		Windows::ApplicationModel::Email::EmailMessage^ message = ref new Windows::ApplicationModel::Email::EmailMessage();
 		message->Subject = WinRTHelper::PlatformStringFromString(subject);
 		message->Body = WinRTHelper::PlatformStringFromString(body);
-		Windows::ApplicationModel::Email::EmailRecipient^ recipient = ref new Windows::ApplicationModel::Email::EmailRecipient(WinRTHelper::PlatformStringFromString(to));
-		message->To->Append(recipient);
+		for (std::string address:to)
+		{
+			Windows::ApplicationModel::Email::EmailRecipient^ recipient = ref new Windows::ApplicationModel::Email::EmailRecipient(WinRTHelper::PlatformStringFromString(address));
+			message->To->Append(recipient);
+		}
 		Windows::ApplicationModel::Email::EmailManager::ShowComposeNewEmailAsync(message);
 	});
 #endif

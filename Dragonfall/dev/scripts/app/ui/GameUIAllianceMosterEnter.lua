@@ -152,7 +152,7 @@ function GameUIAllianceMosterEnter:onEnter()
             end
             show_reward_index = end_index > #reward_table and 1 or end_index
         end,2)
-    end, 2)
+    end, 0.5)
     -- local clipNode = display.newClippingRegionNode(cc.rect(soldier_head_icon:getPositionX() + 90 ,20,380,150)):addTo(body)
     -- local rewards_node = display.newNode():addTo(clipNode)
     -- rewards_node:setContentSize(cc.size(#rewards * 100,100))

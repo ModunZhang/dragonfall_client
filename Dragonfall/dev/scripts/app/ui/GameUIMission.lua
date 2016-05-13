@@ -282,11 +282,11 @@ end
 function GameUIMission:GetAchievementMissionData(isFinish)
     isFinish = type(isFinish) == 'boolean' and isFinish or false
     if isFinish then
-        local tasks = UtilsForTask:GetFirstCompleteTasks(self.city:GetUser().growUpTasks)
+        local tasks = UtilsForTask:GetFirstCompleteTasks(self.city:GetUser())
         local i1, i2, i3 = unpack(tasks)
         return {i1, i2, i3}
     else
-        return UtilsForTask:GetAvailableTasksGroup(self.city:GetUser().growUpTasks)
+        return UtilsForTask:GetAvailableTasksGroup(self.city:GetUser())
     end
 end
 function GameUIMission:OnGetAchievementRewardButtonClicked(data)
@@ -539,7 +539,7 @@ function GameUIMission:OpenGetDailyRewardDialog(reward_index,flag)
 
         -- 道具名称
         UIKit:ttfLabel({
-            text = UtilsForItem:GetItemLocalize(data[2]).."X"..data[3],
+            text = UtilsForItem:GetItemLocalize(data[2]).." X "..data[3],
             size = 24,
             color = 0x403c2f,
         }):addTo(body_1):align(display.LEFT_CENTER,130, body_1:getContentSize().height-22)

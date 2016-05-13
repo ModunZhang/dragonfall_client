@@ -457,7 +457,7 @@ function GameUIPveAttack:Attack()
                     end
                 end):AddToCurrentScene(true)
             end)
-        end,{isPVE = true}):AddToCurrentScene(true)
+        end,{isPVE = true, needTips = self.needTips}):AddToCurrentScene(true)
 end
 function GameUIPveAttack:BuyAndUseSweepScroll(count)
     local User = self.user
