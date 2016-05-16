@@ -10,7 +10,8 @@ function NotSupport()
 
 function main()
 {
-	echo "$OSTYPE:"
+	echo "os: $OSTYPE"
+	echo "size:"
 	if [[ "$OSTYPE" == "linux-gnu" ]]; then
 	     NotSupport
 	elif [[ "$OSTYPE" == "darwin"* ]]; then
