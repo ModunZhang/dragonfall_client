@@ -22,7 +22,6 @@ function main()
 	elif [[ "$OSTYPE" == "msys" ]]; then
         # Lightweight shell and GNU utilities compiled for Windows (part of MinGW)
         git log --name-status -1 | grep -E '^[A-Z]\b' | sort -k 2,2 -u | grep -E "M|A" | awk '{print $2}' | xargs du -b | awk '{t+=$0}END{print t/(1024*1024)" Mb"}'
-        NotSupport
 	elif [[ "$OSTYPE" == "freebsd"* ]]; then
 		NotSupport
 	else
