@@ -1,3 +1,6 @@
+:: build the Windows Phone Project for visual studio 2013
+:: by dannyhe
+
 @echo off
 echo./*
 echo. * Check VC++ environment...
@@ -20,7 +23,7 @@ if not defined VSVARS (
     goto ERROR
 )
 echo./*
-echo. * Building Dragonfall Windows Phone Project ...
+echo. * Building Dragonfall Windows Phone Project...
 echo. */
 echo.
 call %VSVARS%
