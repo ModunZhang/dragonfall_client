@@ -471,7 +471,7 @@ function GameUILoginBeta:GetServerInfo()
                 -- self:setProgressText(_("获取服务器信息成功"))
                 local responseCode = content.code or 500
                 if responseCode ~= 200 then
-                    self:showError("The server is under deploying."), function()
+                    self:showError("The server is under deploying.",function()
                         app:restart()
                     end)
                     return
