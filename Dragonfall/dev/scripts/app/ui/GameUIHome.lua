@@ -431,6 +431,7 @@ function GameUIHome:CreateBottom()
         end
     end)
     self.quest_bar_bg = quest_bar_bg
+    self.fingerNode = display.newNode():addTo(bottom_bg):pos(quest_bar_bg:getPosition())
 
     local light = display.newSprite("quest_light_70x34.png"):addTo(quest_bar_bg):pos(-302, 2)
     light:runAction(
@@ -491,14 +492,14 @@ function GameUIHome:HideClickReward()
 end
 local WidgetMaskFilter = import("..widget.WidgetMaskFilter")
 function GameUIHome:ShowFinger(isFirst)
-    if not self.quest_bar_bg:getChildByTag(111) then
-        UIKit:FingerAni():addTo(self.quest_bar_bg,10,111):pos(180, -30)
+    if not self.fingerNode:getChildByTag(111) then
+        UIKit:FingerAni():addTo(self.fingerNode,1,111):pos(180, -30)
     end
-    self.quest_bar_bg:getChildByTag(111):show()
+    self.fingerNode:getChildByTag(111):show()
     self:HideClickReward()
 
     if isFirst then
-        local rect = self.quest_bar_bg:getChildByTag(111):getCascadeBoundingBox()
+        local rect = self.fingerNode:getChildByTag(111):getCascadeBoundingBox()
         rect.x = rect.x - rect.width/3
         rect.width = rect.width * 1.5
         rect.height = rect.height * 1.3
@@ -514,9 +515,9 @@ function GameUIHome:ShowFinger(isFirst)
             return true
         end)
         -- self:GetFteLayer():Enable():SetTouchRect(rect)
-        -- local finger = self.quest_bar_bg:getChildByTag(111):getChildByTag(1)
+        -- local finger = self.fingerNode:getChildByTag(111):getChildByTag(1)
         -- finger:stopAllActions()
-        -- self.quest_bar_bg:getChildByTag(111)
+        -- self.fingerNode:getChildByTag(111)
         -- :pos(200,400):runAction(transition.sequence{
         --     cc.MoveTo:create(1.5, cc.p(180, -30)),
         --     cc.CallFunc:create(function()
@@ -526,8 +527,8 @@ function GameUIHome:ShowFinger(isFirst)
     end
 end
 function GameUIHome:HideFinger()
-    if self.quest_bar_bg:getChildByTag(111) then
-        self.quest_bar_bg:getChildByTag(111):hide()
+    if self.fingerNode:getChildByTag(111) then
+        self.fingerNode:getChildByTag(111):hide()
     end
 end
 function GameUIHome:RefreshTaskStatus(finished)

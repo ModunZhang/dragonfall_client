@@ -238,7 +238,7 @@ function GameUIPveHomeNew:CreateBottom()
         {normal = "quest_btn_unfinished_566x46.png",pressed = "quest_btn_unfinished_566x46.png"},
         {scale9 = false}
     ):addTo(bottom_bg):pos(420, bottom_bg:getContentSize().height + 56):onButtonClicked(function(event)
-        self.quest_bar_bg:removeChildByTag(111)
+        self:HideFinger()
         local task = self.task
         if task then
             if self.task.finished then
@@ -302,6 +302,8 @@ function GameUIPveHomeNew:CreateBottom()
         end
     end)
     self.quest_bar_bg = quest_bar_bg
+    self.fingerNode = display.newNode():addTo(bottom_bg):pos(quest_bar_bg:getPosition())
+
 
     -- if UtilsForBuilding:GetFreeBuildQueueCount(User) > 0 then
     --     display.newSprite("finger.png")
@@ -367,15 +369,15 @@ function GameUIPveHomeNew:HideClickReward()
     end
 end
 function GameUIPveHomeNew:ShowFinger()
-    if not self.quest_bar_bg:getChildByTag(111) then
-        UIKit:FingerAni():addTo(self.quest_bar_bg,10,111):pos(180, -30)
+    if not self.fingerNode:getChildByTag(111) then
+        UIKit:FingerAni():addTo(self.fingerNode,1,111):pos(180, -30)
     end
-    self.quest_bar_bg:getChildByTag(111):show()
+    self.fingerNode:getChildByTag(111):show()
     self:HideClickReward()
 end
 function GameUIPveHomeNew:HideFinger()
-    if self.quest_bar_bg:getChildByTag(111) then
-        self.quest_bar_bg:getChildByTag(111):hide()
+    if self.fingerNode:getChildByTag(111) then
+        self.fingerNode:getChildByTag(111):hide()
     end
 end
 function GameUIPveHomeNew:RefreshTaskStatus(finished)
