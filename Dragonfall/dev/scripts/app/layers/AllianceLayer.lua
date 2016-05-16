@@ -305,15 +305,20 @@ function AllianceLayer:CreateOrUpdateCorps(id, start_pos, end_pos, start_time, f
         local is_strike = not soldiers or #soldiers == 0
         local corpsNode
         if is_strike then
-            UIKit:CreateDragonByDegree(march_info.degree, 1.4, dragonType):addTo(corps)
+            corpsNode = UIKit:CreateDragonByDegree(march_info.degree, 1.4, dragonType):addTo(corps)
         else
             corpsNode = UIKit:CreateMoveSoldiers(march_info.degree, {dragonType = dragonType, soldiers = soldiers}):addTo(corps)
         end
         if (ally == MINE or ally == FRIEND) and banner_name then
-            local wp = corpsNode.dragon:convertToWorldSpace(cc.p(0,0))
-            local lp = corps:convertToNodeSpace(wp)
-            UIKit:CreateNameBanner(banner_name, dragonType)
-            :addTo(corps,1):pos(lp.x, lp.y + 80)
+            if is_strike then
+                UIKit:CreateNameBanner(banner_name, dragonType)
+                :addTo(corps,1):pos(0, 80)
+            else
+                local wp = corpsNode.dragon:convertToWorldSpace(cc.p(0,0))
+                local lp = corps:convertToNodeSpace(wp)
+                UIKit:CreateNameBanner(banner_name, dragonType)
+                :addTo(corps,1):pos(lp.x, lp.y + 80)
+            end
         end
         corps.march_info = march_info
         corps:pos(march_info.start_info.real.x, march_info.start_info.real.y)
