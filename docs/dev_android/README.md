@@ -1,10 +1,9 @@
 
 # Android Studio开发
 
-~~~
 	我们Andorid项目现在只能在mac上使用AS(Android Studio)开发项目
-  项目不支持同时构建debug和release版本,但支持同一版本下的不同apk构建
-~~~
+	项目不支持同时构建debug和release版本,但支持同一版本下的不同apk构建
+
 
 ## 安装部分
 
