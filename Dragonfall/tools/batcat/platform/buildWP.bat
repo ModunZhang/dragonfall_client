@@ -1,6 +1,10 @@
+::---------------------------------------------------
 :: build the Windows Phone Project for visual studio 2013
 :: by dannyhe
-:: useage: buildWP.bat [OutDir]
+:: Useage: buildWP.bat [OutDir]
+:: Date: 2016/05/16
+::---------------------------------------------------
+
 @echo off
 echo./*
 echo. * Check VC++ environment...
