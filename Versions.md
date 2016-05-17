@@ -41,3 +41,4 @@ Version | Git SHA-1 | Release Notes
 ------------ | ------------- | ------------
 1.1.3(1560)  | a043190       | 
 1.1.3(1815)  | 442e2df       | appx 1.1.3.3
+1.1.4(2062)  | a588cbc       | appVersion: 1.1.4 appMinVersion:1.1.3 appx 1.1.4.6
