@@ -2,8 +2,7 @@
 # Android Studio开发
 
 ~~~
-	我们Andorid项目现在只能在mac上使用AS(Android Studio)开发
-	项目路径为Dragonfall/frameworks/runtime-src/proj.android-studio
+	我们Andorid项目现在只能在mac上使用AS(Android Studio)开发项目路径为Dragonfall/frameworks/runtime-src/proj.android-studio
   构建的时候,我们项目不支持同时构建debug和release版本,但是支持同一版本下的不同apk构建
 ~~~
 
