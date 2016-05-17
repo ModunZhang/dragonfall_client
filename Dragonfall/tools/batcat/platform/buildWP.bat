@@ -1,8 +1,8 @@
 ::---------------------------------------------------
 :: build the Windows Phone Project for visual studio 2013
-:: by dannyhe
 :: Useage: buildWP.bat [OutDir]
 :: Date: 2016/05/16
+:: by dannyhe
 ::---------------------------------------------------
 
 @echo off
@@ -35,11 +35,11 @@ echo. */
 echo.
 call %VSVARS%
 if %FOUND_VC%==1 (
-	if %FOUND_OUTDIR%==0 (
-		msbuild  ..\..\..\frameworks\runtime-src\proj.win8.1-universal\App.WindowsPhone\Dragonfall.WindowsPhone.vcxproj /p:Configuration="Release"  /p:Platform="ARM" /t:Clean;Rebuild
-	) else (
-		msbuild  ..\..\..\frameworks\runtime-src\proj.win8.1-universal\App.WindowsPhone\Dragonfall.WindowsPhone.vcxproj /p:Configuration="Release"  /p:Platform="ARM" /t:Clean;Rebuild /p:OutDir=%~f1
-	)
+if %FOUND_OUTDIR%==0 (
+	msbuild  ..\..\..\frameworks\runtime-src\proj.win8.1-universal\App.WindowsPhone\Dragonfall.WindowsPhone.vcxproj /p:Configuration="Release"  /p:Platform="ARM" /t:Clean;Rebuild
+) else (
+	msbuild  ..\..\..\frameworks\runtime-src\proj.win8.1-universal\App.WindowsPhone\Dragonfall.WindowsPhone.vcxproj /p:Configuration="Release"  /p:Platform="ARM" /t:Clean;Rebuild /p:OutDir=%~f1
+)
 ) else (
     echo Script error.
     goto ERROR
