@@ -31,7 +31,11 @@ function GameUISelectTerrain:OnMoveInStage()
         end
         return true
     end)
-    self:RefreshDragon("grassLand")
+    local terrains = {"grassLand", "desert", "iceField"}
+    math.randomseed(tostring(os.time()):reverse():sub(1, 6))
+    local index = math.random(#terrains)
+    self.ui_map.check_box_group:sureSelectedButtonIndex(index)
+    self:RefreshDragon(terrains[index])
 
     self.ui_map.select:onButtonClicked(function(event)
         self.ui_map.select:setButtonEnabled(false)
