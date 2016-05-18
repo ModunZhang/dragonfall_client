@@ -72,6 +72,7 @@ EditBoxWinRT::EditBoxWinRT(Platform::String^ strPlaceHolder, Platform::String^ s
     m_inputFlag = inputFlag;
     m_receiveHandler = receiveHandler;
     m_maxLength = maxLength;
+	m_canQueueText = true;
 }
 
 
@@ -137,10 +138,13 @@ void EditBoxWinRT::Closed(Platform::Object^ sender, Platform::Object^ e)
 {
     critical_section::scoped_lock lock(m_criticalSection);
     RemoveControls();
+	m_canQueueText = true;
 }
 
 void EditBoxWinRT::Done(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
+	if (!m_canQueueText)return;
+	m_canQueueText = false;
     QueueText();
     HideFlyout();
 }
