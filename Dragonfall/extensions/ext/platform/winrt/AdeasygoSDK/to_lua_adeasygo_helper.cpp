@@ -220,7 +220,7 @@ void tolua_ext_module_adeasygo(lua_State* tolua_S)
 	tolua_module(tolua_S, EXT_MODULE_NAME, 0);
 	tolua_beginmodule(tolua_S, EXT_MODULE_NAME);
 	tolua_function(tolua_S, "registerPayDoneEvent", tolua_adeasygo_register_global_paydone_func);
-	tolua_function(tolua_S, "unRegisterPayDoneEvent", tolua_adeasygo_register_global_paydone_func);
+	tolua_function(tolua_S, "unRegisterPayDoneEvent", tolua_adeasygo_unregister_global_paydone_func);
 	tolua_function(tolua_S, "registerExceptionEvent", tolua_adeasygo_register_global_exception_func);
 	tolua_function(tolua_S, "unRegisterExceptionEvent", tolua_adeasygo_unregister_global_exception_func);
 	tolua_function(tolua_S, "getUid", tolua_adeasygo_device_unique_id);
