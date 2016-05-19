@@ -277,7 +277,7 @@ def exportImagesRes(image_dir_path):
                     if NEED_ENCRYPT_RES:
                         CompileResources(temp_file, image_outdir)
                     else:
-                        shutil.copy(image_sourceFile, image_outdir)
+                        shutil.copy(temp_file, image_outdir)
             else:
                 Logging.warning("未处理:%s" % sourceFile)
 
