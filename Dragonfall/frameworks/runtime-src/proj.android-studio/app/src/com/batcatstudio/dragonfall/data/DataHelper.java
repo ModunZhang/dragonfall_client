@@ -49,8 +49,6 @@ public class DataHelper {
 	
 	public static final long ZIP_RESOURCE_SIZE = 73164655;
 
-	private static int appVersionCode = -1;
-
 	private static SharedPreferences preferences;
 	
 	private static Editor editor;
@@ -58,15 +56,6 @@ public class DataHelper {
 	public static void initHelper() {
 		preferences = AppActivity.getGameActivity().getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
 		editor = preferences.edit();
-		
-		PackageManager pm = AppActivity.getGameActivity().getPackageManager();
-		PackageInfo pi;
-		try {
-			pi = pm.getPackageInfo(AppActivity.getGameActivity().getPackageName(), 0);
-			appVersionCode = pi.versionCode;
-		} catch (NameNotFoundException e) {
-			DebugUtil.LogException(TAG, e);
-		}
 	}
 	
 	public static SharedPreferences getSharedPreferences() {
@@ -102,7 +91,7 @@ public class DataHelper {
 
 				saveBooleanValue(KEY_HAS_INSTALL_GAME, true);
 				saveBooleanValue(KEY_HAS_INSTALL_SDCARD, installToSDCard);
-				saveIntValue(KEY_APP_VERSION_CODE, appVersionCode);
+				saveIntValue(KEY_APP_VERSION_CODE, BuildConfig.VERSION_CODE);
 				AppActivity.getGameActivity().gameHandler.sendEmptyMessage(AppActivity.AppActivityMessage.LOADING_UNZIP_SUCCESS.ordinal());
 			}
 		}.start();
@@ -346,7 +335,7 @@ public class DataHelper {
 	}
 	
 	public static boolean isAppVersionExpired() {
-		if (getSharedPreferences().getInt(KEY_APP_VERSION_CODE, -1) < appVersionCode) {
+		if (getSharedPreferences().getInt(KEY_APP_VERSION_CODE, -1) < BuildConfig.VERSION_CODE) {
 			return true;
 		} else {
 			return false;
