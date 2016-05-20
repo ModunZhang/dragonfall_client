@@ -212,8 +212,7 @@ public class CommonUtils {
 		}
 	}
 
-	public static void killProcess(){
-		int pid = android.os.Process.myPid();
-		android.os.Process.killProcess(pid);
+	public static void terminateProcess(){
+		android.os.Process.killProcess(android.os.Process.myPid());
 	}
 }
