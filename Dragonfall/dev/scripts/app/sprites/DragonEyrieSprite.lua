@@ -1,7 +1,6 @@
 local DragonSprite = import(".DragonSprite")
 local FunctionUpgradingSprite = import(".FunctionUpgradingSprite")
 local DragonEyrieSprite = class("DragonEyrieSprite", FunctionUpgradingSprite)
-local DragonManager = import("..entity.DragonManager")
 local DRAGON_ZORDER = 1
 
 

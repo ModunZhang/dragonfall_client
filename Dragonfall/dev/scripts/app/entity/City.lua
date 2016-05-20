@@ -19,7 +19,6 @@ local pairs = pairs
 local insert = table.insert
 local format = string.format
 City.LISTEN_TYPE = Enum(
-    "LOCK_TILE",
     "UNLOCK_TILE",
     "CREATE_DECORATOR",
     "OCCUPY_RUINS",
@@ -1057,24 +1056,6 @@ function City:OnHouseChanged(userData, current_time, deltaData)
         end)
     end)
     return true, is_unlock_any_tiles, unlock_table
-end
-function City:LockTilesByIndexArray(index_array)
-    table.foreach(index_array, function(_, index)
-        self.tiles[index.y][index.x].locked = true
-    end)
-    self:GenerateWalls()
-    local city = self
-    self:NotifyListeneOnType(City.LISTEN_TYPE.LOCK_TILE, function(listener)
-        listener:OnTileLocked(city)
-    end)
-end
-function City:LockTilesByIndex(x, y)
-    self.tiles[y][x].locked = true
-    self:GenerateWalls()
-    local city = self
-    self:NotifyListeneOnType(City.LISTEN_TYPE.LOCK_TILE, function(listener)
-        listener:OnTileLocked(city, x, y)
-    end)
 end
 function City:UnlockTilesByIndexArray(index_array)
     table.foreach(index_array, function(_, index)

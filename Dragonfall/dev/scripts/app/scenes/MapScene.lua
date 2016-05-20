@@ -11,24 +11,23 @@ local abs = math.abs
 local fmod = math.fmod
 local elastic = 200
 function MapScene:ctor()
-    if User then
-        User:ResetAllListeners()
-        User:AddListenOnType(self, "basicInfo")
-        self.level = User:GetLevel()
-    end
-    if City then
-        City:ResetAllListeners()
-    end
-    if Alliance_Manager then
-        Alliance_Manager:GetMyAlliance():ResetAllListeners()
-        self.my_alliance = Alliance_Manager:GetMyAlliance()
-    end
     self.blur_count = 1
     self.event_manager = EventManager.new(self)
     self.touch_judgment = TouchJudgment.new(self)
 
     app:GetGameDefautlt():setStringForKey("PASS_SPLASH", "yes")
     app:GetGameDefautlt():flush()
+end
+function MapScene:OnUserDataChanged_dragons(userData, deltaData)
+    for k,dragon in pairs(userData.dragons) do
+        local ok, value = deltaData(string.format("dragons.%s.level", k))
+        if self.dragonsLevel[k] ~= value then
+            if not UIKit:GetUIInstance("GameUIPveSummary") then
+                UIKit:newGameUI("GameUIShowDragonUpStarAnimation",dragon,true):AddToCurrentScene(true)
+            end
+        end
+        self.dragonsLevel[k] = value
+    end
 end
 function MapScene:OnUserDataChanged_basicInfo(userData, deltaData)
     local ok, value = deltaData("basicInfo.levelExp")
@@ -55,8 +54,10 @@ function MapScene:onEnter()
     self.top_layer = display.newNode():addTo(self, 3)
     self.screen_layer = display.newNode():addTo(self:GetSceneNode(), 4)
     display.newNode():addTo(self):schedule(function()
+        local Alliance_Manager = Alliance_Manager
+        local alliance = Alliance_Manager:GetMyAlliance()
         local flag = false
-        if self.my_alliance and self.my_alliance:IsDefault() then
+        if alliance and alliance:IsDefault() then
             flag = false 
         else
             flag = Alliance_Manager:HasToMyCityEvents()
@@ -73,10 +74,35 @@ function MapScene:onEnter()
     --     -- showMemoryUsage("collect")
     --     print("getAppMemoryUsage", ext.getAppMemoryUsage())
     -- end, 2)
+    self:ResetAllListeners()
+    self:InitAllListeners()
 end
 function MapScene:onExit()
+    self:ResetAllListeners()
     if self.UnloadImages then
         self:UnloadImages()
+    end
+end
+function MapScene:ResetAllListeners()
+    if User then
+        User:ResetAllListeners()
+    end
+    if City then
+        City:ResetAllListeners()
+    end
+    if Alliance_Manager then
+        Alliance_Manager:GetMyAlliance():ResetAllListeners()
+    end
+end
+function MapScene:InitAllListeners()
+    if User then
+        User:AddListenOnType(self, "dragons")
+        User:AddListenOnType(self, "basicInfo")
+        self.dragonsLevel = {}
+        for k,v in pairs(User.dragons) do
+            self.dragonsLevel[k] = v.level
+        end
+        self.level = User:GetLevel()
     end
 end
 function MapScene:PreLoadImages()

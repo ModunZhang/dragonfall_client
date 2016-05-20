@@ -9,7 +9,6 @@ local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local WidgetDragonEquipIntensify = import("..widget.WidgetDragonEquipIntensify")
 local WidgetInfo = import("..widget.WidgetInfo")
 local GameUIDragonEyrieDetail = import(".GameUIDragonEyrieDetail")
-local DragonManager = import("..entity.DragonManager")
 local UIListView = import(".UIListView")
 local Localize = import("..utils.Localize")
 

@@ -641,6 +641,9 @@ function display.newClippingRegionNode(...)
     return node
 end
 
+
+string.th000 = string.formatnumberthousands
+
 --打开json对null的支持
 local cjson = require("cjson")
 cjson.decode_lua_nil(false)

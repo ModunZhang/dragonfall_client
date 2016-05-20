@@ -554,8 +554,8 @@ function UtilsForTask:GetAvailableTasksByCategory(growUpTasks, category)
                 return a.id < b.id
             end)
         end
-        for _,dragon_type in ipairs{"redDragon", "greenDragon", "blueDragon"} do
-            local dragon = dragons[dragon_type]
+        for _,dragonType in ipairs{"redDragon", "greenDragon", "blueDragon"} do
+            local dragon = dragons[dragonType]
             for _,v in ipairs(dragon.dragonLevel) do
                 table.insert(r, v)
             end
