@@ -114,10 +114,6 @@ public class LaunchHelper {
 		AppActivity.getGameActivity().setKeepScreenOn(false);
 	}
 
-	public static boolean isGameLaunched() {
-		return AppActivity.getGameActivity().isGameLaunched();
-	}
-
 	public static String getWritePath() {
 		StringBuilder sb = new StringBuilder();
 		File file = AppActivity.getGameActivity().getExternalFilesDir(null);
