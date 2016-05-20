@@ -42,7 +42,8 @@ public class LaunchHelper {
 		}else {
 			AppActivity.getGameActivity().setKeepScreenOn(true);
 			final String writePath = getWritePath();
-			if (DataHelper.isAppVersionExpired() && DataHelper.hasInstallUnzip()) {
+			Cocos2dxHelper.setCocos2dxWritablePath(writePath);
+			if (DataHelper.isAppVersionExpired()) {
 				//clean
 				new Thread() {
 					@SuppressWarnings("static-access")
@@ -57,15 +58,13 @@ public class LaunchHelper {
 							DebugUtil.LogException(TAG,e);
 						}
 						DataHelper.saveIntValue(DataHelper.KEY_APP_VERSION_CODE, BuildConfig.VERSION_CODE);
-						DataHelper.saveBooleanValue(DataHelper.KEY_HAS_INSTALL_GAME, true);
-						Cocos2dxHelper.setCocos2dxWritablePath(writePath);
 						AppActivity.getGameActivity().gameHandler.sendEmptyMessage(AppActivity.AppActivityMessage.LOADING_DELETE_SUCCESS.ordinal());
 					}
 				}.start();
 			}else {
-				DataHelper.saveIntValue(DataHelper.KEY_APP_VERSION_CODE, BuildConfig.VERSION_CODE);
-				DataHelper.saveBooleanValue(DataHelper.KEY_HAS_INSTALL_GAME, true);
-				Cocos2dxHelper.setCocos2dxWritablePath(writePath);
+				if (DataHelper.getSharedPreferences().getInt(DataHelper.KEY_APP_VERSION_CODE,-1) != BuildConfig.VERSION_CODE){
+					DataHelper.saveIntValue(DataHelper.KEY_APP_VERSION_CODE, BuildConfig.VERSION_CODE);
+				}
 				runNativeLuaEngine();
 			}
 		}
