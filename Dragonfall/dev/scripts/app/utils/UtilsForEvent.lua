@@ -160,6 +160,9 @@ function UtilsForEvent:GetMarchReturnEventPrefix(event)
     return string.format(_("返回中 (%s)"), target_pos)
 end
 
+function UtilsForEvent:GetVillageConfig(villageInfo)
+    return GameDatas.AllianceVillage[villageInfo.type][villageInfo.level]
+end
 function UtilsForEvent:GetCollectPercent(event)
     local collectTime = app.timer:GetServerTime() - event.startTime / 1000
     local time = (event.finishTime - event.startTime) / 1000
