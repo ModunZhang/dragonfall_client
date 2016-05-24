@@ -60,7 +60,6 @@ function City:ctor(user)
     self.tower = UpgradeBuilding.new({building_type = "tower", city = self})
     self.visible_towers = {}
     self.decorators = {}
-    self.need_update_buildings = {}
     self.building_location_map = {}
     self:InitLocations()
     self:InitRuins()
@@ -784,11 +783,6 @@ function City:IteratorCanUpgradeBuildingsByUserData(user_data, current_time, del
         end)
     end
 end
-function City:IteratorAllNeedTimerEntity(current_time)
-    for _,v in ipairs(self.need_update_buildings) do
-        v:OnTimer(current_time)
-    end
-end
 -- 遍历顺序影响城墙的生成
 function City:IteratorTilesByFunc(func)
     for iy, row in pairs(self.tiles) do
@@ -855,10 +849,6 @@ function City:GetNeighbourRuinWithSpecificRuin(ruin)
         end
     end
     return neighbours
-end
--- 功能函数
-function City:OnTimer(time)
-    self:IteratorAllNeedTimerEntity(time)
 end
 function City:CreateDecorator(current_time, decorator_building)
     insert(self.decorators, decorator_building)
@@ -948,13 +938,6 @@ function City:OnUserDataChanged(userData, current_time, deltaData)
         LuaUtils:outputTable("unlock_table", unlock_table)
         self:UnlockTilesByIndexArray(unlock_table)
     end
-    local need_update_buildings = {}
-    self:IteratorCanUpgradeBuildings(function(building)
-        if building:IsNeedToUpdate() then
-            insert(need_update_buildings, building)
-        end
-    end)
-    self.need_update_buildings = need_update_buildings
     if deltaData then
         local ok_1 = deltaData("buildingEvents.add")
         local ok_2 = deltaData("buildingEvents.remove")

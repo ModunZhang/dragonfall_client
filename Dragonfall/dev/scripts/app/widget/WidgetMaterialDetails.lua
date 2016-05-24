@@ -116,12 +116,10 @@ function WidgetMaterialDetails:InitMaterialDetails(material_key,material_name)
         end)
     elseif material_key == "soldierMaterials" then
         self:CreateOriginItem(list,_("前往飞艇探险"),function ()
-            local city = City
-            local dragon_manger = city:GetDragonEyrie():GetDragonManager()
-            local dragon_type = dragon_manger:GetCanFightPowerfulDragonType()
-            if #dragon_type > 0
-                or UtilsForDragon:GetDefenceDragon(city:GetUser()) then
-                app:EnterPVEScene(city:GetUser():GetLatestPveIndex())
+            local fightPowerfulType = UtilsForDragon:GetCanFightPowerfulDragonType(User)
+            if #fightPowerfulType > 0
+                or UtilsForDragon:GetDefenceDragon(User) then
+                app:EnterPVEScene(User:GetLatestPveIndex())
             else
                 UIKit:showMessageDialog(_("主人"),_("需要一条空闲状态的魔龙才能探险"))
             end

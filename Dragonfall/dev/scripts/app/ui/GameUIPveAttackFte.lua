@@ -223,13 +223,13 @@ function GameUIPveAttackFte:PormiseOfFte()
         table.remove(enemies, 1)
         UIKit:newGameUI('GameUISendTroopNew',
             function(dragonType, soldiers)
-                local dragon = City:GetFirstBuildingByType("dragonEyrie"):GetDragonManager():GetDragon(dragonType)
+                local dragon = UtilsForDragon:GetDragon(User, dragonType)
                 local dragonParam = {
-                    dragonType = dragon:Type(),
-                    old_exp = dragon:Exp(),
-                    new_exp = dragon:Exp(),
-                    old_level = dragon:Level(),
-                    new_level = dragon:Level(),
+                    dragonType = dragon.type,
+                    old_exp = dragon.exp,
+                    new_exp = dragon.exp,
+                    old_level = dragon.level,
+                    new_level = dragon.level,
                     reward = {},
                 }
 
@@ -249,9 +249,9 @@ function GameUIPveAttackFte:PormiseOfFte()
                 fightReport.playerDragonFightData.type = dragonType
 
                 local report = self:DecodeReport(fightReport, dragon, soldiers)
-                local dragon = City:GetFirstBuildingByType("dragonEyrie"):GetDragonManager():GetDragon(dragonType)
-                dragonParam.new_exp = dragon:Exp()
-                dragonParam.new_level = dragon:Level()
+                local dragon = UtilsForDragon:GetDragon(User, dragonType)
+                dragonParam.new_exp = dragon.exp
+                dragonParam.new_level = dragon.level
                 dragonParam.star = 3
                 dragonParam.callback = function()
                     display.getRunningScene():GetSceneLayer():MoveAirship(true)

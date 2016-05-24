@@ -204,9 +204,8 @@ function MyCityFteScene:OpenUI(building, default_tab)
         if #UIKit.open_ui_callbacks == 0 then return end
         UIKit:newGameUI(uiarrays[1], city, entity, uiarrays[2], uiarrays[3]):AddToScene(self, true)
     elseif type_ == "airship" then
-        local dragon_manger = city:GetDragonEyrie():GetDragonManager()
-        local dragon_type = dragon_manger:GetCanFightPowerfulDragonType()
-        if #dragon_type > 0 or UtilsForDragon:GetDefenceDragon(User) then
+        local fightPowerfulType = UtilsForDragon:GetCanFightPowerfulDragonType(city:GetUser())
+        if #fightPowerfulType > 0 or UtilsForDragon:GetDefenceDragon(User) then
             app:EnterPVEFteScene(city:GetUser():GetLatestPveIndex())
         else
             UIKit:showMessageDialog(_("主人"),_("需要一条空闲状态的魔龙才能探险"))

@@ -1,10 +1,10 @@
 UtilsForFte = {}
 
-function UtilsForFte:IsHatedAnyDragon(userData)
-    return #UtilsForDragon:GetHatedDragons(userData) > 0
+function UtilsForFte:IsHatchedAnyDragons(userData)
+    return #UtilsForDragon:GetHatchedDragons(userData) > 0
 end
 function UtilsForFte:IsStudyAnyDragonSkill(userData)
-	for i,v in ipairs(UtilsForDragon:GetHatedDragons(userData)) do
+	for i,v in ipairs(UtilsForDragon:GetHatchedDragons(userData)) do
 		if v.skills.skill_1.level > 0 then
 			return true
 		end

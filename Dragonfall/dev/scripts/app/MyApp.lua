@@ -214,7 +214,6 @@ function MyApp:restart(needDisconnect)
         NetManager:disconnect()
     end
     --关闭所有状态
-    self.timer:Stop()
     self:GetAudioManager():StopAll()
     self:GetChatManager():Reset()
     device.hideActivityIndicator()

@@ -83,9 +83,9 @@ function UpgradeBuilding:GetLevel()
     return self.level
 end
 
-function UpgradeBuilding:IsNeedToUpdate()
-    return self.upgrade_to_next_level_time ~= 0
-end
+-- function UpgradeBuilding:IsNeedToUpdate()
+--     return self.upgrade_to_next_level_time ~= 0
+-- end
 function UpgradeBuilding:OnUserDataChanged(userData, current_time, location_info, house_location_info, deltaData, event)
     local level, finished_time, type_
     if self:IsHouse() then
@@ -115,7 +115,6 @@ function UpgradeBuilding:OnEvent(event)
     if event then
         self.unique_upgrading_key = event.id
         self.event = event
-        dump(event)
     else
         self.unique_upgrading_key = nil
         self.event = nil

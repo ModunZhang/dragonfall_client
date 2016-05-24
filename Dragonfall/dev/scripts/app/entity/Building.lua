@@ -58,8 +58,6 @@ end
 function Building:BelongCity()
     return self.city
 end
-function Building:OnTimer(current_time)
-end
 function Building:GetSize()
     return self.w, self.h
 end

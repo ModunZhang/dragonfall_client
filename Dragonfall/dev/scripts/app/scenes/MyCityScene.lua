@@ -425,9 +425,8 @@ function MyCityScene:OpenUI(building, default_tab, need_tips, build_name)
     if type_ == "ruins" and not self:IsEditMode() then
         UIKit:newGameUI(uiarrays[1], city, entity, uiarrays[2], uiarrays[3], need_tips, build_name):AddToScene(self, true)
     elseif type_ == "airship" then
-        local dragon_manger = city:GetDragonEyrie():GetDragonManager()
-        local dragon_type = dragon_manger:GetCanFightPowerfulDragonType()
-        if #dragon_type > 0 or UtilsForDragon:GetDefenceDragon(User) then
+        local fightPowerfulType = UtilsForDragon:GetCanFightPowerfulDragonType(User)
+        if #fightPowerfulType > 0 or UtilsForDragon:GetDefenceDragon(User) then
             app:EnterPVEScene(city:GetUser():GetLatestPveIndex(), need_tips)
         else
             UIKit:showMessageDialog(_("主人"),_("需要一条空闲状态的魔龙才能探险"))
@@ -457,7 +456,7 @@ end
 
 function MyCityScene:RunFteIfNeeded()
     local p = cocos_promise.defer()
-    if (not UtilsForFte:IsHatedAnyDragon(self:GetCity():GetUser())
+    if (not UtilsForFte:IsHatchedAnyDragons(self:GetCity():GetUser())
     or not UtilsForFte:IsStudyAnyDragonSkill(self:GetCity():GetUser())
     or not UtilsForFte:IsDefencedWithTroops(self:GetCity():GetUser()))
     -- and not self:GetCity():GetUser().countInfo.isFTEFinished
