@@ -161,7 +161,7 @@ function UtilsForEvent:GetMarchReturnEventPrefix(event)
 end
 
 function UtilsForEvent:GetVillageConfig(villageInfo)
-    return GameDatas.AllianceVillage[villageInfo.type][villageInfo.level]
+    return GameDatas.AllianceVillage[villageInfo.name][villageInfo.level]
 end
 function UtilsForEvent:GetCollectPercent(event)
     local collectTime = app.timer:GetServerTime() - event.startTime / 1000
