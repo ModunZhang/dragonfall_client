@@ -21,12 +21,15 @@ end
 function MapScene:OnUserDataChanged_dragons(userData, deltaData)
     for k,dragon in pairs(userData.dragons) do
         local ok, value = deltaData(string.format("dragons.%s.level", k))
-        if ok and self.dragonsLevel[k] ~= value then
+        if ok and self.dragonsLevel[k] ~= value and value > 1 then
+            print(ok, self.dragonsLevel[k], value)
             if not UIKit:GetUIInstance("GameUIPveSummary") then
                 UIKit:newGameUI("GameUIShowDragonUpStarAnimation",dragon,true):AddToCurrentScene(true)
             end
         end
-        self.dragonsLevel[k] = value
+        if ok and value then
+            self.dragonsLevel[k] = value
+        end
     end
 end
 function MapScene:OnUserDataChanged_basicInfo(userData, deltaData)
