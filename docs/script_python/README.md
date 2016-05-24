@@ -92,7 +92,7 @@
 11. buildTexture.py **导出游戏的大图到images目录下**
 	
 	> 参数:1.平台
-12. create_android_zip.py **将Android下导出的资源打包为zip并修改java文件使其更新文件大小信息**
+12. create_android_zip.py ~~将Android下导出的资源打包为zip并修改java文件使其更新文件大小信息~~ 将Android的导出的资源拷贝到assets中
 13. gcm_push.py **Android下 GCM推送测试脚本**
 	
 	`python gcm_push.py --message="Bye Bye" --id="APA91bEv6GmHN3q5Swrsu_Lxxw9zds3Q2C2TPwtWIrBDbouo4uyyE5AdaKxFnZ39FYg0dyJcliPBZa_fqrc5figMZ5-M-gMNfWb_VAm6-HQS1QiDbdyBGTnPysaMw4cBsOGaUkPUbkm_"`
@@ -149,6 +149,6 @@
 
 ##已知问题
 
-**自动更新上传到git的脚本只能在mac上执行**
+~~自动更新上传到git的脚本只能在mac上执行~~
 
 ~~`syncUpdateDataToGit.py`脚本在`windows`上执行时`rsync`命令拷贝时权限有bug~~

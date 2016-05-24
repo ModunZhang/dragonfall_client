@@ -35,7 +35,7 @@ function GameUIUnlockBuilding:Init()
         :addTo(self)
 
     local build_png = SpriteConfig[self.building:GetType()]:GetConfigByLevel(1).png
-    self.building_image = display.newScale9Sprite(build_png, display.cx-197, display.top-245):addTo(self)
+    self.building_image = display.newSprite(build_png, display.cx-197, display.top-245):addTo(self)
     self.building_image:setAnchorPoint(cc.p(0.5,0.5))
     self.building_image:setScale(124/self.building_image:getContentSize().width)
 

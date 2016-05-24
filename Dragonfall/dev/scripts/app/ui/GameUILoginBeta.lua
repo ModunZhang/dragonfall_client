@@ -469,7 +469,13 @@ function GameUILoginBeta:GetServerInfo()
             end
             if success then
                 -- self:setProgressText(_("获取服务器信息成功"))
-                dump(content)
+                local responseCode = content.code or 500
+                if responseCode ~= 200 then
+                    self:showError("The server is under deploying.",function()
+                        app:restart()
+                    end)
+                    return
+                end
                 local ip, port = unpack(string.split(content.data.entry, ":"))
                 NetManager.m_gateServer.host = ip
                 NetManager.m_gateServer.port = tonumber(port)

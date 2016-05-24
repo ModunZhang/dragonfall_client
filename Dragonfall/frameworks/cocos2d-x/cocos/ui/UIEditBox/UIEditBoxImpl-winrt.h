@@ -83,6 +83,7 @@ namespace ui {
         EditBox::InputMode m_inputMode;
         EditBox::InputFlag m_inputFlag;
         int m_maxLength;
+		bool m_canQueueText;
     };
 
     class CC_GUI_DLL UIEditBoxImplWinrt : public EditBoxImpl

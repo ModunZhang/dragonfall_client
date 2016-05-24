@@ -3,19 +3,55 @@
 --------------------------------------------------
 1.1.4
 --------------------------------------------------
+[sdk] Websocket更新到cocos2dx官方的最新版本1.6.0
+[api] 游戏内禁止锁屏功能
+[api] 调整文本框调用ended事件的时机,添加手动隐藏文本框label的函数
+[api] 自动更新不再比对tag值
+[api] 修改lua加密时不编译lua文件为字节码,并提供开关
+[api] 修改发送邮箱接口支持多个收件人
+[api] lua extension支持版本号控制:ext.__version__
+[tool] 删除没有使用的图片,修改导出贴图的脚本
+[api] 添加传递事件到appsflyer的接口
+
+WP上的修改:
+
+[sdk] 修改adeasygo的初始化位置,用于修复sdk留存数据的一致性
+[bug] 修复wp上下载文件bug
+[audio] 移除原有mp3解码，添加新的音乐引擎,音效使用新引擎播放,修改新音乐引擎导致的userdefault的bug
+[api] Native程序本地化只支持英文的本地化
+[api] 优化wp上判断是否是测试版本,是否是低内存设备的api接口
+[sdk] wp替换facebook为最新版本
+[api] 修改windows phone接口GetAppBundleVersion返回windowsphone的修订号
+[sdk] 更新angel zlib到2dx官方最新版本
+[tool] 提供wp上打包项目和部署到手机的脚本工具,可以不用每次打开VS打包和部署项目
+[sdk] 优化在低内存设备上(内存小于等于1G)wp绑定facebook的逻辑
 
 Android上的修改:
 
-修改内购错误发生时的处理方式
-添加bugly对游戏的错误日志进行收集
-修改在一些手机上2dx引擎初始化错误导致crash的bug(无法进入游戏)
-修复google play后台的安全警告(升级TD为最新3.2.4,升级curl为2dx官方最新版本)
-测试服务器的环境下所有市场级别的sdk不再生效(TD,AppsFlyer)
-尝试修复游戏有小几率从后台进入前台会丢失纹理的bug(黑屏)
-修复在一些设备上初始化iap的时候会crash的bug
-GCM使用google play services的api进行检测是否可用
-自定义bugly cocos部分的java代码,在崩溃时尽可能的上传lua调用堆栈,具体的项目为external/Android/bugly_cocos2dx(Android Studio)
-Windows Phone上websocket主动关闭连接时不再回调close事件
+[iap] 修改内购错误发生时的处理方式
+[sdk] 添加bugly对游戏的错误日志进行收集,自定义bugly cocos部分的java代码,在崩溃时尽可能的上传lua调用堆栈,具体的项目为external/Android/bugly_cocos2dx(Android Studio)
+[bug] 修改在一些手机上2dx引擎初始化错误导致crash的bug(无法进入游戏)
+[sdk] 修复google play后台的安全警告,升级TD为最新3.2.4,升级curl为2dx官方最新版本,其他平台保持不变
+[sdk] 测试服务器的环境下所有市场级别的sdk不再生效(TD,AppsFlyer)
+[bug] 尝试修复游戏有小几率从后台进入前台会丢失纹理的bug(黑屏)
+[bug] 修复在一些设备上初始化iap的时候会crash的bug
+[sdk] GCM使用google play services的api进行检测是否可用
+[sdk] android进入后台后才接收远程推送
+[iap] 修改android后台前台切换函数的调用时机,修改账号绑定通讯的时机,修改内购只由主动获取刷新,购买成功时刻不进行和服务器通讯
+[api] 修复android初始化opengl上下文引擎代码
+[api] android输入框默认行为设置为小写
+[bug] 因为在某些越狱设备上会发生意外crash,所以取消掉本地和远程通知的震动效果
+[api] 动态库中加入版本信息
+[api] android修改当activity被摧毁时,重新启动游戏
+[api] 添加获取androidid和IMEI的接口
+[bug] 修复android键盘触发全屏事件时可能会卡住得问题
+[api] 为提高android低内存设备的稳定性,android上的输入框关闭使用游戏内的字体,并生成相应动态库文件
+[api] 修改本地和远程通知唤醒屏幕
+[sdk] android将初始化facebook的逻辑放入ui线程中
+[api] 修改android低内存设备的读图规则及脚本,删除没有再使用的战斗回放
+[api] 覆盖安装时android弹出提示框对原有文件进行删除(其他平台没有进行处理(ios/wp),所以其他平台发布时必须增加大版本号,版本稳定后也可以关掉android的这个功能和其他平台保持一致)
+[api] 去掉首次安装游戏解压的功能,脚本工具和底层支持直接拷贝资源到assets目录中
+[api] 支持png分拆为两张jpg,优化android的包大小(仅仅在内存大于等于1G的设备上)
 
 --------------------------------------------------
 1.1.3
