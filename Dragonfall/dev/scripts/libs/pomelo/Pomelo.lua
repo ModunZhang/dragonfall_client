@@ -72,7 +72,7 @@ function Pomelo:request(route, msg, cb)
         return false
     end
 
-    self.reqId = self.reqId + 1
+    self.reqId = self.reqId + 2
     self:_sendMessage(self.reqId, route, msg)
     self._callbacks[self.reqId] = cb
     self.routeMap[self.reqId] = route
