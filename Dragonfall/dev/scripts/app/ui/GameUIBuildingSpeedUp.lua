@@ -61,6 +61,9 @@ function GameUIBuildingSpeedUp:OnUserDataChanged_buildingEvents(userData, deltaD
             end
         end
     end
+    local time, percent = UtilsForEvent:GetEventInfo(self.event)
+    self:SetFreeButtonEnabled(time <= DataUtils:getFreeSpeedUpLimitTime())
+    self:SetProgressInfo(time, percent)
 end
 function GameUIBuildingSpeedUp:OnUserDataChanged_houseEvents(userData, deltaData)
     local ok, value = deltaData("houseEvents.remove")
@@ -80,6 +83,9 @@ function GameUIBuildingSpeedUp:OnUserDataChanged_houseEvents(userData, deltaData
             end
         end
     end
+    local time, percent = UtilsForEvent:GetEventInfo(self.event)
+    self:SetFreeButtonEnabled(time <= DataUtils:getFreeSpeedUpLimitTime())
+    self:SetProgressInfo(time, percent)
 end
 return GameUIBuildingSpeedUp
 

@@ -49,6 +49,7 @@ function UtilsForEvent:GetSpeedUpPrice(event,eventType,time)
         if speedUpTime > 0 then
             return DataUtils:getGemByTimeInterval(speedUpTime)
         end
+        return 0
     else
         local leftTime = time or self:GetEventInfo(event)
         return DataUtils:getGemByTimeInterval(leftTime)

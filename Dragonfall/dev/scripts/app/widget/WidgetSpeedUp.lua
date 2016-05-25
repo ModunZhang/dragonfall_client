@@ -110,7 +110,12 @@ function WidgetSpeedUp:SetAccBtnsGroup(eventType,speedUpEvent)
     self.eventType = eventType
     self.speedUp_button:onButtonClicked(function(event)
         if event.name == "CLICKED_EVENT" then
-            if User:GetGemValue() < UtilsForEvent:GetSpeedUpPrice(UtilsForEvent:GetEventById(User,speedUpEvent.id),eventType) then
+            local gem = User:GetGemValue()
+            local evt = UtilsForEvent:GetEventById(User,speedUpEvent.id)
+            dump(evt)
+            dump(eventType)
+            local needGem = UtilsForEvent:GetSpeedUpPrice(evt,eventType)
+            if gem < needGem then
                 UIKit:showMessageDialog(_("提示"),_("金龙币不足")):CreateOKButton(
                     {
                         listener = function ()
