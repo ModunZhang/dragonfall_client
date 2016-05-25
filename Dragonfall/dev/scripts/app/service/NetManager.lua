@@ -735,10 +735,12 @@ end
 
 
 function NetManager:getDeviceInfoForServer()
-    if ext.getAndroidId then
+    if device.platform == "android" and ext.getAndroidId then
         local androidId = ext.getAndroidId() 
         local deviceId  = ext.getDeviceId()
         return string.format("%s|%s",androidId,deviceId)
+    elseif device.platform == 'winrt' and ext.adeasygo then
+        return ext.adeasygo.getUid()
     else
         return "unknown"
     end
