@@ -618,6 +618,10 @@ function GameUtils:getSupportMailFormat(category,logMsg)
     if logMsg then
         result_str = string.format("%s\n---------------Log---------------\n%s",result_str,logMsg)
     end
+    if device.platform == 'winrt' and ext.adeasygo then
+        local uid = ext.adeasygo.getUid()
+        result_str = string.format("%s\n%s",result_str,string.format("Identity:%s",uid))
+    end
     return "[Dragonfall]" .. category ,result_str
 end
 function GameUtils:getLoginErrorMailFormat(category)
@@ -636,6 +640,10 @@ function GameUtils:getLoginErrorMailFormat(category)
     local result_str = string.format(format_str,_("不能删除"),UTCTime,GameName,Version,OpenUDID,Category,Language,DeviceType,OSVersion,Tag)
     if logMsg then
         result_str = string.format("%s\n---------------Log---------------\n%s",result_str,logMsg)
+    end
+    if device.platform == 'winrt' and ext.adeasygo then
+        local uid = ext.adeasygo.getUid()
+        result_str = string.format("%s\n%s",result_str,string.format("Identity:%s",uid))
     end
     return "[Dragonfall]" .. category ,result_str
 end
