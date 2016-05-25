@@ -100,14 +100,20 @@ function GameUISendTroopNew:ctor(march_callback,params)
     self.military_soldiers = params.military_soldiers -- 编辑驻防部队时传入当前驻防部队信息
     GameUISendTroopNew.super.ctor(self,City,params.title or _("准备进攻"))
     self.alliance = self:GetMyAlliance()
-    self.dragon_manager = City:GetFirstBuildingByType("dragonEyrie"):GetDragonManager()
+
     self.march_callback = march_callback
     self.params = params
 
     -- 默认选中最强的并且可以出战的龙,如果都不能出战，则默认最强龙
-    self.dragon = params.dragon or self.dragon_manager:GetDragon((self.isPVE and GameUISendTroopNew.dragonType) or self.dragon_manager:GetCanFightPowerfulDragonType()) or self.dragon_manager:GetDragon(self.dragon_manager:GetPowerfulDragonType())
+    local fightPowerfulType = UtilsForDragon:GetCanFightPowerfulDragonType(User)
+    local fightPowerfulDragon = UtilsForDragon:GetDragon(User, (self.isPVE and self.dragonType) or fightPowerfulType)
+
+    local powerfulType = UtilsForDragon:GetPowerfulDragonType(User)
+    local powerfulDragon = UtilsForDragon:GetDragon(User, powerfulType)
+
+    self.dragon = params.dragon or fightPowerfulDragon or powerfulDragon
     if self.isPVE then
-        GameUISendTroopNew.dragonType = self.dragon:Type()
+        GameUISendTroopNew.dragonType = self.dragon.type
     end
 end
 
@@ -148,7 +154,7 @@ function GameUISendTroopNew:SelectDragonPart()
             end
         end):setContentSize(cc.size(204,192))
     -- 龙动画
-    self.dragon_armature = DragonSprite.new(display.getRunningScene():GetSceneLayer(),dragon:Type())
+    self.dragon_armature = DragonSprite.new(display.getRunningScene():GetSceneLayer(),dragon.type)
         :addTo(dragon_box)
         :pos(dragon_box:getContentSize().width/2,dragon_box:getContentSize().height/2)
         :scale(0.65)
@@ -164,7 +170,7 @@ function GameUISendTroopNew:SelectDragonPart()
 
     -- 龙，等级
     self.dragon_name = UIKit:ttfLabel({
-        text = Localize.dragon[dragon:Type()].."（LV ".. dragon:Level()..")",
+        text = Localize.dragon[dragon.type].."（LV ".. dragon.level..")",
         size = 24,
         color = 0xfed36c,
     }):align(display.CENTER,dragon_name_bg:getContentSize().width/2,dragon_name_bg:getContentSize().height/2)
@@ -176,10 +182,14 @@ function GameUISendTroopNew:SelectDragonPart()
         color = 0xffedae,
     }):align(display.LEFT_CENTER,30,dragon_name_bg:getPositionY() - 40)
         :addTo(dragon_frame)
+
+    local isfree = UtilsForDragon:IsDragonFree(User, dragon.type)
+    local isdead = UtilsForDragon:IsDragonDead(User, dragon.type)
+    local desc = UtilsForDragon:GetDragonStatusDesc(UtilsForDragon:GetDragon(User, dragon.type))
     self.dragon_status = UIKit:ttfLabel({
-        text = dragon:GetLocalizedStatus(),
+        text = desc,
         size = 22,
-        color = dragon:IsFree() and not dragon:IsDead() and 0xffedae or 0xff3c00,
+        color = isfree and not isdead and 0xffedae or 0xff3c00,
     }):align(display.RIGHT_CENTER,330,dragon_name_bg:getPositionY() - 40)
         :addTo(dragon_frame)
     -- 龙生命值
@@ -189,8 +199,11 @@ function GameUISendTroopNew:SelectDragonPart()
         color = 0xffedae,
     }):align(display.LEFT_CENTER,30,self.dragon_status:getPositionY() - 40)
         :addTo(dragon_frame)
+
+    local hp = UtilsForDragon:GetDragonHp(User, dragon.type)
+    local hpMax = UtilsForDragon:GetDragonMaxHp(User.dragons[dragon.type])
     self.dragon_hp = UIKit:ttfLabel({
-        text = string.formatnumberthousands(dragon:Hp()).."/"..string.formatnumberthousands(dragon:GetMaxHP()),
+        text = string.formatnumberthousands(hp).."/"..string.formatnumberthousands(hpMax),
         size = 22,
         color = 0xffedae,
     }):align(display.RIGHT_CENTER,330,self.dragon_status:getPositionY() - 40)
@@ -202,8 +215,10 @@ function GameUISendTroopNew:SelectDragonPart()
         color = 0xffedae,
     }):align(display.LEFT_CENTER,30,self.dragon_hp:getPositionY() - 40)
         :addTo(dragon_frame)
+
+    local strength = UtilsForDragon:GetDragonStrength(User.dragons[dragon.type])
     self.dragon_strength = UIKit:ttfLabel({
-        text = string.formatnumberthousands(dragon:TotalStrength()),
+        text = string.formatnumberthousands(strength),
         size = 22,
         color = 0xffedae,
     }):align(display.RIGHT_CENTER,330,self.dragon_hp:getPositionY() - 40)
@@ -247,8 +262,10 @@ function GameUISendTroopNew:SelectDragonPart()
         color = 0xbbae80,
     }):align(display.LEFT_CENTER,20,68)
         :addTo(bottom_info_bg)
+
+    local leadCitizen = UtilsForDragon:GetLeadershipByCitizen(User,dragon.type)
     self.lead_citizen = UIKit:ttfLabel({
-        text = "0/"..string.formatnumberthousands(dragon:LeadCitizen()),
+        text = "0/"..string.formatnumberthousands(leadCitizen),
         size = 22,
         color = 0xffedae,
     }):align(display.RIGHT_CENTER,310,68)
@@ -296,24 +313,36 @@ function GameUISendTroopNew:SelectDragon()
 end
 function GameUISendTroopNew:RefreashDragon(dragon)
     local dragon = dragon or self.dragon
-    self.dragon_armature:ReloadSpriteCauseTerrainChanged(dragon:Type())
-    self.dragon_name:setString(Localize.dragon[dragon:Type()].."（LV ".. dragon:Level()..")")
-    self.dragon_status:setString(dragon:GetLocalizedStatus())
-    self.dragon_status:setColor(UIKit:hex2c3b(dragon:IsFree() and not dragon:IsDead() and 0xffedae or 0xff3c00))
-    self.dragon_hp:setString(string.formatnumberthousands(dragon:Hp()).."/"..string.formatnumberthousands(dragon:GetMaxHP()))
-    self.dragon_strength:setString(string.formatnumberthousands(dragon:TotalStrength()))
+    local dragonType = dragon.type
+    self.dragon_armature:ReloadSpriteCauseTerrainChanged(dragonType)
+    self.dragon_name:setString(Localize.dragon[dragonType].."（LV ".. dragon.level..")")
+    local desc = UtilsForDragon:GetDragonStatusDesc(UtilsForDragon:GetDragon(User, dragonType))
+    self.dragon_status:setString(desc)
+
+    local isfree = UtilsForDragon:IsDragonFree(User, dragonType)
+    local isdead = UtilsForDragon:IsDragonDead(User, dragonType)
+    self.dragon_status:setColor(UIKit:hex2c3b(isfree and not isdead and 0xffedae or 0xff3c00))
+    
+    local hp = UtilsForDragon:GetDragonHp(User, dragonType)
+    local hpMax = UtilsForDragon:GetDragonMaxHp(User.dragons[dragonType])
+    self.dragon_hp:setString(string.formatnumberthousands(hp).."/"..string.formatnumberthousands(hpMax))
+
+    local strength = UtilsForDragon:GetDragonStrength(User.dragons[dragonType])
+    self.dragon_strength:setString(string.formatnumberthousands(strength))
     local power,load,citizen = self:GetTotalSoldierInfo()
     self.soldier_power:setString(string.formatnumberthousands(power))
-    self.lead_citizen:setString(string.formatnumberthousands(citizen).."/"..string.formatnumberthousands(dragon:LeadCitizen()))
+    local leadCitizen = UtilsForDragon:GetLeadershipByCitizen(User,dragonType)
+    self.lead_citizen:setString(string.formatnumberthousands(citizen).."/"..string.formatnumberthousands(leadCitizen))
     self.soldier_load:setString(string.formatnumberthousands(load))
     self.dragon = dragon
     if self.isPVE then
-        GameUISendTroopNew.dragonType = self.dragon:Type()
+        GameUISendTroopNew.dragonType = dragonType
     end
 end
 -- 单个格子最大带兵量
 function GameUISendTroopNew:GetUnitMaxCitizen()
-    return math.floor(self.dragon:LeadCitizen()/maxTroopPerDragon)
+    local leadCitizen = UtilsForDragon:GetLeadershipByCitizen(User,self.dragon.type)
+    return math.floor(leadCitizen/maxTroopPerDragon)
 end
 function GameUISendTroopNew:SelectSoldiersPart()
     -- 每种龙无论等级和星级都有最大六个士兵格子可以配置士兵，每个格子最多派出选择的龙的带兵力的六分之一
@@ -563,17 +592,20 @@ function GameUISendTroopNew:CreateBottomPart()
                     UIKit:showMessageDialog(_("提示"),_("您还没有龙,快去孵化一只巨龙吧"))
                     return
                 end
-                local dragonType = self.dragon:Type()
+                local dragonType = self.dragon.type
                 local soldiers = self:GetSettingSoldiers()
 
-                if not self.dragon:IsFree() and not self.dragon:IsDefenced() then
+                local isfree = UtilsForDragon:IsDragonFree(User, dragonType)
+                local isdefn = UtilsForDragon:IsDragonDefenced(User, dragonType)
+                local isdead = UtilsForDragon:IsDragonDead(User, dragonType)
+                if not isfree and not isdefn then
                     UIKit:showMessageDialog(_("提示"),_("龙未处于空闲状态"))
                     return
-                elseif self.dragon:IsDead() then
+                elseif isdead then
                     UIKit:showMessageDialog(_("提示"),_("选择的龙已经死亡")):CreateCancelButton(
                         {
                             listener = function ()
-                                UIKit:newGameUI("GameUIDragonEyrieMain", City, City:GetFirstBuildingByType("dragonEyrie"), "dragon", false, self.dragon:Type()):AddToCurrentScene(true)
+                                UIKit:newGameUI("GameUIDragonEyrieMain", City, City:GetFirstBuildingByType("dragonEyrie"), "dragon", false, dragonType):AddToCurrentScene(true)
                                 self:LeftButtonClicked()
                             end,
                             btn_name= _("复活"),
@@ -599,7 +631,7 @@ function GameUISendTroopNew:CreateBottomPart()
                     end
                     return
                 end
-                if self.dragon:IsDefenced() and not self.military_soldiers and not self.isPVE then
+                if self.dragon.status == 'defence' and not self.military_soldiers and not self.isPVE then
                     UIKit:showMessageDialog(_("提示"),_("当前选择的龙处于驻防状态，是否取消驻防将这条龙派出")):CreateOKButton(
                         {
                             listener = function ()
@@ -765,24 +797,6 @@ function GameUISendTroopNew:PromiseOfAttack()
     self:GetFteLayer():SetTouchObject(self.march_btn)
     WidgetFteArrow.new(_("点击按钮：驻防")):addTo(self:GetFteLayer())
     :TurnRight():align(display.RIGHT_CENTER, r.x - 10, r.y + r.height/2)
-
-    -- self.march_btn:removeEventListenersByEvent("CLICKED_EVENT")
-    -- self.march_btn:onButtonClicked(function(event)
-    --     if event.name == "CLICKED_EVENT" then
-    --         assert(tolua.type(self.march_callback)=="function")
-    --         self.march_callback(self.dragon:Type(), self:GetSettingSoldiers())
-    --         self:LeftButtonClicked()
-    --     end
-    -- end)
-
-    -- WidgetFteArrow.new(_("点击进攻")):addTo(self:GetFteLayer())
-    --     :TurnDown():align(display.CENTER_BOTTOM, r.x + r.width/2, r.y + 70)
-
-    -- return UIKit:PromiseOfOpen(need_fte and "GameUIReplayFte" or "GameUIReplay"):next(function(ui)
-    --     ui:DestroyFteLayer()
-    --     ui:DoFte()
-    --     return UIKit:PromiseOfClose(need_fte and "GameUIReplayFte" or "GameUIReplay")
-    -- end)
 end
 
 

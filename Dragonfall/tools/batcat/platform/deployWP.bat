@@ -1,6 +1,9 @@
+::---------------------------------------------------
 :: Deploy the Windows Phone app to device
+:: Useage: deployWP.bat filePath
+:: Date: 2016/05/16
 :: by dannyhe
-:: useage: deployWP.bat c:\Dragonfall.WindowsPhone_1.1.4.5_arm.appxbundle
+::---------------------------------------------------
 
 @echo off
 set CMDTOOL="C:\Program Files (x86)\Microsoft SDKs\Windows Phone\v8.1\Tools\AppDeploy\AppDeployCmd.exe"

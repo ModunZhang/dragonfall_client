@@ -71,7 +71,7 @@
 
 ### 打包的特殊说明
 #### Android下的特殊说明
-> **最后一步打包生成apk前需要执行`create_android_zip.py`生成zip压缩文件后执行apk的打包**
+最后一步打包生成apk前需要执行`create_android_zip.py`~~生成zip压缩文件后执行apk的打包~~将资源拷贝到assets中
 
 ----
 By DannyHe 11/11/2015

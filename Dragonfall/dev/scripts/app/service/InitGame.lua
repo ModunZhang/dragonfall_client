@@ -10,7 +10,6 @@ local app = app
 local timer = app.timer
 return function(userData)
     DataManager.user = userData
-    timer:Clear()
     MailManager = MailManager_.new()
     -- if GLOBAL_FTE or userData.basicInfo.terrain == "__NONE__" then
     --     local fteData = DataManager:getFteData()
@@ -33,9 +32,6 @@ return function(userData)
     if userData.basicInfo.terrain ~= "__NONE__" and not NewsManager then
         NewsManager = NewsManager_.new()
     end
-
-    timer:AddListener(City)
-    timer:Start()
 end
 
 

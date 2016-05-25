@@ -9,7 +9,6 @@ local GameUINpc = import(".GameUINpc")
 local TutorialLayer = import(".TutorialLayer")
 local WidgetFteArrow = import("..widget.WidgetFteArrow")
 local StarBar = import(".StarBar")
-local DragonManager = import("..entity.DragonManager")
 local WidgetDragons = import("..widget.WidgetDragons")
 local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local WidgetProgress = import("..widget.WidgetProgress")
@@ -26,54 +25,45 @@ local terrain_map = {
     iceField = "blueDragon",
 }
 -- lockDragon: 是否锁定选择龙的操作,默认不锁定
-function GameUIDragonEyrieMain:ctor(city,building,default_tab,lockDragon,fte_dragon_type,show_setDefence_tip)
+function GameUIDragonEyrieMain:ctor(city,building,default_tab,lockDragon,dragonType,show_setDefence_tip)
     GameUIDragonEyrieMain.super.ctor(self,city,_("龙巢"),building,default_tab)
     self.building = building
     self.city = city
     self.show_setDefence_tip = show_setDefence_tip
     self.draong_index = 1
-    self.dragon_manager = building:GetDragonManager()
     if type(lockDragon) ~= "boolean" then lockDragon = false end
     self.lockDragon = lockDragon
 
-    if not UtilsForFte:IsHatedAnyDragon(city:GetUser()) then
-        self.fte_dragon_type = terrain_map[city:GetUser().basicInfo.terrain]
+    if not UtilsForFte:IsHatchedAnyDragons(city:GetUser()) then
+        self.dragonType = terrain_map[city:GetUser().basicInfo.terrain]
+    else
+        self.dragonType = dragonType
     end
-    -- self.fte_dragon_type = fte_dragon_type
 end
 
 function GameUIDragonEyrieMain:IsDragonLock()
     return self.lockDragon
 end
-
--- event
-------------------------------------------------------------------
-function GameUIDragonEyrieMain:OnHPChanged()
-    local dragon = self:GetCurrentDragon()
-    if not dragon:Ishated() then return end
-    if self.dragon_hp_label and self.dragon_hp_label:isVisible() then
-        self.dragon_hp_label:setString(string.formatnumberthousands(dragon:Hp()) .. "/" .. string.formatnumberthousands(dragon:GetMaxHP()))
-        self.progress_hated:setPercentage(dragon:Hp()/dragon:GetMaxHP()*100)
-    end
-end
-
-function GameUIDragonEyrieMain:OnDragonHatched(dragon)
-    local dragon_index = self.dragon_manager:GetDragonIndexByType(dragon:Type())
-    local localIndex = dragon_index - 1
-    local eyrie = self.draongContentNode:GetItemByIndex(localIndex)
-    eyrie.dragon_image:hide()
-    eyrie.armature:show()
-    eyrie.armature:Resume()
-    self:RefreshUI()
-end
-
-function GameUIDragonEyrieMain:OnBasicChanged(dragon)
-    self:RefreshUI()
-end
 function GameUIDragonEyrieMain:OnUserDataChanged_buildings(userData, deltaData)
     local ok,value = deltaData("buildings.location_4")
     if ok and self.hate_button then 
-        self.hate_button:setButtonEnabled(self.building:CheckIfHateDragon())
+        self.hate_button:setButtonEnabled(UtilsForDragon:CanHatchAnyDragons(userData))
+    end
+end
+function GameUIDragonEyrieMain:OnUserDataChanged_dragons(userData, deltaData)
+    for dragonType,dragon in pairs(userData.dragons) do
+        if deltaData(string.format("dragons.%s.star", dragonType)) then
+            local localIndex = self:GetDragonIndexByType(dragonType) - 1
+            local eyrie = self.draongContentNode:GetItemByIndex(localIndex)
+            if eyrie.dragon_image:isVisible() then
+                eyrie.dragon_image:hide()
+                eyrie.armature:show()
+                eyrie.armature:Resume()
+            end
+        end
+    end
+    if deltaData("dragons") then 
+        self:RefreshUI()
     end
 end
 function GameUIDragonEyrieMain:OnUserDataChanged_dragonDeathEvents(userData, deltaData)
@@ -96,16 +86,15 @@ function GameUIDragonEyrieMain:OnMoveInStage()
     self:CreateUI()
     GameUIDragonEyrieMain.super.OnMoveInStage(self)
 
-    self.dragon_manager:AddListenOnType(self,DragonManager.LISTEN_TYPE.OnHPChanged)
-    self.dragon_manager:AddListenOnType(self,DragonManager.LISTEN_TYPE.OnBasicChanged)
-    self.dragon_manager:AddListenOnType(self,DragonManager.LISTEN_TYPE.OnDragonHatched)
+    User:AddListenOnType(self, "dragons")
     User:AddListenOnType(self, "buildings")
     User:AddListenOnType(self, "dragonDeathEvents")
 
     scheduleAt(self, function()
+        local dragon =self:GetCurrentDragon()
         local event
         for i,v in ipairs(User.dragonDeathEvents) do
-            if v.dragonType == self:GetCurrentDragon():Type() then
+            if v.dragonType == dragon.type then
                 event = v
             end
         end
@@ -116,22 +105,21 @@ function GameUIDragonEyrieMain:OnMoveInStage()
             self.progress_death:setPercentage(percent)
             self.dragon_death_label:setString(GameUtils:formatTimeStyleDayHour(time))
         end
+
+        if dragon.star > 0 then 
+            if self.dragon_hp_label and self.dragon_hp_label:isVisible() then
+                local hp = UtilsForDragon:GetDragonHp(User, dragon.type)
+                local hpMax = UtilsForDragon:GetDragonMaxHp(User.dragons[dragon.type])
+                self.dragon_hp_label:setString(string.th000(hp) .. "/" .. string.th000(hpMax))
+                self.progress_hated:setPercentage(hp/hpMax*100)
+            end
+        end
     end)
 end
-
-function GameUIDragonEyrieMain:OnMoveOutStage()
-    -- self.dragon_manager:RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnHPChanged)
-    -- self.dragon_manager:RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnBasicChanged)
-    -- self.dragon_manager:RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnDragonHatched)
+function GameUIDragonEyrieMain:onExit()
+    User:RemoveListenerOnType(self, "dragons")
     User:RemoveListenerOnType(self, "buildings")
     User:RemoveListenerOnType(self, "dragonDeathEvents")
-    GameUIDragonEyrieMain.super.OnMoveOutStage(self)
-end
-
-function GameUIDragonEyrieMain:onExit()
-    self.dragon_manager:RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnHPChanged)
-    self.dragon_manager:RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnBasicChanged)
-    self.dragon_manager:RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnDragonHatched)
 end
 
 function GameUIDragonEyrieMain:CreateUI()
@@ -159,41 +147,36 @@ end
 function GameUIDragonEyrieMain:RefreshUI()
     local dragon = self:GetCurrentDragon()
     if not self.dragon_info then return end
-    if not self:GetCurrentDragon():Ishated() then
+    if not (self:GetCurrentDragon().star > 0) then
         self.garrison_button:setButtonSelected(false)
         self.dragon_info:hide()
         self.death_speed_button:hide()
         self.progress_content_death:hide()
-        -- local dragonEvent = self.dragon_manager:GetDragonEventByDragonType(self:GetCurrentDragon():Type())
         self.progress_content_hated:hide()
         self.info_panel:hide()
         self.draogn_hate_node:show()
         self.star_bar:hide()
-        -- if dragonEvent then
-        -- local timer_text = GameUtils:formatTimeStyleDayHour(dragonEvent:GetTime())
-        -- self.hate_timer_label:hide()
-        -- self.hate_button:hide()
-        -- self.hate_event_node:show()
-        -- self.hate_event_node:SetProgressInfo(timer_text,dragonEvent:GetPercent())
-        -- else
         self.hate_button:show()
-        -- self.hate_event_node:hide()
-        -- local timer_text = GameUtils:formatTimeStyleDayHour(self.dragon_manager:GetHateNeedMinutes(self:GetCurrentDragon():Type()) * 60)
-        -- self.hate_timer_label:setString(string.format(_("需要时间: %s"),timer_text))
-        -- end
     else
-        self.star_bar:setNum(dragon:Star())
+        self.star_bar:setNum(dragon.star)
         self.star_bar:show()
         self.draogn_hate_node:hide()
-        self.garrison_button:setButtonSelected(dragon:IsDefenced())
+        self.garrison_button:setButtonSelected(dragon.status == "defence")
         self.info_panel:show()
-        self.strength_val_label:setString(string.formatnumberthousands(dragon:TotalStrength()))
-        self.vitality_val_label:setString(string.formatnumberthousands(dragon:GetMaxHP()))
-        self.leadership_val_label:setString(string.formatnumberthousands(dragon:LeadCitizen()))
-        if dragon:IsDead() then
+
+        local strength = UtilsForDragon:GetDragonStrength(User.dragons[dragon.type])
+        self.strength_val_label:setString(string.formatnumberthousands(strength))
+
+        local hpMax = UtilsForDragon:GetDragonMaxHp(User.dragons[dragon.type])
+        self.vitality_val_label:setString(string.formatnumberthousands(hpMax))
+        local leadCitizen = UtilsForDragon:GetLeadershipByCitizen(User,dragon.type)
+        self.leadership_val_label:setString(string.formatnumberthousands(leadCitizen))
+
+        local isdead = UtilsForDragon:IsDragonDead(User, dragon.type)
+        if isdead then
             local event
             for i,v in ipairs(User.dragonDeathEvents) do
-                if v.dragonType == self:GetCurrentDragon():Type() then
+                if v.dragonType == self:GetCurrentDragon().type then
                     event = v
                 end
             end
@@ -211,12 +194,16 @@ function GameUIDragonEyrieMain:RefreshUI()
         else
             self.dragon_info:show()
             self.progress_content_hated:show()
-            local dragon_hp_recovery = self:GetBuilding():GetTotalHPRecoveryPerHour(dragon:Type())
-            self.dragon_hp_recovery_count_label:setString(string.format("+%s/h", dragon:Status()~= "march" and string.formatnumberthousands(dragon_hp_recovery) or 0))
-            self.dragon_hp_label:setString(string.formatnumberthousands(dragon:Hp()) .. "/" .. string.formatnumberthousands(dragon:GetMaxHP()))
-            self.progress_hated:setPercentage(dragon:Hp()/dragon:GetMaxHP()*100)
-            self.state_label:setString(Localize.dragon_status[dragon:Status()])
-            if dragon:IsDefenced() or dragon:IsFree() then
+            local recovery = UtilsForDragon:GetDragonHPRecoveryWithBuff(User, dragon.type)
+            self.dragon_hp_recovery_count_label:setString(string.format("+%s/h", recovery))
+
+            local hp = UtilsForDragon:GetDragonHp(User, dragon.type)
+            local hpMax = UtilsForDragon:GetDragonMaxHp(User.dragons[dragon.type])
+            self.dragon_hp_label:setString(string.formatnumberthousands(hp) .. "/" .. string.formatnumberthousands(hpMax))
+            self.progress_hated:setPercentage(hp/hpMax * 100)
+            
+            self.state_label:setString(Localize.dragon_status[dragon.status])
+            if dragon.status == "defence" or dragon.status == "free" then
                 self.state_label:setColor(UIKit:hex2c3b(0x07862b))
             else
                 self.state_label:setColor(UIKit:hex2c3b(0x7e0000))
@@ -224,12 +211,12 @@ function GameUIDragonEyrieMain:RefreshUI()
             self.death_speed_button:hide()
             self.progress_content_death:hide()
         end
-        self.draong_info_lv_label:setString("LV " .. dragon:Level() .. "/" .. dragon:GetMaxLevel())
-        self.draong_info_xp_label:setString(string.formatnumberthousands(dragon:Exp()) .. "/" .. string.formatnumberthousands(dragon:GetMaxExp()))
+        self.draong_info_lv_label:setString("LV " .. dragon.level .. "/" .. UtilsForDragon:GetDragonLevelMax(dragon))
+        self.draong_info_xp_label:setString(string.formatnumberthousands(dragon.exp) .. "/" .. string.formatnumberthousands(UtilsForDragon:GetDragonExpNeed(dragon)))
         -- self.expIcon:setPositionX(self.draong_info_xp_label:getPositionX() - self.draong_info_xp_label:getContentSize().width/2 - 10)
         -- self.exp_add_button:setPositionX(self.draong_info_xp_label:getPositionX() + self.draong_info_xp_label:getContentSize().width/2 + 10)
     end
-    self.nameLabel:setString(dragon:GetLocalizedName())
+    self.nameLabel:setString(Localize.dragon[dragon.type])
 end
 
 function GameUIDragonEyrieMain:CreateProgressTimer()
@@ -299,13 +286,15 @@ function GameUIDragonEyrieMain:CreateDragonContentNodeIf()
             :align(display.TOP_CENTER,info_bg:getContentSize().width/2,info_bg:getContentSize().height-10)
         info_bg:setTouchEnabled(true)
         self.dragon_info = info_bg
+
+        local levelMax = UtilsForDragon:GetDragonLevelMax(self:GetCurrentDragon())
         self.draong_info_lv_label = UIKit:ttfLabel({
-            text = "LV " .. self:GetCurrentDragon():Level() .. "/" .. self:GetCurrentDragon():GetMaxLevel(),
+            text = "LV " .. self:GetCurrentDragon().level .. "/" .. levelMax,
             color = 0xffedae,
             size = 20
         }):addTo(lv_bg):align(display.CENTER,lv_bg:getContentSize().width/2,lv_bg:getContentSize().height/2)
         self.draong_info_xp_label = UIKit:ttfLabel({
-            text = self:GetCurrentDragon():Exp() .. "/" .. self:GetCurrentDragon():GetMaxExp(),
+            text = self:GetCurrentDragon().exp .. "/" .. UtilsForDragon:GetDragonExpNeed(self:GetCurrentDragon()),
             color = 0x403c2f,
             size = 20,
             align = cc.TEXT_ALIGNMENT_CENTER,
@@ -350,10 +339,10 @@ function GameUIDragonEyrieMain:CreateDragonContentNodeIf()
             size  = 24
         }):addTo(info_layer):align(display.LEFT_CENTER,20, 20)
         local star_bar = StarBar.new({
-            max = self:GetCurrentDragon():MaxStar(),
+            max = UtilsForDragon.dragonStarMax,
             bg = "Stars_bar_bg.png",
             fill = "Stars_bar_highlight.png",
-            num = self:GetCurrentDragon():Star(),
+            num = self:GetCurrentDragon().star,
             margin = 0,
         }):addTo(info_layer):align(display.RIGHT_CENTER, 610,20)
         self.nameLabel = nameLabel
@@ -364,43 +353,45 @@ function GameUIDragonEyrieMain:CreateDragonContentNodeIf()
 
         self.garrison_button = UICheckBoxButton.new(checkbox_image)
             :addTo(dragonAnimateNode):align(display.LEFT_BOTTOM, 25, 310)
-            :setButtonSelected(dragon:IsDefenced())
+            :setButtonSelected(dragon.status == "defence")
             :onButtonClicked(function()
                 local target = self.garrison_button:isButtonSelected()
                 self.garrison_button:setButtonSelected(false)
                 local dragon = self:GetCurrentDragon()
                 if target then
-                    if not dragon:Ishated() then
+                    if not (dragon.star > 0) then
                         UIKit:showMessageDialog(nil,_("龙还未孵化"))
                         self.garrison_button:setButtonSelected(not target,false)
                         return
                     end
-                    if dragon:IsDead() then
+                    local isdead = UtilsForDragon:IsDragonDead(User, dragon.type)
+                    if isdead then
                         UIKit:showMessageDialog(nil,_("选择的龙已经死亡"))
                         self.garrison_button:setButtonSelected(not target,false)
                         return
                     end
-                    if dragon:IsFree() then
+                    if dragon.status == "free" then
                         local military_soldiers
                         if not UtilsForFte:IsDefencedWithTroops(self.city:GetUser()) then
                             military_soldiers = {{name = "swordsman_1", count = 10}}
                         end
                         UIKit:newGameUI('GameUISendTroopNew',function(dragonType,soldiers)
-                            if self.dragon_manager:GetDragon(dragonType):IsDead() then
+                            local isdead = UtilsForDragon:IsDragonDead(User, dragonType)
+                            if isdead then
                                 UIKit:showMessageDialog(nil,_("选择的龙已经死亡"))
                                 return
                             end
-                            if self.dragon_manager:GetDefenceDragon() then
+                            if UtilsForDragon:GetDefenceDragon(User) then
                                 NetManager:getCancelDefenceTroopPromise():done(function()
                                     NetManager:getSetDefenceTroopPromise(dragonType,soldiers):done(function ()
-                                        if self:GetCurrentDragon():Type() == dragonType then
+                                        if self:GetCurrentDragon().type == dragonType then
                                             self.garrison_button:setButtonSelected(true)
                                         end
                                     end)
                                 end)
                             else
                                 NetManager:getSetDefenceTroopPromise(dragonType,soldiers):done(function ()
-                                    if self:GetCurrentDragon():Type() == dragonType then
+                                    if self:GetCurrentDragon().type == dragonType then
                                         self.garrison_button:setButtonSelected(true)
                                     end
                                     if self.defencePromise then
@@ -420,7 +411,7 @@ function GameUIDragonEyrieMain:CreateDragonContentNodeIf()
                         self.garrison_button:setButtonSelected(not target,false)
                     end
                 else
-                    if dragon:IsDefenced() then
+                    if dragon.status == "defence" then
                         NetManager:getCancelDefenceTroopPromise():done(function()
                             GameGlobalUI:showTips(_("提示"),_("取消驻防成功"))
                         end)
@@ -430,7 +421,7 @@ function GameUIDragonEyrieMain:CreateDragonContentNodeIf()
                     end
                 end
             end)
-        if not self.dragon_manager:GetDefenceDragon() and self.show_setDefence_tip then
+        if not UtilsForDragon:GetDefenceDragon(User) and self.show_setDefence_tip then
             local r = self.garrison_button:getCascadeBoundingBox()
             local arrow = WidgetFteArrow.new(_("点击：驻防"))
                 :addTo(self:GetView()):TurnUp(false):align(display.LEFT_TOP, r.x + 30, r.y - 20)
@@ -506,7 +497,7 @@ function GameUIDragonEyrieMain:CreateDragonContentNodeIf()
             color = 0xffedae,
             shadow = true
         })):addTo(info_panel):align(display.RIGHT_BOTTOM,540,5):onButtonClicked(function()
-            UIKit:newGameUI("GameUIDragonEyrieDetail",self.city,self.building,self:GetCurrentDragon():Type()):AddToCurrentScene(false)
+            UIKit:newGameUI("GameUIDragonEyrieDetail",self.city,self.building,self:GetCurrentDragon().type):AddToCurrentScene(false)
             self:LeftButtonClicked()
         end)
         self.detailButton = detailButton
@@ -521,14 +512,15 @@ function GameUIDragonEyrieMain:CreateDragonHateNodeIf()
         self.draogn_hate_node = node
         WidgetUIBackGround.new({width = 554, height = 100},WidgetUIBackGround.STYLE_TYPE.STYLE_3):addTo(node):align(display.CENTER_TOP, window.cx, 210)
         local tip_label = UIKit:ttfLabel({
-            text = Localize.dragon_buffer[self:GetCurrentDragon():Type()],
+            text = Localize.dragon_buffer[self:GetCurrentDragon().type],
             size = 20,
             color= 0x403c2f,
             align= cc.TEXT_ALIGNMENT_CENTER
         }):addTo(node):align(display.CENTER_TOP, window.cx, 200)
         self.dragon_hate_tips_label = tip_label
+        local level = UtilsForDragon:HowManyLevelsCanHatchDragons(User)
         local hate_label = UIKit:ttfLabel({
-            text = self.building:GetNextHateLevel() and string.format(_("龙巢%d级时可孵化新的巨龙"),self.building:GetNextHateLevel()) or "",
+            text = level and string.format(_("龙巢%d级时可孵化新的巨龙"),level) or "",
             size = 20,
             color= 0x403c2f,
             align= cc.TEXT_ALIGNMENT_CENTER,
@@ -545,68 +537,75 @@ function GameUIDragonEyrieMain:CreateDragonHateNodeIf()
             :onButtonClicked(function()
                 self:OnEnergyButtonClicked()
             end)
-        hate_button:setButtonEnabled(self.building:CheckIfHateDragon())
+        hate_button:setButtonEnabled(UtilsForDragon:CanHatchAnyDragons(User))
         self.hate_button = hate_button
-
-        -- local event_node = display.newNode():size(window.width,76):addTo(node):pos(0,0)
-        -- local dragonEvent = self.dragon_manager:GetDragonEventByDragonType(self:GetCurrentDragon():Type())
-        -- local hate_speed_button = WidgetPushButton.new({ normal = "green_btn_up_148x76.png",pressed = "green_btn_down_148x76.png"})
-        --     :setButtonLabel("normal",UIKit:commonButtonLable({
-        --         text = _("加速"),
-        --         size = 24,
-        --         color = 0xffedae,
-        --     }))
-        --     :addTo(event_node):align(display.CENTER_BOTTOM,window.right - 120,34)
-        --     :onButtonClicked(function()
-        --         self:OnHateSpeedUpClicked()
-        --     end)
-        -- local hate_label = UIKit:ttfLabel({
-        --     text = _("正在孵化巨龙"),
-        --     size = 20,
-        --     color= 0x403c2f,
-        --     align= cc.TEXT_ALIGNMENT_CENTER
-        -- }):addTo(event_node):align(display.LEFT_CENTER, window.left + 60, 95)
-        -- local progress = WidgetProgress.new(0xffedae, "progress_bar_364x40_1.png", "progress_bar_364x40_2.png", {
-        --     icon_bg = "back_ground_43x43.png",
-        --     icon = "hourglass_30x38.png",
-        --     bar_pos = {x = 0,y = 0}
-        -- }):addTo(event_node):align(display.LEFT_CENTER, window.left + 60, 55)
-        -- function event_node:SetProgressInfo(time_label, percent)
-        --     progress:SetProgressInfo(time_label, percent)
-        -- end
-        -- self.hate_event_node = event_node
-
-        -- local hate_timer_label = UIKit:ttfLabel({
-        --     text = "",
-        --     size = 20,
-        --     color= 0x403c2f
-        -- }):align(display.BOTTOM_CENTER, window.cx, 18):addTo(node)
-        -- self.hate_timer_label = hate_timer_label
     end
     return self.draogn_hate_node
 end
 
 
--- function GameUIDragonEyrieMain:OnHateSpeedUpClicked()
---     UIKit:newGameUI("GameUIDragonHateSpeedUp", self.dragon_manager,self:GetCurrentDragon():Type()):AddToCurrentScene(true)
--- end
-
-
 function GameUIDragonEyrieMain:OnEnergyButtonClicked()
-    if not self.building:CheckIfHateDragon() then
+    if not UtilsForDragon:CanHatchAnyDragons(User) then
         UIKit:showMessageDialog(nil, _("当前龙巢等级不能孵化新的巨龙"), function()end)
         return
     end
-    return NetManager:getHatchDragonPromise(self:GetCurrentDragon():Type()):done(function ()
-        self.hate_label:setString(self.building:GetNextHateLevel() and string.format(_("龙巢%d级时可孵化新的巨龙"),self.building:GetNextHateLevel()) or "")
-        self.hate_button:setButtonEnabled(self.building:CheckIfHateDragon())
+
+    local level = UtilsForDragon:HowManyLevelsCanHatchDragons(User)
+    return NetManager:getHatchDragonPromise(self:GetCurrentDragon().type):done(function ()
+        self.hate_label:setString(level and string.format(_("龙巢%d级时可孵化新的巨龙"),level) or "")
+        self.hate_button:setButtonEnabled(UtilsForDragon:CanHatchAnyDragons(User))
+        if self.hatchPromise then
+            self.hatchPromise:resolve()
+        end
     end)
 end
 
 function GameUIDragonEyrieMain:GetCurrentDragon()
-    -- index 1~3
-    local dragon = self.dragon_manager:GetDragonByIndex(self.draong_index)
-    return dragon
+    return User.dragons[self:GetDragonTypeByIndex(self.draong_index)]
+end
+function GameUIDragonEyrieMain:GetDragonIndexByType(dragonType)
+    local t = UtilsForDragon:GetSortDragonTypes(User)
+    local powerfulType = UtilsForDragon:GetPowerfulDragonType(User)
+    table.sort(t, function(a,b) 
+        return powerfulType == a
+    end)
+    if self.dragonType then
+        local index = table.indexof(t,self.dragonType)
+        local count = #t
+        local dest = {}
+        for i= index,count do
+            table.insert(dest,t[i])
+        end
+        for i=1,index - 1 do
+            table.insert(dest,t[i])
+        end
+        t = dest
+    end
+    for i,v in ipairs(t) do
+        if v == dragonType then
+            return i
+        end
+    end
+end
+function GameUIDragonEyrieMain:GetDragonTypeByIndex(index)
+    local t = UtilsForDragon:GetSortDragonTypes(User)
+    local powerfulType = UtilsForDragon:GetPowerfulDragonType(User)
+    table.sort(t, function(a,b) 
+        return powerfulType == a
+    end)
+    if self.dragonType then
+        local index = table.indexof(t,self.dragonType)
+        local count = #t
+        local dest = {}
+        for i= index,count do
+            table.insert(dest,t[i])
+        end
+        for i=1,index - 1 do
+            table.insert(dest,t[i])
+        end
+        t = dest
+    end
+    return t[index]
 end
 function GameUIDragonEyrieMain:CreateDragonScrollNode()
     local clipNode = display.newClippingRegionNode(cc.rect(0,0,620,600))
@@ -617,25 +616,20 @@ function GameUIDragonEyrieMain:CreateDragonScrollNode()
             OnTouchClickEvent = handler(self, self.OnTouchClickEvent),
         }
     ):addTo(clipNode):pos(310,300)
-    if self.fte_dragon_type then
-        self.dragon_manager:SortWithFirstDragon(self.fte_dragon_type)
-    else
-        self.dragon_manager:SortDragon()
-    end
     for i,v in ipairs(contenNode:GetItems()) do
-        local dragon = self.dragon_manager:GetDragonByIndex(i)
-        local dragon_image = display.newSprite(string.format("%s_egg_176x192.png",dragon:Type()))
+        local dragon = User.dragons[self:GetDragonTypeByIndex(i)]
+        local dragon_image = display.newSprite(string.format("%s_egg_176x192.png",dragon.type))
             :align(display.CENTER, 300,355)
             :addTo(v)
         v.dragon_image = dragon_image
         dragon_image.resolution = {dragon_image:getContentSize().width,dragon_image:getContentSize().height}
-        local dragon_armature = DragonSprite.new(display.getRunningScene():GetSceneLayer(),dragon:Type())
+        local dragon_armature = DragonSprite.new(display.getRunningScene():GetSceneLayer(),dragon.type)
             :addTo(v)
             :pos(300,350)
             :hide():scale(0.9)
         v.armature = dragon_armature
         v.armature:Pause()
-        if dragon:Ishated() then
+        if dragon.star > 0 then
             v.armature:show()
             v.dragon_image:hide()
         end
@@ -647,8 +641,8 @@ function GameUIDragonEyrieMain:OnEnterIndexEvent(index)
         self.draong_index = index + 1
         self:RefreshUI()
         local eyrie = self.draongContentNode:GetItemByIndex(index)
-        if not self:GetCurrentDragon():Ishated() then
-            self.dragon_hate_tips_label:setString(Localize.dragon_buffer[self:GetCurrentDragon():Type()])
+        if not (self:GetCurrentDragon().star > 0) then
+            self.dragon_hate_tips_label:setString(Localize.dragon_buffer[self:GetCurrentDragon().type])
             return
         end
         eyrie.dragon_image:hide()
@@ -660,8 +654,8 @@ end
 function GameUIDragonEyrieMain:OnTouchClickEvent(index)
     local localIndex = index + 1
     if self.draong_index == localIndex then
-        local dragon = self.dragon_manager:GetDragonByIndex(localIndex)
-        if dragon and dragon:Ishated() then
+        local dragon = User.dragons[self:GetDragonTypeByIndex(localIndex)]
+        if dragon and dragon.star > 0 then
             app:GetAudioManager():PlayBuildingEffectByType('dragonEyrie')
         end
     end
@@ -670,7 +664,7 @@ end
 function GameUIDragonEyrieMain:OnLeaveIndexEvent(index)
     if self.draongContentNode then
         local eyrie = self.draongContentNode:GetItemByIndex(index)
-        if not self:GetCurrentDragon():Ishated() then return end
+        if not (self:GetCurrentDragon().star > 0) then return end
         eyrie.armature:Pause()
         -- eyrie.armature:hide()
         -- eyrie.dragon_image:show()
@@ -715,7 +709,7 @@ function GameUIDragonEyrieMain:OnDragonExpItemUseButtonClicked()
 end
 
 function GameUIDragonEyrieMain:OnDragonDeathSpeedUpClicked()
-    UIKit:newGameUI("GameUIDragonDeathSpeedUp", self:GetCurrentDragon():Type()):AddToCurrentScene(true)
+    UIKit:newGameUI("GameUIDragonDeathSpeedUp", self:GetCurrentDragon().type):AddToCurrentScene(true)
 end
 
 
@@ -738,7 +732,7 @@ end
 function GameUIDragonEyrieMain:PromiseOfFte()
     local p = cocos_promise.defer()
     local user = self.city:GetUser()
-    if not UtilsForFte:IsHatedAnyDragon(user) then
+    if not UtilsForFte:IsHatchedAnyDragons(user) then
         p:next(function()
             return self:PromiseOfHate()
         end)
@@ -769,7 +763,8 @@ function GameUIDragonEyrieMain:PromiseOfHate()
     WidgetFteArrow.new(_("点击按钮：孵化")):addTo(self:GetFteLayer())
     :TurnUp():pos(r.x + r.width/2, r.y - 40)
 
-    return self.dragon_manager:PromiseOfHate():next(function() 
+    self.hatchPromise = promise.new()
+    return self.hatchPromise:next(function() 
         if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEventAF then
             ext.market_sdk.onPlayerEventAF("强制引导-孵化巨龙", "empty")
         end
@@ -809,7 +804,7 @@ function GameUIDragonEyrieMain:PormiseOfLearnSkill()
 
     self:FindDetailBtn():removeEventListenersByEvent("CLICKED_EVENT")
     self:FindDetailBtn():onButtonClicked(function()
-        UIKit:newGameUI("GameUIDragonEyrieDetail",self.city,self.building,self:GetCurrentDragon():Type()):AddToCurrentScene(false)
+        UIKit:newGameUI("GameUIDragonEyrieDetail",self.city,self.building,self:GetCurrentDragon().type):AddToCurrentScene(false)
     end)
 
     UIKit:PromiseOfOpen("GameUIDragonEyrieDetail")

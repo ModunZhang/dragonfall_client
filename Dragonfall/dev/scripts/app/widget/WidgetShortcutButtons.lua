@@ -8,7 +8,6 @@ local WidgetAutoOrderBuffButton = import(".WidgetAutoOrderBuffButton")
 local WidgetAutoOrderGachaButton = import(".WidgetAutoOrderGachaButton")
 local WidgetAutoOrderAwardButton = import(".WidgetAutoOrderAwardButton")
 local WidgetNumberTips = import(".WidgetNumberTips")
-local DragonManager = import("..entity.DragonManager")
 
 local WidgetLight = import(".WidgetLight")
 local UILib = import("..ui.UILib")
@@ -53,32 +52,6 @@ function WidgetShortcutButtons:ctor(city)
         return alliance_belvedere_button:getCascadeBoundingBox().size
     end
     order:AddElement(alliance_belvedere_button)
-
-    -- if not UtilsForDragon:IsDragonAllHated(self.city:GetUser()) then
-    --     local this = self
-    --     local dragon_egg_btn = display.newNode():scale(SCALE)
-
-    --     UIKit:ButtonAddScaleAction(cc.ui.UIPushButton.new(
-    --         {normal = "dragon_eggs_68x80.png", pressed = "dragon_eggs_68x80.png"}
-    --     ):onButtonClicked(function(event)
-    --         if not dragon_egg_btn:CheckVisible() then
-    --             dragon_egg_btn:hide()
-    --         else
-    --             local dragon = UtilsForDragon:GetCanHatedDragon(this.city:GetUser())
-    --             if dragon then
-    --                 UIKit:newGameUI("GameUIDragonEyrieMain", self.city, self.city:GetFirstBuildingByType("dragonEyrie"), "dragon", false, dragon.type):AddToCurrentScene(true)
-    --             end
-    --         end
-    --     end)):addTo(dragon_egg_btn)
-
-    --     function dragon_egg_btn:CheckVisible()
-    --         return not not UtilsForDragon:GetCanHatedDragon(this.city:GetUser())
-    --     end
-    --     function dragon_egg_btn:GetElementSize()
-    --         return {width = 68,height = 80}
-    --     end
-    --     order:AddElement(dragon_egg_btn)
-    -- end
 
 
     --进入三级地图按钮
@@ -243,7 +216,7 @@ function WidgetShortcutButtons:onEnter()
     User:AddListenOnType(self, "productionTechEvents")
     -- User:AddListenOnType(self, "iapGifts")
     User:AddListenOnType(self, "vipEvents")
-    self.city:GetDragonEyrie():GetDragonManager():AddListenOnType(self,DragonManager.LISTEN_TYPE.OnBasicChanged)
+    User:AddListenOnType(self, "dragons")
 
     NewsManager:AddListenOnType(self,NewsManager.LISTEN_TYPE.UNREAD_NEWS_CHANGED)
 
@@ -265,7 +238,7 @@ function WidgetShortcutButtons:onExit()
     User:RemoveListenerOnType(self, "productionTechEvents")
     -- User:RemoveListenerOnType(self, "iapGifts")
     User:RemoveListenerOnType(self, "vipEvents")
-    self.city:GetDragonEyrie():GetDragonManager():RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnBasicChanged)
+    User:RemoveListenerOnType(self, "dragons")
     NewsManager:RemoveListenerOnType(self,NewsManager.LISTEN_TYPE.UNREAD_NEWS_CHANGED)
 
     local my_allaince = Alliance_Manager:GetMyAlliance()
@@ -336,12 +309,11 @@ end
 function WidgetShortcutButtons:OnAllianceDataChanged_shrineEvents(alliance, deltaData)
     self.right_top_order:RefreshOrder()
 end
+function WidgetShortcutButtons:OnUserDataChanged_dragons()
+    self.right_top_order:RefreshOrder()
+end
 function WidgetShortcutButtons:OnUserDataChanged_vipEvents()
 -- self.left_order_group:RefreshOrder()
-end
-function WidgetShortcutButtons:OnBasicChanged()
-    self.right_top_order:RefreshOrder()
-    -- self.left_order_group:RefreshOrder()
 end
 function WidgetShortcutButtons:OnMapDataChanged()
     self.right_top_order:RefreshOrder()

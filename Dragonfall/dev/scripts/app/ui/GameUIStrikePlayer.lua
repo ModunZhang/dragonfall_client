@@ -7,6 +7,7 @@ local window = import("..utils.window")
 local UIListView = import(".UIListView")
 local WidgetPushButton = import("..widget.WidgetPushButton")
 local UILib = import(".UILib")
+local Localize = import("..utils.Localize")
 local Enum = import("..utils.Enum")
 local DragonSprite = import("..sprites.DragonSprite")
 local Alliance_Manager = Alliance_Manager
@@ -16,33 +17,27 @@ GameUIStrikePlayer.STRIKE_TYPE = Enum("CITY","VILLAGE")
 
 function GameUIStrikePlayer:ctor(strike_type,params)
 	GameUIStrikePlayer.super.ctor(self,City,_("准备突袭"))
-	self.dragon_manager = City:GetFirstBuildingByType("dragonEyrie"):GetDragonManager()
 	self.params = params
 	self.strike_type = strike_type or self.STRIKE_TYPE.CITY
 	self:RefreshDefaultDragon()
 end
 
-function GameUIStrikePlayer:GetDragonManager()
-	return self.dragon_manager
-end
-
 function GameUIStrikePlayer:RefreshDefaultDragon()
-	local dragons = self:GetDragonManager():GetDragons()
-	local power_dragon_type = self:GetDragonManager():GetCanFightPowerfulDragonType()
-	if power_dragon_type == "" then
-		power_dragon_type = self:GetDragonManager():GetPowerfulDragonType()
+	local dragonType = UtilsForDragon:GetCanFightPowerfulDragonType(User)
+	if dragonType == "" then
+		dragonType = UtilsForDragon:GetPowerfulDragonType(User)
 	end
-	self.select_dragon_type = power_dragon_type
+	self.select_dragon_type = dragonType
 end
 
 
 function GameUIStrikePlayer:GetDragon()
-	return self:GetDragonManager():GetDragon(self.select_dragon_type)
+	return UtilsForDragon:GetDragon(User, self.select_dragon_type)
 end
 
 function GameUIStrikePlayer:ReloadDragon()
 	local dragon = self:GetDragon()
-	self.dragon_sprite:ReloadSpriteCauseTerrainChanged(dragon:Type())
+	self.dragon_sprite:ReloadSpriteCauseTerrainChanged(dragon.type)
 end
 
 function GameUIStrikePlayer:OnMoveInStage()
@@ -76,7 +71,7 @@ function GameUIStrikePlayer:BuildUI()
 		size = 20,
 		color = 0xffedae,
 	}):align(display.CENTER, 310, 20):addTo(info_layer)
-    self.dragon_sprite = DragonSprite.new(display.getRunningScene():GetSceneLayer(),self:GetDragon():Type())
+    self.dragon_sprite = DragonSprite.new(display.getRunningScene():GetSceneLayer(),self:GetDragon().type)
     					:addTo(clipNode):align(display.CENTER, 300, 100):scale(0.7)
 	self.list_view = UIListView.new ({
         viewRect = cc.rect(window.left+40,window.bottom + 85,window.width-80,475),
@@ -96,8 +91,6 @@ function GameUIStrikePlayer:BuildUI()
 		:setButtonLabelOffset(0, 12)
 		:onButtonClicked(function()
 			local select_DragonType = self:GetSelectDragonType()
-			local dragon = self:GetDragonManager():GetDragon(select_DragonType)
-
 			local alliance = Alliance_Manager:GetMyAlliance()
 			if alliance:IsReachEventLimit() then
 				if User.basicInfo.marchQueue < 2 then
@@ -116,8 +109,7 @@ function GameUIStrikePlayer:BuildUI()
 				end
     			return
 			end
-
-			if dragon:WarningStrikeDragon() then
+			if UtilsForDragon:NeedWarning(User.dragons[select_DragonType]) then
 				UIKit:showMessageDialog(_("提示"),_("您派出的龙可能会因血量过低而死亡，您确定还要派出吗？"), function()
 					self:OnStrikeButtonClicked()
 				end, function()end)
@@ -135,9 +127,8 @@ function GameUIStrikePlayer:BuildUI()
 end
 
 function GameUIStrikePlayer:RefreshListView()
-	local dragons = self:GetDragonManager():GetDragons()
- 	for k,dragon in pairs(dragons) do
-		if dragon:Ishated() then
+ 	for k,dragon in pairs(User.dragons) do
+		if dragon.star > 0 then
 			local item = self:GetItem(dragon,self.select_dragon_type)
 			self.list_view:addItem(item)
 		end
@@ -152,28 +143,31 @@ function GameUIStrikePlayer:GetItem(dragon,power_dragon_type)
 		:align(display.LEFT_BOTTOM,0,0)
 		:addTo(content)
 	local head_bg = display.newSprite("dragon_bg_114x114.png", 63, 63):addTo(box)
-	display.newSprite(UILib.dragon_head[dragon:Type()], 56, 60):addTo(head_bg)
+	display.newSprite(UILib.dragon_head[dragon.type], 56, 60):addTo(head_bg)
 	local content_box = display.newScale9Sprite("box_426X126.png")
 		:size(426,126)
 		:addTo(content)
 		:align(display.LEFT_BOTTOM,128,0)
 	UIKit:ttfLabel({
-		text = dragon:GetLocalizedName() .. "( LV " .. dragon:Level() .. " )",
+		text = Localize.dragon[dragon.type] .. "( LV " .. dragon.level .. " )",
 		size = 22,
 		color = 0x514d3e,
 	}):align(display.LEFT_TOP,20, 120):addTo(content_box)
 
+	local hp = UtilsForDragon:GetDragonHp(User, dragon.type)
+	local hpMax = UtilsForDragon:GetDragonMaxHp(User.dragons[dragon.type])
 	UIKit:ttfLabel({
-		text = _("生命值") .. " " .. dragon:Hp() .. "/" .. dragon:GetMaxHP(),
+		text = _("生命值").." "..string.formatnumberthousands(hp).."/"..string.formatnumberthousands(hpMax),
 		size = 20,
 		color= 0x615b44
 	}):align(display.LEFT_CENTER,20,63):addTo(content_box)
 	local color = 0x007c23
-	if dragon:Status() == 'march' then
+	if dragon.status == 'march' then
 		color = 0x7e0000
 	end
+	local desc = UtilsForDragon:GetDragonStatusDesc(UtilsForDragon:GetDragon(User, dragon.type))
 	UIKit:ttfLabel({
-		text = dragon:GetLocalizedStatus(),
+		text = desc,
 		size = 20,
 		color = color
 	}):align(display.LEFT_BOTTOM,20,16):addTo(content_box)
@@ -181,13 +175,13 @@ function GameUIStrikePlayer:GetItem(dragon,power_dragon_type)
 		normal = "checkbox_unselected.png",disabled = "checkbox_selectd.png"
 	}):align(display.RIGHT_CENTER,400,63):addTo(content_box)
 	:onButtonClicked(function(event)
-		self:OnButtonClickInItem(dragon:Type())
+		self:OnButtonClickInItem(dragon.type)
 	end)
-	if power_dragon_type == dragon:Type() then
+	if power_dragon_type == dragon.type then
 		button:setButtonEnabled(false)
-		self.select_dragon_type = dragon:Type()
+		self.select_dragon_type = dragon.type
 	end
-	item.dragon_type = dragon:Type()
+	item.dragon_type = dragon.type
 	item.button = button
 	item:addContent(content)
 	item:setItemSize(window.width-80, 132)
@@ -207,15 +201,15 @@ end
 
 function GameUIStrikePlayer:CheckDragonIsFree()
 	local dragon = self:GetDragon()
-
-	if not dragon:IsFree() and not dragon:IsDefenced() then
+	local dragonType = dragon.type
+	if not dragon.status == "free" and not dragon.status == "defence" then
         UIKit:showMessageDialog(_("提示"),_("龙未处于空闲状态"))
         return false
-    elseif dragon:IsDead() then
+    elseif UtilsForDragon:IsDragonDead(User, dragonType) then
 	    UIKit:showMessageDialog(_("提示"),_("选择的龙已经死亡"))
 	    return false
 	end
-	if dragon:IsDefenced() then
+	if dragon.status == "defence" then
 		 NetManager:getCancelDefenceTroopPromise():done(function()
 		 	self:SendDataToServer()
 		 end)

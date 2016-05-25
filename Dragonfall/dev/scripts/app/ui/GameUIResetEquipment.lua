@@ -8,8 +8,6 @@ local window = import("..utils.window")
 local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local WidgetDragonEquipIntensify = import("..widget.WidgetDragonEquipIntensify")
 local WidgetInfo = import("..widget.WidgetInfo")
-local GameUIDragonEyrieDetail = import(".GameUIDragonEyrieDetail")
-local DragonManager = import("..entity.DragonManager")
 local UIListView = import(".UIListView")
 local Localize = import("..utils.Localize")
 
@@ -18,10 +16,11 @@ local BODY_WIDTH = 608
 local LISTVIEW_WIDTH = 548
 local GameUIResetEquipment = class("GameUIResetEquipment", WidgetPopDialog)
 
-function GameUIResetEquipment:ctor(building,dragon,equipment_obj)
-    GameUIResetEquipment.super.ctor(self,BODY_HEIGHT,Localize.body[equipment_obj:Body()],window.top-120)
+function GameUIResetEquipment:ctor(building,dragon,equipment,part)
+    GameUIResetEquipment.super.ctor(self,BODY_HEIGHT,Localize.body[part],window.top-120)
     self.dragon = dragon
-    self.equipment = equipment_obj
+    self.part = part
+    self.equipment = equipment
     self.building = building
 end
 function GameUIResetEquipment:onEnter()
@@ -84,7 +83,7 @@ function GameUIResetEquipment:onEnter()
         :onButtonClicked(function()
             local equipment = self:GetEquipment()
             app:GetAudioManager():PlayeEffectSoundWithKey("UI_BLACKSMITH_FORGE")
-            NetManager:getResetDragonEquipmentPromise(equipment:Type(),equipment:Body()):done(function()
+            NetManager:getResetDragonEquipmentPromise(self.dragon.type,self.part):done(function()
                 GameGlobalUI:showTips(_("提示"),_("装备重置成功"))
                 self:RefreshInfoUI()
             end)
@@ -114,27 +113,27 @@ end
 
 -- 调用龙巢详情界面的函数获取道具图标
 function GameUIResetEquipment:GetEquipmentItem()
-    local item = GameUIDragonEyrieDetail:GetEquipmentItem(self:GetEquipment(),self.dragon:Star(),false)
+    local equipment_obj = {self:GetEquipment(), self.part}
+    local item = UIKit:GetUIInstance("GameUIDragonEyrieDetail"):GetEquipmentItem(equipment_obj,self.dragon.star,false)
     item:scale(120/item:getContentSize().width)
     return item
 end
 function GameUIResetEquipment:GetEquipmentEffect()
     local r = {}
     local equipment = self:GetEquipment()
-    local buffers = equipment:GetBufferAndEffect()
-    for __,v in ipairs(buffers) do
+    for __,v in ipairs(UtilsForDragon:GetDragonEquipBuff(equipment)) do
         table.insert(r,{Localize.dragon_buff_effection[v[1]],string.format("%d%%",v[2]*100)})
     end
     return r
 end
 function GameUIResetEquipment:GetCurrentEquipmentCount()
-    local player_equipments = User.dragonEquipments
     local equipment = self:GetEquipment()
-    local eq_name = equipment:IsLoaded() and equipment:Name() or equipment:GetCanLoadConfig().name
-    return player_equipments[eq_name] or 0
+    local equip = UtilsForDragon:GetCanEquipedByDragonPart(self.dragon, self.part)
+    local eq_name = #equipment.name > 0 and equipment.name or equip.name
+    return User.dragonEquipments[eq_name] or 0
 end
 function GameUIResetEquipment:RefreshInfoUI()
-    local equipment = self:GetEquipment()
+    self.equipment = User.dragons[self.dragon.type].equipments[self.part]
     self.reset_button:setButtonEnabled(self:GetCurrentEquipmentCount() > 0)
     self.current_count:setString(self:GetCurrentEquipmentCount())
     self.widgetInfo:SetInfo(self:GetEquipmentEffect())

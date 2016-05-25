@@ -653,9 +653,8 @@ function GameUIMission:dailyListviewListener(event)
                 app:EnterMyAllianceScene()
             end
         elseif pos == 9 then
-            local dragon_manger = city:GetDragonEyrie():GetDragonManager()
-            local dragon_type = dragon_manger:GetCanFightPowerfulDragonType()
-            if #dragon_type > 0 or UtilsForDragon:GetDefenceDragon(User) then
+            local fightPowerfulType = UtilsForDragon:GetCanFightPowerfulDragonType(city:GetUser())
+            if #fightPowerfulType > 0 or UtilsForDragon:GetDefenceDragon(User) then
                 app:EnterPVEScene(city:GetUser():GetLatestPveIndex())
             else
                 UIKit:showMessageDialog(_("主人"),_("需要一条空闲状态的魔龙才能探险"))

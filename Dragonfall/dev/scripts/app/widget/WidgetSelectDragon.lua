@@ -11,7 +11,6 @@ function WidgetSelectDragon:ctor(params)
     WidgetSelectDragon.super.ctor(self,516,params.title)
     local body = self.body
     local rb_size = body:getContentSize()
-    local dragon_manager = City:GetFirstBuildingByType("dragonEyrie"):GetDragonManager()
 
     local function createDragonFrame(dragon)
         local dragon_frame = display.newSprite("alliance_item_flag_box_126X126.png")
@@ -20,7 +19,7 @@ function WidgetSelectDragon:ctor(params)
         local dragon_bg = display.newSprite("dragon_bg_114x114.png")
             :align(display.LEFT_CENTER, 7,dragon_frame:getContentSize().height/2)
             :addTo(dragon_frame)
-        local dragon_img = display.newSprite(UILib.dragon_head[dragon:Type()])
+        local dragon_img = display.newSprite(UILib.dragon_head[dragon.type])
             :align(display.CENTER, dragon_bg:getContentSize().width/2, dragon_bg:getContentSize().height/2+5)
             :addTo(dragon_bg)
         local box_bg = display.newSprite("box_426X126.png")
@@ -28,7 +27,7 @@ function WidgetSelectDragon:ctor(params)
             :addTo(dragon_frame)
         -- 龙，等级
         local dragon_name = UIKit:ttfLabel({
-            text = Localize.dragon[dragon:Type()] .."（LV "..dragon:Level().."）",
+            text = Localize.dragon[dragon.type] .."（LV "..dragon.level.."）",
             size = 22,
             color = 0x514d3e,
         }):align(display.LEFT_CENTER,20,100)
@@ -40,8 +39,10 @@ function WidgetSelectDragon:ctor(params)
             color = 0x615b44,
         }):align(display.LEFT_CENTER,20,65)
             :addTo(box_bg)
+
+        local strength = UtilsForDragon:GetDragonStrength(User.dragons[dragon.type])
         UIKit:ttfLabel({
-            text = string.formatnumberthousands(dragon:TotalStrength()),
+            text = string.formatnumberthousands(strength),
             size = 18,
             color = 0x403c2f,
         }):align(display.RIGHT_CENTER,260,65)
@@ -53,8 +54,10 @@ function WidgetSelectDragon:ctor(params)
             color = 0x615b44,
         }):align(display.LEFT_CENTER,20,40)
             :addTo(box_bg)
+
+        local leadCitizen = UtilsForDragon:GetLeadershipByCitizen(User,dragon.type)
         UIKit:ttfLabel({
-            text = string.formatnumberthousands(dragon:LeadCitizen()),
+            text = string.formatnumberthousands(leadCitizen),
             size = 18,
             color = 0x403c2f,
         }):align(display.RIGHT_CENTER,260,40)
@@ -67,16 +70,20 @@ function WidgetSelectDragon:ctor(params)
             color = 0x615b44,
         }):align(display.LEFT_CENTER,20,15)
             :addTo(box_bg)
+
+        local hp = UtilsForDragon:GetDragonHp(User, dragon.type)
+        local hpMax = UtilsForDragon:GetDragonMaxHp(User.dragons[dragon.type])
         UIKit:ttfLabel({
-            text = string.formatnumberthousands(dragon:Hp()) .."/"..string.formatnumberthousands(dragon:GetMaxHP()),
+            text = string.formatnumberthousands(hp).."/"..string.formatnumberthousands(hpMax),
             size = 18,
             color = 0x403c2f,
         }):align(display.RIGHT_CENTER,260,15)
             :addTo(box_bg)
         -- 龙状态
-        local d_status = dragon:GetLocalizedStatus()
-        local s_color = dragon:IsFree() and 0x007c23 or 0x7e0000
-        if dragon:IsDead() then
+        local d_status = UtilsForDragon:GetDragonStatusDesc(UtilsForDragon:GetDragon(User, dragon.type))
+        local s_color = dragon.status == "free" and 0x007c23 or 0x7e0000
+
+        if UtilsForDragon:IsDragonDead(User, dragon.type) then
             s_color = 0x7e0000
         end
         local dragon_status = UIKit:ttfLabel({
@@ -89,7 +96,8 @@ function WidgetSelectDragon:ctor(params)
         return dragon_frame
     end
 
-    local dragons = dragon_manager:GetDragonsSortWithPowerful()
+
+    local dragons = UtilsForDragon:GetDragonsByPowerSeq(User)
     if LuaUtils:table_size(dragons)==0 then
         return
     end
@@ -98,15 +106,17 @@ function WidgetSelectDragon:ctor(params)
     local add_count = 0
     local optional_dragon = {}
     -- 默认选中最强的并且可以出战的龙,如果都不能出战,则默认最强龙
-    local default_dragon_type = params.default_dragon_type or dragon_manager:GetCanFightPowerfulDragonType() ~= "" and dragon_manager:GetCanFightPowerfulDragonType() or dragon_manager:GetPowerfulDragonType()
+    local fightPowerfulType = UtilsForDragon:GetCanFightPowerfulDragonType(User)
+    local powerfulType = UtilsForDragon:GetPowerfulDragonType(User)
+    local default_dragon_type = params.default_dragon_type or fightPowerfulType ~= "" and fightPowerfulType or powerfulType
     local default_select_dragon_index
     for k,dragon in ipairs(dragons) do
-        if dragon:Level()>0 then
+        if dragon.level>0 then
             createDragonFrame(dragon):align(display.LEFT_CENTER, 30,origin_y-add_count*gap_y)
                 :addTo(body)
             add_count = add_count + 1
             table.insert(optional_dragon, dragon)
-            if dragon:Type() == default_dragon_type then
+            if dragon.type == default_dragon_type then
                 default_select_dragon_index = k
             end
         end

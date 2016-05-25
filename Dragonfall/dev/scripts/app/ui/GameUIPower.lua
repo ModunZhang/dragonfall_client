@@ -188,7 +188,8 @@ function GameUIPower:CreateStrongthMenu()
                     UIKit:showMessageDialog(_("提示"),string.format(_("%s还未解锁"),_("兵营")))
                 end
             elseif i == 2 then
-                local ui = UIKit:newGameUI("GameUIDragonEyrieDetail",City,City:GetFirstBuildingByType("dragonEyrie"),City:GetFirstBuildingByType("dragonEyrie"):GetDragonManager():GetPowerfulDragonType()):AddToCurrentScene(false)
+                local powerfulType = UtilsForDragon:GetPowerfulDragonType(User)
+                local ui = UIKit:newGameUI("GameUIDragonEyrieDetail",City,City:GetFirstBuildingByType("dragonEyrie"),powerfulType):AddToCurrentScene(false)
                 ui.tab_buttons:SelectButtonByTag("skill")
             elseif i == 3 then
                 if #UtilsForBuilding:GetBuildingsBy(User, "blackSmith", 1) > 0 then
@@ -236,9 +237,8 @@ function GameUIPower:CreateFightMenu()
     for i,v in ipairs(btns) do
         self:CreateBtn(v,function ()
             if i == 1 then
-                local dragon_manger = City:GetDragonEyrie():GetDragonManager()
-                local dragon_type = dragon_manger:GetCanFightPowerfulDragonType()
-                if #dragon_type > 0 or UtilsForDragon:GetDefenceDragon(User) then
+                local fightPowerfulType = UtilsForDragon:GetCanFightPowerfulDragonType(User)
+                if #fightPowerfulType > 0 or UtilsForDragon:GetDefenceDragon(User) then
                     app:EnterPVEScene(User:GetLatestPveIndex())
                 else
                     UIKit:showMessageDialog(_("主人"),_("需要一条空闲状态的魔龙才能探险"))

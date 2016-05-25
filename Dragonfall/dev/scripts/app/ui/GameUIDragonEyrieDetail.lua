@@ -10,9 +10,7 @@ local StarBar = import(".StarBar")
 local DragonSprite = import("..sprites.DragonSprite")
 local GameUIDragonEyrieMain = import(".GameUIDragonEyrieMain")
 local WidgetPushButton = import("..widget.WidgetPushButton")
-local DragonManager = import("..entity.DragonManager")
 local WidgetDragonTabButtons = import("..widget.WidgetDragonTabButtons")
-local Dragon = import("..entity.Dragon")
 local UIListView = import(".UIListView")
 local Localize = import("..utils.Localize")
 local config_intInit = GameDatas.PlayerInitData.intInit
@@ -22,12 +20,15 @@ local UILib = import(".UILib")
 local WidgetPushTransparentButton = import("..widget.WidgetPushTransparentButton")
 local GameUIShowDragonUpStarAnimation = import(".GameUIShowDragonUpStarAnimation")
 -- building = DragonEyrie
-function GameUIDragonEyrieDetail:ctor(city,building,dragon_type)
+function GameUIDragonEyrieDetail:ctor(city,building,dragonType)
     GameUIDragonEyrieDetail.super.ctor(self,city,_("龙巢"))
     self.building = building
-    self.dragon_type = dragon_type
     self.draong_index = 1
-    self.dragon_manager = building:GetDragonManager()
+    self.dragonType = dragonType
+    self.dragonsStar = {}
+    for k,dragon in pairs(User.dragons) do
+        self.dragonsStar[k] = dragon.star
+    end
 end
 
 
@@ -72,17 +73,17 @@ function GameUIDragonEyrieDetail:CreateBetweenBgAndTitle()
         :addTo(self.content_node)
     self.star_bg = star_bg
     local nameLabel = UIKit:ttfLabel({
-        text = self:GetCurrentDragon():GetLocalizedName(),
+        text = Localize.dragon[self:GetCurrentDragon().type],
         color = 0xebdba0,
         size = 28
     }):align(display.LEFT_CENTER, 50,star_bg:getContentSize().height/2)
         :addTo(star_bg)
     self.dragon_name_label = nameLabel
     local star_bar = StarBar.new({
-        max = self:GetCurrentDragon():MaxStar(),
+        max = UtilsForDragon.dragonStarMax,
         bg = "Stars_bar_bg.png",
         fill = "Stars_bar_highlight.png",
-        num = self:GetCurrentDragon():Star(),
+        num = self:GetCurrentDragon().star,
     }):addTo(star_bg):align(display.RIGHT_BOTTOM,480,5)
     self.star_bar = star_bar
     self.tab_buttons = WidgetDragonTabButtons.new(function(tag)
@@ -107,21 +108,20 @@ function GameUIDragonEyrieDetail:CreateDragonScrollNode()
         }
     ):addTo(clipNode):pos(310,160)
 
-    self.dragon_manager:SortWithFirstDragon(self.dragon_type)
     for i,v in ipairs(contenNode:GetItems()) do
-        local dragon = self.dragon_manager:GetDragonByIndex(i)
-        local dragon_image = display.newSprite(string.format("%s_egg_176x192.png",dragon:Type()))
+        local dragon = User.dragons[self:GetDragonTypeByIndex(i)]
+        local dragon_image = display.newSprite(string.format("%s_egg_176x192.png",dragon.type))
             :align(display.CENTER, 300,355)
             :addTo(v)
         v.dragon_image = dragon_image
         dragon_image.resolution = {dragon_image:getContentSize().width,dragon_image:getContentSize().height}
-        local dragon_armature = DragonSprite.new(display.getRunningScene():GetSceneLayer(),dragon:Type())
+        local dragon_armature = DragonSprite.new(display.getRunningScene():GetSceneLayer(),dragon.type)
             :addTo(v)
             :pos(300,350)
             :hide():scale(0.9)
         v.armature = dragon_armature
         v.armature:Pause()
-        if dragon:Ishated() then
+        if dragon.star > 0 then
             v.armature:show()
             v.dragon_image:hide()
         end
@@ -133,8 +133,7 @@ function GameUIDragonEyrieDetail:OnEnterIndexEvent(index)
         self.draong_index = index + 1
         self:RefreshUI()
         local eyrie = self.draongContentNode:GetItemByIndex(index)
-        if not self:GetCurrentDragon():Ishated() then
-            -- self.dragon_hate_tips_label:setString(Localize.dragon_buffer[self:GetCurrentDragon():Type()])
+        if self:GetCurrentDragon().star == 0 then
             return
         end
         eyrie.dragon_image:hide()
@@ -146,8 +145,8 @@ end
 function GameUIDragonEyrieDetail:OnTouchClickEvent(index)
     local localIndex = index + 1
     if self.draong_index == localIndex then
-        local dragon = self.dragon_manager:GetDragonByIndex(localIndex)
-        if dragon and dragon:Ishated() then
+        local dragon = User.dragons[self:GetDragonTypeByIndex(localIndex)]
+        if dragon and dragon.star > 0 then
             app:GetAudioManager():PlayBuildingEffectByType('dragonEyrie')
         end
     end
@@ -156,16 +155,35 @@ end
 function GameUIDragonEyrieDetail:OnLeaveIndexEvent(index)
     if self.draongContentNode then
         local eyrie = self.draongContentNode:GetItemByIndex(index)
-        if not self:GetCurrentDragon():Ishated() then return end
+        if self:GetCurrentDragon().star == 0 then return end
         eyrie.armature:Pause()
         -- eyrie.armature:hide()
         -- eyrie.dragon_image:show()
     end
 end
 function GameUIDragonEyrieDetail:GetCurrentDragon()
-    -- index 1~3
-    local dragon = self.dragon_manager:GetDragonByIndex(self.draong_index)
-    return dragon
+    return User.dragons[self:GetDragonTypeByIndex(self.draong_index)]
+end
+function GameUIDragonEyrieDetail:GetDragonTypeByIndex(index)
+    local t = UtilsForDragon:GetSortDragonTypes(User)
+    local powerfulType = UtilsForDragon:GetPowerfulDragonType(User)
+    table.sort(t, function(a,b) 
+        return powerfulType == a
+    end)
+
+    if self.dragonType then
+        local index = table.indexof(t,self.dragonType)
+        local count = #t
+        local dest = {}
+        for i= index,count do
+            table.insert(dest,t[i])
+        end
+        for i=1,index - 1 do
+            table.insert(dest,t[i])
+        end
+        t = dest
+    end
+    return t[index]
 end
 function GameUIDragonEyrieDetail:CreateProgressTimer()
     local bg,progressTimer = nil,nil
@@ -198,26 +216,21 @@ end
 function GameUIDragonEyrieDetail:OnMoveInStage()
     local User = User
     self:BuildUI()
+
+    User:AddListenOnType(self, "dragons")
     User:AddListenOnType(self, "dragonEquipments")
-    self.dragon_manager:AddListenOnType(self,DragonManager.LISTEN_TYPE.OnBasicChanged)
 
     scheduleAt(self, function()
-        if not self:GetCurrentDragon():Ishated() then return end
         if self.skill_ui and self.skill_ui.blood_label then
-            self.skill_ui.blood_label:setString(string.formatnumberthousands(User:GetResValueByType("blood")))
+            self.skill_ui.blood_label:setString(string.th000(User:GetResValueByType("blood")))
         end
     end)
     self.draongContentNode:OnEnterIndex(math.abs(0))
     GameUIDragonEyrieDetail.super.OnMoveInStage(self)
 end
-
-function GameUIDragonEyrieDetail:OnMoveOutStage()
-    local User = User
-    User:RemoveListenerOnType(self, "dragonEquipments")
-    GameUIDragonEyrieDetail.super.OnMoveOutStage(self)
-end
 function GameUIDragonEyrieDetail:onExit()
-    self.dragon_manager:RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnBasicChanged)
+    User:RemoveListenerOnType(self, "dragons")
+    User:RemoveListenerOnType(self, "dragonEquipments")
 end
 
 function GameUIDragonEyrieDetail:VisibleStarBar(v)
@@ -231,8 +244,8 @@ end
 function GameUIDragonEyrieDetail:BuildDragonContent()
     local dragon_content = self.dragon_base:getChildByTag(101)
     if dragon_content then dragon_content:removeFromParent() end
-    if self:GetCurrentDragon():Ishated() then
-        local dragon = DragonSprite.new(display.getRunningScene():GetSceneLayer(),self:GetCurrentDragon():Type())
+    if self:GetCurrentDragon().star > 0 then
+        local dragon = DragonSprite.new(display.getRunningScene():GetSceneLayer(),self:GetCurrentDragon().type)
             :addTo(self.dragon_base)
             :align(display.CENTER, 300,150)
         dragon:setTag(101)
@@ -240,31 +253,28 @@ function GameUIDragonEyrieDetail:BuildDragonContent()
         local nodePoint = self.dragon_base:convertToWorldSpace(cc.p(bound.x, bound.y))
         self.dragon_world_point = nodePoint
     else
-        local dragon = display.newSprite(string.format("%s_egg_176x174.png",self:GetCurrentDragon():Type()))
+        local dragon = display.newSprite(string.format("%s_egg_176x174.png",self:GetCurrentDragon().type))
             :align(display.CENTER, 307,180)
             :addTo(self.dragon_base)
         dragon:setTag(101)
     end
 end
-
--- function GameUIDragonEyrieDetail:GetDragon()
---     return self.dragon
--- end
 --充能
 function GameUIDragonEyrieDetail:OnEnergyButtonClicked()
-    local dragon = self:GetCurrentDragon()
-    NetManager:getHatchDragonPromise(dragon:Type())
+    NetManager:getHatchDragonPromise(self:GetCurrentDragon().type)
 end
 
 function GameUIDragonEyrieDetail:GetUpgradDragonStarTips(dragon)
-    if dragon:Ishated() then
-        if dragon:Star() < 2 then
-            return string.format(_("晋级需要龙的等级到达%d级，集齐已解锁装备，并全部强化到%d星"),dragon:GetPromotionLevel(),dragon:Star())
+    if dragon.star > 0 then
+        local levelMax = UtilsForDragon:GetDragonLevelMax(dragon)
+        if dragon.star < 2 then
+            return string.format(_("晋级需要龙的等级到达%d级，集齐已解锁装备，并全部强化到%d星"),levelMax,dragon.star)
         else
-            return string.format(_("晋级需要龙的等级到达%d级，集齐全部装备，并全部强化到%d星"),dragon:GetPromotionLevel(),dragon:Star())
+            return string.format(_("晋级需要龙的等级到达%d级，集齐全部装备，并全部强化到%d星"),levelMax,dragon.star)
         end
     else
-        return self.building:GetNextHateLevel() and string.format(_("龙巢%d级时可孵化新的巨龙"),self.building:GetNextHateLevel()) or ""
+        local level = UtilsForDragon:HowManyLevelsCanHatchDragons(User)
+        return level and string.format(_("龙巢%d级时可孵化新的巨龙"),level) or ""
     end
 end
 
@@ -274,11 +284,12 @@ function GameUIDragonEyrieDetail:RefreshUI()
     -- if button_tag ~= 'skill' and self.skill_ui and self.skill_ui.listView then
     --     self.skill_ui.listView:removeAllItems()
     -- end
-    local isHated = dragon:Ishated()
+    local isHated = dragon.star > 0
+    local expNeed = UtilsForDragon:GetDragonExpNeed(dragon)
     if button_tag == 'equipment' then
         self.lv_label:show()
-        self.dragon_hp_label:setString(string.formatnumberthousands(dragon:Exp()) .. "/" .. string.formatnumberthousands(dragon:GetMaxExp()))
-        self.hp_process_timer:setPercentage(dragon:Exp()/dragon:GetMaxExp()*100)
+        self.dragon_hp_label:setString(string.formatnumberthousands(dragon.exp) .. "/" .. string.formatnumberthousands(expNeed))
+        self.hp_process_timer:setPercentage(dragon.exp/expNeed * 100)
         self.hp_process_timer.add_button:setVisible(isHated) 
         self.hp_process_bg:show()
         self.equipment_ui.promotionLevel_label:setString(self:GetUpgradDragonStarTips(dragon))
@@ -293,24 +304,31 @@ function GameUIDragonEyrieDetail:RefreshUI()
         self.lv_label:hide()
     else
         self.lv_label:show()
-        self.dragon_hp_label:setString(string.formatnumberthousands(dragon:Exp()) .. "/" .. string.formatnumberthousands(dragon:GetMaxExp()))
-        self.hp_process_timer:setPercentage(dragon:Exp()/dragon:GetMaxExp()*100)
+        self.dragon_hp_label:setString(string.formatnumberthousands(dragon.exp) .. "/" .. string.formatnumberthousands(expNeed))
+        self.hp_process_timer:setPercentage(dragon.exp/expNeed * 100)
         self.hp_process_timer.add_button:setVisible(isHated) 
         self.hp_process_bg:show()
         self:RefreshInfoListView()
-        if dragon and dragon:Ishated() then
-            self.info_strenth_label:setString(string.formatnumberthousands(dragon:TotalStrength()))
-            self.info_vitality_label:setString(string.formatnumberthousands(dragon:GetMaxHP()))
-            self.info_leadership_label:setString(string.formatnumberthousands(dragon:LeadCitizen()))
+        if dragon and dragon.star > 0 then
+            local dragonType = dragon.type
+            local strength = UtilsForDragon:GetDragonStrength(User.dragons[dragonType])
+            self.info_strenth_label:setString(string.formatnumberthousands(strength))
+
+            local hpMax = UtilsForDragon:GetDragonMaxHp(User.dragons[dragonType])
+            self.info_vitality_label:setString(string.formatnumberthousands(hpMax))
+
+            local leadCitizen = UtilsForDragon:GetLeadershipByCitizen(User,dragonType)
+            self.info_leadership_label:setString(string.formatnumberthousands(leadCitizen))
         else
             self.info_strenth_label:setString("0")
             self.info_vitality_label:setString("0")
             self.info_leadership_label:setString("0")
         end
     end
-    self.lv_label:setString(isHated and "LV " .. dragon:Level() .. "/" .. dragon:GetMaxLevel() or "")
-    self.star_bar:setNum(dragon:Star())
-    self.dragon_name_label:setString(dragon:GetLocalizedName())
+    local levelMax = UtilsForDragon:GetDragonLevelMax(dragon)
+    self.lv_label:setString(isHated and "LV "..dragon.level.."/"..levelMax or "")
+    self.star_bar:setNum(dragon.star)
+    self.dragon_name_label:setString(Localize.dragon[dragon.type])
 end
 
 --装备
@@ -359,8 +377,10 @@ end
 
 function GameUIDragonEyrieDetail:OnLoadAllButtonClicked()
     if #self.can_load_equipemts ~= 0 then
-        local eq = self.can_load_equipemts[1]
-        NetManager:getLoadDragonEquipmentPromise(eq:Type(),eq:Body(),eq:GetCanLoadConfig().name):done(function(msg)
+        local dragon = self:GetCurrentDragon()
+        local eq,part = unpack(self.can_load_equipemts[1])
+        local equip = UtilsForDragon:GetCanEquipedByDragonPart(dragon, part)
+        NetManager:getLoadDragonEquipmentPromise(dragon.type, part, equip.name):done(function(msg)
             self:FillEquipemtBox()
             self:OnLoadAllButtonClicked()
 
@@ -371,9 +391,9 @@ function GameUIDragonEyrieDetail:OnLoadAllButtonClicked()
 end
 
 --返回装备图片信息 return 背景图 装备图
-function GameUIDragonEyrieDetail:GetEquipmentItemImageInfo(equipment_obj,dragon_star)
+function GameUIDragonEyrieDetail:GetEquipmentItemImageInfo(part,dragon_star)
     local bgImages = {"box_104x104_1.png","box_104x104_2.png","box_104x104_3.png","box_104x104_4.png"}
-    local image = UILib.getDragonEquipmentImage(equipment_obj:Type(),equipment_obj:Body(),dragon_star == 0 and 1 or dragon_star)
+    local image = UILib.getDragonEquipmentImage(self:GetCurrentDragon().type,part,dragon_star == 0 and 1 or dragon_star)
     return bgImages[dragon_star] or bgImages[1],image
 end
 
@@ -385,149 +405,44 @@ function GameUIDragonEyrieDetail:PlaceEquipmentBoxIntoEqNode()
     end
     self.equipment_boxs = {}
     local dragon = self:GetCurrentDragon()
-    local eq = dragon:GetEquipmentByBody(Dragon.DRAGON_BODY.armguardLeft)
-    local image,__ = self:GetEquipmentItemImageInfo(eq,dragon:Star())
+
+    local eq = dragon.equipments.armguardLeft
+    local image,__ = self:GetEquipmentItemImageInfo("armguardLeft", dragon.star)
     local sp = display.newSprite(image):align(display.LEFT_BOTTOM, 5, 5):addTo(self.equipment_ui.equipment_box)
 
     self.equipment_boxs['armguardLeft'] = sp
-    eq = dragon:GetEquipmentByBody(Dragon.DRAGON_BODY.crown)
-    image,__ = self:GetEquipmentItemImageInfo(eq,dragon:Star())
+    eq = dragon.equipments.crown
+    image,__ = self:GetEquipmentItemImageInfo("crown", dragon.star)
     sp = display.newSprite(image):align(display.LEFT_TOP, 5, 230):addTo(self.equipment_ui.equipment_box)
     self.equipment_boxs['crown'] = sp
-    eq = dragon:GetEquipmentByBody(Dragon.DRAGON_BODY.orb)
-    image,__ = self:GetEquipmentItemImageInfo(eq,dragon:Star())
+    eq = dragon.equipments.orb
+    image,__ = self:GetEquipmentItemImageInfo("orb", dragon.star)
     sp = display.newSprite(image):align(display.LEFT_TOP, 144, 230):addTo(self.equipment_ui.equipment_box)
     self.equipment_boxs['orb'] = sp
-    eq = dragon:GetEquipmentByBody(Dragon.DRAGON_BODY.chest)
-    image,__ = self:GetEquipmentItemImageInfo(eq,dragon:Star())
+    eq = dragon.equipments.chest
+    image,__ = self:GetEquipmentItemImageInfo("chest", dragon.star)
     sp = display.newSprite(image):align(display.LEFT_TOP, 283, 230):addTo(self.equipment_ui.equipment_box)
     self.equipment_boxs['chest'] = sp
-    eq = dragon:GetEquipmentByBody(Dragon.DRAGON_BODY.sting)
-    image,__ = self:GetEquipmentItemImageInfo(eq,dragon:Star())
+    eq = dragon.equipments.sting
+    image,__ = self:GetEquipmentItemImageInfo("sting", dragon.star)
     sp = display.newSprite(image):align(display.RIGHT_TOP, 525, 230):addTo(self.equipment_ui.equipment_box)
     self.equipment_boxs['sting'] = sp
-    eq = dragon:GetEquipmentByBody(Dragon.DRAGON_BODY.armguardRight)
-    image,__ = self:GetEquipmentItemImageInfo(eq,dragon:Star())
+    eq = dragon.equipments.armguardRight
+    image,__ = self:GetEquipmentItemImageInfo("armguardRight", dragon.star)
     sp = display.newSprite(image):align(display.RIGHT_BOTTOM, 525, 5):addTo(self.equipment_ui.equipment_box)
     self.equipment_boxs['armguardRight'] = sp
 end
 
-
-function GameUIDragonEyrieDetail:OnUserDataChanged_dragonEquipments(userData, deltaData)
-    if self.tab_buttons:GetCurrentTag() == 'equipment' then
-        local canloadAnyEq = self:FillEquipemtBox()
-        self.equipment_ui.upgrade_star_btn:setVisible(not canloadAnyEq)
-        self.equipment_ui.load_equipment_btn:setVisible(canloadAnyEq)
-    end
-end
-
-
-function GameUIDragonEyrieDetail:FillEquipemtBox()
-    assert(self.equipment_boxs['armguardLeft'])
-    self.can_load_equipemts = {}
-    local final_point = self.dragon_world_point
-    if self.equipment_nodes then
-        for k,v in pairs(self.equipment_nodes) do
-            v:removeSelf()
+function GameUIDragonEyrieDetail:OnUserDataChanged_dragons(userData, deltaData)
+    local starUp = false
+    for k,dragon in pairs(userData.dragons) do
+        local ok, value = deltaData(string.format("dragons.%s.star", k))
+        if ok and self.dragonsStar[k] ~= value and self:GetCurrentDragon().type == k then
+            starUp = true
         end
+        self.dragonsStar[k] = dragon.star
     end
-    self.equipment_nodes = {}
-    local dragon = self:GetCurrentDragon()
-    for body,box in pairs(self.equipment_boxs) do
-        local eq = dragon:GetEquipmentByBody(body)
-        if not eq:IsLoaded() and self:CheckCanLoadEquipment(eq) then
-            table.insert(self.can_load_equipemts,eq)
-        end
-        local node = self:GetEquipmentItem(eq,dragon:Star(),true):addTo(box):pos(52,52)
-        node.final_point = box:convertToNodeSpace(final_point)
-        node.need_animation = not eq:IsLocked()
-        self.equipment_nodes[body] = node
-    end
-    return #self.can_load_equipemts > 0
-end
-
-function GameUIDragonEyrieDetail:OnDragonExpItemUseButtonClicked()
-    local widgetUseItems = WidgetUseItems.new():Create({
-        item_name = "dragonExp_1",
-        dragon = self:GetCurrentDragon()
-    })
-    widgetUseItems:AddToCurrentScene()
-end
-
-function GameUIDragonEyrieDetail:UpgradeDragonStar()
-    local dragon = self:GetCurrentDragon()
-    if not dragon:IsReachPromotionLevel() then
-        UIKit:showMessageDialog(_("提示"), _("龙未达到晋级等级"), function()end)
-        return
-    end
-
-    if not dragon:EquipmentsIsReachMaxStar() then
-        UIKit:showMessageDialog(_("提示"), _("所有装备未达到最高星级"), function()end)
-        return
-    end
-
-    if dragon:Star() == 4 then
-        UIKit:showMessageDialog(_("提示"), _("5星上限即将开放!"), function()end)
-        return
-    end
-
-    NetManager:getUpgradeDragonStarPromise(dragon:Type())
-end
-
-function GameUIDragonEyrieDetail:CheckCanLoadEquipment(equipment)
-    if equipment:IsLocked() or equipment:IsLoaded() then return false end
-    local player_equipments = User.dragonEquipments
-    local eq_name = equipment:IsLoaded() and equipment:Name() or equipment:GetCanLoadConfig().name
-    return (player_equipments[eq_name] or 0) > 0
-end
-
-function GameUIDragonEyrieDetail:GetEquipmentItem(equipment_obj,dragon_star,needInfoIcon)
-    needInfoIcon = needInfoIcon or false
-    local can_load = self:CheckCanLoadEquipment(equipment_obj)
-    local bgImage,equipmentImage = self:GetEquipmentItemImageInfo(equipment_obj,dragon_star)
-    local equipment_node = display.newSprite(bgImage)
-    if equipment_obj:IsLocked() then
-        display.newSprite("dragon_eq_lock_87x88.png", equipment_node:getContentSize().width/2,equipment_node:getContentSize().height/2):addTo(equipment_node)
-    else
-        if equipment_obj:IsLoaded() then
-            display.newSprite(equipmentImage):addTo(equipment_node):pos(equipment_node:getContentSize().width/2,equipment_node:getContentSize().height/2):scale(0.6)
-            if needInfoIcon then
-                display.newSprite("i_icon_20x20.png"):align(display.LEFT_BOTTOM, 5, 5):addTo(equipment_node)
-            end
-            StarBar.new({
-                max = equipment_obj:MaxStar(),
-                bg = "Stars_bar_bg.png",
-                fill = "Stars_bar_highlight.png",
-                num =  equipment_obj:Star(),
-                margin = 0,
-                direction = StarBar.DIRECTION_VERTICAL,
-                scale = 0.55,
-            }):addTo(equipment_node):align(display.LEFT_BOTTOM,equipment_node:getContentSize().width-30,15)
-        else
-            local icon = UIKit:getDiscolorrationSprite(equipmentImage)
-                :addTo(equipment_node)
-                :pos(equipment_node:getContentSize().width/2,equipment_node:getContentSize().height/2):scale(0.6)
-            icon:setOpacity(80)
-            if needInfoIcon then
-                if can_load then
-                    display.newSprite("dragon_load_eq_37x38.png"):align(display.RIGHT_BOTTOM,104, 5):addTo(equipment_node)
-                else
-                    display.newSprite("i_icon_20x20.png"):align(display.LEFT_BOTTOM, 5, 5):addTo(equipment_node)
-                end
-            end
-        end
-        if needInfoIcon then
-            WidgetPushTransparentButton.new(cc.rect(0,0,104,104)):align(display.LEFT_BOTTOM,0, 0):addTo(equipment_node):onButtonClicked(function()
-                self:HandleClickedOnEquipmentItem(equipment_obj,can_load)
-            end)
-        end
-    end
-    return equipment_node
-end
-
-function GameUIDragonEyrieDetail:OnBasicChanged(dragon,star_chaned)
-    if self:GetCurrentDragon():Type() ~= dragon:Type() then return end
-    if star_chaned then
+    if starUp then
         local button_tag = self.tab_buttons:GetCurrentTag()
         if button_tag == 'equipment' then
             local sequence = transition.sequence({
@@ -554,18 +469,134 @@ function GameUIDragonEyrieDetail:OnBasicChanged(dragon,star_chaned)
         self:RefreshUI()
     end
 end
+function GameUIDragonEyrieDetail:OnUserDataChanged_dragonEquipments(userData, deltaData)
+    if self.tab_buttons:GetCurrentTag() == 'equipment' then
+        local canloadAnyEq = self:FillEquipemtBox()
+        self.equipment_ui.upgrade_star_btn:setVisible(not canloadAnyEq)
+        self.equipment_ui.load_equipment_btn:setVisible(canloadAnyEq)
+    end
+end
 
+
+function GameUIDragonEyrieDetail:FillEquipemtBox()
+    assert(self.equipment_boxs['armguardLeft'])
+    self.can_load_equipemts = {}
+    local final_point = self.dragon_world_point
+    if self.equipment_nodes then
+        for k,v in pairs(self.equipment_nodes) do
+            v:removeSelf()
+        end
+    end
+    self.equipment_nodes = {}
+    local dragon = self:GetCurrentDragon()
+    for part,box in pairs(self.equipment_boxs) do
+        local eq = dragon.equipments[part]
+        local equipment_obj = {eq, part}
+        if #eq.name == 0 and self:CheckCanLoadEquipment(equipment_obj) then
+            table.insert(self.can_load_equipemts,equipment_obj)
+        end
+        local node = self:GetEquipmentItem(equipment_obj,dragon.star,true):addTo(box):pos(52,52)
+        node.final_point = box:convertToNodeSpace(final_point)
+        node.need_animation = UtilsForDragon:IsPartUnLocked(dragon, part)
+        self.equipment_nodes[part] = node
+    end
+    return #self.can_load_equipemts > 0
+end
+
+function GameUIDragonEyrieDetail:OnDragonExpItemUseButtonClicked()
+    local widgetUseItems = WidgetUseItems.new():Create({
+        item_name = "dragonExp_1",
+        dragon = self:GetCurrentDragon()
+    })
+    widgetUseItems:AddToCurrentScene()
+end
+
+function GameUIDragonEyrieDetail:UpgradeDragonStar()
+    local dragon = self:GetCurrentDragon()
+    local levelMax = UtilsForDragon:GetDragonLevelMax(dragon)
+    if dragon.level < levelMax then
+        UIKit:showMessageDialog(_("提示"), _("龙未达到晋级等级"), function()end)
+        return
+    end
+
+    if not UtilsForDragon:IsAllEquipmentsReachMaxStar(User.dragons[dragon.type]) then
+        UIKit:showMessageDialog(_("提示"), _("所有装备未达到最高星级"), function()end)
+        return
+    end
+
+    if dragon.star == 4 then
+        UIKit:showMessageDialog(_("提示"), _("5星上限即将开放!"), function()end)
+        return
+    end
+
+    NetManager:getUpgradeDragonStarPromise(dragon.type)
+end
+
+function GameUIDragonEyrieDetail:CheckCanLoadEquipment(equipment_obj)
+    local dragon = self:GetCurrentDragon()
+    local equipment,part = unpack(equipment_obj)
+    local loaded = #equipment.name > 0
+    if not UtilsForDragon:IsPartUnLocked(dragon, part) or loaded then 
+        return false 
+    end
+    local equip = UtilsForDragon:GetCanEquipedByDragonPart(dragon, part)
+    return (User.dragonEquipments[equip.name] or 0) > 0
+end
+
+function GameUIDragonEyrieDetail:GetEquipmentItem(equipment_obj,dragon_star,needInfoIcon)
+    needInfoIcon = needInfoIcon or false
+    local dragon = self:GetCurrentDragon()
+    local equipment,part = unpack(equipment_obj)
+    local can_load = self:CheckCanLoadEquipment(equipment_obj)
+    local bgImage,equipmentImage = self:GetEquipmentItemImageInfo(part,dragon_star)
+    local equipment_node = display.newSprite(bgImage)
+    if not UtilsForDragon:IsPartUnLocked(dragon, part) then
+        display.newSprite("dragon_eq_lock_87x88.png", equipment_node:getContentSize().width/2,equipment_node:getContentSize().height/2):addTo(equipment_node)
+    else
+        if #equipment.name > 0 then
+            display.newSprite(equipmentImage):addTo(equipment_node):pos(equipment_node:getContentSize().width/2,equipment_node:getContentSize().height/2):scale(0.6)
+            if needInfoIcon then
+                display.newSprite("i_icon_20x20.png"):align(display.LEFT_BOTTOM, 5, 5):addTo(equipment_node)
+            end
+            StarBar.new({
+                max = UtilsForDragon:GetEquipmentMaxStar(equipment),
+                bg = "Stars_bar_bg.png",
+                fill = "Stars_bar_highlight.png",
+                num =  equipment.star,
+                margin = 0,
+                direction = StarBar.DIRECTION_VERTICAL,
+                scale = 0.55,
+            }):addTo(equipment_node):align(display.LEFT_BOTTOM,equipment_node:getContentSize().width-30,15)
+        else
+            local icon = UIKit:getDiscolorrationSprite(equipmentImage)
+                :addTo(equipment_node)
+                :pos(equipment_node:getContentSize().width/2,equipment_node:getContentSize().height/2):scale(0.6)
+            icon:setOpacity(80)
+            if needInfoIcon then
+                if can_load then
+                    display.newSprite("dragon_load_eq_37x38.png"):align(display.RIGHT_BOTTOM,104, 5):addTo(equipment_node)
+                else
+                    display.newSprite("i_icon_20x20.png"):align(display.LEFT_BOTTOM, 5, 5):addTo(equipment_node)
+                end
+            end
+        end
+        if needInfoIcon then
+            WidgetPushTransparentButton.new(cc.rect(0,0,104,104)):align(display.LEFT_BOTTOM,0, 0):addTo(equipment_node):onButtonClicked(function()
+                self:HandleClickedOnEquipmentItem(part, equipment_obj, can_load)
+            end)
+        end
+    end
+    return equipment_node
+end
 function GameUIDragonEyrieDetail:ShowUpgradeStarSuccess()
     GameUIShowDragonUpStarAnimation.new(self:GetCurrentDragon()):addTo(self)
 end
-
 function GameUIDragonEyrieDetail:OnTabButtonClicked(tag)
     if tag == 'back' then
-        UIKit:newGameUI("GameUIDragonEyrieMain", self.city, self.city:GetFirstBuildingByType("dragonEyrie"), "dragon",false,self:GetCurrentDragon():Type()):AddToCurrentScene(false)
+        UIKit:newGameUI("GameUIDragonEyrieMain", self.city, self.city:GetFirstBuildingByType("dragonEyrie"), "dragon",false,self:GetCurrentDragon().type):AddToCurrentScene(false)
         self:LeftButtonClicked()
         return
     end
-    -- if not self:GetCurrentDragon():Ishated() then return end
     if self['CreateNodeIf_' .. tag] then
         if self.current_node then
             self.current_node:hide()
@@ -576,16 +607,18 @@ function GameUIDragonEyrieDetail:OnTabButtonClicked(tag)
     end
 end
 
-function GameUIDragonEyrieDetail:HandleClickedOnEquipmentItem(equipment_obj,canLoad)
-    if equipment_obj:IsLoaded() then
-        UIKit:newGameUI("GameUIDragonEquipment",self.building,self:GetCurrentDragon(),equipment_obj):AddToCurrentScene(true)
+function GameUIDragonEyrieDetail:HandleClickedOnEquipmentItem(part, equipment_obj,canLoad)
+    local equipment, part = unpack(equipment_obj)
+    if #equipment.name > 0 then
+        UIKit:newGameUI("GameUIDragonEquipment",self.building,self:GetCurrentDragon(), equipment, part):AddToCurrentScene(true)
     else
         if canLoad then
-            NetManager:getLoadDragonEquipmentPromise(equipment_obj:Type(),equipment_obj:Body(),equipment_obj:GetCanLoadConfig().name):done(function(msg)
+            local equip = UtilsForDragon:GetCanEquipedByDragonPart(self:GetCurrentDragon(),part)
+            NetManager:getLoadDragonEquipmentPromise(equip.usedFor,part,equip.name):done(function(msg)
                 self:FillEquipemtBox()
             end)
         else
-            UIKit:newGameUI("GameUIDragonEquipmentMake",self:GetCurrentDragon(),equipment_obj):AddToCurrentScene(true)
+            UIKit:newGameUI("GameUIDragonEquipmentMake",self:GetCurrentDragon(), equipment, part):AddToCurrentScene(true)
         end
     end
 end
@@ -639,11 +672,12 @@ function GameUIDragonEyrieDetail:CreateNodeIf_skill()
 end
 
 function GameUIDragonEyrieDetail:GetSkillListItem(skill)
+    local dragon = self:GetCurrentDragon()
     local bg = WidgetPushButton.new({normal = "dragon_skill_item_180x110.png"}, {scale9 = false})
     bg:setAnchorPoint(cc.p(0,0))
     local skill_bg = display.newSprite("dragon_skill_bg_110x110.png", 62, 55):addTo(bg)
-    local skill_icon = UILib.dragon_skill_icon[skill:Name()][skill:Type()]
-    if skill:IsLocked() then
+    local skill_icon = UILib.dragon_skill_icon[skill.name][dragon.type]
+    if UtilsForDragon:IsSkillLocked(dragon, skill) then
         local skill_sp = UIKit:getDiscolorrationSprite(skill_icon):addTo(skill_bg):pos(55,55)
         skill_sp:scale(80/skill_sp:getContentSize().width)
         display.newSprite("dragon_skill_lock_34x46.png",136, 55):addTo(bg)
@@ -657,7 +691,7 @@ function GameUIDragonEyrieDetail:GetSkillListItem(skill)
             align = cc.TEXT_ALIGNMENT_LEFT
         }):align(display.LEFT_BOTTOM,120,60):addTo(bg)
         UIKit:ttfLabel({
-            text = skill:Level(),
+            text = skill.level,
             size = 24,
             color = 0x403c2f,
             align = cc.TEXT_ALIGNMENT_CENTER
@@ -671,17 +705,12 @@ end
 
 --根据skill 的key排序 并分页
 function GameUIDragonEyrieDetail:GetSkillListData(perLineCount,page)
-    local skills = self:GetCurrentDragon():Skills()
-    local keys = table.keys(skills)
-    table.sort( keys, function(a,b) return a<b end )
-    local skills_local = {}
-
-    for i,v in ipairs(keys) do
-        table.insert(skills_local,skills[v])
-    end
-    local pageCount =  math.ceil(#skills_local/perLineCount)
+    local user = self.city:GetUser()
+    local dragonType = self:GetCurrentDragon().type
+    local skills = UtilsForDragon:GetSkillsBySeq(UtilsForDragon:GetDragon(user,dragonType))
+    local pageCount =  math.ceil(#skills/perLineCount)
     if not page then return pageCount end
-    return LuaUtils:table_slice(skills_local,1+(page - 1)*perLineCount,perLineCount*page)
+    return LuaUtils:table_slice(skills,1+(page - 1)*perLineCount,perLineCount*page)
 end
 
 
@@ -712,14 +741,14 @@ function GameUIDragonEyrieDetail:RefreshSkillList()
 end
 
 function GameUIDragonEyrieDetail:SkillListItemClicked(skill)
-    UIKit:newGameUI("GameUIDragonSkill",self.building,skill):AddToCurrentScene(true)
+    UIKit:newGameUI("GameUIDragonSkill",self:GetCurrentDragon().type,skill):AddToCurrentScene(true)
 end
 
 --信息
 function GameUIDragonEyrieDetail:CreateNodeIf_info()
     if self.info_node then return self.info_node end
     local dragon = self:GetCurrentDragon()
-    local ishated = dragon:Ishated()
+    local ishated = dragon.star > 0
     local info_node = display.newNode():addTo(self:GetView())
     local list_bg = display.newScale9Sprite("background_568x120.png", 0,0,cc.size(546,212),cc.rect(15,10,538,100))
         :addTo(info_node)
@@ -738,8 +767,10 @@ function GameUIDragonEyrieDetail:CreateNodeIf_info()
         size = 20,
         color= 0x615b44
     }):align(display.CENTER_TOP,75, 72):addTo(strenth_bg)
+
+    local strength = UtilsForDragon:GetDragonStrength(User.dragons[dragon.type])
     self.info_strenth_label = UIKit:ttfLabel({
-        text = ishated and string.formatnumberthousands(dragon:TotalStrength()) or 0,
+        text = ishated and string.formatnumberthousands(strength) or 0,
         size = 24,
         color=0x117a00
     }):align(display.CENTER_BOTTOM,75, 10):addTo(strenth_bg)
@@ -751,8 +782,10 @@ function GameUIDragonEyrieDetail:CreateNodeIf_info()
         size = 20,
         color= 0x615b44
     }):align(display.CENTER_TOP,75, 72):addTo(vitality_bg)
+
+    local hpMax = UtilsForDragon:GetDragonMaxHp(User.dragons[dragon.type])
     self.info_vitality_label = UIKit:ttfLabel({
-        text = ishated and string.formatnumberthousands(dragon:GetMaxHP()) or 0,
+        text = ishated and string.formatnumberthousands(hpMax) or 0,
         size = 24,
         color=0x117a00
     }):align(display.CENTER_BOTTOM,75, 10):addTo(vitality_bg)
@@ -766,8 +799,9 @@ function GameUIDragonEyrieDetail:CreateNodeIf_info()
         size = 20,
         color= 0x615b44
     }):align(display.CENTER_TOP,75, 72):addTo(leadership_bg)
+    local leadCitizen = UtilsForDragon:GetLeadershipByCitizen(User,dragon.type)
     self.info_leadership_label = UIKit:ttfLabel({
-        text = ishated and string.formatnumberthousands(dragon:LeadCitizen()) or 0,
+        text = ishated and string.formatnumberthousands(leadCitizen) or 0,
         size = 24,
         color=0x117a00
     }):align(display.CENTER_BOTTOM,75, 10):addTo(leadership_bg)
@@ -790,15 +824,17 @@ end
 function GameUIDragonEyrieDetail:GetInfomationData()
     local r = {}
     local dragon = self:GetCurrentDragon()
-    if dragon:Ishated() then
-        table.insert(r, {_("带兵量"),dragon:LeadCitizen()})
-        for __,v in ipairs(dragon:GetAllEquipmentBuffEffect()) do
+    if dragon.star > 0 then
+        local User = self.city:GetUser()
+        local leadCitizen = UtilsForDragon:GetLeadershipByCitizen(User,dragon.type)
+        table.insert(r, {_("带兵量"),leadCitizen})
+        for __,v in ipairs(UtilsForDragon:GetEquipmentEffects(dragon)) do
             if v[2]*100 > 0 then
                 table.insert(r,{Localize.dragon_buff_effection[v[1]] or v[1],string.format("%d%%",v[2]*100)})
             end
         end
-
-        for __,v in ipairs(dragon:GetAllSkillBuffEffect()) do
+        
+        for __,v in ipairs(UtilsForDragon:GetSkillEffects(dragon)) do
             if v[2]*100 > 0 then
                 table.insert(r,{Localize.dragon_skill_effection[v[1]] or v[1],string.format("%d%%",v[2]*100)})
             end

@@ -141,9 +141,6 @@ function CityLayer:GetClickedObject(world_x, world_y)
         end
     end
 end
-function CityLayer:OnTileLocked(city)
-    self:OnTileChanged(city)
-end
 function CityLayer:OnTileUnlocked(city)
     self:OnTileChanged(city)
 end
@@ -449,7 +446,6 @@ function CityLayer:ReloadSceneBackground()
 end
 function CityLayer:InitWithCity(city)
     city:AddListenOnType(self, city.LISTEN_TYPE.UNLOCK_TILE)
-    city:AddListenOnType(self, city.LISTEN_TYPE.LOCK_TILE)
     city:AddListenOnType(self, city.LISTEN_TYPE.OCCUPY_RUINS)
     city:AddListenOnType(self, city.LISTEN_TYPE.CREATE_DECORATOR)
     city:AddListenOnType(self, city.LISTEN_TYPE.DESTROY_DECORATOR)
@@ -477,7 +473,6 @@ function CityLayer:InitWithCity(city)
     -- 加功能建筑
     for _, building in pairs(city:GetAllBuildings()) do
         local building_sprite = self:CreateBuilding(building, city):addTo(city_node)
-        city:AddListenOnType(building_sprite, city.LISTEN_TYPE.LOCK_TILE)
         city:AddListenOnType(building_sprite, city.LISTEN_TYPE.UNLOCK_TILE)
         table.insert(self.buildings, building_sprite)
         self:CreateLevelArrowBy(building_sprite)
