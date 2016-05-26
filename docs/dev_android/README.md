@@ -150,7 +150,7 @@ Android 官方文档：http://developer.android.com/tools/device.html
    
 	* 构建游戏资源我们使用`python脚本`进行,和`iOS`一样,只是选择`Android`就可
     
-    * Android上需要多执行一个脚本:`create_android_zip.py`来将update_android下的文件打包
+    * Android上需要多执行一个脚本:`create_android_zip.py`~~来将update_android下的文件打包~~,来将update_android下的文件拷贝到Android包中
      
 2. 构建我们项目的cpp部分.
 
