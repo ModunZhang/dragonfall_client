@@ -16,7 +16,7 @@ function GameUIReplay:ctor(report, callback, skipcallback)
     assert(report.IsFightWithBlackTroops)
 
     assert(report.GetAttackTargetTerrain)
-    
+
     assert(report.GetFightAttackName)
     assert(report.GetFightDefenceName)
 
@@ -30,7 +30,7 @@ function GameUIReplay:ctor(report, callback, skipcallback)
     assert(report.GetOrderedAttackSoldiers)
     assert(report.GetOrderedDefenceSoldiers)
     assert(report.GetSoldierRoundData)
-    
+
     assert(report.IsFightWall)
     if report:IsFightWall() then
         assert(report.GetFightAttackWallRoundData)
@@ -44,9 +44,11 @@ function GameUIReplay:ctor(report, callback, skipcallback)
     self:BuildUI()
 end
 function GameUIReplay:onEnter()
+    self:BlurRenderScene()
     self:StartReplay()
 end
 function GameUIReplay:onExit()
+    self:ResetRenderSceneState()
     GameUIReplay.super.onExit(self)
     if type(self.callback) == "function" then
         self.callback(self)
@@ -169,7 +171,7 @@ function GameUIReplay:Setup()
             self.defenceTroops[i] = UIKit:CreateFightTroops(v.name, {
                 isleft = false,
                 ispve = self.report:IsFightWithBlackTroops(),
-            },self):addTo(self.ui_map.soldierBattleNode,0,BATTLE_OBJECT_TAG) 
+            },self):addTo(self.ui_map.soldierBattleNode,0,BATTLE_OBJECT_TAG)
             :pos(self:DefencePosition(), self:TopPositionByRow(i))
             :FaceCorrect():Idle()
 
@@ -186,7 +188,7 @@ end
 function GameUIReplay:CreateSoldierCountBox(infoNode)
     local box = display.newSprite("replay_attack_number_bg.png")
     :addTo(infoNode)
-    
+
     local point = box:getAnchorPointInPoints()
     local size = box:getContentSize()
     box.count = UIKit:ttfLabel({
@@ -198,27 +200,27 @@ function GameUIReplay:CreateSoldierCountBox(infoNode)
         self.count:setString(GameUtils:formatNumber(count))
         return self
     end
-    
+
     infoNode.soldierCount = box
     return box
 end
 function GameUIReplay:GetSoldierCount(isattack, round, dualCount, ishurt)
     if ishurt then
         local roundData = self.report:GetSoldierRoundData()
-        local results = isattack 
-                        and roundData[round].attackResults 
+        local results = isattack
+                        and roundData[round].attackResults
                         or roundData[round].defenceResults
         return results[dualCount].soldierCount - results[dualCount].soldierDamagedCount
     else
-        return (isattack and 
-            self.report:GetOrderedAttackSoldiers() or 
+        return (isattack and
+            self.report:GetOrderedAttackSoldiers() or
             self.report:GetOrderedDefenceSoldiers())[dualCount].count
     end
 end
 function GameUIReplay:GetSoldierHurtCount(isattack, round, dualCount)
     local roundData = self.report:GetSoldierRoundData()
-    local results = isattack 
-                    and roundData[round].attackResults 
+    local results = isattack
+                    and roundData[round].attackResults
                     or roundData[round].defenceResults
     return results[dualCount].soldierDamagedCount
 end
@@ -275,7 +277,7 @@ function GameUIReplay:Start()
     :next(function()
         return promise.all(
         	dragonBattle:GetAttackDragon()
-        	:PromiseOfProgressTo(TIME_PER_HUNDRED_PERCENT * attackStepPercent, attackToPercent), 
+        	:PromiseOfProgressTo(TIME_PER_HUNDRED_PERCENT * attackStepPercent, attackToPercent),
         	dragonBattle:GetDefenceDragon()
         	:PromiseOfProgressTo(TIME_PER_HUNDRED_PERCENT * defenceStepPercent, defenceToPercent))
     end)
@@ -305,12 +307,12 @@ function GameUIReplay:OnStartRound()
 end
 function GameUIReplay:OnFinishRound()
     self.roundCount = self.roundCount + 1
-    
+
     local attackTroops = {}
     for _,v in ipairs(self.attackTroops) do
         if not v:isVisible() then
             v:removeFromParent()
-        else 
+        else
             table.insert(attackTroops, v)
             v.effectsNode:removeAllChildren()
         end
@@ -321,7 +323,7 @@ function GameUIReplay:OnFinishRound()
     for i,v in ipairs(self.defenceTroops) do
         if not v:isVisible() then
             v:removeFromParent()
-        else 
+        else
             table.insert(defenceTroops, v)
             v.effectsNode:removeAllChildren()
         end
@@ -526,8 +528,8 @@ function GameUIReplay:PromisesOfDefenceDragonSkill(round)
 end
 function GameUIReplay:OnDragonAttackTroops(dragon, allTroops)
     local p = cocos_promise.defer()
-    
-    local isdefencer = dragon == self.defenceDragon 
+
+    local isdefencer = dragon == self.defenceDragon
     local x = isdefencer and self:AttackPosition() or self:DefencePosition()
 
     local leftPos = cc.p(-50, 15)
@@ -557,7 +559,7 @@ function GameUIReplay:OnDragonAttackTroops(dragon, allTroops)
                 troop:PromiseOfHurt():next(function() troop:Idle() end)
             end
         end)
-        
+
     elseif dragon.dragonType == "blueDragon" then
         math.randomseed(#allTroops)
         allTroops = randomArray(allTroops)
@@ -663,7 +665,7 @@ function GameUIReplay:OnFinishDual()
     local attackResults = roundData[self.roundCount].attackResults
     local defenceResults = roundData[self.roundCount].defenceResults
 
-    if self.dualCount <= #attackResults 
+    if self.dualCount <= #attackResults
     and self.dualCount <= #defenceResults then
         self:OnStartDual()
     else
@@ -749,7 +751,7 @@ function GameUIReplay:OnHurtFinished(hurtTroop)
             local pps = {}
             for i,v in pairs(self.attackTroops) do
                 local roundData = attackRoundData[i]
-                if roundData then 
+                if roundData then
                     v.infoNode.soldierCount:SetSoldierCount(roundData.soldierCount - roundData.soldierDamagedCount)
                     table.insert(pps, v:PromiseOfShowHurtCount(roundData.soldierDamagedCount))
 
@@ -931,7 +933,7 @@ function GameUIReplay:BuildUI()
 
     local clipWith, clipHeight = 608-15*2, 910-85*2
     local clip = display.newClippingRegionNode(cc.rect(15,85,clipWith,clipHeight)):addTo(bg)
-    
+
     ui_map.timerNode = display.newNode():addTo(self)
     ui_map.battleBgNode = self:CreateBattleBg():addTo(clip):align(display.LEFT_BOTTOM)
     ui_map.soldierBattleNode = display.newNode():addTo(clip,1)
@@ -957,7 +959,7 @@ function GameUIReplay:BuildUI()
     :opacity(255):setColor(cc.c3b(255,0,0))
     ui_map.soldierBattleWhite:setScaleX(clipWith/size.width)
     ui_map.soldierBattleWhite:setScaleY(0.75)
-    
+
 
     -- 左右黑边
     local line1 = display.newSprite("line_send_trop_612x2.png")
@@ -972,13 +974,13 @@ function GameUIReplay:BuildUI()
         :addTo(bg):rotation(90)
     line1:setScaleX((910 - 85*2)/612)
     line1:setScaleY((608-15*2)  /2)
-    
+
     display.newSprite("replay_title_bg.png"):addTo(self)
     :align(display.TOP_CENTER, display.cx, display.height - 10)
-    
+
     display.newSprite("replay_round.png"):addTo(self)
     :pos(display.cx, display.height - 40)
-    
+
     ui_map.roundLabel = UIKit:ttfLabel({
         text = 1,
         size = 36,
