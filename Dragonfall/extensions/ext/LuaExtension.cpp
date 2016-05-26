@@ -38,7 +38,6 @@ extern "C" {
 #if CC_USE_FACEBOOK
 #include "tolua_fb_sdk.h"
 #endif
-#include "network/WebSocket.h"
 //MARK:Android
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 #if CC_USE_POMELO_C_LIB
@@ -721,8 +720,6 @@ static int tolua_ext_restart(lua_State* tolua_S)
 		//下面两个方法均有被修改 dannyhe
 		LuaNodeManager::getInstance()->removeAllNodeAndEvents();
 		scheduler->unscheduleScriptEntry(-1);
-        //关闭所有websocket的连接
-        network::WebSocket::closeAllConnections();
 		scheduler->schedule(schedule_selector(AppDelegateExtern::restartGame), &delegateExtern, 0, false, 0, false);
 #endif
     }

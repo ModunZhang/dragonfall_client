@@ -184,7 +184,7 @@ public class AppActivity extends Cocos2dxActivity
 		releaseData();
 		super.onDestroy();
 		//如果Activity被摧毁,杀掉游戏进程,被重新创建时游戏会重启
-		CommonUtils.killProcess();
+		CommonUtils.terminateProcess();
 	}
 	
 	@Override

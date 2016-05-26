@@ -44,7 +44,7 @@ public class FaceBookSDK {
 	public static void Initialize()
 	{
 //#ifdef CC_USE_FACEBOOK
-	AppActivity.getGameActivity().runOnGLThread(new Runnable() {
+	AppActivity.getGameActivity().runOnUiThread(new Runnable() {
 		@Override
 		public void run() {
 			InitializeAction();
