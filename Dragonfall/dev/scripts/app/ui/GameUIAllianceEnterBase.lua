@@ -102,13 +102,31 @@ end
 
 function GameUIAllianceEnterBase:GetBuildImageSprite()
     local postion = {
-        grassLand = 960,
         desert = 0,
-        iceField = 480,
+        iceField = 480/2,
+        grassLand = 960/2,
     }
     local x = postion[self:GetTerrain()]
-    local sprite = cc.Sprite:create("tmxmaps/terrain1.png",cc.rect(x,0,480,480))
-    sprite:setCascadeOpacityEnabled(true)
+    local sprite = display.newNode()
+    if isUseSdImage() then
+        local postion = {
+            desert = 0,
+            iceField = 480/2,
+            grassLand = 960/2,
+        }
+        local x = postion[self:GetTerrain()]
+        cc.Sprite:create("tmxmaps/terrain1-sd.png",cc.rect(x,0,240,240))
+        :addTo(sprite):scale(2):setCascadeOpacityEnabled(true)
+    else
+        local postion = {
+            desert = 0,
+            iceField = 480,
+            grassLand = 960,
+        }
+        local x = postion[self:GetTerrain()]
+        cc.Sprite:create("tmxmaps/terrain1.png",cc.rect(x,0,480,480))
+        :addTo(sprite):setCascadeOpacityEnabled(true)
+    end
     return sprite
 end
 
