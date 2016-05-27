@@ -61,6 +61,7 @@ end
 
 function WidgetChat:ctor()
     self.chatManager = app:GetChatManager()
+    self:setTouchEnabled(true)
     -- 上次所在的聊天频道
     local last_chat_channel = tonumber(app:GetGameDefautlt():getStringForKey("LAST_CHAT_CHANNEL"))
     local current_page_index

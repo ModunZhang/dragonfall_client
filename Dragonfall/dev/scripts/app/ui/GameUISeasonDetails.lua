@@ -19,6 +19,13 @@ end
 
 function GameUISeasonDetails:onEnter()
     GameUISeasonDetails.super.onEnter(self)
+    self:CreateList()
+end
+function GameUISeasonDetails:CreateList()
+    if self.listView then
+        self.listView:removeFromParent()
+        self.listView = nil
+    end
     local body = self:GetBody()
     local list = UIListView.new({
         -- bgColor = UIKit:hex2c4b(0x7a10ff00),
@@ -29,7 +36,6 @@ function GameUISeasonDetails:onEnter()
     self:GetListNode()
     list:reload()
 end
-
 function GameUISeasonDetails:GetListNode()
     local list = self.listView
     local item = list:newItem()
@@ -43,57 +49,64 @@ function GameUISeasonDetails:GetListNode()
     local reward_y
     if status == "expired" then
         local reward = ActivityManager:GetMyActivityRankReward(activity_type)
-        local reward_height = 18 + #reward * 64
-        local reward_content = WidgetUIBackGround.new({width = 540,height = reward_height},WidgetUIBackGround.STYLE_TYPE.STYLE_6)
-            :align(display.LEFT_BOTTOM, 12, 0):addTo(content)
-        for i,data in ipairs(reward) do
-            local body_image = i%2 == 0 and "back_ground_548x40_1.png" or "back_ground_548x40_2.png"
-            local body = display.newScale9Sprite(body_image,0,0,cc.size(520,64),cc.rect(10,10,528,20))
-                :align(display.CENTER_BOTTOM, 270, 10 + (i -1)*64)
-                :addTo(reward_content)
+        if #reward > 0 then
+            local reward_height = 18 + #reward * 64
+            local reward_content = WidgetUIBackGround.new({width = 540,height = reward_height},WidgetUIBackGround.STYLE_TYPE.STYLE_6)
+                :align(display.LEFT_BOTTOM, 12, 0):addTo(content)
+            local got_tips = _("获得").." "
+            for i,data in ipairs(reward) do
+                local body_image = i%2 == 0 and "back_ground_548x40_1.png" or "back_ground_548x40_2.png"
+                local body = display.newScale9Sprite(body_image,0,0,cc.size(520,64),cc.rect(10,10,528,20))
+                    :align(display.CENTER_BOTTOM, 270, 10 + (i -1)*64)
+                    :addTo(reward_content)
 
-            local item_bg = display.newSprite("box_118x118.png"):align(display.CENTER, 30, 32):addTo(body):scale(54/118)
-            local sp = display.newSprite(UIKit:GetItemImage("items",data.name),59,59):addTo(item_bg)
-            local size = sp:getContentSize()
-            sp:scale(90/math.max(size.width,size.height))
+                local item_bg = display.newSprite("box_118x118.png"):align(display.CENTER, 30, 32):addTo(body):scale(54/118)
+                local sp = display.newSprite(UIKit:GetItemImage("items",data.name),59,59):addTo(item_bg)
+                local size = sp:getContentSize()
+                sp:scale(90/math.max(size.width,size.height))
+                UIKit:ttfLabel({
+                    text = Localize_item.item_name[data.name],
+                    size = 20,
+                    color = 0x403c2f,
+                }):align(display.LEFT_CENTER,100,32)
+                    :addTo(body)
+                UIKit:ttfLabel({
+                    text = "X "..data.count,
+                    size = 20,
+                    color = 0x403c2f,
+                }):align(display.RIGHT_CENTER,506,32)
+                    :addTo(body)
+                got_tips = got_tips .. Localize_item.item_name[data.name].." X "..data.count.." "
+            end
             UIKit:ttfLabel({
-                text = Localize_item.item_name[data.name],
+                text = _("我的奖励"),
                 size = 20,
                 color = 0x403c2f,
-            }):align(display.LEFT_CENTER,100,32)
-                :addTo(body)
+            }):align(display.LEFT_CENTER,12,reward_content:getContentSize().height + 24)
+                :addTo(content)
             UIKit:ttfLabel({
-                text = "X "..data.count,
+                text = string.format(_("我的排名：%s"),myRank and ""..myRank or _("无")),
                 size = 20,
                 color = 0x403c2f,
-            }):align(display.RIGHT_CENTER,506,32)
-                :addTo(body)
+            }):align(display.LEFT_CENTER,12,reward_content:getContentSize().height + 60)
+                :addTo(content)
+            local btn = WidgetPushButton.new(
+                {normal = "yellow_btn_up_148x58.png", pressed = "yellow_btn_down_148x58.png",disabled = "grey_btn_148x58.png"}
+            ):setButtonLabel(UIKit:ttfLabel({
+                text = _("全部领取"),
+                size = 20,
+                color = 0xfff3c7,
+                shadow = true
+            })):addTo(content):align(display.LEFT_BOTTOM, 416, reward_content:getContentSize().height + 16)
+                :onButtonClicked(function(event)
+                    if event.name == "CLICKED_EVENT" then
+                        NetManager:getPlayerActivityRankRewardsPromise(activity_type)
+                        GameGlobalUI:showTips(_("提示"),got_tips)
+                        self:LeftButtonClicked()
+                    end
+                end)
+            reward_y = reward_content:getContentSize().height + 88
         end
-        UIKit:ttfLabel({
-            text = _("我的奖励"),
-            size = 20,
-            color = 0x403c2f,
-        }):align(display.LEFT_CENTER,12,reward_content:getContentSize().height + 24)
-            :addTo(content)
-        UIKit:ttfLabel({
-            text = string.format(_("我的排名：%s"),myRank and ""..myRank or _("无")),
-            size = 20,
-            color = 0x403c2f,
-        }):align(display.LEFT_CENTER,12,reward_content:getContentSize().height + 60)
-            :addTo(content)
-        local btn = WidgetPushButton.new(
-            {normal = "yellow_btn_up_148x58.png", pressed = "yellow_btn_down_148x58.png",disabled = "grey_btn_148x58.png"}
-        ):setButtonLabel(UIKit:ttfLabel({
-            text = _("全部领取"),
-            size = 20,
-            color = 0xfff3c7,
-            shadow = true
-        })):addTo(content):align(display.LEFT_BOTTOM, 416, reward_content:getContentSize().height + 16)
-            :onButtonClicked(function(event)
-                if event.name == "CLICKED_EVENT" then
-                end
-            end)
-        reward_y = reward_content:getContentSize().height + 88
     else
         local reward = ActivityManager:GetActivityRankReward(activity_type)
         local region = ActivityManager:GetActivityRankRewardRegion()
@@ -222,13 +235,14 @@ function GameUISeasonDetails:GetListNode()
             :addTo(content)
             :size(92,478 * progress_percent)
     end
-    self.pointLabel = {}
+    self.pointbtn = {}
     for i,v in ipairs(reward_points) do
         local y = citizen_num_bg:getPositionY() + (#reward_points - i) * 478/5
+
         local point_bg = display.newSprite(my_score >= v and "title_yellow_80x30.png" or "title_blue_80x30.png")
             :align(display.LEFT_BOTTOM, 128, y)
             :addTo(content)
-        self.pointLabel[i] = UIKit:ttfLabel({
+        UIKit:ttfLabel({
             text = GameUtils:formatNumber(v),
             size = 22,
             color = 0xffedae,
@@ -246,8 +260,7 @@ function GameUISeasonDetails:GetListNode()
         local size = sp:getContentSize()
         sp:scale(90/math.max(size.width,size.height))
         UIKit:addTipsToNode(item_bg,Localize_item.item_name[item_rewards[2].name].." X "..item_rewards[2].count,self:getParent(),nil,50,10)
-
-        local btn = WidgetPushButton.new(
+        self.pointbtn[i] = WidgetPushButton.new(
             {normal = "yellow_btn_up_148x58.png", pressed = "yellow_btn_down_148x58.png",disabled = "grey_btn_148x58.png"}
         ):setButtonLabel(UIKit:ttfLabel({
             text = gotIndex >= i and _("已领取") or _("领取"),
@@ -257,9 +270,14 @@ function GameUISeasonDetails:GetListNode()
         })):addTo(content):align(display.LEFT_BOTTOM, 416, y)
             :onButtonClicked(function(event)
                 if event.name == "CLICKED_EVENT" then
+                    NetManager:getPlayerActivityScoreRewardsPromise(activity_type):done(function ()
+                        self:RefreshAfterGotPointReward()
+                        GameGlobalUI:showTips(_("提示"),
+                            _("获得").." "..Localize_item.item_name[item_rewards[1].name].." X "..item_rewards[1].count.." , "..Localize_item.item_name[item_rewards[2].name].." X "..item_rewards[2].count)
+                    end)
                 end
             end)
-        btn:setButtonEnabled((gotIndex + 1) == i and my_score >= v)
+        self.pointbtn[i]:setButtonEnabled((gotIndex + 1) == i and my_score >= v)
     end
     local my_porint_bg = display.newSprite("title_red_564x54_1.png")
         :align(display.LEFT_BOTTOM, 0,citizen_num_bg:getPositionY() + 511 + 20)
@@ -303,5 +321,21 @@ function GameUISeasonDetails:GetListNode()
     item:setItemSize(item_width,item_height)
     list:addItem(item)
 end
-
+function GameUISeasonDetails:RefreshAfterGotPointReward()
+    local activity_type = self.activity_data.activity.type
+    local my_score = User.activities[activity_type].score
+    local gotIndex = User.activities[activity_type].scoreRewardedIndex
+    local reward_points = ActivityManager:GetActivityScorePonits(activity_type)
+    for i,v in ipairs(reward_points) do
+        self.pointbtn[i]:setButtonEnabled((gotIndex + 1) == i and my_score >= v)
+        self.pointbtn[i]:setButtonLabel(UIKit:ttfLabel({
+            text = gotIndex >= i and _("已领取") or _("领取"),
+            size = 20,
+            color = 0xfff3c7,
+            shadow = true
+        }))
+    end
+end
 return GameUISeasonDetails
+
+

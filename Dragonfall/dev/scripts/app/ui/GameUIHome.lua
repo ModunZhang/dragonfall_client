@@ -403,10 +403,11 @@ function GameUIHome:CreateBottom()
     self.chat = WidgetChat.new():addTo(bottom_bg)
         :align(display.CENTER, bottom_bg:getContentSize().width/2, bottom_bg:getContentSize().height)
     -- 任务条
+    local quest_node = display.newNode():addTo(bottom_bg):pos(420, bottom_bg:getContentSize().height + 56)
     local quest_bar_bg = cc.ui.UIPushButton.new(
         {normal = "quest_btn_unfinished_566x46.png",pressed = "quest_btn_unfinished_566x46.png"},
         {scale9 = false}
-    ):addTo(bottom_bg):pos(420, bottom_bg:getContentSize().height + 56):onButtonClicked(function(event)
+    ):addTo(quest_node):onButtonClicked(function(event)
         self:HideFinger()
         local task = self.task
         if task then
@@ -453,17 +454,17 @@ function GameUIHome:CreateBottom()
         end
     end)
     self.quest_bar_bg = quest_bar_bg
-    self.fingerNode = display.newNode():addTo(bottom_bg):pos(quest_bar_bg:getPosition())
+    self.fingerNode = display.newNode():addTo(quest_node)
 
-    quest_bar_bg:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
+    quest_node:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
         if self.event_tab and self.event_tab:isVisible() then
             local node = self.event_tab.arrow
             local attackWorldPoint = node:convertToWorldSpace(cc.p(0,90))
-            local attackNodePoint = quest_bar_bg:getParent():convertToNodeSpace(attackWorldPoint)
-            quest_bar_bg:setPositionY(attackNodePoint.y)
+            local attackNodePoint = quest_node:getParent():convertToNodeSpace(attackWorldPoint)
+            quest_node:setPositionY(attackNodePoint.y)
         end
     end)
-    quest_bar_bg:scheduleUpdate()
+    quest_node:scheduleUpdate()
 
     local light = display.newSprite("quest_light_70x34.png"):addTo(quest_bar_bg):pos(-302, 2)
     light:runAction(

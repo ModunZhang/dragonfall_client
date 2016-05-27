@@ -46,7 +46,7 @@ function GameUISeasonRank:onEnter()
         :align(display.CENTER_TOP,size.width / 2, size.height - 96)
         :addTo(body)
     UIKit:ttfLabel({
-        text = _("活动"),
+        text = _("排名"),
         size = 20,
         color = 0xffedae,
     }):align(display.LEFT_CENTER,10,22)
@@ -128,11 +128,11 @@ function GameUISeasonRank:CreatePlayerContentByIndex(idx)
         text = "",
         size = 22,
         color = 0x403c2f,
-    }):align(display.LEFT_CENTER, 380 + 20, 40):addTo(item)
+    }):align(display.RIGHT_CENTER, 520, 40):addTo(item)
 
     function item:SetData(data)
         self.name:setString(data.name)
-        self.value:setString(string.formatnumberthousands(data.value))
+        self.value:setString(string.formatnumberthousands(data.score))
         item.player_icon:setTexture(UIKit:GetPlayerIconImage(data.icon))
         return self
     end

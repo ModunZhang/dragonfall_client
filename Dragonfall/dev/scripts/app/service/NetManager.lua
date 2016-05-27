@@ -2184,6 +2184,14 @@ end
 function NetManager:getActivitiesPromise()
     return get_blocking_request_promise("logic.playerHandler.getActivities",{},"获取活动信息失败!"):done(get_player_response_msg)
 end
+--获取玩家活动积分奖励
+function NetManager:getPlayerActivityScoreRewardsPromise(rankType)
+    return get_blocking_request_promise("logic.playerHandler.getPlayerActivityScoreRewards",{rankType=rankType},"获取玩家活动积分奖励失败!"):done(get_player_response_msg)
+end
+--获取玩家活动排名奖励
+function NetManager:getPlayerActivityRankRewardsPromise(rankType)
+    return get_blocking_request_promise("logic.playerHandler.getPlayerActivityRankRewards",{rankType=rankType},"获取玩家活动排名奖励失败!"):done(get_player_response_msg)
+end
 function NetManager:getMoveAlliancePromise(targetMapIndex)
     return get_blocking_request_promise("logic.allianceHandler.moveAlliance",{
         targetMapIndex = targetMapIndex,
