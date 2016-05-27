@@ -726,12 +726,12 @@ function UtilsForTask:GetFinishedUnRewardTasksBySeq(userData)
             end
         end
     end
-    table.sort(t, function(a,b) 
+    table.sort(t, function(a,b)
+        local aindex = self:GetTaskIndex(a.type,a.task.id)
+        local bindex = self:GetTaskIndex(b.type,b.task.id)
         if a.type == b.type then
-            return a.task.id < b.task.id
+            return aindex < bindex and true or (a.task.id < b.task.id)
         else
-            local aindex = self:GetTaskIndex(a.type,a.task.id)
-            local bindex = self:GetTaskIndex(b.type,b.task.id)
             if aindex == bindex then
                 return taskSeqMap[a.type] < taskSeqMap[b.type]
             end
