@@ -241,7 +241,7 @@ string AppDelegateExtern::getGameZipcrc32(const char *filePath)
             if (d.HasParseError())
             {
                 CCLOG("GetParseError %s %s\n",filePath,d.GetParseError());
-                return filePath;
+                return string("GetParseError");
             }
             else
             {
@@ -270,7 +270,7 @@ string AppDelegateExtern::getGameZipcrc32(const char *filePath)
         }
         
     }
-    return filePath;
+    return string("FileNotExist");
 }
 
 bool AppDelegateExtern::checkPath()
