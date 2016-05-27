@@ -209,6 +209,11 @@ function Pomelo:_isReady()
     return self.socket:getReadyState() == cc.WEBSOCKET_STATE_OPEN
 end
 
+-- pomelo级别连接成功而不是仅仅websocket连接成功
+function Pomelo:_isConnected()
+    return self:_isReady() and self.data ~= nil
+end
+
 function Pomelo:_sendMessage(reqId,route,msg)
     local _type = Message.TYPE_REQUEST
     if reqId == 0 then
