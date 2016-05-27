@@ -546,6 +546,13 @@ GameDatas.PvE = {
 require("app.datas.PvE_sections")
 require("app.datas.PvE_stages")
 
+GameDatas.ScheduleActivities = {
+	["type"] = {},
+	["scoreCondition"] = {},
+}
+require("app.datas.ScheduleActivities_type")
+require("app.datas.ScheduleActivities_scoreCondition")
+
 GameDatas.Soldiers = {
 	["normal"] = {},
 	["special"] = {},
@@ -557,8 +564,10 @@ require("app.datas.Soldiers_fightFix")
 
 GameDatas.StoreItems = {
 	["items"] = {},
+	["promotionItems"] = {},
 }
 require("app.datas.StoreItems_items")
+require("app.datas.StoreItems_promotionItems")
 
 GameDatas.Vip = {
 	["level"] = {},

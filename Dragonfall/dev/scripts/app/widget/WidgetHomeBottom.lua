@@ -3,11 +3,15 @@ local WidgetChangeMap = import(".WidgetChangeMap")
 local fire_var = import("app.particles.fire_var")
 local WidgetHomeBottom = class("WidgetHomeBottom", function()
     local bottom_bg = display.newSprite("bottom_bg_768x122.png")
+    local tmp = display.newNode():align(display.LEFT_BOTTOM, 0, 0):addTo(bottom_bg)
+    tmp:setContentSize(bottom_bg:getContentSize())
+    tmp:setNodeEventEnabled(true)
+    tmp:setTouchEnabled(true)
     if display.width >640 then
         bottom_bg:scale(display.width/768)
     end
     bottom_bg:setNodeEventEnabled(true)
-    bottom_bg:setTouchEnabled(true)
+    bottom_bg:setTouchEnabled(false)
     return bottom_bg
 end)
 

@@ -2065,6 +2065,20 @@ function NetManager:getPlayerRankPromise(rankType, fromRank)
         fromRank = fromRank or 0,
     },"获取排行榜失败!")
 end
+-- 获取玩家自身的活动排名
+function NetManager:getPlayerActivityRankPromise(rankType)
+    return get_blocking_request_promise("rank.rankHandler.getPlayerRank",{
+        rankType = rankType,
+    },"获取玩家自身的活动排名失败!")
+end
+-- 获取玩家活动排名信息列表
+function NetManager:getPlayerTotalActivityRankPromise(rankType,fromRank)
+    return get_blocking_request_promise("rank.rankHandler.getPlayerActivityRankList",{
+        rankType = rankType,
+        fromRank = fromRank or 0,
+    },"获取玩家活动排名信息列表失败!")
+end
+
 function NetManager:getAllianceRankPromise(rankType, fromRank)
     return get_blocking_request_promise("rank.rankHandler.getAllianceRankList",{
         rankType = rankType,
@@ -2165,6 +2179,18 @@ function NetManager:getMapAllianceDatasPromise(mapIndexs)
     return get_none_blocking_request_promise("logic.allianceHandler.getMapAllianceDatas",{
         mapIndexs = mapIndexs,
     },"获取世界地图信息失败!")
+end
+--获取活动信息
+function NetManager:getActivitiesPromise()
+    return get_blocking_request_promise("logic.playerHandler.getActivities",{},"获取活动信息失败!"):done(get_player_response_msg)
+end
+--获取玩家活动积分奖励
+function NetManager:getPlayerActivityScoreRewardsPromise(rankType)
+    return get_blocking_request_promise("logic.playerHandler.getPlayerActivityScoreRewards",{rankType=rankType},"获取玩家活动积分奖励失败!"):done(get_player_response_msg)
+end
+--获取玩家活动排名奖励
+function NetManager:getPlayerActivityRankRewardsPromise(rankType)
+    return get_blocking_request_promise("logic.playerHandler.getPlayerActivityRankRewards",{rankType=rankType},"获取玩家活动排名奖励失败!"):done(get_player_response_msg)
 end
 function NetManager:getMoveAlliancePromise(targetMapIndex)
     return get_blocking_request_promise("logic.allianceHandler.moveAlliance",{
