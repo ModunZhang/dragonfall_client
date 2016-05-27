@@ -183,6 +183,11 @@ function Pomelo:_processMessage(msg)
     --    printf("msg.id=%s,msg.route=%s,msg.body=%s",msg.id,msg.route,msg.body)
     --    printf("json.encode(msg.body)=%s",json.encode(msg.body))
     if msg.id==0 then
+        --FIXME:emit方法几率抛错nil.暂时不屏蔽这个错误,如果错误发生,通过DataManager.latestDeltaData发送msg.body到服务器查看信息
+        if not msg.route and DataManager then
+            DataManager.latestDeltaData = msg.body
+        end
+        -- end
         self:emit(msg.route, msg.body)
     end
 
