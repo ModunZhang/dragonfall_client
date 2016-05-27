@@ -20,13 +20,13 @@ function WidgetUseItems:Create(params)
         dialog = self:OpenHeroBloodDialog(item_name)
     elseif item_name == "stamina_1" then
         dialog = self:OpenStrengthDialog(item_name)
-    elseif item_name == "dragonHp_1" then
+    elseif string.find(item_name,"dragonHp") then
         if params.dragon then
             dialog = self:OpenOneDragonHPItemDialog(item_name, params.dragon)
         else
             dialog = self:OpenIncreaseDragonExpOrHp(item_name)
         end
-    elseif item_name == "dragonExp_1" then
+    elseif string.find(item_name,"dragonExp") then
         if params.dragon then
             dialog = self:OpenOneDragonItemExpDialog(item_name, params.dragon)
         else

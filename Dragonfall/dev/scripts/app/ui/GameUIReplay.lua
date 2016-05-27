@@ -45,11 +45,17 @@ function GameUIReplay:ctor(report, callback, skipcallback)
 end
 function GameUIReplay:onEnter()
     self:StartReplay()
+    if UIKit:GetUIInstance("GameUIMail") then
+        UIKit:GetUIInstance("GameUIMail"):hide()
+    end
 end
 function GameUIReplay:onExit()
     GameUIReplay.super.onExit(self)
     if type(self.callback) == "function" then
         self.callback(self)
+    end
+    if UIKit:GetUIInstance("GameUIMail") then
+        UIKit:GetUIInstance("GameUIMail"):show()
     end
 end
 function GameUIReplay:RefreshSpeed()

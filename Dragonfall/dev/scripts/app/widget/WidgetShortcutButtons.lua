@@ -27,8 +27,16 @@ end)
 function WidgetShortcutButtons:ctor(city)
     self.city = city
     local order = WidgetAutoOrder.new(WidgetAutoOrder.ORIENTATION.BOTTOM_TO_TOP,50,false)
-        :addTo(self):pos(display.left + 50, display.bottom + 250)
-
+        :addTo(self):pos(display.left + 50, display.bottom + 266)
+    order:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
+        if display.getRunningScene():GetHomePage().__cname == "GameUIHome" and display.getRunningScene():GetHomePage().quest_bar_bg then
+            local node = display.getRunningScene():GetHomePage().quest_bar_bg
+            local attackWorldPoint = node:convertToWorldSpace(cc.p(0,90))
+            local attackNodePoint = order:getParent():convertToNodeSpace(attackWorldPoint)
+            order:setPositionY(attackNodePoint.y)
+        end
+    end)
+    order:scheduleUpdate()
     --在线活动
     local activity_button = WidgetAutoOrderAwardButton.new():scale(SCALE)
     order:AddElement(activity_button)
@@ -102,7 +110,7 @@ function WidgetShortcutButtons:ctor(city)
         return world_map_btn_bg:getContentSize()
     end
     function world_map_btn_bg:GetXY()
-        return {x = 0 ,y = 46}
+        return {x = 0 ,y = 30}
     end
     self.world_map_btn_bg = world_map_btn_bg
     order:AddElement(world_map_btn_bg)
@@ -356,6 +364,8 @@ end
 function WidgetShortcutButtons:CheckAllianceRewardCount()
     if not self.tips_button then return end
     local newsCount = NewsManager:GetUnreadCount()
+    local activityCount = ActivityManager:GetHaveRewardActivitiesCount()
+    
     local award_num = 0
     if User:HaveEveryDayLoginReward() then
         award_num = award_num + 1
@@ -366,7 +376,7 @@ function WidgetShortcutButtons:CheckAllianceRewardCount()
     if User:HavePlayerLevelUpReward() then
         award_num = award_num + 1
     end
-    self.tips_button.tips_button_count:SetNumber(newsCount + award_num)
+    self.tips_button.tips_button_count:SetNumber(newsCount + award_num + activityCount)
 end
 
 return WidgetShortcutButtons

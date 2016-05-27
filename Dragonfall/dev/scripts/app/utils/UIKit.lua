@@ -1112,6 +1112,8 @@ function UIKit:GetItemImage(reward_type,item_key)
         if item_key == 'marchQueue' then
             return "tmp_march_queue_128x128.png"
         end
+    elseif reward_type == 'soldiers' then
+        return UILib.soldier_images[item_key]
     end
 end
 

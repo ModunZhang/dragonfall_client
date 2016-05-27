@@ -102,7 +102,7 @@ function DataUtils:GetResOutput(userData)
             res.limit = v
         end
     end
-    
+
     for k,v in pairs(production) do
         local res = reses[k]
         if k == "food" then
@@ -1254,8 +1254,8 @@ local resourceBuildingMap = {
 }
 local function getBuildingBuffForResourceProtectPercent(resourceName)
     return UtilsForBuilding:GetBuildingProtection(User,
-                resourceBuildingMap[resourceName]
-            )
+        resourceBuildingMap[resourceName]
+    )
 end
 -- local function getPlayerItemBuffForResourceLootPercentSubtract()
 --     local itemBuff = 0
@@ -1368,11 +1368,47 @@ function DataUtils:GetAllianceMapBuffByRound(round)
     return buff_info
 end
 
+local promotionItems = GameDatas.StoreItems.promotionItems
+-- 获取指定组别当前的促销礼包以及剩余时间
+function DataUtils:GetProductAndLeftTimeByIndex(pro_index)
+    local pro_a,pro_b
+    for i,item in ipairs(promotionItems) do
+        if string.find(item.name,"promotion_product_"..pro_index) then
+            if not pro_a then
+                pro_a = item
+            elseif not pro_b then
+                pro_b = item
+            end
+        end
+    end
+    local userTime = app.timer:GetServerTime() - User.countInfo.registerTime/1000 -- 当前时间和玩家注册时间差值
+    local existHours_a = pro_a.existHours * 60 * 60
+    local existHours_b = pro_b.existHours * 60 * 60
+    local max_data,min_data,max_time
+    if existHours_a > existHours_b then
+        max_data = pro_a
+        min_data = pro_b
+        max_time = existHours_a
+    else
+        max_data = pro_b
+        min_data = pro_a
+        max_time = existHours_b
+    end
+    local mod = userTime % (existHours_a + existHours_b)
+    if mod < max_time then
+        return max_data,max_data.existHours * 60 * 60 - mod
+    else
+        return min_data,min_data.existHours * 60 * 60 - (mod - max_data.existHours * 60 * 60)
+    end
+end
+function DataUtils:GetPromtionProductLessLeftTime()
+    local lessTime = math.huge
+    for i=1,4 do
+        local __,time = self:GetProductAndLeftTimeByIndex(i)
+        if lessTime > time then
+            lessTime = time
+        end
+    end
+    return lessTime
+end
 return DataUtils
-
-
-
-
-
-
-
