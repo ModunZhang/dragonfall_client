@@ -28,7 +28,9 @@ function GameUIUpgradeBuilding:CreateTabButtons(param, cb)
         if tag == "upgrade" then
             if not self.upgrade_layer then
                 self.upgrade_layer = CommonUpgradeUI.new(self.city, self.building):addTo(self:GetView())
-                if self.needTips and UtilsForTask:NeedTips(User) then
+                if self.needTips
+                and UtilsForTask:NeedTips(User)
+                and self.upgrade_layer.upgrade_btn then
                     UIKit:FingerAni():pos(55,-52)
                     :addTo(self.upgrade_layer.upgrade_btn,10,321)
                     self.upgrade_layer.upgrade_btn:onButtonClicked(function()
