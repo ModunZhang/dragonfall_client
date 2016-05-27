@@ -568,7 +568,7 @@ function GameUISendTroopNew:CreateBottomPart()
         end):align(display.LEFT_CENTER,30,bottom_bg:getContentSize().height/2):addTo(bottom_bg)
     self.max_btn = max_btn
 
-    if self.params.needTips then
+    if self.params.needTips and UtilsForTask:NeedTips(User) then
         UIKit:FingerAni():addTo(self.max_btn,11,111):rotation(-80):pos(170,30)
         self.max_btn:onButtonClicked(function()
             self.max_btn:removeChildByTag(111)
