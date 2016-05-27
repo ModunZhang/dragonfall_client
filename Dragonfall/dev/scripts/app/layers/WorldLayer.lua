@@ -141,8 +141,13 @@ function WorldLayer:CreateMap()
         -- :addTo(self.scene_node):align(display.LEFT_BOTTOM,CORNER_LENGTH,CORNER_LENGTH)
 
     GameUtils:LoadImagesWithFormat(function()
-        cc.TMXTiledMap:create("tmxmaps/worldlayer.tmx")
-        :align(display.LEFT_BOTTOM, 0, 0):addTo(clip)
+        if isUseSdImage() then
+            cc.TMXTiledMap:create("tmxmaps/worldlayer-sd.tmx")
+            :align(display.LEFT_BOTTOM, 0, 0):addTo(clip):scale(2.01)
+        else
+            cc.TMXTiledMap:create("tmxmaps/worldlayer.tmx")
+            :align(display.LEFT_BOTTOM, 0, 0):addTo(clip)
+        end
     end, cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565)
 
     self.normal_map = NormalMapAnchorBottomLeftReverseY.new{

@@ -94,6 +94,12 @@ LOCAL_STATIC_LIBRARIES += bugly_crashreport_cocos_static
 
 include $(BUILD_SHARED_LIBRARY)
 
+include $(CLEAR_VARS)
+LOCAL_MODULE := Bugly
+LOCAL_SRC_FILES := prebuilt/$(TARGET_ARCH_ABI)/libBugly.so
+include $(PREBUILT_SHARED_LIBRARY)
+
+
 ifeq ($(CC_USE_POMELO_C_LIB),1)
 $(call import-module,libpomelo)
 endif

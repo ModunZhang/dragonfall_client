@@ -354,7 +354,7 @@ function AllianceDetailScene:onEnter()
                 app:GetGameDefautlt():SetPassAllianceFte(1)
                 break
             end
-            
+
 
             -- step 2
             if app:GetGameDefautlt():IsPassedAllianceFte(1) and
@@ -625,7 +625,7 @@ function AllianceDetailScene:OnTouchClicked(pre_x, pre_y, x, y)
                 self:OpenUI(alliance, mapObj)
             end
         else
-            if type_ == "empty" then
+            if type_ == "empty" or mapObj.name == "nouse" then
                 return
             end
             local scale_map = {

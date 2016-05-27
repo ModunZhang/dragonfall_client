@@ -56,9 +56,11 @@ function GameUIMilitaryTechSpeedUp:OnUserDataChanged_militaryTechEvents(userData
         for i,v in ipairs(value) do
             if v.id ==  self.militaryEvent.id then
                 self:LeftButtonClicked()
+                return
             end
         end
     end
+    self:CheckCanSpeedUpFree()
 end
 function GameUIMilitaryTechSpeedUp:OnUserDataChanged_soldierStarEvents(userData, deltaData)
     local ok, value = deltaData("soldierStarEvents.edit")
@@ -73,6 +75,7 @@ function GameUIMilitaryTechSpeedUp:OnUserDataChanged_soldierStarEvents(userData,
             end
         end
     end
+    self:CheckCanSpeedUpFree()
 end
 function GameUIMilitaryTechSpeedUp:GetEvent()
     return self.militaryEvent
