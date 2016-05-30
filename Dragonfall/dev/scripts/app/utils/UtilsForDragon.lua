@@ -91,8 +91,7 @@ function UtilsForDragon:GetSkillEffect(skill, offset)
 	offset = offset or 0
 	local configs = DragonSkills[skill.name]
 	local level = skill.level + offset
-	level = level > #configs and #configs or level
-	local config = configs[level]
+	local config = configs[math.min(level, #configs)]
 	if config then
 		return config.effect
 	end
@@ -185,7 +184,7 @@ function UtilsForDragon:IsDragonFree(userData, dragonType)
 	return userData.dragons[dragonType].status == 'free'
 end
 function UtilsForDragon:IsDragonDead(userData, dragonType)
-	return userData.dragons[dragonType].hp <= 0 
+	return userData.dragons[dragonType].hp <= 0
 end
 function UtilsForDragon:GetDragonMaxHp(dragon)
 	return self:GetDragonVitality(dragon) * 4
@@ -283,7 +282,7 @@ function UtilsForDragon:GetCanFightPowerfulDragonType(userData)
 	local dragonWeight = 0
     local dragonType = ""
     for k,dragon in pairs(userData.dragons) do
-        if (dragon.status == "free" or dragon.status == "defence") 
+        if (dragon.status == "free" or dragon.status == "defence")
         	and dragon.hp > 0 then
         	local weight = self:GetDragonWeight(dragon)
             if weight > dragonWeight then
@@ -309,7 +308,7 @@ end
 function UtilsForDragon:GetDragonWeight(dragon)
 	if dragon.star <= 0 then
 		return 0
-	else 
+	else
 		return self:GetDragonStrength(dragon)
 	end
 end
