@@ -78,7 +78,9 @@ function MyCityScene:onExit()
 end
 function MyCityScene:EnterEditMode()
     self:GetTopLayer():hide()
-    self:GetHomePage():DisplayOff()
+    if self:GetHomePage() then
+        self:GetHomePage():DisplayOff()
+    end
     local label = UIKit:ttfLabel(
         {
             text = _("选择一个空地,将小屋移动到这里"),
@@ -92,7 +94,9 @@ function MyCityScene:EnterEditMode()
 end
 function MyCityScene:LeaveEditMode()
     self:GetTopLayer():show()
-    self:GetHomePage():DisplayOn()
+    if self:GetHomePage() then
+        self:GetHomePage():DisplayOn()
+    end
     self.move_house_tip:removeFromParent(true)
     MyCityScene.super.LeaveEditMode(self)
     self:GetSceneUILayer():removeChildByTag(WidgetMoveHouse.ADD_TAG, true)
@@ -234,7 +238,9 @@ function MyCityScene:OnAllianceDataChanged_operation(alliance, op)
         Alliance_Manager:HasBeenJoinedAlliance() and
         not self.firstJoinAllianceRewardGeted
     then
-        self:GetHomePage():PromiseOfFteAllianceMap()
+        if self:GetHomePage() then
+            self:GetHomePage():PromiseOfFteAllianceMap()
+        end
     end
 end
 function MyCityScene:onEnterTransitionFinish()
@@ -319,12 +325,16 @@ function MyCityScene:OnUserDataChanged_buildingEvents(userData, deltaData)
 end
 function MyCityScene:OnUserDataChanged_soldierEvents(userData, deltaData)
     if deltaData("soldierEvents.add") then
-        self:GetHomePage():OnUserDataChanged_growUpTasks()
+        if self:GetHomePage() then
+            self:GetHomePage():OnUserDataChanged_growUpTasks()
+        end
     end
     local ok, value = deltaData("soldierEvents.remove")
     if ok then
         local event = value[1]
-        self:GetHomePage():OnUserDataChanged_growUpTasks()
+        if self:GetHomePage() then
+            self:GetHomePage():OnUserDataChanged_growUpTasks()
+        end
         self:GetSceneLayer():MoveBarracksSoldiers(event.name)
     end
 end
@@ -333,7 +343,7 @@ function MyCityScene:OnUserDataChanged_basicInfo(userData, deltaData)
     if deltaData("basicInfo.terrain") then
         self:ChangeTerrain(userData.basicInfo.terrain)
     end
-    if deltaData("basicInfo.power") then
+    if deltaData("basicInfo.power") and self:GetHomePage() then
         self:GetHomePage():ShowPowerAni(cc.p(display.cx, display.cy), userData.basicInfo.power)
     end
 end
@@ -457,10 +467,10 @@ end
 function MyCityScene:RunFteIfNeeded()
     local p = cocos_promise.defer()
     if (not UtilsForFte:IsHatchedAnyDragons(self:GetCity():GetUser())
-    or not UtilsForFte:IsStudyAnyDragonSkill(self:GetCity():GetUser())
-    or not UtilsForFte:IsDefencedWithTroops(self:GetCity():GetUser()))
+        or not UtilsForFte:IsStudyAnyDragonSkill(self:GetCity():GetUser())
+        or not UtilsForFte:IsDefencedWithTroops(self:GetCity():GetUser()))
     -- and not self:GetCity():GetUser().countInfo.isFTEFinished
-     then
+    then
         p:next(function()
             return self:PromiseOfHateDragonAndDefence()
         end)
@@ -477,7 +487,9 @@ function MyCityScene:RunFteIfNeeded()
                 ):next(function()
                     return GameUINpc:PromiseOfLeave()
                 end):next(function()
-                    self:GetHomePage():CheckFinger(true)
+                    if self:GetHomePage() then
+                        self:GetHomePage():CheckFinger(true)
+                    end
                 end)
             end)
         end)
@@ -516,8 +528,8 @@ function MyCityScene:FteAlliance()
     if MyCityScene.fteAlliance then
         return
     end
-    if Alliance_Manager:GetMyAlliance():IsDefault() 
-    and not UIKit:GetUIInstance("GameUINpc") then
+    if Alliance_Manager:GetMyAlliance():IsDefault()
+        and not UIKit:GetUIInstance("GameUINpc") then
         MyCityScene.fteAlliance = true
         app:lockInput(true)
         cocos_promise.defer(function()
@@ -529,7 +541,9 @@ function MyCityScene:FteAlliance()
         end):next(function()
             return GameUINpc:PromiseOfLeave()
         end):next(function()
-            self:GetHomePage():PromiseOfFteAlliance()
+            if self:GetHomePage() then
+                self:GetHomePage():PromiseOfFteAlliance()
+            end
         end)
     end
 end
@@ -630,7 +644,7 @@ function MyCityScene:EndClickFte()
     self:GetSceneLayer():GetInfoLayer():removeAllChildren()
 end
 function MyCityScene:CheckClickPromise(building, func)
-    if self.clicked_callbacks and 
+    if self.clicked_callbacks and
         #self.clicked_callbacks > 0 then
         if self.clicked_callbacks[1](building) then
             table.remove(self.clicked_callbacks, 1)
