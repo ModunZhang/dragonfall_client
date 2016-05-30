@@ -216,7 +216,7 @@ function GameUtils:Baidu_Translate(text,cb)
             end
             local content = json.decode(request:getResponseData())
             local r = ""
-            if content.trans_result and type(content.trans_result) == 'table' then
+            if content and content.trans_result and type(content.trans_result) == 'table' then
                 for _,v in ipairs(content.trans_result) do
                     r = r .. v.dst
                 end
