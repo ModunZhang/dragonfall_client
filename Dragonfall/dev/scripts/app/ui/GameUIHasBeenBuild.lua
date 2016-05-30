@@ -116,6 +116,7 @@ function Item:ctor(parent_ui)
         }))
         :onButtonClicked(function(event)
             local building = self.building
+            local city = building:BelongCity()
             if self.status == "free" then
                 local event = UtilsForBuilding:GetBuildingEventByLocation(User, self:GetCurrentLocation())
                 if event then
@@ -126,7 +127,6 @@ function Item:ctor(parent_ui)
                     end
                 end
             elseif self.status == "instant" then
-                local city = building:BelongCity()
                 if building:getUpgradeNowNeedGems() > city:GetUser():GetGemValue() then
                     local dialog = UIKit:showMessageDialog()
                     dialog:SetTitle(_("提示"))
@@ -192,8 +192,7 @@ function Item:ctor(parent_ui)
                     end, nil,nil,nil,nil,_("前往"))
                     return
                 end
-                local city = building:BelongCity()
-                
+
                 if city:IsGate(building) then
                     NetManager:getUpgradeWallByLocationPromise():done(function()
                         self.parent_ui:RefreshAllItems()
