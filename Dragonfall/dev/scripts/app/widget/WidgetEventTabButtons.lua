@@ -206,7 +206,7 @@ function WidgetEventTabButtons:RefreshAllEvents()
     else
         self:GetTabByKey("material"):SetOrResetProgress(nil)
     end
-    
+
     local event = UtilsForBuilding:GetBuildingEventsBySeq(User)[1]
     if event then
         local time, percent = UtilsForEvent:GetEventInfo(event)
@@ -780,6 +780,16 @@ function WidgetEventTabButtons:LoadBuildingEvents()
                 end
             end)
         self:SetProgressItemBtnLabel(self:IsAbleToFreeSpeedup(v), event_item)
+
+        if UtilsForFte:ShouldFingerOnFree(self.city:GetUser()) then
+            local speedBtn = event_item:GetSpeedUpButton()
+            local x,y = speedBtn:getPosition()
+            UIKit:FingerAni():addTo(event_item,10,111):scale(0.8):pos(x-35,y-40)
+            speedBtn:onButtonClicked(function()
+                event_item:removeChildByTag(111)
+            end)
+        end
+
         table.insert(items, event_item)
     end
     self:InsertItem(items)
