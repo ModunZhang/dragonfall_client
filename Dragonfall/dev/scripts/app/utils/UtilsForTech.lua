@@ -37,11 +37,9 @@ function UtilsForTech:GetTechLocalize(tech_name)
     end
     return string.format(_("对%s的攻击"), Localize.soldier_category[category2])
 end
-
 function UtilsForTech:GetProductionTechConfig(tech_name)
     return productionTechs[tech_name]
 end
-
 local ProductionTechLevelUp = GameDatas.ProductionTechLevelUp
 local MilitaryTechLevelUp = GameDatas.MilitaryTechLevelUp
 function UtilsForTech:GetTechInfo(tech_name, level)
