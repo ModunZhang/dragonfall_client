@@ -563,7 +563,8 @@ local logic_event_map = {
         if not NetManager.m_was_inited_game then return end
         if DataManager:hasUserData() then
             local user_alliance_data = DataManager:getUserAllianceData()
-            if user_alliance_data ~= json.null and response.targetAllianceId == user_alliance_data._id then
+            if type(user_alliance_data) == "table"
+            and response.targetAllianceId == user_alliance_data._id then
                 local edit = decodeInUserDataFromDeltaData(user_alliance_data, response.data)
                 DataManager:setUserAllianceData(user_alliance_data, edit)
                 -- LuaUtils:outputTable("onAllianceDataChanged", edit)
