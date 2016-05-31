@@ -43,13 +43,13 @@ function Observer:NotifyObservers(func)
         if type(v) ~= "userdata" then
             table.insert(observer, v)
         else
-            if not tolua.isnull(observer) then
+            if not tolua.isnull(v) then
                 table.insert(observer, v)
             end
         end
     end
     self.observer = observer
-    for _,v in ipairs(observer) do
+    for _,v in ipairs(self.observer) do
         if func(v) then return end
     end
 end
