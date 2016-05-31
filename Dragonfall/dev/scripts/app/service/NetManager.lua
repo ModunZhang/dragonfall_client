@@ -40,6 +40,10 @@ local function get_response_mail_msg(response)
                             local mail_index = MailManager:GetMailByServerIndex(k)
                             if not mail_index then
                                 is_changed_saved_mails = true
+                                local mail_index_1 = MailManager:GetSavedMailByServerIndex(k)
+                                if not mail_index_1 then
+                                    return
+                                end
                                 client_index = MailManager:GetSavedMailByServerIndex(k) - 1
                             else
                                 client_index = mail_index - 1
@@ -80,6 +84,10 @@ local function get_response_delete_mail_msg(response)
                 for i=1,len do
                     local k = tonumber(keys[i]) or keys[i]
                     if type(k) == "number" then
+                        local mail_index = MailManager:GetMailByServerIndex(k)
+                        if not mail_index then
+                            return
+                        end
                         local client_index = MailManager:GetMailByServerIndex(k) - 1
                         newKey = newKey..client_index..(i~=len and "." or "")
                     else
@@ -111,6 +119,10 @@ local function get_response_delete_send_mail_msg(response)
                 for i=1,len do
                     local k = tonumber(keys[i]) or keys[i]
                     if type(k) == "number" then
+                        local mail_index = MailManager:GetSendMailIndexByServerIndex(k)
+                        if not mail_index then
+                            return
+                        end
                         local client_index = MailManager:GetSendMailIndexByServerIndex(k) - 1
                         newKey = newKey..client_index..(i~=len and "." or "")
                     else
@@ -150,6 +162,10 @@ local function get_response_report_msg(response)
                             client_index = report_index - 1
                         else
                             is_saved_report = true
+                            local report_index_1 = MailManager:GetSavedReportByServerIndex(k)
+                            if not report_index_1 then
+                                return
+                            end
                             client_index = MailManager:GetSavedReportByServerIndex(k) - 1
                         end
                         newKey = newKey..client_index..(i~=len and "." or "")
@@ -187,6 +203,10 @@ local function get_response_delete_report_msg(response)
                 for i=1,len do
                     local k = tonumber(keys[i]) or keys[i]
                     if type(k) == "number" then
+                        local report_index = MailManager:GetReportByServerIndex(k)
+                        if not report_index then
+                            return
+                        end
                         local client_index = MailManager:GetReportByServerIndex(k) - 1
                         newKey = newKey..client_index..(i~=len and "." or "")
                     else

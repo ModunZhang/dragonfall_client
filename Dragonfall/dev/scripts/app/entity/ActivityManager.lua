@@ -9,7 +9,7 @@ local scheduler = require(cc.PACKAGE_NAME .. ".scheduler")
 local ScheduleActivities = GameDatas.ScheduleActivities.type
 local scoreCondition = GameDatas.ScheduleActivities.scoreCondition
 local ActivityManager = class("ActivityManager", MultiObserver)
-ActivityManager.LISTEN_TYPE = Enum("NEWS_CHANGED","UNREAD_NEWS_CHANGED")
+ActivityManager.LISTEN_TYPE = Enum("ACTIVITY_CHANGED")
 
 function ActivityManager:ctor()
     ActivityManager.super.ctor(self)
@@ -21,16 +21,18 @@ function ActivityManager:GetActivitiesFromServer()
     NetManager:getActivitiesPromise():done(function (response)
         if response.success then
             self.activities = response.msg.activities
-            dump(self.activities)
             self:IteratorActivityExpired(function (i,activity)
                 self:GetExpiredActivityPlayerRankFromServer(activity.type)
             end)
+            if self.handle_next then
+                scheduler.unscheduleGlobal(self.handle_next)
+                self.handle_next = nil
+            end
             if self.handle then
                 scheduler.unscheduleGlobal(self.handle)
                 self.handle = nil
-            else
-                self:addSchdulerRefresh__()
             end
+            self:addSchdulerRefresh__()
         end
     end)
 end
@@ -38,23 +40,38 @@ end
 function ActivityManager:addSchdulerRefresh__()
     local activities = self.activities
     local now = app.timer:GetServerTime()
-    local time
+    local next_time,n_activity
     for i,nextActivity in ipairs(activities.next) do
         local tmpTime = nextActivity.startTime/1000 - now
-        if not time or tmpTime < time then
-            time = tmpTime
+        if not next_time or tmpTime < next_time then
+            next_time = tmpTime
+            n_activity = nextActivity
         end
     end
+    local on_time
     for i,onActivity in ipairs(activities.on) do
         local tmpTime = onActivity.finishTime/1000 - now
-        if not time or tmpTime < time then
-            time = tmpTime
+        if not on_time or tmpTime < on_time then
+            on_time = tmpTime
         end
+    end
+    local time
+    if on_time and next_time then
+        time = math.min(on_time,next_time)
+    elseif on_time then
+        time = on_time
+    elseif next_time then
+        time = next_time
     end
     if time then
         self.handle = scheduler.performWithDelayGlobal(function ()
             self:GetActivitiesFromServer()
         end, time)
+    end
+    if next_time then
+        self.handle_next = scheduler.performWithDelayGlobal(function ()
+            GameGlobalUI:showNotice("info",string.format(_("%s已经开始"),Localize.activities[n_activity.type]))
+        end, next_time)
     end
 end
 -- 获取已经结束的活动的玩家排行
@@ -115,12 +132,12 @@ function ActivityManager:IsPlayerExpiredActivityValid(activity_type)
     local userActiviy = User.activities
     for i,serverActivity in ipairs(activities.on) do
         if serverActivity.type == activity_type then
-            return userActiviy[activity_type].lastActive >= serverActivity.finishTime - (ScheduleActivities[activity_type].existHours * 60 * 60 * 1000)
+            return userActiviy[activity_type].lastActive >= (serverActivity.finishTime - (ScheduleActivities[activity_type].existHours * 60 * 60 * 1000))
         end
     end
     for i,serverActivity in ipairs(activities.expired) do
         if serverActivity.type == activity_type then
-            return userActiviy[activity_type].lastActive >= serverActivity.removeTime - (ScheduleActivities[activity_type].expireHours * 60 * 60 * 1000) - (ScheduleActivities[activity_type].existHours * 60 * 60 * 1000)
+            return userActiviy[activity_type].lastActive >= (serverActivity.removeTime - (ScheduleActivities[activity_type].expireHours * 60 * 60 * 1000) - (ScheduleActivities[activity_type].existHours * 60 * 60 * 1000))
         end
     end
 end
@@ -153,7 +170,7 @@ end
 function ActivityManager:GetActivityScorePonits(type)
     local score_points = {}
     for i=1,5 do
-    	table.insert(score_points, self:GetActivityConfig(type)["scoreIndex"..i])
+        table.insert(score_points, self:GetActivityConfig(type)["scoreIndex"..i])
     end
     return score_points
 end
@@ -216,7 +233,7 @@ function ActivityManager:GetActivityScoreCondition(type)
             {_("高级抽奖1次"),config.andvancedGacha.score},
         }
     elseif type == "collectResource" then
-    	return {
+        return {
             {_("村落每采集1单位的木材"),config.collectOneWood.score},
             {_("村落每采集1单位的石料"),config.collectOneStone.score},
             {_("村落每采集1单位的铁矿"),config.collectOneIron.score},
@@ -229,7 +246,7 @@ function ActivityManager:GetActivityScoreCondition(type)
             {_("掠夺玩家1单位的银币"),config.robOneCoin.score},
         }
     elseif type == "pveFight" then
-    	return {
+        return {
             {_("探索1-4章的1个关卡"),config.attackPve_1_4.score},
             {_("探索5-8章的1个关卡"),config.attackPve_5_8.score},
             {_("探索9-12章的1个关卡"),config.attackPve_9_12.score},
@@ -238,7 +255,7 @@ function ActivityManager:GetActivityScoreCondition(type)
             {_("探索21-24章的1个关卡"),config.attackPve_21_24.score},
         }
     elseif type == "attackMonster" then
-    	return {
+        return {
             {_("黑龙军团Lv1-Lv8"),config.attackOneMonster_1_8.score},
             {_("黑龙军团Lv9-Lv16"),config.attackOneMonster_9_16.score},
             {_("黑龙军团Lv17-Lv24"),config.attackOneMonster_17_24.score},
@@ -246,11 +263,11 @@ function ActivityManager:GetActivityScoreCondition(type)
             {_("黑龙军团Lv33-Lv40"),config.attackOneMonster_33_40.score},
         }
     elseif type == "collectHeroBlood" then
-    	return {
+        return {
             {_("获取1单位的英雄之血"),config.getOneBlood.score},
         }
     elseif type == "recruitSoldiers" then
-    	return {
+        return {
             {_("招募部队Ⅰ：步兵/弓兵"),config.recruitOneLevel1_infantry_archer.score},
             {_("招募部队Ⅰ：骑兵/攻城武器"),config.recruitOneLevel1_cavalry_siege.score},
             {_("招募部队Ⅱ：步兵/弓兵"),config.recruitOneLevel2_infantry_archer.score},
@@ -261,50 +278,8 @@ function ActivityManager:GetActivityScoreCondition(type)
     end
 end
 return ActivityManager
--- "<var>" = {
--- [LUA-print] -     "attackMonster" = {
--- [LUA-print] -         "lastActive"         = 1464233637384
--- [LUA-print] -         "rankRewardsGeted"   = false
--- [LUA-print] -         "score"              = 0
--- [LUA-print] -         "scoreRewardedIndex" = 0
--- [LUA-print] -         "type"               = "attackMonster"
--- [LUA-print] -     }
--- [LUA-print] -     "collectHeroBlood" = {
--- [LUA-print] -         "lastActive"         = 1464233637384
--- [LUA-print] -         "rankRewardsGeted"   = false
--- [LUA-print] -         "score"              = 0
--- [LUA-print] -         "scoreRewardedIndex" = 0
--- [LUA-print] -         "type"               = "collectHeroBlood"
--- [LUA-print] -     }
--- [LUA-print] -     "collectResource" = {
--- [LUA-print] -         "lastActive"         = 1464233637384
--- [LUA-print] -         "rankRewardsGeted"   = false
--- [LUA-print] -         "score"              = 0
--- [LUA-print] -         "scoreRewardedIndex" = 0
--- [LUA-print] -         "type"               = "collectResource"
--- [LUA-print] -     }
--- [LUA-print] -     "gacha" = {
--- [LUA-print] -         "lastActive"         = 1464233637384
--- [LUA-print] -         "rankRewardsGeted"   = false
--- [LUA-print] -         "score"              = 0
--- [LUA-print] -         "scoreRewardedIndex" = 0
--- [LUA-print] -         "type"               = "gacha"
--- [LUA-print] -     }
--- [LUA-print] -     "pveFight" = {
--- [LUA-print] -         "lastActive"         = 1464233637384
--- [LUA-print] -         "rankRewardsGeted"   = false
--- [LUA-print] -         "score"              = 0
--- [LUA-print] -         "scoreRewardedIndex" = 0
--- [LUA-print] -         "type"               = "collectResource"
--- [LUA-print] -     }
--- [LUA-print] -     "recruitSoldiers" = {
--- [LUA-print] -         "lastActive"         = 1464233637384
--- [LUA-print] -         "rankRewardsGeted"   = false
--- [LUA-print] -         "score"              = 0
--- [LUA-print] -         "scoreRewardedIndex" = 0
--- [LUA-print] -         "type"               = "recruitSoldiers"
--- [LUA-print] -     }
--- [LUA-print] - }
+
+
 
 
 

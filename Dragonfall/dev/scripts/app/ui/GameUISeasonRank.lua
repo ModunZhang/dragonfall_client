@@ -3,6 +3,7 @@
 -- Date: 2016-05-23 13:45:39
 --
 local WidgetPopDialog = import("..widget.WidgetPopDialog")
+local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local GameUISeasonRank = class("GameUISeasonRank", WidgetPopDialog)
 local window = import("..utils.window")
 local UIListView = import(".UIListView")
@@ -22,7 +23,7 @@ local function load_more(rank_list, new_datas)
     end
 end
 function GameUISeasonRank:ctor(activity_data)
-    GameUISeasonRank.super.ctor(self,660,"排行榜",window.top_bottom)
+    GameUISeasonRank.super.ctor(self,680,"排行榜",window.top_bottom)
     self.activity_data = activity_data
     self.activity_type = activity_data.activity.type
 end
@@ -42,8 +43,11 @@ function GameUISeasonRank:onEnter()
         color = 0x403c2f,
     }):align(display.CENTER, bg:getContentSize().width/2, bg:getContentSize().height/2)
         :addTo(bg)
+
+    WidgetUIBackGround.new({width = 568,height = 518},WidgetUIBackGround.STYLE_TYPE.STYLE_6)
+        :addTo(body):align(display.BOTTOM_CENTER, size.width / 2, 62)
     local t_bg = display.newScale9Sprite("back_ground_blue_254x42.png", 0, 0,cc.size(546,44),cc.rect(10,10,234,22))
-        :align(display.CENTER_TOP,size.width / 2, size.height - 96)
+        :align(display.CENTER_TOP,size.width / 2, size.height - 110)
         :addTo(body)
     UIKit:ttfLabel({
         text = _("排名"),
@@ -57,12 +61,11 @@ function GameUISeasonRank:onEnter()
         color = 0xffedae,
     }):align(display.RIGHT_CENTER,536,22)
         :addTo(t_bg)
-
     local list = UIListView.new({
         async = true, --异步加载
         -- bgColor = UIKit:hex2c4b(0x7a10ff00),
         direction = cc.ui.UIScrollView.DIRECTION_VERTICAL,
-        viewRect = cc.rect(30,26,550,492),
+        viewRect = cc.rect(30,74,550,450),
     }):onTouch(handler(self, self.touchListener)):addTo(body)
     self.listview = list
     self.listview:setRedundancyViewVal(self.listview:getViewRect().height + 76 * 2)
@@ -70,6 +73,13 @@ function GameUISeasonRank:onEnter()
     NetManager:getPlayerTotalActivityRankPromise(self.activity_type):done(function(response)
         self:ReloadRank(rank_filter(response).msg)
     end)
+
+     UIKit:ttfLabel({
+        text = _("排行榜信息10分钟刷新一次"),
+        size = 20,
+        color = 0x403c2f,
+    }):align(display.CENTER,size.width / 2,38)
+        :addTo(body)
 end
 function GameUISeasonRank:sourceDelegate(listView, tag, idx)
     if cc.ui.UIListView.COUNT_TAG == tag then
@@ -106,10 +116,10 @@ function GameUISeasonRank:CreatePlayerContentByIndex(idx)
         :pos(size.width/2, size.height/2)
     item.bg3 = display.newSprite("background3_548x76.png"):addTo(item)
         :pos(size.width/2, size.height/2)
-    local bg = display.newSprite("background_57x57.png"):addTo(item):pos(120, 40)
+    local bg = display.newSprite("box_102x102.png"):addTo(item):pos(120, 40):scale(0.6)
     local point = bg:getAnchorPointInPoints()
     local player_head_icon = UIKit:GetPlayerIconOnly():addTo(bg)
-        :scale(0.5):pos(point.x, point.y+5)
+        :scale(0.72):pos(point.x, point.y)
 
     item.player_icon = player_head_icon
     item.rank = UIKit:ttfLabel({

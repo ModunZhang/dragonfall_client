@@ -225,6 +225,7 @@ function WidgetShortcutButtons:onEnter()
     -- User:AddListenOnType(self, "iapGifts")
     User:AddListenOnType(self, "vipEvents")
     User:AddListenOnType(self, "dragons")
+    User:AddListenOnType(self, "activities")
 
     NewsManager:AddListenOnType(self,NewsManager.LISTEN_TYPE.UNREAD_NEWS_CHANGED)
 
@@ -247,6 +248,7 @@ function WidgetShortcutButtons:onExit()
     -- User:RemoveListenerOnType(self, "iapGifts")
     User:RemoveListenerOnType(self, "vipEvents")
     User:RemoveListenerOnType(self, "dragons")
+    User:RemoveListenerOnType(self, "activities")
     NewsManager:RemoveListenerOnType(self,NewsManager.LISTEN_TYPE.UNREAD_NEWS_CHANGED)
 
     local my_allaince = Alliance_Manager:GetMyAlliance()
@@ -323,6 +325,10 @@ end
 function WidgetShortcutButtons:OnUserDataChanged_vipEvents()
 -- self.left_order_group:RefreshOrder()
 end
+function WidgetShortcutButtons:OnUserDataChanged_activities()
+    self:CheckAllianceRewardCount()
+end
+
 function WidgetShortcutButtons:OnMapDataChanged()
     self.right_top_order:RefreshOrder()
 end
