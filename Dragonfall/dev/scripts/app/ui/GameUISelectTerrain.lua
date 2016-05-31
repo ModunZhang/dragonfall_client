@@ -49,8 +49,12 @@ function GameUISelectTerrain:OnMoveInStage()
                 if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEventAF then
                     ext.market_sdk.onPlayerEventAF("强制引导-选择地形", "empty")
                 end
-                NewsManager = NewsManager_.new()
-                ActivityManager = ActivityManager_.new()
+                if not NewsManager then
+                    NewsManager = NewsManager_.new()
+                end
+                if not ActivityManager then
+                    ActivityManager = ActivityManager_.new()
+                end
                 self.select_promise:resolve()
             end):fail(function()
                 self.ui_map.select:setButtonEnabled(true)

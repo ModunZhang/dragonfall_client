@@ -331,11 +331,12 @@ function MyCityScene:OnUserDataChanged_soldierEvents(userData, deltaData)
     end
     local ok, value = deltaData("soldierEvents.remove")
     if ok then
-        local event = value[1]
         if self:GetHomePage() then
             self:GetHomePage():OnUserDataChanged_growUpTasks()
         end
-        self:GetSceneLayer():MoveBarracksSoldiers(event.name)
+        if value[1] then
+            self:GetSceneLayer():MoveBarracksSoldiers(value[1].name)
+        end
     end
 end
 function MyCityScene:OnUserDataChanged_basicInfo(userData, deltaData)

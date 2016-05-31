@@ -558,7 +558,9 @@ function GameUIActivityNew:listviewListener(event)
         if event.item then
             local content = event.item:getContent()
             local data = self.newsData[content.idx]
-            self:OpenNewsDetails(data,content)
+            if data then
+                self:OpenNewsDetails(data,content)
+            end
         end
     end
 end

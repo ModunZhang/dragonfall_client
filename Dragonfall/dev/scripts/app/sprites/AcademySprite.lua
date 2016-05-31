@@ -41,7 +41,7 @@ function AcademySprite:PlayAni()
     animation:playWithIndex(0)
 end
 function AcademySprite:StopAni()
-    if self:GetAniArray()[1]:isVisible() then
+    if self:GetAniArray()[1] and self:GetAniArray()[1]:isVisible() then
         self:GetAniArray()[1]:hide():getAnimation():stop()
     end
 end

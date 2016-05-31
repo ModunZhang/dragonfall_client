@@ -172,7 +172,7 @@ function GameUIShrineReport:GetFightItemContent()
         size = 20,
         color= 0x403c2f
     }):align(display.LEFT_BOTTOM,122, 8):addTo(content_part)
-    
+
     local result_label = UIKit:ttfLabel({
         text = "",
         size = 24,
@@ -211,7 +211,7 @@ function GameUIShrineReport:fillFightItemContent(item_content,list_data,item,ite
         content.name_label:setString(real_data.playerName or "")
         content.kill_label:setString(string.formatnumberthousands(real_data.killScore or 0))
         content.player_icon.icon:setTexture(UIKit:GetPlayerIconImage(real_data.playerIcon))
-        local isWin = real_data.fightResult == "attackWin" 
+        local isWin = real_data.fightResult == "attackWin"
         content.result_label:setColor(isWin and self.LABEL_COLOR.WIN or self.LABEL_COLOR.LOSE)
         content.result_label:setString(isWin and _("胜利") or _("失败"))
         --
@@ -281,7 +281,7 @@ function GameUIShrineReport:CreateIf_data_statistics()
     }):align(display.
     RIGHT_CENTER,honour_icon:getPositionX()-20,honour_icon:getPositionY()):addTo(layer)
     local shrineStage = GameDatas.AllianceInitData.shrineStage
-    
+
     UIKit:ttfLabel({
         text = shrineStage[self:GetShrineReport().stageName].honour or 0,
         size = 20,
@@ -359,12 +359,12 @@ function GameUIShrineReport:GetPlayerDataItemContent()
         size = 14,
         color= 0xffedae,
         align = cc.TEXT_ALIGNMENT_CENTER,
-    }):align(display.CENTER, 54, 15):addTo(layer):scale(1.54)    
+    }):align(display.CENTER, 54, 15):addTo(layer):scale(1.54)
     reward_bg3.label = label
     reward_bg1:scale(0.54)
     reward_bg2:scale(0.54)
     reward_bg3:scale(0.54)
-   
+
     content:size(548,80)
     content.bg0 = bg0
     content.bg1 = bg1
@@ -383,7 +383,7 @@ end
 function GameUIShrineReport:fillPlayerDataItemContent(content,list_data,item,idx)
     if content.next_button then
         content.next_button:removeSelf()
-    end 
+    end
     if content.pre_button then
         content.pre_button:removeSelf()
     end
@@ -393,7 +393,7 @@ function GameUIShrineReport:fillPlayerDataItemContent(content,list_data,item,idx
             self:OnRewardPageButtonClicked(1,content)
         end)
     local pre_button = WidgetPushButton.new({normal = "shrine_page_control_26x34.png"},{flipX = true}):align(display.RIGHT_CENTER, 540, 40):addTo(content)
-        :onButtonClicked(function() 
+        :onButtonClicked(function()
             self:OnRewardPageButtonClicked(-1,content)
         end)
 
@@ -404,14 +404,14 @@ function GameUIShrineReport:fillPlayerDataItemContent(content,list_data,item,idx
     content.kill_label:setString(string.formatnumberthousands(list_data.kill or 0))
     if list_data.id == User:Id() then
         content.bg2:show()
-        content.name_label:setColor(self.LABEL_COLOR.ME) 
-        content.kill_label:setColor(self.LABEL_COLOR.ME) 
+        content.name_label:setColor(self.LABEL_COLOR.ME)
+        content.kill_label:setColor(self.LABEL_COLOR.ME)
     else
-        content.name_label:setColor(self.LABEL_COLOR.OTHER) 
-        content.kill_label:setColor(self.LABEL_COLOR.OTHER) 
+        content.name_label:setColor(self.LABEL_COLOR.OTHER)
+        content.kill_label:setColor(self.LABEL_COLOR.OTHER)
         content.bg2:hide()
-        local bg_num = idx % 2 
-        if bg_num == 0 then 
+        local bg_num = idx % 2
+        if bg_num == 0 then
             content.bg0:show()
             content.bg1:hide()
         else
@@ -434,7 +434,7 @@ function GameUIShrineReport:fillPlayerDataItemContent(content,list_data,item,idx
         content.reward1:hide()
         content.reward2:hide()
     end
-    local reward_data = list_data.rewards
+    local reward_data = list_data.rewards or {}
     local count = #reward_data
     content.pages = self:GetPageSizeOfReward(count)
     content.page = 1
@@ -490,7 +490,7 @@ function GameUIShrineReport:GetRewardPageData(idx,page)
     local end_index = page * 3
     local list_data = self.player_data_source[idx]
     if list_data then
-        local reward_data = list_data.rewards
+        local reward_data = list_data.rewards or {}
         return LuaUtils:table_slice(reward_data,start_index,end_index)
     else
         return {}

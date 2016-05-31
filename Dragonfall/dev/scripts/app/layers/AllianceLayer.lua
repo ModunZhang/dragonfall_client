@@ -555,7 +555,7 @@ function AllianceLayer:RemoveMapObjectByIndex(index, mapObject)
 end
 function AllianceLayer:RefreshMapObjectByIndex(index, mapObject, alliance)
     local alliance_object = self.alliance_objects[index]
-    if alliance_object then
+    if alliance_object and alliance_object.mapObjects then
         local object = alliance_object.mapObjects[mapObject.id]
         if object then
             self:RefreshMapObjectPosition(object, mapObject)
@@ -565,7 +565,7 @@ function AllianceLayer:RefreshMapObjectByIndex(index, mapObject, alliance)
 end
 function AllianceLayer:RefreshBuildingByIndex(index, building, alliance)
     local alliance_object = self.alliance_objects[index]
-    if alliance_object then
+    if alliance_object and alliance_object.buildings then
         local object = alliance_object.buildings[building.name]
         if object then
             local x,y = self:GetBannerPos(index, object.x, object.y)

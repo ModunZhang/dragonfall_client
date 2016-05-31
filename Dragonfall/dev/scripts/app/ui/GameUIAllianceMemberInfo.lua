@@ -46,9 +46,13 @@ function GameUIAllianceMemberInfo:OnMoveInStage()
     self.title_bar = title_bar
 
     NetManager:getPlayerInfoPromise(self.memberId_,self.serverId_):done(function(data)
-        self:OnGetPlayerInfoSuccess(data)
+        if not tolua.isnull(self) then
+            self:OnGetPlayerInfoSuccess(data)
+        end
     end):fail(function()
-        self:LeftButtonClicked()
+        if not tolua.isnull(self) then
+            self:LeftButtonClicked()
+        end
     end)
 end
 

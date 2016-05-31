@@ -420,7 +420,9 @@ function GameUIHasBeenBuild:onExit()
 end
 function GameUIHasBeenBuild:RefreshAllItems()
     for i,v in ipairs(self.building_list_view.items_) do
-        v:getContent():UpdateByBuilding(self.buildings[v.idx_])
+        if v:getContent().UpdateByBuilding then
+            v:getContent():UpdateByBuilding(self.buildings[v.idx_])
+        end
     end
 end
 function GameUIHasBeenBuild:LoadBuildingQueue()
