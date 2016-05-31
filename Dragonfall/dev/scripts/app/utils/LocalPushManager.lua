@@ -84,7 +84,9 @@ function LocalPushManager:CancelNotificationByKeyAndIdentity(key,identity)
 	if not self:IsSupport() then return end
 	self:CancelNotificationByIdentity(identity)
 	local target_queue = self["push_queue_" .. key]
-	target_queue[identity] = nil
+	if target_queue and identity then
+		target_queue[identity] = nil
+	end
 end
 -- push_key is string
 function LocalPushManager:AddLocalPush(push_key,finishTime,msg,identity)

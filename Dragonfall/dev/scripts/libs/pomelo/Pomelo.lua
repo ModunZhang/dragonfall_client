@@ -183,6 +183,11 @@ function Pomelo:_processMessage(msg)
     --    printf("msg.id=%s,msg.route=%s,msg.body=%s",msg.id,msg.route,msg.body)
     --    printf("json.encode(msg.body)=%s",json.encode(msg.body))
     if msg.id==0 then
+        --FIXME:emit方法几率抛错nil.暂时不屏蔽这个错误,如果错误发生,通过DataManager.latestDeltaData发送msg.body到服务器查看信息
+        if not msg.route and DataManager then
+            DataManager.latestDeltaData = msg.body
+        end
+        -- end
         self:emit(msg.route, msg.body)
     end
 
@@ -207,6 +212,11 @@ end
 function Pomelo:_isReady()
     if not self.socket then return false end
     return self.socket:getReadyState() == cc.WEBSOCKET_STATE_OPEN
+end
+
+-- pomelo级别连接成功而不是仅仅websocket连接成功
+function Pomelo:_isConnected()
+    return self:_isReady() and self.data ~= nil
 end
 
 function Pomelo:_sendMessage(reqId,route,msg)

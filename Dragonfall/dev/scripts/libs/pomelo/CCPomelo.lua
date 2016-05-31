@@ -57,7 +57,7 @@ function CCPomelo:cleanup()
 end
 
 function CCPomelo:isReady()
-	return self._pomelo:_isReady()
+	return self._pomelo:_isConnected()
 end
 
 return CCPomelo

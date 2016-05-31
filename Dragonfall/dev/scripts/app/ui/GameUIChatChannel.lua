@@ -604,7 +604,8 @@ function GameUIChatChannel:listviewListener(event)
                     return
                 end
                 GameUtils:Translate(final_chat_msg,function(result,errText)
-                    if result then
+                    -- fix the nil error
+                    if result and not tolua.isnull(self) and not tolua.isnull(contentLable)  then
                         chat._translate_ = result
                         chat._translateMode_ = true
                         if string.lower(chat.id) == 'system' then

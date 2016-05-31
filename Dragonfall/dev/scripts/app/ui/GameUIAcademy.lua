@@ -141,6 +141,7 @@ function GameUIAcademy:OnUserDataChanged_buildings(userData, deltaData)
     end
 end
 function GameUIAcademy:OnUserDataChanged_productionTechEvents()
+    if not self.tab_btns or self.tab_btns:GetSelectedButtonTag() ~= 'technology' then return end
     self:CheckUIChanged()
 end
 function GameUIAcademy:OnMoveOutStage()

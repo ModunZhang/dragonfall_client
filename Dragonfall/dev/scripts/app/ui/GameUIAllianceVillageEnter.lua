@@ -318,7 +318,9 @@ function GameUIAllianceVillageEnter:GetEnterButtons()
                             UIKit:newGameUI('GameUISendTroopNew',function(dragonType,soldiers,total_march_time,gameuialliancesendtroops)
                                 NetManager:getAttackVillagePromise(dragonType,soldiers,alliance_id,village_id):done(function()
                                     app:GetAudioManager():PlayeEffectSoundWithKey("TROOP_SENDOUT")
-                                    gameuialliancesendtroops:LeftButtonClicked()
+                                    if gameuialliancesendtroops and gameuialliancesendtroops.LeftButtonClicked then
+                                        gameuialliancesendtroops:LeftButtonClicked()
+                                    end
                                 end)
                             end,{targetAlliance = focus_alliance,toLocation = position,returnCloseAction = true}):AddToCurrentScene(true)
                         end)
@@ -345,7 +347,9 @@ function GameUIAllianceVillageEnter:GetEnterButtons()
                         UIKit:newGameUI('GameUISendTroopNew',function(dragonType,soldiers,total_march_time,gameuialliancesendtroops)
                             NetManager:getAttackVillagePromise(dragonType,soldiers,alliance_id,village_id):done(function()
                                 app:GetAudioManager():PlayeEffectSoundWithKey("TROOP_SENDOUT")
-                                gameuialliancesendtroops:LeftButtonClicked()
+                                if gameuialliancesendtroops and gameuialliancesendtroops.LeftButtonClicked then
+                                    gameuialliancesendtroops:LeftButtonClicked()
+                                end
                             end)
                         end,{targetAlliance = focus_alliance,toLocation = toLocation,returnCloseAction = true}):AddToCurrentScene(true)
                     end
@@ -380,7 +384,7 @@ function GameUIAllianceVillageEnter:GetEnterButtons()
                         UIKit:newGameUI('GameUISendTroopNew',function(dragonType,soldiers,total_march_time,gameuialliancesendtroops)
                             NetManager:getAttackVillagePromise(dragonType,soldiers,alliance_id,village_id):done(function()
                                 app:GetAudioManager():PlayeEffectSoundWithKey("TROOP_SENDOUT")
-                                if gameuialliancesendtroops.LeftButtonClicked then
+                                if gameuialliancesendtroops and gameuialliancesendtroops.LeftButtonClicked then
                                     gameuialliancesendtroops:LeftButtonClicked()
                                 end
                             end)
