@@ -70,15 +70,13 @@ function UtilsForBuilding:GetFunctionConfigBy(userData, nameOrLocationOrHouseOrB
     end
     local configs = self:GetBuildingConfig(houseOrBuilding.type)
     local level = houseOrBuilding.level + offset
-    level = level > #configs and #configs or level
-    return configs[level]
+    return configs[math.max(math.min(level, #configs), 1)]
 end
 function UtilsForBuilding:GetLevelUpConfigBy(userData, houseOrBuilding, offset)
     offset = offset or 0
     local configs = self:GetLevelUpConfig(houseOrBuilding.type)
     local level = houseOrBuilding.level + offset
-    level = level > #configs and #configs or level
-    return configs[level]
+    return configs[math.max(math.min(level, #configs), 1)]
 end
 
 
@@ -151,8 +149,7 @@ function UtilsForBuilding:GetWarehouseLimit(userData, offset)
     }
     for _,building in ipairs(self:GetBuildingsBy(userData, "warehouse", 1)) do
         local level = building.level + offset
-        level = level > #warehouse and #warehouse or level
-        local config = warehouse[level]
+        local config = warehouse[math.max(math.min(level, #warehouse), 1)]
         for k,v in pairs(limit) do
             limit[k] = v + config[k]
         end
@@ -171,8 +168,7 @@ function UtilsForBuilding:GetMaterialDepotLimit(userData, offset)
     }
     for _,building in ipairs(self:GetBuildingsBy(userData, "materialDepot", 1)) do
         local level = building.level + offset
-        level = level > #materialDepot and #materialDepot or level
-        local config = materialDepot[level]
+        local config = materialDepot[math.max(math.min(level, #materialDepot), 1)]
         for k,v in pairs(limit) do
             limit[k] = v + config[k]
         end
@@ -333,8 +329,7 @@ function UtilsForBuilding:GetMaxCasualty(userData, offset)
     local tech_effect = UtilsForTech:GetEffect("rescueTent", tech)
     for _,building in ipairs(self:GetBuildingsBy(userData, "hospital", 1)) do
         local level = building.level + offset
-        level = level > #hospital and #hospital or level
-        return math.floor(hospital[level].maxCitizen * (1 + tech_effect))
+        return math.floor(hospital[math.max(math.min(level, #hospital), 1)].maxCitizen * (1 + tech_effect))
     end
     return value
 end
@@ -366,8 +361,7 @@ function UtilsForBuilding:GetUnlockPoint(userData, offset)
     assert(offset >= 0)
     for _,building in ipairs(self:GetBuildingsBy(userData, "keep", 1)) do
         local level = building.level + offset
-        level = level > #keep and #keep or level
-        return keep[level].unlock
+        return keep[math.max(math.min(level, #keep), 1)].unlock
     end
     assert(false)
 end
@@ -376,8 +370,7 @@ function UtilsForBuilding:GetBeHelpedCount(userData, offset)
     assert(offset >= 0)
     for _,building in ipairs(self:GetBuildingsBy(userData, "keep", 1)) do
         local level = building.level + offset
-        level = level > #keep and #keep or level
-        return keep[level].beHelpedCount
+        return keep[math.max(math.min(level, #keep), 1)].beHelpedCount
     end
     assert(false)
 end
@@ -391,8 +384,7 @@ function UtilsForBuilding:GetMaxRecruitSoldier(userData, offset)
     local max = 0
     for _,building in ipairs(self:GetBuildingsBy(userData, "barracks", 1)) do
         local level = building.level + offset
-        level = level > #barracks and #barracks or level
-        max = max + barracks[level].maxRecruit
+        max = max + barracks[math.max(math.min(level, #barracks), 1)].maxRecruit
     end
     return max
 end
@@ -421,8 +413,7 @@ function UtilsForBuilding:GetMaxCart(userData, offset)
     local effect = UtilsForTech:GetEffect("logistics", userData.productionTechs["logistics"])
     for _,building in ipairs(self:GetBuildingsBy(userData, "tradeGuild", 1)) do
         local level = building.level + offset
-        level = level > #tradeGuild and #tradeGuild or level
-        return math.ceil(tradeGuild[level].maxCart * (1 + effect))
+        return math.ceil(tradeGuild[math.max(math.min(level, #tradeGuild), 1)].maxCart * (1 + effect))
     end
     return 0
 end
@@ -430,8 +421,7 @@ function UtilsForBuilding:GetMaxSellQueue(userData, offset)
     offset = offset or 0
     for _,building in ipairs(self:GetBuildingsBy(userData, "tradeGuild", 1)) do
         local level = building.level + offset
-        level = level > #tradeGuild and #tradeGuild or level
-        return tradeGuild[level].maxSellQueue
+        return tradeGuild[math.max(math.min(level, #tradeGuild), 1)].maxSellQueue
     end
     return 0
 end
@@ -439,8 +429,7 @@ function UtilsForBuilding:GetCartRecovery(userData, offset)
     offset = offset or 0
     for _,building in ipairs(self:GetBuildingsBy(userData, "tradeGuild", 1)) do
         local level = building.level + offset
-        level = level > #tradeGuild and #tradeGuild or level
-        return tradeGuild[level].cartRecovery
+        return tradeGuild[math.max(math.min(level, #tradeGuild), 1)].cartRecovery
     end
     return 0
 end
@@ -470,8 +459,7 @@ function UtilsForBuilding:GetBuildingProtection(userData, buildingName, offset)
     local protection = 0
     for _,building in ipairs(self:GetBuildingsBy(userData, buildingName, 1)) do
         local level = building.level + offset
-        level = level > #configs and #configs or level
-        protection = protection + configs[level].protection
+        protection = protection + configs[math.max(math.min(level, #configs), 1)].protection
     end
     return protection
 end
@@ -684,7 +672,7 @@ function UtilsForBuilding:GetRequiredGems(userData,houseOrBuilding)
     --当升级队列不足时，立即完成正在升级的建筑中所剩升级时间最少的建筑
     local shortestEvent = self:GetBuildingEventsBySeq(userData)[1]
     if self:GetFreeBuildQueueCount(userData) == 0 and shortestEvent then
-        local time = UtilsForEvent:GetEventInfo(shortestEvent)     
+        local time = UtilsForEvent:GetEventInfo(shortestEvent)
         required_gems = required_gems + DataUtils:getGemByTimeInterval(time)
     end
 

@@ -307,7 +307,9 @@ function GameUIAlliance:GetMoreJoinListData()
     if self.isLoadingJoin or string.len(self.editbox_tag_search:getText()) ~= 0 then return end
     self.isLoadingJoin = true
     self.join_list_page = self.join_list_page + 1
-    NetManager:getFetchCanDirectJoinAlliancesPromise(JOIN_LIST_PAGE_SIZE * (self.join_list_page - 1)):done(function(response)
+    NetManager:getFetchCanDirectJoinAlliancesPromise(JOIN_LIST_PAGE_SIZE * (self.join_list_page - 1))
+    :done(function(response)
+        if tolua.isnull(self) then return end
         if not response.msg or not response.msg.allianceDatas then return end
         if response.msg.allianceDatas then
             table.insertto(self.join_list_data_source, response.msg.allianceDatas)

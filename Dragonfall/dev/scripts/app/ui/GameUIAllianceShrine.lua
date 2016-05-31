@@ -90,7 +90,7 @@ function GameUIAllianceShrine:OnMoveInStage()
 
     scheduleAt(self, function()
         local aln = Alliance_Manager:GetMyAlliance()
-        if self:GetSelectedButtonTag() == "stage" then 
+        if self:GetSelectedButtonTag() == "stage" then
             local res = aln:GetPerceptionRes()
             local value = aln:GetPerception()
             local display_str = string.format(_("感知力:%s"),value .. "/" .. res.limit)
@@ -137,7 +137,9 @@ function GameUIAllianceShrine:RefreshUI()
     elseif tag == 'events_history' then
         if not DataManager:getUserAllianceData().shrineReports then
             NetManager:getShrineReportsPromise():done(function()
-                self:RefreshEventsListView()
+                if not tolua.isnull(self) then
+                    self:RefreshEventsListView()
+                end
             end)
         else
             self:RefreshEventsListView()
@@ -235,7 +237,7 @@ function GameUIAllianceShrine:TabEvent_stage()
         :align(display.CENTER,title_bg:getContentSize().width/2,29)
         :addTo(title_bg)
     self.stage_ui.stage_label = stage_label
-   
+
     local list,list_node = UIKit:commonListView({
         direction = cc.ui.UIScrollView.DIRECTION_VERTICAL,
         viewRect = cc.rect(0,0,568,630),

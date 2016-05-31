@@ -714,7 +714,10 @@ function GameUIActivityRewardNew:ui_FIRST_IN_PURGURE()
     self.purgure_get_button:onButtonClicked(function()
         NetManager:getFirstIAPRewardsPromise():done(function()
             if iskindof(display.getRunningScene(), "MyCityScene") then
-                display.getRunningScene():GetHomePage().event_tab:RefreshBuildQueueByType("build")
+                local home_page = display.getRunningScene():GetHomePage()
+                if home_page and home_page.event_tab then
+                    home_page.event_tab:RefreshBuildQueueByType("build")
+                end
             end
 
             GameGlobalUI:showTips(_("提示"),tips_str)

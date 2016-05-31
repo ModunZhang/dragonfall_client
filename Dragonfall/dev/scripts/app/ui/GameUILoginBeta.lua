@@ -573,10 +573,12 @@ end
 
 function GameUILoginBeta:connectGateServer()
     NetManager:getConnectGateServerPromise():catch(function(err)
-        
+
     end):done(function()
         -- self:setProgressPercent(80)
-        self:getLogicServerInfo()
+        if not tolua.isnull(self) then
+            self:getLogicServerInfo()
+        end
     end):fail(function()
         -- 1是连接游戏服务器失败 0是本地网络有问题
         GameUtils:PingSearchEngine(function(success)
@@ -758,7 +760,7 @@ function GameUILoginBeta:donwLoadFilesWithFileList()
     local updateFileList = {}
     for k, v in pairs(serverFileList.files) do
         local localFile = localFileList.files[k]
-        --不再比对tag值 
+        --不再比对tag值
         if not localFile or localFile.crc32 ~= v.crc32 then
             v.path = k
             table.insert(updateFileList, v)

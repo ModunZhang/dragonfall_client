@@ -204,6 +204,7 @@ function MailManager:DeleteSendMail(mail)
             table.remove(self.sendMails,k)
         end
     end
+    if not delete_mail_server_index then return end
     for k,v in pairs(DataManager:getUserData().sendMails) do
         if v.index > delete_mail_server_index then
             local old = clone(v.index)

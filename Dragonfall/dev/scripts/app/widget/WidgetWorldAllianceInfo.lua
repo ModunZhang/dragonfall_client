@@ -127,12 +127,16 @@ function WidgetWorldAllianceInfo:Located(mapIndex, x, y)
             if Alliance_Manager:GetAllianceByCache(mapIndex) then
                 scene:GotoPosition(x,y)
                 EnterIn(mapIndex)
-                self:LeftButtonClicked()
+                if not tolua.isnull(self) then
+                    self:LeftButtonClicked()
+                end
             else
                 scene:FetchAllianceDatasByIndex(mapIndex, function()
                     scene:GotoPosition(x,y)
                     EnterIn(mapIndex)
-                    self:LeftButtonClicked()
+                    if not tolua.isnull(self) then
+                        self:LeftButtonClicked()
+                    end
                 end)
             end
         end
@@ -143,17 +147,23 @@ function WidgetWorldAllianceInfo:Located(mapIndex, x, y)
             if Alliance_Manager:GetAllianceByCache(mapIndex) then
                 scene:GotoAllianceByXY(scene:GetSceneLayer():IndexToLogic(mapIndex))
                 EnterIn(mapIndex)
-                self:LeftButtonClicked()
+                if not tolua.isnull(self) then
+                    self:LeftButtonClicked()
+                end
             else
                 if scene:ViewIndex() == mapIndex then
                     scene:GotoAllianceByXY(scene:GetSceneLayer():IndexToLogic(mapIndex))
                     EnterIn(mapIndex)
-                    self:LeftButtonClicked()
+                    if not tolua.isnull(self) then
+                        self:LeftButtonClicked()
+                    end
                 else
                     scene:FetchAllianceDatasByIndex(mapIndex, function()
                         scene:GotoAllianceByXY(scene:GetSceneLayer():IndexToLogic(mapIndex))
                         EnterIn(mapIndex)
-                        self:LeftButtonClicked()
+                        if not tolua.isnull(self) then
+                            self:LeftButtonClicked()
+                        end
                     end)
                 end
             end

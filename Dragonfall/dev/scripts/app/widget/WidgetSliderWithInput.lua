@@ -40,7 +40,8 @@ function WidgetSliderWithInput:ctor(params)
                     min=min,
                     unit=unit,
                     callback = function ( edit_value )
-                        if edit_value ~= self:GetValue() then
+                        if edit_value ~= self:GetValue()
+                        and type(edit_value) == "number" then
                             slider.fsm_:doEvent("press")
                             slider:setSliderValue(edit_value)
                             slider.fsm_:doEvent("release")
