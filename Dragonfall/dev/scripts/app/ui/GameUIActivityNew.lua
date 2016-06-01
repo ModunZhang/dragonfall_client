@@ -59,6 +59,8 @@ function GameUIActivityNew:ctor(city)
                     content.finish_time_label:setString(string.format(_("结束时间：%s"),GameUtils:formatTimeStyle1(content.activity.finishTime/1000 - app.timer:GetServerTime())))
                 elseif content.coming_time_label then
                     content.coming_time_label:setString(string.format(_("距离开始还有：%s"),GameUtils:formatTimeStyle1(content.activity.startTime/1000 - app.timer:GetServerTime())))
+                elseif content.over_time_label then
+                    content.over_time_label:setString(string.format(_("%s后消失"),GameUtils:formatTimeStyle1(content.activity.removeTime/1000 - app.timer:GetServerTime())))
                 end
             end
         end
@@ -68,9 +70,11 @@ end
 
 function GameUIActivityNew:onCleanup()
     User:RemoveListenerOnType(self, "countInfo")
+    User:RemoveListenerOnType(self, "activities")
     -- User:RemoveListenerOnType(self, "iapGifts")
     User:RemoveListenerOnType(self, "buildings")
     NewsManager:RemoveListenerOnType(self,NewsManager.LISTEN_TYPE.NEWS_CHANGED)
+    ActivityManager:RemoveListenerOnType(self,ActivityManager.LISTEN_TYPE.ACTIVITY_CHANGED)
     GameUIActivityNew.super.onCleanup(self)
 end
 
@@ -118,15 +122,23 @@ function GameUIActivityNew:CreateTabIf_season()
     list:onTouch(handler(self, self.OnSeasonListViewTouch))
     self.season_list_view = list
     self:RefreshSeasonList()
+    User:AddListenOnType(self, "activities")
+    ActivityManager:AddListenOnType(self,ActivityManager.LISTEN_TYPE.ACTIVITY_CHANGED)
+    
     return self.season_list_view
 end
 function GameUIActivityNew:OnSeasonListViewTouch(event)
     if event.name == "clicked" and event.item and event.item:getContent().activity then
-        UIKit:newGameUI("GameUISeasonDetails",event.item:getContent()):AddToCurrentScene()
+        local content = event.item:getContent()
+        local data = {}
+        data.activity = content.activity
+        data.status = content.status
+        UIKit:newGameUI("GameUISeasonDetails",data):AddToCurrentScene()
     end
 end
 function GameUIActivityNew:RefreshSeasonList()
     local list = self.season_list_view
+    list:removeAllItems()
     local activities = ActivityManager:GetLocalActivities()
     -- 进行中的赛季
     if #activities.on > 0 then
@@ -193,7 +205,7 @@ function GameUIActivityNew:GetSeasonItem(season_type,activity)
             color = 0x7e0000
         }):addTo(content):align(display.LEFT_CENTER,144,item_height/2 - 10)
         local season_desc_label = UIKit:ttfLabel({
-            text = Localize.activities_desc[activity.type],
+            text = _("个人赛事"),
             size = 18,
             color = 0x403c2f
         }):addTo(content):align(display.LEFT_CENTER,144,item_height/2 - 40)
@@ -221,7 +233,7 @@ function GameUIActivityNew:GetSeasonItem(season_type,activity)
             shadow = true
         }):addTo(title_bg):align(display.LEFT_CENTER,30,title_bg:getContentSize().height/2 + 4)
         content.over_time_label = UIKit:ttfLabel({
-            text = string.format(_("%s已过期"),GameUtils:formatTimeAsTimeAgoStyle(activity.removeTime/1000 - app.timer:GetServerTime())),
+            text = string.format(_("%s后消失"),GameUtils:formatTimeStyle1(activity.removeTime/1000 - app.timer:GetServerTime())),
             size = 18,
             color = 0x7e0000
         }):addTo(content):align(display.LEFT_CENTER,28,item_height/2 - 24)
@@ -257,7 +269,7 @@ function GameUIActivityNew:GetSeasonItem(season_type,activity)
             color = 0x007c23
         }):addTo(content):align(display.LEFT_CENTER,28,item_height/2 - 12)
         local season_desc_label = UIKit:ttfLabel({
-            text = Localize.activities_desc[activity.type],
+            text = _("个人赛事"),
             size = 18,
             color = 0x403c2f
         }):addTo(content):align(display.LEFT_CENTER,28,item_height/2 - 40)
@@ -326,7 +338,14 @@ function GameUIActivityNew:OnUserDataChanged_countInfo()
     self:RefreshActivityListView()
     self:RefreshActivityCountTips()
 end
-
+function GameUIActivityNew:OnUserDataChanged_activities()
+    self:RefreshSeasonList()
+    self:RefreshActivityCountTips()
+end
+function GameUIActivityNew:OnActivitiesChanged()
+    self:RefreshSeasonList()
+    self:RefreshActivityCountTips()
+end
 function GameUIActivityNew:OnActivityListViewTouch(event)
     if event.name == "clicked" and event.item then
         app:GetAudioManager():PlayeEffectSoundWithKey("NORMAL_DOWN")

@@ -7,6 +7,7 @@ local UIListView = import(".UIListView")
 local Localize_item = import("..utils.Localize_item")
 local Localize = import("..utils.Localize")
 local WidgetPushButton = import("..widget.WidgetPushButton")
+local scheduler = require(cc.PACKAGE_NAME .. ".scheduler")
 local UILib = import(".UILib")
 local UIAutoClose = import('.UIAutoClose')
 local GameUISaleOne = class('GameUISaleOne', UIAutoClose)
@@ -24,7 +25,7 @@ function GameUISaleOne:onEnter()
     self:CreateSalesBox()
     self:CreateInfo()
     self:RefreshInfo()
-    self.pv:gotoPage(self.lesstimeIndex)
+    self.pv:gotoPage(math.random(4))
 
     local close_btn = WidgetPushButton.new({normal = "x_btn_up_48x48.png",pressed = "x_btn_down_48x48.png"})
         :onButtonClicked(function(event)
@@ -52,6 +53,9 @@ function GameUISaleOne:onEnter()
 end
 
 function GameUISaleOne:onExit()
+    if self.auto_change_page then
+        scheduler.unscheduleGlobal(self.auto_change_page)
+    end
     GameUISaleOne.super.onExit(self)
 end
 function GameUISaleOne:CreateSalesBox()
@@ -71,15 +75,17 @@ function GameUISaleOne:CreateSalesBox()
     pv:onTouch(function (event)
         if event.name == "pageChange" then
             self:RefreshInfo()
+            if self.auto_change_page then
+                scheduler.unscheduleGlobal(self.auto_change_page)
+            end
+            self.auto_change_page = scheduler.scheduleGlobal(handler(self, self.Change), 5.0, false)
         end
     end):addTo(body)
-    local lesstimeIndex = 1
     local lessTime = math.huge
     for i=1,4 do
         local item = pv:newItem()
         local pro_data,leftTime = DataUtils:GetProductAndLeftTimeByIndex(i)
         if lessTime > leftTime then
-            lesstimeIndex = i
             lessTime = leftTime
         end
         local content_node = self:GetSalesItem(pro_data,leftTime):pos(278,109)
@@ -89,7 +95,17 @@ function GameUISaleOne:CreateSalesBox()
     end
     pv:reload()
     self.pv = pv
-    self.lesstimeIndex = lesstimeIndex
+end
+function GameUISaleOne:Change()
+    local pv = self.pv
+    if pv and not pv:IsOnTouch() and pv:getNumberOfRunningActions() < 1 then
+        pv:setTouchEnabled(false)
+        local go_page = pv:getCurPageIdx() + 1
+        pv:gotoPage(go_page > 4 and 1 or go_page,true)
+        pv:performWithDelay(function ()
+            pv:setTouchEnabled(true)
+        end,0.3)
+    end
 end
 function GameUISaleOne:GetSalesItem(pro_data,leftTime)
     local content_node = display.newSprite(UILib.promotion_items[pro_data.name]):pos(278,109)
@@ -257,6 +273,7 @@ function GameUISaleOne:OnBuyButtonClicked()
     end
 end
 return GameUISaleOne
+
 
 
 

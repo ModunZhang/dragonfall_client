@@ -20,6 +20,11 @@ end
 function GameUISeasonDetails:onEnter()
     GameUISeasonDetails.super.onEnter(self)
     self:CreateList()
+    ActivityManager:AddListenOnType(self,ActivityManager.LISTEN_TYPE.ACTIVITY_CHANGED)
+end
+function GameUISeasonDetails:onExit()
+    GameUISeasonDetails.super.onExit(self)
+    ActivityManager:RemoveListenerOnType(self,ActivityManager.LISTEN_TYPE.ACTIVITY_CHANGED)
 end
 function GameUISeasonDetails:CreateList()
     if self.listView then
@@ -202,7 +207,7 @@ function GameUISeasonDetails:GetListNode()
         :align(display.CENTER_TOP,season_pro_bg:getContentSize().width/2, season_pro_bg:getContentSize().height)
         :addTo(season_pro_bg)
     UIKit:ttfLabel({
-        text = _("活动"),
+        text = _("积分规则"),
         size = 20,
         color = 0xffedae,
     }):align(display.LEFT_CENTER,10,15)
@@ -237,7 +242,7 @@ function GameUISeasonDetails:GetListNode()
         :addTo(content)
         :scale(121/170)
     local reward_points = ActivityManager:GetActivityScorePonits(activity_type)
-    local gotIndex = User.activities[activity_type].scoreRewardedIndex
+    local gotIndex = isValid and User.activities[activity_type].scoreRewardedIndex or 0
     local my_score = isValid and User.activities[activity_type].score or 0
     local progress_percent = 0
     for i,v in ipairs(reward_points) do
@@ -329,7 +334,8 @@ function GameUISeasonDetails:GetListNode()
     local season_desc_label = UIKit:ttfLabel({
         text = Localize.activities_desc[activity_type],
         size = 20,
-        color = 0x403c2f
+        color = 0x403c2f,
+        dimensions = cc.size(400,0)
     }):align(display.LEFT_TOP,season_icon:getPositionX() + season_icon:getContentSize().width + 10,season_icon:getPositionY() + 100)
         :addTo(content)
     local finish_time_label = UIKit:ttfLabel({
@@ -365,6 +371,9 @@ function GameUISeasonDetails:RefreshAfterGotPointReward()
         self.got_labels[i]:setVisible(gotIndex >= i)
         self.pointbtn[i]:setVisible(gotIndex < i)
     end
+end
+function GameUISeasonDetails:OnActivitiesChanged()
+    self:LeftButtonClicked()
 end
 return GameUISeasonDetails
 

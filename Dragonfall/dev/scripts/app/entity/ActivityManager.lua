@@ -33,6 +33,9 @@ function ActivityManager:GetActivitiesFromServer()
                 self.handle = nil
             end
             self:addSchdulerRefresh__()
+            self:NotifyListeneOnType(ActivityManager.LISTEN_TYPE.ACTIVITY_CHANGED,function(listener)
+                listener:OnActivitiesChanged()
+            end)
         end
     end)
 end
@@ -278,6 +281,7 @@ function ActivityManager:GetActivityScoreCondition(type)
     end
 end
 return ActivityManager
+
 
 
 

@@ -256,8 +256,12 @@ function MyCityScene:onEnterTransitionFinish()
 
         local isFinished_fte = DataManager:getUserData().countInfo.isFTEFinished
         local not_buy_any_gems = DataManager:getUserData().countInfo.iapCount == 0
-        if isFinished_fte and not_buy_any_gems then
-            UIKit:newGameUI("GameUIActivityRewardNew",GameUIActivityRewardNew.REWARD_TYPE.FIRST_IN_PURGURE):AddToScene(self, true)
+        if isFinished_fte then
+            if not_buy_any_gems then
+                UIKit:newGameUI("GameUIActivityRewardNew",GameUIActivityRewardNew.REWARD_TYPE.FIRST_IN_PURGURE):AddToScene(self, true)
+            else
+                UIKit:newGameUI("GameUISaleOne"):AddToCurrentScene()
+            end
         end
         --开启屏幕锁定定时器(前面已经关闭)
         -- if ext.disableIdleTimer then

@@ -80,6 +80,14 @@ function GameUISeasonRank:onEnter()
         color = 0x403c2f,
     }):align(display.CENTER,size.width / 2,38)
         :addTo(body)
+    ActivityManager:AddListenOnType(self,ActivityManager.LISTEN_TYPE.ACTIVITY_CHANGED)
+end
+function GameUISeasonRank:onExit()
+    GameUISeasonRank.super.onExit(self)
+    ActivityManager:RemoveListenerOnType(self,ActivityManager.LISTEN_TYPE.ACTIVITY_CHANGED)
+end
+function GameUISeasonRank:OnActivitiesChanged()
+    self:LeftButtonClicked()
 end
 function GameUISeasonRank:sourceDelegate(listView, tag, idx)
     if cc.ui.UIListView.COUNT_TAG == tag then

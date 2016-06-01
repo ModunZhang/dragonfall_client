@@ -1310,12 +1310,12 @@ local ACTIVITIES = {
     recruitSoldiers = _("军备竞赛赛季"),
 }
 local ACTIVITIES_DESC = {
-    gacha = _("抽奖赢点数，兑换丰厚奖励"),
-    collectResource = _("掠夺资源赢点数，兑换丰厚奖励"),
-    pveFight = _("探索飞艇赢点数，兑换丰厚奖励"),
-    attackMonster = _("击败黑龙军团赢点数，兑换丰厚奖励"),
-    collectHeroBlood = _("攻打获取英雄之血赢点数，兑换丰厚奖励"),
-    recruitSoldiers = _("招募士兵赢点数，兑换丰厚奖励"),
+    gacha = _("抽奖赢分数，兑换丰厚奖励"),
+    collectResource = _("掠夺资源赢分数，兑换丰厚奖励"),
+    pveFight = _("探索飞艇赢分数，兑换丰厚奖励"),
+    attackMonster = _("击败黑龙军团赢分数，兑换丰厚奖励"),
+    collectHeroBlood = _("攻打获取英雄之血赢分数，兑换丰厚奖励"),
+    recruitSoldiers = _("招募士兵赢分数，兑换丰厚奖励"),
 }
 return {
     equip_material = EQUIP_MATERIAL_LOCALIZE,
