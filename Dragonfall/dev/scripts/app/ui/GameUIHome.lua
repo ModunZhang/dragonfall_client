@@ -139,7 +139,7 @@ function GameUIHome:onEnter()
         self.food_label:SetNumColor(User:IsResOverLimit("food") and red_color or normal_color)
         self.iron_label:SetNumColor(User:IsResOverLimit("iron") and red_color or normal_color)
         self.stone_label:SetNumColor(User:IsResOverLimit("stone") and red_color or normal_color)
-        self.promotionTime:setString(GameUtils:formatTimeStyle1(DataUtils:GetPromtionProductLessLeftTime())) 
+        self.promotionTime:setString(GameUtils:formatTimeStyle1(DataUtils:GetPromtionProductLessLeftTime()))
     end)
 end
 function GameUIHome:onExit()
@@ -511,16 +511,16 @@ function GameUIHome:CheckFinger(isFirst)
 end
 local WidgetFteArrow = import("..widget.WidgetFteArrow")
 function GameUIHome:ShowClickReward()
-    if not self.quest_bar_bg:getChildByTag(222) then
+    if not self.fingerNode:getChildByTag(222) then
         WidgetFteArrow.new(_("点击领取奖励")):TurnDown()
-            :addTo(self.quest_bar_bg,10,222):pos(100,60)
+            :addTo(self.fingerNode,10,222):pos(100,60)
     end
-    self.quest_bar_bg:getChildByTag(222):show()
+    self.fingerNode:getChildByTag(222):show()
     self:HideFinger()
 end
 function GameUIHome:HideClickReward()
-    if self.quest_bar_bg:getChildByTag(222) then
-        self.quest_bar_bg:getChildByTag(222):hide()
+    if self.fingerNode:getChildByTag(222) then
+        self.fingerNode:getChildByTag(222):hide()
     end
 end
 local WidgetMaskFilter = import("..widget.WidgetMaskFilter")
