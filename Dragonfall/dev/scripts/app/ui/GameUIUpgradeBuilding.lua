@@ -1,5 +1,6 @@
 local GameUIWithCommonHeader = import('.GameUIWithCommonHeader')
 local CommonUpgradeUI = import('.CommonUpgradeUI')
+local WidgetFteArrow = import("..widget.WidgetFteArrow")
 local GameUIUpgradeBuilding = class('GameUIUpgradeBuilding', GameUIWithCommonHeader)
 
 function GameUIUpgradeBuilding:ctor(city, title , building, default_tab)
@@ -31,8 +32,17 @@ function GameUIUpgradeBuilding:CreateTabButtons(param, cb)
                 if self.needTips
                 and UtilsForTask:NeedTips(User)
                 and self.upgrade_layer.upgrade_btn then
-                    UIKit:FingerAni():pos(55,-52)
-                    :addTo(self.upgrade_layer.upgrade_btn,10,321)
+                    if self.building:GetType() == "keep" then
+                        local arrow = WidgetFteArrow.new(_("升级城堡以解锁更多新建筑"))
+                        :TurnUp():addTo(self.upgrade_layer.upgrade_btn,10,321)
+                        :pos(-30,-80).arrow
+
+                        local x,y = arrow:getPosition()
+                        arrow:pos(x+30,y)
+                    else
+                        UIKit:FingerAni():pos(55,-52)
+                        :addTo(self.upgrade_layer.upgrade_btn,10,321)
+                    end
                     self.upgrade_layer.upgrade_btn:onButtonClicked(function()
                         self.upgrade_layer.upgrade_btn:removeChildByTag(321)
                     end)

@@ -679,7 +679,7 @@ end
 --------------
 function WidgetEventTabButtons:IsAbleToFreeSpeedup(event)
     local time = UtilsForEvent:GetEventInfo(event)
-    return DataUtils:getFreeSpeedUpLimitTime() > time
+    return DataUtils:getFreeSpeedUpLimitTime() >= time
 end
 function WidgetEventTabButtons:UpgradeBuildingHelpOrSpeedup(event)
     local User = self.city:GetUser()
