@@ -43,7 +43,7 @@ extern "C" {
 #if CC_USE_POMELO_C_LIB
 #include "CCPomelo.h"
 #endif
-#include "MarketSDKTool.h"
+#include "tolua_market_sdk.h"
 #include "jni_StoreKit.h"
 #if CC_USE_SDK_PAYPAL
 #include "PayPalSDK.h"
@@ -57,7 +57,7 @@ extern "C" {
 #if CC_USE_POMELO_C_LIB
 #include "CCPomelo.h"
 #endif
-#include "MarketSDKTool.h"
+#include "tolua_market_sdk.h"
 #include "GameCenter.h"
 #define KODLOG(format, ...) CCLOG(format, ##__VA_ARGS__);Kodlog__(format, ##__VA_ARGS__);
 //MARK:WinRT

@@ -91,6 +91,3 @@ public:
      */
     virtual void onPlayerLevelUp(int level);
 };
-
-#define EXT_MODULE_NAME_MARKET "market_sdk"
-void tolua_ext_module_market(lua_State* tolua_S);
