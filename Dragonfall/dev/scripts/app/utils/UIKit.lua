@@ -1017,10 +1017,21 @@ end
 function UIKit:getDiscolorrationSprite(image)
     return display.newFilteredSprite(image, "CUSTOM", json.encode({frag = "shaders/ps_discoloration.fs",shaderName = "ps_discoloration"}))
 end
-
+function UIKit:getPromotionIapPackageName(productId)
+    local localizeKey = ""
+    for __,v in ipairs(GameDatas.StoreItems.promotionItems) do
+        if productId == v.productId then
+            localizeKey = v.name
+        end
+    end
+    return localizeKey ~= "" and Localize.promotion_items[localizeKey] or ""
+end
 
 function UIKit:getIapPackageName(productId)
-    return Localize.iap_package_name[productId]
+    local name = Localize.iap_package_name[productId]
+    if not name then
+        return self:getPromotionIapPackageName(productId)
+    end
 end
 
 function UIKit:addTipsToNode( node,tips , include_node ,tip_dimensions,offset_x,offset_y)

@@ -649,8 +649,14 @@ function DataUtils:getItemsPrice( items )
     return total_price
 end
 local config_store = GameDatas.StoreItems.items
+local config_store_promotion = GameDatas.StoreItems.promotionItems
 function DataUtils:getIapInfo(productId)
     for __,v in ipairs(config_store) do
+        if productId == v.productId then
+            return v
+        end
+    end
+    for __,v in ipairs(config_store_promotion) do
         if productId == v.productId then
             return v
         end
