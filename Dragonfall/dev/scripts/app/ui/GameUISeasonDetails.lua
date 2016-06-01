@@ -116,7 +116,7 @@ function GameUISeasonDetails:GetListNode()
                 scheduleAt(self, function()
                     local ep_time = activity_data.activity.removeTime/1000 - app.timer:GetServerTime() -- 过期后十分钟可以领取排行榜奖励
                     if ep_time <= 600 then
-                        my_reward_label:setString(_("奖励在后%s可领取"),GameUtils:formatTimeStyle1(ep_time))
+                        my_reward_label:setString(_("奖励在%s后可领取"),GameUtils:formatTimeStyle1(ep_time))
                     else
                         btn:setButtonEnabled(true)
                         my_reward_label:setString(_("我的奖励"))
