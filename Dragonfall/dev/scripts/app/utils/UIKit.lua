@@ -1028,10 +1028,7 @@ function UIKit:getPromotionIapPackageName(productId)
 end
 
 function UIKit:getIapPackageName(productId)
-    local name = Localize.iap_package_name[productId]
-    if not name then
-        return self:getPromotionIapPackageName(productId)
-    end
+    return Localize.iap_package_name[productId] or self:getPromotionIapPackageName(productId)
 end
 
 function UIKit:addTipsToNode( node,tips , include_node ,tip_dimensions,offset_x,offset_y)
