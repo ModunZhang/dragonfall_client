@@ -301,7 +301,7 @@ function GameUIUpgradeTechnology:BuildUI()
         :addTo(bg_node,10)
     self.upgrade_button = btn_bg
     if self.needTips and UtilsForTask:NeedTips(User) then
-        UIKit:FingerAni():addTo(self.upgrade_button,11,111):pos(120,0)
+        UIKit:FingerAni():addTo(self.upgrade_button,11,111):pos(120,-20)
     end
 
     local gem = display.newSprite("gem_icon_62x61.png")
