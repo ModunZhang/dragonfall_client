@@ -20,7 +20,7 @@
             <key>Icon_brotherClub_122x124.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{683,839},{122,124}}</string>
+                <string>{{135,1058},{122,124}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -33,7 +33,7 @@
             <key>Icon_conqueror_104x117.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{543,994},{104,117}}</string>
+                <string>{{1201,773},{104,117}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -55,6 +55,84 @@
                 <string>{{0,0},{78,50}}</string>
                 <key>sourceSize</key>
                 <string>{78,50}</string>
+            </dict>
+            <key>activity_attackMonster_134x134.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{143,819},{122,134}}</string>
+                <key>offset</key>
+                <string>{-1,0}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{5,0},{122,134}}</string>
+                <key>sourceSize</key>
+                <string>{134,134}</string>
+            </dict>
+            <key>activity_collectHeroBlood_134x134.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{1075,773},{122,122}}</string>
+                <key>offset</key>
+                <string>{-1,1}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{5,5},{122,122}}</string>
+                <key>sourceSize</key>
+                <string>{134,134}</string>
+            </dict>
+            <key>activity_collectResource_134x134.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{683,731},{128,126}}</string>
+                <key>offset</key>
+                <string>{2,-1}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{5,5},{128,126}}</string>
+                <key>sourceSize</key>
+                <string>{134,134}</string>
+            </dict>
+            <key>activity_gacha_134x134.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{3,881},{130,122}}</string>
+                <key>offset</key>
+                <string>{-1,1}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{1,5},{130,122}}</string>
+                <key>sourceSize</key>
+                <string>{134,134}</string>
+            </dict>
+            <key>activity_pveFight_134x134.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{945,863},{122,122}}</string>
+                <key>offset</key>
+                <string>{-1,1}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{5,5},{122,122}}</string>
+                <key>sourceSize</key>
+                <string>{134,134}</string>
+            </dict>
+            <key>activity_recruitSoldiers_134x134.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{813,949},{122,122}}</string>
+                <key>offset</key>
+                <string>{-1,1}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{5,5},{122,122}}</string>
+                <key>sourceSize</key>
+                <string>{134,134}</string>
             </dict>
             <key>activity_title_552x42.png</key>
             <dict>
@@ -85,7 +163,7 @@
             <key>alliance_flag_body_106x126_1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{3,1013},{104,126}}</string>
+                <string>{{945,755},{104,126}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -98,7 +176,7 @@
             <key>alliance_flag_body_106x126_2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1073,773},{104,100}}</string>
+                <string>{{1071,899},{104,100}}</string>
                 <key>offset</key>
                 <string>{0,10}</string>
                 <key>rotated</key>
@@ -111,7 +189,7 @@
             <key>alliance_flag_body_106x126_3.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{135,932},{106,126}}</string>
+                <string>{{815,731},{106,126}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -124,7 +202,7 @@
             <key>alliance_flag_body_106x126_4.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{938,863},{104,82}}</string>
+                <string>{{939,989},{104,82}}</string>
                 <key>offset</key>
                 <string>{0,-22}</string>
                 <key>rotated</key>
@@ -137,7 +215,7 @@
             <key>alliance_flag_body_106x126_5.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{683,731},{104,126}}</string>
+                <string>{{815,841},{104,126}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -150,7 +228,7 @@
             <key>alliance_flag_body_106x126_6.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{813,731},{104,126}}</string>
+                <string>{{683,861},{104,126}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -163,7 +241,7 @@
             <key>alliance_flag_body_106x126_7.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{277,819},{54,124}}</string>
+                <string>{{281,819},{54,124}}</string>
                 <key>offset</key>
                 <string>{-26,1}</string>
                 <key>rotated</key>
@@ -189,7 +267,7 @@
             <key>alliance_flag_body_106x126_9.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{943,755},{104,126}}</string>
+                <string>{{543,869},{104,126}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -202,7 +280,7 @@
             <key>alliance_flag_color_62x62.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{241,1185},{46,46}}</string>
+                <string>{{1532,942},{46,46}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -228,7 +306,7 @@
             <key>alliance_flag_type_48x46_1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1476,773},{46,46}}</string>
+                <string>{{1415,945},{46,46}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -241,7 +319,7 @@
             <key>alliance_flag_type_48x46_10.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1476,823},{46,46}}</string>
+                <string>{{1465,945},{46,46}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -254,7 +332,7 @@
             <key>alliance_flag_type_48x46_2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1376,859},{46,46}}</string>
+                <string>{{1515,992},{46,46}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -267,7 +345,7 @@
             <key>alliance_flag_type_48x46_3.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1426,859},{46,46}}</string>
+                <string>{{1565,992},{46,46}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -280,7 +358,7 @@
             <key>alliance_flag_type_48x46_4.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1476,873},{46,46}}</string>
+                <string>{{1309,975},{46,46}}</string>
                 <key>offset</key>
                 <string>{-1,0}</string>
                 <key>rotated</key>
@@ -293,7 +371,7 @@
             <key>alliance_flag_type_48x46_5.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1148,878},{46,46}}</string>
+                <string>{{1359,975},{46,46}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -306,7 +384,7 @@
             <key>alliance_flag_type_48x46_6.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1198,878},{46,46}}</string>
+                <string>{{1409,995},{46,46}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -319,7 +397,7 @@
             <key>alliance_flag_type_48x46_7.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1046,923},{46,46}}</string>
+                <string>{{1459,995},{46,46}}</string>
                 <key>offset</key>
                 <string>{-1,0}</string>
                 <key>rotated</key>
@@ -332,7 +410,7 @@
             <key>alliance_flag_type_48x46_8.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1096,923},{46,46}}</string>
+                <string>{{1179,989},{46,46}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -345,7 +423,7 @@
             <key>alliance_flag_type_48x46_9.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{938,949},{46,46}}</string>
+                <string>{{1229,989},{46,46}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -384,7 +462,7 @@
             <key>back_ground_121x122.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{543,869},{121,122}}</string>
+                <string>{{673,969},{121,122}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -410,7 +488,7 @@
             <key>back_ground_42x48.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{255,1139},{42,48}}</string>
+                <string>{{263,1139},{42,48}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -514,7 +592,7 @@
             <key>blueDragon_40x40.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{988,949},{38,40}}</string>
+                <string>{{1279,1025},{38,40}}</string>
                 <key>offset</key>
                 <string>{-1,0}</string>
                 <key>rotated</key>
@@ -540,7 +618,7 @@
             <key>blue_head_42x98.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{441,969},{42,98}}</string>
+                <string>{{339,903},{42,98}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -553,7 +631,7 @@
             <key>box_104x104.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{3,1243},{104,104}}</string>
+                <string>{{1201,881},{104,104}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -579,11 +657,11 @@
             <key>box_gacha_112x112_1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{311,1105},{110,112}}</string>
+                <string>{{327,949},{110,112}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{1,0},{110,112}}</string>
                 <key>sourceSize</key>
@@ -592,11 +670,11 @@
             <key>box_gacha_112x112_2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{125,1164},{110,112}}</string>
+                <string>{{327,1065},{110,112}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{1,0},{110,112}}</string>
                 <key>sourceSize</key>
@@ -631,7 +709,7 @@
             <key>box_soldier_128x128.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{3,881},{128,128}}</string>
+                <string>{{3,1007},{128,128}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -683,7 +761,7 @@
             <key>brown_head_42x98.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{441,1015},{42,98}}</string>
+                <string>{{441,969},{42,98}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -696,7 +774,7 @@
             <key>buff_active_123x125.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{811,839},{123,123}}</string>
+                <string>{{3,1139},{123,123}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -748,7 +826,7 @@
             <key>draon_garrison_btn_d_82x86.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1386,773},{82,86}}</string>
+                <string>{{1442,773},{82,86}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -761,7 +839,7 @@
             <key>draon_garrison_btn_n_82x86.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1286,813},{82,86}}</string>
+                <string>{{1442,859},{82,86}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -774,7 +852,7 @@
             <key>drop_down_box_button_light_52x44.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{265,947},{52,44}}</string>
+                <string>{{271,947},{52,44}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -787,7 +865,7 @@
             <key>drop_down_box_button_normal_52x44.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{265,995},{52,44}}</string>
+                <string>{{271,995},{52,44}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -839,7 +917,7 @@
             <key>flag_zh_Hant_83x83.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1526,855},{83,83}}</string>
+                <string>{{1532,855},{83,83}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -891,7 +969,7 @@
             <key>greenDragon.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{321,988},{113,116}}</string>
+                <string>{{1322,773},{113,116}}</string>
                 <key>offset</key>
                 <string>{0,1}</string>
                 <key>rotated</key>
@@ -917,7 +995,7 @@
             <key>green_head_42x98.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{441,1061},{42,98}}</string>
+                <string>{{441,1015},{42,98}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -995,7 +1073,7 @@
             <key>icon_desert_132x132.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{133,1042},{118,118}}</string>
+                <string>{{543,977},{118,118}}</string>
                 <key>offset</key>
                 <string>{-1,1}</string>
                 <key>rotated</key>
@@ -1008,7 +1086,7 @@
             <key>icon_grass_132x132.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{3,1121},{118,118}}</string>
+                <string>{{130,1184},{118,118}}</string>
                 <key>offset</key>
                 <string>{-1,1}</string>
                 <key>rotated</key>
@@ -1021,7 +1099,7 @@
             <key>icon_icefield_132x132.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{669,965},{118,118}}</string>
+                <string>{{3,1266},{118,118}}</string>
                 <key>offset</key>
                 <string>{-1,1}</string>
                 <key>rotated</key>
@@ -1099,7 +1177,7 @@
             <key>map_city_81x102.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{335,903},{81,102}}</string>
+                <string>{{1309,890},{81,102}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -1112,7 +1190,7 @@
             <key>online_time_bg_96x36.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1286,773},{96,36}}</string>
+                <string>{{1724,907},{96,36}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -1320,7 +1398,7 @@
             <key>shrine_page_btn_disable_52x44.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{255,1043},{52,44}}</string>
+                <string>{{271,1043},{52,44}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -1333,7 +1411,7 @@
             <key>shrine_page_btn_light_52x44.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{255,1091},{52,44}}</string>
+                <string>{{263,1091},{52,44}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -1359,7 +1437,7 @@
             <key>store_npc_1_109x130.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{143,819},{109,130}}</string>
+                <string>{{137,945},{109,130}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -1411,7 +1489,7 @@
             <key>torch_101x101.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1181,773},{101,101}}</string>
+                <string>{{1619,907},{101,101}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -1450,7 +1528,7 @@
             <key>yellow_head_42x98.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1046,877},{42,98}}</string>
+                <string>{{441,1061},{42,98}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -1470,7 +1548,7 @@
             <key>size</key>
             <string>{2048,2048}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:68616a13333314cfee2ca1a7d2eb146a:a1400cf963dc9ac9fa603e47ad3f6073:2344e8a5b78202988b701759d1f0a67d$</string>
+            <string>$TexturePacker:SmartUpdate:64b3bf717cd8ac3c80aad6a7941e112e:5b19bf174b249fe7b5f9e58564cad4e8:2344e8a5b78202988b701759d1f0a67d$</string>
             <key>textureFileName</key>
             <string>ui_pvr2.png</string>
         </dict>
