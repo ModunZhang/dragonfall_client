@@ -9,7 +9,8 @@ local scheduler = require(cc.PACKAGE_NAME .. ".scheduler")
 local ScheduleActivities = GameDatas.ScheduleActivities.type
 local scoreCondition = GameDatas.ScheduleActivities.scoreCondition
 local ActivityManager = class("ActivityManager", MultiObserver)
-ActivityManager.LISTEN_TYPE = Enum("ACTIVITY_CHANGED","ON_RANK_CHANGED")
+ActivityManager.LISTEN_TYPE = Enum("ACTIVITY_CHANGED","ON_RANK_CHANGED","ON_LIMIT_CHANGED")
+ActivityManager.EXPIRED_GET_LIMIT = 600 --获取过期赛季排名奖励限制时间 10分钟后
 
 function ActivityManager:ctor()
     ActivityManager.super.ctor(self)
@@ -23,6 +24,10 @@ function ActivityManager:GetActivitiesFromServer()
             self.activities = response.msg.activities
             self:IteratorActivityExpired(function (i,activity)
                 self:GetExpiredActivityPlayerRankFromServer(activity.type)
+                local ep_time = app.timer:GetServerTime() - (activity.removeTime/1000 - ScheduleActivities[activity.type].expireHours * 60 * 60) -- 过期后十分钟可以领取排行榜奖励
+                if ep_time <= self.EXPIRED_GET_LIMIT then
+                    self:SchedulerExpiredGetReward(activity.type,self.EXPIRED_GET_LIMIT - ep_time)
+                end
             end)
             if self.handle_next then
                 scheduler.unscheduleGlobal(self.handle_next)
@@ -58,15 +63,15 @@ function ActivityManager:addSchdulerRefresh__()
             on_time = tmpTime
         end
     end
-    local time
-    if on_time and next_time then
-        time = math.min(on_time,next_time)
-    elseif on_time then
-        time = on_time
-    elseif next_time then
-        time = next_time
+    local expired_time
+    for i,expiredActivity in ipairs(activities.expired) do
+        local tmpTime = expiredActivity.removeTime/1000 - now
+        if not expired_time or tmpTime < expired_time then
+            expired_time = tmpTime
+        end
     end
-    if time then
+    local time = math.min(on_time or math.huge,next_time or math.huge,expired_time or math.huge) 
+    if time and time~= math.huge then
         self.handle = scheduler.performWithDelayGlobal(function ()
             self:GetActivitiesFromServer()
         end, time)
@@ -123,13 +128,50 @@ function ActivityManager:GetHaveRewardActivitiesCount()
             if self:GetActivityScoreGotIndex(serverActivity.type) > 0 then
                 count = count + 1
             elseif not User.activities[serverActivity.type].rankRewardsGeted then
-                if self.rank[serverActivity.type] and self.rank[serverActivity.type] <= ScheduleActivities[serverActivity.type].maxRank then
+                local ep_time = app.timer:GetServerTime() - (serverActivity.removeTime/1000 - ScheduleActivities[serverActivity.type].expireHours * 60 * 60) -- 过期后十分钟可以领取排行榜奖励
+                if ep_time > self.EXPIRED_GET_LIMIT and self.rank[serverActivity.type] and self.rank[serverActivity.type] <= ScheduleActivities[serverActivity.type].maxRank then
                     count = count + 1
                 end
             end
         end
     end)
     return count
+end
+function ActivityManager:HaveRewardByType(type)
+    local isHave = false
+    self:IteratorActivityOn(function (i,serverActivity)
+        if type == serverActivity.type and self:IsPlayerExpiredActivityValid(serverActivity.type) then
+            if self:GetActivityScoreGotIndex(serverActivity.type) > 0 then
+                isHave = true
+            end
+        end
+    end)
+    self:IteratorActivityExpired(function (i,serverActivity)
+        if type == serverActivity.type and self:IsPlayerExpiredActivityValid(type) then
+            if self:GetActivityScoreGotIndex(type) > 0 then
+                isHave = true
+            end
+            if not User.activities[type].rankRewardsGeted then
+                local ep_time = app.timer:GetServerTime() - (serverActivity.removeTime/1000 - ScheduleActivities[type].expireHours * 60 * 60) -- 过期后十分钟可以领取排行榜奖励
+                if ep_time > self.EXPIRED_GET_LIMIT and self.rank[type] and self.rank[type] <= ScheduleActivities[type].maxRank then
+                    isHave = true
+                end
+            end
+        end
+    end)
+    return isHave
+end
+function ActivityManager:SchedulerExpiredGetReward(type,ep_time)
+    self.expired_handle = self.expired_handle or {}
+    if self.expired_handle[type] then
+        scheduler.unscheduleGlobal(self.expired_handle[type])
+        self.expired_handle[type] = nil
+    end
+    self.expired_handle[type] = scheduler.performWithDelayGlobal(function ()
+        self:NotifyListeneOnType(ActivityManager.LISTEN_TYPE.ON_LIMIT_CHANGED,function(listener)
+            listener:OnActivitiesExpiredLimitChanged()
+        end)
+    end, ep_time)
 end
 -- 玩家活动数据是否有效
 function ActivityManager:IsPlayerExpiredActivityValid(activity_type)
@@ -283,6 +325,9 @@ function ActivityManager:GetActivityScoreCondition(type)
     end
 end
 return ActivityManager
+
+
+
 
 
 
