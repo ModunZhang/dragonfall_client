@@ -539,6 +539,8 @@ function MyApp:verifyAdeasygoPurchase(transaction)
                     UIKit:getIapPackageName(transaction.productIdentifier)),
                 openRewardIf)
         end
+    end):catch(function(err)
+        --FIXME:just fix the promise assert error!
     end)
 end
 
