@@ -75,6 +75,7 @@ function GameUIActivityNew:onCleanup()
     User:RemoveListenerOnType(self, "buildings")
     NewsManager:RemoveListenerOnType(self,NewsManager.LISTEN_TYPE.NEWS_CHANGED)
     ActivityManager:RemoveListenerOnType(self,ActivityManager.LISTEN_TYPE.ACTIVITY_CHANGED)
+    ActivityManager:RemoveListenerOnType(self,ActivityManager.LISTEN_TYPE.ON_RANK_CHANGED)
     GameUIActivityNew.super.onCleanup(self)
 end
 
@@ -115,16 +116,18 @@ function GameUIActivityNew:OnTabButtonClicked(tag)
     end
 end
 function GameUIActivityNew:CreateTabIf_season()
-    local list = UIListView.new({
-        direction = cc.ui.UIScrollView.DIRECTION_VERTICAL,
-        viewRect = cc.rect(window.left+(window.width - 612)/2,window.bottom_top + 20,612,785),
-    }):addTo(self:GetView())
-    list:onTouch(handler(self, self.OnSeasonListViewTouch))
-    self.season_list_view = list
+    if not self.season_list_view then
+        local list = UIListView.new({
+            direction = cc.ui.UIScrollView.DIRECTION_VERTICAL,
+            viewRect = cc.rect(window.left+(window.width - 612)/2,window.bottom_top + 20,612,785),
+        }):addTo(self:GetView())
+        list:onTouch(handler(self, self.OnSeasonListViewTouch))
+        self.season_list_view = list
+        User:AddListenOnType(self, "activities")
+        ActivityManager:AddListenOnType(self,ActivityManager.LISTEN_TYPE.ACTIVITY_CHANGED)
+        ActivityManager:AddListenOnType(self,ActivityManager.LISTEN_TYPE.ON_RANK_CHANGED)
+    end
     self:RefreshSeasonList()
-    User:AddListenOnType(self, "activities")
-    ActivityManager:AddListenOnType(self,ActivityManager.LISTEN_TYPE.ACTIVITY_CHANGED)
-    
     return self.season_list_view
 end
 function GameUIActivityNew:OnSeasonListViewTouch(event)
@@ -340,11 +343,15 @@ function GameUIActivityNew:OnUserDataChanged_countInfo()
 end
 function GameUIActivityNew:OnUserDataChanged_activities()
     self:RefreshSeasonList()
-    self:RefreshActivityCountTips()
+    self:RefreshSeasonCountTips()
 end
 function GameUIActivityNew:OnActivitiesChanged()
     self:RefreshSeasonList()
-    self:RefreshActivityCountTips()
+    self:RefreshSeasonCountTips()
+end
+function GameUIActivityNew:OnRankChanged()
+    self:RefreshSeasonList()
+    self:RefreshSeasonCountTips()
 end
 function GameUIActivityNew:OnActivityListViewTouch(event)
     if event.name == "clicked" and event.item then
@@ -948,6 +955,7 @@ function GameUIActivityNew:OnAwardButtonClicked(idx)
 end
 
 return GameUIActivityNew
+
 
 
 

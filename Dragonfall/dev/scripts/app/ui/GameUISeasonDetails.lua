@@ -9,6 +9,7 @@ local Localize = import("..utils.Localize")
 local Localize_item = import("..utils.Localize_item")
 local UIListView = import(".UIListView")
 local UILib = import(".UILib")
+local ScheduleActivities = GameDatas.ScheduleActivities.type
 local WidgetPushButton = import("..widget.WidgetPushButton")
 local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 function GameUISeasonDetails:ctor(activity_data)
@@ -108,8 +109,8 @@ function GameUISeasonDetails:GetListNode()
                         end)
                     end
                 end)
-            local ep_time = activity_data.activity.removeTime/1000 - app.timer:GetServerTime() -- 过期后十分钟可以领取排行榜奖励
-            local could_got = ep_time > 10 * 60
+            local ep_time = app.timer:GetServerTime() - (activity_data.activity.removeTime/1000 - ScheduleActivities[activity_type].expireHours * 60 * 60) -- 过期后十分钟可以领取排行榜奖励
+            local could_got = ep_time > 600
             local my_reward_label = UIKit:ttfLabel({
                 text = _("我的奖励"),
                 size = 20,
@@ -119,12 +120,14 @@ function GameUISeasonDetails:GetListNode()
             if not could_got  then
                 btn:setButtonEnabled(false)
                 scheduleAt(self, function()
-                    local ep_time = activity_data.activity.removeTime/1000 - app.timer:GetServerTime() -- 过期后十分钟可以领取排行榜奖励
+                    local ep_time = app.timer:GetServerTime() - (activity_data.activity.removeTime/1000 - ScheduleActivities[activity_type].expireHours * 60 * 60) -- 过期后十分钟可以领取排行榜奖励
                     if ep_time <= 600 then
-                        my_reward_label:setString(_("奖励在%s后可领取"),GameUtils:formatTimeStyle1(ep_time))
+                        my_reward_label:setString(string.format(_("奖励在%s后可领取"),GameUtils:formatTimeStyle1(600 - ep_time)))
+                        my_reward_label:setColor(UIKit:hex2c4b(0x7e0000))
                     else
                         btn:setButtonEnabled(true)
                         my_reward_label:setString(_("我的奖励"))
+                        my_reward_label:setColor(UIKit:hex2c4b(0x403c2f))
                     end
                 end)
             end
@@ -310,13 +313,13 @@ function GameUISeasonDetails:GetListNode()
                 end
             end)
         self.pointbtn[i]:setButtonEnabled(gotIndex < i and my_score >= v)
-        self.pointbtn[i]:setVisible(gotIndex < i)
+        self.pointbtn[i]:setVisible(status == "expired" and gotIndex < i and my_score >= v or status ~= "expired" and gotIndex < i)
         self.got_labels[i] = UIKit:ttfLabel({
-            text =  _("已领取"),
+            text =  status == "expired" and gotIndex < i and _("过期") or _("已领取"),
             size = 22,
             color = 0x403c2f,
         }):addTo(content):align(display.CENTER_BOTTOM, 490, y + 20)
-        self.got_labels[i]:setVisible(gotIndex >= i)
+        self.got_labels[i]:setVisible(status == "expired" and gotIndex < i and my_score < v or gotIndex >= i)
     end
     local my_porint_bg = display.newSprite("title_red_564x54_1.png")
         :align(display.LEFT_BOTTOM, 0,citizen_num_bg:getPositionY() + 511 + 20)
@@ -352,7 +355,9 @@ function GameUISeasonDetails:GetListNode()
             finish_time_label:setString(string.format(_("距离开始还有：%s"),GameUtils:formatTimeStyle1(activity_data.activity.startTime/1000 - app.timer:GetServerTime())))
         end)
     elseif activity_data.status == "expired" then
-        finish_time_label:setString(string.format(_("%s已过期"),GameUtils:formatTimeAsTimeAgoStyle(activity_data.activity.removeTime/1000 - app.timer:GetServerTime())))
+        scheduleAt(self, function()
+            finish_time_label:setString(string.format(_("%s后消失"),GameUtils:formatTimeStyle1(activity_data.activity.removeTime/1000 - app.timer:GetServerTime())))
+        end)
     end
 
     local item_width,item_height = content:getCascadeBoundingBox().width,content:getCascadeBoundingBox().height
@@ -368,8 +373,8 @@ function GameUISeasonDetails:RefreshAfterGotPointReward()
     local reward_points = ActivityManager:GetActivityScorePonits(activity_type)
     for i,v in ipairs(reward_points) do
         self.pointbtn[i]:setButtonEnabled(gotIndex < i and my_score >= v)
-        self.got_labels[i]:setVisible(gotIndex >= i)
-        self.pointbtn[i]:setVisible(gotIndex < i)
+        self.pointbtn[i]:setVisible(self.activity_data.status == "expired" and gotIndex < i and my_score >= v or self.activity_data.status ~= "expired" and gotIndex < i)
+        self.got_labels[i]:setVisible(self.activity_data.status == "expired" and gotIndex < i and my_score < v or gotIndex >= i)
     end
 end
 function GameUISeasonDetails:OnActivitiesChanged()

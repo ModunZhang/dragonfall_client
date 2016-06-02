@@ -9,7 +9,7 @@ local scheduler = require(cc.PACKAGE_NAME .. ".scheduler")
 local ScheduleActivities = GameDatas.ScheduleActivities.type
 local scoreCondition = GameDatas.ScheduleActivities.scoreCondition
 local ActivityManager = class("ActivityManager", MultiObserver)
-ActivityManager.LISTEN_TYPE = Enum("ACTIVITY_CHANGED")
+ActivityManager.LISTEN_TYPE = Enum("ACTIVITY_CHANGED","ON_RANK_CHANGED")
 
 function ActivityManager:ctor()
     ActivityManager.super.ctor(self)
@@ -83,6 +83,9 @@ function ActivityManager:GetExpiredActivityPlayerRankFromServer(type)
         local myRank = response.msg.myRank
         if myRank ~= json.null and tonumber(myRank) then
             self.rank[type] = tonumber(myRank)
+            self:NotifyListeneOnType(ActivityManager.LISTEN_TYPE.ON_RANK_CHANGED,function(listener)
+                listener:OnRankChanged()
+            end)
         end
     end)
 end
@@ -126,7 +129,6 @@ function ActivityManager:GetHaveRewardActivitiesCount()
             end
         end
     end)
-    print("··获取所有能领取奖励的活动的数量·",count)
     return count
 end
 -- 玩家活动数据是否有效
@@ -185,7 +187,7 @@ function ActivityManager:GetMyActivityRankReward(type)
     if self:IsPlayerExpiredActivityValid(type) and not User.activities[type].rankRewardsGeted and myRank and myRank <= config.maxRank then
         for i,v in ipairs(self:GetActivityRankRewardRegion()) do
             local point = config["rankPoint"..i]
-            if myRank <= v[2] and  myRank >= v[1] then
+            if myRank <= v[2] and myRank >= v[1] then
                 local reward = string.split(config["rankRewards"..i],',')
                 for i,re in ipairs(reward) do
                     local tmp = string.split(re,":")
@@ -237,16 +239,16 @@ function ActivityManager:GetActivityScoreCondition(type)
         }
     elseif type == "collectResource" then
         return {
-            {_("村落每采集1单位的木材"),config.collectOneWood.score},
-            {_("村落每采集1单位的石料"),config.collectOneStone.score},
-            {_("村落每采集1单位的铁矿"),config.collectOneIron.score},
-            {_("村落每采集1单位的粮食"),config.collectOneFood.score},
-            {_("村落每采集1单位的银币"),config.collectOneCoin.score},
-            {_("掠夺玩家1单位的木材"),config.robOneWood.score},
-            {_("掠夺玩家1单位的石料"),config.robOneStone.score},
-            {_("掠夺玩家1单位的铁矿"),config.robOneIron.score},
-            {_("掠夺玩家1单位的粮食"),config.robOneFood.score},
-            {_("掠夺玩家1单位的银币"),config.robOneCoin.score},
+            {_("村落每采集1单位的木材"),config.collectOne_wood.score},
+            {_("村落每采集1单位的石料"),config.collectOne_stone.score},
+            {_("村落每采集1单位的铁矿"),config.collectOne_iron.score},
+            {_("村落每采集1单位的粮食"),config.collectOne_food.score},
+            {_("村落每采集1单位的银币"),config.collectOne_coin.score},
+            {_("掠夺玩家1单位的木材"),config.robOne_wood.score},
+            {_("掠夺玩家1单位的石料"),config.robOne_stone.score},
+            {_("掠夺玩家1单位的铁矿"),config.robOne_iron.score},
+            {_("掠夺玩家1单位的粮食"),config.robOne_food.score},
+            {_("掠夺玩家1单位的银币"),config.robOne_coin.score},
         }
     elseif type == "pveFight" then
         return {

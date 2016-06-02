@@ -23,7 +23,7 @@ local function load_more(rank_list, new_datas)
     end
 end
 function GameUISeasonRank:ctor(activity_data)
-    GameUISeasonRank.super.ctor(self,680,"排行榜",window.top_bottom)
+    GameUISeasonRank.super.ctor(self,680,_("排行榜"),window.top_bottom)
     self.activity_data = activity_data
     self.activity_type = activity_data.activity.type
 end
@@ -184,7 +184,7 @@ function GameUISeasonRank:ReloadRank(rank)
     if rank.myData.index == json.null then
         self.my_ranking:setString(_("暂无排名"))
     else
-        self.my_ranking:setString(string.format("我的排名：%d", rank.myData.index))
+        self.my_ranking:setString(string.format(_("我的排名：%d"), rank.myData.index))
     end
     self.current_rank = rank
     self.listview:releaseAllFreeItems_()
@@ -193,6 +193,9 @@ end
 function GameUISeasonRank:touchListener(event)
     local listView = event.listView
     if "clicked" == event.name then
+        if not self.current_rank.datas[event.itemPos] then
+            return
+        end
         local id = self.current_rank.datas[event.itemPos].id
         app:GetAudioManager():PlayeEffectSoundWithKey("NORMAL_DOWN")
         UIKit:newGameUI("GameUIAllianceMemberInfo",false,id,nil,DataManager:getUserData().serverId):AddToCurrentScene(true)

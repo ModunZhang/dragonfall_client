@@ -384,8 +384,8 @@ function WidgetRecruitSoldier:AddButtons()
                 if not_enough_material then
                     UIKit:showMessageDialog(_("招募材料不足"), _("您当前没有足够材料"))
                 elseif queue_need_gem + required_gems > 0 then
-                    local title = string.format("%s/%s", queue_need_gem > 0 and _("队列不足") or "", required_gems > 0 and _("资源不足") or "")
-                    local content = string.format("%s%s%s", queue_need_gem > 0 and _("您当前没有足够的队列") or "", required_gems > 0 and _("您当前没有足够的资源") or "", _("是否花费魔法石立即补充"))
+                    local title = _("提示")
+                    local content = string.format("%s%s%s", queue_need_gem > 0 and _("您当前没有足够的队列").."," or "", required_gems > 0 and _("您当前没有足够的资源").."," or "", _("是否花费魔法石立即补充"))
 
                     UIKit:showMessageDialog(title, content,function()
                         end):CreateOKButtonWithPrice({
@@ -419,8 +419,8 @@ function WidgetRecruitSoldier:AddButtons()
                 local required_gems = DataUtils:buyResource(self:GetNeedResouce(self.count), {})
                 if queue_need_gem + required_gems > 0 then
 
-                    local title = string.format("%s/%s", queue_need_gem > 0 and _("队列不足") or "", required_gems > 0 and _("资源不足") or "")
-                    local content = string.format("%s%s%s", queue_need_gem > 0 and _("您当前没有足够的队列") or "", required_gems > 0 and _("您当前没有足够的资源") or "", _("是否花费魔法石立即补充"))
+                    local title = _("提示")
+                    local content = string.format("%s%s%s", queue_need_gem > 0 and _("您当前没有足够的队列").."," or "", required_gems > 0 and _("您当前没有足够的资源").."," or "", _("是否花费魔法石立即补充"))
                     UIKit:showMessageDialog(title, content,function()
                         end):CreateOKButtonWithPrice({
                         listener = function ()

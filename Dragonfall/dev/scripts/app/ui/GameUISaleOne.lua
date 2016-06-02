@@ -78,7 +78,7 @@ function GameUISaleOne:CreateSalesBox()
             if self.auto_change_page then
                 scheduler.unscheduleGlobal(self.auto_change_page)
             end
-            self.auto_change_page = scheduler.scheduleGlobal(handler(self, self.Change), 5.0, false)
+            self.auto_change_page = scheduler.scheduleGlobal(handler(self, self.Change), 10.0, false)
         end
     end):addTo(body)
     local lessTime = math.huge
@@ -122,7 +122,7 @@ function GameUISaleOne:GetSalesItem(pro_data,leftTime)
         pro_data.name == "promotion_product_3_1" then
         x,y = 100 , 90
     end
-    self:CreateNumberImageNode__(""..pro_data.promotionPercent.."%"):align(display.CENTER, x,y):addTo(content_node)
+    self:CreateNumberImageNode__(""..(pro_data.promotionPercent * 100).."%"):align(display.CENTER, x,y):addTo(content_node)
     content_node.leftTime = UIKit:ttfLabel({
         text = GameUtils:formatTimeStyle1(leftTime),
         size = 26,
@@ -225,7 +225,7 @@ function GameUISaleOne:RefreshInfo()
     self.box_name:setString(Localize.promotion_items[pro_data.name])
     self.gem_price:setString(string.formatnumberthousands(pro_data.gem))
 
-    self.original_cost:setString("$"..pro_data.normalPrice)
+    self.original_cost:setString("$"..string.format("%.2f",pro_data.price * pro_data.promotionPercent))
     self.current_price:setString("$"..pro_data.price)
 
     local list = self.reward_list
