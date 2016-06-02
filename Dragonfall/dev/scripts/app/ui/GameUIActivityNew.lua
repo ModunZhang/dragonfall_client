@@ -11,6 +11,7 @@ local Localize = import("..utils.Localize")
 local RichText = import("..widget.RichText")
 local UIListView = import(".UIListView")
 local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
+local ScheduleActivities = GameDatas.ScheduleActivities.type
 local User = User
 local config_day14 = GameDatas.Activities.day14
 local config_levelup = GameDatas.Activities.levelup
@@ -76,6 +77,7 @@ function GameUIActivityNew:onCleanup()
     NewsManager:RemoveListenerOnType(self,NewsManager.LISTEN_TYPE.NEWS_CHANGED)
     ActivityManager:RemoveListenerOnType(self,ActivityManager.LISTEN_TYPE.ACTIVITY_CHANGED)
     ActivityManager:RemoveListenerOnType(self,ActivityManager.LISTEN_TYPE.ON_RANK_CHANGED)
+    ActivityManager:RemoveListenerOnType(self,ActivityManager.LISTEN_TYPE.ON_LIMIT_CHANGED)
     GameUIActivityNew.super.onCleanup(self)
 end
 
@@ -126,6 +128,7 @@ function GameUIActivityNew:CreateTabIf_season()
         User:AddListenOnType(self, "activities")
         ActivityManager:AddListenOnType(self,ActivityManager.LISTEN_TYPE.ACTIVITY_CHANGED)
         ActivityManager:AddListenOnType(self,ActivityManager.LISTEN_TYPE.ON_RANK_CHANGED)
+        ActivityManager:AddListenOnType(self,ActivityManager.LISTEN_TYPE.ON_LIMIT_CHANGED)
     end
     self:RefreshSeasonList()
     return self.season_list_view
@@ -136,6 +139,7 @@ function GameUIActivityNew:OnSeasonListViewTouch(event)
         local data = {}
         data.activity = content.activity
         data.status = content.status
+        app:GetAudioManager():PlayeEffectSoundWithKey("NORMAL_DOWN")
         UIKit:newGameUI("GameUISeasonDetails",data):AddToCurrentScene()
     end
 end
@@ -240,7 +244,7 @@ function GameUIActivityNew:GetSeasonItem(season_type,activity)
             size = 18,
             color = 0x7e0000
         }):addTo(content):align(display.LEFT_CENTER,28,item_height/2 - 24)
-        if #ActivityManager:GetMyActivityRankReward(activity.type) > 0 then
+        if ActivityManager:HaveRewardByType(activity.type) then
             UIKit:ttfLabel({
                 text = _("有奖励可领取"),
                 size = 20,
@@ -346,6 +350,10 @@ function GameUIActivityNew:OnUserDataChanged_activities()
     self:RefreshSeasonCountTips()
 end
 function GameUIActivityNew:OnActivitiesChanged()
+    self:RefreshSeasonList()
+    self:RefreshSeasonCountTips()
+end
+function GameUIActivityNew:OnActivitiesExpiredLimitChanged()
     self:RefreshSeasonList()
     self:RefreshSeasonCountTips()
 end

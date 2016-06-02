@@ -53,9 +53,7 @@ function GameUISaleOne:onEnter()
 end
 
 function GameUISaleOne:onExit()
-    if self.auto_change_page then
-        scheduler.unscheduleGlobal(self.auto_change_page)
-    end
+    
     GameUISaleOne.super.onExit(self)
 end
 function GameUISaleOne:CreateSalesBox()
@@ -75,10 +73,6 @@ function GameUISaleOne:CreateSalesBox()
     pv:onTouch(function (event)
         if event.name == "pageChange" then
             self:RefreshInfo()
-            if self.auto_change_page then
-                scheduler.unscheduleGlobal(self.auto_change_page)
-            end
-            self.auto_change_page = scheduler.scheduleGlobal(handler(self, self.Change), 10.0, false)
         end
     end):addTo(body)
     local lessTime = math.huge
@@ -95,17 +89,6 @@ function GameUISaleOne:CreateSalesBox()
     end
     pv:reload()
     self.pv = pv
-end
-function GameUISaleOne:Change()
-    local pv = self.pv
-    if pv and not pv:IsOnTouch() and pv:getNumberOfRunningActions() < 1 then
-        pv:setTouchEnabled(false)
-        local go_page = pv:getCurPageIdx() + 1
-        pv:gotoPage(go_page > 4 and 1 or go_page,true)
-        pv:performWithDelay(function ()
-            pv:setTouchEnabled(true)
-        end,0.3)
-    end
 end
 function GameUISaleOne:GetSalesItem(pro_data,leftTime)
     local content_node = display.newSprite(UILib.promotion_items[pro_data.name]):pos(278,109)
