@@ -1100,8 +1100,13 @@ function GameUIReplay:CreateBattleBg()
     local terrain = self.report:GetAttackTargetTerrain()
     local bg_node = display.newNode()
     GameUtils:LoadImagesWithFormat(function()
-        cc.TMXTiledMap:create(string.format("tmxmaps/alliance_%s1.tmx",terrain))
-            :align(display.LEFT_BOTTOM, 0, 0):addTo(bg_node)
+        if isUseSdImage() then
+            local file = string.format("tmxmaps/alliance_%s1-sd.tmx", terrain)
+            cc.TMXTiledMap:create(file):addTo(bg_node):align(display.LEFT_BOTTOM):scale(2)
+        else
+            cc.TMXTiledMap:create(string.format("tmxmaps/alliance_%s1.tmx",terrain))
+                        :align(display.LEFT_BOTTOM, 0, 0):addTo(bg_node)
+        end 
     end, cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565)
 
     local unlock_position = {

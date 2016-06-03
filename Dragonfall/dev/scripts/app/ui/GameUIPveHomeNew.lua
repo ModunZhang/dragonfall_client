@@ -360,7 +360,7 @@ local WidgetFteArrow = import("..widget.WidgetFteArrow")
 function GameUIPveHomeNew:ShowClickReward()
     if not self.quest_bar_bg:getChildByTag(222) then
         WidgetFteArrow.new(_("点击领取奖励")):TurnDown()
-        :addTo(self.quest_bar_bg,10,222):pos(100,50)
+        :addTo(self.quest_bar_bg,10,222):pos(100,60)
     end
     self.quest_bar_bg:getChildByTag(222):show()
     self:HideFinger()

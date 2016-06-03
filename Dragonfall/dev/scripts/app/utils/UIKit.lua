@@ -2756,8 +2756,13 @@ end
 function UIKit:CreateTerrainForNode(clip,terrain)
     local city_terrain = terrain or User.basicInfo.terrain 
     GameUtils:LoadImagesWithFormat(function()
-        cc.TMXTiledMap:create(string.format("tmxmaps/alliance_%s1.tmx",city_terrain))
-            :align(display.LEFT_BOTTOM, 0, 0):addTo(clip)
+        if isUseSdImage() then
+            local file = string.format("tmxmaps/alliance_%s1-sd.tmx", city_terrain)
+            cc.TMXTiledMap:create(file):addTo(clip):align(display.LEFT_BOTTOM):scale(2)
+        else
+            cc.TMXTiledMap:create(string.format("tmxmaps/alliance_%s1.tmx",city_terrain))
+                :align(display.LEFT_BOTTOM, 0, 0):addTo(clip)
+        end 
     end, cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565)
 
     local unlock_position = {

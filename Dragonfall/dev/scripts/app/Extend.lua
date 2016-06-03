@@ -537,7 +537,7 @@ function display.newScene(name)
     local WAI_TAG = 1234
     local scene = newScene(name)
     for k,_ in pairs(auto_cleanup) do
-        scene:markAutoCleanupImage(k)
+        -- scene:markAutoCleanupImage(k)
     end
     function scene:WaitForNet(delay)
         local child = self:getChildByTag(WAI_TAG)
