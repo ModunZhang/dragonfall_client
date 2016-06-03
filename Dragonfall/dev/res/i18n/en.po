@@ -1,9 +1,9 @@
-# This file was generated from /Users/kennydai/Downloads/i18n(6).xlsx
+# This file was generated from /Users/kennydai/Downloads/i18n(6)(1).xlsx
 msgid ""
 msgstr ""
 "Project-Id-Version: dragonfall\n"
-"POT-Creation-Date: 2016-06-03 10:07+0800\n"
-"PO-Revision-Date: 2016-06-03 10:07+0800\n"
+"POT-Creation-Date: 2016-06-03 10:16+0800\n"
+"PO-Revision-Date: 2016-06-03 10:16+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 #: MyApp.lua:266 MyApp.lua:277 MyApp.lua:281 MyApp.lua:304 MyApp.lua:308
-#: MyApp.lua:314 MyApp.lua:322 MyApp.lua:694 service/NetManager.lua:406
+#: MyApp.lua:314 MyApp.lua:322 MyApp.lua:696 service/NetManager.lua:406
 #: ui/GameUIAllianceCityEnter.lua:176 ui/GameUIChatChannel.lua:115
 #: ui/GameUIChatChannel.lua:159 ui/GameUIGMChat.lua:367
 #: ui/GameUIGMChat.lua:400 ui/GameUILoginBeta.lua:235
@@ -39,7 +39,7 @@ msgstr ""
 "You have lost connection with the server, please check your network and "
 "retry."
 
-#: MyApp.lua:449 MyApp.lua:636 entity/Alliance.lua:796
+#: MyApp.lua:449 MyApp.lua:638 entity/Alliance.lua:796
 #: entity/MailManager.lua:39 entity/User.lua:1239 entity/User.lua:1267
 #: entity/User.lua:1453 entity/User.lua:1518
 #: scenes/AllianceDetailScene.lua:642 scenes/AllianceDetailScene.lua:702
@@ -218,24 +218,24 @@ msgstr "Tips"
 msgid "加入联盟后开放此功能!"
 msgstr "You need to join an Alliance at first"
 
-#: MyApp.lua:537 MyApp.lua:561 MyApp.lua:614 MyApp.lua:657 MyApp.lua:678
+#: MyApp.lua:537 MyApp.lua:563 MyApp.lua:616 MyApp.lua:659 MyApp.lua:680
 msgid "恭喜"
 msgstr "Congrats!"
 
-#: MyApp.lua:538 MyApp.lua:562 MyApp.lua:615 MyApp.lua:679
+#: MyApp.lua:538 MyApp.lua:564 MyApp.lua:617 MyApp.lua:681
 #, lua-format
 msgid "您已获得%s,到物品里面查看"
 msgstr "You've got the %s, please check it in the Item bar !"
 
-#: MyApp.lua:636
+#: MyApp.lua:638
 msgid "你有未完成的订单,请处理后再进行购买"
 msgstr "You have an unfinished order, please get it done first"
 
-#: MyApp.lua:657
+#: MyApp.lua:659
 msgid "已为你恢复以前的购买"
 msgstr "We have already recovered your last purchase"
 
-#: MyApp.lua:657 ui/FullScreenPopDialogUI.lua:103
+#: MyApp.lua:659 ui/FullScreenPopDialogUI.lua:103
 #: ui/FullScreenPopDialogUI.lua:124 ui/GameUIAllianceNoticeOrDescEdit.lua:72
 #: ui/GameUILoginBeta.lua:369 ui/GameUILoginBeta.lua:487
 #: ui/GameUILoginBeta.lua:707 ui/GameUILoginBeta.lua:734
@@ -250,7 +250,7 @@ msgstr "We have already recovered your last purchase"
 msgid "确定"
 msgstr "OK"
 
-#: MyApp.lua:694 ui/GameUILoginBeta.lua:605 ui/GameUILoginBeta.lua:684
+#: MyApp.lua:696 ui/GameUILoginBeta.lua:605 ui/GameUILoginBeta.lua:684
 #: utils/cocos_promise.lua:51
 msgid "请求超时"
 msgstr "Time out"
@@ -6853,7 +6853,7 @@ msgstr "Close"
 msgid "跳过"
 msgstr "Skip"
 
-#: ui/GameUIReplay.lua:1149
+#: ui/GameUIReplay.lua:1154
 msgid "点击关闭"
 msgstr "Tap \"Close\""
 
@@ -12270,7 +12270,7 @@ msgstr "Playground Season"
 
 #: utils/Localize.lua:1306
 msgid "资源掠夺赛季"
-msgstr "Resource Plundering Season"
+msgstr "Resource Plunderer Season"
 
 #: utils/Localize.lua:1307
 msgid "冒险家赛季"
