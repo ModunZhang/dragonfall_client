@@ -18,7 +18,7 @@
 #define LWS_LIBRARY_VERSION "1.5"
 
 /* The current git commit hash that we're building from */
-#define LWS_BUILD_HASH "c517f04"
+#define LWS_BUILD_HASH "2cd3665"
 
 /* Build with OpenSSL support */
 /* #undef LWS_OPENSSL_SUPPORT */
@@ -36,7 +36,7 @@
 /* #undef LWS_USE_LIBEV */
 
 /* Build with support for ipv6 */
-/* #undef LWS_USE_IPV6 */
+#define LWS_USE_IPV6
 
 /* Build with support for HTTP2 */
 /* #undef LWS_USE_HTTP2 */
@@ -62,4 +62,4 @@
 /* use SHA1() not internal libwebsockets_SHA1 */
 /* #undef LWS_SHA1_USE_OPENSSL_NAME */
 
-#define LWS_SIZEOFPTR 8
+#define LWS_SIZEOFPTR 4
