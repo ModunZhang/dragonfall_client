@@ -16,6 +16,7 @@ function ActivityManager:ctor()
     ActivityManager.super.ctor(self)
     self:GetActivitiesFromServer()
     self.rank = {}
+    self.activities = {on = {},next = {},expired = {}}
 end
 -- 从服务器获取所有活动信息
 function ActivityManager:GetActivitiesFromServer()
