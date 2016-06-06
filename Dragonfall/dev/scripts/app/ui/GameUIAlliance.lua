@@ -2011,6 +2011,11 @@ function GameUIAlliance:OnInfoButtonClicked(tag)
             UIKit:showMessageDialog(_("提示"),_("你即将被攻打，不能退出联盟"))
             return
         end
+        local canQuite,quiteTime = DataUtils:IsMemberCanQuiteAlliance(Alliance_Manager:GetMyAlliance():GetSelf())
+        if not canQuite then
+            UIKit:showMessageDialog(_("提示"),string.format(_("%s后才可以退出联盟"),quiteTime))
+            return
+        end
         UIKit:showMessageDialog(_("退出联盟"),
             _("您必须在没有部队在外行军的情况下，才可以退出联盟。退出联盟会损失当前未打开的联盟礼物。"),
             function()

@@ -207,6 +207,11 @@ end
 
 function GameUIAllianceMemberInfo:SendToServerWithTag(tag,member)
     if tag == 1 then -- 踢出
+        local canQuite,quiteTime = DataUtils:IsMemberCanQuiteAlliance(member)
+        if not canQuite then
+            UIKit:showMessageDialog(_("提示"),string.format(_("%s后才可以将其踢出联盟"),quiteTime))
+            return
+        end
         NetManager:getKickAllianceMemberOffPromise(member:Id()):done(function(data)
             self:CallBackFunctionIf()
             self:LeftButtonClicked()
