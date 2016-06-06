@@ -92,7 +92,12 @@ function GameUIAllianceInfo:GetAllianceArchonData()
 end
 
 function GameUIAllianceInfo:GetAllianceArchonName()
-    return self:GetAllianceArchonData().name
+    local archon = self:GetAllianceArchonData()
+    if archon then
+        return archon.name
+    else
+        return _("无")
+    end
 end
 
 function GameUIAllianceInfo:onExit()
@@ -114,13 +119,22 @@ function GameUIAllianceInfo:onEnter()
 end
 
 function GameUIAllianceInfo:BuildUI()
-    WidgetRoundTabButtons.new({
-        {tag = "Info",label = _("信息"),default = self.default_tab == "Info"},
-        {tag = "Contact",label = _("联系盟主"),default = self.default_tab == "Contact"},
-        {tag = "Members",label = _("成员列表"),default = self.default_tab == "Members"},
-    }, function(tag)
-        self:OnTabButtonClicked(tag)
-    end,1):align(display.BOTTOM_CENTER,304,10):addTo(self:GetBody()):zorder(200)
+    local archon = self:GetAllianceArchonData()
+    if archon then
+        WidgetRoundTabButtons.new({
+            {tag = "Info",label = _("信息"),default = self.default_tab == "Info"},
+            {tag = "Contact",label = _("联系盟主"),default = self.default_tab == "Contact"},
+            {tag = "Members",label = _("成员列表"),default = self.default_tab == "Members"},
+        }, function(tag)
+            self:OnTabButtonClicked(tag)
+        end,1):align(display.BOTTOM_CENTER,304,10):addTo(self:GetBody()):zorder(200)
+    else
+        WidgetRoundTabButtons.new({
+            {tag = "Info",label = _("信息"),default = self.default_tab == "Info"},
+        }, function(tag)
+            self:OnTabButtonClicked(tag)
+        end,1):align(display.BOTTOM_CENTER,304,10):addTo(self:GetBody()):zorder(200)
+    end
 end
 
 function GameUIAllianceInfo:OnTabButtonClicked( tag )
@@ -214,7 +228,7 @@ function GameUIAllianceInfo:LoadInfo()
         :addTo(layer)
         :align(display.LEFT_TOP,titleBg:getPositionX() - titleBg:getContentSize().width, titleBg:getPositionY() - titleBg:getContentSize().height -12)
     local leaderLabel = UIKit:ttfLabel({
-        text = self:GetAllianceArchonName() or  "",
+        text = self:GetAllianceArchonName(),
         size = 22,
         color = 0x403c2f
     }):addTo(layer):align(display.LEFT_TOP,leaderIcon:getPositionX()+leaderIcon:getContentSize().width+15, leaderIcon:getPositionY()-4)
