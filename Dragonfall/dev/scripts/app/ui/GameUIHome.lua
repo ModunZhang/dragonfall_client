@@ -266,7 +266,9 @@ function GameUIHome:CreateTop()
         local x, y = first_col + (i - 1) * padding_width, 16
         self.res_icon_map[v[3]] = display.newSprite(v[1]):addTo(button):pos(x, y):scale(0.3)
         local wp = self.res_icon_map[v[3]]:convertToWorldSpace(cc.p(0,0))
-        self.ResPositionMap[v[3]] = wp
+        if not GameUIHome.ResPositionMap[v[3]] then
+            GameUIHome.ResPositionMap[v[3]] = wp
+        end
         self[v[2]] = UIKit:CreateNumberImageNode({text = "",
             size = 18,
             color = 0xf3f0b6,
@@ -598,6 +600,7 @@ function GameUIHome:RefreshVIP()
 end
 local POWER_ANI_TAG = 1001
 function GameUIHome:ShowPowerAni(wp, old_power)
+    if tolua.isnull(self) then return end
     local pnt = self.top
     self.power_label:hide()
     self.shadow_power_label:show():SetNumString(string.formatnumberthousands(old_power))
