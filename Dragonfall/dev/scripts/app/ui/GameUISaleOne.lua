@@ -222,16 +222,16 @@ function GameUISaleOne:RefreshInfo()
         local content = display.newNode()
         content:setContentSize(cc.size(item_width,item_height))
         local reward_bg = display.newSprite("box_118x118.png"):align(display.LEFT_CENTER, 0, item_height/2):addTo(content):scale(50/118)
-        local sp = display.newSprite(UIKit:GetItemImage(#re_data > 2 and "items" or "soldiers",#re_data > 2 and re_data[2] or re_data[1]),59,59):addTo(reward_bg)
+        local sp = display.newSprite(UIKit:GetItemImage(re_data[1],re_data[2]),59,59):addTo(reward_bg)
         local size = sp:getContentSize()
         sp:scale(90/math.max(size.width,size.height))
         UIKit:ttfLabel({
-            text = #re_data > 2 and Localize_item.item_name[re_data[2]] or Localize.soldier_name[re_data[1]],
+            text = Localize_item.item_name[re_data[2]] or Localize.soldier_name[re_data[2]],
             size = 20,
             color = 0xfed36c,
         }):addTo(content):align(display.LEFT_CENTER, 60,item_height/2)
         UIKit:ttfLabel({
-            text = "X " .. string.formatnumberthousands(#re_data > 2 and re_data[3] or re_data[2]),
+            text = re_data[3] ,
             size = 20,
             color = 0xfed36c,
         }):addTo(content):align(display.RIGHT_CENTER, 360,item_height/2)
