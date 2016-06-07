@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: dragonfall\n"
-"POT-Creation-Date: 2016-06-07 15:04+0800\n"
-"PO-Revision-Date: 2016-06-07 15:04+0800\n"
+"POT-Creation-Date: 2016-06-07 15:28+0800\n"
+"PO-Revision-Date: 2016-06-07 15:28+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zh_TW\n"
@@ -133,8 +133,8 @@ msgstr "伺服器連接斷開，請檢測你的網路環境後重試！"
 #: ui/GameUIPower.lua:263 ui/GameUIPower.lua:269 ui/GameUIPower.lua:282
 #: ui/GameUIPower.lua:287 ui/GameUIPower.lua:294 ui/GameUIPower.lua:327
 #: ui/GameUIPower.lua:362 ui/GameUIPower.lua:368 ui/GameUIPveAttack.lua:351
-#: ui/GameUIPveAttack.lua:363 ui/GameUIPveAttack.lua:482
-#: ui/GameUIPveAttack.lua:528 ui/GameUIPveAttack.lua:555
+#: ui/GameUIPveAttack.lua:363 ui/GameUIPveAttack.lua:486
+#: ui/GameUIPveAttack.lua:532 ui/GameUIPveAttack.lua:559
 #: ui/GameUIPveReward.lua:140 ui/GameUIResetEquipment.lua:87
 #: ui/GameUIResource.lua:356 ui/GameUIResource.lua:367
 #: ui/GameUIResource.lua:378 ui/GameUIResource.lua:390
@@ -1716,7 +1716,7 @@ msgstr "資源不足。建造隊列不足"
 #: ui/CommonUpgradeUI.lua:1134 ui/GameUIAllianceTitle.lua:132
 #: ui/GameUIBuild.lua:235 ui/GameUIHospital.lua:306 ui/GameUIItems.lua:227
 #: ui/GameUIKeep.lua:528 ui/GameUIPResourceBuilding.lua:254
-#: ui/GameUIPveAttack.lua:482 ui/GameUIResource.lua:423
+#: ui/GameUIPveAttack.lua:486 ui/GameUIResource.lua:423
 #: ui/GameUIResource.lua:437 ui/GameUISettingServer.lua:61
 #: ui/GameUITownHall.lua:215 ui/GameUIUnlockBuilding.lua:279
 #: ui/GameUIUnlockBuilding.lua:322 ui/GameUIUnlockBuilding.lua:366
@@ -2419,7 +2419,7 @@ msgstr "加速"
 #: ui/CommonUpgradeUI.lua:1212 ui/GameUIBuild.lua:241
 #: ui/GameUIHasBeenBuild.lua:140 ui/GameUIHospital.lua:263
 #: ui/GameUIHospital.lua:312 ui/GameUIItems.lua:233 ui/GameUIKeep.lua:535
-#: ui/GameUIPResourceBuilding.lua:261 ui/GameUIPveAttack.lua:487
+#: ui/GameUIPResourceBuilding.lua:261 ui/GameUIPveAttack.lua:491
 #: ui/GameUIResource.lua:428 ui/GameUIResource.lua:442
 #: ui/GameUISettingServer.lua:66 ui/GameUITownHall.lua:221
 #: ui/GameUIUnlockBuilding.lua:284 ui/GameUIUnlockBuilding.lua:327
@@ -2987,7 +2987,7 @@ msgstr "撤銷"
 msgid "总览"
 msgstr "總覽"
 
-#: ui/GameUIAlliance.lua:810 ui/GameUIAllianceMosterEnter.lua:177
+#: ui/GameUIAlliance.lua:810
 msgid "建筑"
 msgstr "建築"
 
@@ -3165,7 +3165,7 @@ msgstr "你即將被攻打，不能退出聯盟"
 #: ui/GameUIAlliance.lua:2017
 #, lua-format
 msgid "%s后才可以退出联盟"
-msgstr ""
+msgstr "%s後才可以退出聯盟"
 
 #: ui/GameUIAlliance.lua:2021
 msgid ""
@@ -3505,10 +3505,9 @@ msgstr "協防盟友將失去保護狀態，確定繼續派兵?"
 #: ui/GameUIAllianceCityEnter.lua:163 ui/GameUIAllianceCityEnter.lua:173
 #: ui/GameUIAllianceCityEnter.lua:245 ui/GameUIAllianceVillageEnter.lua:331
 #: ui/GameUIAllianceVillageEnter.lua:358
-#: ui/GameUIAllianceVillageEnter.lua:395 ui/GameUIDragonEyrieMain.lua:128
-#: ui/GameUIShireFightEvent.lua:278 widget/WidgetMaterials.lua:159
-msgid "龙"
-msgstr "龍"
+#: ui/GameUIAllianceVillageEnter.lua:395 ui/GameUIShireFightEvent.lua:278
+msgid "龙材料"
+msgstr ""
 
 #: ui/GameUIAllianceCityEnter.lua:176
 msgid "已有协防部队正在行军"
@@ -3887,7 +3886,7 @@ msgstr "您確定移交盟主職位給：%s嗎？"
 #: ui/GameUIAllianceMemberInfo.lua:212
 #, lua-format
 msgid "%s后才可以将其踢出联盟"
-msgstr ""
+msgstr "%s後才可以踢出該成員"
 
 #: ui/GameUIAllianceMemberInfo.lua:230
 #, lua-format
@@ -3982,6 +3981,11 @@ msgstr "有幾率獲得"
 #: ui/GameUIAllianceMosterEnter.lua:169
 msgid "敌人已经消失了"
 msgstr "敵人已經消失了"
+
+#: ui/GameUIAllianceMosterEnter.lua:177 ui/GameUITradeGuild.lua:105
+#: ui/GameUITradeGuild.lua:1058 widget/WidgetManufactureNew.lua:50
+msgid "建筑材料"
+msgstr "建築材料"
 
 #: ui/GameUIAllianceMosterEnter.lua:181 ui/GameUIShireFightEvent.lua:281
 msgid "进攻该目标将失去保护状态，确定继续派兵?"
@@ -5053,6 +5057,10 @@ msgstr "5星上限即將開放！"
 #: ui/GameUIDragonEyrieDetail.lua:896
 msgid "点击技能"
 msgstr "點擊技能"
+
+#: ui/GameUIDragonEyrieMain.lua:128 widget/WidgetMaterials.lua:159
+msgid "龙"
+msgstr "龍"
 
 #: ui/GameUIDragonEyrieMain.lua:363 utils/Localize.lua:46
 msgid "龙还未孵化"
@@ -6499,7 +6507,7 @@ msgstr "傳送"
 msgid "每次消耗体力:"
 msgstr "每次消耗體力:"
 
-#: ui/GameUIPveAttack.lua:351 ui/GameUIPveAttack.lua:528
+#: ui/GameUIPveAttack.lua:351 ui/GameUIPveAttack.lua:532
 msgid "已达今日最大挑战次数!"
 msgstr "已達今日最大挑戰次數!"
 
@@ -6507,15 +6515,21 @@ msgstr "已達今日最大挑戰次數!"
 msgid "解锁材料库房，激活此关卡!"
 msgstr "解鎖材料庫房，激活此關卡!"
 
-#: ui/GameUIPveAttack.lua:476
+#: ui/GameUIPveAttack.lua:377 utils/Localize.lua:269 utils/Localize.lua:270
+#: utils/Localize.lua:271 utils/Localize.lua:272 utils/Localize.lua:866
+#: utils/Localize.lua:867 utils/Localize.lua:868 utils/Localize.lua:869
+msgid "士兵材料"
+msgstr "士兵材料"
+
+#: ui/GameUIPveAttack.lua:480
 msgid "补充道具"
 msgstr "補充道具"
 
-#: ui/GameUIPveAttack.lua:477
+#: ui/GameUIPveAttack.lua:481
 msgid "您当前没有足够的扫荡劵,是否花费金龙币购买补充并使用"
 msgstr "你當前沒有足夠的掃蕩劵,是否花費金龍幣購買補充並使用"
 
-#: ui/GameUIPveAttack.lua:556
+#: ui/GameUIPveAttack.lua:560
 #, lua-format
 msgid ""
 "当前材料库房中的%s材料已满，你可能无法获得此次扫荡所得的材料奖励。是否仍要扫"
@@ -6524,11 +6538,11 @@ msgstr ""
 "當前材料庫房中的%s材料已滿，你可能無法獲得此次掃蕩所得的材料獎勵。是否仍要掃"
 "蕩？"
 
-#: ui/GameUIPveAttack.lua:556
+#: ui/GameUIPveAttack.lua:560
 msgid "士兵"
 msgstr "士兵"
 
-#: ui/GameUIPveAttack.lua:559
+#: ui/GameUIPveAttack.lua:563
 msgid "强行扫荡"
 msgstr "強行掃蕩"
 
@@ -7698,11 +7712,6 @@ msgstr "我的商品"
 #: ui/GameUITradeGuild.lua:104 ui/GameUITradeGuild.lua:1057
 msgid "基本资源"
 msgstr "基本資源"
-
-#: ui/GameUITradeGuild.lua:105 ui/GameUITradeGuild.lua:1058
-#: widget/WidgetManufactureNew.lua:50
-msgid "建筑材料"
-msgstr "建築材料"
 
 #: ui/GameUITradeGuild.lua:106 ui/GameUITradeGuild.lua:1059
 #: widget/WidgetManufactureNew.lua:51
@@ -9079,12 +9088,6 @@ msgid ""
 "用于招募亡灵兵种的材料。在探险过程中有一定几率会遭遇亡灵部队，击败他们后获得"
 msgstr ""
 "用於招募亡靈兵種的材料。在探險過程中有一定機率會遭遇亡靈部隊，擊敗他們後獲得"
-
-#: utils/Localize.lua:269 utils/Localize.lua:270 utils/Localize.lua:271
-#: utils/Localize.lua:272 utils/Localize.lua:866 utils/Localize.lua:867
-#: utils/Localize.lua:868 utils/Localize.lua:869
-msgid "士兵材料"
-msgstr "士兵材料"
 
 #: utils/Localize.lua:277
 msgid "铁锭"
@@ -12647,8 +12650,8 @@ msgstr "正常"
 
 #: utils/UIKit.lua:828
 #, lua-format
-msgid "%s材料已满"
-msgstr "%s材料已滿"
+msgid "%s已满"
+msgstr ""
 
 #: utils/UIKit.lua:878
 msgid "评价我们"
@@ -13665,3 +13668,6 @@ msgstr "需盟主或將軍權限才能遷移！"
 #: widget/WidgetWorldAllianceInfo.lua:500
 msgid "是否确认迁移联盟至该领土？"
 msgstr "是否確認遷移聯盟至該領土？"
+
+#~ msgid "%s材料已满"
+#~ msgstr "%s材料已滿"
