@@ -108,11 +108,11 @@ function GameUIAllianceMemberInfo:BuildUI()
                             color = 0xfff3c7
                         })
                     )
-                    :align(display.LEFT_BOTTOM, 50,15)
-                    :onButtonClicked(function(event)
-                        UIKit:newGameUI("GameUIAllianceInfo",self.player_info.alliance.id,nil,self.serverId_):AddToCurrentScene(true)
-                    end):addTo(self.bg)
-                mail_btn:align(display.RIGHT_BOTTOM,self.bg:getContentSize().width - 50,15)
+                :align(display.LEFT_BOTTOM, 50,15)
+                :onButtonClicked(function(event)
+                    UIKit:newGameUI("GameUIAllianceInfo",self.player_info.alliance.id,nil,self.serverId_):AddToCurrentScene(true)
+                end):addTo(self.bg)
+            mail_btn:align(display.RIGHT_BOTTOM,self.bg:getContentSize().width - 50,15)
             end
         else -- 自己有联盟时
             if Alliance_Manager:GetMyAlliance():GetSelf():CanInvatePlayer() and not self.player_info.alliance then
@@ -136,9 +136,9 @@ function GameUIAllianceMemberInfo:BuildUI()
                         end
                     end):addTo(self.bg)
                 self:AddNormalMailButton():align(display.RIGHT_BOTTOM,self.bg:getContentSize().width - 50,15)
-            else
-                self:AddNormalMailButton()
-            end
+        else
+            self:AddNormalMailButton()
+        end
         end
     end
     local player_node = WidgetPlayerNode.new(cc.size(564,644),self)
@@ -209,7 +209,15 @@ function GameUIAllianceMemberInfo:SendToServerWithTag(tag,member)
     if tag == 1 then -- 踢出
         local canQuite,quiteTime = DataUtils:IsMemberCanQuiteAlliance(member)
         if not canQuite then
-            UIKit:showMessageDialog(_("提示"),string.format(_("%s后才可以将其踢出联盟"),quiteTime))
+            local dialog = UIKit:showMessageDialog(_("提示"),string.format(_("%s后才可以将其踢出联盟"),quiteTime))
+            scheduleAt(dialog, function()
+                local canQuite,quiteTime = DataUtils:IsMemberCanQuiteAlliance(member)
+                if not canQuite then
+                    dialog:SetPopMessage(string.format(_("%s后才可以将其踢出联盟"),quiteTime))
+                else
+                    dialog:LeftButtonClicked()
+                end
+            end)
             return
         end
         NetManager:getKickAllianceMemberOffPromise(member:Id()):done(function(data)
@@ -416,6 +424,7 @@ function GameUIAllianceMemberInfo:ShowSureDialog(msg,ok_func,cancel_func)
 end
 
 return GameUIAllianceMemberInfo
+
 
 
 

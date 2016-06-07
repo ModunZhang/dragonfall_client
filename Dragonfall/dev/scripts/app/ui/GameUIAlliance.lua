@@ -308,19 +308,19 @@ function GameUIAlliance:GetMoreJoinListData()
     self.isLoadingJoin = true
     self.join_list_page = self.join_list_page + 1
     NetManager:getFetchCanDirectJoinAlliancesPromise(JOIN_LIST_PAGE_SIZE * (self.join_list_page - 1))
-    :done(function(response)
-        if tolua.isnull(self) then return end
-        if not response.msg or not response.msg.allianceDatas then return end
-        if response.msg.allianceDatas then
-            table.insertto(self.join_list_data_source, response.msg.allianceDatas)
-        end
-    end):always(function()
+        :done(function(response)
+            if tolua.isnull(self) then return end
+            if not response.msg or not response.msg.allianceDatas then return end
+            if response.msg.allianceDatas then
+                table.insertto(self.join_list_data_source, response.msg.allianceDatas)
+            end
+        end):always(function()
         self.isLoadingJoin = false
-    end):fail(function()
+        end):fail(function()
         if self.join_list_page then
             self.join_list_page = self.join_list_page - 1
         end
-    end)
+        end)
 end
 
 function GameUIAlliance:JoinListsourceDelegate(listView, tag, idx)
@@ -2014,7 +2014,15 @@ function GameUIAlliance:OnInfoButtonClicked(tag)
         end
         local canQuite,quiteTime = DataUtils:IsMemberCanQuiteAlliance(Alliance_Manager:GetMyAlliance():GetSelf())
         if not canQuite then
-            UIKit:showMessageDialog(_("提示"),string.format(_("%s后才可以退出联盟"),quiteTime))
+            local dialog = UIKit:showMessageDialog(_("提示"),string.format(_("%s后才可以退出联盟"),quiteTime))
+            scheduleAt(dialog, function()
+                local canQuite,quiteTime = DataUtils:IsMemberCanQuiteAlliance(Alliance_Manager:GetMyAlliance():GetSelf())
+                if not canQuite then
+                    dialog:SetPopMessage(string.format(_("%s后才可以退出联盟"),quiteTime))
+                else
+                    dialog:LeftButtonClicked()
+                end
+            end)
             return
         end
         UIKit:showMessageDialog(_("退出联盟"),
@@ -2100,6 +2108,8 @@ end
 
 
 return GameUIAlliance
+
+
 
 
 
