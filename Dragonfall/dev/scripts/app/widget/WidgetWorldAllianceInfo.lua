@@ -391,7 +391,8 @@ end
 function WidgetWorldAllianceInfo:GetAllianceArchonName()
     local archon = self:GetAllianceData().archon
     if archon then
-        return (archon.name == "" or archon.name == nil) and _("无") or archon.name
+        local isnone = archon.name == "" or archon.name == nil or archon.name == json.null
+        return isnone and _("无") or archon.name
     else
         return _("无")
     end

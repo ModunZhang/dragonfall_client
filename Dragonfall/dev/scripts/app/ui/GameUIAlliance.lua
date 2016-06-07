@@ -354,7 +354,8 @@ function GameUIAlliance:RefreshJoinListContent(alliance,content,idx)
     content.fightingValLabel:setString(string.formatnumberthousands(alliance.power))
     content.languageValLabel:setString(Localize.alliance_language[alliance.country])
     content.killValLabel:setString(string.formatnumberthousands(alliance.kill))
-    content.leaderLabel:setString((alliance.archon == "" or alliance.archon == nil) or _("无"))
+    local isnone = alliance.archon == "" or alliance.archon == nil or alliance.archon == json.null
+    content.leaderLabel:setString(isnone and _("无") or alliance.archon)
     local terrain = alliance.terrain
     local flag_info = alliance.flag
     if content.flag_sprite then
