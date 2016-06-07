@@ -214,6 +214,7 @@ function GameUISaleOne:RefreshInfo()
     local list = self.reward_list
     list:removeAllItems()
     local rewards = string.split(pro_data.rewards, ",")
+    table.insert(rewards, 1,pro_data.allianceRewards)
     for i,v in ipairs(rewards) do
         local re_data = string.split(v, ":")
         local item = list:newItem()
@@ -226,7 +227,7 @@ function GameUISaleOne:RefreshInfo()
         local size = sp:getContentSize()
         sp:scale(90/math.max(size.width,size.height))
         UIKit:ttfLabel({
-            text = Localize_item.item_name[re_data[2]] or Localize.soldier_name[re_data[2]],
+            text = i==1 and string.format(_("赠送给联盟成员的%s"),Localize_item.item_name[re_data[2]]) or Localize_item.item_name[re_data[2]] or Localize.soldier_name[re_data[2]],
             size = 20,
             color = 0xfed36c,
         }):addTo(content):align(display.LEFT_CENTER, 60,item_height/2)
