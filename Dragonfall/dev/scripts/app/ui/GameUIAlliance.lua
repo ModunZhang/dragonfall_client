@@ -354,7 +354,8 @@ function GameUIAlliance:RefreshJoinListContent(alliance,content,idx)
     content.fightingValLabel:setString(string.formatnumberthousands(alliance.power))
     content.languageValLabel:setString(Localize.alliance_language[alliance.country])
     content.killValLabel:setString(string.formatnumberthousands(alliance.kill))
-    content.leaderLabel:setString(alliance.archon)
+    local isnone = alliance.archon == "" or alliance.archon == nil or alliance.archon == json.null
+    content.leaderLabel:setString(isnone and _("无") or alliance.archon)
     local terrain = alliance.terrain
     local flag_info = alliance.flag
     if content.flag_sprite then
@@ -1065,7 +1066,6 @@ end
 function GameUIAlliance:GetEventContent(event)
     local event_type = event.type
     local params_,params = event.params,{}
-    dump(event)
     for _,v in ipairs(params_) do
         if 'promotionDown' == event_type or 'promotionUp' == event_type then
             if Localize.alliance_title[v] then
@@ -2010,6 +2010,11 @@ function GameUIAlliance:OnInfoButtonClicked(tag)
         end
         if #Alliance_Manager:GetMyBeAttackingEvent() > 0 then
             UIKit:showMessageDialog(_("提示"),_("你即将被攻打，不能退出联盟"))
+            return
+        end
+        local canQuite,quiteTime = DataUtils:IsMemberCanQuiteAlliance(Alliance_Manager:GetMyAlliance():GetSelf())
+        if not canQuite then
+            UIKit:showMessageDialog(_("提示"),string.format(_("%s后才可以退出联盟"),quiteTime))
             return
         end
         UIKit:showMessageDialog(_("退出联盟"),

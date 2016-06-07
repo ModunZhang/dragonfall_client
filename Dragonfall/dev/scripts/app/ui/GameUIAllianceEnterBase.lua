@@ -154,10 +154,12 @@ function GameUIAllianceEnterBase:InitBuildingImage()
     if not sprite then
         local images = self:GetBuildingImage()
         if tolua.type(images) ~= "table" then
-            local building_image = display.newSprite(images)
-            local scale,x,y = self:GetBuildImageInfomation(building_image)
-            building_image:addTo(body):align(display.CENTER,x,y)
-            building_image:setScale(scale)
+            if images then
+                local building_image = display.newSprite(images)
+                local scale,x,y = self:GetBuildImageInfomation(building_image)
+                building_image:addTo(body):align(display.CENTER,x,y)
+                building_image:setScale(scale)
+            end
         else
             for i,image in ipairs(images) do
                 local building_image = display.newSprite(image)

@@ -496,16 +496,15 @@ function GameUILoginBeta:GetServerInfo()
                     self:loadServerJson()
                 end
             else
-                local SIMULATION_WORKING_TIME = 3
-                self:performWithDelay(function()
-                    -- self:showErrorForReTry(_("获取服务器信息失败!"),function()
-                    --     self:GetServerInfo()
-                    -- end)
+                --1是连接游戏服务器失败 0是本地网络有问题
+                GameUtils:PingSearchEngine(function(success)
+                    local errorCode = success and 1 or 0
+                    local msg = string.format("%s[%d]",_("获取服务器信息失败!"),errorCode)
                     UIKit:NoWaitForNet()
-                    device.showAlert(_("错误"), _("获取服务器信息失败!"), { _("重试") }, function(event)
+                    device.showAlert(_("错误"),msg,{ _("重试") }, function(event)
                         self:GetServerInfo()
                     end)
-                end, SIMULATION_WORKING_TIME)
+                end)
             end
         end)
     end

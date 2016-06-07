@@ -86,8 +86,10 @@ end
 
 function GameUIAllianceVillageEnter:GetBuildingImage()
     local village_info = self:GetVillageInfo()
-    local build_png = SpriteConfig[village_info.name]:GetConfigByLevel(village_info.level).png
-    return build_png
+    if village_info then
+        local build_png = SpriteConfig[village_info.name]:GetConfigByLevel(village_info.level).png
+        return build_png
+    end
 end
 
 function GameUIAllianceVillageEnter:GetBuildingType()

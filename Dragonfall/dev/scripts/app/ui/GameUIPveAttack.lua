@@ -358,9 +358,17 @@ function GameUIPveAttack:CreateAttackButton()
                 return
             end
             -- event.target:setTouchEnabled(false)
-            if self.isDropMaterials and 
+            if self.isDropMaterials and
                 #UtilsForBuilding:GetBuildingsBy(self.user, "materialDepot", 1) == 0 then
-                UIKit:showMessageDialog(_("提示"),_("解锁材料库房，激活此关卡!"))
+                UIKit:showMessageDialog(_("提示"),_("解锁材料库房，激活此关卡!"),function()
+                    app:EnterMyCityScene(false,"nil",function(scene)
+                        local homePage = scene:GetHomePage()
+                        if homePage then
+                            local buildings = UtilsForBuilding:GetBuildingsBy(User, "materialDepot")
+                            homePage:GotoUnlockBuilding(buildings[1].location)
+                        end
+                    end)
+                end,nil,nil,nil,nil,_("前往"))
                 return
             end
             self:Attack()
@@ -440,7 +448,7 @@ function GameUIPveAttack:Attack()
                         display.getRunningScene():GetSceneLayer():MoveAirship(true)
                     end
                 end
-                
+
                 local is_show = false
                 UIKit:newGameUI("GameUIReplay", report, function(replayui)
                     if not is_show then
@@ -671,7 +679,7 @@ function GameUIPveAttack:DecodeReport(report, dragon, attack_soldiers)
 end
 
 
-    
+
 
 return GameUIPveAttack
 

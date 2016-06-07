@@ -1383,4 +1383,13 @@ function DataUtils:GetPromtionProductLessLeftTime()
     end
     return lessTime
 end
+-- 是否达到退出联盟的冷却时间
+function DataUtils:IsMemberCanQuiteAlliance(memberObject)
+    local joinAllianceTime = memberObject.joinAllianceTime
+    if not joinAllianceTime then
+        joinAllianceTime = app.timer:GetServerTime() * 1000
+    end
+    local quiteAvailableTime = joinAllianceTime/1000 + GameDatas.PlayerInitData.intInit.quitAllianceCoolingMinutes.value * 60
+    return quiteAvailableTime <= app.timer:GetServerTime(),GameUtils:formatTimeStyle1(quiteAvailableTime-app.timer:GetServerTime())
+end
 return DataUtils

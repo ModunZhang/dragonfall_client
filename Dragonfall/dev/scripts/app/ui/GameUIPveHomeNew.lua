@@ -431,7 +431,9 @@ local icon_map = {
 }
 local ResPositionMap = GameUIHome.ResPositionMap
 function GameUIPveHomeNew:ShowResourceAni(resource, wp)
-    if not icon_map[resource] then
+    if not icon_map[resource] or
+        not ResPositionMap[resource] or
+        tolua.isnull(self) then
         return
     end
     local pnt = self.top

@@ -513,7 +513,7 @@ function GameUIVipNew:CreateVipEffNodeByLevel(level,height)
             }):align(display.CENTER, 115,60)
                 :addTo(booty_item_bg)
             UIKit:ttfLabel({
-                text = "+"..effect,
+                text = (v == "soldierConsumeSub" and "-" or "+")..effect,
                 size = 20,
                 color = 0x007c23,
             }):align(display.CENTER, 115,30)
