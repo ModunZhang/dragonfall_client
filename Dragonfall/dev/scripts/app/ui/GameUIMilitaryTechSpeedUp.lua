@@ -72,6 +72,7 @@ function GameUIMilitaryTechSpeedUp:OnUserDataChanged_soldierStarEvents(userData,
         for i,v in ipairs(value) do
             if v.id ==  self.militaryEvent.id then
                 self:LeftButtonClicked()
+                return
             end
         end
     end

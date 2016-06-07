@@ -503,9 +503,9 @@ function WidgetUseItems:OpenIncreaseDragonExpOrHp( item_name )
         local expNeed = UtilsForDragon:GetDragonExpNeed(dragon)
         local hp = UtilsForDragon:GetDragonHp(User, dragon.type)
         local hpMax = UtilsForDragon:GetDragonMaxHp(User.dragons[dragon.type])
-        local text_1 = increase_type == "dragonHp" and 
-string.format(_("生命值 %s/%s"), string.th000(hp), string.th000(hpMax)) or 
-string.format( _("经验值 %d/%d"), dragon.exp, expNeed)
+        local text_1 = increase_type == "dragonHp" and
+            string.format(_("生命值 %s/%s"), string.th000(hp), string.th000(hpMax)) or
+            string.format( _("经验值 %d/%d"), dragon.exp, expNeed)
         local dragon_vitality = UIKit:ttfLabel({
             text = text_1,
             size = 20,
@@ -516,7 +516,7 @@ string.format( _("经验值 %d/%d"), dragon.exp, expNeed)
         -- 龙状态
         local d_status = UtilsForDragon:GetDragonStatusDesc(UtilsForDragon:GetDragon(User, dragon.type))
         local s_color = dragon.status == "free" and 0x007c23 or 0x7e0000
-        
+
         if UtilsForDragon:IsDragonDead(User, dragon.type) then
             s_color = 0x7e0000
         end
@@ -632,6 +632,22 @@ string.format( _("经验值 %d/%d"), dragon.exp, expNeed)
                     break
                 end
             end
+            if UtilsForDragon:IsDragonDead(User, select_dragonType) then
+                UIKit:showMessageDialog(_("提示"),_("选择的龙已经死亡")):CreateCancelButton(
+                    {
+                        listener = function ()
+                            if UIKit:GetUIInstance("GameUIItems") then
+                                UIKit:GetUIInstance("GameUIItems"):LeftButtonClicked()
+                            end
+                            UIKit:newGameUI("GameUIDragonEyrieMain", City, City:GetFirstBuildingByType("dragonEyrie"), "dragon", false, select_dragonType):AddToCurrentScene(true)
+                            dialog:LeftButtonClicked()
+                        end,
+                        btn_name= _("复活"),
+                        btn_images = {normal = "blue_btn_up_148x58.png",pressed = "blue_btn_down_148x58.png"}
+                    }
+                )
+                return
+            end
             NetManager:getUseItemPromise(item_name,{[item_name] = {
                 dragonType = select_dragonType
             }})
@@ -643,6 +659,22 @@ string.format( _("经验值 %d/%d"), dragon.exp, expNeed)
                     select_dragonType = v:GetDragonType()
                     break
                 end
+            end
+            if UtilsForDragon:IsDragonDead(User, select_dragonType) then
+                UIKit:showMessageDialog(_("提示"),_("选择的龙已经死亡")):CreateCancelButton(
+                    {
+                        listener = function ()
+                            if UIKit:GetUIInstance("GameUIItems") then
+                                UIKit:GetUIInstance("GameUIItems"):LeftButtonClicked()
+                            end
+                            UIKit:newGameUI("GameUIDragonEyrieMain", City, City:GetFirstBuildingByType("dragonEyrie"), "dragon", false, select_dragonType):AddToCurrentScene(true)
+                            dialog:LeftButtonClicked()
+                        end,
+                        btn_name= _("复活"),
+                        btn_images = {normal = "blue_btn_up_148x58.png",pressed = "blue_btn_down_148x58.png"}
+                    }
+                )
+                return
             end
             NetManager:getBuyAndUseItemPromise(item_name,{[item_name] = {
                 dragonType = select_dragonType
@@ -974,7 +1006,7 @@ function WidgetUseItems:OpenWarSpeedupDialog( item_name ,march_event, eventType)
                 end
             end
         end
-        
+
     end
     local alliance = Alliance_Manager:GetMyAlliance()
     alliance:AddListenOnType(dialog, "marchEvents")
@@ -1041,7 +1073,7 @@ function WidgetUseItems:OpenRetreatTroopDialog( item_name,event,eventType )
     dialog:scheduleAt(function()
         if UtilsForEvent:GetEventInfo(event) <= 0 then
             dialog:LeftButtonClicked()
-            return 
+            return
         end
         gem_label:setString(string.formatnumberthousands(User:GetGemValue()))
     end)
@@ -1157,5 +1189,7 @@ end
 
 
 return WidgetUseItems
+
+
 
 
