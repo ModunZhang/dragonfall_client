@@ -147,17 +147,44 @@ function WidgetHomeBottom:OnUserDataChanged_countInfo(userData, deltaData)
 end
 function WidgetHomeBottom:OnAllianceDataChanged_joinRequestEvents(alliance,deltaData)
     if self.join_request_count then
-        self.join_request_count:SetNumber((#Alliance_Manager:GetMyAlliance().joinRequestEvents + #User.iapGifts) or 0)
+        local alliance = Alliance_Manager:GetMyAlliance()
+        if not alliance:IsDefault() then
+            if alliance:GetSelf():IsTitleEqualOrGreaterThan("quartermaster") then
+                self.join_request_count:SetNumber((#Alliance_Manager:GetMyAlliance().joinRequestEvents + #User.iapGifts) or 0)
+            else
+                self.join_request_count:SetNumber(#User.iapGifts or 0)
+            end
+        else
+            self.join_request_count:SetNumber(#User.inviteToAllianceEvents or 0)
+        end
     end
 end
 function WidgetHomeBottom:OnUserDataChanged_inviteToAllianceEvents()
-    if self.join_request_count and Alliance_Manager:GetMyAlliance():IsDefault() then
-        self.join_request_count:SetNumber(#User.inviteToAllianceEvents or 0)
+    if self.join_request_count then
+        local alliance = Alliance_Manager:GetMyAlliance()
+        if not alliance:IsDefault() then
+            if alliance:GetSelf():IsTitleEqualOrGreaterThan("quartermaster") then
+                self.join_request_count:SetNumber((#Alliance_Manager:GetMyAlliance().joinRequestEvents + #User.iapGifts) or 0)
+            else
+                self.join_request_count:SetNumber(#User.iapGifts or 0)
+            end
+        else
+            self.join_request_count:SetNumber(#User.inviteToAllianceEvents or 0)
+        end
     end
 end
 function WidgetHomeBottom:OnUserDataChanged_iapGifts()
     if self.join_request_count then
-        self.join_request_count:SetNumber((#Alliance_Manager:GetMyAlliance().joinRequestEvents + #User.iapGifts) or 0)
+        local alliance = Alliance_Manager:GetMyAlliance()
+        if not alliance:IsDefault() then
+            if alliance:GetSelf():IsTitleEqualOrGreaterThan("quartermaster") then
+                self.join_request_count:SetNumber((#Alliance_Manager:GetMyAlliance().joinRequestEvents + #User.iapGifts) or 0)
+            else
+                self.join_request_count:SetNumber(#User.iapGifts or 0)
+            end
+        else
+            self.join_request_count:SetNumber(#User.inviteToAllianceEvents or 0)
+        end
     end
 end
 -- fte
@@ -179,6 +206,7 @@ end
 
 
 return WidgetHomeBottom
+
 
 
 
