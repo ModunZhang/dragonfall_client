@@ -865,8 +865,8 @@ function GameUIAllianceHome:ShowHonorFte(isshow)
         totalsize = totalsize + size.width * scale + 15
     end
     content:setContentSize(cc.size(totalsize-15,maxheight))
-    WidgetFteArrow.new(content):TurnDown(false):addTo(fteNode):scale(0.8)
-    :pos(r.x + r.width/2+(totalsize-15)/2, r.y + r.height/2+maxheight+20)
+    WidgetFteArrow.new(content):TurnUp(false):addTo(fteNode):scale(0.8)
+    :pos(r.x + r.width/2+(totalsize-15)/2, r.y - r.height/2 - maxheight + 35)
 end
 function GameUIAllianceHome:ShowWorldMap(isshow)
     self:GetShortcutNode().world_map_btn:removeChildByTag(FTE_TAG)
