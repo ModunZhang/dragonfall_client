@@ -328,7 +328,7 @@ function GameUIAllianceVillageEnter:GetEnterButtons()
                         end)
                     end, function ()
                     end
-                    UIKit:showSendTroopMessageDialog(attack_func,"dragonMaterials",_("龙"))
+                    UIKit:showSendTroopMessageDialog(attack_func,"dragonMaterials",_("龙材料"))
                 end
                 if checkMeIsProtectedWarinng then
                     UIKit:showMessageDialog(_("提示"),_("进攻村落将失去保护状态，确定继续派兵?"),final_func)
@@ -355,7 +355,7 @@ function GameUIAllianceVillageEnter:GetEnterButtons()
                             end)
                         end,{targetAlliance = focus_alliance,toLocation = toLocation,returnCloseAction = true}):AddToCurrentScene(true)
                     end
-                    UIKit:showSendTroopMessageDialog(attack_func,"dragonMaterials",_("龙"))
+                    UIKit:showSendTroopMessageDialog(attack_func,"dragonMaterials",_("龙材料"))
                 end
 
                 if checkMeIsProtectedWarinng then
@@ -392,7 +392,7 @@ function GameUIAllianceVillageEnter:GetEnterButtons()
                             end)
                         end,{targetAlliance = focus_alliance,toLocation = toLocation,returnCloseAction = true}):AddToCurrentScene(true)
                     end
-                    UIKit:showSendTroopMessageDialog(attack_func, "dragonMaterials",_("龙"))
+                    UIKit:showSendTroopMessageDialog(attack_func, "dragonMaterials",_("龙材料"))
                 end
 
 

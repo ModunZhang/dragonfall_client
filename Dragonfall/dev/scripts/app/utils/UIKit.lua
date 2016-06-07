@@ -236,7 +236,7 @@ function UIKit:ttfLabel( params )
     end
     params.font = UIKit:getFontFilePath()
     params.UILabelType = cc.ui.UILabel.LABEL_TYPE_TTF
-    if params.color and 
+    if params.color and
         (type(params.color) == "number" or type(params.color) == "string") then
         params.color = self:hex2c3b(params.color)
     end
@@ -825,7 +825,7 @@ function UIKit:showSendTroopMessageDialog(attack_func,material_name,effect_str,i
         if is_material_overhead then
             display.newSprite("icon_warning_22x42.png"):addTo(materialDepot_bg):align(display.CENTER, 75, materialDepot_bg:getContentSize().height/2 + 15)
             if #UtilsForBuilding:GetBuildingsBy(User, "materialDepot", 1) > 0 then
-                label_1 = string.format(_("%s材料已满"),effect_str)
+                label_1 = string.format(_("%s已满"),effect_str)
             else
                 label_1 = _("未解锁")
             end
@@ -1637,7 +1637,7 @@ function UIKit:CreateDragonBattle(attackDragon, defenceDragon, gameController)
     local leftDragon = UIKit:CreateFightDragon(attackDragon, gameController)
     :SetPercent(attackDragon.hp/attackDragon.hpMax)
     :addTo(attackBone):pos(-360, -50)
-    
+
     attackBone:addDisplay(leftDragon, 0)
     attackBone:changeDisplayWithIndex(0, true)
 
@@ -1646,7 +1646,7 @@ function UIKit:CreateDragonBattle(attackDragon, defenceDragon, gameController)
     local rightDragon = UIKit:CreateFightDragon(defenceDragon, gameController)
     :SetPercent(defenceDragon.hp/defenceDragon.hpMax)
     :addTo(defenceBone):pos(238, -82)
-    
+
     defenceBone:addDisplay(rightDragon, 0)
     defenceBone:changeDisplayWithIndex(0, true)
 
@@ -2272,13 +2272,13 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
             self:Play("move_90", -1)
             local acts = transition.sequence({
                 cc.MoveTo:create(0.15,cc.p(x+d,y)),
-                cc.CallFunc:create(function() 
+                cc.CallFunc:create(function()
                     app:GetAudioManager()
                     :PlayeAttackSoundBySoldierName(self.soldierName, "rush")
-                    p1:resolve() 
+                    p1:resolve()
                 end),
                 cc.MoveTo:create(0.15,cc.p(x,y)),
-                cc.CallFunc:create(function() 
+                cc.CallFunc:create(function()
                     self:Idle()
                     p2:resolve()
                 end),
@@ -2318,7 +2318,7 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         else
             return self:PromiseOfAnimationFinished(self:GetAni())
         end
-        
+
     end
     function troopsNode:PromiseOfAnimationFinished(animation)
         local p = promise.new()
@@ -2754,7 +2754,7 @@ end
 
 
 function UIKit:CreateTerrainForNode(clip,terrain)
-    local city_terrain = terrain or User.basicInfo.terrain 
+    local city_terrain = terrain or User.basicInfo.terrain
     GameUtils:LoadImagesWithFormat(function()
         if isUseSdImage() then
             local file = string.format("tmxmaps/alliance_%s1-sd.tmx", city_terrain)

@@ -174,7 +174,7 @@ function GameUIAllianceMosterEnter:onEnter()
                     end)
                 end,{targetAlliance = alliance,toLocation = entity.location,returnCloseAction = false}):AddToCurrentScene(true)
             end
-            UIKit:showSendTroopMessageDialog(attack_monster_func,"buildingMaterials",_("建筑"))
+            UIKit:showSendTroopMessageDialog(attack_monster_func,"buildingMaterials",_("建筑材料"))
         end
 
         if my_alliance:GetSelf():IsProtected() then

@@ -371,7 +371,11 @@ function GameUIPveAttack:CreateAttackButton()
                 end,nil,nil,nil,nil,_("前往"))
                 return
             end
-            self:Attack()
+
+            UIKit:showSendTroopMessageDialog(function()
+                self:Attack()
+            end, "soldierMaterials",_("士兵材料"))
+
             -- self:UseStrength(function()
             -- event.target:setTouchEnabled(true)
             -- end, sections[self.pve_name].staminaUsed):addTo(event.target)
