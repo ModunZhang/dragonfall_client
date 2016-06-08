@@ -411,6 +411,10 @@ function GameUIAlliance:OnJoinListActionButtonClicked(idx)
         GameGlobalUI:showTips(_("提示"),string.format(_("加入%s联盟成功!"),alliance.name))
     end)
     else
+        if #User.requestToAllianceEvents >= 5 then
+            UIKit:showMessageDialog(_("提示"),_("联盟申请已满，请撤消部分申请后再来申请"))
+            return 
+        end
         for i,v in ipairs(User.requestToAllianceEvents) do
             if v.id == alliance.id then
                 UIKit:showMessageDialog(_("提示"),_("对此联盟的申请已发出,请耐心等候审核"))

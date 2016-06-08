@@ -302,6 +302,10 @@ function GameUIAllianceInfo:OnJoinActionClicked(joinType,sender)
             UIKit:showMessageDialog(_("提示"),_("不能申请加入其他服务器的联盟"))
             return
         end
+        if #User.requestToAllianceEvents >= 5 then
+            UIKit:showMessageDialog(_("提示"),_("联盟申请已满，请撤消部分申请后再来申请"))
+            return 
+        end
         for i,v in ipairs(User.requestToAllianceEvents) do
             if v.id == self:GetAllianceData().id then
                 UIKit:showMessageDialog(_("提示"),_("对此联盟的申请已发出,请耐心等候审核"))
