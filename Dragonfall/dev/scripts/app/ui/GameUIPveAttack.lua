@@ -406,7 +406,8 @@ function GameUIPveAttack:Attack()
             }
             local be_star = self.user:GetPveSectionStarByName(self.pve_name)
 
-            NetManager:getAttackPveSectionPromise(self.pve_name, dragonType, soldiers):done(function()
+            NetManager:getAttackPveSectionPromise(self.pve_name, dragonType, soldiers):catch(function(err)
+            end):done(function()
                 display.getRunningScene():GetSceneLayer():RefreshPve()
             end):done(function(response)
                 local report = self:DecodeReport(response.msg.fightReport, dragon, soldiers)
