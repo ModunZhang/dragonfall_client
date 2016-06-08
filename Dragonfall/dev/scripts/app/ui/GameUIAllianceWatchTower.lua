@@ -248,8 +248,16 @@ function GameUIAllianceWatchTower:CreateBeStrikedContent()
             if event.name == "CLICKED_EVENT" then
                 local fromAlliance = beStriked_event.fromAlliance
                 local x,y = DataUtils:GetAbsolutePosition(fromAlliance.mapIndex, fromAlliance.location.x, fromAlliance.location.y)
-                display.getRunningScene():GotoPosition(x,y)
-                parent:LeftButtonClicked()
+                if display.getRunningScene().__cname ~= "AllianceDetailScene" then
+                    app:EnterMyAllianceScene({
+                        mapIndex = fromAlliance.mapIndex,
+                        x = fromAlliance.location.x,
+                        y = fromAlliance.location.y,
+                    })
+                else
+                    display.getRunningScene():GotoPosition(x,y)
+                    parent:LeftButtonClicked()
+                end
             end
         end)
         if parent:GetWatchTowerLevel() > 1 then
@@ -446,8 +454,16 @@ function GameUIAllianceWatchTower:CreateAttackContent()
             if event.name == "CLICKED_EVENT" then
                 local toAlliance = att_event.toAlliance
                 local x,y = DataUtils:GetAbsolutePosition(toAlliance.mapIndex, toAlliance.location.x, toAlliance.location.y)
-                display.getRunningScene():GotoPosition(x,y)
-                parent:LeftButtonClicked()
+                if display.getRunningScene().__cname ~= "AllianceDetailScene" then
+                    app:EnterMyAllianceScene({
+                        mapIndex = toAlliance.mapIndex,
+                        x = toAlliance.location.x,
+                        y = toAlliance.location.y,
+                    })
+                else
+                    display.getRunningScene():GotoPosition(x,y)
+                    parent:LeftButtonClicked()
+                end
             end
         end)
         dragon_head:setDragonImg(att_event.attackPlayerData.dragon.type)

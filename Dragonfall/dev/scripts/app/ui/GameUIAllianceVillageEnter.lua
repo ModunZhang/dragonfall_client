@@ -24,6 +24,7 @@ function GameUIAllianceVillageEnter:GetVillageInfo()
     local info = self:GetFocusAlliance():GetAllianceVillageInfosById(self:GetBuilding().id)
     if not info then
         self:LeftButtonClicked()
+        return
     end
     return info
 end
