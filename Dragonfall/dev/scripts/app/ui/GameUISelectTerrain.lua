@@ -5,6 +5,7 @@ local UICanCanelCheckBoxButtonGroup = import('.UICanCanelCheckBoxButtonGroup')
 local UICheckBoxButton = import(".UICheckBoxButton")
 local WidgetPopDialog = import("..widget.WidgetPopDialog")
 local NewsManager_ = import("..entity.NewsManager")
+local ActivityManager_ = import("..entity.ActivityManager")
 local GameUISelectTerrain = class("GameUISelectTerrain", WidgetPopDialog)
 local intInit = GameDatas.PlayerInitData.intInit
 
@@ -31,7 +32,11 @@ function GameUISelectTerrain:OnMoveInStage()
         end
         return true
     end)
-    self:RefreshDragon("grassLand")
+    local terrains = {"grassLand", "desert", "iceField"}
+    math.randomseed(tostring(os.time()):reverse():sub(1, 6))
+    local index = math.random(#terrains)
+    self.ui_map.check_box_group:sureSelectedButtonIndex(index)
+    self:RefreshDragon(terrains[index])
 
     self.ui_map.select:onButtonClicked(function(event)
         self.ui_map.select:setButtonEnabled(false)
@@ -44,7 +49,12 @@ function GameUISelectTerrain:OnMoveInStage()
                 if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEventAF then
                     ext.market_sdk.onPlayerEventAF("强制引导-选择地形", "empty")
                 end
-                NewsManager = NewsManager_.new()
+                if not NewsManager then
+                    NewsManager = NewsManager_.new()
+                end
+                if not ActivityManager then
+                    ActivityManager = ActivityManager_.new()
+                end
                 self.select_promise:resolve()
             end):fail(function()
                 self.ui_map.select:setButtonEnabled(true)

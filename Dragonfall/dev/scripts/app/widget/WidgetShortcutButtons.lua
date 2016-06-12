@@ -8,7 +8,6 @@ local WidgetAutoOrderBuffButton = import(".WidgetAutoOrderBuffButton")
 local WidgetAutoOrderGachaButton = import(".WidgetAutoOrderGachaButton")
 local WidgetAutoOrderAwardButton = import(".WidgetAutoOrderAwardButton")
 local WidgetNumberTips = import(".WidgetNumberTips")
-local DragonManager = import("..entity.DragonManager")
 
 local WidgetLight = import(".WidgetLight")
 local UILib = import("..ui.UILib")
@@ -27,8 +26,16 @@ end)
 function WidgetShortcutButtons:ctor(city)
     self.city = city
     local order = WidgetAutoOrder.new(WidgetAutoOrder.ORIENTATION.BOTTOM_TO_TOP,50,false)
-        :addTo(self):pos(display.left + 50, display.bottom + 250)
-
+        :addTo(self):pos(display.left + 50, display.bottom + 266)
+    order:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
+        if display.getRunningScene():GetHomePage().__cname == "GameUIHome" and display.getRunningScene():GetHomePage().quest_bar_bg then
+            local node = display.getRunningScene():GetHomePage().quest_bar_bg
+            local attackWorldPoint = node:convertToWorldSpace(cc.p(0,90))
+            local attackNodePoint = order:getParent():convertToNodeSpace(attackWorldPoint)
+            order:setPositionY(attackNodePoint.y)
+        end
+    end)
+    order:scheduleUpdate()
     --在线活动
     local activity_button = WidgetAutoOrderAwardButton.new():scale(SCALE)
     order:AddElement(activity_button)
@@ -54,32 +61,6 @@ function WidgetShortcutButtons:ctor(city)
     end
     order:AddElement(alliance_belvedere_button)
 
-    -- if not UtilsForDragon:IsDragonAllHated(self.city:GetUser()) then
-    --     local this = self
-    --     local dragon_egg_btn = display.newNode():scale(SCALE)
-
-    --     UIKit:ButtonAddScaleAction(cc.ui.UIPushButton.new(
-    --         {normal = "dragon_eggs_68x80.png", pressed = "dragon_eggs_68x80.png"}
-    --     ):onButtonClicked(function(event)
-    --         if not dragon_egg_btn:CheckVisible() then
-    --             dragon_egg_btn:hide()
-    --         else
-    --             local dragon = UtilsForDragon:GetCanHatedDragon(this.city:GetUser())
-    --             if dragon then
-    --                 UIKit:newGameUI("GameUIDragonEyrieMain", self.city, self.city:GetFirstBuildingByType("dragonEyrie"), "dragon", false, dragon.type):AddToCurrentScene(true)
-    --             end
-    --         end
-    --     end)):addTo(dragon_egg_btn)
-
-    --     function dragon_egg_btn:CheckVisible()
-    --         return not not UtilsForDragon:GetCanHatedDragon(this.city:GetUser())
-    --     end
-    --     function dragon_egg_btn:GetElementSize()
-    --         return {width = 68,height = 80}
-    --     end
-    --     order:AddElement(dragon_egg_btn)
-    -- end
-
 
     --进入三级地图按钮
     local world_map_btn_bg = display.newSprite("background_86x86.png")
@@ -102,7 +83,7 @@ function WidgetShortcutButtons:ctor(city)
         return world_map_btn_bg:getContentSize()
     end
     function world_map_btn_bg:GetXY()
-        return {x = 0 ,y = 46}
+        return {x = 0 ,y = 30}
     end
     self.world_map_btn_bg = world_map_btn_bg
     order:AddElement(world_map_btn_bg)
@@ -243,7 +224,8 @@ function WidgetShortcutButtons:onEnter()
     User:AddListenOnType(self, "productionTechEvents")
     -- User:AddListenOnType(self, "iapGifts")
     User:AddListenOnType(self, "vipEvents")
-    self.city:GetDragonEyrie():GetDragonManager():AddListenOnType(self,DragonManager.LISTEN_TYPE.OnBasicChanged)
+    User:AddListenOnType(self, "dragons")
+    User:AddListenOnType(self, "activities")
 
     NewsManager:AddListenOnType(self,NewsManager.LISTEN_TYPE.UNREAD_NEWS_CHANGED)
 
@@ -265,7 +247,8 @@ function WidgetShortcutButtons:onExit()
     User:RemoveListenerOnType(self, "productionTechEvents")
     -- User:RemoveListenerOnType(self, "iapGifts")
     User:RemoveListenerOnType(self, "vipEvents")
-    self.city:GetDragonEyrie():GetDragonManager():RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnBasicChanged)
+    User:RemoveListenerOnType(self, "dragons")
+    User:RemoveListenerOnType(self, "activities")
     NewsManager:RemoveListenerOnType(self,NewsManager.LISTEN_TYPE.UNREAD_NEWS_CHANGED)
 
     local my_allaince = Alliance_Manager:GetMyAlliance()
@@ -336,13 +319,16 @@ end
 function WidgetShortcutButtons:OnAllianceDataChanged_shrineEvents(alliance, deltaData)
     self.right_top_order:RefreshOrder()
 end
+function WidgetShortcutButtons:OnUserDataChanged_dragons()
+    self.right_top_order:RefreshOrder()
+end
 function WidgetShortcutButtons:OnUserDataChanged_vipEvents()
 -- self.left_order_group:RefreshOrder()
 end
-function WidgetShortcutButtons:OnBasicChanged()
-    self.right_top_order:RefreshOrder()
-    -- self.left_order_group:RefreshOrder()
+function WidgetShortcutButtons:OnUserDataChanged_activities()
+    self:CheckAllianceRewardCount()
 end
+
 function WidgetShortcutButtons:OnMapDataChanged()
     self.right_top_order:RefreshOrder()
 end
@@ -356,6 +342,8 @@ end
 function WidgetShortcutButtons:CheckAllianceRewardCount()
     if not self.tips_button then return end
     local newsCount = NewsManager:GetUnreadCount()
+    local activityCount = ActivityManager:GetHaveRewardActivitiesCount()
+    
     local award_num = 0
     if User:HaveEveryDayLoginReward() then
         award_num = award_num + 1
@@ -366,7 +354,7 @@ function WidgetShortcutButtons:CheckAllianceRewardCount()
     if User:HavePlayerLevelUpReward() then
         award_num = award_num + 1
     end
-    self.tips_button.tips_button_count:SetNumber(newsCount + award_num)
+    self.tips_button.tips_button_count:SetNumber(newsCount + award_num + activityCount)
 end
 
 return WidgetShortcutButtons

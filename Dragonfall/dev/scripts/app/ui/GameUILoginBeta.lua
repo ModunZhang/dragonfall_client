@@ -496,12 +496,15 @@ function GameUILoginBeta:GetServerInfo()
                     self:loadServerJson()
                 end
             else
-                local SIMULATION_WORKING_TIME = 3
-                self:performWithDelay(function()
-                    self:showErrorForReTry(_("获取服务器信息失败!"),function()
+                --1是连接游戏服务器失败 0是本地网络有问题
+                GameUtils:PingSearchEngine(function(success)
+                    local errorCode = success and 1 or 0
+                    local msg = string.format("%s[%d]",_("获取服务器信息失败!"),errorCode)
+                    UIKit:NoWaitForNet()
+                    device.showAlert(_("错误"),msg,{ _("重试") }, function(event)
                         self:GetServerInfo()
                     end)
-                end, SIMULATION_WORKING_TIME)
+                end)
             end
         end)
     end
@@ -573,10 +576,12 @@ end
 
 function GameUILoginBeta:connectGateServer()
     NetManager:getConnectGateServerPromise():catch(function(err)
-        
+
     end):done(function()
         -- self:setProgressPercent(80)
-        self:getLogicServerInfo()
+        if not tolua.isnull(self) then
+            self:getLogicServerInfo()
+        end
     end):fail(function()
         -- 1是连接游戏服务器失败 0是本地网络有问题
         GameUtils:PingSearchEngine(function(success)
@@ -698,7 +703,7 @@ end
 function GameUILoginBeta:showError(msg,cb)
     UIKit:NoWaitForNet()
     msg = msg or ""
-    UIKit:showKeyMessageDialog(_("提示"),msg, function()
+    device.showAlert(_("错误"), msg, { _("确定") }, function(event)
         if cb then cb() end
     end)
 end
@@ -758,7 +763,7 @@ function GameUILoginBeta:donwLoadFilesWithFileList()
     local updateFileList = {}
     for k, v in pairs(serverFileList.files) do
         local localFile = localFileList.files[k]
-        --不再比对tag值 
+        --不再比对tag值
         if not localFile or localFile.crc32 ~= v.crc32 then
             v.path = k
             table.insert(updateFileList, v)
@@ -803,7 +808,9 @@ function GameUILoginBeta:downloadFiles(files)
             if (percent ~= currentPercent) then
                 percent = currentPercent
                 self:setProgressPercent(percent)
-                self:setProgressText(string.format(_("更新进度:%d%%"), percent))
+                local msg = string.format(_("更新进度:%d%%"), percent)
+                msg = string.format("%s (%0.1fK/%0.1fK)",msg,(self.m_currentSize + current)/1024,self.m_totalSize/1024)
+                self:setProgressText(msg)
             end
         end)
     else

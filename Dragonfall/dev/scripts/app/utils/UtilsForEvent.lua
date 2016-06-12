@@ -49,6 +49,7 @@ function UtilsForEvent:GetSpeedUpPrice(event,eventType,time)
         if speedUpTime > 0 then
             return DataUtils:getGemByTimeInterval(speedUpTime)
         end
+        return 0
     else
         local leftTime = time or self:GetEventInfo(event)
         return DataUtils:getGemByTimeInterval(leftTime)
@@ -160,6 +161,9 @@ function UtilsForEvent:GetMarchReturnEventPrefix(event)
     return string.format(_("返回中 (%s)"), target_pos)
 end
 
+function UtilsForEvent:GetVillageConfig(villageInfo)
+    return GameDatas.AllianceVillage[villageInfo.name][villageInfo.level]
+end
 function UtilsForEvent:GetCollectPercent(event)
     local collectTime = app.timer:GetServerTime() - event.startTime / 1000
     local time = (event.finishTime - event.startTime) / 1000

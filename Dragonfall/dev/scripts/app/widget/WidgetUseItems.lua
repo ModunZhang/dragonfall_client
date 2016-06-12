@@ -20,13 +20,13 @@ function WidgetUseItems:Create(params)
         dialog = self:OpenHeroBloodDialog(item_name)
     elseif item_name == "stamina_1" then
         dialog = self:OpenStrengthDialog(item_name)
-    elseif item_name == "dragonHp_1" then
+    elseif string.find(item_name,"dragonHp") then
         if params.dragon then
             dialog = self:OpenOneDragonHPItemDialog(item_name, params.dragon)
         else
             dialog = self:OpenIncreaseDragonExpOrHp(item_name)
         end
-    elseif item_name == "dragonExp_1" then
+    elseif string.find(item_name,"dragonExp") then
         if params.dragon then
             dialog = self:OpenOneDragonItemExpDialog(item_name, params.dragon)
         else
@@ -226,7 +226,7 @@ function WidgetUseItems:OpenHeroBloodDialog( item_name )
     }):align(display.LEFT_CENTER,40,blood_bg:getContentSize().height/2)
         :addTo(blood_bg)
     local blood_value = UIKit:ttfLabel({
-        text = User:GetResValueByType("blood"),
+        text = string.th000(User:GetResValueByType("blood")),
         size = 22,
         color = 0x28251d,
     }):align(display.RIGHT_CENTER,blood_bg:getContentSize().width-40,blood_bg:getContentSize().height/2)
@@ -255,7 +255,7 @@ function WidgetUseItems:OpenHeroBloodDialog( item_name )
         end
     end
     dialog:scheduleAt(function()
-        blood_value:setString(User:GetResValueByType("blood"))
+        blood_value:setString(string.th000(User:GetResValueByType("blood")))
     end)
     return dialog
 end
@@ -266,21 +266,25 @@ function WidgetUseItems:OpenOneDragonItemExpDialog( item_name ,dragon)
     local body = dialog:GetBody()
     local size = body:getContentSize()
     UIKit:ttfLabel({
-        text = Localize.dragon[dragon:Type()],
+        text = Localize.dragon[dragon.type],
         size = 28,
         color = 0x403c2f,
     }):align(display.CENTER,size.width/2,size.height-45)
         :addTo(body)
     local blood_bg = display.newScale9Sprite("back_ground_398x97.png",size.width/2,size.height-100,cc.size(556,58),cc.rect(10,10,378,77))
         :addTo(body)
+
+    local levelMax = UtilsForDragon:GetDragonLevelMax(dragon)
     local dragon_level = UIKit:ttfLabel({
-        text = "LV"..dragon:Level().."/"..dragon:GetMaxLevel(),
+        text = "LV"..dragon.level.."/"..levelMax,
         size = 22,
         color = 0x28251d,
     }):align(display.LEFT_CENTER,20,blood_bg:getContentSize().height/2)
         :addTo(blood_bg)
+
+    local expNeed = UtilsForDragon:GetDragonExpNeed(dragon)
     local dragon_value = UIKit:ttfLabel({
-        text = dragon:Exp().."/"..dragon:GetMaxExp(),
+        text = dragon.exp.."/"..expNeed,
         size = 22,
         color = 0x28251d,
     }):align(display.RIGHT_CENTER,blood_bg:getContentSize().width-20,blood_bg:getContentSize().height/2)
@@ -306,12 +310,12 @@ function WidgetUseItems:OpenOneDragonItemExpDialog( item_name ,dragon)
                 end,
                 function ()
                     NetManager:getUseItemPromise(item_name,{[item_name] = {
-                        dragonType = dragon:Type()
+                        dragonType = dragon.type
                     }})
                 end,
                 function ()
                     NetManager:getBuyAndUseItemPromise(item_name,{[item_name] = {
-                        dragonType = dragon:Type()
+                        dragonType = dragon.type
                     }})
                 end,
                 which_bg
@@ -319,18 +323,21 @@ function WidgetUseItems:OpenOneDragonItemExpDialog( item_name ,dragon)
             which_bg = not which_bg
         end
     end
-    -- 添加龙的信息监听
-    local dragon_manager = City:GetDragonEyrie():GetDragonManager()
-    dragon_manager:AddListenOnType(dialog,dragon_manager.LISTEN_TYPE.OnBasicChanged)
-    dialog:addCloseCleanFunc(function ()
-        dragon_manager:RemoveListenerOnType(dialog,dragon_manager.LISTEN_TYPE.OnBasicChanged)
-    end)
+    function dialog:OnUserDataChanged_dragons(userData, deltaData)
+        if deltaData("dragons") then
+            local dragon = userData.dragons[dragon.type]
+            local expNeed = UtilsForDragon:GetDragonExpNeed(dragon)
+            dragon_value:setString(dragon.exp.."/"..expNeed)
+            exp_icon:setPositionX(dragon_value:getPositionX() - dragon_value:getContentSize().width - 20)
 
-    function dialog:OnBasicChanged()
-        dragon_value:setString(dragon:Exp().."/"..dragon:GetMaxExp())
-        exp_icon:setPositionX(dragon_value:getPositionX() - dragon_value:getContentSize().width - 20)
-        dragon_level:setString("LV"..dragon:Level().."/"..dragon:GetMaxLevel())
+            local levelMax = UtilsForDragon:GetDragonLevelMax(dragon)
+            dragon_level:setString("LV"..dragon.level.."/"..levelMax)
+        end
     end
+    User:AddListenOnType(dialog, "dragons")
+    dialog:addCloseCleanFunc(function ()
+        User:RemoveListenerOnType(dialog, "dragons")
+    end)
     return dialog
 end
 
@@ -340,7 +347,7 @@ function WidgetUseItems:OpenOneDragonHPItemDialog( item_name ,dragon)
     local body = dialog:GetBody()
     local size = body:getContentSize()
     UIKit:ttfLabel({
-        text = Localize.dragon[dragon:Type()],
+        text = Localize.dragon[dragon.type],
         size = 28,
         color = 0x403c2f,
     }):align(display.CENTER,size.width/2,size.height-45)
@@ -352,7 +359,10 @@ function WidgetUseItems:OpenOneDragonHPItemDialog( item_name ,dragon)
         :addTo(body)
         :align(display.CENTER, size.width/2,size.height-100)
     progressTimer = UIKit:commonProgressTimer("progress_bar_540x40_2.png"):addTo(bg):align(display.LEFT_CENTER,0,20)
-    progressTimer:setPercentage(math.floor(dragon:Hp()/dragon:GetMaxHP()*100))
+
+    local hp = UtilsForDragon:GetDragonHp(User, dragon.type)
+    local hpMax = UtilsForDragon:GetDragonMaxHp(User.dragons[dragon.type])
+    progressTimer:setPercentage(math.floor(hp/hpMax*100))
     local iconbg = display.newSprite("drgon_process_icon_bg.png")
         :addTo(bg)
         :align(display.LEFT_BOTTOM, -13,-2)
@@ -360,7 +370,7 @@ function WidgetUseItems:OpenOneDragonHPItemDialog( item_name ,dragon)
         :addTo(iconbg)
         :pos(iconbg:getContentSize().width/2,iconbg:getContentSize().height/2)
     local dragon_hp_label = UIKit:ttfLabel({
-        text = dragon:Hp().."/"..dragon:GetMaxHP(),
+        text = string.formatnumberthousands(hp).."/"..string.formatnumberthousands(hpMax),
         color = 0xfff3c7,
         shadow = true,
         size = 20
@@ -382,12 +392,12 @@ function WidgetUseItems:OpenOneDragonHPItemDialog( item_name ,dragon)
                 end,
                 function ()
                     NetManager:getUseItemPromise(item_name,{[item_name] = {
-                        dragonType = dragon:Type()
+                        dragonType = dragon.type
                     }})
                 end,
                 function ()
                     NetManager:getBuyAndUseItemPromise(item_name,{[item_name] = {
-                        dragonType = dragon:Type()
+                        dragonType = dragon.type
                     }})
                 end,
                 which_bg
@@ -395,16 +405,12 @@ function WidgetUseItems:OpenOneDragonHPItemDialog( item_name ,dragon)
             which_bg = not which_bg
         end
     end
-    -- 添加龙的信息监听
-    local dragon_manager = City:GetDragonEyrie():GetDragonManager()
-    dragon_manager:AddListenOnType(dialog,dragon_manager.LISTEN_TYPE.OnHPChanged)
-    dialog:addCloseCleanFunc(function ()
-        dragon_manager:RemoveListenerOnType(dialog,dragon_manager.LISTEN_TYPE.OnHPChanged)
+    scheduleAt(dialog, function()
+        local hp = UtilsForDragon:GetDragonHp(User, dragon.type)
+        local hpMax = UtilsForDragon:GetDragonMaxHp(User.dragons[dragon.type])
+        dragon_hp_label:setString(string.formatnumberthousands(hp).."/"..string.formatnumberthousands(hpMax))
+        progressTimer:setPercentage(math.floor(hp/hpMax*100))
     end)
-    function dialog:OnHPChanged()
-        dragon_hp_label:setString(dragon:Hp().."/"..dragon:GetMaxHP())
-        progressTimer:setPercentage(math.floor(dragon:Hp()/dragon:GetMaxHP()*100))
-    end
     return dialog
 end
 function WidgetUseItems:OpenStrengthDialog( item_name )
@@ -450,14 +456,14 @@ function WidgetUseItems:OpenStrengthDialog( item_name )
     dialog:scheduleAt(function()
         local value = User:GetResValueByType("stamina")
         local res = User:GetResProduction("stamina")
-        strength_label:setString(string.format(_("%s(+%d/每小时)"), string.formatnumberthousands(value), res.output))
+        strength_label:setString(string.format(_("%s(+%d/每小时)"), string.th000(value), res.output))
     end)
     return dialog
 end
 function WidgetUseItems:OpenIncreaseDragonExpOrHp( item_name )
     local increase_type = string.split(item_name,"_")[1]
-    local dragon_manager = City:GetFirstBuildingByType("dragonEyrie"):GetDragonManager()
-    local dragons = dragon_manager:GetDragonsSortWithPowerful()
+
+    local dragons = UtilsForDragon:GetDragonsByPowerSeq(User)
     local dragon_num = LuaUtils:table_size(dragons)
     if dragon_num==0 then
         UIKit:showMessageDialog(_("提示"),_("您还没孵化巨龙,快去龙巢孵化一只吧!"))
@@ -479,7 +485,7 @@ function WidgetUseItems:OpenIncreaseDragonExpOrHp( item_name )
         local dragon_bg = display.newSprite("dragon_bg_114x114.png")
             :align(display.LEFT_CENTER, 7,dragon_frame:getContentSize().height/2)
             :addTo(dragon_frame)
-        local dragon_img = display.newSprite(UILib.dragon_head[dragon:Type()])
+        local dragon_img = display.newSprite(UILib.dragon_head[dragon.type])
             :align(display.CENTER, dragon_bg:getContentSize().width/2, dragon_bg:getContentSize().height/2+5)
             :addTo(dragon_bg)
         local box_bg = display.newSprite("box_426X126.png")
@@ -487,14 +493,19 @@ function WidgetUseItems:OpenIncreaseDragonExpOrHp( item_name )
             :addTo(dragon_frame)
         -- 龙，等级
         local dragon_name = UIKit:ttfLabel({
-            text = Localize.dragon[dragon:Type()] .."(LV "..dragon:Level()..")",
+            text = Localize.dragon[dragon.type] .."(LV "..dragon.level..")",
             size = 22,
             color = 0x514d3e,
         }):align(display.LEFT_CENTER,20,100)
             :addTo(box_bg,2)
 
         -- 经验 or hp
-        local text_1 = increase_type == "dragonHp" and string.format( _("生命值 %d/%d"), dragon:Hp(), dragon:GetMaxHP() ) or string.format( _("经验值 %d/%d"), dragon:Exp(), dragon:GetMaxExp() )
+        local expNeed = UtilsForDragon:GetDragonExpNeed(dragon)
+        local hp = UtilsForDragon:GetDragonHp(User, dragon.type)
+        local hpMax = UtilsForDragon:GetDragonMaxHp(User.dragons[dragon.type])
+        local text_1 = increase_type == "dragonHp" and
+            string.format(_("生命值 %s/%s"), string.th000(hp), string.th000(hpMax)) or
+            string.format( _("经验值 %d/%d"), dragon.exp, expNeed)
         local dragon_vitality = UIKit:ttfLabel({
             text = text_1,
             size = 20,
@@ -503,9 +514,10 @@ function WidgetUseItems:OpenIncreaseDragonExpOrHp( item_name )
             :addTo(box_bg)
 
         -- 龙状态
-        local d_status = dragon:GetLocalizedStatus()
-        local s_color = dragon:IsFree() and 0x007c23 or 0x7e0000
-        if dragon:IsDead() then
+        local d_status = UtilsForDragon:GetDragonStatusDesc(UtilsForDragon:GetDragon(User, dragon.type))
+        local s_color = dragon.status == "free" and 0x007c23 or 0x7e0000
+
+        if UtilsForDragon:IsDragonDead(User, dragon.type) then
             s_color = 0x7e0000
         end
         local dragon_status = UIKit:ttfLabel({
@@ -521,7 +533,7 @@ function WidgetUseItems:OpenIncreaseDragonExpOrHp( item_name )
             :addTo(box_bg)
 
         function dragon_frame:GetDragonType()
-            return dragon:Type()
+            return dragon.type
         end
         function dragon_frame:setCheckBoxButtonSelected( isSelected )
             check_box:setButtonSelected(isSelected)
@@ -573,11 +585,13 @@ function WidgetUseItems:OpenIncreaseDragonExpOrHp( item_name )
         end
     end
     -- 默认选中最强的并且可以出战的龙,如果都不能出战,则默认最强龙
-    local default_dragon_type = dragon_manager:GetCanFightPowerfulDragonType() ~= "" and dragon_manager:GetCanFightPowerfulDragonType() or dragon_manager:GetPowerfulDragonType()
+    local fightPowerfulType = UtilsForDragon:GetCanFightPowerfulDragonType(User)
+    local powerfulType = UtilsForDragon:GetPowerfulDragonType(User)
+    local default_dragon_type = fightPowerfulType ~= "" and fightPowerfulType or powerfulType
     local default_select_dragon_index
     local dragon_boxes = {}
     for k,dragon in ipairs(dragons) do
-        if dragon:Level()>0 then
+        if dragon.level > 0 then
             local dragon_box = createDragonFrame(dragon):align(display.LEFT_CENTER, 30,origin_y-add_count*gap_y)
                 :addTo(body)
                 :OnStateChanged(function (event)
@@ -586,7 +600,7 @@ function WidgetUseItems:OpenIncreaseDragonExpOrHp( item_name )
 
             add_count = add_count + 1
             table.insert(optional_dragon, dragon_box)
-            if dragon:Type() == default_dragon_type then
+            if dragon.type == default_dragon_type then
                 dragon_box:setCheckBoxButtonSelected(true)
             end
             table.insert(dragon_boxes, dragon_box)
@@ -618,6 +632,22 @@ function WidgetUseItems:OpenIncreaseDragonExpOrHp( item_name )
                     break
                 end
             end
+            if UtilsForDragon:IsDragonDead(User, select_dragonType) then
+                UIKit:showMessageDialog(_("提示"),_("选择的龙已经死亡")):CreateCancelButton(
+                    {
+                        listener = function ()
+                            if UIKit:GetUIInstance("GameUIItems") then
+                                UIKit:GetUIInstance("GameUIItems"):LeftButtonClicked()
+                            end
+                            UIKit:newGameUI("GameUIDragonEyrieMain", City, City:GetFirstBuildingByType("dragonEyrie"), "dragon", false, select_dragonType):AddToCurrentScene(true)
+                            dialog:LeftButtonClicked()
+                        end,
+                        btn_name= _("复活"),
+                        btn_images = {normal = "blue_btn_up_148x58.png",pressed = "blue_btn_down_148x58.png"}
+                    }
+                )
+                return
+            end
             NetManager:getUseItemPromise(item_name,{[item_name] = {
                 dragonType = select_dragonType
             }})
@@ -630,37 +660,55 @@ function WidgetUseItems:OpenIncreaseDragonExpOrHp( item_name )
                     break
                 end
             end
+            if UtilsForDragon:IsDragonDead(User, select_dragonType) then
+                UIKit:showMessageDialog(_("提示"),_("选择的龙已经死亡")):CreateCancelButton(
+                    {
+                        listener = function ()
+                            if UIKit:GetUIInstance("GameUIItems") then
+                                UIKit:GetUIInstance("GameUIItems"):LeftButtonClicked()
+                            end
+                            UIKit:newGameUI("GameUIDragonEyrieMain", City, City:GetFirstBuildingByType("dragonEyrie"), "dragon", false, select_dragonType):AddToCurrentScene(true)
+                            dialog:LeftButtonClicked()
+                        end,
+                        btn_name= _("复活"),
+                        btn_images = {normal = "blue_btn_up_148x58.png",pressed = "blue_btn_down_148x58.png"}
+                    }
+                )
+                return
+            end
             NetManager:getBuyAndUseItemPromise(item_name,{[item_name] = {
                 dragonType = select_dragonType
             }})
         end
     ):addTo(item_box_bg):align(display.CENTER,item_box_bg:getContentSize().width/2,item_box_bg:getContentSize().height/2)
 
-    -- 添加龙的信息监听
-    local dragon_manager = City:GetDragonEyrie():GetDragonManager()
-    dragon_manager:AddListenOnType(dialog,dragon_manager.LISTEN_TYPE.OnBasicChanged)
-    dragon_manager:AddListenOnType(dialog,dragon_manager.LISTEN_TYPE.OnHPChanged)
+    function dialog:OnUserDataChanged_dragons(userData, deltaData)
+        if deltaData("dragons") then
+            if increase_type == "dragonExp" then
+                for i,v in ipairs(dragon_boxes) do
+                    local dragon = UtilsForDragon:GetDragon(User, v:GetDragonType())
+                    local expNeed = UtilsForDragon:GetDragonExpNeed(dragon)
+                    v:setDragonVitality(string.format( _("经验值 %d/%d"), dragon.exp, expNeed))
+                    v:setDragonName(Localize.dragon[dragon.type] .."(LV "..dragon.level..")")
+                end
+            end
+        end
+    end
+    User:AddListenOnType(dialog, "dragons")
     dialog:addCloseCleanFunc(function ()
-        dragon_manager:RemoveListenerOnType(dialog,dragon_manager.LISTEN_TYPE.OnBasicChanged)
-        dragon_manager:RemoveListenerOnType(dialog,dragon_manager.LISTEN_TYPE.OnHPChanged)
+        User:RemoveListenerOnType(dialog, "dragons")
     end)
-    function dialog:OnHPChanged()
+
+    scheduleAt(dialog, function()
         if increase_type == "dragonHp" then
             for i,v in ipairs(dragon_boxes) do
-                local dragon = dragon_manager:GetDragon(v:GetDragonType())
-                v:setDragonVitality( string.format( _("生命值 %d/%d"), dragon:Hp(), dragon:GetMaxHP() ) )
+                local dragon = UtilsForDragon:GetDragon(User, v:GetDragonType())
+                local hp = UtilsForDragon:GetDragonHp(User, dragon.type)
+                local hpMax = UtilsForDragon:GetDragonMaxHp(User.dragons[dragon.type])
+                v:setDragonVitality( string.format( _("生命值 %s/%s"), string.th000(hp), string.th000(hpMax)))
             end
         end
-    end
-    function dialog:OnBasicChanged()
-        if increase_type == "dragonExp" then
-            for i,v in ipairs(dragon_boxes) do
-                local dragon = dragon_manager:GetDragon(v:GetDragonType())
-                v:setDragonVitality( string.format( _("经验值 %d/%d"), dragon:Exp(), dragon:GetMaxExp() ) )
-                v:setDragonName( Localize.dragon[dragon:Type()] .."(LV "..dragon:Level()..")")
-            end
-        end
-    end
+    end)
     return dialog
 end
 function WidgetUseItems:OpenChestDialog( item_name )
@@ -958,7 +1006,7 @@ function WidgetUseItems:OpenWarSpeedupDialog( item_name ,march_event, eventType)
                 end
             end
         end
-        
+
     end
     local alliance = Alliance_Manager:GetMyAlliance()
     alliance:AddListenOnType(dialog, "marchEvents")
@@ -1025,7 +1073,7 @@ function WidgetUseItems:OpenRetreatTroopDialog( item_name,event,eventType )
     dialog:scheduleAt(function()
         if UtilsForEvent:GetEventInfo(event) <= 0 then
             dialog:LeftButtonClicked()
-            return 
+            return
         end
         gem_label:setString(string.formatnumberthousands(User:GetGemValue()))
     end)
@@ -1140,42 +1188,7 @@ end
 
 
 
-
-
-
-
-
 return WidgetUseItems
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

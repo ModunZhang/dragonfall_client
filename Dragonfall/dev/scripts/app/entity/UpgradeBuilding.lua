@@ -65,7 +65,7 @@ function UpgradeBuilding:InstantUpgradeTo(level)
 end
 function UpgradeBuilding:GetUpgradeTimeToNextLevel()
     return UtilsForBuilding:GetLevelUpConfigBy(
-        self:BelongCity():GetUser(), 
+        self:BelongCity():GetUser(),
         {type = self:GetType(), level = self.level + 1}
     ).buildTime
 end
@@ -83,9 +83,9 @@ function UpgradeBuilding:GetLevel()
     return self.level
 end
 
-function UpgradeBuilding:IsNeedToUpdate()
-    return self.upgrade_to_next_level_time ~= 0
-end
+-- function UpgradeBuilding:IsNeedToUpdate()
+--     return self.upgrade_to_next_level_time ~= 0
+-- end
 function UpgradeBuilding:OnUserDataChanged(userData, current_time, location_info, house_location_info, deltaData, event)
     local level, finished_time, type_
     if self:IsHouse() then
@@ -115,7 +115,6 @@ function UpgradeBuilding:OnEvent(event)
     if event then
         self.unique_upgrading_key = event.id
         self.event = event
-        dump(event)
     else
         self.unique_upgrading_key = nil
         self.event = nil
@@ -148,7 +147,7 @@ function UpgradeBuilding:GetNextLevelPower()
     return self.config_building_function[self:GetType()][self:GetNextLevel()].power
 end
 function UpgradeBuilding:GetPower()
-    return self.config_building_function[self:GetType()][self:GetLevel()].power
+    return self.config_building_function[self:GetType()][self:GetEfficiencyLevel()].power
 end
 function UpgradeBuilding:GetLevelUpWood()
     local level = self.level
@@ -222,7 +221,7 @@ function UpgradeBuilding:IsBuildingUpgradeLegal()
         return UpgradeBuilding.NOT_ABLE_TO_UPGRADE.TILE_NOT_UNLOCKED
     end
     -- 是否达到建造上限
-    
+
     if UtilsForBuilding:GetFreeUnlockPoint(city:GetUser()) < 1 and self.level==0 then
         return UpgradeBuilding.NOT_ABLE_TO_UPGRADE.IS_MAX_UNLOCK
     end
@@ -337,7 +336,7 @@ end
 
 function UpgradeBuilding:getUpgradeNowNeedGems()
     return UtilsForBuilding:GetUpgradeNowGems(
-            self:BelongCity():GetUser(), 
+            self:BelongCity():GetUser(),
             {type = self.building_type , level = self:GetNextLevel()}
         )
 end
@@ -359,7 +358,7 @@ function UpgradeBuilding:getUpgradeRequiredGems()
     --当升级队列不足时，立即完成正在升级的建筑中所剩升级时间最少的建筑
     local shortest_event = UtilsForBuilding:GetBuildingEventsBySeq(User)[1]
     if UtilsForBuilding:GetFreeBuildQueueCount(User) == 0 and shortest_event then
-        local time = UtilsForEvent:GetEventInfo(shortest_event)     
+        local time = UtilsForEvent:GetEventInfo(shortest_event)
         required_gems = required_gems + DataUtils:getGemByTimeInterval(time)
     end
 

@@ -25,11 +25,11 @@ end
 
 local texture_data_file = ".texture_data"
 if device.platform == 'ios' then
-    texture_data_file = ".texture_data_iOS" 
+    texture_data_file = ".texture_data_iOS"
 elseif device.platform == 'android' then
-    texture_data_file = ".texture_data_android" 
+    texture_data_file = ".texture_data_android"
 elseif device.platform == 'winrt' then
-    texture_data_file = ".texture_data_wp" 
+    texture_data_file = ".texture_data_wp"
 end
 plist_texture_data     = import(texture_data_file)
 
@@ -60,9 +60,9 @@ if device.platform == 'android' and ext.isLowMemoryDevice() then
     end
     -- 更新查找单张图片从低画质的大图中查询
     for k,v in pairs(plist_texture_data) do
-        if type(v) == 'string' then 
+        if type(v) == 'string' then
             if low_ram_texture_name[k] then
-                plist_texture_data[k] = low_ram_texture_name[k] 
+                plist_texture_data[k] = low_ram_texture_name[k]
             end
         end
     end
@@ -111,7 +111,7 @@ end
 
 local pairs = pairs
 local ipairs = ipairs
--- 
+--
 local cache = cc.Director:getInstance():getTextureCache()
 function removeImageByKey(key)
     local cacheKey = key
@@ -125,7 +125,7 @@ function removeImageByKey(key)
             cacheKey = sdname
         end
     end
-    
+
     print("removeImageByKey", cacheKey)
     cache:removeTextureForKey(cacheKey)
 end
@@ -163,11 +163,8 @@ end
 -- rgb_888
 for i,v in ipairs{
     "fte_background.jpg",
-    "plus_right_desert.png",
-    "plus_right_iceField.png",
-    "plus_right_grassLand.png",
 } do
-    display.setTexturePixelFormat("fte_background.jpg", cc.TEXTURE2_D_PIXEL_FORMAT_RG_B888)
+    display.setTexturePixelFormat(v, cc.TEXTURE2_D_PIXEL_FORMAT_RG_B888)
 end
 -- 4444
 for i,v in ipairs{
@@ -220,7 +217,7 @@ function Sprite:setTexture(arg)
                 if FileUtils:isFileExist(sdname) then
                     arg = sdname
                     isSd = true
-                end 
+                end
             end
             old_setTexture(self,arg)
         end
@@ -540,7 +537,7 @@ function display.newScene(name)
     local WAI_TAG = 1234
     local scene = newScene(name)
     for k,_ in pairs(auto_cleanup) do
-        scene:markAutoCleanupImage(k)
+        -- scene:markAutoCleanupImage(k)
     end
     function scene:WaitForNet(delay)
         local child = self:getChildByTag(WAI_TAG)
@@ -616,7 +613,7 @@ function display.newSprite(...)
         if FileUtils:isFileExist(sdname) then
             args[1] = sdname
             isSd = true
-        end 
+        end
     end
     local sp = display.__newSprite(unpack(args))
     sp:setCascadeOpacityEnabled(true)
@@ -640,6 +637,9 @@ function display.newClippingRegionNode(...)
     node:setCascadeOpacityEnabled(true)
     return node
 end
+
+
+string.th000 = string.formatnumberthousands
 
 --打开json对null的支持
 local cjson = require("cjson")

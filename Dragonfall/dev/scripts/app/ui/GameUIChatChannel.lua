@@ -21,8 +21,8 @@ local PLAYERMENU_ZORDER = 201
 local BASE_CELL_HEIGHT  = 82
 local CELL_FIX_WIDTH    = 484
 
-local NAME_COLOR_SYSTEM = UIKit:hex2c3b(0x245f00) 
-local NAME_COLOR_NORMAL = UIKit:hex2c3b(0x005e6c) 
+local NAME_COLOR_SYSTEM = UIKit:hex2c3b(0x245f00)
+local NAME_COLOR_NORMAL = UIKit:hex2c3b(0x005e6c)
 
 function GameUIChatChannel:ctor(default_tag)
     GameUIChatChannel.super.ctor(self,City,_("聊天"))
@@ -249,17 +249,10 @@ function GameUIChatChannel:ShowTipsIf()
 end
 
 function GameUIChatChannel:GetChatIcon(icon)
-    -- if device.platform == 'winrt' then
-    --     local bg = display.newSprite("dragon_bg_68x68.png")
-    --     local icon = UIKit:GetPlayerIconOnly(icon):addTo(bg):align(display.LEFT_BOTTOM,-3, 1):scale(66/114)
-    --     bg.icon = icon
-    --     return bg
-    -- else
-        local bg = display.newSprite("box_102x102.png"):scale(62/114)
-        local icon = UIKit:GetPlayerIconOnly(icon):addTo(bg):align(display.LEFT_BOTTOM,4, 4):scale(0.72)
-        bg.icon = icon
-        return bg
-    -- end
+    local bg = display.newSprite("box_102x102.png"):scale(62/114)
+    local icon = UIKit:GetPlayerIconOnly(icon):addTo(bg):align(display.LEFT_BOTTOM,4, 4):scale(0.72)
+    bg.icon = icon
+    return bg
 end
 
 function GameUIChatChannel:GetChatItemCell()
@@ -474,7 +467,7 @@ function GameUIChatChannel:HandleCellUIData(mainContent,chat,update_time)
     local vipLabel = currentContent.vip_label
     local name_title = chat.allianceTag == "" and chat.name or string.format("[ %s ] %s",chat.allianceTag,chat.name)
     titleLabel:setString(name_title)
-    if not isSelf then 
+    if not isSelf then
         local system_flag = currentContent.system_flag
         if string.lower(chat.id) == 'system' and system_flag then
             system_flag:show()

@@ -6,7 +6,6 @@ local WidgetSpeedUp = import("..widget.WidgetSpeedUp")
 local GameUIDragonDeathSpeedUp = class("GameUIDragonDeathSpeedUp", WidgetSpeedUp)
 local GameUtils = GameUtils
 local Localize = import("..utils.Localize")
-local DragonManager = import("..entity.DragonManager")
 
 function GameUIDragonDeathSpeedUp:ctor(dragonType)
 	GameUIDragonDeathSpeedUp.super.ctor(self)

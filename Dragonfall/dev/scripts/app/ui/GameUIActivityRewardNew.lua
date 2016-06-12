@@ -150,34 +150,6 @@ function GameUIActivityRewardNew:RefreshUI()
     end
 end
 
-function GameUIActivityRewardNew:OnTimer(current_time)
-    if self.online_time_label and self.online_time then
-        local time = self.online_time + current_time
-        self.online_time_label:setString(GameUtils:formatTimeStyle1(time))
-        --item update
-        for k,v in pairs(self.need_update_online_item) do
-            local diff_time = config_online[k].onLineMinutes * 60 - time
-            if diff_time > 0 then
-                v.time_label:setString(GameUtils:formatTimeStyle1(diff_time))
-                print("GameUtils:formatTimeStyle1(time)---->",GameUtils:formatTimeStyle1(time),GameUtils:formatTimeStyle1(diff_time))
-            else
-                self:RefreshOnLineList(false)
-                break
-            end
-        end
-    end
-    if self.level_up_time_label then
-        self.player_level_up_time_residue = self.player_level_up_time - current_time
-        if self.player_level_up_time_residue > 0 then
-            self.level_up_time_label:setString(GameUtils:formatTimeStyle1(self.player_level_up_time_residue))
-        else
-            self.level_up_time_label:hide()
-            self.level_up_time_desc_label:hide()
-            self.level_up_state_label:show()
-        end
-    end
-end
-
 
 function GameUIActivityRewardNew:BuildUI()
     local height = height_config[self.REWARD_TYPE[self:GetRewardType()]]

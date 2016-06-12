@@ -35,19 +35,19 @@ function WidgetRankingList:ctor(type_)
 end
 local function rank_filter(response)
     local data = response.msg
-    local is_not_nil = data.myData.rank ~= json.null
+    local is_not_nil = data.myData.index ~= json.null
     if is_not_nil then
-        data.myData.rank = data.myData.rank + 1
+        data.myData.index = data.myData.index + 1
     end
-    -- if is_not_nil and data.datas[data.myData.rank] then
-    --     data.datas[data.myData.rank].is_mine = true
+    -- if is_not_nil and data.datas[data.myData.index] then
+    --     data.datas[data.myData.index].is_mine = true
     -- end
     -- table.sort(data.datas, function(a, b)
     --     return a.value > b.value
     -- end)
     -- for i,v in ipairs(data.datas) do
     --     if v.is_mine then
-    --         data.myData.rank = i
+    --         data.myData.index = i
     --     end
     -- end
     return response
@@ -153,7 +153,7 @@ function WidgetRankingList:LoadMore()
     end
 end
 function WidgetRankingList:ReloadRank(rank)
-    if rank.myData.rank == json.null then
+    if rank.myData.index == json.null then
         self.my_ranking:setString(_("暂无排名"))
     else
         local str
@@ -162,7 +162,7 @@ function WidgetRankingList:ReloadRank(rank)
         else
             str = self.drop_list:GetSelectedButtonTag() == "power" and _("我的联盟战斗力排行") or _("我的联盟击杀排行")
         end
-        self.my_ranking:setString(string.format("%s : %d", str, rank.myData.rank))
+        self.my_ranking:setString(string.format("%s : %d", str, rank.myData.index))
     end
     self.current_rank = rank
     self.listview:releaseAllFreeItems_()
@@ -265,7 +265,7 @@ function WidgetRankingList:CreatePlayerContentByIndex(idx)
     end
     local ranklist = self
     function item:SetIndex(index)
-        local is_mine = ranklist.current_rank.myData.rank == index
+        local is_mine = ranklist.current_rank.myData.index == index
         self.bg2:setVisible(index % 2 == 0 and not is_mine)
         self.bg3:setVisible(is_mine)
 
@@ -341,7 +341,7 @@ function WidgetRankingList:CreateAllianceContentByIndex(idx)
     end
     local ranklist = self
     function item:SetIndex(index)
-        local is_mine = ranklist.current_rank.myData.rank == index
+        local is_mine = ranklist.current_rank.myData.index == index
         self.bg2:setVisible(index % 2 == 0 and not is_mine)
         self.bg3:setVisible(is_mine)
 

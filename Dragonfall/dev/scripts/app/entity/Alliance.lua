@@ -230,21 +230,24 @@ end
 function Alliance:GetCouldShowHelpEvents()
     local User = User
     local could_show = {}
+    local _id = User:Id()
     for k,event in pairs(self.helpEvents) do
         -- 去掉被自己帮助过的
+        local istable = type(event.eventData) == "table"
         local isHelped
-        local _id = User:Id()
-        for k,id in pairs(event.eventData.helpedMembers) do
-            if id == _id then
-                isHelped = true
+        if istable then
+            for k,id in pairs(event.eventData.helpedMembers) do
+                if id == _id then
+                    isHelped = true
+                end
             end
         end
-        if not isHelped then
+        if not isHelped and istable then
             -- 已经帮助到最大次数的去掉
             if #event.eventData.helpedMembers < event.eventData.maxHelpCount then
                 -- 属于自己的求助事件，已经结束的
                 local isFinished = false
-                if User:Id() == event.playerData.id then
+                if _id == event.playerData.id then
                     local city = City
                     local eventData = event.eventData
                     local type = eventData.type
@@ -604,7 +607,7 @@ function Alliance:IsSubStageUnlock(stageName)
     return false
 end
 function Alliance:IsSubStagePassed(stageName)
-    local index = shrineStage[stageName].index 
+    local index = shrineStage[stageName].index
     local next_stage_name
     for k,v in pairs(shrineStage) do
         if v.index == index + 1 then

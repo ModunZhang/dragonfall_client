@@ -257,7 +257,7 @@ function AllianceLayer:CreateOrUpdateCorpsBy(event, isreturn)
             event.attackPlayerData.soldiers,
             getAllyFromEvent(event),
             string.format("[%s]%s", event.fromAlliance.tag, event.attackPlayerData.name)
-        )        
+        )
 
         if event.marchType == "monster"
         or event.marchType == "village" then
@@ -270,7 +270,7 @@ function AllianceLayer:CreateOrUpdateCorpsBy(event, isreturn)
         else
             sour_index = event.fromAlliance.mapIndex
         end
-        
+
         local dest_index
         if myid == event.toAlliance.id then
             dest_index = Alliance_Manager:GetMyAlliance().mapIndex
@@ -344,8 +344,8 @@ function AllianceLayer:CreateDeadEvent(event)
         else
             mapIndex = event.toAlliance.mapIndex
         end
-        local point = self:RealPosition(mapIndex, 
-                                      event.toAlliance.location.x, 
+        local point = self:RealPosition(mapIndex,
+                                      event.toAlliance.location.x,
                                       event.toAlliance.location.y)
         self.map_dead[id_corps] = display.newSprite("warriors_tomb_80x72.png")
                                     :addTo(self.objects_node, point.x*point.y):pos(point.x,point.y)
@@ -505,7 +505,7 @@ function AllianceLayer:FindMapObject(index, x, y)
         if alliance_object.isCrown then
             for k,v in pairs(alliance_object.tower1) do
                 -- 点击到中心
-                if (v.x == x and v.y == y) 
+                if (v.x == x and v.y == y)
                 -- 点击到王座周围
                 or (v.name == "crown" and math.abs(x - v.x) < 2 and math.abs(y - v.y) < 2)
                 then
@@ -555,7 +555,7 @@ function AllianceLayer:RemoveMapObjectByIndex(index, mapObject)
 end
 function AllianceLayer:RefreshMapObjectByIndex(index, mapObject, alliance)
     local alliance_object = self.alliance_objects[index]
-    if alliance_object then
+    if alliance_object and alliance_object.mapObjects then
         local object = alliance_object.mapObjects[mapObject.id]
         if object then
             self:RefreshMapObjectPosition(object, mapObject)
@@ -565,13 +565,13 @@ function AllianceLayer:RefreshMapObjectByIndex(index, mapObject, alliance)
 end
 function AllianceLayer:RefreshBuildingByIndex(index, building, alliance)
     local alliance_object = self.alliance_objects[index]
-    if alliance_object then
+    if alliance_object and alliance_object.buildings then
         local object = alliance_object.buildings[building.name]
         if object then
             local x,y = self:GetBannerPos(index, object.x, object.y)
             object.info.level:setString(building.level)
             object.info:pos(x, y):zorder(x * y)
-            if alliance and 
+            if alliance and
                 alliance._id == Alliance_Manager:GetMyAlliance()._id then
                 local door = object:GetSprite().door
                 local light = object:GetSprite().light
@@ -673,7 +673,7 @@ function AllianceLayer:AddMapObject(objects_node, mapObj, alliance)
         soldierName = soldiers[1]
         sprite = UIKit:CreateMonster(soldiers[1])
     else
-        return 
+        return
     end
 
     local node = self:CreateClickableObject()
@@ -697,7 +697,7 @@ function AllianceLayer:AddMapObject(objects_node, mapObj, alliance)
                     }
                 )
             return p
-        end 
+        end
     end
     node.info = self:CreateInfoBanner()
     node.name = mapObj.name
@@ -938,14 +938,14 @@ function AllianceLayer:LoadObjects(index, alliance, func)
         end
     else
         -- 联盟领地
-        if (alliance_obj.nomanland or alliance_obj.style ~= style) 
+        if (alliance_obj.nomanland or alliance_obj.style ~= style)
         and alliance then
             self:FreeObjects(alliance_obj)
             self.alliance_objects[index] = nil
             return self:LoadObjects(index, alliance, func)
         -- 无主之地
-        elseif  not alliance 
-            and not alliance_obj.nomanland 
+        elseif  not alliance
+            and not alliance_obj.nomanland
             and not self:IsCrown(index) then
             self:FreeObjects(alliance_obj)
             self.alliance_objects[index] = nil
@@ -1027,7 +1027,7 @@ function AllianceLayer:GetFreeObjects(terrain, style, index, alliance, isnomanla
     -- 判断是否是nomanland
     if not alliance and isnomanland then
         -- 固定每个无主之地是固定的造型
-        local nomanland_style = index % NoManMap_max + 1 
+        local nomanland_style = index % NoManMap_max + 1
         local obj = table.remove(self.alliance_nomanland[nomanland_style], 1)
         if not obj then
             obj = display.newNode()
@@ -1331,10 +1331,10 @@ end
 function AllianceLayer:GetRightDownTerrain(index)
     local right_terrain
     local down_terrain
-    
+
     local x,y = self:IndexToLogic(index)
-    if x + 1 >= 0 
-   and x + 1 < bigMapLength_value 
+    if x + 1 >= 0
+   and x + 1 < bigMapLength_value
    and y >= 0
    and y < bigMapLength_value
    then
@@ -1343,8 +1343,8 @@ function AllianceLayer:GetRightDownTerrain(index)
         right_terrain = self:GetMapInfoByIndex(mapIndex, aln)
     end
 
-    if x >= 0 
-   and x < bigMapLength_value 
+    if x >= 0
+   and x < bigMapLength_value
    and y + 1 >= 0
    and y + 1 < bigMapLength_value
    then
@@ -1420,9 +1420,22 @@ function AllianceLayer:LoadMiddleTerrain(map, terrain)
 end
 function AllianceLayer:CreateDesertBg()
     local terrain = "desert"
-    local map
+    local map = display.newNode()
     GameUtils:LoadImagesWithFormat(function()
-        map = cc.TMXTiledMap:create(string.format("tmxmaps/alliance_%s1.tmx", terrain))
+        if isUseSdImage() then
+            local file = string.format("tmxmaps/alliance_%s1-sd.tmx", terrain)
+            local tmx = cc.TMXTiledMap:create(file):addTo(map)
+                        :align(display.LEFT_BOTTOM):scale(2)
+            local size = tmx:getContentSize()
+            map:setContentSize(cc.size(size.width * 2, size.height * 2))
+        else
+            local file = string.format("tmxmaps/alliance_%s1.tmx", terrain)
+            map:setContentSize(
+                cc.TMXTiledMap:create(file)
+                :addTo(map):align(display.LEFT_BOTTOM)
+                :getContentSize()
+            )
+        end
     end, cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565)
     local width = map:getContentSize().width
     local LEN = 160
@@ -1454,9 +1467,22 @@ function AllianceLayer:CreateDesertBg()
 end
 function AllianceLayer:CreateIceFieldBg()
     local terrain = "iceField"
-    local map 
+    local map = display.newNode()
     GameUtils:LoadImagesWithFormat(function()
-        map = cc.TMXTiledMap:create(string.format("tmxmaps/alliance_%s1.tmx", terrain))
+        if isUseSdImage() then
+            local file = string.format("tmxmaps/alliance_%s1-sd.tmx", terrain)
+            local tmx = cc.TMXTiledMap:create(file):addTo(map)
+                        :align(display.LEFT_BOTTOM):scale(2)
+            local size = tmx:getContentSize()
+            map:setContentSize(cc.size(size.width * 2, size.height * 2))
+        else
+            local file = string.format("tmxmaps/alliance_%s1.tmx", terrain)
+            map:setContentSize(
+                cc.TMXTiledMap:create(file)
+                :addTo(map):align(display.LEFT_BOTTOM)
+                :getContentSize()
+            )
+        end
     end, cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565)
     local width = map:getContentSize().width
 
@@ -1487,9 +1513,22 @@ function AllianceLayer:CreateIceFieldBg()
 end
 function AllianceLayer:CreateGrassLandBg()
     local terrain = "grassLand"
-    local map
+    local map = display.newNode()
     GameUtils:LoadImagesWithFormat(function()
-        map = cc.TMXTiledMap:create(string.format("tmxmaps/alliance_%s1.tmx", terrain))
+        if isUseSdImage() then
+            local file = string.format("tmxmaps/alliance_%s1-sd.tmx", terrain)
+            local tmx = cc.TMXTiledMap:create(file):addTo(map)
+                        :align(display.LEFT_BOTTOM):scale(2)
+            local size = tmx:getContentSize()
+            map:setContentSize(cc.size(size.width * 2, size.height * 2))
+        else
+            local file = string.format("tmxmaps/alliance_%s1.tmx", terrain)
+            map:setContentSize(
+                cc.TMXTiledMap:create(file)
+                :addTo(map):align(display.LEFT_BOTTOM)
+                :getContentSize()
+            )
+        end
     end, cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565)
     local width = map:getContentSize().width
 
@@ -1596,13 +1635,13 @@ function AllianceLayer:AddUpgradeFlag(index)
     local objects = self.alliance_objects[index]
     if objects then
         local fte_node = display.newNode():addTo(objects,999999999,FTE_TAG)
-        
+
         local size = objects.buildings["palace"]:getCascadeBoundingBox()
         local x,y = objects.buildings["palace"]:getPosition()
         WidgetFteMark.new():addTo(fte_node,0,FTE_TAG)
         :Size(size.width*1.1,size.height*1.1):pos(x,y):stopAllActions()
         display.newSprite("upgrade.png"):addTo(fte_node):pos(x-size.width/2+5,y+90)
-        
+
         -- local size = objects.buildings["orderHall"]:getCascadeBoundingBox()
         local x,y = objects.buildings["orderHall"]:getPosition()
         WidgetFteMark.new():addTo(fte_node,0,FTE_TAG)

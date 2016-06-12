@@ -127,12 +127,16 @@ function WidgetWorldAllianceInfo:Located(mapIndex, x, y)
             if Alliance_Manager:GetAllianceByCache(mapIndex) then
                 scene:GotoPosition(x,y)
                 EnterIn(mapIndex)
-                self:LeftButtonClicked()
+                if not tolua.isnull(self) then
+                    self:LeftButtonClicked()
+                end
             else
                 scene:FetchAllianceDatasByIndex(mapIndex, function()
                     scene:GotoPosition(x,y)
                     EnterIn(mapIndex)
-                    self:LeftButtonClicked()
+                    if not tolua.isnull(self) then
+                        self:LeftButtonClicked()
+                    end
                 end)
             end
         end
@@ -143,17 +147,23 @@ function WidgetWorldAllianceInfo:Located(mapIndex, x, y)
             if Alliance_Manager:GetAllianceByCache(mapIndex) then
                 scene:GotoAllianceByXY(scene:GetSceneLayer():IndexToLogic(mapIndex))
                 EnterIn(mapIndex)
-                self:LeftButtonClicked()
+                if not tolua.isnull(self) then
+                    self:LeftButtonClicked()
+                end
             else
                 if scene:ViewIndex() == mapIndex then
                     scene:GotoAllianceByXY(scene:GetSceneLayer():IndexToLogic(mapIndex))
                     EnterIn(mapIndex)
-                    self:LeftButtonClicked()
+                    if not tolua.isnull(self) then
+                        self:LeftButtonClicked()
+                    end
                 else
                     scene:FetchAllianceDatasByIndex(mapIndex, function()
                         scene:GotoAllianceByXY(scene:GetSceneLayer():IndexToLogic(mapIndex))
                         EnterIn(mapIndex)
-                        self:LeftButtonClicked()
+                        if not tolua.isnull(self) then
+                            self:LeftButtonClicked()
+                        end
                     end)
                 end
             end
@@ -292,7 +302,7 @@ function WidgetWorldAllianceInfo:LoadInfo(alliance_data)
         :addTo(layer)
         :align(display.LEFT_TOP,titleBg:getPositionX() - titleBg:getContentSize().width, titleBg:getPositionY() - titleBg:getContentSize().height -18)
     local leaderLabel = UIKit:ttfLabel({
-        text = self:GetAllianceArchonName() or  "",
+        text = self:GetAllianceArchonName(),
         size = 22,
         color = 0x403c2f
     }):addTo(layer):align(display.LEFT_TOP,leaderIcon:getPositionX()+leaderIcon:getContentSize().width+15, leaderIcon:getPositionY()-4)
@@ -309,9 +319,13 @@ function WidgetWorldAllianceInfo:LoadInfo(alliance_data)
         :align(display.RIGHT_TOP,titleBg:getPositionX(),titleBg:getPositionY() - titleBg:getContentSize().height -10)
         :addTo(layer)
     button:onButtonClicked(function(event)
+        if not self:GetAllianceData().archon then
+            return
+        end
         local location = self:GetAllianceData().archon.location
         self:Located(self.mapIndex, location.x, location.y)
     end)
+    button:setButtonEnabled(not not self:GetAllianceData().archon)
 
     local desc_bg = WidgetUIBackGround.new({height=158,width=550},WidgetUIBackGround.STYLE_TYPE.STYLE_5)
         :align(display.CENTER_TOP, l_size.width/2,info_bg:getPositionY() - 92)
@@ -375,7 +389,13 @@ function WidgetWorldAllianceInfo:LoadInfo(alliance_data)
 end
 
 function WidgetWorldAllianceInfo:GetAllianceArchonName()
-    return self:GetAllianceData().archon.name
+    local archon = self:GetAllianceData().archon
+    if archon then
+        local isnone = archon.name == "" or archon.name == nil or archon.name == json.null
+        return isnone and _("无") or archon.name
+    else
+        return _("无")
+    end
 end
 function WidgetWorldAllianceInfo:BuildOneButton(image,title,music_info)
     local btn = WidgetPushButton.new({normal = "btn_138x110.png",pressed = "btn_pressed_138x110.png"},{}

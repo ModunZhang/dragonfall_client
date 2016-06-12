@@ -6,9 +6,9 @@ local UIScrollView = import(".UIScrollView")
 
 local function rank_filter(response)
     local data = response.msg
-    local is_not_nil = data.myData.rank ~= json.null
+    local is_not_nil = data.myData.index ~= json.null
     if is_not_nil then
-        data.myData.rank = data.myData.rank + 1
+        data.myData.index = data.myData.index + 1
     end
     return response
 end
@@ -82,7 +82,7 @@ function GameUISearchPlayer:playerDelegate(listView, tag, idx)
         content:SetPlayerData(idx)
         local size = content:getContentSize()
         item:setItemSize(size.width, size.height)
-        -- 当取到客户端本地最后一个玩家信息，并且可能还有更多模糊查找到的玩家则获取更多玩家信息 
+        -- 当取到客户端本地最后一个玩家信息，并且可能还有更多模糊查找到的玩家则获取更多玩家信息
         if idx == #self.player_datas and self.canLoadMore then
             NetManager:getSearchPlayerByNamePromise(self.search_key,self.fromIndex):done(function (response)
                 dump(response.msg.playerDatas)
@@ -135,7 +135,7 @@ function GameUISearchPlayer:SearchPlayerAction(search_key)
         return
     end
     self.player_datas = {}
-    self.fromIndex = 0 
+    self.fromIndex = 0
     NetManager:getSearchPlayerByNamePromise(search_key,self.fromIndex):done(function (response)
         dump(response.msg.playerDatas)
         local limit = response.msg.limit

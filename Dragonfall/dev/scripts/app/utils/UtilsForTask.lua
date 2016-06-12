@@ -99,7 +99,7 @@ function cityBuild_meta:Title()
         if GameDatas.HouseLevelUp[config.name] then
             return string.format(_("建造一个%s"), Localize.building_name[config.name])
         else
-            return string.format(_("解锁建筑%s"), Localize.building_name[config.name]) 
+            return string.format(_("解锁建筑%s"), Localize.building_name[config.name])
         end
     end
     return string.format(_("将%s升级到等级%d"), Localize.building_name[config.name], config.level)
@@ -267,7 +267,7 @@ function soldierCount_meta:Title()
         local str = string.formatnumberthousands(self:Config().count)
         return string.format(_("招募%s个%s(%s/%s)"),str,Localize.soldier_name[self:Config().name],str,str)
     else
-        return string.format(_("招募%s个%s(%s/%s)"), 
+        return string.format(_("招募%s个%s(%s/%s)"),
             string.formatnumberthousands(self:Config().count),
             Localize.soldier_name[self:Config().name],
             string.formatnumberthousands(self:Config().count - leftCount),
@@ -297,7 +297,7 @@ function pveCount_meta:Title()
         local str = string.formatnumberthousands(self:Config().count)
         return string.format(_("探索%s次PVE(%s/%s)"),str,str,str)
     else
-        return string.format(_("探索%s次PVE(%s/%s)"), 
+        return string.format(_("探索%s次PVE(%s/%s)"),
             string.formatnumberthousands(self:Config().count),
             string.formatnumberthousands(self:Config().count - leftCount),
             string.formatnumberthousands(self:Config().count))
@@ -554,8 +554,8 @@ function UtilsForTask:GetAvailableTasksByCategory(growUpTasks, category)
                 return a.id < b.id
             end)
         end
-        for _,dragon_type in ipairs{"redDragon", "greenDragon", "blueDragon"} do
-            local dragon = dragons[dragon_type]
+        for _,dragonType in ipairs{"redDragon", "greenDragon", "blueDragon"} do
+            local dragon = dragons[dragonType]
             for _,v in ipairs(dragon.dragonLevel) do
                 table.insert(r, v)
             end
@@ -657,7 +657,7 @@ end
 local cityBuild = GameDatas.GrowUpTasks.cityBuild
 local materialDepot_index
 for i,mission in ipairs(RecommendedMission) do
-    if  mission.type == "cityBuild" 
+    if  mission.type == "cityBuild"
     and cityBuild[mission.id].name == "materialDepot" then
         materialDepot_index = i + 4
         break
@@ -665,7 +665,7 @@ for i,mission in ipairs(RecommendedMission) do
 end
 function UtilsForTask:NeedTips(userData)
     for i,mission in ipairs(RecommendedMission) do
-        if not self:CheckIsComplete(userData, mission) 
+        if not self:CheckIsComplete(userData, mission)
         and i < materialDepot_index then
             return true
         end
@@ -726,15 +726,15 @@ function UtilsForTask:GetFinishedUnRewardTasksBySeq(userData)
             end
         end
     end
-    table.sort(t, function(a,b) 
-        if a.type == b.type then
-            return a.task.id < b.task.id
-        else
-            local aindex = self:GetTaskIndex(a.type,a.task.id)
-            local bindex = self:GetTaskIndex(b.type,b.task.id)
-            if aindex == bindex then
-                return taskSeqMap[a.type] < taskSeqMap[b.type]
+    table.sort(t, function(a,b)
+        local aindex = self:GetTaskIndex(a.type,a.task.id)
+        local bindex = self:GetTaskIndex(b.type,b.task.id)
+        if aindex == bindex then
+            if a.type == b.type then
+                return (a.task.id < b.task.id)
             end
+            return taskSeqMap[a.type] < taskSeqMap[b.type]
+        else
             return aindex < bindex
         end
     end)

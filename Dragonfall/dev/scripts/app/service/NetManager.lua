@@ -40,6 +40,10 @@ local function get_response_mail_msg(response)
                             local mail_index = MailManager:GetMailByServerIndex(k)
                             if not mail_index then
                                 is_changed_saved_mails = true
+                                local mail_index_1 = MailManager:GetSavedMailByServerIndex(k)
+                                if not mail_index_1 then
+                                    return
+                                end
                                 client_index = MailManager:GetSavedMailByServerIndex(k) - 1
                             else
                                 client_index = mail_index - 1
@@ -80,6 +84,10 @@ local function get_response_delete_mail_msg(response)
                 for i=1,len do
                     local k = tonumber(keys[i]) or keys[i]
                     if type(k) == "number" then
+                        local mail_index = MailManager:GetMailByServerIndex(k)
+                        if not mail_index then
+                            return
+                        end
                         local client_index = MailManager:GetMailByServerIndex(k) - 1
                         newKey = newKey..client_index..(i~=len and "." or "")
                     else
@@ -111,6 +119,10 @@ local function get_response_delete_send_mail_msg(response)
                 for i=1,len do
                     local k = tonumber(keys[i]) or keys[i]
                     if type(k) == "number" then
+                        local mail_index = MailManager:GetSendMailIndexByServerIndex(k)
+                        if not mail_index then
+                            return
+                        end
                         local client_index = MailManager:GetSendMailIndexByServerIndex(k) - 1
                         newKey = newKey..client_index..(i~=len and "." or "")
                     else
@@ -150,6 +162,10 @@ local function get_response_report_msg(response)
                             client_index = report_index - 1
                         else
                             is_saved_report = true
+                            local report_index_1 = MailManager:GetSavedReportByServerIndex(k)
+                            if not report_index_1 then
+                                return
+                            end
                             client_index = MailManager:GetSavedReportByServerIndex(k) - 1
                         end
                         newKey = newKey..client_index..(i~=len and "." or "")
@@ -187,6 +203,10 @@ local function get_response_delete_report_msg(response)
                 for i=1,len do
                     local k = tonumber(keys[i]) or keys[i]
                     if type(k) == "number" then
+                        local report_index = MailManager:GetReportByServerIndex(k)
+                        if not report_index then
+                            return
+                        end
                         local client_index = MailManager:GetReportByServerIndex(k) - 1
                         newKey = newKey..client_index..(i~=len and "." or "")
                     else
@@ -563,7 +583,8 @@ local logic_event_map = {
         if not NetManager.m_was_inited_game then return end
         if DataManager:hasUserData() then
             local user_alliance_data = DataManager:getUserAllianceData()
-            if response.targetAllianceId == user_alliance_data._id then
+            if type(user_alliance_data) == "table"
+            and response.targetAllianceId == user_alliance_data._id then
                 local edit = decodeInUserDataFromDeltaData(user_alliance_data, response.data)
                 DataManager:setUserAllianceData(user_alliance_data, edit)
                 -- LuaUtils:outputTable("onAllianceDataChanged", edit)
@@ -735,10 +756,12 @@ end
 
 
 function NetManager:getDeviceInfoForServer()
-    if ext.getAndroidId then
-        local androidId = ext.getAndroidId() 
+    if device.platform == "android" and ext.getAndroidId then
+        local androidId = ext.getAndroidId()
         local deviceId  = ext.getDeviceId()
         return string.format("%s|%s",androidId,deviceId)
+    elseif device.platform == 'winrt' and ext.adeasygo then
+        return ext.adeasygo.getUid()
     else
         return "unknown"
     end
@@ -2063,6 +2086,20 @@ function NetManager:getPlayerRankPromise(rankType, fromRank)
         fromRank = fromRank or 0,
     },"获取排行榜失败!")
 end
+-- 获取玩家自身的活动排名
+function NetManager:getPlayerActivityRankPromise(rankType)
+    return get_blocking_request_promise("rank.rankHandler.getPlayerRank",{
+        rankType = rankType,
+    },"获取玩家自身的活动排名失败!")
+end
+-- 获取玩家活动排名信息列表
+function NetManager:getPlayerTotalActivityRankPromise(rankType,fromRank)
+    return get_blocking_request_promise("rank.rankHandler.getPlayerActivityRankList",{
+        rankType = rankType,
+        fromRank = fromRank or 0,
+    },"获取玩家活动排名信息列表失败!")
+end
+
 function NetManager:getAllianceRankPromise(rankType, fromRank)
     return get_blocking_request_promise("rank.rankHandler.getAllianceRankList",{
         rankType = rankType,
@@ -2163,6 +2200,18 @@ function NetManager:getMapAllianceDatasPromise(mapIndexs)
     return get_none_blocking_request_promise("logic.allianceHandler.getMapAllianceDatas",{
         mapIndexs = mapIndexs,
     },"获取世界地图信息失败!")
+end
+--获取活动信息
+function NetManager:getActivitiesPromise()
+    return get_blocking_request_promise("logic.playerHandler.getActivities",{},"获取活动信息失败!"):done(get_player_response_msg)
+end
+--获取玩家活动积分奖励
+function NetManager:getPlayerActivityScoreRewardsPromise(rankType)
+    return get_blocking_request_promise("logic.playerHandler.getPlayerActivityScoreRewards",{rankType=rankType},"获取玩家活动积分奖励失败!"):done(get_player_response_msg)
+end
+--获取玩家活动排名奖励
+function NetManager:getPlayerActivityRankRewardsPromise(rankType)
+    return get_blocking_request_promise("logic.playerHandler.getPlayerActivityRankRewards",{rankType=rankType},"获取玩家活动排名奖励失败!"):done(get_player_response_msg)
 end
 function NetManager:getMoveAlliancePromise(targetMapIndex)
     return get_blocking_request_promise("logic.allianceHandler.moveAlliance",{

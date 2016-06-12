@@ -68,12 +68,32 @@ function GameUIAllianceHome:onEnter()
     -- 中间按钮
     local buttons = UIKit:newWidgetUI("WidgetShortcutButtons",self.city):addTo(self)
     self.order_shortcut = buttons
+    buttons.right_top_order:setPositionY(display.top-300)
     local size = buttons.world_map_btn_bg:getCascadeBoundingBox()
     self.loading = display.newSprite("loading.png"):addTo(buttons.world_map_btn_bg)
         :pos(size.width-20,10):scale(0.9)
     self:HideLoading()
     self:AddOrRemoveListener(true)
     self:Schedule()
+    -- 促销活动
+    local box = ccs.Armature:create("AD_icon"):addTo(self):align(display.CENTER, display.right - 55, display.top - 205)
+    box:getAnimation():playWithIndex(0)
+    self.promotionTime = UIKit:ttfLabel({
+        text = GameUtils:formatTimeStyle1(DataUtils:GetPromtionProductLessLeftTime()),
+        size = 16,
+        color = 0xffedae,
+        shadow = true
+    }):align(display.CENTER, display.right - 55, display.top - 227)
+        :addTo(self)
+    local sale_button = WidgetPushButton.new()
+        :addTo(self):align(display.CENTER, display.right - 55, display.top - 205)
+        :onButtonClicked(function(event)
+            if event.name == "CLICKED_EVENT" then
+                UIKit:newGameUI("GameUISaleOne"):AddToCurrentScene()
+            end
+        end)
+    sale_button:setContentSize(cc.size(100,110))
+    sale_button:setTouchSwallowEnabled(true)
 end
 function GameUIAllianceHome:onExit()
     self:AddOrRemoveListener(false)
@@ -845,8 +865,8 @@ function GameUIAllianceHome:ShowHonorFte(isshow)
         totalsize = totalsize + size.width * scale + 15
     end
     content:setContentSize(cc.size(totalsize-15,maxheight))
-    WidgetFteArrow.new(content):TurnDown(false):addTo(fteNode):scale(0.8)
-    :pos(r.x + r.width/2+(totalsize-15)/2, r.y + r.height/2+maxheight+20)
+    WidgetFteArrow.new(content):TurnUp(false):addTo(fteNode):scale(0.8)
+    :pos(r.x + r.width/2+(totalsize-15)/2, r.y - r.height/2 - maxheight + 35)
 end
 function GameUIAllianceHome:ShowWorldMap(isshow)
     self:GetShortcutNode().world_map_btn:removeChildByTag(FTE_TAG)

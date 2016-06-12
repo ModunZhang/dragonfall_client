@@ -1288,8 +1288,34 @@ local TERRAIN_FUNCTION = {
     desert= _("沙漠产出红龙材料,更容易培养红龙"),
     iceField = _("雪地产出蓝龙材料，更容易培养蓝龙"),
 }
+local PROMOTION_ITEMS = {
+    promotion_product_1_1 = _("远古学识特惠"),
+    promotion_product_1_2 = _("富饶之地特惠"),
+    promotion_product_2_1 = _("龙族宝藏特惠"),
+    promotion_product_2_2 = _("好运连连特惠"),
+    promotion_product_3_1 = _("贵族传承特惠"),
+    promotion_product_3_2 = _("英雄之血特惠"),
+    promotion_product_4_1 = _("不死军团特惠"),
+    promotion_product_4_2 = _("金龙币特惠"),
+}
 local USER_AGREEMENT = {
     agreement = _("Batcatstudio游戏用户使用许可协议本地化ID")
+}
+local ACTIVITIES = {
+    gacha = _("游乐场赛季"),
+    collectResource = _("资源掠夺赛季"),
+    pveFight = _("冒险家赛季"),
+    attackMonster = _("黑龙军团赛季"),
+    collectHeroBlood = _("杀戮之王赛季"),
+    recruitSoldiers = _("军备竞赛赛季"),
+}
+local ACTIVITIES_DESC = {
+    gacha = _("抽奖赢分数，兑换丰厚奖励"),
+    collectResource = _("掠夺资源赢分数，兑换丰厚奖励"),
+    pveFight = _("探索飞艇赢分数，兑换丰厚奖励"),
+    attackMonster = _("击败黑龙军团赢分数，兑换丰厚奖励"),
+    collectHeroBlood = _("攻打获取英雄之血赢分数，兑换丰厚奖励"),
+    recruitSoldiers = _("招募士兵赢分数，兑换丰厚奖励"),
 }
 return {
     equip_material = EQUIP_MATERIAL_LOCALIZE,
@@ -1361,6 +1387,9 @@ return {
     user_agreement = USER_AGREEMENT,
     period_type = PERIOD_TYPE,
     alliance_buff = ALLIANCE_BUFF,
+    promotion_items = PROMOTION_ITEMS,
+    activities = ACTIVITIES,
+    activities_desc = ACTIVITIES_DESC,
 }
 
 

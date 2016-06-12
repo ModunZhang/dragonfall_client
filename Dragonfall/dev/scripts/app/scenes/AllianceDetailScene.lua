@@ -354,7 +354,7 @@ function AllianceDetailScene:onEnter()
                 app:GetGameDefautlt():SetPassAllianceFte(1)
                 break
             end
-            
+
 
             -- step 2
             if app:GetGameDefautlt():IsPassedAllianceFte(1) and
@@ -625,7 +625,7 @@ function AllianceDetailScene:OnTouchClicked(pre_x, pre_y, x, y)
                 self:OpenUI(alliance, mapObj)
             end
         else
-            if type_ == "empty" then
+            if type_ == "empty" or mapObj.name == "nouse" then
                 return
             end
             local scale_map = {
@@ -635,13 +635,15 @@ function AllianceDetailScene:OnTouchClicked(pre_x, pre_y, x, y)
             }
             app:lockInput(true)
             self.util_node:performWithDelay(function()app:lockInput(false)end,0.5)
-            mapObj.obj:PromiseOfFlash():next(function()
-                if type_ == "crown" then
-                    UIKit:newGameUI("GameUIThroneMain"):AddToCurrentScene()
-                elseif type_ == "tower1" or type_ == "tower2" then
-                    UIKit:showMessageDialog(_("提示"), _("即将开放"))
-                end
-            end)
+            if mapObj.obj.PromiseOfFlash then
+                mapObj.obj:PromiseOfFlash():next(function()
+                    if type_ == "crown" then
+                        UIKit:newGameUI("GameUIThroneMain"):AddToCurrentScene()
+                    elseif type_ == "tower1" or type_ == "tower2" then
+                        UIKit:showMessageDialog(_("提示"), _("即将开放"))
+                    end
+                end)
+            end
             -- self:GetSceneLayer()
             --     :PromiseOfFlashEmptyGround(mapObj.index,mapObj.x,mapObj.y,scale_map[type_])
             --     :next(function()
@@ -725,7 +727,6 @@ function AllianceDetailScene:EnterNotAllianceBuilding(alliance,mapObj)
         app:GetAudioManager():PlayBuildingEffectByType("keep")
         class_name = "GameUIAllianceCityEnter"
     elseif type_ == 'decorate' then
-        -- class_name = "GameUIAllianceDecorateEnter"
         return
     elseif type_ == 'village' then
         app:GetAudioManager():PlayBuildingEffectByType("warehouse")

@@ -4,7 +4,6 @@
 --
 local GameUIAllianceVillageEnter = UIKit:createUIClass("GameUIAllianceVillageEnter","GameUIAllianceEnterBase")
 local Localize = import("..utils.Localize")
-local VillageEvent = import("..entity.VillageEvent")
 local GameUIStrikePlayer = import(".GameUIStrikePlayer")
 local SpriteConfig = import("..sprites.SpriteConfig")
 local UILib = import(".UILib")
@@ -87,8 +86,10 @@ end
 
 function GameUIAllianceVillageEnter:GetBuildingImage()
     local village_info = self:GetVillageInfo()
-    local build_png = SpriteConfig[village_info.name]:GetConfigByLevel(village_info.level).png
-    return build_png
+    if village_info then
+        local build_png = SpriteConfig[village_info.name]:GetConfigByLevel(village_info.level).png
+        return build_png
+    end
 end
 
 function GameUIAllianceVillageEnter:GetBuildingType()
@@ -110,6 +111,7 @@ function GameUIAllianceVillageEnter:GetBuildingInfo()
     local village_id = self:GetVillageInfo().id
     local villageEvent = Alliance_Manager:GetMyAllianceVillageEventsByMapId(self:GetMyAlliance(), village_id)
     local other_villageEvent = Alliance_Manager:GetVillageEventsByMapId(self:GetFocusAlliance(),village_id)
+    local villageConfig = UtilsForEvent:GetVillageConfig(self:GetVillageInfo())
     if villageEvent then --我方占领
         local startTime = villageEvent.startTime/1000.0
         local finishTime = villageEvent.finishTime/1000.0
@@ -133,8 +135,8 @@ function GameUIAllianceVillageEnter:GetBuildingInfo()
             },
         }
         labels = {location,occupy_label,current_collect_label,end_time_label}
-        local str = string.formatnumberthousands(self:GetVillageInfo().resource - collectCount) .. "/" .. string.formatnumberthousands(VillageEvent.GetVillageConfig(self:GetVillageInfo().name,self:GetVillageInfo().level).production)
-        local percent = (self:GetVillageInfo().resource - collectCount)/VillageEvent.GetVillageConfig(self:GetVillageInfo().name,self:GetVillageInfo().level).production
+        local str = string.th000(self:GetVillageInfo().resource - collectCount) .. "/" .. string.th000(villageConfig.production)
+        local percent = (self:GetVillageInfo().resource - collectCount)/villageConfig.production
         self:GetProgressTimer():setPercentage(percent*100)
         self:GetProcessLabel():setString(str)
         scheduleAt(self, function()
@@ -146,13 +148,13 @@ function GameUIAllianceVillageEnter:GetBuildingInfo()
             local collectTime = app.timer:GetServerTime() - startTime
             local collectCount = math.floor(collectSpeed * collectTime)
 
-            local str = string.formatnumberthousands(self:GetVillageInfo().resource - collectCount) .. "/" .. string.formatnumberthousands(VillageEvent.GetVillageConfig(self:GetVillageInfo().name,self:GetVillageInfo().level).production)
-            local percent = (self:GetVillageInfo().resource - collectCount)/VillageEvent.GetVillageConfig(self:GetVillageInfo().name,self:GetVillageInfo().level).production
+            local str = string.th000(self:GetVillageInfo().resource - collectCount) .. "/" .. string.th000(villageConfig.production)
+            local percent = (self:GetVillageInfo().resource - collectCount)/villageConfig.production
             self:GetProgressTimer():setPercentage(percent*100)
             self:GetProcessLabel():setString(str)
             local label = self:GetInfoLabelByTag(900)
             if label then
-                label:setString(string.formatnumberthousands(collectCount) .. "(" .. math.floor(collectCount/villageEvent.villageData.collectTotal * 100)  .. "%)")
+                label:setString(string.th000(collectCount) .. "(" .. math.floor(collectCount/villageEvent.villageData.collectTotal * 100)  .. "%)")
             end
             local label = self:GetInfoLabelByTag(1000)
             if label then
@@ -183,8 +185,8 @@ function GameUIAllianceVillageEnter:GetBuildingInfo()
             },
         }
         labels = {location,occupy_label,current_collect_label,end_time_label}
-        local str = string.formatnumberthousands(self:GetVillageInfo().resource - collectCount) .. "/" .. string.formatnumberthousands(VillageEvent.GetVillageConfig(self:GetVillageInfo().name,self:GetVillageInfo().level).production)
-        local percent = (self:GetVillageInfo().resource - collectCount)/VillageEvent.GetVillageConfig(self:GetVillageInfo().name,self:GetVillageInfo().level).production
+        local str = string.th000(self:GetVillageInfo().resource - collectCount) .. "/" .. string.th000(villageConfig.production)
+        local percent = (self:GetVillageInfo().resource - collectCount)/villageConfig.production
         self:GetProgressTimer():setPercentage(percent*100)
         self:GetProcessLabel():setString(str)
         scheduleAt(self, function()
@@ -196,13 +198,13 @@ function GameUIAllianceVillageEnter:GetBuildingInfo()
             local collectTime = app.timer:GetServerTime() - startTime
             local collectCount = math.floor(collectSpeed * collectTime)
 
-            local str = string.formatnumberthousands(self:GetVillageInfo().resource - collectCount) .. "/" .. string.formatnumberthousands(VillageEvent.GetVillageConfig(self:GetVillageInfo().name,self:GetVillageInfo().level).production)
-            local percent = (self:GetVillageInfo().resource - collectCount)/VillageEvent.GetVillageConfig(self:GetVillageInfo().name,self:GetVillageInfo().level).production
+            local str = string.th000(self:GetVillageInfo().resource - collectCount) .. "/" .. string.th000(villageConfig.production)
+            local percent = (self:GetVillageInfo().resource - collectCount)/villageConfig.production
             self:GetProgressTimer():setPercentage(percent*100)
             self:GetProcessLabel():setString(str)
             local label = self:GetInfoLabelByTag(900)
             if label then
-                label:setString(string.formatnumberthousands(collectCount) .. "(" .. math.floor(collectCount/villageEvent.villageData.collectTotal * 100)  .. "%)")
+                label:setString(string.th000(collectCount) .. "(" .. math.floor(collectCount/villageEvent.villageData.collectTotal * 100)  .. "%)")
             end
             local label = self:GetInfoLabelByTag(1000)
             if label then
@@ -215,8 +217,8 @@ function GameUIAllianceVillageEnter:GetBuildingInfo()
             {_("无"),0x403c2f}
         }
         labels = {location,no_one_label}
-        local str = string.formatnumberthousands(self:GetVillageInfo().resource) .. "/" .. string.formatnumberthousands(VillageEvent.GetVillageConfig(self:GetVillageInfo().name,self:GetVillageInfo().level).production)
-        local percent = self:GetVillageInfo().resource/VillageEvent.GetVillageConfig(self:GetVillageInfo().name,self:GetVillageInfo().level).production
+        local str = string.th000(self:GetVillageInfo().resource) .. "/" .. string.th000(villageConfig.production)
+        local percent = self:GetVillageInfo().resource/villageConfig.production
         self:GetProgressTimer():setPercentage(percent*100)
         self:GetProcessLabel():setString(str)
         end
@@ -225,13 +227,13 @@ end
 
 function GameUIAllianceVillageEnter:OnVillageEventTimer(village_event,left_resource)
     if village_event:VillageData().id == self:GetVillageInfo().id then
-        local str = string.formatnumberthousands(left_resource) .. "/" .. string.formatnumberthousands(VillageEvent.GetVillageConfig(self:GetVillageInfo().name,self:GetVillageInfo().level).production)
-        local percent = left_resource/VillageEvent.GetVillageConfig(self:GetVillageInfo().name,self:GetVillageInfo().level).production
+        local str = string.th000(left_resource) .. "/" .. string.th000(villageConfig.production)
+        local percent = left_resource/villageConfig.production
         self:GetProgressTimer():setPercentage(percent*100)
         self:GetProcessLabel():setString(str)
         local label = self:GetInfoLabelByTag(900)
         if label then
-            label:setString(string.formatnumberthousands(village_event:CollectCount()) .. "(" .. village_event:CollectPercent() .. "%)")
+            label:setString(string.th000(village_event:CollectCount()) .. "(" .. village_event:CollectPercent() .. "%)")
         end
         local label = self:GetInfoLabelByTag(1000)
         if label then
@@ -326,7 +328,7 @@ function GameUIAllianceVillageEnter:GetEnterButtons()
                         end)
                     end, function ()
                     end
-                    UIKit:showSendTroopMessageDialog(attack_func,"dragonMaterials",_("龙"))
+                    UIKit:showSendTroopMessageDialog(attack_func,"dragonMaterials",_("龙材料"))
                 end
                 if checkMeIsProtectedWarinng then
                     UIKit:showMessageDialog(_("提示"),_("进攻村落将失去保护状态，确定继续派兵?"),final_func)
@@ -353,7 +355,7 @@ function GameUIAllianceVillageEnter:GetEnterButtons()
                             end)
                         end,{targetAlliance = focus_alliance,toLocation = toLocation,returnCloseAction = true}):AddToCurrentScene(true)
                     end
-                    UIKit:showSendTroopMessageDialog(attack_func,"dragonMaterials",_("龙"))
+                    UIKit:showSendTroopMessageDialog(attack_func,"dragonMaterials",_("龙材料"))
                 end
 
                 if checkMeIsProtectedWarinng then
@@ -390,7 +392,7 @@ function GameUIAllianceVillageEnter:GetEnterButtons()
                             end)
                         end,{targetAlliance = focus_alliance,toLocation = toLocation,returnCloseAction = true}):AddToCurrentScene(true)
                     end
-                    UIKit:showSendTroopMessageDialog(attack_func, "dragonMaterials",_("龙"))
+                    UIKit:showSendTroopMessageDialog(attack_func, "dragonMaterials",_("龙材料"))
                 end
 
 

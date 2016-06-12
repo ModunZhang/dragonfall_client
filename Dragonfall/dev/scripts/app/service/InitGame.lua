@@ -2,6 +2,7 @@ local BuildingRegister = import("..entity.BuildingRegister")
 local City_ = import("..entity.City")
 local User_ = import("..entity.User")
 local MailManager_ = import("..entity.MailManager")
+local ActivityManager_ = import("..entity.ActivityManager")
 local NewsManager_ = import("..entity.NewsManager")
 local check = import("..fte.check")
 local initData = import("..fte.initData")
@@ -10,7 +11,6 @@ local app = app
 local timer = app.timer
 return function(userData)
     DataManager.user = userData
-    timer:Clear()
     MailManager = MailManager_.new()
     -- if GLOBAL_FTE or userData.basicInfo.terrain == "__NONE__" then
     --     local fteData = DataManager:getFteData()
@@ -30,12 +30,14 @@ return function(userData)
         DataManager:setUserData(userData)
     -- end
 
-    if userData.basicInfo.terrain ~= "__NONE__" and not NewsManager then
-        NewsManager = NewsManager_.new()
+    if userData.basicInfo.terrain ~= "__NONE__" then
+        if not NewsManager then
+            NewsManager = NewsManager_.new()
+        end
+        if not ActivityManager then
+            ActivityManager = ActivityManager_.new()
+        end
     end
-
-    timer:AddListener(City)
-    timer:Start()
 end
 
 

@@ -358,12 +358,24 @@ function GameUIPveAttack:CreateAttackButton()
                 return
             end
             -- event.target:setTouchEnabled(false)
-            if self.isDropMaterials and 
+            if self.isDropMaterials and
                 #UtilsForBuilding:GetBuildingsBy(self.user, "materialDepot", 1) == 0 then
-                UIKit:showMessageDialog(_("提示"),_("解锁材料库房，激活此关卡!"))
+                UIKit:showMessageDialog(_("提示"),_("解锁材料库房，激活此关卡!"),function()
+                    app:EnterMyCityScene(false,"nil",function(scene)
+                        local homePage = scene:GetHomePage()
+                        if homePage then
+                            local buildings = UtilsForBuilding:GetBuildingsBy(User, "materialDepot")
+                            homePage:GotoUnlockBuilding(buildings[1].location)
+                        end
+                    end)
+                end,nil,nil,nil,nil,_("前往"))
                 return
             end
-            self:Attack()
+
+            UIKit:showSendTroopMessageDialog(function()
+                self:Attack()
+            end, "soldierMaterials",_("士兵材料"))
+
             -- self:UseStrength(function()
             -- event.target:setTouchEnabled(true)
             -- end, sections[self.pve_name].staminaUsed):addTo(event.target)
@@ -383,13 +395,13 @@ function GameUIPveAttack:Attack()
     table.remove(enemies, 1)
     UIKit:newGameUI('GameUISendTroopNew',
         function(dragonType, soldiers)
-            local dragon = City:GetFirstBuildingByType("dragonEyrie"):GetDragonManager():GetDragon(dragonType)
+            local dragon = UtilsForDragon:GetDragon(User, dragonType)
             local dragonParam = {
-                dragonType = dragon:Type(),
-                old_exp = dragon:Exp(),
-                new_exp = dragon:Exp(),
-                old_level = dragon:Level(),
-                new_level = dragon:Level(),
+                dragonType = dragon.type,
+                old_exp = dragon.exp,
+                new_exp = dragon.exp,
+                old_level = dragon.level,
+                new_level = dragon.level,
                 reward = {},
             }
             local be_star = self.user:GetPveSectionStarByName(self.pve_name)
@@ -398,9 +410,9 @@ function GameUIPveAttack:Attack()
                 display.getRunningScene():GetSceneLayer():RefreshPve()
             end):done(function(response)
                 local report = self:DecodeReport(response.msg.fightReport, dragon, soldiers)
-                local dragon = City:GetFirstBuildingByType("dragonEyrie"):GetDragonManager():GetDragon(dragonType)
-                dragonParam.new_exp = dragon:Exp()
-                dragonParam.new_level = dragon:Level()
+                local dragon = UtilsForDragon:GetDragon(User, dragonType)
+                dragonParam.new_exp = dragon.exp
+                dragonParam.new_level = dragon.level
                 dragonParam.star = self:GetStarByReport(report)
                 if response.get_func then
                     dragonParam.reward = response.get_func()
@@ -440,7 +452,7 @@ function GameUIPveAttack:Attack()
                         display.getRunningScene():GetSceneLayer():MoveAirship(true)
                     end
                 end
-                
+
                 local is_show = false
                 UIKit:newGameUI("GameUIReplay", report, function(replayui)
                     if not is_show then
@@ -656,7 +668,7 @@ function GameUIPveAttack:DecodeReport(report, dragon, attack_soldiers)
         return true
     end
     function report:GetAttackDragonLevel()
-        return dragon:Level()
+        return dragon.level
     end
     function report:GetDefenceDragonLevel()
         return level
@@ -671,7 +683,7 @@ function GameUIPveAttack:DecodeReport(report, dragon, attack_soldiers)
 end
 
 
-    
+
 
 return GameUIPveAttack
 

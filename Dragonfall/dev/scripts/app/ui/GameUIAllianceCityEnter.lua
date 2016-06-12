@@ -160,7 +160,7 @@ function GameUIAllianceCityEnter:GetEnterButtons()
                                             end)
                                         end,{targetAlliance = alliance,toLocation = toLocation}):AddToCurrentScene(true)
                                     end
-                                    UIKit:showSendTroopMessageDialog(attack_func, "dragonMaterials",_("龙"))
+                                    UIKit:showSendTroopMessageDialog(attack_func, "dragonMaterials",_("龙材料"))
                                 end,function()end)
                             else
                                 local attack_func = function ()
@@ -170,7 +170,7 @@ function GameUIAllianceCityEnter:GetEnterButtons()
                                         end)
                                     end,{targetAlliance = alliance,toLocation = toLocation}):AddToCurrentScene(true)
                                 end
-                                UIKit:showSendTroopMessageDialog(attack_func, "dragonMaterials",_("龙"))
+                                UIKit:showSendTroopMessageDialog(attack_func, "dragonMaterials",_("龙材料"))
                             end
                         else
                             UIKit:showMessageDialog(_("错误"), _("已有协防部队正在行军"), function()end)
@@ -242,7 +242,7 @@ function GameUIAllianceCityEnter:GetEnterButtons()
                         end
                     end,{targetAlliance = alliance,toLocation = toLocation,returnCloseAction = true}):AddToCurrentScene(true)
                 end
-                UIKit:showSendTroopMessageDialog(attack_func, "dragonMaterials",_("龙"))
+                UIKit:showSendTroopMessageDialog(attack_func, "dragonMaterials",_("龙材料"))
             end
 
             if isProtected then

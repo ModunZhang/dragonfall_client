@@ -71,6 +71,10 @@ function FullScreenPopDialogUI:GetBody()
     return self.body
 end
 function FullScreenPopDialogUI:SetPopMessage(message)
+    if self.listview then
+        self.listview:removeFromParent()
+        self.listview = nil
+    end
     local message_label = UIKit:ttfLabel({
         text = message,
         size = 20,
@@ -90,9 +94,9 @@ function FullScreenPopDialogUI:SetPopMessage(message)
     item:addContent(message_label)
     listview:addItem(item)
     listview:reload()
+    self.listview = listview
     return self
 end
-
 function FullScreenPopDialogUI:CreateOKButton(params)
     if self.ok_button then
         self.ok_button:removeFromParent(true)

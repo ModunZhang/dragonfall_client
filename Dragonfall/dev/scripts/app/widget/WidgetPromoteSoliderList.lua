@@ -113,7 +113,7 @@ function WidgetPromoteSoliderList:CreateSoliderBox(soldier_type,index,star)
                 :addTo(soldier_box)
                 :align(display.CENTER, soldier_box:getContentSize().width/2 , -30)
                 :setButtonLabel(UIKit:ttfLabel({
-                    text = _("研发"),
+                    text = _("晋级"),
                     size = 24,
                     color = 0xfff3c7,
                     shadow = true

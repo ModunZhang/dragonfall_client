@@ -10,30 +10,51 @@ local LISTVIEW_WIDTH = 520
 local UIListView = import(".UIListView")
 local Localize = import("..utils.Localize")
 local WidgetPushButton = import("..widget.WidgetPushButton")
-local DragonManager = import("..entity.DragonManager")
 local UILib = import(".UILib")
 local WidgetRequirementListview = import("..widget.WidgetRequirementListview")
 
-function GameUIDragonSkill:ctor(building,skill)
+function GameUIDragonSkill:ctor(dragonType,skill)
     GameUIDragonSkill.super.ctor(self)
+    self.dragonType = dragonType
     self.skill = skill
-    self.city = building:BelongCity()
-    self.dragon_manager = building:GetDragonManager()
-    self.dragon_manager:AddListenOnType(self,DragonManager.LISTEN_TYPE.OnBasicChanged)
     if self:SkillIsMaxLevel() then
         BODY_HEIGHT = 220
     else
         BODY_HEIGHT = 520
     end
 end
-
+function GameUIDragonSkill:GetSkillTitle()
+    return self.skill.level > 0 and Localize.dragon_skill[self.skill.name] .. " (LV" .. self.skill.level .. ")" or Localize.dragon_skill[self.skill.name]
+end
+function GameUIDragonSkill:GetSkillIcon()
+    return UILib.dragon_skill_icon[self.skill.name][self.dragonType]
+end
+function GameUIDragonSkill:GetSkillName()
+    return self.skill.name
+end
+function GameUIDragonSkill:GetSkillDragonType()
+    return self.dragonType
+end
+function GameUIDragonSkill:IsSkillLocked()
+    local dragon = UtilsForDragon:GetDragon(User, self.dragonType)
+    return UtilsForDragon:IsSkillLocked(dragon, self.skill)
+end
+function GameUIDragonSkill:GetBloodCost()
+    return UtilsForDragon:GetBloodCost(self.skill, 1)
+end
+function GameUIDragonSkill:GetEffect()
+    return UtilsForDragon:GetSkillEffect(self.skill)
+end
+function GameUIDragonSkill:GetNextEffect()
+    return UtilsForDragon:GetSkillEffect(self.skill, 1)
+end
 function GameUIDragonSkill:SkillIsMaxLevel()
-    return self.skill:IsMaxLevel()
+    return UtilsForDragon:IsSkillLevelMax(self.skill)
 end
 
 function GameUIDragonSkill:GetSkillIconSprite()
-    local skill_icon = UILib.dragon_skill_icon[self.skill:Name()][self.skill:Type()]
-    if self.skill:IsLocked() then
+    local skill_icon = self:GetSkillIcon()
+    if self:IsSkillLocked() then
         local skill_sp = UIKit:getDiscolorrationSprite(skill_icon)
         return skill_sp
     else
@@ -74,15 +95,14 @@ function GameUIDragonSkill:onEnter()
                 :addTo(self.backgroundImage)
     local skillBg = display.newSprite("dragon_skill_bg_110x110.png")
         :addTo(self.backgroundImage):align(display.LEFT_TOP,37,titleBar:getPositionY() - 25)
-    local skill_icon = UILib.dragon_skill_icon[self.skill:Name()][self.skill:Type()]
+    local skill_icon = self:GetSkillIcon()
     local skill_sp = self:GetSkillIconSprite():addTo(skillBg):pos(55,55)
     skill_sp:scale(80/skill_sp:getContentSize().width)
     local title_bg = display.newScale9Sprite("title_blue_430x30.png",0, 0, cc.size(416,30), cc.rect(10,10,410,10)):addTo(self.backgroundImage)
         :align(display.LEFT_TOP,skillBg:getPositionX()+skillBg:getContentSize().width+15,skillBg:getPositionY())
     self.title_bg = title_bg
-    local str = self.skill:Level() > 0 and Localize.dragon_skill[self.skill:Name()] .. " (LV" .. self.skill:Level() .. ")" or Localize.dragon_skill[self.skill:Name()]
     local titleLabel = UIKit:ttfLabel({
-        text = str,
+        text = self:GetSkillTitle(),
         size = 24,
         color= 0xffedae,
         align = cc.ui.UILabel.TEXT_ALIGN_LEFT
@@ -120,16 +140,11 @@ function GameUIDragonSkill:onEnter()
         end)
     end
     self:RefreshUI()
-    City:GetUser():AddListenOnType(self, "resources")
+    User:AddListenOnType(self, "dragons")
+    User:AddListenOnType(self, "resources")
 end
-
-function GameUIDragonSkill:GetDragon()
-    return self.dragon_manager:GetDragon(self.skill:Type())
-end
-
 function GameUIDragonSkill:RefreshUI()
-    local str = self.skill:Level() > 0 and Localize.dragon_skill[self.skill:Name()] .. " (LV" .. self.skill:Level() .. ")" or Localize.dragon_skill[self.skill:Name()]
-    self.titleLabel:setString(str)
+    self.titleLabel:setString(self:GetSkillTitle())
     self:SetDesc()
     if not self:SkillIsMaxLevel() then
         local requirements = self:GetRequirements()
@@ -139,8 +154,8 @@ function GameUIDragonSkill:RefreshUI()
 end
 
 function GameUIDragonSkill:OnMoveOutStage()
-    self.dragon_manager:RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnBasicChanged)
-    City:GetUser():RemoveListenerOnType(self, "resources")
+    User:RemoveListenerOnType(self, "dragons")
+    User:RemoveListenerOnType(self, "resources")
     GameUIDragonSkill.super.OnMoveOutStage(self)
 end
 
@@ -149,7 +164,9 @@ function GameUIDragonSkill:UpgradeButtonClicked()
         UIKit:showMessageDialog(_("提示"),_("技能已经达到最大等级"))
         return
     end
-    NetManager:getUpgradeDragonDragonSkillPromise(self.skill:Type(),self.skill:Key()):done(function()
+    local dragon = UtilsForDragon:GetDragon(User, self.dragonType)
+    local key = UtilsForDragon:GetSkillKey(dragon, self.skill)
+    NetManager:getUpgradeDragonDragonSkillPromise(self.dragonType,key):done(function()
         if self.learnPromise then
             self.learnPromise:resolve()
         end
@@ -193,17 +210,17 @@ end
 function GameUIDragonSkill:GetRequirements()
     local requirements = {}
     local blood = User:GetResValueByType("blood")
-    local cost = self.skill:GetBloodCost()
+    local cost = self:GetBloodCost()
     table.insert(requirements,
         {
             resource_type = _("英雄之血"),
             isVisible = true,
-            isSatisfy = blood >= self.skill:GetBloodCost(),
+            isSatisfy = blood >= self:GetBloodCost(),
             icon="heroBlood_3_128x128.png",
-            description= string.format("%s/%s",blood,self.skill:GetBloodCost())
+            description= string.format("%s/%s",blood,self:GetBloodCost())
         })
-    local star = self.skill:Star()
-    local need_star = DataUtils:GetDragonSkillUnLockStar(self.skill:Name())
+    local star = UtilsForDragon:GetDragon(User, self.dragonType).star
+    local need_star = DataUtils:GetDragonSkillUnLockStar(self.skill.name)
     table.insert(requirements,
         {
             resource_type = "dragon_star",
@@ -217,18 +234,18 @@ function GameUIDragonSkill:GetRequirements()
 end
 
 function GameUIDragonSkill:CanUpgrade()
-    local cost = self.skill:GetBloodCost()
+    local cost = self:GetBloodCost()
     local flag = User:GetResValueByType("blood") >= cost
-    return flag and not self.skill:IsLocked()
+    return flag and not self:IsSkillLocked()
 end
 
 function GameUIDragonSkill:GetSkillEffection()
-    if self.skill:Level() >  0 then
-        local current_effect  = string.format("%d%%",self.skill:GetEffect() * 100)
-        local next_effect  = string.format("%d%%",self.skill:GetNextLevelEffect() * 100)
-        return Localize.dragon_skill_effection[self.skill:Name()] , current_effect , current_effect ~= next_effect and next_effect
+    if self.skill.level >  0 then
+        local current_effect  = string.format("%d%%",self:GetEffect() * 100)
+        local next_effect  = string.format("%d%%",self:GetNextEffect() * 100)
+        return Localize.dragon_skill_effection[self.skill.name] , current_effect , current_effect ~= next_effect and next_effect
     else
-        return Localize.dragon_skill_effection[self.skill:Name()]
+        return Localize.dragon_skill_effection[self.skill.name]
     end
 end
 function GameUIDragonSkill:SetDesc()
@@ -270,14 +287,15 @@ function GameUIDragonSkill:SetDesc()
     end
 
 end
-function GameUIDragonSkill:OnBasicChanged()
-    local dragon = self.dragon_manager:GetDragon(self.skill:Type())
-    self.skill = dragon:GetSkillByKey(self.skill:Key())
-    self:RefreshUI()
+function GameUIDragonSkill:OnUserDataChanged_dragons(userData, deltaData)
+    if deltaData("dragons") then
+        local dragon = UtilsForDragon:GetDragon(userData, self.dragonType)
+        self.skill = UtilsForDragon:GetSkillByName(dragon, self.skill.name)
+        self:RefreshUI()
+    end
 end
 function GameUIDragonSkill:OnUserDataChanged_resources(userData, deltaData)
-    local ok, value = deltaData("resources.blood")
-    if ok then
+    if deltaData("resources.blood") then
         self:RefreshUI()
     end
 end

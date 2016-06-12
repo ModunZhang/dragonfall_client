@@ -42,15 +42,6 @@ end
 function GameUIDailyQuestSpeedUp:CheckCanSpeedUpFree()
     return false
 end
-function GameUIDailyQuestSpeedUp:OnTimer(current_time)
-    local quest = self.quest
-    local show_time = quest.finishTime/1000-current_time <0 and 0 or quest.finishTime/1000-current_time
-    if show_time == 0 then
-        self:LeftButtonClicked()
-        return
-    end
-    self:SetProgressInfo(show_time, 100-(quest.finishTime-current_time*1000)/(quest.finishTime-quest.startTime)*100 )
-end
 function GameUIDailyQuestSpeedUp:OnUserDataChanged_dailyQuestEvents(userData, deltaData)
     local quest = self.quest
     local ok, value = deltaData("dailyQuestEvents.edit")
