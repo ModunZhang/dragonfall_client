@@ -594,19 +594,13 @@ static int tolua_ext_createDirectory(lua_State* tolua_S)
     else
 #endif
     {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
-		const char* strFolderPath = ((const char*)tolua_tostring(tolua_S, 1, 0));
-		bool isCreated = FileOperation::createDirectory(strFolderPath);
+		bool isCreated = FileOperation::createDirectory(tolua_tocppstring(tolua_S, 1, 0));
 		tolua_pushboolean(tolua_S, isCreated);
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
-		bool isCreated =  FileUtils::getInstance()->createDirectory(tolua_tocppstring(tolua_S, 1, 0));
-		tolua_pushboolean(tolua_S, isCreated);
-#endif
     }
     return 1;
 #ifndef TOLUA_RELEASE
 tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'createDir'.",&tolua_err);
+    tolua_error(tolua_S,"#ferror in function 'createDirectory'.",&tolua_err);
     return 0;
 #endif
 }
@@ -629,8 +623,33 @@ static int tolua_ext_removeDirectory(lua_State* tolua_S)
     return 1;
 #ifndef TOLUA_RELEASE
 tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'createDir'.",&tolua_err);
+    tolua_error(tolua_S,"#ferror in function 'removeDirectory'.",&tolua_err);
     return 0;
+#endif
+}
+
+//@since 115
+static int tolua_ext_copyFile(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+	tolua_Error tolua_err;
+	if (
+		!tolua_isstring(tolua_S, 1, 0, &tolua_err) ||
+		!tolua_isstring(tolua_S, 2, 0, &tolua_err) ||
+		!tolua_isnoobj(tolua_S, 3, &tolua_err)
+		)
+		goto tolua_lerror;
+	else
+#endif
+	{
+		bool isSuccess = FileOperation::copyFile(tolua_tocppstring(tolua_S, 1, 0), tolua_tocppstring(tolua_S, 2, 0));
+		tolua_pushboolean(tolua_S, isSuccess);
+	}
+	return 1;
+#ifndef TOLUA_RELEASE
+tolua_lerror :
+	tolua_error(tolua_S, "#ferror in function 'copyFile'.", &tolua_err);
+	return 0;
 #endif
 }
 
@@ -930,6 +949,7 @@ static int tolua_ext_get_android_id(lua_State* tolua_S)
 static void ResgisterGlobalExtFunctions(lua_State* tolua_S)
 {
     tolua_function(tolua_S, "now", tolua_ext_now);
+	tolua_function(tolua_S, "copyFile", tolua_ext_copyFile);
     tolua_function(tolua_S, "getDeviceId", tolua_ext_get_device_id);
     tolua_function(tolua_S, "getAndroidId", tolua_ext_get_android_id);
     tolua_function(tolua_S, "getBatteryLevel", tolua_ext_getBatteryLevel);
@@ -997,7 +1017,7 @@ TOLUA_API int tolua_cc_lua_extension(lua_State* tolua_S)
     tolua_beginmodule(tolua_S,"ext");
     ResgisterGlobalExtFunctions(tolua_S);
     RegisterExtModules(tolua_S);
-    tolua_constant(tolua_S,"__version__",114); //dannyhe:version infomation for our lua extension
+    tolua_constant(tolua_S,"__version__",115); //dannyhe:version infomation for our lua extension
     tolua_endmodule(tolua_S);
     tolua_endmodule(tolua_S);
     return 1;
