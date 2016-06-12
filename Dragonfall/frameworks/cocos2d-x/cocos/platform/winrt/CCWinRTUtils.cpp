@@ -445,7 +445,7 @@ void destroyMappedCacheFile(const std::string& key)
 		FileUtils::getInstance()->removeFile(cacheFilePath);
     }
 
-	UserDefault::getInstance()->deleteValueForKey(newKey.c_str());//dannyhe:use deleteValueForKey to  fix  the  file size?
+	UserDefault::getInstance()->setStringForKey(newKey.c_str(), "");
 }
 
 NS_CC_END
