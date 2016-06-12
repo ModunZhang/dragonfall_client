@@ -107,8 +107,10 @@ function GameUIAllianceInfo:onEnter()
     GameUIAllianceInfo.super.onEnter(self)
     NetManager:getAllianceInfoPromise(self.alliance_id, self.serverId):done(function(response)
         if response.success and response.msg.allianceData then
-            self:setAllianceData(response.msg.allianceData)
-            self:BuildUI()
+            if self.setAllianceData and self.BuildUI then
+                self:setAllianceData(response.msg.allianceData)
+                self:BuildUI()
+            end
         end
     end):fail(function ()
         if self.LeftButtonClicked then

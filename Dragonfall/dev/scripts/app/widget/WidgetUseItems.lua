@@ -98,14 +98,18 @@ function WidgetUseItems:OpenChangePlayerOrCityName(item_name)
         NetManager:getUseItemPromise(item_name,{[item_name] = {
             [request_key] = string.trim(editbox:getText())
         }}):done(function ()
-            dialog:LeftButtonClicked()
+            if dialog.LeftButtonClicked then
+                dialog:LeftButtonClicked()
+            end
         end)
     end,
     function ()
         NetManager:getBuyAndUseItemPromise(item_name,{[item_name] = {
             [request_key] = string.trim(editbox:getText())
         }}):done(function ()
-            dialog:LeftButtonClicked()
+            if dialog.LeftButtonClicked then
+                dialog:LeftButtonClicked()
+            end
         end)
     end
     ):addTo(item_box_bg):align(display.CENTER,item_box_bg:getContentSize().width/2,item_box_bg:getContentSize().height/2)
@@ -769,7 +773,9 @@ function WidgetUseItems:OpenMoveTheCityDialog( item_name ,params)
                     }
 
                 }):done(function ()
-                    dialog:LeftButtonClicked()
+                    if dialog.LeftButtonClicked then
+                        dialog:LeftButtonClicked()
+                    end
                 end)
             end
         end,
@@ -785,7 +791,9 @@ function WidgetUseItems:OpenMoveTheCityDialog( item_name ,params)
                         locationY = params.locationY
                     }
                 }):done(function ()
-                    dialog:LeftButtonClicked()
+                    if dialog.LeftButtonClicked then
+                        dialog:LeftButtonClicked()
+                    end
                 end)
             end
         end
@@ -1056,7 +1064,9 @@ function WidgetUseItems:OpenRetreatTroopDialog( item_name,event,eventType )
                     eventId = event.id
                 }
             }):done(function ()
-                dialog:LeftButtonClicked()
+                if dialog.LeftButtonClicked then
+                    dialog:LeftButtonClicked()
+                end
             end)
         end,
         function ()
@@ -1066,7 +1076,9 @@ function WidgetUseItems:OpenRetreatTroopDialog( item_name,event,eventType )
                     eventId = event.id
                 }
             }):done(function ()
-                dialog:LeftButtonClicked()
+                if dialog.LeftButtonClicked then
+                    dialog:LeftButtonClicked()
+                end
             end)
         end
     ):addTo(item_box_bg):align(display.CENTER,item_box_bg:getContentSize().width/2,item_box_bg:getContentSize().height/2)
@@ -1189,6 +1201,7 @@ end
 
 
 return WidgetUseItems
+
 
 
 

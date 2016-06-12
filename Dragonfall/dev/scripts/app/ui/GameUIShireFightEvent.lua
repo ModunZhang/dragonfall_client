@@ -253,7 +253,10 @@ function GameUIShireFightEvent:DispathSoliderButtonClicked()
     local final_func = function ()
         local attack_func = function ()
             UIKit:newGameUI("GameUISendTroopNew",function(dragonType,soldiers,total_march_time,gameuialliancesendtroops)
-                if type(self.GetFightEvent) ~= 'function' then gameuialliancesendtroops:LeftButtonClicked() end
+                if type(self.GetFightEvent) ~= 'function' then 
+                    gameuialliancesendtroops:LeftButtonClicked() 
+                    return
+                end
                 if total_march_time >= UtilsForShrine:GetEventTime(self:GetFightEvent()) then
                     UIKit:showMessageDialog(_("提示"),
                         _("检测到你的行军时间大于圣地事件时间,可能部队未达到之前，圣地事件已结束。是否继续派兵?"),

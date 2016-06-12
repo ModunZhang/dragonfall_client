@@ -454,7 +454,10 @@ function MailManager:OnNewMailsChanged( mails )
             end
         elseif type == "edit" then
             for i,data in ipairs(mail) do
-                table.insert(edit_mails, self:ModifyMail(clone(data)))
+                local modify_mail = self:ModifyMail(clone(data))
+                if modify_mail then
+                    table.insert(edit_mails, modify_mail)
+                end
             end
         end
     end
@@ -576,6 +579,9 @@ function MailManager:OnSavedReportsChanged( savedReports )
     end
 end
 function MailManager:OnNewReportsChanged( __reports )
+    if not self.reports then
+        return
+    end
     local add_reports = {}
     local remove_reports = {}
     local edit_reports = {}

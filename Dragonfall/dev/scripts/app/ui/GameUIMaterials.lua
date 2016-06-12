@@ -20,7 +20,9 @@ function GameUIMaterials:OnMoveInStage()
     self:TabButtons()
 end
 function GameUIMaterials:onExit()
-    self.euip_view:UnInit()
+    if self.euip_view then
+        self.euip_view:UnInit()
+    end
     GameUIMaterials.super.onExit(self)
 end
 function GameUIMaterials:TabButtons()

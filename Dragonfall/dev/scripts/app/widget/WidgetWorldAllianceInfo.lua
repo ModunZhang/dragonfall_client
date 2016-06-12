@@ -319,7 +319,7 @@ function WidgetWorldAllianceInfo:LoadInfo(alliance_data)
         :align(display.RIGHT_TOP,titleBg:getPositionX(),titleBg:getPositionY() - titleBg:getContentSize().height -10)
         :addTo(layer)
     button:onButtonClicked(function(event)
-        if not self:GetAllianceData().archon then
+        if not self:GetAllianceData().archon or self:GetAllianceData().archon == json.null then
             return
         end
         local location = self:GetAllianceData().archon.location
@@ -390,7 +390,7 @@ end
 
 function WidgetWorldAllianceInfo:GetAllianceArchonName()
     local archon = self:GetAllianceData().archon
-    if archon then
+    if archon and archon ~= json.null then
         local isnone = archon.name == "" or archon.name == nil or archon.name == json.null
         return isnone and _("无") or archon.name
     else
