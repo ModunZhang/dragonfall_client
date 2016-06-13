@@ -92,7 +92,9 @@ end
 function GameUIAlliance:OnUserDataChanged_iapGifts()
     if not Alliance_Manager:GetMyAlliance():IsDefault() then
         self:RefreshInformationTips()
-        self.have_gift_tip:SetNumber(#User.iapGifts)
+        if self.have_gift_tip then
+            self.have_gift_tip:SetNumber(#User.iapGifts)
+        end
     end
 end
 function GameUIAlliance:AddListenerOfMyAlliance()

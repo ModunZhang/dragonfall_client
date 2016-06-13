@@ -39,13 +39,15 @@ function GameUISaleOne:onEnter()
             local cur_index = self.pv:getCurPageIdx()
             for i,item in ipairs(self.pv.items_) do
                 local content_node = item.content_node
-                local pro_data,leftTime = DataUtils:GetProductAndLeftTimeByIndex(i)
-                if pro_data.name ~= content_node.pro_data.name then
-                    self:CreateSalesBox()
-                    self.pv:gotoPage(cur_index)
-                    self:RefreshInfo()
-                else
-                    content_node.leftTime:setString(GameUtils:formatTimeStyle1(leftTime))
+                if content_node then
+                    local pro_data,leftTime = DataUtils:GetProductAndLeftTimeByIndex(i)
+                    if pro_data.name ~= content_node.pro_data.name then
+                        self:CreateSalesBox()
+                        self.pv:gotoPage(cur_index)
+                        self:RefreshInfo()
+                    else
+                        content_node.leftTime:setString(GameUtils:formatTimeStyle1(leftTime))
+                    end
                 end
             end
         end

@@ -95,6 +95,10 @@ function GameUIAllianceBattle:InitBattleStatistics()
     local status = alliance.basicInfo.status
     -- local status = ""
     if status == "peace" or status == "protect" then
+        if not other_alliance then
+            self:LeftButtonClicked()
+            return
+        end
         local blue_bg = display.newSprite("back_ground_blue_308x96.png"):addTo(layer):align(display.RIGHT_CENTER,window.cx,window.top_bottom - 40)
         local red_bg = display.newSprite("back_ground_red_308x96.png"):addTo(layer):align(display.LEFT_CENTER,window.cx,window.top_bottom - 40)
 
