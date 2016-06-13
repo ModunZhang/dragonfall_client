@@ -77,31 +77,6 @@ int mkpath(const char *path, mode_t mode)
 	free(copypath);
 	return (status);
 }
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
-
-static void GetFileFolderFromPath(std::string &path)
-{
-	std::size_t found = path.rfind("/");
-	if (found != std::string::npos)
-	{
-		path.erase(found + 1);
-	}
-}
-
-static inline std::string convertPathFormatToWinStyle(const std::string& path)
-{
-	std::string ret = path;
-	int len = ret.length();
-	for (int i = 0; i < len; ++i)
-	{
-		if (ret[i] == '/')
-		{
-			ret[i] = '\\';
-		}
-	}
-	return ret;
-}
-
 #endif /* CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_IOS */
 
 bool FileOperation::createDirectory(const std::string& path){
