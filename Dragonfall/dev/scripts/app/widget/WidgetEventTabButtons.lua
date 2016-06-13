@@ -247,10 +247,7 @@ function WidgetEventTabButtons:RefreshAllEvents()
             self:IteratorAllItem(function(i, v)
                 if i ~= 1 and v.event then
                     v:SetProgressInfo(self:BuildingDescribe(v.event))
-                    self:SetProgressItemBtnLabel(
-                        DataUtils:getFreeSpeedUpLimitTime()
-                        >UtilsForEvent:GetEventInfo(v.event),
-                        v)
+                    self:SetProgressItemBtnLabel(self:IsAbleToFreeSpeedup(v.event),v)
                 end
             end)
         end

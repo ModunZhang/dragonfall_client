@@ -372,9 +372,13 @@ function GameUIPveAttack:CreateAttackButton()
                 return
             end
 
-            UIKit:showSendTroopMessageDialog(function()
+            if self.isDropMaterials then
+                UIKit:showSendTroopMessageDialog(function()
+                    self:Attack()
+                end, "soldierMaterials",_("士兵材料"))
+            else
                 self:Attack()
-            end, "soldierMaterials",_("士兵材料"))
+            end
 
             -- self:UseStrength(function()
             -- event.target:setTouchEnabled(true)
