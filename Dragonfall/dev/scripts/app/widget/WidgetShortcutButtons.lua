@@ -38,7 +38,13 @@ function WidgetShortcutButtons:ctor(city)
     order:scheduleUpdate()
     --在线活动
     local activity_button = WidgetAutoOrderAwardButton.new():scale(SCALE)
+    activity_button:onButtonClicked(function(event)
+        if event.target:getChildByTag(111) then
+            event.target:removeChildByTag(111)
+        end
+    end)
     order:AddElement(activity_button)
+    self.activity_button = activity_button
     local gacha_button = WidgetAutoOrderGachaButton.new():scale(SCALE)
     order:AddElement(gacha_button)
     --行军事件按钮
@@ -102,8 +108,13 @@ function WidgetShortcutButtons:ctor(city)
     ):scale(SCALE)
     WidgetLight.new():addTo(button, -1001):scale(0.6)
     button:onButtonClicked(function(event)
+        local needTips = false
+        if event.target:getChildByTag(111) then
+            event.target:removeChildByTag(111)
+            needTips = true
+        end
         if event.name == "CLICKED_EVENT" then
-            UIKit:newGameUI("GameUIActivityNew",self.city):AddToCurrentScene(true)
+            UIKit:newGameUI("GameUIActivityNew",self.city,needTips):AddToCurrentScene(true)
         end
     end)
     function button:CheckVisible()
@@ -343,7 +354,7 @@ function WidgetShortcutButtons:CheckAllianceRewardCount()
     if not self.tips_button then return end
     local newsCount = NewsManager:GetUnreadCount()
     local activityCount = ActivityManager:GetHaveRewardActivitiesCount()
-    
+
     local award_num = 0
     if User:HaveEveryDayLoginReward() then
         award_num = award_num + 1
@@ -356,7 +367,28 @@ function WidgetShortcutButtons:CheckAllianceRewardCount()
     end
     self.tips_button.tips_button_count:SetNumber(newsCount + award_num + activityCount)
 end
-
+function WidgetShortcutButtons:HasAnyRewards()
+    return User:HaveEveryDayLoginReward()
+        or User:HaveContinutyReward()
+        or User:HavePlayerLevelUpReward()
+        or User:HaveOnlineReward()
+end
+local WidgetFteArrow = import("..widget.WidgetFteArrow")
+function WidgetShortcutButtons:TipsOnReward()
+    if User:HaveEveryDayLoginReward()
+    or User:HaveContinutyReward()
+    or User:HavePlayerLevelUpReward() then
+        WidgetFteArrow.new(_("当前有奖励可以领取"))
+        :addTo(self.tips_button, 100, 111)
+        :TurnRight():align(display.RIGHT_CENTER, -50, 0)
+    else
+        if User:HaveOnlineReward() then
+            WidgetFteArrow.new(_("当前有奖励可以领取"))
+            :addTo(self.activity_button, 100, 111)
+            :TurnLeft():align(display.LEFT_CENTER, 50, 0)
+        end
+    end
+end
 return WidgetShortcutButtons
 
 

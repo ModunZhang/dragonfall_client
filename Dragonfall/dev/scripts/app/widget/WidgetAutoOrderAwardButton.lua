@@ -19,7 +19,7 @@ function WidgetAutoOrderAwardButton:OnAwradButtonClicked(event)
 end
 
 
-function WidgetAutoOrderAwardButton:SetTimeInfo(time) 
+function WidgetAutoOrderAwardButton:SetTimeInfo(time)
 	if self.time_bg then
 		if math.floor(time) > 0 then
 			self.time_label:SetNumString(os.date("!%H:%M:%S",time))
@@ -61,21 +61,9 @@ function WidgetAutoOrderAwardButton:onEnter()
 			self.can_receive_num:hide()
 		else
 			self.can_receive_num:show()
-			self.can_receive_num:SetNumber(self:GetCanReceiveOnLineNum())
+			self.can_receive_num:SetNumber(User:GetOnlineRewardCount())
 		end
 	end)
-end
-function WidgetAutoOrderAwardButton:GetCanReceiveOnLineNum()
-    local on_line_time = DataUtils:getPlayerOnlineTimeMinutes()
-    local count = 0
-    for __,v in pairs(config_online) do
-        if v.onLineMinutes <= on_line_time then
-            if not self:IsTimePointRewarded(v.timePoint) then
-            	count = count + 1
-            end
-        end
-    end
-    return count
 end
 function WidgetAutoOrderAwardButton:IsTimePointRewarded(timepoint)
     local countInfo = User.countInfo
@@ -94,7 +82,7 @@ end
 function WidgetAutoOrderAwardButton:StopAction()
 	self.sprite_[1]:stopAllActions()
 	self.sprite_[1]:setRotation(0)
-	
+
 end
 
 function WidgetAutoOrderAwardButton:GetShakeAction()
@@ -159,7 +147,7 @@ function WidgetAutoOrderAwardButton:CheckState()
 			self.can_get = false
 		end
 	else
-		self.visible___ = false 
+		self.visible___ = false
 	end
 end
 
@@ -170,6 +158,6 @@ function WidgetAutoOrderAwardButton:IsTimePointRewarded(timepoint)
 			return true
 		end
 	end
-	return false 
+	return false
 end
 return WidgetAutoOrderAwardButton

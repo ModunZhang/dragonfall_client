@@ -282,6 +282,14 @@ function MyCityScene:onEnterTransitionFinish()
 
     if type(self.callback) == "function" then
         self:callback()
+    else
+        if not UtilsForTask:NeedTips(self:GetCity():GetUser()) then
+            if self.home_page.order_shortcut then
+                if self.home_page.order_shortcut:HasAnyRewards() then
+                    self.home_page.order_shortcut:TipsOnReward()
+                end
+            end
+        end
     end
 end
 function MyCityScene:CreateHomePage()

@@ -31,8 +31,9 @@ local titles = {
     PLAYER_LEVEL_UP = _("新手冲级奖励"),
 }
 
-function GameUIActivityNew:ctor(city)
+function GameUIActivityNew:ctor(city, needTips)
     GameUIActivityNew.super.ctor(self,city, _("活动"))
+    self.needTips = needTips
     ActivityManager:GetActivitiesFromServer()
     local countInfo = User.countInfo
     self.player_level_up_time = countInfo.registerTime/1000 + config_intInit.playerLevelupRewardsHours.value * 60 * 60 -- 单位秒
@@ -88,11 +89,12 @@ function GameUIActivityNew:OnMoveInStage()
             {
                 label = _("赛季"),
                 tag = "season",
-                default = true,
+                default = true and not self.needTips,
             },
             {
                 label = _("活动"),
                 tag = "activity",
+                default = self.needTips,
             },
             {
                 label = _("新闻"),
@@ -297,28 +299,45 @@ function GameUIActivityNew:CreateTabIf_activity()
         self:RefreshActivityListView()
         User:AddListenOnType(self, "countInfo")
         User:AddListenOnType(self, "buildings")
+    else
+        self:RefreshActivityListView()
     end
-    self:RefreshActivityListView()
     return self.activity_list_view
 end
-
+local WidgetFteArrow = import("..widget.WidgetFteArrow")
 function GameUIActivityNew:RefreshActivityListView()
     self.activity_list_view:removeAllItems()
     local countInfo = User.countInfo
-    local item = self:GetActivityItem(self.ITEMS_TYPE.EVERY_DAY_LOGIN)
+    local item = self:GetActivityItem(self.ITEMS_TYPE.EVERY_DAY_LOGIN):zorder(4)
     self.activity_list_view:addItem(item)
+    local hasTips = false
+    if self.needTips and User:HaveEveryDayLoginReward() then
+        WidgetFteArrow.new(_("每日登陆游戏可以领取奖励")):TurnUp()
+        :addTo(item,100,111):pos(612/2, 30)
+        hasTips = true
+    end
     --
     if countInfo.day14RewardsCount < #config_day14 then
-        item = self:GetActivityItem(self.ITEMS_TYPE.CONTINUITY)
+        item = self:GetActivityItem(self.ITEMS_TYPE.CONTINUITY):zorder(3)
         self.activity_list_view:addItem(item)
+        if self.needTips and User:HaveContinutyReward() and not hasTips then
+            WidgetFteArrow.new(_("连续登陆可以领取奖励")):TurnUp()
+            :addTo(item,100,111):pos(612/2, 30)
+            hasTips = true
+        end
     end
     if not countInfo.isFirstIAPRewardsGeted then
-        item = self:GetActivityItem(self.ITEMS_TYPE.FIRST_IN_PURGURE)
+        item = self:GetActivityItem(self.ITEMS_TYPE.FIRST_IN_PURGURE):zorder(2)
         self.activity_list_view:addItem(item)
     end
     if self.player_level_up_time - app.timer:GetServerTime() > 0 and not self:CheckFinishAllLevelUpActiIf() then
-        item = self:GetActivityItem(self.ITEMS_TYPE.PLAYER_LEVEL_UP)
+        item = self:GetActivityItem(self.ITEMS_TYPE.PLAYER_LEVEL_UP):zorder(1)
         self.activity_list_view:addItem(item)
+        if self.needTips and User:HavePlayerLevelUpReward() and not hasTips then
+            WidgetFteArrow.new(_("升级城堡可以领取奖励")):TurnUp()
+            :addTo(item,100,111):pos(612/2, 30)
+            hasTips = true
+        end
     end
     self.activity_list_view:reload()
 end
@@ -363,6 +382,10 @@ function GameUIActivityNew:OnRankChanged()
 end
 function GameUIActivityNew:OnActivityListViewTouch(event)
     if event.name == "clicked" and event.item then
+        if event.item:getChildByTag(111) then
+            event.item:removeChildByTag(111)
+            self.needTips = false
+        end
         app:GetAudioManager():PlayeEffectSoundWithKey("NORMAL_DOWN")
         self:OnSelectActivityAtItem(event.item.item_type)
     end

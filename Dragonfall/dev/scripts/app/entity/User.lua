@@ -319,6 +319,34 @@ function User:HavePlayerLevelUpReward()
     end
 end
 --[[end]]
+-- 在线奖励
+function User:HaveOnlineReward()
+    return self:GetOnlineRewardCount() > 0
+end
+local online = GameDatas.Activities.online
+function User:GetOnlineRewardCount()
+    local countInfo = self.countInfo
+    local secs = math.floor((countInfo.todayOnLineTime+(NetManager:getServerTime()-countInfo.lastLoginTime)) / 1000)
+    local mins = math.floor(secs / 60)
+    local count = 0
+    for __,v in pairs(online) do
+        if v.onLineMinutes <= mins then
+            if not self:IsTimePointRewarded(v.timePoint) then
+                count = count + 1
+            end
+        end
+    end
+    return count
+end
+function User:IsTimePointRewarded(timepoint)
+    for __,v in ipairs(self.countInfo.todayOnLineTimeRewards) do
+        if v == timepoint then
+            return true
+        end
+    end
+    return false
+end
+--[[end]]
 
 --[[iap 相关方法]]
 local giftExpireHours_value = GameDatas.PlayerInitData.intInit.giftExpireHours.value
