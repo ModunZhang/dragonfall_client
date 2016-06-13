@@ -232,7 +232,6 @@ end
 
 --2.join
 function GameUIAlliance:NoAllianceTabEvent_joinIf()
-    self.join_list_page = 1
     if self.joinNode then
         self:GetJoinList()
         return self.joinNode
@@ -266,18 +265,50 @@ function GameUIAlliance:NoAllianceTabEvent_joinIf()
     self.editbox_tag_search = editbox_tag_search
     local list,list_node = UIKit:commonListView({
         direction = UIScrollView.DIRECTION_VERTICAL,
-        viewRect = cc.rect(0, 0,568,680),
+        viewRect = cc.rect(0, 0,568,650),
         async = true,
     })
-    list_node:addTo(joinNode):pos((window.width - 568)/2,30)
+    list_node:addTo(joinNode):pos((window.width - 568)/2,60)
     list:setDelegate(handler(self, self.JoinListsourceDelegate))
     self.joinListView = list
+    local checkbox = UICheckBoxButton.new({
+        off = "checkbox_unselected.png",
+        off_pressed = "checkbox_unselected.png",
+        off_disabled = "checkbox_unselected.png",
+        on = "checkbox_selectd.png",
+        on_pressed = "checkbox_selectd.png",
+        on_disabled = "checkbox_selectd.png",
+    }):addTo(self.joinNode,1,111):pos(window.width/2-60, 30)
+    :onButtonStateChanged(function(event)
+        GameUIAlliance.isCheckBoxButtonSelected = event.target:isButtonSelected()
+        self:GetJoinList()
+    end):setButtonSelected(not not GameUIAlliance.isCheckBoxButtonSelected)
+    UIKit:ttfLabel({
+        text = _("只显示可立即加入的联盟"),
+        size = 20,
+        color = 0x403c2f
+    }):addTo(checkbox)
+    :align(display.LEFT_CENTER, 40, 0)
     self:GetJoinList()
     return joinNode
 end
-
+local function filterDatas(datas, filter)
+    if filter then
+        local t = {}
+        for i,v in ipairs(datas) do
+            if v.membersMax > v.members then
+                table.insert(t, v)
+            end
+        end
+        return t
+    else
+        return datas
+    end
+end
 -- tag ~= nil -->search
 function GameUIAlliance:GetJoinList(tag)
+    self.join_list_page = 1
+    self.isNoMore = false
     if tag and string.len(tag) >  0 then
         NetManager:getSearchAllianceByTagPromsie(tag):done(function(response)
             if not response.msg or not response.msg.allianceDatas then return end
@@ -287,6 +318,7 @@ function GameUIAlliance:GetJoinList(tag)
                     self:RefreshJoinListView()
                 end
             end
+            self.joinNode:getChildByTag(111):hide()
         end)
     else
         if self.isLoadingJoin then return end
@@ -294,11 +326,15 @@ function GameUIAlliance:GetJoinList(tag)
         NetManager:getFetchCanDirectJoinAlliancesPromise(0):done(function(response)
             if not response.msg or not response.msg.allianceDatas then return end
             if response.msg.allianceDatas then
-                self.join_list_data_source = response.msg.allianceDatas
+                if self.joinNode then
+                    local isfilter = self.joinNode:getChildByTag(111):isButtonSelected()
+                    self.join_list_data_source = filterDatas(response.msg.allianceDatas, isfilter)
+                end
                 if self.RefreshJoinListView then
                     self:RefreshJoinListView()
                 end
             end
+            self.joinNode:getChildByTag(111):show()
         end):always(function()
             self.isLoadingJoin = false
         end)
@@ -314,7 +350,13 @@ function GameUIAlliance:GetMoreJoinListData()
             if tolua.isnull(self) then return end
             if not response.msg or not response.msg.allianceDatas then return end
             if response.msg.allianceDatas then
-                table.insertto(self.join_list_data_source, response.msg.allianceDatas)
+                if self.joinNode then
+                    if #response.msg.allianceDatas < JOIN_LIST_PAGE_SIZE then
+                        self.isNoMore = true
+                    end
+                    local isfilter = self.joinNode:getChildByTag(111):isButtonSelected()
+                    table.insertto(self.join_list_data_source, filterDatas(response.msg.allianceDatas, isfilter))
+                end
             end
         end):always(function()
         self.isLoadingJoin = false
@@ -329,8 +371,16 @@ function GameUIAlliance:JoinListsourceDelegate(listView, tag, idx)
     if cc.ui.UIListView.COUNT_TAG == tag then
         return #self.join_list_data_source
     elseif cc.ui.UIListView.CELL_TAG == tag then
-        if idx % JOIN_LIST_PAGE_SIZE == 0 and #self.join_list_data_source - idx < JOIN_LIST_PAGE_SIZE then
-            self:GetMoreJoinListData()
+        if self.joinNode and not self.isNoMore then
+            if self.joinNode:getChildByTag(111):isButtonSelected() then
+                if idx == #self.join_list_data_source then
+                    self:GetMoreJoinListData()
+                end
+            else
+                if idx % JOIN_LIST_PAGE_SIZE == 0 and #self.join_list_data_source - idx < JOIN_LIST_PAGE_SIZE then
+                    self:GetMoreJoinListData()
+                end
+            end
         end
         local item
         local content
