@@ -104,7 +104,7 @@ static inline std::string convertPathFormatToWinStyle(const std::string& path)
 
 #endif /* CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_IOS */
 
-bool FileOperation::createDirectory(std::string path){
+bool FileOperation::createDirectory(const std::string& path){
 #if CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
 	int succ = mkpath(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 	if(succ != 0){
@@ -126,7 +126,7 @@ bool FileOperation::createDirectory(std::string path){
 #endif
 }
 
-bool FileOperation::removeDirectory(std::string path){
+bool FileOperation::removeDirectory(const std::string& path){
 #if CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
 	int succ = remove(path.c_str());
 	if(succ != 0){
@@ -148,7 +148,7 @@ bool FileOperation::removeDirectory(std::string path){
 #endif
 }
 
-bool FileOperation::copyFile(std::string from, std::string to){
+bool FileOperation::copyFile(const std::string& from, const std::string& to){
 #if CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
 	copyfile_state_t _copyfileState;
 	_copyfileState = copyfile_state_alloc();
