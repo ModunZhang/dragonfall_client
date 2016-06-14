@@ -703,6 +703,9 @@ function WidgetEventTabButtons:UpgradeBuildingHelpOrSpeedup(event)
 end
 function WidgetEventTabButtons:MiliTaryTechUpgradeOrSpeedup(event)
     local User = self.city:GetUser()
+    if not User:EventType(event) then
+        return
+    end
     local time, percent = UtilsForEvent:GetEventInfo(event)
 
     if DataUtils:getFreeSpeedUpLimitTime() > time and time > 1 then
