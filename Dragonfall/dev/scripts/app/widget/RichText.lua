@@ -45,6 +45,9 @@ function RichText:ctor(params)
     self.ellipsis_width = label:getContentSize().width
     label:removeFromParent()
 end
+function RichText:SetColor(color)
+    self.color = color or 0xffffff
+end
 function RichText:Text(str, line , url_handle)
     if url_handle then
         self.url_handle = url_handle

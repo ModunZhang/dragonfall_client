@@ -26,6 +26,7 @@ local PLAYER_ICON = {
     "player_icon_9.png",
     "player_icon_10.png",
     "player_icon_11.png",
+    __mod = "player_icon_mod.png",
 }
 local RESOURCE = {
     blood = "heroBlood_3_128x128.png",

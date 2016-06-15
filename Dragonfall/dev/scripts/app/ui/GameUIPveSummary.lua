@@ -3,6 +3,8 @@ local Localize = import("..utils.Localize")
 local Localize_item = import("..utils.Localize_item")
 local lights = import("..particles.lights")
 local WidgetSoldier = import("..widget.WidgetSoldier")
+local WidgetUseItems = import("..widget.WidgetUseItems")
+local SpriteConfig = import("..sprites.SpriteConfig")
 local GameUIPveSummary = UIKit:createUIClass("GameUIPveSummary", "UIAutoClose")
 local config_dragonLevel = GameDatas.Dragons.dragonLevel
 local function setExpLabelWithFormat(label, num1, num2, num3)
@@ -273,75 +275,112 @@ function GameUIPveSummary:BuildDefeatUI(param)
     ):pos(display.cx, display.cy):onButtonClicked(function()
         self:LeftButtonClicked()
     end)
-    display.newSprite("pve_summary_bg1.png"):addTo(bg):align(display.BOTTOM_CENTER, 0, 200)
 
-    self.items = {}
-    local sbg = display.newSprite("pve_summary_bg5.png"):addTo(bg):pos(0, 208)
-    local size = sbg:getContentSize()
-    self.items[1] = display.newSprite("tmp_pve_star_bg.png"):addTo(sbg):pos(size.width/2 - 60, 50):scale(0.8)
-    self.items[2] = display.newSprite("tmp_pve_star_bg.png"):addTo(sbg):pos(size.width/2, 50)
-    self.items[3] = display.newSprite("tmp_pve_star_bg.png"):addTo(sbg):pos(size.width/2 + 60, 50):scale(0.8)
-    ccs.Armature:create("win"):addTo(bg):align(display.CENTER, 0, 300):getAnimation():play("Defeat", -1, 0)
+    local title_bg = display.newSprite("title_red_564x54_1.png"):addTo(bg):align(display.BOTTOM_CENTER, 0, 180)
+    UIKit:ttfLabel({
+        text = _("立即提升战斗力"),
+        size = 20,
+        color = 0xffcb4e,
+        shadow = true
+    }):addTo(title_bg):align(display.CENTER,title_bg:getContentSize().width/2, 32)
+
+    ccs.Armature:create("win"):addTo(bg):align(display.CENTER, 0, 280):getAnimation():play("Defeat", -1, 0)
     app:GetAudioManager():PlayeEffectSoundWithKey("BATTLE_DEFEATED")
     self:performWithDelay(function()
         self:DisableAutoClose(false)
     end, 0.8)
 
-
-
-    display.newScale9Sprite("pve_summary_bg3.png", nil, nil, cc.size(534, 148 * 2)):addTo(bg):pos(0,10)
+    local bg_1 = display.newScale9Sprite("pve_summary_bg3.png", nil, nil, cc.size(534, 330)):addTo(bg):pos(0,10)
     local dragon = cc.ui.UIPushButton.new(
-        {normal = "pve_summary_bg4.png", pressed = "pve_summary_bg4.png", disabled = "pve_summary_bg4.png"},
+        {normal = "pve_summary_bg6.png", pressed = "pve_summary_bg6.png", disabled = "pve_summary_bg6.png"},
         {scale9 = false},
         {}
-    ):addTo(bg):pos(0, 82):onButtonClicked(function()
-        UIKit:newGameUI("GameUIDragonEyrieMain", City, City:GetFirstBuildingByType("dragonEyrie"), "dragon"):AddToCurrentScene(true)
+    ):addTo(bg_1):pos(534/2, 41):onButtonClicked(function()
+        local ui = UIKit:newGameUI("GameUIDragonEyrieDetail",City,City:GetFirstBuildingByType("dragonEyrie"),param.dragonType):AddToCurrentScene(false)
+        ui.tab_buttons:SelectButtonByTag("skill")
         self:LeftButtonClicked()
     end)
-    local dragon_bg = display.newSprite("dragon_bg_114x114.png"):addTo(dragon):pos(-180, 0)
+    local dragon_bg = display.newSprite("dragon_bg_114x114.png"):addTo(dragon):pos(-180, 0):scale(0.6)
     self.dragon_img = display.newSprite(UILib.dragon_head[param.dragonType])
         :align(display.CENTER, dragon_bg:getContentSize().width/2, dragon_bg:getContentSize().height/2+5):addTo(dragon_bg)
 
     UIKit:ttfLabel({
-        text = _("龙巢"),
-        size = 22,
+        text = _("升级巨龙的技能,在战场上获得更多强力的加成"),
+        size = 18,
         color = 0xffedae,
-    }):addTo(dragon):align(display.LEFT_CENTER, -80, 30)
-
-    UIKit:ttfLabel({
-        text = _("提升龙的等级"),
-        size = 22,
-        color = 0xffedae,
-    }):addTo(dragon):align(display.LEFT_CENTER, -80, -30)
+        dimensions = cc.size(300,0)
+    }):addTo(dragon):align(display.LEFT_CENTER, -120, 0)
 
     display.newSprite("fte_icon_arrow.png"):align(display.CENTER, 200, 0):addTo(dragon):rotation(-90):scale(0.5)
 
-
-    local barracks = cc.ui.UIPushButton.new(
-        {normal = "pve_summary_bg4.png", pressed = "pve_summary_bg4.png", disabled = "pve_summary_bg4.png"},
+    local items = cc.ui.UIPushButton.new(
+        {normal = "pve_summary_bg6.png", pressed = "pve_summary_bg6.png", disabled = "pve_summary_bg6.png"},
         {scale9 = false},
         {}
-    ):addTo(bg):pos(0, -62):onButtonClicked(function()
+    ):addTo(bg_1):pos(534/2, 124):onButtonClicked(function()
+        UIKit:newGameUI('GameUIItems',City,"shop"):AddToCurrentScene(true)
+        self:LeftButtonClicked()
+    end)
+    display.newSprite("bottom_icon_package_66x66.png"):addTo(items):pos(-180, 0)
+
+    UIKit:ttfLabel({
+        text = _("购买巨龙装备宝箱,打造装备强化你的巨龙"),
+        size = 18,
+        color = 0xffedae,
+        dimensions = cc.size(300,0)
+    }):addTo(items):align(display.LEFT_CENTER, -120, 0)
+
+    display.newSprite("fte_icon_arrow.png"):align(display.CENTER, 200, 0):addTo(items):rotation(-90):scale(0.5)
+
+    local barracks = cc.ui.UIPushButton.new(
+        {normal = "pve_summary_bg6.png", pressed = "pve_summary_bg6.png", disabled = "pve_summary_bg6.png"},
+        {scale9 = false},
+        {}
+    ):addTo(bg_1):pos(534/2, 207):onButtonClicked(function()
         UIKit:newGameUI("GameUIBarracks", City, City:GetFirstBuildingByType("barracks"), "recruit"):AddToCurrentScene(true)
         self:LeftButtonClicked()
     end)
-
-    WidgetSoldier.new("swordsman_1", 1):addTo(barracks):pos(-180, 0):scale(0.8)
-
-    UIKit:ttfLabel({
-        text = _("兵营"),
-        size = 22,
-        color = 0xffedae,
-    }):addTo(barracks):align(display.LEFT_CENTER, -80, 30)
+    local config = SpriteConfig["barracks"]
+    local build_png = config:GetConfigByLevel(1).png
+    local building_image = display.newSprite(build_png,-180, 0)
+        :scale(0.3)
+        :addTo(barracks)
 
     UIKit:ttfLabel({
-        text = _("招募更多兵种"),
-        size = 22,
+        text = _("在兵营中招募更多单位。升级兵营还能解锁更多的高级兵种"),
+        size = 18,
         color = 0xffedae,
-    }):addTo(barracks):align(display.LEFT_CENTER, -80, -30)
+        dimensions = cc.size(300,0)
+    }):addTo(barracks):align(display.LEFT_CENTER, -120, 0)
+
     display.newSprite("fte_icon_arrow.png"):align(display.CENTER, 200, 0):addTo(barracks):rotation(-90):scale(0.5)
 
+    local dragonEyrie = cc.ui.UIPushButton.new(
+        {normal = "pve_summary_bg6.png", pressed = "pve_summary_bg6.png", disabled = "pve_summary_bg6.png"},
+        {scale9 = false},
+        {}
+    ):addTo(bg_1):pos(534/2, 290):onButtonClicked(function()
+        WidgetUseItems.new():Create({
+            item_name = "dragonExp_1",
+            dragon = UtilsForDragon:GetDragon(User, param.dragonType)
+        }):AddToCurrentScene()
+        self:LeftButtonClicked()
+    end)
+    local config = SpriteConfig["dragonEyrie"]
+    local build_png = config:GetConfigByLevel(1).png
+    local building_image = display.newSprite(build_png,-180, 0)
+        :scale(0.2)
+        :addTo(dragonEyrie)
 
+
+    UIKit:ttfLabel({
+        text = _("提升龙的等级，提升龙的带兵量，生命值和攻击力"),
+        size = 18,
+        color = 0xffedae,
+        dimensions = cc.size(300,0)
+    }):addTo(dragonEyrie):align(display.LEFT_CENTER, -120, 0)
+
+    display.newSprite("fte_icon_arrow.png"):align(display.CENTER, 200, 0):addTo(dragonEyrie):rotation(-90):scale(0.5)
     UIKit:ttfLabel({
         text = _("确定"),
         size = 22,
@@ -370,6 +409,8 @@ end
 
 
 return GameUIPveSummary
+
+
 
 
 
