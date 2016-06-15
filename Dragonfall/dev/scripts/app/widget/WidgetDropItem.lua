@@ -34,6 +34,9 @@ function WidgetDropItem:onEnter()
     }):align(display.LEFT_CENTER, 20, 29):addTo(header)
 end
 
+function WidgetDropItem:SetTitle(title)
+    self.title_label:setString(title)
+end
 
 function WidgetDropItem:GetState()
     return self.state_
@@ -56,7 +59,7 @@ function WidgetDropItem:OnClose(ani)
     end
     self.state_ = self.STATE.close
     self.lock_ = false
-    self.arrow:flipY(false)
+    self.arrow:flipX(false)
     if type(self.callback) == "function" then
         self.callback(nil, ani)
     end
@@ -65,7 +68,7 @@ function WidgetDropItem:OnOpen(ani)
     ani = ani == nil and true or ani
     self.state_ = self.STATE.open
     self.lock_ = false
-    self.arrow:flipY(true)
+    self.arrow:flipX(true)
     if type(self.callback) == "function" then
         self.callback(self, ani)
     end
@@ -122,7 +125,52 @@ function WidgetDropItem:CreateRewardsPanel(task)
         base_y = cur_y - under_y
     end
 end
+-- 下拉选择框
+function WidgetDropItem:CreateSelectPanel(options,select,callback)
+    local content = self:GetContent()
 
+    content:size(572, #options * 60 + 40)
+
+    local size = content:getContentSize()
+    local base_under_line = size.height
+    local base_y = base_under_line
+    local gap_y = 60
+    for i,v in ipairs(options) do
+        local cur_y = base_y - gap_y
+        UIKit:ttfLabel({
+            text = v,
+            size = 20,
+            color = 0x403c2f,
+        }):align(display.LEFT_CENTER, 20, cur_y):addTo(content)
+
+        if i ~= #options then
+            display.newScale9Sprite("dividing_line.png",0,0,cc.size(550,2),cc.rect(10,2,382,2)):align(display.CENTER, 572/2, cur_y-30):addTo(content)
+        end
+        base_y = cur_y
+    end
+    local checkbox_image = {
+        off = "checkbox_unselected.png",
+        off_pressed = "checkbox_unselected.png",
+        off_disabled = "checkbox_unselected.png",
+        on = "checkbox_selectd.png",
+        on_pressed = "checkbox_selectd.png",
+        on_disabled = "checkbox_selectd.png",
+    }
+    local group = cc.ui.UICheckBoxButtonGroup.new(display.TOP_TO_BOTTOM)
+        :onButtonSelectChanged(function(event)
+            local selected = event.selected
+            callback(selected)
+        end)
+        :align(display.BOTTOM_CENTER, 500 , 32)
+        :addTo(content)
+    for i,v in ipairs(options) do
+        group:addButton(cc.ui.UICheckBoxButton.new(checkbox_image)
+            :align(display.LEFT_CENTER):scale(0.8))
+    end
+    group:setButtonsLayoutMargin(14, 0, 0, 0)
+        :setLayoutSize(50, #options * 60)
+    group:getButtonAtIndex(select):setButtonSelected(true)
+end
 function WidgetDropItem:align(anchorPoint, x, y)
     display.align(self,anchorPoint,x,y)
     local anchorPoint = display.ANCHOR_POINTS[anchorPoint]
@@ -134,6 +182,7 @@ function WidgetDropItem:align(anchorPoint, x, y)
 end
 
 return WidgetDropItem
+
 
 
 

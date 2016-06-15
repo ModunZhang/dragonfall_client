@@ -8,12 +8,13 @@ local WidgetPushButton = import("..widget.WidgetPushButton")
 
 local GameUIAllianceInfoMenu = UIKit:createUIClass("GameUIAllianceInfoMenu","UIAutoClose")
 
-function GameUIAllianceInfoMenu:ctor(callback,alliance_buttong_str,enable_alliance_info)
+function GameUIAllianceInfoMenu:ctor(callback,alliance_buttong_str,enable_alliance_info,isMod)
     GameUIAllianceInfoMenu.super.ctor(self)
     self.body = display.newScale9Sprite("back_ground_588x346.png",window.cx, window.bottom_top - 416, cc.size(588,290), cc.rect(10,10,568,326)):align(display.BOTTOM_CENTER) --window.bottom_top - 70
     local body = self.body
     self:addTouchAbleChild(body)
     self.callback = callback
+    self.isMod = isMod
     self.alliance_buttong_str = alliance_buttong_str or ""
     self.enable_alliance_info = enable_alliance_info or false
 end
@@ -113,13 +114,17 @@ function GameUIAllianceInfoMenu:LoadAllMenus()
 
     local button = WidgetPushButton.new({normal = "brown_btn_up_552x56.png",pressed = "brown_btn_down_552x56.png"})
             :setButtonLabel(UIKit:ttfLabel({
-                text = _("屏蔽"),
+                text = self.isMod and _("禁言") or _("屏蔽"),
                 size = 20,
                 color = 0xffedae,
             }))
             :onButtonClicked(function(event)
                 if event.name == "CLICKED_EVENT" then
-                    self:CallButtonActionWithTag("blockChat")
+                    if self.isMod then
+                        self:CallButtonActionWithTag("mutePlayer")
+                    else
+                        self:CallButtonActionWithTag("blockChat")
+                    end
                 end
             end)
             :align(display.CENTER_TOP, size.width/2, 65)
