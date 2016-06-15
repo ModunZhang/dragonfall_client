@@ -179,11 +179,11 @@ file changed size:
 获取`92fa574`到上次提交(`HEAD`)的文件大小变动
 
 ~~~
-☁  kod_update_server [WP_production] sh /Users/dannyhe/WorkSpace/NewDragonfall/Dragonfall/tools/getChangedSize.sh
+☁  kod_update_server [WP_production] sh /Users/dannyhe/WorkSpace/NewDragonfall/Dragonfall/tools/getChangedSize.sh 92fa574
 os: darwin15
-version: HEAD^ - HEAD:
+version: 92fa574 - HEAD:
 file changed size:
-2.63682 Mb
+13.9624 Mb
 ~~~
 
 ##### buildiOS.sh
