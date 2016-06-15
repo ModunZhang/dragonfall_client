@@ -7,7 +7,7 @@
 #---------------------------------------------------
 
 if test -z $1;then
-	COMMAND_PREFIX="git log --name-status -1"
+	COMMAND_PREFIX="git diff --name-status HEAD^ HEAD"
 	TIPS="HEAD^ - HEAD:"
 else
 	COMMAND_PREFIX="git diff --name-status $1 HEAD"
