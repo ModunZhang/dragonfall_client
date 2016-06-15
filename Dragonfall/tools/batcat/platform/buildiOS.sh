@@ -13,7 +13,7 @@ ProvisionType="Distribution" # Inhouse
 #Distribution config
 DistributionProvision="7f884fc4-abc7-4efd-bba6-c9297bf4fd3a"
 DistributionCodeIdentity="iPhone Distribution: Alan Cooper (B484Q6X8P4)"
-#Inhouse confi
+#Inhouse config
 InhouseProvision="0bed58fb-1068-4d04-b1b4-959212c36644"
 InhouseCodeIdentity="iPhone Developer: Alan Cooper (37X43D5H4Z)"
 TargetName="Dragonfall"
