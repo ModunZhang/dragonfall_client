@@ -16,7 +16,7 @@ local EmojiUtil = class("EmojiUtil")
         table.insert(dest,1,'{\"type\":\"text\", \"value\":\"first\"}')
     end
 --]]
-function EmojiUtil:ConvertEmojiToRichText(chatmsg,func_handler_dest)
+function EmojiUtil:ConvertEmojiToRichText(chatmsg,func_handler_dest,chat)
     chatmsg = chatmsg or ""
     if string.len(chatmsg) == 0 then return "" end
     chatmsg = string.gsub(chatmsg,"\n","\\n")
@@ -59,6 +59,8 @@ function EmojiUtil:ConvertEmojiToRichText(chatmsg,func_handler_dest)
                 end
                 dest[i] = string.format('{\"type\":\"text\", \"value\":\"%s\"},{\"type\":\"text\", \"value\":\"%s\",\"color\":"0xd64600",\"url\":\"%s\"},{\"type\":\"text\", \"value\":\"%s\"}',string.sub(result,1,r_s - 1), msg_value,"report:"..userId..":"..reportId,string.sub(result,r_e+1))
             else
+                -- local color = chat and chat.icon == '__mod' and ",\"color\":\"0xbf6e17" or ""
+                -- dest[i] = string.format('{\"type\":\"text\", \"value\":\"%s\"%s\"}', v,color)
                 dest[i] = string.format('{\"type\":\"text\", \"value\":\"%s\"}', v)
             end
         else
@@ -66,6 +68,8 @@ function EmojiUtil:ConvertEmojiToRichText(chatmsg,func_handler_dest)
             if plist_texture_data[key] then
                 dest[i] = string.format('{\"type\":\"image\", \"value\":\"%s\"}', key)
             else
+                -- local color = chat and chat.icon == '__mod' and ",\"color\":\"0xbf6e17" or ""
+                -- dest[i] = string.format('{\"type\":\"text\", \"value\":\"%s\"%s\"}', v,color)
                 dest[i] = string.format('{\"type\":\"text\", \"value\":\"%s\"}', v)
             end
         end
@@ -134,6 +138,9 @@ function ChatManager:GetGameDefault()
 end
 
 function ChatManager:__checkIsBlocked(msg)
+    if msg.icon == "__mod" then
+        return false
+    end
     if msg.id == User._id then
         msg.name = User.basicInfo.name
         msg.icon = User.basicInfo.icon
@@ -285,16 +292,19 @@ end
 
 function ChatManager:__formatLastMessage(chat)
     if not chat then return ""  end
-    if chat.id == User._id then
+    if chat.id == User._id and chat.icon ~= "__mod" then
         chat.name = User.basicInfo.name
     end
     if string.lower(chat.id) == 'system' then
         return self:GetEmojiUtil():FormatSystemChat(string.format("%s : %s",chat.name,chat.text),true)
     else
         local chat_text = string.format(" : %s",chat.text)
+        local color = chat.icon ~= "__mod" and "0x00b4cf" or "0xbf6e17"
         local result = self:GetEmojiUtil():ConvertEmojiToRichText(chat_text,function(json_table)
-            table.insert(json_table,1,string.format('{\"type\":\"text\", \"value\":\"%s\",\"color\":"0x00b4cf"}', chat.name))
-        end)
+            local color = chat.icon == '__mod' and "0xbf6e17" or "0x00b4cf"
+            table.insert(json_table,1,string.format('{\"type\":\"text\", \"value\":\"%s\",\"color\":\"%s\"}', chat.name,color))
+            -- table.insert(json_table,1,string.format('{\"type\":\"text\", \"value\":\"%s\",\"color\":\"0x00b4cf\"}', chat.name))
+        end,chat)
         return result
     end
 end
@@ -357,6 +367,12 @@ end
 
 function ChatManager:SendChat(channel,msg,cb)
     NetManager:getSendChatPromise(channel,msg):done(function()
+        self:__checkNotifyIf()
+        if cb then cb() end
+    end)
+end
+function ChatManager:SendModChat(msg,cb)
+    NetManager:getSendModChatPromise(msg):done(function()
         self:__checkNotifyIf()
         if cb then cb() end
     end)

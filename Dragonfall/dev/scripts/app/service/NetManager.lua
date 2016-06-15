@@ -1510,6 +1510,34 @@ function NetManager:getSendChatPromise(channel,text)
         ["channel"] = channel
     }, "发送聊天信息失败!")
 end
+--发送墨子聊天信息到世界频道
+function NetManager:getSendModChatPromise(text)
+    return get_none_blocking_request_promise("chat.chatHandler.modSend", {
+        ["text"] = text,
+    }, "发送墨子聊天信息到世界频道失败!")
+end
+--查看我的墨子信息
+function NetManager:getMyModDataPromise()
+    return get_blocking_request_promise("logic.playerHandler.getMyModData", {}, "查看我的墨子信息失败!")
+end
+-- 墨子禁言玩家
+function NetManager:getMutePlayerPromise(targetPlayerId,muteMinutes,muteReason)
+    return get_blocking_request_promise("logic.playerHandler.mutePlayer", {
+        targetPlayerId = targetPlayerId,
+        muteMinutes = muteMinutes,
+        muteReason = muteReason
+    }, "墨子禁言玩家失败!")
+end
+-- 墨子解除玩家禁言
+function NetManager:getUnMutePlayerPromise(targetPlayerId)
+    return get_blocking_request_promise("logic.playerHandler.unMutePlayer", {
+        targetPlayerId = targetPlayerId
+    }, "墨子解除玩家禁言失败!")
+end
+-- 墨子获取禁言玩家列表
+function NetManager:getMutedPlayerListPromise()
+    return get_blocking_request_promise("logic.playerHandler.getMutedPlayerList", {}, "墨子获取禁言玩家列表失败!")
+end
 --获取GM聊天记录
 function NetManager:getAllGMChatPromise()
     return get_none_blocking_request_promise("http.httpHandler.getAll", {}, "获取GM聊天记录信息失败!")
