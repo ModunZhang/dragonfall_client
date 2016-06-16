@@ -18,6 +18,7 @@
 		3F0840FC1B9BE33200A52544 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F0840FB1B9BE33200A52544 /* MessageUI.framework */; };
 		3F0841031B9BE6ED00A52544 /* res in Resources */ = {isa = PBXBuildFile; fileRef = 3F0841011B9BE6ED00A52544 /* res */; };
 		3F0841041B9BE6ED00A52544 /* scripts in Resources */ = {isa = PBXBuildFile; fileRef = 3F0841021B9BE6ED00A52544 /* scripts */; };
+		3F0ADC931CFF1A01001D609E /* tolua_market_sdk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3F0ADC911CFF1A01001D609E /* tolua_market_sdk.cpp */; };
 		3F2DC6F21BFAD06600D562F9 /* FacebookSDK-apple.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3F2DC6EB1BFAD06600D562F9 /* FacebookSDK-apple.mm */; };
 		3F2DC6F51BFAD06600D562F9 /* tolua_fb_sdk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3F2DC6F01BFAD06600D562F9 /* tolua_fb_sdk.cpp */; };
 		3F4DC4941BE3016000628E80 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FDC6A051BB12D5300F29DE2 /* Images.xcassets */; };
@@ -182,6 +183,8 @@
 		3F0840FB1B9BE33200A52544 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.4.sdk/System/Library/Frameworks/MessageUI.framework; sourceTree = DEVELOPER_DIR; };
 		3F0841011B9BE6ED00A52544 /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; name = res; path = ../../../update/res; sourceTree = "<group>"; };
 		3F0841021B9BE6ED00A52544 /* scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = scripts; path = ../../../update/scripts; sourceTree = "<group>"; };
+		3F0ADC911CFF1A01001D609E /* tolua_market_sdk.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tolua_market_sdk.cpp; sourceTree = "<group>"; };
+		3F0ADC921CFF1A01001D609E /* tolua_market_sdk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tolua_market_sdk.h; sourceTree = "<group>"; };
 		3F2DC6EB1BFAD06600D562F9 /* FacebookSDK-apple.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "FacebookSDK-apple.mm"; sourceTree = "<group>"; };
 		3F2DC6ED1BFAD06600D562F9 /* FacebookSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookSDK.h; sourceTree = "<group>"; };
 		3F2DC6F01BFAD06600D562F9 /* tolua_fb_sdk.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tolua_fb_sdk.cpp; sourceTree = "<group>"; };
@@ -339,10 +342,12 @@
 		3F08403B1B9BDFC300A52544 /* sdk */ = {
 			isa = PBXGroup;
 			children = (
-				3FD7CAB21C8E7A5F00338869 /* AppsFlyer */,
-				3F2DC6EA1BFAD06600D562F9 /* Facebook */,
+				3F0ADC911CFF1A01001D609E /* tolua_market_sdk.cpp */,
+				3F0ADC921CFF1A01001D609E /* tolua_market_sdk.h */,
 				3F08407C1B9BDFC300A52544 /* MarketSDKTool-ios.mm */,
 				3F08407D1B9BDFC300A52544 /* MarketSDKTool.h */,
+				3FD7CAB21C8E7A5F00338869 /* AppsFlyer */,
+				3F2DC6EA1BFAD06600D562F9 /* Facebook */,
 				3F08407E1B9BDFC300A52544 /* TalkingData */,
 			);
 			name = sdk;
@@ -824,6 +829,7 @@
 				5023812417EBBCAC00990C9B /* main.m in Sources */,
 				3F4DC5021BE349CE00628E80 /* UICKeyChainStore.m in Sources */,
 				3F0840D71B9BDFC400A52544 /* MarketSDKTool-ios.mm in Sources */,
+				3F0ADC931CFF1A01001D609E /* tolua_market_sdk.cpp in Sources */,
 				3F0840B61B9BDFC400A52544 /* FileOperation.cpp in Sources */,
 				3F2DC6F21BFAD06600D562F9 /* FacebookSDK-apple.mm in Sources */,
 				3F4DC4E31BE3496000628E80 /* CommonUtils-apple.mm in Sources */,

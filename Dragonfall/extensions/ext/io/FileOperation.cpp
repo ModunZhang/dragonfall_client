@@ -77,34 +77,9 @@ int mkpath(const char *path, mode_t mode)
 	free(copypath);
 	return (status);
 }
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
-
-static void GetFileFolderFromPath(std::string &path)
-{
-	std::size_t found = path.rfind("/");
-	if (found != std::string::npos)
-	{
-		path.erase(found + 1);
-	}
-}
-
-static inline std::string convertPathFormatToWinStyle(const std::string& path)
-{
-	std::string ret = path;
-	int len = ret.length();
-	for (int i = 0; i < len; ++i)
-	{
-		if (ret[i] == '/')
-		{
-			ret[i] = '\\';
-		}
-	}
-	return ret;
-}
-
 #endif /* CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_IOS */
 
-bool FileOperation::createDirectory(std::string path){
+bool FileOperation::createDirectory(const std::string& path){
 #if CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
 	int succ = mkpath(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 	if(succ != 0){
@@ -126,7 +101,7 @@ bool FileOperation::createDirectory(std::string path){
 #endif
 }
 
-bool FileOperation::removeDirectory(std::string path){
+bool FileOperation::removeDirectory(const std::string& path){
 #if CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
 	int succ = remove(path.c_str());
 	if(succ != 0){
@@ -148,7 +123,7 @@ bool FileOperation::removeDirectory(std::string path){
 #endif
 }
 
-bool FileOperation::copyFile(std::string from, std::string to){
+bool FileOperation::copyFile(const std::string& from, const std::string& to){
 #if CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
 	copyfile_state_t _copyfileState;
 	_copyfileState = copyfile_state_alloc();
@@ -175,28 +150,9 @@ bool FileOperation::copyFile(std::string from, std::string to){
 	}
 	return ret;
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
-	bool ret = true;
-	if (!FileUtils::getInstance()->isFileExist(from)) return false;
-	if (FileUtils::getInstance()->isFileExist(to))FileUtils::getInstance()->removeFile(to);
-	GetFileFolderFromPath(to);
-	createDirectory(to);
-	Platform::String^ psfrom = cocos2d::WinRTHelper::PlatformStringFromString(convertPathFormatToWinStyle(from));
-	Platform::String^ psto = cocos2d::WinRTHelper::PlatformStringFromString(convertPathFormatToWinStyle(to));
-	create_task(StorageFolder::GetFolderFromPathAsync(psto)).then([=, &psfrom, &ret](task<StorageFolder^> task){
-		try
-		{
-			StorageFolder^ folder = task.get();
-			create_task(StorageFile::GetFileFromPathAsync(psfrom)).then([=, &folder](StorageFile^ file){
-				create_task(file->CopyAsync(folder)).wait();
-			}).wait();
-		}
-		catch (Platform::COMException^ ex)
-		{
-			ret = false;
-		}
-	}).wait();
-
-	return ret;
+	std::wstring wfrom(from.begin(), from.end());
+	std::wstring wto(to.begin(), to.end());
+	return SUCCEEDED(CopyFile2(wfrom.c_str(), wto.c_str(), NULL)) ? true : false;
 #endif
 }
 #endif // CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_WINRT || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
