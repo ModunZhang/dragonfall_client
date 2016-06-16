@@ -36,6 +36,7 @@ Version | Git SHA-1 | Release Notes
 1.1.3(1783)  | 13a9220       | apk 120
 1.1.3(1821)  | b3fe9ce       | apk 121
 1.1.3(1821)  | 5e46dfd       | apk 122 (upgrade talking data sdk for gp 3.2.7)
+1.1.3(1821)  | 5e46dfd       | apk 123
 
 ### WindowPhone
 
@@ -44,3 +45,5 @@ Version | Git SHA-1 | Release Notes
 1.1.3(1560)  | a043190       | 
 1.1.3(1815)  | 442e2df       | appx 1.1.3.3
 1.1.4(2062)  | a588cbc       | appVersion: 1.1.4 appMinVersion:1.1.3 appx 1.1.4.6
+1.1.5(2219)  | c855e54       | appVersion: 1.1.5 appMinVersion:1.1.3 appx 1.1.5.7
+1.1.5(2266)  | 9da6028       | 
