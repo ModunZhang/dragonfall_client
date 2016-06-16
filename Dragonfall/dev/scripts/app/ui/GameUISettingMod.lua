@@ -14,7 +14,9 @@ function GameUISettingMod:onEnter()
     self:BuildUI()
 end
 function GameUISettingMod:BuildUI()
-   local button = WidgetPushButton.new({normal = "brown_btn_up_552x56.png",pressed = "brown_btn_down_552x56.png"})
+    local address = GameUtils:getSupportEmailAddress()
+    
+    local button = WidgetPushButton.new({normal = "brown_btn_up_552x56.png",pressed = "brown_btn_down_552x56.png"})
         :setButtonLabel(UIKit:ttfLabel({
             text = _("成为MOD"),
             size = 20,
@@ -23,6 +25,11 @@ function GameUISettingMod:BuildUI()
         }))
         :onButtonClicked(function(event)
             if event.name == "CLICKED_EVENT" then
+                local subject,body = GameUtils:getSupportMailFormat(_("成为MOD"))
+                local canSendMail = ext.sysmail.sendMail(address,subject,body,function()end)
+                if not canSendMail then
+                    UIKit:showMessageDialog(_("错误"),_("您尚未设置邮件：请前往IOS系统“设置”-“邮件、通讯录、日历”-“添加账户”处设置"),function()end)
+                end
             end
         end)
         :align(display.CENTER_TOP, window.cx, window.top_bottom)
@@ -38,6 +45,11 @@ function GameUISettingMod:BuildUI()
         }))
         :onButtonClicked(function(event)
             if event.name == "CLICKED_EVENT" then
+                local subject,body = GameUtils:getSupportMailFormat(_("举报MOD"))
+                local canSendMail = ext.sysmail.sendMail(address,subject,body,function()end)
+                if not canSendMail then
+                    UIKit:showMessageDialog(_("错误"),_("您尚未设置邮件：请前往IOS系统“设置”-“邮件、通讯录、日历”-“添加账户”处设置"),function()end)
+                end
             end
         end)
         :align(display.CENTER_TOP, window.cx, window.top_bottom - 70)
@@ -45,6 +57,7 @@ function GameUISettingMod:BuildUI()
     display.newSprite("mod_icon_1.png"):addTo(button):pos(-240,-28)
 end
 return GameUISettingMod
+
 
 
 
