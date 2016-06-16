@@ -21,6 +21,7 @@ $(PATH_SUFF)../../../../extensions/ext/notification/tolua_local_push.cpp \
 $(PATH_SUFF)../../../../extensions/ext/io/FileOperation.cpp \
 $(PATH_SUFF)../../../../extensions/ext/notification/LocalNotification-android.cpp \
 $(PATH_SUFF)../../../../extensions/sdk/MarketSDKTool-android.cpp \
+$(PATH_SUFF)../../../../extensions/sdk/tolua_market_sdk.cpp \
 $(PATH_SUFF)../../../../extensions/ext/platform/android/jni_StoreKit.cpp
 
 ifeq ($(CC_USE_SDK_PAYPAL),1)

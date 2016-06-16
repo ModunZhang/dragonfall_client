@@ -2761,9 +2761,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\base\ccTypes.cpp">
       <Filter>base</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\base\CCUserDefault.cpp">
-      <Filter>base</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\base\ccUTF8.cpp">
       <Filter>base</Filter>
     </ClCompile>
@@ -3365,6 +3362,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\audio\AudioEngine.cpp">
       <Filter>audio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\base\CCUserDefault-winrt.cpp">
+      <Filter>base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
