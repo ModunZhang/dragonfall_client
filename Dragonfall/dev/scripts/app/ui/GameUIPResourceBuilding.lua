@@ -7,6 +7,7 @@ local WidgetInfoWithTitle = import('..widget.WidgetInfoWithTitle')
 local SpriteConfig = import("..sprites.SpriteConfig")
 local WidgetInfo = import('..widget.WidgetInfo')
 local Localize = import('..utils.Localize')
+local GameUINpc = import("..ui.GameUINpc")
 local GameUIPResourceBuilding = UIKit:createUIClass('GameUIPResourceBuilding',"GameUIUpgradeBuilding")
 local intInit = GameDatas.PlayerInitData.intInit
 local buildings = GameDatas.Buildings.buildings
@@ -30,6 +31,13 @@ local P_RESOURCE_BUILDING_TYPE_TO_RESOURCE ={
     ["mill"] = _("粮食产量"),
 }
 
+local RESOURCE_TYPE ={
+    ["foundry"] = _("铁矿"),
+    ["stoneMason"] = _("石材"),
+    ["lumbermill"] = _("木材"),
+    ["mill"] = _("粮食"),
+}
+
 function GameUIPResourceBuilding:ctor(city,building)
     GameUIPResourceBuilding.super.ctor(self,city,P_RESOURCE_BUILDING_TYPE_TO_NAME[building:GetType()],building)
 end
@@ -43,7 +51,7 @@ end
 
 function GameUIPResourceBuilding:OnMoveInStage()
     GameUIPResourceBuilding.super.OnMoveInStage(self)
-    self:CreateTabButtons({
+    local tab = self:CreateTabButtons({
         {
             label = _("信息"),
             tag = "info",
@@ -57,6 +65,22 @@ function GameUIPResourceBuilding:OnMoveInStage()
     end):pos(window.cx, window.bottom + 34)
     self:ProduceIncreasePart()
     self:RebuildPart()
+    if self.needTips then
+        tab:SelectTab("info")
+        local buildingType = self.building:GetType()
+        local houseType = UtilsForBuilding:GetHouseType(buildingType)
+        local text = string.format(
+            _("领主大人，在%s附近修建%s，能大幅提升%s的产量！您也可在此转换建筑的类型，使得您可以建造更多的对应小屋")
+        , Localize.building_name[buildingType], Localize.building_name[houseType], RESOURCE_TYPE[buildingType])
+        GameUINpc:PromiseOfSay({
+            npc = "woman",
+            words = text,
+            focus_rect = self.condition_bg:getCascadeBoundingBox(),
+        }):next(function()
+            app:GetGameDefautlt():SetPassTriggerTips(buildingType)
+            return GameUINpc:PromiseOfLeave()
+        end)
+    end
 end
 
 
@@ -90,7 +114,7 @@ function GameUIPResourceBuilding:ProduceIncreasePart()
         h = 146,
         info = info
     }):align(display.CENTER, display.cx, display.top-200):addTo(self.info_layer)
-
+    self.condition_bg = bg.info_bg
     local bg_size = bg:getContentSize()
 
 end

@@ -101,9 +101,16 @@ function WidgetMilitaryTechnology:CreateItem(name, tech)
             color = 0xffedae,
             shadow = true
         })):onButtonClicked(function (event)
-        UIKit:newWidgetUI("WidgetUpgradeMilitaryTech", name, tech):AddToCurrentScene()
+            local needTips
+            if event.target:getChildByTag(111) then
+                event.target:removeChildByTag(111)
+                needTips = true
+            end
+            UIKit:newWidgetUI("WidgetUpgradeMilitaryTech", name, tech, needTips):AddToCurrentScene()
         end)
         :align(display.CENTER, item_width-90, 44):addTo(content)
+
+    item.upgrade_btn = upgrade_btn
 
     local soldiers = string.split(name, "_")
     local soldier_category = Localize.soldier_category

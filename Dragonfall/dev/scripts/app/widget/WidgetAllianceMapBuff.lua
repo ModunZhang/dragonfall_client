@@ -5,6 +5,7 @@
 local WidgetPopDialog = import(".WidgetPopDialog")
 local WidgetInfo = import(".WidgetInfo")
 local WidgetPages = import(".WidgetPages")
+local GameUINpc = import("..ui.GameUINpc")
 local Localize = import("..utils.Localize")
 
 local aliance_buff = GameDatas.AllianceMap.buff
@@ -12,7 +13,7 @@ local aliance_buff = GameDatas.AllianceMap.buff
 local WidgetAllianceMapBuff = class("WidgetAllianceMapBuff", WidgetPopDialog)
 
 
-function WidgetAllianceMapBuff:ctor(mapIndex)
+function WidgetAllianceMapBuff:ctor(mapIndex,needTips)
     WidgetAllianceMapBuff.super.ctor(self,464,_("联盟地图BUFF"))
     local body = self:GetBody()
     local rb_size = body:getContentSize()
@@ -38,7 +39,13 @@ function WidgetAllianceMapBuff:ctor(mapIndex)
     }):align(display.CENTER, rb_size.width/2,rb_size.height-50)
         :addTo(body)
 
-
+    if needTips then
+        GameUINpc:PromiseOfSay(
+            {npc = "woman", words = _("领主大人，联盟越靠近中心位置，可获得的增益就越多越强，帮助联盟向中心进发吧！")}
+        ):next(function()
+            return GameUINpc:PromiseOfLeave()
+        end)
+    end
 end
 
 return WidgetAllianceMapBuff

@@ -61,11 +61,23 @@ function MapScene:onEnter()
         local alliance = Alliance_Manager:GetMyAlliance()
         local flag = false
         if alliance and alliance:IsDefault() then
-            flag = false 
+            flag = false
         else
             flag = Alliance_Manager:HasToMyCityEvents()
         end
         if flag then
+            if not GameDefautlt:IsPassedTriggerTips("warning") then
+                app:GetGameDefautlt():SetPassTriggerTips("warning")
+                if UIKit:GetUIInstance("GameUINpc") then
+                    UIKit:GetUIInstance("GameUINpc"):removeFromParent()
+                    GameUINpc:PromiseOfSay({
+                        npc = "woman",
+            words = _("领主大人，您的城市即将被攻击！您可以在城墙选择驻防部队统计敌人，或是撤下部队，避免无所谓的死伤（但您的资源将会被略对）")
+                    }):next(function()
+                        return GameUINpc:PromiseOfLeave()
+                    end)
+                end
+            end
             self:Warning()
         else
             self:DisableWaring()
@@ -125,7 +137,7 @@ function MapScene:GetScreenLayer()
     return self.screen_layer
 end
 function MapScene:GetTopLayer()
-    return self.top_layer 
+    return self.top_layer
 end
 function MapScene:BlurRenderScene()
     self.blur_count = self.blur_count - 1
@@ -174,9 +186,9 @@ function MapScene:Warning()
 end
 function MapScene:CreateWaring()
     local sprite = display.newSprite(
-        "click_empty.png", 
-        display.cx, 
-        display.cy, 
+        "click_empty.png",
+        display.cx,
+        display.cy,
         {class=cc.FilteredSpriteWithOne}
     ):addTo(self, 2999, WARNING_TAG)
     local size = sprite:getContentSize()

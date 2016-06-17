@@ -151,7 +151,7 @@ function GameUIAllianceCityEnter:GetEnterButtons()
                         local playerId = member.id
                         if not alliance:CheckHelpDefenceMarchEventsHaveTarget(playerId) then
                             local toLocation = self:GetLogicPosition()
-                            if alliance:GetSelf():IsProtected() then
+                            if alliance:GetSelf().masterOfDefender then
                                 UIKit:showMessageDialog(_("提示"),_("协防盟友将失去保护状态，确定继续派兵?"),function()
                                     local attack_func = function ()
                                         UIKit:newGameUI('GameUISendTroopNew',function(dragonType,soldiers)
@@ -223,7 +223,7 @@ function GameUIAllianceCityEnter:GetEnterButtons()
             local final_func = function ()
                 local attack_func = function ()
                     UIKit:newGameUI('GameUISendTroopNew',function(dragonType,soldiers,total_march_time,gameuialliancesendtroops)
-                        if member.isProtected then
+                        if member.masterOfDefender then
                             UIKit:showMessageDialog(_("提示"),_("目标城市已被击溃并进入保护期，可能无法发生战斗，你是否继续派兵?"), function()
                                 NetManager:getAttackPlayerCityPromise(dragonType, soldiers, alliance._id, member.id):done(function()
                                     app:GetAudioManager():PlayeEffectSoundWithKey("TROOP_SENDOUT")
@@ -258,10 +258,10 @@ function GameUIAllianceCityEnter:GetEnterButtons()
             local toLocation = self:GetLogicPosition()
             if isProtected then
                 UIKit:showMessageDialog(_("提示"),_("突袭玩家城市将失去保护状态，确定继续派兵?"),function ()
-                    UIKit:newGameUI("GameUIStrikePlayer",1,{memberId = member.id,alliance = alliance, toLocation = toLocation,targetIsProtected = member.isProtected}):AddToCurrentScene(true)
+                    UIKit:newGameUI("GameUIStrikePlayer",1,{memberId = member.id,alliance = alliance, toLocation = toLocation,targetIsProtected = member.masterOfDefender}):AddToCurrentScene(true)
                 end)
             else
-                UIKit:newGameUI("GameUIStrikePlayer",1,{memberId = member.id,alliance = alliance,toLocation = toLocation,targetIsProtected = member.isProtected}):AddToCurrentScene(true)
+                UIKit:newGameUI("GameUIStrikePlayer",1,{memberId = member.id,alliance = alliance,toLocation = toLocation,targetIsProtected = member.masterOfDefender}):AddToCurrentScene(true)
             end
             self:LeftButtonClicked()
         end)

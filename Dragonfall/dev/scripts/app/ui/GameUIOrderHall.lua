@@ -5,6 +5,7 @@ local WidgetRoundTabButtons = import("..widget.WidgetRoundTabButtons")
 local SpriteConfig = import("..sprites.SpriteConfig")
 local UIListView = import(".UIListView")
 local UILib = import(".UILib")
+local GameUINpc = import(".GameUINpc")
 local Alliance = import("..entity.Alliance")
 local Localize = import("..utils.Localize")
 local AllianceVillage = GameDatas.AllianceVillage
@@ -41,6 +42,15 @@ function GameUIOrderHall:OnMoveInStage()
         if tag == 'village' then
             self.village_layer:setVisible(true)
             self:InitVillagePart()
+
+            if not app:GetGameDefautlt():IsPassedTriggerTips("allianceOrderHall") then
+                GameUINpc:PromiseOfSay(
+                    {npc = "woman", words = _("联盟内军需官及以上的官员可以升级联盟领地内的资源村落等级，使得村落的资源大幅增长。")}
+                ):next(function()
+                    return GameUINpc:PromiseOfLeave()
+                end)
+                app:GetGameDefautlt():SetPassTriggerTips("allianceOrderHall")
+            end
         else
             self.village_layer:Reset()
             self.village_layer:setVisible(false)

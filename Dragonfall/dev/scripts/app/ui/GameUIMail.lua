@@ -1590,6 +1590,14 @@ function GameUIMail:InitReport()
                 if self.report_listview then
                     self.report_listview:reload()
                 end
+                if #response.msg.reports > 0 then
+                    local ispass = app:GetGameDefautlt():IsPassedTriggerTips("mail")
+                    if not ispass then
+                        app:GetGameDefautlt():SetPassTriggerTips("mail")
+                        local item = self.report_listview.items_[1]
+                        UIKit:FingerAni():addTo(item:getContent(),10,111):pos(500, 50)
+                    end
+                end
                 return response
             end)
         end
@@ -1642,6 +1650,15 @@ function GameUIMail:DelegateReport( listView, tag, idx )
         end
     end
 end
+local GameUINpc = import("..ui.GameUINpc")
+local function ShowReportTips(enable)
+    if not enable then return end
+    GameUINpc:PromiseOfSay(
+        {npc = "woman", words = _("领主，战报中会显示您这次战斗所获得的战利品及双方伤亡情况，您也可以在此观察战斗动画或把它分享给大家！")}
+    ):next(function()
+        return GameUINpc:PromiseOfLeave()
+    end)
+end
 function GameUIMail:CreateReportContent()
     local item_width, item_height = 568,150
     local content = display.newNode()
@@ -1657,6 +1674,11 @@ function GameUIMail:CreateReportContent()
         local c_size = self:getContentSize()
         WidgetPushButton.new({normal = "back_ground_568x150.png"})
             :onButtonClicked(function(event)
+                local needTips
+                if self:getChildByTag(111) then
+                    self:removeChildByTag(111)
+                    needTips = true
+                end
                 if event.name == "CLICKED_EVENT" then
                     parent:SelectAllMailsOrReports(false)
                     if not report:IsRead() then
@@ -1671,12 +1693,15 @@ function GameUIMail:CreateReportContent()
                         UIKit:newGameUI("GameUIStrikeReport", report,true):AddToCurrentScene(true)
                     elseif report:Type() == "attackCity" or report:Type() == "attackVillage" then
                         UIKit:newGameUI("GameUIWarReport", report,true):AddToCurrentScene(true)
+                        ShowReportTips(needTips)
                     elseif report:Type() == "collectResource" then
                         UIKit:newGameUI("GameUICollectReport", report):AddToCurrentScene(true)
                     elseif report:Type() == "attackMonster" then
                         UIKit:newGameUI("GameUIMonsterReport", report,true):AddToCurrentScene(true)
+                        ShowReportTips(needTips)
                     elseif report:Type() == "attackShrine" then
                         UIKit:newGameUI("GameUIShrineReportInMail", report,true):AddToCurrentScene(true)
+                        ShowReportTips(needTips)
                     end
                     if report:Type() ~= "collectResource" and report:Type() ~= "attackShrine" then
                         if report:IsWin() then
@@ -2339,7 +2364,7 @@ end
     回复邮件
     @param addressee 收件人
     @param title 邮件主题
-    @param content 邮件内容 
+    @param content 邮件内容
 ]]
 function GameUIMail:ReplyMail(mail,title,content)
     local addressee = mail.fromId
@@ -2589,6 +2614,7 @@ function GameUIMail:GetEnemyAllianceTag(report)
         return "xxxxx"
     end
 end
+
 
 return GameUIMail
 

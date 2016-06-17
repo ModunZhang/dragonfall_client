@@ -11,10 +11,11 @@ local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local UILib = import(".UILib")
 local GameUtils = GameUtils
 --异步列表按钮事件修复
-function GameUIAllianceShrine:ctor(city,default_tab,building)
+function GameUIAllianceShrine:ctor(city,default_tab,building,needTips)
     GameUIAllianceShrine.super.ctor(self, city, _("联盟圣地"),default_tab,building)
     self.default_tab = default_tab
     self.my_alliance = Alliance_Manager:GetMyAlliance()
+    self.needTips = needTips
 end
 function GameUIAllianceShrine:OnAllianceDataChanged_shrineReports()
     self:RefreshUI()
@@ -76,6 +77,10 @@ function GameUIAllianceShrine:OnMoveInStage()
                 assert(self.currentContent)
                 self.currentContent:show()
                 self:RefreshUI()
+                if tag == "fight_event" and self.needTips then
+                    local node = self.fight_list.items_[1]:getContent().button
+                    UIKit:FingerAni():addTo(node,10,111):pos(-20,-20)
+                end
             else
                 if self.currentContent then
                     self.currentContent:hide()
@@ -433,15 +438,17 @@ function GameUIAllianceShrine:GetFight_List_Item(event)
             size = 20,
             color = 0xfff3c7
         }))
-        :onButtonClicked(function()
-            -- if self.my_alliance:GetSelf():IsProtected() then
-            --     UIKit:showMessageDialog(_("提示"),_("进攻该目标将失去保护状态，确定继续派兵?"),function()
-            --         self:OnDispatchSoliderButtonClicked(event)
-            --     end)
-            -- else
-                self:OnDispatchSoliderButtonClicked(event)
-            -- end
+        :onButtonClicked(function(evt)
+            local needTips
+            if evt.target:getChildByTag(111) then
+                evt.target:removeChildByTag(111)
+                self.needTips = false
+                needTips = true
+            end
+            self:OnDispatchSoliderButtonClicked(event,needTips)
         end)
+
+    bg.button = button
 
     local time_label = UIKit:ttfLabel({
         text = GameUtils:formatTimeStyle1(event.startTime/1000 - app.timer:GetServerTime()),
@@ -466,8 +473,8 @@ function GameUIAllianceShrine:RefreshFightListView()
     self.fight_list:reload()
 end
 
-function GameUIAllianceShrine:OnDispatchSoliderButtonClicked(event)
-    UIKit:newGameUI("GameUIShireFightEvent",event):AddToCurrentScene(true)
+function GameUIAllianceShrine:OnDispatchSoliderButtonClicked(event, needTips)
+    UIKit:newGameUI("GameUIShireFightEvent",event,needTips):AddToCurrentScene(true)
 end
 
 --事件记录

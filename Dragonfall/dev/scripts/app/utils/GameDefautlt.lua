@@ -45,6 +45,18 @@ function GameDefautlt:getStringForKey(key)
     return cc.UserDefault:getInstance():getStringForKey(key)
 end
 
+function GameDefautlt:SetPassTriggerTips(type)
+    self:setStringForKey(type.."_fte1", "yes")
+    self:flush()
+end
+function GameDefautlt:IsPassedTriggerTips(type)
+    if UtilsForFte:NeedTriggerTips(User) then
+        return self:getStringForKey(type.."_fte1") == "yes"
+    else
+        return false
+    end
+end
+
 function GameDefautlt:setTableForKey(key,t)
     local jsonString = json.encode(t)
     self:setStringForKey(key,jsonString)

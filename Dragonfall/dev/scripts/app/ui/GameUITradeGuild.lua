@@ -7,6 +7,7 @@ local WidgetPopDialog = import("..widget.WidgetPopDialog")
 local WidgetInfo = import("..widget.WidgetInfo")
 local WidgetSliderWithInput = import("..widget.WidgetSliderWithInput")
 local UILib = import(".UILib")
+local GameUINpc = import("..ui.GameUINpc")
 
 
 local GameUITradeGuild = UIKit:createUIClass('GameUITradeGuild',"GameUIUpgradeBuilding")
@@ -85,6 +86,28 @@ function GameUITradeGuild:OnMoveInStage()
     User:AddListenOnType(self, "technologyMaterials")
     User:AddListenOnType(self, "buildingEvents")
     User:AddListenOnType(self, "buildings")
+
+
+
+    if self.needTips then
+        self.needTips = false
+        GameUINpc:PromiseOfSay(
+            {npc = "woman", words = _("领主大人，您可以在贸易行会中通过银币购买同一服务器中其他玩家售出的资源及各种材料。")}
+        ):next(function()
+            self.tab_buttons:SelectTab("myGoods")
+            if self.my_goods_listview.items_[1].sellbtn then
+                UIKit:FingerAni()
+                :addTo(self.my_goods_listview.items_[1]:zorder(10).sellbtn,10,111)
+                :pos(-20, -50)
+                return GameUINpc:PromiseOfSay({npc = "woman", words = _("当然，您也可以将您多余的资源或材料售出，赚取银币！")})
+            else
+                self.tab_buttons:SelectTab("buy")
+            end
+        end):next(function()
+            app:GetGameDefautlt():SetPassTriggerTips("tradeGuild")
+            return GameUINpc:PromiseOfLeave()
+        end)
+    end
 end
 
 function GameUITradeGuild:onExit()
@@ -611,7 +634,7 @@ function GameUITradeGuild:CreateSellItem(list,index)
                     dimensions = cc.size(200,0)
                 }):align(display.LEFT_TOP, 140 ,item_height-60)
                 :addTo(content)
-            WidgetPushButton.new(
+            item.sellbtn = WidgetPushButton.new(
                 {normal = "blue_btn_up_148x58.png" ,
                     pressed = "blue_btn_down_148x58.png"})
                 :addTo(content)
@@ -623,6 +646,7 @@ function GameUITradeGuild:CreateSellItem(list,index)
                     shadow = true
                 }))
                 :onButtonClicked(function(event)
+                    event.target:removeChildByTag(111)
                     self:OpenSellDialog()
                 end)
         else
@@ -904,7 +928,7 @@ function GameUITradeGuild:OpenSellDialog()
                     }
                 )
                 self:SetTotalPriceAndCartNum( self.sell_num_item:GetValue(),self.sell_price_item:GetValue())
-                
+
             end)
         if goods_type == RESOURCE_TYPE then
             scheduleAt(self, function()

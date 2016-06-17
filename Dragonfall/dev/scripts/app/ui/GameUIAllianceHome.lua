@@ -9,6 +9,7 @@ local WidgetAllianceTop = import("..widget.WidgetAllianceTop")
 local WidgetMarchEvents = import("app.widget.WidgetMarchEvents")
 local WidgetAllianceHelper = import("..widget.WidgetAllianceHelper")
 local GameUIAllianceHome = UIKit:createUIClass('GameUIAllianceHome')
+local GameUINpc = import("..ui.GameUINpc")
 local intInit = GameDatas.AllianceInitData.intInit
 local buildingName = GameDatas.AllianceInitData.buildingName
 local Alliance_Manager = Alliance_Manager
@@ -58,6 +59,29 @@ function GameUIAllianceHome:onEnter()
     local ratio = self.bottom:getScale()
     local rect1 = self.chat:getCascadeBoundingBox()
     local x, y = rect1.x, rect1.y + rect1.height - 2
+
+    if UtilsForFte:NeedTriggerTips(User)
+    and not UtilsForEvent:HaveMyMarchEvents() then
+        self.clipNode = display.newClippingRegionNode(cc.rect(0,0,display.width,80))
+                        :addTo(self):pos(x,y)
+        local tipsNode = display.newNode():addTo(self.clipNode)
+        UIKit:GetPlayerCommonIcon():addTo(tipsNode)
+        :scale(0.5):align(display.LEFT_BOTTOM,0,8)
+        local sprite = display.newScale9Sprite("word_bubble.png",
+                                                rect1.width,
+                                                5,
+                                                nil,
+                                                cc.rect(20,10,10,46))
+        :addTo(tipsNode):align(display.RIGHT_BOTTOM):size(545,56)
+        UIKit:ttfLabel({
+            text = _("大人：\n进攻其他领主有几率获得：英雄之血和龙的装材料"),
+            size = 16,
+            color = 0xffedae,
+        }):addTo(sprite)
+        :align(display.LEFT_TOP, 15, 50)
+        :setMaxLineWidth(545)
+    end
+
     self.march = WidgetMarchEvents.new(ratio):addTo(self):pos(x, y)
     self:AddMapChangeButton()
     scheduleAt(self, function()
@@ -94,6 +118,40 @@ function GameUIAllianceHome:onEnter()
         end)
     sale_button:setContentSize(cc.size(100,110))
     sale_button:setTouchSwallowEnabled(true)
+
+
+
+
+    if app:GetGameDefautlt():IsPassedAllianceFte(1,2,3,4,5) and
+        not app:GetGameDefautlt():IsPassedTriggerTips("allianceFight") then
+        app:GetGameDefautlt():SetPassTriggerTips("allianceFight")
+        local status = self.alliance.basicInfo.status
+        if (status == "fight" or status == "prepare")
+            and self.self_power_label
+            and self.enemy_power_label then
+            local node = display.newNode():addTo(self,100)
+            local rect1 = self.self_power_label:getCascadeBoundingBox()
+            local src = cc.p(rect1.x + 130, rect1.y - 25)
+            local rect2 = self.enemy_power_label:getCascadeBoundingBox()
+            local dst = cc.p(rect2.x + 130, rect2.y - 25)
+            GameUINpc:PromiseOfSay({words = _("领主大人，您正在参与一场联盟战！")})
+            :next(function()
+                UIKit:FingerAni():addTo(node,10,111):pos(src.x,src.y)
+                return GameUINpc:PromiseOfSay({words = _("左上方为我方联盟击杀数量")})
+            end):next(function()
+                local finger = node:getChildByTag(111)
+                finger:moveTo(0.6, dst.x, dst.y)
+                return GameUINpc:PromiseOfSay({words = _("右上方为敌方联盟击杀数量")})
+            end):next(function()
+                node:removeFromParent()
+                return GameUINpc:PromiseOfSay({
+                    words = _("攻击敌方城市或防御敌方部队来袭，均可获得击杀积分，联盟战结束时，击杀积分高的一方将获得最后的胜利！")
+                })
+            end):next(function()
+                return GameUINpc:PromiseOfLeave()
+            end)
+        end
+    end
 end
 function GameUIAllianceHome:onExit()
     self:AddOrRemoveListener(false)
@@ -408,6 +466,7 @@ function GameUIAllianceHome:RefreshTop(force_refresh)
                 color = 0xbdb582
             }):align(display.LEFT_CENTER, 20, self_power_bg:getContentSize().height/2)
             :addTo(self_power_bg)
+        self.self_power_label = self_power_label
 
         enemy_name_label:setString("["..enemy_alliance.alliance.tag.."] "..enemy_alliance.alliance.name)
         local enemy_flag = ui_helper:CreateFlagContentSprite(enemy_alliance.alliance.flag):scale(0.5)
@@ -427,6 +486,7 @@ function GameUIAllianceHome:RefreshTop(force_refresh)
                 color = 0xbdb582
             }):align(display.LEFT_CENTER, 20, enemy_power_bg:getContentSize().height/2)
             :addTo(enemy_power_bg)
+        self.enemy_power_label = enemy_power_label
         -- end
     else
         local isKing = DataUtils:getMapRoundByMapIndex(current_map_index) == 0 -- 是否在王座

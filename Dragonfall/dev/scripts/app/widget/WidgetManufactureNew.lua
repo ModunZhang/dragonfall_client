@@ -151,7 +151,7 @@ function WidgetManufactureNew:ReloadMaterials(materials, materials_map)
     end
 
 
-    self.build_node = display.newNode():addTo(self.view)
+    self.build_node = display.newNode():addTo(self.view,1)
         :pos(window.cx, window.top - 450)
     self.build_node.build_label = UIKit:ttfLabel({
         size = 20,
@@ -175,6 +175,7 @@ function WidgetManufactureNew:ReloadMaterials(materials, materials_map)
             style = UIKit.BTN_COLOR.YELLOW,
             labelParams={text = _("生产")},
             listener = function ()
+                self.build_node.build_btn:removeChildByTag(111)
                 local User = self.toolShop:BelongCity():GetUser()
                 local wood_cur = User:GetResValueByType("wood")
                 local stone_cur = User:GetResValueByType("stone")
@@ -428,6 +429,17 @@ function WidgetManufactureNew:BuildMaterial()
     end
 end
 
+local GameUINpc = import("..ui.GameUINpc")
+function WidgetManufactureNew:TriggerTips()
+    UIKit:FingerAni():addTo(self.build_node.build_btn,10,111):pos(50, -50)
+    if self.material_tab:GetSelectedButtonTag() == "buildingMaterials" then
+        GameUINpc:PromiseOfSay(
+            {npc = "woman", words = _("领主大人，工具作坊可以提供建筑升级和军事科技升级所需的各种材料，点击生产吧！")}
+        ):next(function()
+            return GameUINpc:PromiseOfLeave()
+        end)
+    end
+end
 
 return WidgetManufactureNew
 

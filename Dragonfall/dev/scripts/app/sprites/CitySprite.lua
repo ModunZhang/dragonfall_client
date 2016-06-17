@@ -1,5 +1,4 @@
 local UILib = import("..ui.UILib")
-local fire = import("..particles.fire")
 local smoke_city = import("..particles.smoke_city")
 local SpriteConfig = import(".SpriteConfig")
 local WithInfoSprite = import(".WithInfoSprite")
@@ -41,13 +40,13 @@ function CitySprite:GetInfo()
 end
 function CitySprite:CheckStatus()
     local memberInfo = self:GetMemberInfo()
-    if memberInfo:IsProtected() then
+    if memberInfo.masterOfDefender then
         if self:getChildByTag(SMOKE_TAG) then
             self:removeChildByTag(SMOKE_TAG)
         end
         if not self:getChildByTag(FIRE_TAG) then
             local x,y = self:GetSpriteOffset()
-            fire():addTo(self, 2, FIRE_TAG):pos(x + 20, y)
+            UIKit:ProtectedAni():addTo(self, 2, FIRE_TAG):pos(x + 20, y)
         end
     else
         if self:getChildByTag(FIRE_TAG) then

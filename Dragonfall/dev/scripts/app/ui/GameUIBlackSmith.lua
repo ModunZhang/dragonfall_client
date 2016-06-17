@@ -23,7 +23,7 @@ function GameUIBlackSmith:onExit()
     GameUIBlackSmith.super.onExit(self)
 end
 function GameUIBlackSmith:TabButtons()
-    self:CreateTabButtons({
+    local tab = self:CreateTabButtons({
         {
             label = _("红龙装备"),
             tag = "redDragon",
@@ -45,8 +45,17 @@ function GameUIBlackSmith:TabButtons()
             self.euip_view:HideAll()
         else
             self.euip_view:SwitchToDragon(tag)
+            if self.needTips then
+                self.needTips = false
+                self.euip_view:TriggerTips(tag)
+            end
         end
     end):pos(window.cx, window.bottom + 34)
+
+    if not self.defeat_tab_name and self.needTips then
+        local dragonType = UtilsForDragon:GetPowerfulDragonType(self.city:GetUser())
+        tab:SelectTab(dragonType)
+    end
 end
 
 return GameUIBlackSmith

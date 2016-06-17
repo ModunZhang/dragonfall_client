@@ -183,8 +183,18 @@ function WidgetShortcutButtons:ctor(city)
 
     -- 圣地时间按钮
     local shrine_event_button = cc.ui.UIPushButton.new({normal = 'tmp_btn_shrine_74x90.png'})
-    shrine_event_button:onButtonClicked(function()
-        UIKit:newGameUI("GameUIAllianceShrine",self.city,"fight_event",Alliance_Manager:GetMyAlliance():GetAllianceBuildingInfoByName("shrine")):AddToCurrentScene(true)
+    shrine_event_button:onButtonClicked(function(event)
+        local needTips
+        if event.target:getChildByTag(111) then
+            event.target:removeChildByTag(111)
+            needTips = true
+        end
+        local info = Alliance_Manager:GetMyAlliance():GetAllianceBuildingInfoByName("shrine")
+        UIKit:newGameUI("GameUIAllianceShrine",
+                        self.city,
+                        "fight_event",
+                        info,
+                        needTips):AddToCurrentScene(true)
     end):scale(SCALE)
     function shrine_event_button:CheckVisible()
         return not Alliance_Manager:GetMyAlliance():IsDefault() and Alliance_Manager:GetMyAlliance().shrineEvents and #Alliance_Manager:GetMyAlliance().shrineEvents > 0
@@ -193,6 +203,7 @@ function WidgetShortcutButtons:ctor(city)
         return shrine_event_button:getCascadeBoundingBox().size
     end
     right_top_order:AddElement(shrine_event_button)
+    self.shrine_event_button = shrine_event_button
 
     -- 协助加速按钮
     self.help_button = cc.ui.UIPushButton.new(
@@ -378,16 +389,30 @@ function WidgetShortcutButtons:TipsOnReward()
     if User:HaveEveryDayLoginReward()
     or User:HaveContinutyReward()
     or User:HavePlayerLevelUpReward() then
-        WidgetFteArrow.new(_("当前有奖励可以领取"))
-        :addTo(self.tips_button, 100, 111)
-        :TurnRight():align(display.RIGHT_CENTER, -50, 0)
+        if not self.tips_button:getChildByTag(111) then
+            WidgetFteArrow.new(_("当前有奖励可以领取"))
+            :addTo(self.tips_button, 100, 111)
+            :TurnRight():align(display.RIGHT_CENTER, -50, 0)
+        end
     else
         if User:HaveOnlineReward() then
-            WidgetFteArrow.new(_("当前有奖励可以领取"))
-            :addTo(self.activity_button, 100, 111)
-            :TurnLeft():align(display.LEFT_CENTER, 50, 0)
+            if not self.activity_button:getChildByTag(111) then
+                WidgetFteArrow.new(_("当前有奖励可以领取"))
+                :addTo(self.activity_button, 100, 111)
+                :TurnLeft():align(display.LEFT_CENTER, 50, 0)
+            end
         end
     end
+end
+function WidgetShortcutButtons:TipsOnShrine()
+    if not self.shrine_event_button:getChildByTag(111) then
+        UIKit:FingerAni():addTo(self.shrine_event_button,10,111):pos(35,-40)
+    end
+end
+function WidgetShortcutButtons:HasAnyTips()
+    return self.tips_button:getChildByTag(111)
+    or self.activity_button:getChildByTag(111)
+    or self.shrine_event_button:getChildByTag(111)
 end
 return WidgetShortcutButtons
 

@@ -9,17 +9,19 @@ local StarBar = import("..ui.StarBar")
 local window = import("..utils.window")
 local Localize = import("..utils.Localize")
 local UILib = import("..ui.UILib")
+local GameUINpc = import("..ui.GameUINpc")
 local NORMAL = GameDatas.Soldiers.normal
 
 local WidgetSoldierPromoteDetails = class("WidgetSoldierPromoteDetails", WidgetPopDialog)
 
 
-function WidgetSoldierPromoteDetails:ctor(soldier_type,star,building,can_not_next)
+function WidgetSoldierPromoteDetails:ctor(soldier_type,star,building,can_not_next,needTips)
     WidgetSoldierPromoteDetails.super.ctor(self,720,_("兵种晋级"))
     self.soldier_type = soldier_type
     self.star = star
     self.building = building
     self.can_not_next = can_not_next
+    self.needTips = needTips
 end
 
 function WidgetSoldierPromoteDetails:onEnter()
@@ -213,7 +215,7 @@ function WidgetSoldierPromoteDetails:onEnter()
     WidgetInfoText.new({info = info}):addTo(body):align(display.CENTER_BOTTOM, size.width/2, 100)
 
     if not self.can_not_next then
-        WidgetPushButton.new(
+        self.btn = WidgetPushButton.new(
             {normal = "yellow_btn_up_186x66.png",pressed = "yellow_btn_down_186x66.png"})
             :addTo(body)
             :align(display.CENTER, size.width/2 , 50)
@@ -224,9 +226,27 @@ function WidgetSoldierPromoteDetails:onEnter()
                 shadow = true
             }))
             :onButtonClicked(function(event)
-                UIKit:newWidgetUI("WidgetPromoteSoldier",soldier_type,self.building:GetType()):AddToCurrentScene()
+                local needTips
+                if event.target:getChildByTag(111) then
+                    needTips = true
+                    event.target:removeChildByTag(111)
+                end
+                UIKit:newWidgetUI("WidgetPromoteSoldier",
+                                  soldier_type,
+                                  self.building:GetType(),
+                                  needTips):AddToCurrentScene()
                 self:LeftButtonClicked()
             end)
+    end
+
+
+    if self.needTips and self.btn then
+        UIKit:FingerAni():addTo(self.btn,10,111):pos(70, -50)
+        GameUINpc:PromiseOfSay(
+            {npc = "woman", words = _("晋级后的士兵将会变得更为强大！")}
+        ):next(function()
+            return GameUINpc:PromiseOfLeave()
+        end)
     end
 end
 function WidgetSoldierPromoteDetails:CreateSoldierBox(isGray)

@@ -8,7 +8,7 @@ local window = import("..utils.window")
 local WidgetMilitaryTechnologyStatus = import("..widget.WidgetMilitaryTechnologyStatus")
 local WidgetMilitaryTechnology = import("..widget.WidgetMilitaryTechnology")
 local WidgetPromoteSoliderList = import("..widget.WidgetPromoteSoliderList")
-
+local GameUINpc = import("..ui.GameUINpc")
 -- 建筑名map对应科技
 local building_map_tech = {
     trainingGround = _("步兵科技"),
@@ -16,7 +16,12 @@ local building_map_tech = {
     hunterHall     = _("弓手科技"),
     workshop       = _("攻城科技"),
 }
-
+local map_tech = {
+    trainingGround = _("步兵"),
+    stable         = _("骑兵"),
+    hunterHall     = _("弓手"),
+    workshop       = _("攻城"),
+}
 local GameUIMilitaryTechBuilding = UIKit:createUIClass('GameUIMilitaryTechBuilding',"GameUIUpgradeBuilding")
 function GameUIMilitaryTechBuilding:ctor(city,building,default_tab)
     local bn = Localize.building_name
@@ -25,7 +30,7 @@ end
 
 function GameUIMilitaryTechBuilding:OnMoveInStage()
     GameUIMilitaryTechBuilding.super.OnMoveInStage(self)
-    self:CreateTabButtons({
+    local tab = self:CreateTabButtons({
         {
             label = _("科技"),
             tag = "tech",
@@ -67,6 +72,42 @@ function GameUIMilitaryTechBuilding:OnMoveInStage()
         end
     end):pos(window.cx, window.bottom + 34)
     User:AddListenOnType(self, "militaryTechs")
+
+
+    if self.needTips then
+        if not app:GetGameDefautlt():IsPassedTriggerTips("militaryTech1") then
+            if tab:GetSelectedButtonTag() == "tech" then
+                local btn = self.teac_list.listview.items_[1]:zorder(10).upgrade_btn
+                UIKit:FingerAni():addTo(btn,10,111):pos(50, -50)
+            end
+            local text1 = string.format(
+                            _("领主大人，您可以在训练营地中通过银币和军事材料提升%s的各项属性"),
+                            map_tech[self.building:GetType()])
+            GameUINpc:PromiseOfSay(
+                {npc = "woman", words = text1}
+            ):next(function()
+                app:GetGameDefautlt():SetPassTriggerTips("militaryTech1")
+                return GameUINpc:PromiseOfLeave()
+            end)
+        elseif not app:GetGameDefautlt():IsPassedTriggerTips("militaryTech2") then
+            tab:SelectTab("promote")
+            local btn = self.promote_list.listview.items_[1]:zorder(10):getContent():getChildByTag(2)
+            UIKit:FingerAni():addTo(btn,10,111):pos(120, -80)
+
+            local text2 = string.format(
+                            _("领主大人，当步兵的军事科技达到一定程度后，您可以在此对%s进行晋级。"),
+                            map_tech[self.building:GetType()])
+            GameUINpc:PromiseOfSay(
+                {npc = "woman", words = text2}
+            ):next(function()
+                app:GetGameDefautlt():SetPassTriggerTips("militaryTech2")
+                app:GetGameDefautlt():SetPassTriggerTips(self.building:GetType())
+                return GameUINpc:PromiseOfLeave()
+            end)
+        else
+            app:GetGameDefautlt():SetPassTriggerTips(self.building:GetType())
+        end
+    end
 end
 function GameUIMilitaryTechBuilding:onExit()
     User:RemoveListenerOnType(self, "militaryTechs")

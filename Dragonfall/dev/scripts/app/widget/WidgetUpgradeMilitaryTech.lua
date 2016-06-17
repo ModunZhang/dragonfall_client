@@ -51,10 +51,11 @@ local function create_line_item(icon,text_1,text_2,text_3)
 
     return line
 end
-function WidgetUpgradeMilitaryTech:ctor(name, military_tech)
+function WidgetUpgradeMilitaryTech:ctor(name, military_tech,needTips)
     WidgetUpgradeMilitaryTech.super.ctor(self,694,_("研发军事科技"))
     self.tech_name = name
     self.tech = military_tech
+    self.needTips = needTips
 end
 
 function WidgetUpgradeMilitaryTech:onEnter()
@@ -65,6 +66,10 @@ function WidgetUpgradeMilitaryTech:onEnter()
         self:UpgradeRequirement()
     end)
     User:AddListenOnType(self, "militaryTechs")
+
+    if self.needTips then
+        UIKit:FingerAni():addTo(self.btn_bg,10,111):pos(150, -20)
+    end
 end
 function WidgetUpgradeMilitaryTech:onExit()
     User:RemoveListenerOnType(self, "militaryTechs")
@@ -144,6 +149,7 @@ function WidgetUpgradeMilitaryTech:UpgradeButtons()
             style = UIKit.BTN_COLOR.YELLOW,
             labelParams={text = _("研发")},
             listener = function ()
+                self.btn_bg:removeChildByTag(111)
                 local upgrade_listener = function()
                     NetManager:getUpgradeMilitaryTechPromise(self.tech_name)
                     self:LeftButtonClicked()
@@ -161,7 +167,8 @@ function WidgetUpgradeMilitaryTech:UpgradeButtons()
             end,
         }
     ):pos(size.width/2+180, size.height-230)
-        :addTo(body)
+        :addTo(body,1)
+    self.btn_bg = btn_bg
 
 
     -- 立即升级所需金龙币
@@ -258,7 +265,9 @@ function WidgetUpgradeMilitaryTech:PopNotSatisfyDialog(upgrade_listener,results)
     end
     local need_gems = User:GetNormalUpgradeMilitaryTechGems(self.tech_name, self.tech)
     local current_gem = User:GetGemValue()
-    UIKit:showMessageDialog(_("主人"),message)
+    UIKit:showMessageDialog(_("主人"),message,nil,nil,nil,function()
+            self:TriggerTips()
+        end)
         :CreateOKButtonWithPrice({
             listener =  current_gem < need_gems and function ()
                 UIKit:showMessageDialog(_("主人"),_("金龙币不足"))
@@ -273,7 +282,12 @@ function WidgetUpgradeMilitaryTech:PopNotSatisfyDialog(upgrade_listener,results)
             or upgrade_listener,
             price = need_gems
         })
-        :CreateCancelButton()
+        :CreateCancelButton({
+            listener = function()
+                self:TriggerTips()
+            end,
+            btn_name = _("取消")
+        })
 end
 function WidgetUpgradeMilitaryTech:OnUserDataChanged_militaryTechs(userData, deltaData)
     local ok, value = deltaData("militaryTechs")
@@ -306,6 +320,24 @@ function WidgetUpgradeMilitaryTech:OnUserDataChanged_militaryTechs(userData, del
         end
     end
 end
+
+local GameUINpc = import("..ui.GameUINpc")
+function WidgetUpgradeMilitaryTech:TriggerTips()
+    GameUINpc:PromiseOfSay(
+        {npc = "woman", words = _("没有对应的军事材料？让我们前往工具作坊生产吧！")}
+    ):next(function()
+        return GameUINpc:PromiseOfLeave()
+    end):next(function()
+        UIKit:closeAllUI()
+        local ui = UIKit:newGameUI('GameUIToolShop',
+                        City,
+                        City:GetBuildingByType("toolShop")[1],
+                        "manufacture",
+                        "technologyMaterials"):AddToCurrentScene(true)
+        ui.needTips = true
+    end)
+end
+
 return WidgetUpgradeMilitaryTech
 
 

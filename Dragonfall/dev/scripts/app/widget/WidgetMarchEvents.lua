@@ -204,6 +204,11 @@ function WidgetMarchEvents:IsShow()
 end
 
 function WidgetMarchEvents:PromiseOfSwitch()
+    local homepage = display.getRunningScene():GetHomePage()
+    if homepage and homepage.clipNode then
+        homepage.clipNode:removeFromParent()
+        homepage.clipNode = nil
+    end
     return self:PromiseOfHide():next(function()
         return self:PromiseOfShow()
     end)

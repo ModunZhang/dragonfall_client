@@ -69,6 +69,11 @@ function GameUIWorldMap:onEnter()
         self:UpdateArrow()
         self:UpdateEnemyArrow()
     end, 0.01)
+
+    if not app:GetGameDefautlt():IsPassedTriggerTips("worldMap") then
+        app:GetGameDefautlt():SetPassTriggerTips("worldMap")
+        UIKit:FingerAni():addTo(self.details_button:zorder(10),10,111):pos(60,-25)
+    end
 end
 local deg = math.deg
 local ceil = math.ceil
@@ -284,11 +289,17 @@ function GameUIWorldMap:LoadRoundInfo(mapIndex)
             UIKit:commonButtonLable({
                 text = _("详情")
             })
-        ):onButtonClicked(function()
-        UIKit:newWidgetUI("WidgetAllianceMapBuff",node.mapIndex):AddToCurrentScene()
+        ):onButtonClicked(function(event)
+            local triggerTips
+            if event.target:getChildByTag(111) then
+                event.target:removeChildByTag(111)
+                triggerTips = true
+            end
+            UIKit:newWidgetUI("WidgetAllianceMapBuff",node.mapIndex,triggerTips):AddToCurrentScene()
         end)
         :align(display.CENTER,630,46)
         :addTo(node)
+    self.details_button = details_button
     -- 屏幕中心点在小地图的位置
     local current_position_sprite = display.newSprite("icon_current_position_8x10.png"):addTo(mini_map_button)
     -- :align(display.RIGHT_CENTER)

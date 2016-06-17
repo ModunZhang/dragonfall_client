@@ -6,7 +6,6 @@ local UILib = import("..ui.UILib")
 local Alliance = import("..entity.Alliance")
 local SpriteConfig = import("..sprites.SpriteConfig")
 local WidgetAllianceHelper = import("..widget.WidgetAllianceHelper")
-local fire = import("..particles.fire")
 local smoke_city = import("..particles.smoke_city")
 local NormalMapAnchorBottomLeftReverseY = import("..map.NormalMapAnchorBottomLeftReverseY")
 local MapLayer = import(".MapLayer")
@@ -789,12 +788,12 @@ function AllianceLayer:RefreshObjectInfo(object, mapObj, alliance)
         else
             info.name:setString(string.format("%s", member.name))
         end
-        if member.isProtected then
+        if member.masterOfDefender then
             if object:getChildByTag(SMOKE_TAG) then
                 object:removeChildByTag(SMOKE_TAG)
             end
             if not object:getChildByTag(FIRE_TAG) then
-                fire():addTo(object, 2, FIRE_TAG):pos(0,-50)
+                UIKit:ProtectedAni():addTo(object, 2, FIRE_TAG):pos(0,40):scale(1)
             end
         else
             if object:getChildByTag(FIRE_TAG) then
