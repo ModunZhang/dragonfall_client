@@ -122,7 +122,8 @@ function GameUIAllianceHome:onEnter()
 
 
 
-    if app:GetGameDefautlt():IsPassedAllianceFte(1,2,3,4,5) and
+    if UtilsForFte:NeedTriggerTips(User) and
+        app:GetGameDefautlt():IsPassedAllianceFte(1,2,3,4,5) and
         not app:GetGameDefautlt():IsPassedTriggerTips("allianceFight") then
         app:GetGameDefautlt():SetPassTriggerTips("allianceFight")
         local status = self.alliance.basicInfo.status
