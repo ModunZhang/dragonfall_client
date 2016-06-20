@@ -247,10 +247,7 @@ function WidgetEventTabButtons:RefreshAllEvents()
             self:IteratorAllItem(function(i, v)
                 if i ~= 1 and v.event then
                     v:SetProgressInfo(self:BuildingDescribe(v.event))
-                    self:SetProgressItemBtnLabel(
-                        DataUtils:getFreeSpeedUpLimitTime()
-                        >UtilsForEvent:GetEventInfo(v.event),
-                        v)
+                    self:SetProgressItemBtnLabel(self:IsAbleToFreeSpeedup(v.event),v)
                 end
             end)
         end
@@ -703,6 +700,9 @@ function WidgetEventTabButtons:UpgradeBuildingHelpOrSpeedup(event)
 end
 function WidgetEventTabButtons:MiliTaryTechUpgradeOrSpeedup(event)
     local User = self.city:GetUser()
+    if not User:EventType(event) then
+        return
+    end
     local time, percent = UtilsForEvent:GetEventInfo(event)
 
     if DataUtils:getFreeSpeedUpLimitTime() > time and time > 1 then
