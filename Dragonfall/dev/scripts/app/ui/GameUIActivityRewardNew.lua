@@ -32,7 +32,7 @@ local height_config = {
 local ui_titles = {
     EVERY_DAY_LOGIN = _("每日登陆奖励"),
     ONLINE = _("在线奖励"),
-    CONTINUITY = _("王城援军"),
+    CONTINUITY = _("第二条行军队列"),
     FIRST_IN_PURGURE = _("首次充值奖励"),
     PLAYER_LEVEL_UP = _("新手冲级奖励"),
 }
@@ -327,22 +327,23 @@ end
 function GameUIActivityRewardNew:ui_CONTINUITY()
     local march_queue_bg = display.newSprite("gem_logo_592x139_3.png"):align(display.LEFT_TOP,30,self.height - 20):addTo(self.bg):scale(554/592)
     display.newScale9Sprite("box_50x50.png",0,0, cc.size(554,130), cc.rect(20,20,10,10)):align(display.LEFT_TOP,30,self.height - 20):addTo(self.bg)
+    display.newSprite("activity_layer_blue_586x114.png"):align(display.LEFT_TOP,-4,self.height - 28):addTo(self.bg)
 
     local text_1 = UIKit:ttfLabel({
         text = User.countInfo.day14 > 3 and 3 or User.countInfo.day14,
         size = 22,
         color= 0x238700,
-    }):align(display.LEFT_CENTER,510,self.height - 55):addTo(self.bg)
+    }):align(display.LEFT_CENTER,514,self.height - 55):addTo(self.bg)
     self.march_queue_text = text_1
     UIKit:ttfLabel({
         text = "/3",
         size = 22,
-        color= 0x403c2f,
+        color= 0x238700,
     }):align(display.LEFT_CENTER,text_1:getPositionX()+text_1:getContentSize().width,self.height - 55):addTo(self.bg)
     UIKit:ttfLabel({
         text = _("三天后可激活"),
         size = 20,
-        color= 0x403c2f,
+        color= 0xffedae,
     }):align(display.RIGHT_CENTER,text_1:getPositionX() - text_1:getContentSize().width - 10,self.height - 55):addTo(self.bg)
     local button = WidgetPushButton.new({normal = 'yellow_btn_up_148x58.png',pressed = 'yellow_btn_down_148x58.png',disabled = 'gray_btn_148x58.png'})
         :setButtonLabel("normal", UIKit:commonButtonLable({

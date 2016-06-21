@@ -154,69 +154,111 @@ end
 function GameUIModChatChannel:ListMutePlayer()
     if not self.mute_listview then
         local list,list_node = UIKit:commonListView({
+            async = true, --异步加载
             direction = cc.ui.UIScrollView.DIRECTION_VERTICAL,
             viewRect = cc.rect(41, window.bottom_top,568 , window.betweenHeaderAndTab - 20),
         },false,true)
+        list:setDelegate(handler(self, self.Delegate))
         list_node:addTo(self:GetView()):align(display.BOTTOM_CENTER, window.cx,window.bottom_top+20)
+
         self.mute_listview = list
         self.mute_node = list_node
     end
     self.mute_listview:removeAllItems()
     NetManager:getMutedPlayerListPromise():done(function (response)
         LuaUtils:outputTable("response",response)
-        for i,v in ipairs(response.msg.datas) do
-            self:CreateMutePlayerItem(v)
-        end
+        self.source_data = response.msg.datas
         self.mute_listview:reload()
     end)
 end
-function GameUIModChatChannel:CreateMutePlayerItem(data)
-    local mute_listview = self.mute_listview
-    local item = mute_listview:newItem()
+function GameUIModChatChannel:Delegate( listView, tag, idx )
+    if cc.ui.UIListView.COUNT_TAG == tag then
+        return self.source_data and #self.source_data or 0
+    elseif cc.ui.UIListView.CELL_TAG == tag then
+        local item
+        local content
+        item = listView:dequeueItem()
+        if not item then
+            item = listView:newItem()
+            content = self:CreateMutePlayerItem()
+            item:addContent(content)
+        else
+            content = item:getContent()
+        end
+        content:SetData(idx)
+        local size = content:getContentSize()
+        item:setItemSize(size.width, size.height)
+        return item
+    end
+end
+function GameUIModChatChannel:CreateMutePlayerItem()
     local item_width,item_height = 568, 124
-    item:setItemSize(item_width,item_height)
     local content = WidgetUIBackGround.new({width = item_width,height = item_height},WidgetUIBackGround.STYLE_TYPE.STYLE_2)
-    item:addContent(content)
     local player_icon = UIKit:GetPlayerCommonIcon(1):addTo(content):align(display.LEFT_CENTER,10,item_height/2)
+    content.player_icon = player_icon
     local title_bg = display.newScale9Sprite("title_blue_430x30.png",0,0, cc.size(432,30), cc.rect(10,10,410,10))
         :align(display.TOP_LEFT,player_icon:getPositionX() + player_icon:getContentSize().width + 10,item_height - 15)
         :addTo(content)
-    UIKit:ttfLabel({
-        text = data.name,
+    local button = WidgetPushButton.new()
+        :addTo(content):align(display.LEFT_CENTER,10,item_height/2)
+    button:setContentSize(player_icon:getContentSize())
+    local name = UIKit:ttfLabel({
+        text = "",
         size = 22,
         color = 0xffedae
     }):align(display.LEFT_CENTER, 10, title_bg:getContentSize().height/2)
         :addTo(title_bg)
     local time = UIKit:ttfLabel({
-        text = GameUtils:formatTimeStyle1(data.finishTime/1000 - app.timer:GetServerTime()),
+        text = "",
         size = 20,
         color = 0x7e0000
     }):align(display.LEFT_CENTER, title_bg:getPositionX() + 10, 35)
         :addTo(content)
-    scheduleAt(content, function()
-        if data.finishTime/1000 - app.timer:GetServerTime() <= 0 then
-            self:ListMutePlayer()
-        else
-            time:setString(GameUtils:formatTimeStyle1(data.finishTime/1000 - app.timer:GetServerTime()))
-        end
-    end)
-    UIKit:ttfLabel({
+
+    local endPre = UIKit:ttfLabel({
         text = _("后解除禁言"),
         size = 20,
         color = 0x403c2f
     }):align(display.LEFT_CENTER, time:getPositionX() + time:getContentSize().width + 10, 35)
         :addTo(content)
-    WidgetPushButton.new({normal = "red_btn_up_148x58.png",pressed = "red_btn_down_148x58.png"}):setButtonLabel(UIKit:commonButtonLable({
+    local unMute = WidgetPushButton.new({normal = "red_btn_up_148x58.png",pressed = "red_btn_down_148x58.png"}):setButtonLabel(UIKit:commonButtonLable({
         color = 0xfff3c7,
         text  = _("立即解除")
-    })):align(display.RIGHT_BOTTOM,item_width - 20, 10):onButtonClicked(function(event)
-        NetManager:getUnMutePlayerPromise(data._id):done(function ()
-            self:ListMutePlayer()
+    })):align(display.RIGHT_BOTTOM,item_width - 20, 10):addTo(content)
+    local parent = self
+    function content:SetData(idx)
+        local data = parent.source_data[idx]
+        name:setString(data.name)
+        if self.player_icon then
+            self.player_icon:removeFromParent()
+        end
+        self.player_icon = UIKit:GetPlayerCommonIcon(data.icon):addTo(self):align(display.LEFT_CENTER,10,item_height/2)
+        unMute:removeEventListenersByEvent("CLICKED_EVENT")
+        unMute:onButtonClicked(function(event)
+            NetManager:getUnMutePlayerPromise(data._id):done(function ()
+                GameGlobalUI:showTips(_("提示"), _("解除禁言成功"))
+                parent:ListMutePlayer()
+            end)
         end)
-    end):addTo(content)
-    mute_listview:addItem(item)
+        button:removeEventListenersByEvent("CLICKED_EVENT")
+        button:onButtonClicked(function(event)
+            if event.name == "CLICKED_EVENT" then
+                UIKit:newGameUI("GameUIAllianceMemberInfo",false,data._id,nil,data.serverId):AddToCurrentScene(true)
+            end
+        end)
+        scheduleAt(self, function()
+            if data.finishTime/1000 - app.timer:GetServerTime() <= 0 then
+                parent:ListMutePlayer()
+            else
+                time:setString(GameUtils:formatTimeStyle1(data.finishTime/1000 - app.timer:GetServerTime()))
+            end
+        end)
+        endPre:setPositionX(time:getPositionX() + time:getContentSize().width + 10)
+    end
+    return content
 end
 return GameUIModChatChannel
+
 
 
 

@@ -27,7 +27,6 @@ local NAME_COLOR_NORMAL = UIKit:hex2c3b(0x005e6c)
 function GameUIChatChannel:ctor(default_tag,title)
     GameUIChatChannel.super.ctor(self,City,_("聊天") or title)
     self.default_tag = default_tag
-    print("··default_tag·",default_tag)
     self.chatManager = app:GetChatManager()
 end
 
@@ -479,7 +478,7 @@ function GameUIChatChannel:HandleCellUIData(mainContent,chat,update_time)
     local titleLabel = currentContent.from_label
     local system_label = currentContent.system_label
     local vipLabel = currentContent.vip_label
-    local name_title = (chat.icon == "__mod" or chat.allianceTag == "") and chat.name or string.format("[ %s ] %s",chat.allianceTag,chat.name)
+    local name_title = chat.name == "System" and _("赛琳娜") or (chat.icon == "__mod" or chat.allianceTag == "") and chat.name or string.format("[ %s ] %s",chat.allianceTag,chat.name)
     titleLabel:setString(name_title)
     -- if not isSelf then
     local system_flag = currentContent.system_flag
@@ -750,7 +749,7 @@ function GameUIChatChannel:CreatePlayerMenu(event,chat)
                 self:RefreshListView()
                 GameGlobalUI:showTips(_("提示"),_("屏蔽成功"))
             elseif data == 'mutePlayer' then
-                UIKit:newGameUI("GameUIModMute",chat.id):AddToCurrentScene(true)
+                UIKit:newGameUI("GameUIModMute",chat):AddToCurrentScene(true)
             elseif data == 'allianceInfo' then
                 if not is_invate_action then
                     if chat.allianceId and string.len(chat.allianceId) > 0 then

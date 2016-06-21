@@ -898,16 +898,16 @@ function GameUIReplay:FinishReplay()
         return
     end
     local isWin = self.report:GetReportResult()
+    local result = ccs.Armature:create("win"):addTo(self, 10, RESULT_TAG)
+    result:align(display.CENTER, window.cx, window.cy + 150)
     if isWin then
-        local result = ccs.Armature:create("win"):addTo(self, 10, RESULT_TAG)
-        result:align(display.CENTER, window.cx, window.cy + 150)
         result:setAnchorPoint(cc.p(0.48, 0.5))
         app:GetAudioManager():PlayeEffectSoundWithKey("BATTLE_VICTORY")
-        result:getAnimation():play("Victory", -1, 0)
     else
+        result:setAnchorPoint(cc.p(0.5, 0.5))
         UIKit:newGameUI("GameUIPveSummary",{star = 0,dragonType = self.report:GetFightAttackDragonRoundData().type}):AddToCurrentScene()
-        -- app:GetAudioManager():PlayeEffectSoundWithKey("BATTLE_DEFEATED")
     end
+    result:getAnimation():play(isWin and "Victory" or "Defeat", -1, 0)
 
     self.ui_map.speedup:hide()
     self.ui_map.replay:show()
@@ -1159,6 +1159,7 @@ function GameUIReplay:OnHandle(state)
 end
 
 return GameUIReplay
+
 
 
 

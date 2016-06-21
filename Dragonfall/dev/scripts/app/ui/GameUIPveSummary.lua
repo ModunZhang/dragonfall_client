@@ -368,7 +368,7 @@ function GameUIPveSummary:BuildDefeatUI(param)
     end)
     local config = SpriteConfig["dragonEyrie"]
     local build_png = config:GetConfigByLevel(1).png
-    local building_image = display.newSprite(build_png,-180, 0)
+    local building_image = display.newSprite(build_png,-190, 0)
         :scale(0.2)
         :addTo(dragonEyrie)
 

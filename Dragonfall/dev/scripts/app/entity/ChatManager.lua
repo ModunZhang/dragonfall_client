@@ -296,7 +296,7 @@ function ChatManager:__formatLastMessage(chat)
         chat.name = User.basicInfo.name
     end
     if string.lower(chat.id) == 'system' then
-        return self:GetEmojiUtil():FormatSystemChat(string.format("%s : %s",chat.name,chat.text),true)
+        return self:GetEmojiUtil():FormatSystemChat(string.format("%s : %s",_("赛琳娜"),chat.text),true)
     else
         local chat_text = string.format(" : %s",chat.text)
         local color = chat.icon ~= "__mod" and "0x00b4cf" or "0xbf6e17"
@@ -366,6 +366,10 @@ function ChatManager:setChannelHaveInited(channel,trueOrFalse)
 end
 
 function ChatManager:SendChat(channel,msg,cb)
+    if User.countInfo.muteTime/1000 >= app.timer:GetServerTime() then
+        UIKit:showMessageDialog(_("提示"),_("玩家被禁言"))
+        return
+    end
     NetManager:getSendChatPromise(channel,msg):done(function()
         self:__checkNotifyIf()
         if cb then cb() end
