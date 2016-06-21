@@ -372,7 +372,7 @@ function GameUIPveAttack:CreateAttackButton()
                 return
             end
 
-            if self.isDropMaterials then
+            if self.isDropMaterials or User:IsWoundedSoldierOverflow() then
                 UIKit:showSendTroopMessageDialog(function()
                     self:Attack()
                 end, "soldierMaterials",_("士兵材料"))
