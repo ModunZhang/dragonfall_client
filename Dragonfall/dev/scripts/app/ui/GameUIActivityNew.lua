@@ -311,7 +311,9 @@ function GameUIActivityNew:RefreshActivityListView()
     local item = self:GetActivityItem(self.ITEMS_TYPE.EVERY_DAY_LOGIN):zorder(4)
     self.activity_list_view:addItem(item)
     local hasTips = false
-    if self.needTips and User:HaveEveryDayLoginReward() then
+    if self.needTips
+    and User:HaveEveryDayLoginReward()
+    and not app:GetGameDefautlt():IsPassedTriggerTips("everyDayLogin") then
         WidgetFteArrow.new(_("每日登陆游戏可以领取奖励")):TurnUp()
         :addTo(item,100,111):pos(612/2, 30)
         hasTips = true
@@ -320,7 +322,10 @@ function GameUIActivityNew:RefreshActivityListView()
     if countInfo.day14RewardsCount < #config_day14 then
         item = self:GetActivityItem(self.ITEMS_TYPE.CONTINUITY):zorder(3)
         self.activity_list_view:addItem(item)
-        if self.needTips and User:HaveContinutyReward() and not hasTips then
+        if self.needTips
+        and User:HaveContinutyReward()
+        and not app:GetGameDefautlt():IsPassedTriggerTips("continuty")
+        and not hasTips then
             WidgetFteArrow.new(_("连续登陆可以领取奖励")):TurnUp()
             :addTo(item,100,111):pos(612/2, 30)
             hasTips = true
@@ -333,7 +338,10 @@ function GameUIActivityNew:RefreshActivityListView()
     if self.player_level_up_time - app.timer:GetServerTime() > 0 and not self:CheckFinishAllLevelUpActiIf() then
         item = self:GetActivityItem(self.ITEMS_TYPE.PLAYER_LEVEL_UP):zorder(1)
         self.activity_list_view:addItem(item)
-        if self.needTips and User:HavePlayerLevelUpReward() and not hasTips then
+        if self.needTips
+        and User:HavePlayerLevelUpReward()
+        and not app:GetGameDefautlt():IsPassedTriggerTips("playerLevelUp")
+        and not hasTips then
             WidgetFteArrow.new(_("升级城堡可以领取奖励")):TurnUp()
             :addTo(item,100,111):pos(612/2, 30)
             hasTips = true

@@ -379,12 +379,12 @@ function WidgetShortcutButtons:CheckAllianceRewardCount()
     end
     self.tips_button.tips_button_count:SetNumber(newsCount + award_num + activityCount)
 end
-function WidgetShortcutButtons:HasAnyRewards()
-    return User:HaveEveryDayLoginReward()
-        or User:HaveContinutyReward()
-        or User:HavePlayerLevelUpReward()
-        or User:HaveOnlineReward()
-end
+-- function WidgetShortcutButtons:HasAnyRewards()
+--     return User:HaveEveryDayLoginReward()
+--         or User:HaveContinutyReward()
+--         or User:HavePlayerLevelUpReward()
+--         or User:HaveOnlineReward()
+-- end
 local WidgetFteArrow = import("..widget.WidgetFteArrow")
 function WidgetShortcutButtons:TipsOnReward()
     if User:HaveEveryDayLoginReward()
