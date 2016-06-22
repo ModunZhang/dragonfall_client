@@ -314,6 +314,7 @@ function GameUIActivityNew:RefreshActivityListView()
     if self.needTips
     and User:HaveEveryDayLoginReward()
     and not app:GetGameDefautlt():IsPassedTriggerTips("everyDayLogin") then
+        app:GetGameDefautlt():SetPassTriggerTips("everyDayLogin")
         WidgetFteArrow.new(_("每日登陆游戏可以领取奖励")):TurnUp()
         :addTo(item,100,111):pos(612/2, 30)
         hasTips = true
@@ -326,6 +327,7 @@ function GameUIActivityNew:RefreshActivityListView()
         and User:HaveContinutyReward()
         and not app:GetGameDefautlt():IsPassedTriggerTips("continuty")
         and not hasTips then
+            app:GetGameDefautlt():SetPassTriggerTips("continuty")
             WidgetFteArrow.new(_("连续登陆可以领取奖励")):TurnUp()
             :addTo(item,100,111):pos(612/2, 30)
             hasTips = true
@@ -342,6 +344,7 @@ function GameUIActivityNew:RefreshActivityListView()
         and User:HavePlayerLevelUpReward()
         and not app:GetGameDefautlt():IsPassedTriggerTips("playerLevelUp")
         and not hasTips then
+            app:GetGameDefautlt():SetPassTriggerTips("playerLevelUp")
             WidgetFteArrow.new(_("升级城堡可以领取奖励")):TurnUp()
             :addTo(item,100,111):pos(612/2, 30)
             hasTips = true

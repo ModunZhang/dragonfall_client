@@ -386,22 +386,18 @@ end
 --         or User:HaveOnlineReward()
 -- end
 local WidgetFteArrow = import("..widget.WidgetFteArrow")
-function WidgetShortcutButtons:TipsOnReward()
-    if User:HaveEveryDayLoginReward()
-    or User:HaveContinutyReward()
-    or User:HavePlayerLevelUpReward() then
+function WidgetShortcutButtons:TipsOnReward(isonline)
+    if isonline then
+        if not self.activity_button:getChildByTag(111) then
+            WidgetFteArrow.new(_("当前有奖励可以领取"))
+            :addTo(self.activity_button, 100, 111)
+            :TurnLeft():align(display.LEFT_CENTER, 50, 0)
+        end
+    else
         if not self.tips_button:getChildByTag(111) then
             WidgetFteArrow.new(_("当前有奖励可以领取"))
             :addTo(self.tips_button, 100, 111)
             :TurnRight():align(display.RIGHT_CENTER, -50, 0)
-        end
-    else
-        if User:HaveOnlineReward() then
-            if not self.activity_button:getChildByTag(111) then
-                WidgetFteArrow.new(_("当前有奖励可以领取"))
-                :addTo(self.activity_button, 100, 111)
-                :TurnLeft():align(display.LEFT_CENTER, 50, 0)
-            end
         end
     end
 end

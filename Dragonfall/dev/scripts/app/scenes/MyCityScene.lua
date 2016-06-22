@@ -304,20 +304,17 @@ function MyCityScene:onEnterTransitionFinish()
                     checktips = false
                 elseif User:HaveEveryDayLoginReward()
                     and not app:GetGameDefautlt():IsPassedTriggerTips("everyDayLogin") then
-                    app:GetGameDefautlt():SetPassTriggerTips("everyDayLogin")
                     self.home_page.order_shortcut:TipsOnReward()
                 elseif User:HaveContinutyReward()
                     and not app:GetGameDefautlt():IsPassedTriggerTips("continuty") then
-                    app:GetGameDefautlt():SetPassTriggerTips("continuty")
                     self.home_page.order_shortcut:TipsOnReward()
                 elseif User:HavePlayerLevelUpReward()
                     and not app:GetGameDefautlt():IsPassedTriggerTips("playerLevelUp") then
-                    app:GetGameDefautlt():SetPassTriggerTips("playerLevelUp")
                     self.home_page.order_shortcut:TipsOnReward()
                 elseif User:HaveOnlineReward()
                     and not app:GetGameDefautlt():IsPassedTriggerTips("online") then
                     app:GetGameDefautlt():SetPassTriggerTips("online")
-                    self.home_page.order_shortcut:TipsOnReward()
+                    self.home_page.order_shortcut:TipsOnReward(true)
                 end
             end
             if checktips then
