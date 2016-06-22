@@ -122,7 +122,7 @@ function GameUISendTroopNew:OnMoveInStage()
     if self.params.needTips then
         scheduleAt(self, function()
             self:CheckRate()
-        end, 1)
+        end, 0.618)
     end
 end
 function GameUISendTroopNew:CreateBetweenBgAndTitle()

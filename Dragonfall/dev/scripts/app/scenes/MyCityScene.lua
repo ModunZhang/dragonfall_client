@@ -781,17 +781,36 @@ function MyCityScene:CheckBuildingFte()
     end
 end
 function MyCityScene:ShowBuildingTips(location)
-    local building = UtilsForBuilding:GetBuildingByLocation(User, location)
-    local ispassed = UtilsForFte:IsPassedBuildingTips(User, building.type)
-    local needTips = building.level > 0 and not ispassed
-    if needTips then
-        for i,v in ipairs(self:GetSceneLayer():GetBuildings(location)) do
-            v:ShowFinger()
-            return true
+    if location == 9 then -- blackSmith
+        for k,dragon in pairs(User.dragons) do
+            if dragon.star > 1 then
+                return false
+            end
+            for k,v in pairs(dragon.equipments) do
+                if #v.name > 0 then
+                    return false
+                end
+            end
         end
+        for k,v in pairs(User.dragonEquipments) do
+            if v > 0 then
+                return false
+            end
+        end
+        return true
     else
-        for i,v in ipairs(self:GetSceneLayer():GetBuildings(location)) do
-            v:HideFinger()
+        local building = UtilsForBuilding:GetBuildingByLocation(User, location)
+        local ispassed = UtilsForFte:IsPassedBuildingTips(User, building.type)
+        local needTips = building.level > 0 and not ispassed
+        if needTips then
+            for i,v in ipairs(self:GetSceneLayer():GetBuildings(location)) do
+                v:ShowFinger()
+                return true
+            end
+        else
+            for i,v in ipairs(self:GetSceneLayer():GetBuildings(location)) do
+                v:HideFinger()
+            end
         end
     end
     return false
