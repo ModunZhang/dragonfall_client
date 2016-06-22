@@ -63,6 +63,21 @@ function GameUIMilitaryTechBuilding:OnMoveInStage()
                 self.status = WidgetMilitaryTechnologyStatus.new(self.building):addTo(self:GetView(),2):pos(window.cx, window.top_bottom)
             end
             self.status:setVisible(true)
+
+            if UtilsForFte:NeedTriggerTips(User)
+            and not app:GetGameDefautlt():IsPassedTriggerTips("promote") then
+                local btn = self.promote_list.listview.items_[1]:zorder(10):getContent():getChildByTag(2)
+                UIKit:FingerAni():addTo(btn,10,111):pos(120, -80)
+                local text2 = string.format(
+                    _("领主大人，当步兵的军事科技达到一定程度后，您可以在此对%s进行晋级。"),
+                    map_tech[self.building:GetType()])
+                GameUINpc:PromiseOfSay(
+                    {npc = "woman", words = text2}
+                ):next(function()
+                    app:GetGameDefautlt():SetPassTriggerTips("promote")
+                    return GameUINpc:PromiseOfLeave()
+                end)
+            end
         else
             self.tech_layer:setVisible(false)
             self.promote_layer:setVisible(false)
@@ -75,7 +90,7 @@ function GameUIMilitaryTechBuilding:OnMoveInStage()
 
 
     if self.needTips then
-        if not app:GetGameDefautlt():IsPassedTriggerTips("militaryTech1") then
+        if not app:GetGameDefautlt():IsPassedTriggerTips(self.building:GetType()) then
             if tab:GetSelectedButtonTag() == "tech" then
                 local btn = self.teac_list.listview.items_[1]:zorder(10).upgrade_btn
                 UIKit:FingerAni():addTo(btn,10,111):pos(50, -50)
@@ -86,26 +101,9 @@ function GameUIMilitaryTechBuilding:OnMoveInStage()
             GameUINpc:PromiseOfSay(
                 {npc = "woman", words = text1}
             ):next(function()
-                app:GetGameDefautlt():SetPassTriggerTips("militaryTech1")
-                return GameUINpc:PromiseOfLeave()
-            end)
-        elseif not app:GetGameDefautlt():IsPassedTriggerTips("militaryTech2") then
-            tab:SelectTab("promote")
-            local btn = self.promote_list.listview.items_[1]:zorder(10):getContent():getChildByTag(2)
-            UIKit:FingerAni():addTo(btn,10,111):pos(120, -80)
-
-            local text2 = string.format(
-                            _("领主大人，当步兵的军事科技达到一定程度后，您可以在此对%s进行晋级。"),
-                            map_tech[self.building:GetType()])
-            GameUINpc:PromiseOfSay(
-                {npc = "woman", words = text2}
-            ):next(function()
-                app:GetGameDefautlt():SetPassTriggerTips("militaryTech2")
                 app:GetGameDefautlt():SetPassTriggerTips(self.building:GetType())
                 return GameUINpc:PromiseOfLeave()
             end)
-        else
-            app:GetGameDefautlt():SetPassTriggerTips(self.building:GetType())
         end
     end
 end

@@ -294,6 +294,12 @@ function MyCityScene:onEnterTransitionFinish()
             if self.home_page.order_shortcut then
                 if UtilsForFte:HasAnyShrineEvents()
                 and not app:GetGameDefautlt():IsPassedTriggerTips("shrineEvents") then
+                    GameUINpc:PromiseOfSay(
+                        {npc = "woman",
+                        words = _("领主大人，圣地战被激活了，快去参加吧！参与的成员越多，更容易获得珍贵的龙装备材料哦！")}
+                    ):next(function()
+                        return GameUINpc:PromiseOfLeave()
+                    end)
                     self.home_page.order_shortcut:TipsOnShrine()
                     checktips = false
                 elseif self.home_page.order_shortcut:HasAnyRewards() then
