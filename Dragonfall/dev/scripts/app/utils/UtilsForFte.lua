@@ -106,5 +106,5 @@ end
 function UtilsForFte:NeedTriggerTips(userData)
     local time = app.timer:GetServerTime()
     local needTips = ((time - userData.countInfo.registerTime/1000) / 60 / 60 / 24) < (7 * 24 * 60 * 60)
-    return not UtilsForTask:NeedTips(userData) and needTips
+    return not UtilsForTask:NeedTips(userData) and needTips and userData.countInfo.isFTEFinished
 end

@@ -115,7 +115,8 @@ function GameUIDragonEyrieMain:OnMoveInStage()
             end
         end
     end)
-    if not app:GetGameDefautlt():IsPassedTriggerTips(self.building:GetType()) then
+    if UtilsForFte:NeedTriggerTips(User) and
+        not app:GetGameDefautlt():IsPassedTriggerTips(self.building:GetType()) then
         UIKit:FingerAni():addTo(self.detailButton:zorder(10),10,111):pos(-10,-20)
         GameUINpc:PromiseOfSay(
             {npc = "woman", words = _("领主大人，巨龙的攻击力将直接影响战斗中龙战斗的胜负；而带兵量即为当前巨龙能带领出征的士兵数量。")}

@@ -53,7 +53,7 @@ function GameDefautlt:IsPassedTriggerTips(type)
     if UtilsForFte:NeedTriggerTips(User) then
         return self:getStringForKey(type.."_fte1") == "yes"
     else
-        return false
+        return true
     end
 end
 
