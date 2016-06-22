@@ -60,8 +60,11 @@ function GameUIAllianceHome:onEnter()
     local rect1 = self.chat:getCascadeBoundingBox()
     local x, y = rect1.x, rect1.y + rect1.height - 2
 
-    if UtilsForFte:NeedTriggerTips(User)
-    and not UtilsForEvent:HaveMyMarchEvents() then
+    if app:GetGameDefautlt():IsPassedAllianceFte(1,2,3,4,5)
+    and UtilsForFte:NeedTriggerTips(User)
+    and not UtilsForEvent:HaveMyMarchEvents()
+    and not app:GetGameDefautlt():IsPassedTriggerTips("regionHelps") then
+        app:GetGameDefautlt():SetPassTriggerTips("regionHelps")
         self.clipNode = display.newClippingRegionNode(cc.rect(0,0,display.width,80))
                         :addTo(self):pos(x,y)
         local tipsNode = display.newNode():addTo(self.clipNode)

@@ -77,6 +77,22 @@ function GameUITradeGuild:OnMoveInStage()
         end
         if tag == 'myGoods' and not self.my_goods_listview then
             self:LoadMyGoodsPage()
+
+            if UtilsForFte:NeedTriggerTips(User) and
+            not app:GetGameDefautlt():IsPassedTriggerTips("tradeGuild_myGoods") then
+                GameUINpc:PromiseOfSay(
+                    {npc = "woman", words = _("当然，您也可以将您多余的资源或材料售出，赚取银币！")}
+                ):next(function()
+                    app:GetGameDefautlt():SetPassTriggerTips("tradeGuild_myGoods")
+                    if self.my_goods_listview.items_[1].sellbtn then
+                        UIKit:FingerAni()
+                        :addTo(self.my_goods_listview.items_[1]:zorder(10).sellbtn,10,111)
+                        :pos(-20, -50)
+                    end
+                end):next(function()
+                    return GameUINpc:PromiseOfLeave()
+                end)
+            end
         end
     end):pos(window.cx, window.bottom + 34)
     local User = self.user
@@ -94,16 +110,6 @@ function GameUITradeGuild:OnMoveInStage()
         GameUINpc:PromiseOfSay(
             {npc = "woman", words = _("领主大人，您可以在贸易行会中通过银币购买同一服务器中其他玩家售出的资源及各种材料。")}
         ):next(function()
-            self.tab_buttons:SelectTab("myGoods")
-            if self.my_goods_listview.items_[1].sellbtn then
-                UIKit:FingerAni()
-                :addTo(self.my_goods_listview.items_[1]:zorder(10).sellbtn,10,111)
-                :pos(-20, -50)
-                return GameUINpc:PromiseOfSay({npc = "woman", words = _("当然，您也可以将您多余的资源或材料售出，赚取银币！")})
-            else
-                self.tab_buttons:SelectTab("buy")
-            end
-        end):next(function()
             app:GetGameDefautlt():SetPassTriggerTips("tradeGuild")
             return GameUINpc:PromiseOfLeave()
         end)

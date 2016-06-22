@@ -90,6 +90,16 @@ function GameUIDragonEyrieDetail:CreateBetweenBgAndTitle()
     self.star_bar = star_bar
     self.tab_buttons = WidgetDragonTabButtons.new(function(tag)
         self:OnTabButtonClicked(tag)
+        if tag == "skill"
+        and UtilsForFte:NeedTriggerTips(User)
+        and not app:GetGameDefautlt():IsPassedTriggerTips("dragonEyrie_skill") then
+            GameUINpc:PromiseOfSay(
+                {npc = "woman", words = _("领主大人，消耗英雄之血提升巨龙的技能等级也将使您的巨龙变得更为强力！英雄之血可以通过击杀地方玩家和直接购买获得。")}
+            ):next(function()
+                app:GetGameDefautlt():SetPassTriggerTips("dragonEyrie_skill")
+                return GameUINpc:PromiseOfLeave()
+            end)
+        end
     end):addTo(self.dragon_base):pos(-4,-42)
     --lv label 是公用
     self.lv_label = UIKit:ttfLabel({
@@ -236,11 +246,6 @@ function GameUIDragonEyrieDetail:OnMoveInStage()
         GameUINpc:PromiseOfSay(
             {npc = "woman", words = _("当巨龙达到当前最大等级并集齐所有慢性装备后，即可晋级，晋级后的巨龙实力将大幅增强！")}
         ):next(function()
-            self.tab_buttons:SelectButtonByTag("skill")
-            return GameUINpc:PromiseOfSay(
-                    {npc = "woman", words = _("领主大人，消耗英雄之血提升巨龙的技能等级也将使您的巨龙变得更为强力！英雄之血可以通过击杀地方玩家和直接购买获得。")}
-                )
-        end):next(function()
             return GameUINpc:PromiseOfLeave()
         end)
     end

@@ -71,7 +71,6 @@ function GameUIWorldMap:onEnter()
     end, 0.01)
 
     if not app:GetGameDefautlt():IsPassedTriggerTips("worldMap") then
-        app:GetGameDefautlt():SetPassTriggerTips("worldMap")
         UIKit:FingerAni():addTo(self.details_button:zorder(10),10,111):pos(60,-25)
     end
 end
@@ -292,8 +291,9 @@ function GameUIWorldMap:LoadRoundInfo(mapIndex)
         ):onButtonClicked(function(event)
             local triggerTips
             if event.target:getChildByTag(111) then
-                event.target:removeChildByTag(111)
                 triggerTips = true
+                app:GetGameDefautlt():SetPassTriggerTips("worldMap")
+                event.target:removeChildByTag(111)
             end
             UIKit:newWidgetUI("WidgetAllianceMapBuff",node.mapIndex,triggerTips):AddToCurrentScene()
         end)
