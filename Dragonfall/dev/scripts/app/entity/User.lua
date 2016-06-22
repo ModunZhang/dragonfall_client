@@ -1161,7 +1161,6 @@ function User:GetEventById(id)
             return v
         end
     end
-    assert(false)
 end
 function User:EventType(event)
     for i,v in ipairs(self.militaryTechEvents) do
@@ -1184,7 +1183,6 @@ function User:EventType(event)
             return "treatSoldierEvents"
         end
     end
-    assert(false)
 end
 --[[end]]
 

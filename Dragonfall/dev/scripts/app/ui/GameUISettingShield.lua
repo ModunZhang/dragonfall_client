@@ -86,7 +86,7 @@ function GameUISettingShield:GetBlackListItem(index,chat)
         align= cc.TEXT_ALIGNMENT_LEFT
     }):addTo(content):pos(100,38)
 
-    WidgetPushButton.new({normal = 'yellow_btn_up_148x58.png',pressed = 'yellow_btn_down_148x58.png'},{scale9 = true})
+    WidgetPushButton.new({normal = 'yellow_btn_up_148x58.png',pressed = 'yellow_btn_down_148x58.png'})
         :setButtonLabel("normal",UIKit:commonButtonLable({
             text = _("取消屏蔽"),
             color = 0xfff3c7,

@@ -1,7 +1,7 @@
-#Python脚本工具说明
+# Python脚本工具说明
 
-##安装
-###python部分
+## 安装
+### python部分
 
 首选安装python的运行环境并安装使用的第三方库,使用以下命令安装python脚本所依赖的第三方库。**mac下可能需要管理权限安装(sudo)**
 
@@ -11,8 +11,8 @@
 
 > poxls插件的安装,参考文档i18n_texture中的安装办法
 
-###平台部分 
-####所有系统
+### 平台部分 
+#### 所有系统
 
 * git 的命令行运行环境(terminal/cmd),并确认有可以操作远程仓库的权限(git pull/push etc...)
 
@@ -26,7 +26,7 @@
 	Windows上必须多添加一个系统变量`GIT_REPOSITOTY_AUTO_UPDATE_CYGWIN`,值必须为`cygwin`风格的路径字符串。指向自动更新仓库的本地绝对路径,如`GIT_REPOSITOTY_AUTO_UPDATE_CYGWIN = /cygdrive/d/Project/kod_update_server`
 
 	
-####Windows
+#### Windows
 
 * 直接运行`ImageMagick_6.9.3-4Q16`下的`ImageMagick-6.9.3-4-Q16-x64-dll.exe`安装即可,**配置系统的环境变量`CONVERT_PATH`指向`ImageMagick命令行工具的目录`,python脚本会自动查找命令行工具`convert`**
 
@@ -34,7 +34,7 @@
 
 **为了方便在Windows上打开终端的路径,提供了一个注册表文件`DosHere.reg`,导入系统注册表后可以通过文件的右键菜单进入dos**
 
-####Mac
+#### Mac
 * 安装**TexturePacker bash命令行可执行环境**
 
 * 安装**ImageMagick**命令行工具
@@ -53,11 +53,11 @@
 		convert -version
 		~~~
 	
-####验证脚本的正确安装
+#### 验证脚本的正确安装
 
 执行脚本`python checkEnv.py`进行验证脚本安装的正确性，如果发生错误请确认上面的配置!
 
-##脚本文件说明
+## 脚本文件说明
 	所有的脚本位于tools/batcat目录下
 	下面的脚本没有参数说明就表示不需要参数
 	有带参数的脚本可以直接执行选择输入相应参数即可.或者执行时在后面添加默认参数.
@@ -101,13 +101,13 @@
 	
 	> 参数:1.平台 2.选择执行的环境
 
-##关于脚本生成的临时垃圾文件
+## 关于脚本生成的临时垃圾文件
 如果python脚本执行过程中被打断或者发生关键性错误,可能会留下一些处理资源的临时文件,如果python脚本成功执行完成,会自动清理这些临时垃圾文件
 
 * Windows 上可以用360进行垃圾清理
 * mac 上需要手动清理,需要管理员权限
 
-##如何使用ssh操作git仓库
+## 如何使用ssh操作git仓库
 `mac`下使用终端环境,`windows`下使用`git bash`环境进行ssh的生成
 
 1.将项目目录`tools/win32/cwRsync`添加到环境变量
@@ -122,7 +122,7 @@
 
 	git remote set-url origin git@github.com:xxxx.git 
 
-##如何设置windows版本的bash环境,比如加入git的别名
+## 如何设置windows版本的bash环境,比如加入git的别名
 1.以管理员身份打开sublime
 
 2.打开git安装下的`etc/profile`
@@ -144,11 +144,78 @@
 	gitv
 	gitl 1
 
-##重要说明
+## 重要说明
 `WindowsPhone`的资源处理只能在Windows环境进行!
 
-##已知问题
+## 已知问题
 
 ~~自动更新上传到git的脚本只能在mac上执行~~
 
 ~~`syncUpdateDataToGit.py`脚本在`windows`上执行时`rsync`命令拷贝时权限有bug~~
+
+
+---
+
+## 一些特殊的帮助脚本
+
+###### WindowsPhoneClean.bat
+
+Visual Studio的清理后Windows Phone 8.1打包仍失败的情况下关闭Visual Studio后执行该脚本后再执行打包。
+
+##### getChangedSize.sh
+
+获取自动更新文件的大小,在自动更新仓库的某个分支上执行。可以指定具体从那次提交作为参考。
+
+获取上上次提交(`HEAD^`)到上次提交(`HEAD`)的文件大小变动
+
+~~~
+☁  kod_update_server [WP_production] sh /Users/dannyhe/WorkSpace/NewDragonfall/Dragonfall/tools/getChangedSize.sh
+os: darwin15
+version: HEAD^ - HEAD:
+file changed size:
+2.63682 Mb
+~~~
+
+获取`92fa574`到上次提交(`HEAD`)的文件大小变动
+
+~~~
+☁  kod_update_server [WP_production] sh /Users/dannyhe/WorkSpace/NewDragonfall/Dragonfall/tools/getChangedSize.sh 92fa574
+os: darwin15
+version: 92fa574 - HEAD:
+file changed size:
+13.9624 Mb
+~~~
+
+##### buildiOS.sh
+mac下构建iOS包
+
+##### buildWP.bat
+VS2013构建WindowsPhone8.1的包.
+
+打包WP包到默认路径(VS2013中设置的默认生成目录)
+
+~~~
+buildWP.bat 
+~~~
+
+打包WP安装包到`D:\release_wp`目录
+
+~~~
+buildWP.bat D:\release_wp
+~~~
+
+##### certWP.bat 
+
+验证WP安装包(appxbundle文件),最终生成`xml`格式的报告文件
+
+~~~
+certWP.bat D:\release_wp\Dragonfall.appxbundle
+~~~
+
+##### deployWP.bat
+
+部署WP安装包到手机上,脚本会先卸载手机上的包,然后安装新包
+
+~~~
+deployWP.bat D:\release_wp\Dragonfall.appxbundle
+~~~

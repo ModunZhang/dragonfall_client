@@ -8,9 +8,9 @@
 class FileOperation
 {
 public:
-	static bool createDirectory(std::string path);
-	static bool removeDirectory(std::string path);
-	static bool copyFile(std::string from, std::string to);
+	static bool createDirectory(const std::string& path);
+	static bool removeDirectory(const std::string& path);
+	static bool copyFile(const std::string& from, const std::string& to);
 };
 
 #endif  

@@ -107,7 +107,7 @@ function GameUIAllianceInfo:onEnter()
     GameUIAllianceInfo.super.onEnter(self)
     NetManager:getAllianceInfoPromise(self.alliance_id, self.serverId):done(function(response)
         if response.success and response.msg.allianceData then
-            if self.setAllianceData and self.BuildUI then
+            if not tolua.isnull(self) then
                 self:setAllianceData(response.msg.allianceData)
                 self:BuildUI()
             end

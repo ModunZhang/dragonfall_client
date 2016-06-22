@@ -98,7 +98,7 @@ function WidgetUseItems:OpenChangePlayerOrCityName(item_name)
         NetManager:getUseItemPromise(item_name,{[item_name] = {
             [request_key] = string.trim(editbox:getText())
         }}):done(function ()
-            if dialog.LeftButtonClicked then
+            if not tolua.isnull(dialog) then
                 dialog:LeftButtonClicked()
             end
         end)
@@ -107,7 +107,7 @@ function WidgetUseItems:OpenChangePlayerOrCityName(item_name)
         NetManager:getBuyAndUseItemPromise(item_name,{[item_name] = {
             [request_key] = string.trim(editbox:getText())
         }}):done(function ()
-            if dialog.LeftButtonClicked then
+            if not tolua.isnull(dialog) then
                 dialog:LeftButtonClicked()
             end
         end)
@@ -773,7 +773,7 @@ function WidgetUseItems:OpenMoveTheCityDialog( item_name ,params)
                     }
 
                 }):done(function ()
-                    if dialog.LeftButtonClicked then
+                    if not tolua.isnull(dialog) then
                         dialog:LeftButtonClicked()
                     end
                 end)
@@ -791,7 +791,7 @@ function WidgetUseItems:OpenMoveTheCityDialog( item_name ,params)
                         locationY = params.locationY
                     }
                 }):done(function ()
-                    if dialog.LeftButtonClicked then
+                    if not tolua.isnull(dialog) then
                         dialog:LeftButtonClicked()
                     end
                 end)
@@ -1064,7 +1064,7 @@ function WidgetUseItems:OpenRetreatTroopDialog( item_name,event,eventType )
                     eventId = event.id
                 }
             }):done(function ()
-                if dialog.LeftButtonClicked then
+                if not tolua.isnull(dialog) then
                     dialog:LeftButtonClicked()
                 end
             end)
@@ -1076,7 +1076,7 @@ function WidgetUseItems:OpenRetreatTroopDialog( item_name,event,eventType )
                     eventId = event.id
                 }
             }):done(function ()
-                if dialog.LeftButtonClicked then
+                if not tolua.isnull(dialog) then
                     dialog:LeftButtonClicked()
                 end
             end)

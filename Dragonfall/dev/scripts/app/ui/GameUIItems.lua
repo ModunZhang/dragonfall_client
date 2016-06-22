@@ -292,7 +292,7 @@ function GameUIItems:IsItemCouldUseInShop(item_name)
         and item_name ~= "chestKey_2"
         and item_name ~= "chestKey_3"
         and item_name ~= "chestKey_4"
-        and item_name ~= "sweepScroll"
+        -- and item_name ~= "sweepScroll"
     then
         return true
     end
@@ -306,7 +306,7 @@ function GameUIItems:IsItemCouldUseNow(item_name)
         and item_name ~= "dragonHp_1"
         and item_name ~= "dragonHp_2"
         and item_name ~= "dragonHp_3"
-        and item_name ~= "sweepScroll"
+        -- and item_name ~= "sweepScroll"
     then
         return true
     end
@@ -475,6 +475,11 @@ end
 function GameUIItems:UseItemFunc( item_name )
     local User = self.city:GetUser()
     if self:IsItemCouldUseNow(item_name) then
+        -- 扫荡卷进入飞艇场景
+        if item_name == "sweepScroll" then
+            app:EnterPVEScene(self.city:GetUser():GetLatestPveIndex())
+            return
+        end
         -- 使用巨龙宝箱会获得龙装备材料，需要提示
         local clone_dragon_materials
         if string.find(item_name,"dragonChest") or string.find(item_name,"redbag") then
