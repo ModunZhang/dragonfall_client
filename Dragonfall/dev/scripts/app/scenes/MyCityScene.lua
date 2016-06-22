@@ -290,16 +290,18 @@ function MyCityScene:onEnterTransitionFinish()
         self:callback()
     else
         if UtilsForFte:NeedTriggerTips(self:GetCity():GetUser()) then
+            local checktips = true
             if self.home_page.order_shortcut then
                 if UtilsForFte:HasAnyShrineEvents()
                 and not app:GetGameDefautlt():IsPassedTriggerTips("shrineEvents") then
-                    app:GetGameDefautlt():SetPassTriggerTips("shrineEvents")
                     self.home_page.order_shortcut:TipsOnShrine()
+                    checktips = false
                 elseif self.home_page.order_shortcut:HasAnyRewards() then
                     self.home_page.order_shortcut:TipsOnReward()
-                else
-                    self:CheckBuildingFte()
                 end
+            end
+            if checktips then
+                self:CheckBuildingFte()
             end
             if DataManager:getUserData().countInfo.isFTEFinished then
                 scheduleAt(self, function()

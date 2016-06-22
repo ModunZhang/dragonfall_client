@@ -186,8 +186,9 @@ function WidgetShortcutButtons:ctor(city)
     shrine_event_button:onButtonClicked(function(event)
         local needTips
         if event.target:getChildByTag(111) then
-            event.target:removeChildByTag(111)
             needTips = true
+            event.target:removeChildByTag(111)
+            app:GetGameDefautlt():SetPassTriggerTips("shrineEvents")
         end
         local info = Alliance_Manager:GetMyAlliance():GetAllianceBuildingInfoByName("shrine")
         UIKit:newGameUI("GameUIAllianceShrine",
