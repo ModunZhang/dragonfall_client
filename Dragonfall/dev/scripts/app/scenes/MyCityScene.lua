@@ -808,20 +808,18 @@ function MyCityScene:ShowBuildingTips(location)
                 return false
             end
         end
-        return true
+    end
+    local building = UtilsForBuilding:GetBuildingByLocation(User, location)
+    local ispassed = UtilsForFte:IsPassedBuildingTips(User, building.type)
+    local needTips = building.level > 0 and not ispassed
+    if needTips then
+        for i,v in ipairs(self:GetSceneLayer():GetBuildings(location)) do
+            v:ShowFinger()
+            return true
+        end
     else
-        local building = UtilsForBuilding:GetBuildingByLocation(User, location)
-        local ispassed = UtilsForFte:IsPassedBuildingTips(User, building.type)
-        local needTips = building.level > 0 and not ispassed
-        if needTips then
-            for i,v in ipairs(self:GetSceneLayer():GetBuildings(location)) do
-                v:ShowFinger()
-                return true
-            end
-        else
-            for i,v in ipairs(self:GetSceneLayer():GetBuildings(location)) do
-                v:HideFinger()
-            end
+        for i,v in ipairs(self:GetSceneLayer():GetBuildings(location)) do
+            v:HideFinger()
         end
     end
     return false
