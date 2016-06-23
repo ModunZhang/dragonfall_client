@@ -65,6 +65,7 @@ function GameUIMilitaryTechBuilding:OnMoveInStage()
             self.status:setVisible(true)
 
             if UtilsForFte:NeedTriggerTips(User)
+            and not UtilsForFte:IsPromoteAny(User)
             and not app:GetGameDefautlt():IsPassedTriggerTips("promote") then
                 local btn = self.promote_list.listview.items_[1]:zorder(10):getContent():getChildByTag(2)
                 UIKit:FingerAni():addTo(btn,10,111):pos(120, -80)

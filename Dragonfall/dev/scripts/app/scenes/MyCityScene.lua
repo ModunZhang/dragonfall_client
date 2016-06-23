@@ -793,20 +793,18 @@ function MyCityScene:CheckBuildingFte()
 end
 function MyCityScene:ShowBuildingTips(location)
     if location == 9 then -- blackSmith
-        for k,dragon in pairs(User.dragons) do
-            if dragon.star > 1 then
-                return false
-            end
-            for k,v in pairs(dragon.equipments) do
-                if #v.name > 0 then
-                    return false
-                end
-            end
+        if UtilsForFte:IsMakeAnyEquip(User) then
+            return false
         end
-        for k,v in pairs(User.dragonEquipments) do
-            if v > 0 then
-                return false
-            end
+    end
+    if location == 16 then
+        if UtilsForFte:IsMakeAnyMaterial(User) then
+            return false
+        end
+    end
+    if location >= 17 and location <= 20 then
+        if UtilsForFte:IsUpgradeAnyMilitaryTech(User) then
+            return false
         end
     end
     local building = UtilsForBuilding:GetBuildingByLocation(User, location)

@@ -95,6 +95,62 @@ function UtilsForFte:HasAnyShrineEvents()
             and Alliance_Manager:GetMyAlliance().shrineEvents
             and #Alliance_Manager:GetMyAlliance().shrineEvents > 0
 end
+function UtilsForFte:IsPromoteAny(userData)
+    for k,v in pairs(userData.soldierStars) do
+        if v > 1 then
+            return true
+        end
+    end
+
+    return #userData.soldierStarEvents > 0
+end
+function UtilsForFte:IsMakeAnyEquip(userData)
+    for k,dragon in pairs(userData.dragons) do
+        if dragon.star > 1 then
+            return true
+        end
+        for k,v in pairs(dragon.equipments) do
+            if #v.name > 0 then
+                return true
+            end
+        end
+    end
+    for k,v in pairs(userData.dragonEquipments) do
+        if v > 0 then
+            return true
+        end
+    end
+
+    return #userData.dragonEquipmentEvents > 0
+end
+function UtilsForFte:IsMakeAnyMaterial(userData)
+    for k,v in pairs(userData.buildingMaterials) do
+        if v > 0 then
+            return true
+        end
+    end
+    for k,v in pairs(userData.technologyMaterials) do
+        if v > 0 then
+            return true
+        end
+    end
+    return #userData.materialEvents > 0
+end
+local tech_building_name = {
+    "trainingGround",
+    "stable",
+    "hunterHall",
+    "workshop",
+}
+function UtilsForFte:IsUpgradeAnyMilitaryTech(userData)
+    for location = 17, 20 do
+        local type = userData.buildings[string.format("location_%d", location)].type
+        if userData:GetTechPoints(type) > 0 then
+            return true
+        end
+    end
+    return #userData.militaryTechEvents > 0
+end
 function UtilsForFte:IsPassedBuildingTips(userData, type)
     local ispassed = app:GetGameDefautlt():IsPassedTriggerTips(type)
     if ispassed or #UtilsForBuilding:GetBuildingsBy(userData, type, 2) > 0 then
