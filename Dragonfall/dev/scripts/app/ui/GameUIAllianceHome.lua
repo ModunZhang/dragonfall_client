@@ -121,18 +121,14 @@ function GameUIAllianceHome:onEnter()
         end)
     sale_button:setContentSize(cc.size(100,110))
     sale_button:setTouchSwallowEnabled(true)
-
-
-
-
-    if UtilsForFte:NeedTriggerTips(User) and
-        app:GetGameDefautlt():IsPassedAllianceFte(1,2,3,4,5) and
-        not app:GetGameDefautlt():IsPassedTriggerTips("allianceFight") then
-        app:GetGameDefautlt():SetPassTriggerTips("allianceFight")
+    if UtilsForFte:NeedTriggerTips(User)
+    and app:GetGameDefautlt():IsPassedAllianceFte(1,2,3,4,5)
+    and not app:GetGameDefautlt():IsPassedTriggerTips("allianceFight") then
         local status = self.alliance.basicInfo.status
         if (status == "fight" or status == "prepare")
             and self.self_power_label
             and self.enemy_power_label then
+            app:GetGameDefautlt():SetPassTriggerTips("allianceFight")
             local node = display.newNode():addTo(self,100)
             local rect1 = self.self_power_label:getCascadeBoundingBox()
             local src = cc.p(rect1.x + 130, rect1.y - 25)
@@ -385,7 +381,8 @@ function GameUIAllianceHome:RefreshTop(force_refresh)
     local top_self_bg,top_enemy_bg,top_bg = self:TopBg()
     local top_self_size = top_self_bg:getCascadeBoundingBox().size
     local top_enemy_size = top_enemy_bg:getCascadeBoundingBox().size
-    if alliance.basicInfo.status == "fight" or alliance.basicInfo.status == "prepare" then
+    if alliance.basicInfo.status == "fight"
+    or alliance.basicInfo.status == "prepare" then
         -- 己方联盟名字
         local self_name_bg = display.newSprite("title_green_292X32.png")
             :align(display.LEFT_CENTER, 0,-26)
