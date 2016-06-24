@@ -122,7 +122,6 @@ function GameUIAllianceHome:onEnter()
     sale_button:setContentSize(cc.size(100,110))
     sale_button:setTouchSwallowEnabled(true)
     if UtilsForFte:NeedTriggerTips(User)
-    and app:GetGameDefautlt():IsPassedAllianceFte(1,2,3,4,5)
     and not app:GetGameDefautlt():IsPassedTriggerTips("allianceFight") then
         local status = self.alliance.basicInfo.status
         if (status == "fight" or status == "prepare")

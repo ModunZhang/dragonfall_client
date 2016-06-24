@@ -327,6 +327,15 @@ function AllianceDetailScene:onEnter()
         end
     else
         while true do
+            local status = alliance.basicInfo.status
+            if (status == "fight" or status == "prepare") then
+                if not app:GetGameDefautlt():IsPassedTriggerTips("allianceFight") then
+                    local mapObj = alliance:FindMapObjectById(alliance:GetSelf().mapId)
+                    local x,y = DataUtils:GetAbsolutePosition(alliance.mapIndex, mapObj.location.x, mapObj.location.y)
+                    self:GotoPosition(x,y)
+                    break
+                end
+            end
             -- step 1
             if not app:GetGameDefautlt():IsPassedAllianceFte(1) then
                 alliance:IteratorVillages(function(k,v)
