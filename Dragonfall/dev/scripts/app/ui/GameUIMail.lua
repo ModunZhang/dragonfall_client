@@ -21,11 +21,12 @@ local GameUIMail = class('GameUIMail', GameUIWithCommonHeader)
 GameUIMail.ONE_TIME_LOADING_MAILS = 10
 GameUIMail.ONE_TIME_LOADING_REPORTS = 10
 
-function GameUIMail:ctor(city)
+function GameUIMail:ctor(city,needTips)
     GameUIMail.super.ctor(self)
     self.title = _("邮件")
     self.city = city
     self.manager = MailManager
+    self.needTips = needTips
 
     app:GetAudioManager():PlayeEffectSoundWithKey("OPEN_MAIL")
 end
@@ -38,11 +39,12 @@ function GameUIMail:OnMoveInStage()
         {
             label = _("收件箱"),
             tag = "inbox",
-            default = true,
+            default = not self.needTips and true or false,
         },
         {
             label = _("战报"),
             tag = "report",
+            default = self.needTips,
         },
         {
             label = _("收藏夹"),
@@ -1592,10 +1594,12 @@ function GameUIMail:InitReport()
                 end
                 if #response.msg.reports > 0 then
                     local ispass = app:GetGameDefautlt():IsPassedTriggerTips("mail")
-                    if not ispass then
-                        app:GetGameDefautlt():SetPassTriggerTips("mail")
-                        local item = self.report_listview.items_[1]
-                        UIKit:FingerAni():addTo(item:getContent(),10,111):pos(500, 50)
+                    if UtilsForFte:NeedTriggerTips(User)
+                    and not ispass then
+                        if response.msg.reports[1].type == "attackCity" then
+                            local item = self.report_listview.items_[1]
+                            UIKit:FingerAni():addTo(item:getContent(),10,111):pos(500, 50)
+                        end
                     end
                 end
                 return response
@@ -1692,16 +1696,18 @@ function GameUIMail:CreateReportContent()
                         or report:Type() == "villageBeStriked" or report:Type()== "strikeVillage" then
                         UIKit:newGameUI("GameUIStrikeReport", report,true):AddToCurrentScene(true)
                     elseif report:Type() == "attackCity" or report:Type() == "attackVillage" then
+                        if report:Type() == "attackCity"
+                        and not app:GetGameDefautlt():IsPassedTriggerTips("mail") then
+                            app:GetGameDefautlt():SetPassTriggerTips("mail")
+                        end
                         UIKit:newGameUI("GameUIWarReport", report,true):AddToCurrentScene(true)
                         ShowReportTips(needTips)
                     elseif report:Type() == "collectResource" then
                         UIKit:newGameUI("GameUICollectReport", report):AddToCurrentScene(true)
                     elseif report:Type() == "attackMonster" then
                         UIKit:newGameUI("GameUIMonsterReport", report,true):AddToCurrentScene(true)
-                        ShowReportTips(needTips)
                     elseif report:Type() == "attackShrine" then
                         UIKit:newGameUI("GameUIShrineReportInMail", report,true):AddToCurrentScene(true)
-                        ShowReportTips(needTips)
                     end
                     if report:Type() ~= "collectResource" and report:Type() ~= "attackShrine" then
                         if report:IsWin() then
