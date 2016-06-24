@@ -34,12 +34,17 @@ function GameUITownHall:OnMoveInStage()
         promise.all(GameUINpc:PromiseOfSay(
             {npc = "woman", words = _("领主大人，在市政厅附近修建住宅，可获得银币产出加成，多多益善！")}
         ), self.tipsPromise):next(function()
+            local rect
             if #self.quest_list_view.items_ > 0 then
                 UIKit:FingerAni()
                 :addTo(self.quest_list_view.items_[1].control_btn,10,111)
                 :pos(-20, -50)
+                rect = self.quest_list_view.items_[1].control_btn:getCascadeBoundingBox()
             end
-            return GameUINpc:PromiseOfSay({words = _("同时，您也可在此通过小任务，花费一定的时间获得大量的资源奖励！")})
+            return GameUINpc:PromiseOfSay({
+                focus_rect = rect,
+                words = _("同时，您也可在此通过小任务，花费一定的时间获得大量的资源奖励！")
+            })
         end):next(function()
             app:GetGameDefautlt():SetPassTriggerTips("townHall")
             return GameUINpc:PromiseOfLeave()

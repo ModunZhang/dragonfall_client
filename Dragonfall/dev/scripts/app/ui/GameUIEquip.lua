@@ -324,7 +324,7 @@ function GameUIEquip:TriggerTips(dragonType)
     UIKit:FingerAni():addTo(btn,10,111):pos(50, -50)
 
     GameUINpc:PromiseOfSay({
-        -- focus_rect = rect,
+        focus_rect = rect,
         npc = "woman",
         words = _("领主，您可以在铁匠铺内为您的巨龙打造装备，强化它的实力！")
     }):next(function()
