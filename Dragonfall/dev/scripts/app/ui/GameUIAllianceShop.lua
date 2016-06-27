@@ -58,7 +58,7 @@ function GameUIAllianceShop:OnMoveInStage()
             end
             if not app:GetGameDefautlt():IsPassedTriggerTips("allianceShop") then
                 GameUINpc:PromiseOfSay(
-                    {npc = "woman", words = _("领主大人，您可以使用忠诚值在联盟商店内购买各种道具(可通过协助梦游加速、捐赠等获得忠诚值)。")}
+                    {npc = "woman", words = _("领主大人，您可以使用忠诚值在联盟商店内购买各种道具(可通过协助盟友加速、捐赠等获得忠诚值)。")}
                 ):next(function()
                     return GameUINpc:PromiseOfLeave()
                 end)
