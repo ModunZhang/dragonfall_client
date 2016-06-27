@@ -837,7 +837,7 @@ function MyCityScene:ShowTipsOnBlackSmith()
     local building = self:GetSceneLayer():GetBuildings(9)[1]
     local __,top = building:GetWorldPosition()
     local top_point = info_layer:convertToNodeSpace(top)
-    local arrow = WidgetFteArrow.new(_("有装备可以制造装备提升龙的战斗力"))
+    local arrow = WidgetFteArrow.new(_("有装备可以制造\n装备提升龙的战斗力"))
         :addTo(info_layer, 1, ARROW_TAG):TurnDown():pos(top_point.x, top_point.y + 50)
 end
 function MyCityScene:ShowTipsOnAirShip()
@@ -854,7 +854,7 @@ function MyCityScene:ShowTipsOnToolShop()
     local building = self:GetSceneLayer():GetBuildings(16)[1]
     local __,top = building:GetWorldPosition()
     local top_point = info_layer:convertToNodeSpace(top)
-    local arrow = WidgetFteArrow.new(_("制造建筑材料用于高级建筑升级，制造军事材料用于研发军事科技"))
+    local arrow = WidgetFteArrow.new(_("制造建筑材料用于高级建筑升级\n制造军事材料用于研发军事科技"))
         :addTo(info_layer, 1, ARROW_TAG):TurnDown():pos(top_point.x, top_point.y + 50)
 end
 function MyCityScene:ShowTipsOnTownHall()
@@ -863,7 +863,7 @@ function MyCityScene:ShowTipsOnTownHall()
     local building = self:GetSceneLayer():GetBuildings(15)[1]
     local __,top = building:GetWorldPosition()
     local top_point = info_layer:convertToNodeSpace(top)
-    local arrow = WidgetFteArrow.new(_("完成每日任务，获得资源奖励"))
+    local arrow = WidgetFteArrow.new(_("完成每日任务\n获得资源奖励"))
         :addTo(info_layer, 1, ARROW_TAG):TurnDown():pos(top_point.x, top_point.y + 50)
 end
 function MyCityScene:ShowTipsOnBuilding(buildingLocation)
@@ -872,7 +872,7 @@ function MyCityScene:ShowTipsOnBuilding(buildingLocation)
     local building = self:GetSceneLayer():GetBuildings(buildingLocation)[1]
     local __,top = building:GetWorldPosition()
     local top_point = info_layer:convertToNodeSpace(top)
-    local arrow = WidgetFteArrow.new(_("研发军事科技，提升兵种的战斗力"))
+    local arrow = WidgetFteArrow.new(_("研发军事科技\n提升兵种的战斗力"))
         :addTo(info_layer, 1, ARROW_TAG):TurnDown():pos(top_point.x, top_point.y + 50)
 end
 
