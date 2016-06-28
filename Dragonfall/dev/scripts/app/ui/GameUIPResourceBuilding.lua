@@ -26,14 +26,14 @@ local P_RESOURCE_BUILDING_TYPE_TO_NAME ={
 
 local P_RESOURCE_BUILDING_TYPE_TO_RESOURCE ={
     ["foundry"] = _("铁矿产量"),
-    ["stoneMason"] = _("石材产量"),
+    ["stoneMason"] = _("石料产量"),
     ["lumbermill"] = _("木材产量"),
     ["mill"] = _("粮食产量"),
 }
 
 local RESOURCE_TYPE ={
     ["foundry"] = _("铁矿"),
-    ["stoneMason"] = _("石材"),
+    ["stoneMason"] = _("石料"),
     ["lumbermill"] = _("木材"),
     ["mill"] = _("粮食"),
 }

@@ -72,7 +72,7 @@ function MapScene:onEnter()
                     UIKit:GetUIInstance("GameUINpc"):removeFromParent()
                     GameUINpc:PromiseOfSay({
                         npc = "woman",
-            words = _("领主大人，您的城市即将被攻击！您可以在城墙选择驻防部队统计敌人，或是撤下部队，避免无所谓的死伤（但您的资源将会被略对）")
+            words = _("领主大人，您的城市即将被攻击！您可以在城墙选择驻防部队痛击敌人，或是撤下部队，避免无所谓的死伤（但您的资源将会被掠夺）")
                     }):next(function()
                         return GameUINpc:PromiseOfLeave()
                     end)

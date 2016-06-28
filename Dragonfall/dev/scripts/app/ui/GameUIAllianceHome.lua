@@ -133,17 +133,27 @@ function GameUIAllianceHome:onEnter()
             local src = cc.p(rect1.x + 130, rect1.y - 25)
             local rect2 = self.enemy_power_label:getCascadeBoundingBox()
             local dst = cc.p(rect2.x + 130, rect2.y - 25)
-            GameUINpc:PromiseOfSay({words = _("领主大人，您正在参与一场联盟战！")})
-            :next(function()
+            local r1 = self.self_power_label:getParent():getCascadeBoundingBox()
+            local r2 = self.enemy_power_label:getParent():getCascadeBoundingBox()
+            GameUINpc:PromiseOfSay({
+                words = _("领主大人，您正在参与一场联盟战！")
+            }):next(function()
                 UIKit:FingerAni():addTo(node,10,111):pos(src.x,src.y)
-                return GameUINpc:PromiseOfSay({words = _("左上方为我方联盟击杀数量")})
+                return GameUINpc:PromiseOfSay({
+                            focus_rect = cc.rectUnion( r1, r2 ),
+                            words = _("左上方为我方联盟击杀数量")
+                        })
             end):next(function()
                 local finger = node:getChildByTag(111)
                 finger:moveTo(0.6, dst.x, dst.y)
-                return GameUINpc:PromiseOfSay({words = _("右上方为敌方联盟击杀数量")})
+                return GameUINpc:PromiseOfSay({
+                            focus_rect = cc.rectUnion( r1, r2 ),
+                            words = _("右上方为敌方联盟击杀数量")
+                        })
             end):next(function()
                 node:removeFromParent()
                 return GameUINpc:PromiseOfSay({
+                    focus_rect = cc.rectUnion( r1, r2 ),
                     words = _("攻击敌方城市或防御敌方部队来袭，均可获得击杀积分，联盟战结束时，击杀积分高的一方将获得最后的胜利！")
                 })
             end):next(function()
