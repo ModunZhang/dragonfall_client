@@ -6,9 +6,9 @@ import shutil
 import os
 from os.path import join, getsize
 
-FLAVORS = ('googleplay','paypal')
-ASSETS_FOLDER = {'googleplay':'assets-googleplay','paypal':'assets-paypal'}
-GAME_IDS = {'googleplay':'dragonfall','paypal':'dragonfall_paypal'}
+FLAVORS = ('googleplay','paypal','qihoo360','9game')
+ASSETS_FOLDER = {'googleplay':'assets-googleplay','paypal':'assets-paypal','qihoo360':'assets-qihoo','9game':'assets-uc'}
+GAME_IDS = {'googleplay':'dragonfall','paypal':'dragonfall_paypal','qihoo360':'dragonfall_qihoo','9game':'dragonfall_uc'}
 
 def getGameId(flavor):
     return GAME_IDS[flavor]
