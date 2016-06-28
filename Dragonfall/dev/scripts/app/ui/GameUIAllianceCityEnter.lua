@@ -222,25 +222,27 @@ function GameUIAllianceCityEnter:GetEnterButtons()
         local attack_button = self:BuildOneButton("attack_58x56.png",_("进攻")):onButtonClicked(function()
             local final_func = function ()
                 local attack_func = function ()
-                    UIKit:newGameUI('GameUISendTroopNew',function(dragonType,soldiers,total_march_time,gameuialliancesendtroops)
-                        if member.masterOfDefender then
-                            UIKit:showMessageDialog(_("提示"),_("目标城市已被击溃并进入保护期，可能无法发生战斗，你是否继续派兵?"), function()
+                    if member.masterOfDefender then
+                        UIKit:showMessageDialog(_("提示"),_("目标城市已被击溃并进入保护期，可能无法发生战斗，你是否继续派兵?"), function()
+                            UIKit:newGameUI('GameUISendTroopNew',function(dragonType,soldiers,total_march_time,gameuialliancesendtroops)
                                 NetManager:getAttackPlayerCityPromise(dragonType, soldiers, alliance._id, member.id):done(function()
                                     app:GetAudioManager():PlayeEffectSoundWithKey("TROOP_SENDOUT")
                                     if gameuialliancesendtroops and gameuialliancesendtroops.LeftButtonClicked then
                                         gameuialliancesendtroops:LeftButtonClicked()
                                     end
                                 end)
-                            end,function()end)
-                        else
+                            end,{targetAlliance = alliance,toLocation = toLocation,returnCloseAction = true}):AddToCurrentScene(true)
+                        end,function()end)
+                    else
+                        UIKit:newGameUI('GameUISendTroopNew',function(dragonType,soldiers,total_march_time,gameuialliancesendtroops)
                             NetManager:getAttackPlayerCityPromise(dragonType, soldiers, alliance._id, member.id):done(function()
                                 app:GetAudioManager():PlayeEffectSoundWithKey("TROOP_SENDOUT")
                                 if gameuialliancesendtroops and gameuialliancesendtroops.LeftButtonClicked then
                                     gameuialliancesendtroops:LeftButtonClicked()
                                 end
                             end)
-                        end
-                    end,{targetAlliance = alliance,toLocation = toLocation,returnCloseAction = true}):AddToCurrentScene(true)
+                        end,{targetAlliance = alliance,toLocation = toLocation,returnCloseAction = true}):AddToCurrentScene(true)
+                    end
                 end
                 UIKit:showSendTroopMessageDialog(attack_func, "dragonMaterials",_("龙材料"))
             end
@@ -295,6 +297,8 @@ function GameUIAllianceCityEnter:GetEnterButtons()
 end
 
 return GameUIAllianceCityEnter
+
+
 
 
 

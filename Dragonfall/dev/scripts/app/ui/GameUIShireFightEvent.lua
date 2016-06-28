@@ -297,11 +297,11 @@ function GameUIShireFightEvent:DispathSoliderButtonClicked(needTips)
         end
         UIKit:showSendTroopMessageDialog(attack_func, "dragonMaterials", _("龙材料"))
     end
-    if Alliance_Manager:GetMyAlliance():GetSelf().masterOfDefender then
-        UIKit:showMessageDialog(_("提示"),_("进攻该目标将失去保护状态，确定继续派兵?"),final_func)
-    else
+    -- if Alliance_Manager:GetMyAlliance():GetSelf().masterOfDefender then
+    --     UIKit:showMessageDialog(_("提示"),_("进攻该目标将失去保护状态，确定继续派兵?"),final_func)
+    -- else
         final_func()
-    end
+    -- end
 end
 local shrineStage = GameDatas.AllianceInitData.shrineStage
 function GameUIShireFightEvent:InfomationButtonClicked()

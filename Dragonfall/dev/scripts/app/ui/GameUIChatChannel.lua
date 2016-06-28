@@ -591,7 +591,7 @@ function GameUIChatChannel:listviewListener(event)
         local item = event.item
         if not item then return end
         local chat = self.dataSource_[item.idx_]
-        if not chat or chat.icon == "__mod" then return end
+        if not chat then return end
         local isSelf = User:Id() == chat.id
         if isSelf or not chat then return end
         local content = item:getContent().other_content
@@ -669,6 +669,9 @@ function GameUIChatChannel:listviewListener(event)
         nodePoint = listView:getScrollNode():convertToNodeSpace(nodePoint)
         bound.x = nodePoint.x
         bound.y = nodePoint.y
+        if chat.icon == "__mod" then
+            return
+        end
         local isTouchChatIcon = cc.rectContainsPoint(bound,event.point)
         if isTouchChatIcon then
             UIKit:newGameUI("GameUIAllianceMemberInfo",false,chat.id,nil,chat.serverId):AddToCurrentScene(true)
