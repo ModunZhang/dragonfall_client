@@ -325,6 +325,9 @@ function GameUIEquip:TriggerTips(dragonType)
 
     GameUINpc:PromiseOfSay({
         focus_rect = rect,
+        click_func = function(event)
+            btn:dispatchEvent({name = btn.CLICKED_EVENT, x = event.x, y = event.y, touchInTarget = true})
+        end,
         npc = "woman",
         words = _("领主，您可以在铁匠铺内为您的巨龙打造装备，强化它的实力！")
     }):next(function()
