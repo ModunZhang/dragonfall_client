@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: dragonfall\n"
-"POT-Creation-Date: 2016-06-30 14:37+0800\n"
-"PO-Revision-Date: 2016-06-30 14:37+0800\n"
+"POT-Creation-Date: 2016-06-30 15:27+0800\n"
+"PO-Revision-Date: 2016-06-30 15:27+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -48,11 +48,11 @@ msgstr ""
 #: scenes/AllianceScene.lua:198 scenes/MyCityFteScene.lua:291
 #: service/NetManager.lua:415 service/NetManager.lua:966
 #: service/NetManager.lua:985 service/NetManager.lua:998
-#: service/NetManager.lua:1011 service/NetManager.lua:1212
-#: service/NetManager.lua:1284 service/NetManager.lua:1338
-#: service/NetManager.lua:1746 service/NetManager.lua:1928
-#: service/NetManager.lua:1942 service/NetManager.lua:1944
-#: service/NetManager.lua:1964 service/NetManager.lua:1966
+#: service/NetManager.lua:1011 service/NetManager.lua:1211
+#: service/NetManager.lua:1283 service/NetManager.lua:1337
+#: service/NetManager.lua:1745 service/NetManager.lua:1927
+#: service/NetManager.lua:1941 service/NetManager.lua:1943
+#: service/NetManager.lua:1963 service/NetManager.lua:1965
 #: ui/CommonUpgradeUI.lua:583 ui/CommonUpgradeUI.lua:903
 #: ui/CommonUpgradeUI.lua:995 ui/CommonUpgradeUI.lua:1031
 #: ui/CommonUpgradeUI.lua:1039 ui/CommonUpgradeUI.lua:1059
@@ -100,24 +100,24 @@ msgstr ""
 #: ui/GameUIBuild.lua:222 ui/GameUIBuild.lua:235 ui/GameUIChatChannel.lua:97
 #: ui/GameUIChatChannel.lua:103 ui/GameUIChatChannel.lua:108
 #: ui/GameUIChatChannel.lua:147 ui/GameUIChatChannel.lua:152
-#: ui/GameUIChatChannel.lua:241 ui/GameUIChatChannel.lua:414
-#: ui/GameUIChatChannel.lua:420 ui/GameUIChatChannel.lua:749
-#: ui/GameUIChatChannel.lua:753 ui/GameUIChatChannel.lua:764
-#: ui/GameUIChatChannel.lua:767 ui/GameUIChatChannel.lua:771
-#: ui/GameUIChest.lua:69 ui/GameUIDragonEyrieDetail.lua:540
-#: ui/GameUIDragonEyrieDetail.lua:545 ui/GameUIDragonEyrieDetail.lua:550
-#: ui/GameUIDragonEyrieMain.lua:426 ui/GameUIDragonSkill.lua:164
-#: ui/GameUIDragonSkill.lua:173 ui/GameUIGMChat.lua:38 ui/GameUIGMChat.lua:362
-#: ui/GameUIGacha.lua:262 ui/GameUIHasBeenBuild.lua:132
-#: ui/GameUIHasBeenBuild.lua:172 ui/GameUIHasBeenBuild.lua:185
-#: ui/GameUIHelp.lua:72 ui/GameUIHelp.lua:244 ui/GameUIHospital.lua:177
-#: ui/GameUIHospital.lua:254 ui/GameUIHospital.lua:256
-#: ui/GameUIHospital.lua:266 ui/GameUIHospital.lua:275
-#: ui/GameUIHospital.lua:282 ui/GameUIHospital.lua:304
-#: ui/GameUIHospital.lua:306 ui/GameUIIapGifts.lua:224
-#: ui/GameUIIntensifyEquipment.lua:216 ui/GameUIIntensifyEquipment.lua:228
-#: ui/GameUIItems.lua:227 ui/GameUIItems.lua:238 ui/GameUIKeep.lua:528
-#: ui/GameUIKeep.lua:548 ui/GameUILoginBeta.lua:135 ui/GameUILoginBeta.lua:205
+#: ui/GameUIChatChannel.lua:241 ui/GameUIChatChannel.lua:246
+#: ui/GameUIChatChannel.lua:749 ui/GameUIChatChannel.lua:753
+#: ui/GameUIChatChannel.lua:764 ui/GameUIChatChannel.lua:767
+#: ui/GameUIChatChannel.lua:771 ui/GameUIChest.lua:69
+#: ui/GameUIDragonEyrieDetail.lua:540 ui/GameUIDragonEyrieDetail.lua:545
+#: ui/GameUIDragonEyrieDetail.lua:550 ui/GameUIDragonEyrieMain.lua:426
+#: ui/GameUIDragonSkill.lua:164 ui/GameUIDragonSkill.lua:173
+#: ui/GameUIGMChat.lua:38 ui/GameUIGMChat.lua:362 ui/GameUIGacha.lua:262
+#: ui/GameUIHasBeenBuild.lua:132 ui/GameUIHasBeenBuild.lua:172
+#: ui/GameUIHasBeenBuild.lua:185 ui/GameUIHelp.lua:72 ui/GameUIHelp.lua:244
+#: ui/GameUIHospital.lua:177 ui/GameUIHospital.lua:254
+#: ui/GameUIHospital.lua:256 ui/GameUIHospital.lua:266
+#: ui/GameUIHospital.lua:275 ui/GameUIHospital.lua:282
+#: ui/GameUIHospital.lua:304 ui/GameUIHospital.lua:306
+#: ui/GameUIIapGifts.lua:224 ui/GameUIIntensifyEquipment.lua:216
+#: ui/GameUIIntensifyEquipment.lua:228 ui/GameUIItems.lua:227
+#: ui/GameUIItems.lua:238 ui/GameUIKeep.lua:528 ui/GameUIKeep.lua:548
+#: ui/GameUILoginBeta.lua:135 ui/GameUILoginBeta.lua:205
 #: ui/GameUILoginBeta.lua:713 ui/GameUIMail.lua:182 ui/GameUIMail.lua:1334
 #: ui/GameUIMail.lua:1533 ui/GameUIMail.lua:1565 ui/GameUIMail.lua:2408
 #: ui/GameUIMail.lua:2411 ui/GameUIMail.lua:2414 ui/GameUIMail.lua:2417
@@ -166,7 +166,7 @@ msgstr ""
 #: ui/GameUIStrikePlayer.lua:113 ui/GameUIStrikePlayer.lua:206
 #: ui/GameUIStrikePlayer.lua:209 ui/GameUIStrikePlayer.lua:228
 #: ui/GameUIThroneMain.lua:91 ui/GameUIThroneMain.lua:100
-#: ui/GameUITownHall.lua:243 ui/GameUITownHall.lua:253
+#: ui/GameUITownHall.lua:250 ui/GameUITownHall.lua:260
 #: ui/GameUITradeGuild.lua:308 ui/GameUITradeGuild.lua:902
 #: ui/GameUITradeGuild.lua:906 ui/GameUITradeGuild.lua:911
 #: ui/GameUITradeGuild.lua:915 ui/GameUIUnlockBuilding.lua:279
@@ -218,8 +218,8 @@ msgid "提示"
 msgstr "Tips"
 
 #: MyApp.lua:449 ui/GameUIChatChannel.lua:103 ui/GameUIChatChannel.lua:147
-#: ui/GameUIChatChannel.lua:241 ui/GameUIChatChannel.lua:414
-#: ui/GameUIShareReport.lua:211 widget/WidgetChangeMap.lua:31
+#: ui/GameUIChatChannel.lua:241 ui/GameUIShareReport.lua:211
+#: widget/WidgetChangeMap.lua:31
 msgid "加入联盟后开放此功能!"
 msgstr "You need to join an Alliance at first"
 
@@ -1907,7 +1907,7 @@ msgstr "Need more Resources and build queue"
 #: ui/GameUIKeep.lua:528 ui/GameUIPResourceBuilding.lua:278
 #: ui/GameUIPveAttack.lua:491 ui/GameUIResource.lua:423
 #: ui/GameUIResource.lua:437 ui/GameUISettingServer.lua:61
-#: ui/GameUITownHall.lua:243 ui/GameUIUnlockBuilding.lua:279
+#: ui/GameUITownHall.lua:250 ui/GameUIUnlockBuilding.lua:279
 #: ui/GameUIUnlockBuilding.lua:322 ui/GameUIUnlockBuilding.lua:366
 #: ui/GameUIUnlockBuilding.lua:386 ui/GameUIUpgradeTechnology.lua:528
 #: ui/GameUIUpgradeTechnology.lua:600 ui/GameUIWatchTower.lua:187
@@ -1980,11 +1980,11 @@ msgstr "Not enough Components, need %s Components more"
 msgid "建造%s至%d级完成"
 msgstr "%s Lv%d has been built"
 
-#: entity/User.lua:1324 service/NetManager.lua:1846
+#: entity/User.lua:1324 service/NetManager.lua:1845
 msgid "生产科技升级完成"
 msgstr "Science upgraded"
 
-#: entity/User.lua:1357 service/NetManager.lua:1860
+#: entity/User.lua:1357 service/NetManager.lua:1859
 msgid "军事科技升级完成"
 msgstr "Upgrade military science complete"
 
@@ -1997,11 +1997,11 @@ msgstr "Recruit complete"
 msgid "治愈士兵完成"
 msgstr "Heal complete"
 
-#: entity/User.lua:1449 service/NetManager.lua:1885
+#: entity/User.lua:1449 service/NetManager.lua:1884
 msgid "士兵晋级完成"
 msgstr "Upgrade soldier complete"
 
-#: entity/User.lua:1451 service/NetManager.lua:1887
+#: entity/User.lua:1451 service/NetManager.lua:1886
 #, lua-format
 msgid "晋级%s至%d星完成"
 msgstr "Upgrade %s to star %d complete"
@@ -2175,7 +2175,7 @@ msgstr "Tap building:%s"
 #: ui/GameUIAllianceInfo.lua:417 ui/GameUIAllianceInfo.lua:421
 #: ui/GameUIEditName.lua:49 ui/GameUIItems.lua:497 ui/GameUIItems.lua:502
 #: ui/GameUIItems.lua:507 ui/GameUIMission.lua:663 ui/GameUIPower.lua:244
-#: ui/GameUITownHall.lua:367 ui/GameUITownHall.lua:371
+#: ui/GameUITownHall.lua:374 ui/GameUITownHall.lua:378
 #: ui/GameUITradeGuild.lua:313 ui/GameUIWriteMail.lua:137
 #: ui/GameUIWriteMail.lua:140 ui/GameUIWriteMail.lua:145
 #: widget/WidgetAccelerateGroup.lua:124
@@ -2450,29 +2450,29 @@ msgstr "Lost connection with the server, please check your network and retry."
 msgid "服务器连接断开!"
 msgstr "Server disconnected!"
 
-#: service/NetManager.lua:1212 service/NetManager.lua:1284
+#: service/NetManager.lua:1211 service/NetManager.lua:1283
 msgid "发送邮件成功"
 msgstr "Mail sent Successfully"
 
-#: service/NetManager.lua:1338
+#: service/NetManager.lua:1337
 msgid "已向全体盟友发出帮助请求"
 msgstr "Help request has been sent to all allies"
 
-#: service/NetManager.lua:1746
+#: service/NetManager.lua:1745
 msgid "驻防成功"
 msgstr "Garrisoned successfully"
 
-#: service/NetManager.lua:1928
+#: service/NetManager.lua:1927
 #, lua-format
 msgid "购买%s道具成功"
 msgstr "%s purchased Successfully"
 
-#: service/NetManager.lua:1942 service/NetManager.lua:1964
+#: service/NetManager.lua:1941 service/NetManager.lua:1963
 #, lua-format
 msgid "使用%s道具X %d成功"
 msgstr "%s X %d used Successfully"
 
-#: service/NetManager.lua:1944 service/NetManager.lua:1966
+#: service/NetManager.lua:1943 service/NetManager.lua:1965
 #, lua-format
 msgid "使用%s道具成功"
 msgstr "%s used Successfully"
@@ -2567,7 +2567,7 @@ msgstr "Upgrade Now"
 #: ui/CommonUpgradeUI.lua:583 ui/GameUIHasBeenBuild.lua:172
 #: ui/GameUIHospital.lua:177 ui/GameUIItems.lua:238
 #: ui/GameUIPResourceBuilding.lua:254 ui/GameUIResource.lua:419
-#: ui/GameUITownHall.lua:253 ui/GameUIUpgradeTechnology.lua:462
+#: ui/GameUITownHall.lua:260 ui/GameUIUpgradeTechnology.lua:462
 #: widget/WidgetMakeEquip.lua:152 widget/WidgetPromoteSoldier.lua:130
 #: widget/WidgetRecruitSoldier.lua:306 widget/WidgetTreatSoldier.lua:246
 #: widget/WidgetUpgradeMilitaryTech.lua:128 widget/WidgetUseItems.lua:1137
@@ -2675,7 +2675,7 @@ msgstr "Free"
 #: ui/CommonUpgradeUI.lua:894 ui/GameUIAcademy.lua:198
 #: ui/GameUIDragonEyrieMain.lua:453 ui/GameUIHasBeenBuild.lua:361
 #: ui/GameUIQuickTechnology.lua:171 ui/GameUIReplay.lua:921
-#: ui/GameUIReplay.lua:930 ui/GameUIReplay.lua:1056 ui/GameUITownHall.lua:343
+#: ui/GameUIReplay.lua:930 ui/GameUIReplay.lua:1056 ui/GameUITownHall.lua:350
 #: ui/GameUIWatchTower.lua:342 ui/GameUIWathTowerRegion.lua:332
 #: widget/WidgetEventTabButtons.lua:408 widget/WidgetEventTabButtons.lua:746
 #: widget/WidgetEventsList.lua:300 widget/WidgetEventsList.lua:391
@@ -2696,7 +2696,7 @@ msgstr "Speed up"
 #: ui/GameUIHospital.lua:312 ui/GameUIItems.lua:233 ui/GameUIKeep.lua:535
 #: ui/GameUIPResourceBuilding.lua:285 ui/GameUIPveAttack.lua:496
 #: ui/GameUIResource.lua:428 ui/GameUIResource.lua:442
-#: ui/GameUISettingServer.lua:66 ui/GameUITownHall.lua:249
+#: ui/GameUISettingServer.lua:66 ui/GameUITownHall.lua:256
 #: ui/GameUIUnlockBuilding.lua:284 ui/GameUIUnlockBuilding.lua:327
 #: ui/GameUIUnlockBuilding.lua:371 ui/GameUIUnlockBuilding.lua:391
 #: ui/GameUIWatchTower.lua:193 ui/GameUIWathTowerRegion.lua:182
@@ -4356,7 +4356,7 @@ msgstr "Alliance Palace"
 
 #: ui/GameUIAlliancePalace.lua:28 ui/GameUIAlliancePalace.lua:230
 #: ui/GameUIAlliancePalaceEnter.lua:63 ui/GameUIMission.lua:525
-#: ui/GameUITownHall.lua:396
+#: ui/GameUITownHall.lua:403
 msgid "奖励"
 msgstr "Rewards"
 
@@ -5034,7 +5034,7 @@ msgid "对不起你的聊天频率太频繁"
 msgstr "You're chatting too frequently!"
 
 #: ui/GameUIChatChannel.lua:108 ui/GameUIChatChannel.lua:152
-#: ui/GameUIChatChannel.lua:420 ui/GameUIShareReport.lua:240
+#: ui/GameUIChatChannel.lua:246 ui/GameUIShareReport.lua:240
 msgid "联盟未处于战争状态，不能使用此聊天频道!"
 msgstr ""
 "You can only use this chat channel during the Preparation and Battle Period."
@@ -5582,7 +5582,7 @@ msgstr "Choose one to forge"
 msgid "铁匠铺升级到%d级解锁"
 msgstr "Unlock at Blacksmith Lv%d"
 
-#: ui/GameUIEquip.lua:329
+#: ui/GameUIEquip.lua:332
 msgid "领主，您可以在铁匠铺内为您的巨龙打造装备，强化它的实力！"
 msgstr ""
 "My Lord, you can forge equipments for your Dragon to greatly enhance its "
@@ -7344,7 +7344,7 @@ msgid "请填写本服玩家姓名"
 msgstr "Enter the player name"
 
 #: ui/GameUISeasonDetails.lua:63 ui/GameUISeasonDetails.lua:311
-#: ui/GameUITownHall.lua:331 ui/GameUITradeGuild.lua:620
+#: ui/GameUITownHall.lua:338 ui/GameUITradeGuild.lua:620
 #: widget/WidgetManufactureNew.lua:249
 msgid "获得"
 msgstr "Get"
@@ -8259,63 +8259,63 @@ msgstr ""
 "My Lord, build dwellings beside the Town hall, you'll get more output of "
 "coins!"
 
-#: ui/GameUITownHall.lua:46
+#: ui/GameUITownHall.lua:53
 msgid "同时，您也可在此通过小任务，花费一定的时间获得大量的资源奖励！"
 msgstr "And you can earn lots of resource rewards by finishing tasks here."
 
-#: ui/GameUITownHall.lua:75
+#: ui/GameUITownHall.lua:82
 msgid "市政"
 msgstr "Municipal"
 
-#: ui/GameUITownHall.lua:106
+#: ui/GameUITownHall.lua:113
 msgid "每日任务"
 msgstr "Daily Task"
 
-#: ui/GameUITownHall.lua:114
+#: ui/GameUITownHall.lua:121
 msgid "刷新时间"
 msgstr "Refreshing in:"
 
-#: ui/GameUITownHall.lua:121
+#: ui/GameUITownHall.lua:128
 msgid "更新中"
 msgstr "Refreshing"
 
-#: ui/GameUITownHall.lua:315
+#: ui/GameUITownHall.lua:322
 msgid "任务完成"
 msgstr "Finished"
 
-#: ui/GameUITownHall.lua:323
+#: ui/GameUITownHall.lua:330
 msgid "获取奖励"
 msgstr "Get"
 
-#: ui/GameUITownHall.lua:331
+#: ui/GameUITownHall.lua:338
 msgid "每日任务完成"
 msgstr "Daily Task finished"
 
-#: ui/GameUITownHall.lua:349
+#: ui/GameUITownHall.lua:356
 msgid "正在"
 msgstr "In process of"
 
-#: ui/GameUITownHall.lua:362
+#: ui/GameUITownHall.lua:369
 msgid "开始"
 msgstr "Start"
 
-#: ui/GameUITownHall.lua:367
+#: ui/GameUITownHall.lua:374
 msgid "请先领取已经完成的任务的奖励"
 msgstr "Please claim your reward first"
 
-#: ui/GameUITownHall.lua:371
+#: ui/GameUITownHall.lua:378
 msgid "已经有一个任务正在进行中"
 msgstr "There's a task in progress"
 
-#: ui/GameUITownHall.lua:442
+#: ui/GameUITownHall.lua:449
 msgid "周围2格范围的住宅数量"
 msgstr "The amount of dwelling within 2 grids"
 
-#: ui/GameUITownHall.lua:471
+#: ui/GameUITownHall.lua:478
 msgid "增加 5% 银币增长"
 msgstr " +5% Coin output"
 
-#: ui/GameUITownHall.lua:488
+#: ui/GameUITownHall.lua:495
 #, lua-format
 msgid "达到 %d/%d"
 msgstr "Achieve %d/%d"

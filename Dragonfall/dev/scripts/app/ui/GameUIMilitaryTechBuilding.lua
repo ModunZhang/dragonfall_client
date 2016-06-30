@@ -97,7 +97,7 @@ function GameUIMilitaryTechBuilding:OnMoveInStage()
                 UIKit:FingerAni():addTo(btn,10,111):pos(50, -50)
             end
             local text1 = string.format(
-                            _("领主大人，您可以在训练营地中通过银币和军事材料提升%s的各项属性"),
+                            _("领主大人，您可以在%s中通过银币和军事材料提升%s的各项属性"),Localize.building_name[self.building:GetType()],
                             map_tech[self.building:GetType()])
             GameUINpc:PromiseOfSay(
                 {npc = "woman", words = text1}
