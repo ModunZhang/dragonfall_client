@@ -35,7 +35,7 @@
 
 #include "platform/CCPlatformMacros.h"
 #include "platform/CCStdC.h"
-
+#include "websockets/include/ios/libwebsockets.h"
 struct libwebsocket;
 struct libwebsocket_context;
 struct libwebsocket_protocols;
@@ -189,10 +189,7 @@ private:
 
 
     friend class WebSocketCallbackWrapper;
-    int onSocketCallback(struct libwebsocket_context *ctx,
-                         struct libwebsocket *wsi,
-                         int reason,
-                         void *user, void *in, ssize_t len);
+    int onSocketCallback(struct lws *wsi,enum lws_callback_reasons reason,void *user, void *in, size_t len);
 
 private:
     State        _readyState;
@@ -207,11 +204,11 @@ private:
     friend class WsThreadHelper;
     WsThreadHelper* _wsHelper;
 
-    struct libwebsocket*         _wsInstance;
-    struct libwebsocket_context* _wsContext;
+    struct lws*         _wsInstance;
+    struct lws_context* _wsContext;
     Delegate* _delegate;
     int _SSLConnection;
-    struct libwebsocket_protocols* _wsProtocols;
+    struct lws_protocols* _wsProtocols;
 };
 
 }
