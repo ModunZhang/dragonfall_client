@@ -162,7 +162,6 @@ function MailManager:DeleteMail(mail)
 end
 function MailManager:ModifyMail(mail)
     for k,v in pairs(self.mails) do
-        print("ModifyMail ",v.id, mail.id)
         if v.id == mail.id then
             if mail.isSaved ~= v.isSaved then
                 self:OnNewSavedMailsChanged(mail)
@@ -199,19 +198,19 @@ function MailManager:DeleteSendMail(mail)
     local delete_mail_server_index
     for k,v in pairs(self.sendMails) do
         if v.id == mail.id then
-            dump(v,"DeleteSendMail mail")
             delete_mail_server_index = v.index
             table.remove(self.sendMails,k)
         end
     end
+    if not delete_mail_server_index then return end
     for k,v in pairs(DataManager:getUserData().sendMails) do
-        if v.index > delete_mail_server_index then
+        if v.index and (v.index > delete_mail_server_index) then
             local old = clone(v.index)
             v.index = old - 1
         end
     end
     for k,v in pairs(self.sendMails) do
-        if v.index > delete_mail_server_index then
+        if v.index and (v.index > delete_mail_server_index) then
             local old = clone(v.index)
             v.index = old - 1
         end
@@ -455,7 +454,10 @@ function MailManager:OnNewMailsChanged( mails )
             end
         elseif type == "edit" then
             for i,data in ipairs(mail) do
-                table.insert(edit_mails, self:ModifyMail(clone(data)))
+                local modify_mail = self:ModifyMail(clone(data))
+                if modify_mail then
+                    table.insert(edit_mails, modify_mail)
+                end
             end
         end
     end
@@ -577,6 +579,9 @@ function MailManager:OnSavedReportsChanged( savedReports )
     end
 end
 function MailManager:OnNewReportsChanged( __reports )
+    if not self.reports then
+        return
+    end
     local add_reports = {}
     local remove_reports = {}
     local edit_reports = {}
@@ -609,7 +614,10 @@ function MailManager:OnNewReportsChanged( __reports )
             end
         elseif type == "edit" then
             for k,data in pairs(rp) do
-                table.insert(edit_reports,self:ModifyReport(clone(data)))
+                local ed_rp = self:ModifyReport(clone(data))
+                if ed_rp then
+                    table.insert(edit_reports,ed_rp)
+                end
             end
         end
     end

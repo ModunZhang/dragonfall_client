@@ -146,7 +146,7 @@ function GameUIPveHomeNew:CreateTop()
             UIKit:newGameUI("GameUIPveSelect", self.level):AddToCurrentScene(true)
         end)
     display.newSprite("coordinate_128x128.png"):addTo(btn):scale(0.4)
-     
+
     UIKit:ttfLabel({
         text = string.format(_("第%d章"), self.level),
         size = 22,
@@ -216,7 +216,7 @@ function GameUIPveHomeNew:CreateTop()
         shadow = true,
     }):addTo(pve_back):align(display.RIGHT_CENTER, size.width / 2, 25)
 
-    
+
     UIKit:ttfLabel({
         text = string.format("/%d", User:GetResProduction("stamina").limit),
         size = 20,
@@ -242,7 +242,9 @@ function GameUIPveHomeNew:CreateBottom()
         local task = self.task
         if task then
             if self.task.finished then
-                NetManager:getGrowUpTaskRewardsPromise(task:TaskType(), task.id):done(function()
+                NetManager:getGrowUpTaskRewardsPromise(task:TaskType(), task.id)
+                :catch(function()
+                end):done(function()
                     if self.ShowResourceAni then
                         local x,y = self.quest_status_icon:getPosition()
                         local wp = self.quest_status_icon:getParent():convertToWorldSpace(cc.p(x,y))
@@ -340,8 +342,8 @@ function GameUIPveHomeNew:CreateBottom()
     return bottom_bg
 end
 function GameUIPveHomeNew:CheckFinger()
-    if  self.task 
-    and UtilsForFte:ShouldFingerOnTask(User) 
+    if  self.task
+    and UtilsForFte:ShouldFingerOnTask(User)
     and User.countInfo.isFTEFinished then
         if self.task.finished then
             self:ShowClickReward()
@@ -358,7 +360,7 @@ local WidgetFteArrow = import("..widget.WidgetFteArrow")
 function GameUIPveHomeNew:ShowClickReward()
     if not self.quest_bar_bg:getChildByTag(222) then
         WidgetFteArrow.new(_("点击领取奖励")):TurnDown()
-        :addTo(self.quest_bar_bg,10,222):pos(100,50)
+        :addTo(self.quest_bar_bg,10,222):pos(100,60)
     end
     self.quest_bar_bg:getChildByTag(222):show()
     self:HideFinger()
@@ -396,13 +398,13 @@ function GameUIPveHomeNew:ChangeChatChannel(channel_index)
 end
 local WidgetLight = import("..widget.WidgetLight")
 function GameUIPveHomeNew:TipsOnReward(enable)
-    if enable == false then 
+    if enable == false then
         self.reward_icon:removeAllChildren()
         self.reward_icon:stopAllActions()
-        return 
+        return
     end
     if self.reward_icon:getNumberOfRunningActions() > 0 then return end
-    if not self.reward_icon:getChildByTag(1) then 
+    if not self.reward_icon:getChildByTag(1) then
         local size = self.reward_icon:getContentSize()
         WidgetLight.new():addTo(self.reward_icon, -1, 1)
         :scale(0.6):pos(size.width/2, size.height/2)
@@ -429,7 +431,9 @@ local icon_map = {
 }
 local ResPositionMap = GameUIHome.ResPositionMap
 function GameUIPveHomeNew:ShowResourceAni(resource, wp)
-    if not icon_map[resource] then
+    if not icon_map[resource] or
+        not ResPositionMap[resource] or
+        tolua.isnull(self) then
         return
     end
     local pnt = self.top

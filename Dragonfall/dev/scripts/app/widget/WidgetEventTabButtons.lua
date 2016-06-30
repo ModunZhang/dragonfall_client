@@ -206,7 +206,7 @@ function WidgetEventTabButtons:RefreshAllEvents()
     else
         self:GetTabByKey("material"):SetOrResetProgress(nil)
     end
-    
+
     local event = UtilsForBuilding:GetBuildingEventsBySeq(User)[1]
     if event then
         local time, percent = UtilsForEvent:GetEventInfo(event)
@@ -247,10 +247,7 @@ function WidgetEventTabButtons:RefreshAllEvents()
             self:IteratorAllItem(function(i, v)
                 if i ~= 1 and v.event then
                     v:SetProgressInfo(self:BuildingDescribe(v.event))
-                    self:SetProgressItemBtnLabel(
-                        DataUtils:getFreeSpeedUpLimitTime()
-                        >UtilsForEvent:GetEventInfo(v.event),
-                        v)
+                    self:SetProgressItemBtnLabel(self:IsAbleToFreeSpeedup(v.event),v)
                 end
             end)
         end
@@ -362,9 +359,12 @@ function WidgetEventTabButtons:CreateTabButtons()
     return node, tab_map
 end
 function WidgetEventTabButtons:CreateBackGround()
-    local back = cc.ui.UIImage.new("tab_background_640x106.png", {scale9 = true,
-        capInsets = cc.rect(2, 2, WIDGET_WIDTH - 4, 106 - 4)
-    }):align(display.LEFT_BOTTOM):setLayoutSize(WIDGET_WIDTH, ITEM_HEIGHT + 2)
+    -- local back = cc.ui.UIImage.new("tab_background_640x106.png", {scale9 = true,
+    --     capInsets = cc.rect(2, 2, WIDGET_WIDTH - 4, 106 - 4)
+    -- }):align(display.LEFT_BOTTOM):setLayoutSize(WIDGET_WIDTH, ITEM_HEIGHT + 2)
+    -- return back
+    local back = display.newNode()
+    back:setContentSize(cc.size(WIDGET_WIDTH, ITEM_HEIGHT))
     return back
 end
 function WidgetEventTabButtons:CreateItem()
@@ -377,8 +377,9 @@ function WidgetEventTabButtons:CreateMilitaryItem(building)
     return self:CreateOpenMilitaryTechItem(building):align(display.LEFT_CENTER)
 end
 function WidgetEventTabButtons:CreateProgressItem()
-    local node = display.newSprite("tab_event_bar.png")
+    local node = display.newScale9Sprite("background_event_42x42.png"):size(638,47)
     local half_height = node:getContentSize().height / 2
+    display.newScale9Sprite("line_1x42.png"):pos(478, half_height):addTo(node):size(2,44)
     node.progress = display.newProgressTimer("tab_progress_bar.png",
         display.PROGRESS_TIMER_BAR):addTo(node)
         :align(display.LEFT_CENTER, 4, half_height)
@@ -398,18 +399,17 @@ function WidgetEventTabButtons:CreateProgressItem()
         shadow = true,
     }):addTo(node):align(display.RIGHT_CENTER, 470, half_height)
 
-    node.speed_btn = WidgetPushButton.new({normal = "green_btn_up_154x39.png",
-        pressed = "green_btn_down_154x39.png",
-    }
-    ,{}
-    ,{
-        disabled = { name = "GRAY", params = {0.2, 0.3, 0.5, 0.1} }
-    }):addTo(node):align(display.RIGHT_CENTER, WIDGET_WIDTH - 6, half_height)
-        :setButtonLabel(UIKit:ttfLabel({
-            text = _("加速"),
-            size = 18,
-            color = 0xfff3c7,
-            shadow = true}))
+    node.speed_btn = WidgetPushButton.new({normal = "green_btn_up_108x38.png",
+        pressed = "green_btn_down_108x38.png",
+    },{scale9 = true}):addTo(node):align(display.RIGHT_CENTER, WIDGET_WIDTH - 6, half_height)
+        
+    node.speed_btn:setButtonSize(154, 39)
+    node.speed_btn_str = UIKit:commonButtonLable({
+        text = _("加速"),
+        size = 18,
+        color= 0xfff3c7,
+        shadow = true,
+    }):addTo(node.speed_btn):align(display.CENTER, -77,0)
     function node:SetProgressInfo(str, percent, time)
         self.desc:setString(str)
         self.time:setString(time or "")
@@ -431,11 +431,7 @@ function WidgetEventTabButtons:CreateProgressItem()
         return self
     end
     function node:SetButtonLabel(str)
-        self.speed_btn:setButtonLabel(UIKit:ttfLabel({
-            text = str,
-            size = 18,
-            color = 0xfff3c7,
-            shadow = true}))
+        self.speed_btn_str:setString(str)
         return self
     end
     function node:GetSpeedUpButton()
@@ -444,8 +440,9 @@ function WidgetEventTabButtons:CreateProgressItem()
     return node
 end
 function WidgetEventTabButtons:CreateOpenItem()
-    local node = display.newSprite("tab_event_bar.png")
+    local node = display.newScale9Sprite("background_event_42x42.png"):size(638,47)
     local half_height = node:getContentSize().height / 2
+    display.newScale9Sprite("line_1x42.png"):pos(478, half_height):addTo(node):size(2,44)
 
     node.label = UIKit:ttfLabel({
         text = "Building",
@@ -456,19 +453,16 @@ function WidgetEventTabButtons:CreateOpenItem()
     }):addTo(node):align(display.LEFT_CENTER, 10, half_height)
 
     node.button = WidgetPushButton.new({
-        normal = "blue_btn_up_154x39.png",
-        pressed = "blue_btn_down_154x39.png",
-    }
-    ,{}
-    ,{
-        disabled = { name = "GRAY", params = {0.2, 0.3, 0.5, 0.1} }
-    }):addTo(node):align(display.RIGHT_CENTER, WIDGET_WIDTH - 6, half_height)
-        :setButtonLabel(UIKit:ttfLabel({
-            text = _("打开"),
-            size = 18,
-            color = 0xfff3c7,
-            shadow = true
-        }))
+        normal = "blue_btn_up_108x38.png",
+        pressed = "blue_btn_down_108x38.png",
+    },{scale9 = true}):addTo(node):align(display.RIGHT_CENTER, WIDGET_WIDTH - 6, half_height)
+    node.button:setButtonSize(154, 39)
+    UIKit:commonButtonLable({
+        text = _("打开"),
+        size = 18,
+        color= 0xfff3c7,
+        shadow = true,
+    }):addTo(node.button):align(display.CENTER, -77,0)
     function node:SetLabel(str)
         self.label:setString(str)
         return self
@@ -682,7 +676,7 @@ end
 --------------
 function WidgetEventTabButtons:IsAbleToFreeSpeedup(event)
     local time = UtilsForEvent:GetEventInfo(event)
-    return DataUtils:getFreeSpeedUpLimitTime() > time
+    return DataUtils:getFreeSpeedUpLimitTime() >= time
 end
 function WidgetEventTabButtons:UpgradeBuildingHelpOrSpeedup(event)
     local User = self.city:GetUser()
@@ -706,6 +700,9 @@ function WidgetEventTabButtons:UpgradeBuildingHelpOrSpeedup(event)
 end
 function WidgetEventTabButtons:MiliTaryTechUpgradeOrSpeedup(event)
     local User = self.city:GetUser()
+    if not User:EventType(event) then
+        return
+    end
     local time, percent = UtilsForEvent:GetEventInfo(event)
 
     if DataUtils:getFreeSpeedUpLimitTime() > time and time > 1 then
@@ -738,8 +735,8 @@ function WidgetEventTabButtons:SetProgressItemBtnLabel(canFreeSpeedUp, event_ite
     local btn_images
     if canFreeSpeedUp then
         btn_label = _("免费加速")
-        btn_images = {normal = "purple_btn_up_154x39.png",
-            pressed = "purple_btn_down_154x39.png",
+        btn_images = {normal = "purple_btn_up_108x38.png",
+            pressed = "purple_btn_down_108x38.png",
         }
         event_item.status = "freeSpeedup"
     else
@@ -747,14 +744,14 @@ function WidgetEventTabButtons:SetProgressItemBtnLabel(canFreeSpeedUp, event_ite
         if Alliance_Manager:GetMyAlliance():IsDefault()
             or User:IsRequestHelped(event_item.event.id) then
             btn_label = _("加速")
-            btn_images = {normal = "green_btn_up_154x39.png",
-                pressed = "green_btn_down_154x39.png",
+            btn_images = {normal = "green_btn_up_108x38.png",
+                pressed = "green_btn_down_108x38.png",
             }
             event_item.status = "speedup"
         else
             btn_label = _("帮助")
-            btn_images = {normal = "yellow_btn_up_154x39.png",
-                pressed = "yellow_btn_down_154x39.png",
+            btn_images = {normal = "yellow_btn_up_108x38.png",
+                pressed = "yellow_btn_down_108x38.png",
             }
             event_item.status = "help"
         end
@@ -780,6 +777,16 @@ function WidgetEventTabButtons:LoadBuildingEvents()
                 end
             end)
         self:SetProgressItemBtnLabel(self:IsAbleToFreeSpeedup(v), event_item)
+
+        if UtilsForFte:ShouldFingerOnFree(self.city:GetUser()) then
+            local speedBtn = event_item:GetSpeedUpButton()
+            local x,y = speedBtn:getPosition()
+            UIKit:FingerAni():addTo(event_item,10,111):scale(0.8):pos(x-35,y-40)
+            speedBtn:onButtonClicked(function()
+                event_item:removeChildByTag(111)
+            end)
+        end
+
         table.insert(items, event_item)
     end
     self:InsertItem(items)

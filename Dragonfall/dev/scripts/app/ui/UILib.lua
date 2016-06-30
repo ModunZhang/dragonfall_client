@@ -26,6 +26,7 @@ local PLAYER_ICON = {
     "player_icon_9.png",
     "player_icon_10.png",
     "player_icon_11.png",
+    __mod = "player_icon_mod.png",
 }
 local RESOURCE = {
     blood = "heroBlood_3_128x128.png",
@@ -823,7 +824,24 @@ local ALLIANCE_LANGUAGE_FRAME_1 = {
     KOR ="KOR.png",
     FIN ="FIN.png",
 }
-
+local PROMOTION_ITEMS = {
+    promotion_product_1_1 = "sale_ancientLore.png",
+    promotion_product_1_2 = "sale_landOfPlenty.png",
+    promotion_product_2_1 = "sale_dragonTreasure.png",
+    promotion_product_2_2 = "sale_goodFortune.png",
+    promotion_product_3_1 = "sale_nobleTradition.png",
+    promotion_product_3_2 = "sale_bloodOfHero.png",
+    promotion_product_4_1 = "sale_undeadLegion.png",
+    promotion_product_4_2 = "sale_dragonCoin.png",
+}
+local ACTVITIES = {
+    gacha = "activity_gacha_134x134.png",
+    collectResource = "activity_collectResource_134x134.png",
+    pveFight = "activity_pveFight_134x134.png",
+    attackMonster = "activity_attackMonster_134x134.png",
+    collectHeroBlood = "activity_collectHeroBlood_134x134.png",
+    recruitSoldiers = "activity_recruitSoldiers_134x134.png",
+}
 return {
     resource = RESOURCE,
     soldier_image = SOLDIER_IMAGES,
@@ -856,6 +874,8 @@ return {
     city_terrain_icon = CITY_TERRAIN_ICON,
     alliance_language_frame = ALLIANCE_LANGUAGE_FRAME,
     alliance_language_frame_1 = ALLIANCE_LANGUAGE_FRAME_1,
+    promotion_items = PROMOTION_ITEMS,
+    actvities = ACTVITIES,
 }
 
 

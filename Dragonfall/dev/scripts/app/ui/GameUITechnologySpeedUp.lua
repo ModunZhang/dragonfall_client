@@ -53,7 +53,9 @@ function GameUITechnologySpeedUp:OnUserDataChanged_productionTechEvents(userData
     local upgrading_event = User.productionTechEvents[1]
     if not upgrading_event or not self:GetEvent() or upgrading_event.id ~= self:GetEvent().id then
         self:LeftButtonClicked()
+        return
     end
+        self:CheckCanSpeedUpFree()
 end
 
 function GameUITechnologySpeedUp:GetEvent()

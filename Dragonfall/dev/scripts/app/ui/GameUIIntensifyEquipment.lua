@@ -7,8 +7,6 @@ local WidgetPopDialog = import("..widget.WidgetPopDialog")
 local window = import("..utils.window")
 local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local WidgetDragonEquipIntensify = import("..widget.WidgetDragonEquipIntensify")
-local GameUIDragonEyrieDetail = import(".GameUIDragonEyrieDetail")
-local DragonManager = import("..entity.DragonManager")
 local UIListView = import(".UIListView")
 local Localize = import("..utils.Localize")
 
@@ -17,13 +15,14 @@ local BODY_WIDTH = 608
 local LISTVIEW_WIDTH = 548
 local GameUIIntensifyEquipment = class("GameUIIntensifyEquipment", WidgetPopDialog)
 
-function GameUIIntensifyEquipment:ctor(building,dragon,equipment_obj)
-    GameUIIntensifyEquipment.super.ctor(self,BODY_HEIGHT,Localize.body[equipment_obj:Body()],window.top-120)
+function GameUIIntensifyEquipment:ctor(building,dragon,equipment,part)
+    GameUIIntensifyEquipment.super.ctor(self,BODY_HEIGHT,Localize.body[part],window.top-120)
     self.dragon = dragon
-    self.equipment = equipment_obj
+    self.equipment = equipment
+    self.part = part
     self.building = building
-    self.dragon_manager = building:GetDragonManager()
-    self.dragon_manager:AddListenOnType(self,DragonManager.LISTEN_TYPE.OnBasicChanged)
+    -- self.dragon_manager = building:GetDragonManager()
+    User:AddListenOnType(self, "dragons")
     User:AddListenOnType(self, "dragonEquipments")
 end
 function GameUIIntensifyEquipment:onEnter()
@@ -100,12 +99,12 @@ function GameUIIntensifyEquipment:onEnter()
 end
 
 function GameUIIntensifyEquipment:onExit()
+    User:RemoveListenerOnType(self, "dragons")
     User:RemoveListenerOnType(self, "dragonEquipments")
-    self.dragon_manager:RemoveListenerOnType(self,DragonManager.LISTEN_TYPE.OnBasicChanged)
     GameUIIntensifyEquipment.super.onExit(self)
 end
 function GameUIIntensifyEquipment:GetEquipmentDesc()
-    return string.format(_("可强化等级:%d/%d"), self:GetEquipment():Star(), self.dragon:Star())
+    return string.format(_("可强化等级:%d/%d"), self:GetEquipment().star, self.dragon.star)
 end
 function GameUIIntensifyEquipment:GetEquipment()
     return self.equipment
@@ -114,19 +113,20 @@ function GameUIIntensifyEquipment:RefreshIntensifyUI(isAnimationyellowProcess)
     if type(isAnimationyellowProcess) ~= 'boolean' then isAnimationyellowProcess = false end
     self:RefreshEquipmentItem()
     local equipment = self:GetEquipment()
-    if equipment:Star() < self.dragon:Star() then
-        self.exp_label:setString(equipment.exp .. "/" .. equipment:GetNextStarDetailConfig().enhanceExp)
-        self.greenProgress:setPercentage((equipment:Exp() or 0)/equipment:GetNextStarDetailConfig().enhanceExp * 100)
+    if equipment.star < self.dragon.star then
+        local nextConfig = UtilsForDragon:GetEquipStarConfig(equipment, self.part, 1)
+        self.exp_label:setString(equipment.exp .. "/" .. nextConfig.enhanceExp)
+        self.greenProgress:setPercentage((equipment.exp or 0)/nextConfig.enhanceExp * 100)
         if isAnimationyellowProcess then
             local current_percent = self.yellowProgress:getPercentage()
-            local percent = (equipment:Exp() or 0)/equipment:GetNextStarDetailConfig().enhanceExp * 100
+            local percent = (equipment.exp or 0)/nextConfig.enhanceExp * 100
             if current_percent > percent then
                 self.yellowProgress:setPercentage(0)
             end
-            local action = cc.ProgressTo:create(0.5, (equipment:Exp() or 0)/equipment:GetNextStarDetailConfig().enhanceExp * 100)
+            local action = cc.ProgressTo:create(0.5, (equipment.exp or 0)/nextConfig.enhanceExp * 100)
             self.yellowProgress:runAction(action)
         else
-            self.yellowProgress:setPercentage((equipment:Exp() or 0)/equipment:GetNextStarDetailConfig().enhanceExp * 100)
+            self.yellowProgress:setPercentage((equipment.exp or 0)/nextConfig.enhanceExp * 100)
         end
     else
         self.greenProgress:setPercentage(100)
@@ -159,7 +159,7 @@ function GameUIIntensifyEquipment:RefreshIntensifyEquipmentListView()
             local lineData = self:GetPlayerEquipmentsListData(5,i)
             for j=1,#lineData do
                 local perData = lineData[j]
-                local tempNode = WidgetDragonEquipIntensify.new(self,perData[1],0,perData[2],equipment:Name())
+                local tempNode = WidgetDragonEquipIntensify.new(self,perData[1],0,perData[2],equipment.name)
                     :addTo(node)
                 local x = tempNode:getCascadeBoundingBox().width/2 + (j-1) * (tempNode:getCascadeBoundingBox().width +5)
                 tempNode:pos(x,tempNode:getCascadeBoundingBox().height/2)
@@ -177,7 +177,7 @@ function GameUIIntensifyEquipment:RefreshIntensifyEquipmentListView()
         local button = WidgetPushButton.new({normal = "box_104x104_1.png"}):align(display.LEFT_BOTTOM,0,0):addTo(node)
         display.newSprite("dragon_load_eq_37x38.png"):align(display.RIGHT_BOTTOM,104, 5):addTo(button)
         button:onButtonClicked(function()
-            UIKit:newGameUI("GameUIBlackSmith",City,City:GetFirstBuildingByType("blackSmith"),self.equipment:Type()):AddToCurrentScene(true)
+            UIKit:newGameUI("GameUIBlackSmith",City,City:GetFirstBuildingByType("blackSmith"),self.dragon.type):AddToCurrentScene(true)
         end)
         item:addContent(node)
         node:size(540, 104)
@@ -189,8 +189,7 @@ function GameUIIntensifyEquipment:RefreshIntensifyEquipmentListView()
 end
 function GameUIIntensifyEquipment:GetPlayerEquipments()
     local t = {}
-    local player_equipments = User.dragonEquipments
-    local r = LuaUtils:table_filter(player_equipments,function(equipment,count)
+    local r = LuaUtils:table_filter(User.dragonEquipments,function(equipment,count)
         return count > 0
     end)
     for k,v in pairs(r) do
@@ -219,7 +218,7 @@ function GameUIIntensifyEquipment:IntensifyButtonClicked()
     end
     local equipment = self:GetEquipment()
     app:GetAudioManager():PlayeEffectSoundWithKey("UI_BLACKSMITH_FORGE")
-    NetManager:getEnhanceDragonEquipmentPromise(self.dragon:Type(),equipment:Body(),equipments):done(function()
+    NetManager:getEnhanceDragonEquipmentPromise(self.dragon.type,self.part,equipments):done(function()
         if self.intensify_tips and string.len(self.intensify_tips) > 0 then
             GameGlobalUI:showTips(_("装备强化成功"),self.intensify_tips)
             app:GetAudioManager():PlayeEffectSoundWithKey("COMPLETE")
@@ -232,7 +231,8 @@ function GameUIIntensifyEquipment:IntensifyButtonClicked()
 end
 -- 调用龙巢详情界面的函数获取道具图标
 function GameUIIntensifyEquipment:GetEquipmentItem()
-    local item = GameUIDragonEyrieDetail:GetEquipmentItem(self:GetEquipment(),self.dragon:Star(),false)
+    local equipment_obj = {self:GetEquipment(), self.part}
+    local item = UIKit:GetUIInstance("GameUIDragonEyrieDetail"):GetEquipmentItem(equipment_obj,self.dragon.star,false)
     item:scale(120/item:getContentSize().width)
     return item
 end
@@ -245,19 +245,21 @@ function GameUIIntensifyEquipment:WidgetDragonEquipIntensifyEvent(widgetDragonEq
         exp = exp + v:GetTotalExp()
     end)
     local oldExp = exp - widgetDragonEquipIntensify:GetExpPerEq()
-    local oldPercent = (oldExp + (equipment.exp or 0))/equipment:GetNextStarDetailConfig().enhanceExp * 100
+
+    local nextConfig = UtilsForDragon:GetEquipStarConfig(equipment, self.part, 1)
+    local oldPercent = (oldExp + (equipment.exp or 0))/nextConfig.enhanceExp * 100
     if oldPercent >= 100 then
         return true
     else
-        local percent = (exp + (equipment.exp or 0))/equipment:GetNextStarDetailConfig().enhanceExp * 100
-        local str = equipment.exp .. "/" .. equipment:GetNextStarDetailConfig().enhanceExp
+        local percent = (exp + (equipment.exp or 0))/nextConfig.enhanceExp * 100
+        local str = equipment.exp .. "/" .. nextConfig.enhanceExp
         if exp > 0 then
             str = str .. " +" .. exp
         end
         self.exp_label:setString(str)
         if percent >= 100 then
-            local config =  equipment:GetNextStarDetailConfig()
-            local current_config = equipment:GetDetailConfig()
+            local config =  nextConfig
+            local current_config = UtilsForDragon:GetEquipStarConfig(equipment, self.part)
             local tips_global = ""
 
             local vitality_add = (config.vitality - current_config.vitality) * 4
@@ -277,11 +279,13 @@ function GameUIIntensifyEquipment:WidgetDragonEquipIntensifyEvent(widgetDragonEq
         self.greenProgress:setPercentage(percent)
     end
 end
-function GameUIIntensifyEquipment:OnUserDataChanged_dragonEquipments()
+function GameUIIntensifyEquipment:OnUserDataChanged_dragons()
+    local config = UtilsForDragon:GetConfigByName(self.equipment.name)
+    local dragon = User.dragons[config.usedFor]
+    self.equipment = dragon.equipments[self.part]
     self:RefreshIntensifyUI(true)
 end
-function GameUIIntensifyEquipment:OnBasicChanged()
-    self.equipment = self.dragon_manager:GetDragon(self.equipment:Type()):GetEquipmentByBody(self.equipment:Body())
+function GameUIIntensifyEquipment:OnUserDataChanged_dragonEquipments()
     self:RefreshIntensifyUI(true)
 end
 return GameUIIntensifyEquipment

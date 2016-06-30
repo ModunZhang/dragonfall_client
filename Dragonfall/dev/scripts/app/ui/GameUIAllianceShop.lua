@@ -571,7 +571,9 @@ function GameUIAllianceShop:OnAllianceDataChanged_items(alliance, deltaData)
     end
 end
 function GameUIAllianceShop:OnUserDataChanged_allianceData(userData, deltaData)
-    self.honourAndLoyalty:SetLoyalty(userData.allianceData.loyalty)
+    if self.honourAndLoyalty then
+        self.honourAndLoyalty:SetLoyalty(userData.allianceData.loyalty)
+    end
 end
 
 return GameUIAllianceShop

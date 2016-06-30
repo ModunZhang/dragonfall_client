@@ -15,6 +15,10 @@ function Observer:ctor(...)
 	self.observer = {}
 end
 function Observer:AddObserver(observer)
+    if type(observer) == "userdata"
+    and tolua.isnull(observer) then
+        return observer
+    end
 	for i,v in ipairs(self.observer) do
 		if v == observer then
 			return v
@@ -34,9 +38,20 @@ function Observer:RemoveObserver(observer)
 	end
 end
 function Observer:NotifyObservers(func)
-	for _,v in pairs(self.observer) do
-		if func(v) then return end
-	end
+    local observer = {}
+    for _,v in ipairs(self.observer) do
+        if type(v) ~= "userdata" then
+            table.insert(observer, v)
+        else
+            if not tolua.isnull(v) then
+                table.insert(observer, v)
+            end
+        end
+    end
+    self.observer = observer
+    for _,v in ipairs(self.observer) do
+        if func(v) then return end
+    end
 end
 
 

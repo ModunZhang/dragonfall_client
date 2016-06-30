@@ -92,7 +92,9 @@ end
 function GameUIAlliance:OnUserDataChanged_iapGifts()
     if not Alliance_Manager:GetMyAlliance():IsDefault() then
         self:RefreshInformationTips()
-        self.have_gift_tip:SetNumber(#User.iapGifts)
+        if self.have_gift_tip then
+            self.have_gift_tip:SetNumber(#User.iapGifts)
+        end
     end
 end
 function GameUIAlliance:AddListenerOfMyAlliance()
@@ -307,18 +309,20 @@ function GameUIAlliance:GetMoreJoinListData()
     if self.isLoadingJoin or string.len(self.editbox_tag_search:getText()) ~= 0 then return end
     self.isLoadingJoin = true
     self.join_list_page = self.join_list_page + 1
-    NetManager:getFetchCanDirectJoinAlliancesPromise(JOIN_LIST_PAGE_SIZE * (self.join_list_page - 1)):done(function(response)
-        if not response.msg or not response.msg.allianceDatas then return end
-        if response.msg.allianceDatas then
-            table.insertto(self.join_list_data_source, response.msg.allianceDatas)
-        end
-    end):always(function()
+    NetManager:getFetchCanDirectJoinAlliancesPromise(JOIN_LIST_PAGE_SIZE * (self.join_list_page - 1))
+        :done(function(response)
+            if tolua.isnull(self) then return end
+            if not response.msg or not response.msg.allianceDatas then return end
+            if response.msg.allianceDatas then
+                table.insertto(self.join_list_data_source, response.msg.allianceDatas)
+            end
+        end):always(function()
         self.isLoadingJoin = false
-    end):fail(function()
+        end):fail(function()
         if self.join_list_page then
             self.join_list_page = self.join_list_page - 1
         end
-    end)
+        end)
 end
 
 function GameUIAlliance:JoinListsourceDelegate(listView, tag, idx)
@@ -352,7 +356,8 @@ function GameUIAlliance:RefreshJoinListContent(alliance,content,idx)
     content.fightingValLabel:setString(string.formatnumberthousands(alliance.power))
     content.languageValLabel:setString(Localize.alliance_language[alliance.country])
     content.killValLabel:setString(string.formatnumberthousands(alliance.kill))
-    content.leaderLabel:setString(alliance.archon)
+    local isnone = alliance.archon == "" or alliance.archon == nil or alliance.archon == json.null
+    content.leaderLabel:setString(isnone and _("无") or alliance.archon)
     local terrain = alliance.terrain
     local flag_info = alliance.flag
     if content.flag_sprite then
@@ -408,6 +413,10 @@ function GameUIAlliance:OnJoinListActionButtonClicked(idx)
         GameGlobalUI:showTips(_("提示"),string.format(_("加入%s联盟成功!"),alliance.name))
     end)
     else
+        if #User.requestToAllianceEvents >= 5 then
+            UIKit:showMessageDialog(_("提示"),_("联盟申请已满，请撤消部分申请后再来申请"))
+            return 
+        end
         for i,v in ipairs(User.requestToAllianceEvents) do
             if v.id == alliance.id then
                 UIKit:showMessageDialog(_("提示"),_("对此联盟的申请已发出,请耐心等候审核"))
@@ -655,7 +664,7 @@ function GameUIAlliance:getCommonListItem_(listType,alliance)
         text = "14/50", --count of members
         size = 20,
         color = 0x403c2f
-    }):addTo(info_bg):align(display.LEFT_TOP,70, memberTitleLabel:getPositionY())
+    }):addTo(info_bg):align(display.LEFT_TOP,100, memberTitleLabel:getPositionY())
 
 
     local fightingTitleLabel = UIKit:ttfLabel({
@@ -1063,7 +1072,6 @@ end
 function GameUIAlliance:GetEventContent(event)
     local event_type = event.type
     local params_,params = event.params,{}
-    dump(event)
     for _,v in ipairs(params_) do
         if 'promotionDown' == event_type or 'promotionUp' == event_type then
             if Localize.alliance_title[v] then
@@ -2010,6 +2018,19 @@ function GameUIAlliance:OnInfoButtonClicked(tag)
             UIKit:showMessageDialog(_("提示"),_("你即将被攻打，不能退出联盟"))
             return
         end
+        local canQuite,quiteTime = DataUtils:IsMemberCanQuiteAlliance(Alliance_Manager:GetMyAlliance():GetSelf())
+        if not canQuite then
+            local dialog = UIKit:showMessageDialog(_("提示"),string.format(_("%s后才可以退出联盟"),quiteTime))
+            scheduleAt(dialog, function()
+                local canQuite,quiteTime = DataUtils:IsMemberCanQuiteAlliance(Alliance_Manager:GetMyAlliance():GetSelf())
+                if not canQuite then
+                    dialog:SetPopMessage(string.format(_("%s后才可以退出联盟"),quiteTime))
+                else
+                    dialog:LeftButtonClicked()
+                end
+            end)
+            return
+        end
         UIKit:showMessageDialog(_("退出联盟"),
             _("您必须在没有部队在外行军的情况下，才可以退出联盟。退出联盟会损失当前未打开的联盟礼物。"),
             function()
@@ -2093,6 +2114,8 @@ end
 
 
 return GameUIAlliance
+
+
 
 
 

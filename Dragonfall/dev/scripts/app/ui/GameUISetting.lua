@@ -51,6 +51,7 @@ function GameUISetting:BuildUI()
 		{text = _("已屏蔽用户"),image = "setting_shield_58x70.png"},
 		-- {text = _("我有建议"),image = "setting_user_voice_62x63.png"},
 		{text = _("遇到问题"),image = "setting_help_64x65.png"},
+		{text = _("MOD"),image = "setting_mod_64x78.png"},
 	}
 	if device.platform == "ios" or device.platform == "android" then
 		table.insert(buttons_info,{text = _("分享"),image = "setting_share_52x66.png"})
@@ -151,6 +152,16 @@ function GameUISetting:OnButtonClicked(button)
 		-- end
        	UIKit:newGameUI("GameUISettingContactUs"):AddToCurrentScene(true)
 	elseif tag == 12 then
+       	NetManager:getMyModDataPromise():done(function (response)
+       		LuaUtils:outputTable("response",response)
+       		if response.msg.modData ~= json.null then
+       			UIKit:newGameUI("GameUIModChatChannel"):AddToCurrentScene(true)
+       		else
+		       	UIKit:newGameUI("GameUISettingMod"):AddToCurrentScene(true)
+       		end
+       		self:LeftButtonClicked()
+       	end)
+	elseif tag == 13 then
 		--facebook
 		if device.platform == "ios" or device.platform == "android" then
 			if not ext.facebook then return end

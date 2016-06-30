@@ -23,7 +23,6 @@ local titles = {
 }
 function GameUIWatchTowerMyTroopsDetail:ctor(event, eventType)
     GameUIWatchTowerMyTroopsDetail.super.ctor(self)
-    self.dragon_manager = City:GetDragonEyrie():GetDragonManager()
     self.event = event
     self.eventType = eventType
     self.data = nil
@@ -31,8 +30,7 @@ end
 
 
 function GameUIWatchTowerMyTroopsDetail:GetDragon()
-    local dragon_type = self:GetData().dragon.type
-    return self.dragon_manager:GetDragon(dragon_type)
+    return UtilsForDragon:GetDragon(User, self:GetData().dragon.type)
 end
 
 
@@ -131,7 +129,7 @@ function GameUIWatchTowerMyTroopsDetail:GetItem(ITEM_TYPE,item_data)
     local title_bar = display.newSprite("alliance_member_title_548x38.png"):addTo(bg):align(display.LEFT_TOP, 0, height + 38)
     if ITEM_TYPE == self.ITEM_TYPE.DRAGON_INFO then
         local dragon = self:GetDragon()
-        local dragon_name = Localize.dragon[dragon:Type()] or '?'
+        local dragon_name = Localize.dragon[dragon.type] or '?'
         UIKit:ttfLabel({
             text = dragon_name,
             size = 20,
@@ -141,18 +139,21 @@ function GameUIWatchTowerMyTroopsDetail:GetItem(ITEM_TYPE,item_data)
             max = 4,
             bg = "Stars_bar_bg.png",
             fill = "Stars_bar_highlight.png",
-            num = dragon:Star(),
+            num = dragon.star,
         }):addTo(title_bar):align(display.RIGHT_CENTER,538,19)
         local y = 0
-        local dragon_hp = dragon:Hp() .. "/" .. dragon:GetMaxHP()
+
+        local hp = UtilsForDragon:GetDragonHp(User, dragon.type)
+        local hpMax = UtilsForDragon:GetDragonMaxHp(User.dragons[dragon.type])
+        local dragon_hp = string.formatnumberthousands(hp).."/"..string.formatnumberthousands(hpMax)
         self:GetSubItem(ITEM_TYPE,1,{_("生命值"),dragon_hp}):addTo(bg):align(display.RIGHT_BOTTOM, 547, y)
         y = y + 38
-        local dragon_strength = dragon:TotalStrength()
-        self:GetSubItem(ITEM_TYPE,2,{_("攻击力"),dragon_strength}):addTo(bg):align(display.RIGHT_BOTTOM, 547, y)
+        local strength = UtilsForDragon:GetDragonStrength(User.dragons[dragon.type])
+        self:GetSubItem(ITEM_TYPE,2,{_("攻击力"),strength}):addTo(bg):align(display.RIGHT_BOTTOM, 547, y)
         y = y + 38
-        local dragon_level = dragon:Level()
+        local dragon_level = dragon.level
         self:GetSubItem(ITEM_TYPE,3,{_("等级"),dragon_level}):addTo(bg):align(display.RIGHT_BOTTOM, 547, y)
-        local dragon_png = UILib.dragon_head[dragon:Type()]
+        local dragon_png = UILib.dragon_head[dragon.type]
         if dragon_png then
             local icon_bg = display.newSprite("dragon_bg_114x114.png", 65, 60):addTo(bg):scale(98/114)
             display.newSprite(dragon_png, 57, 60):addTo(icon_bg)

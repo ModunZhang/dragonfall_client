@@ -32,7 +32,7 @@ local height_config = {
 local ui_titles = {
     EVERY_DAY_LOGIN = _("每日登陆奖励"),
     ONLINE = _("在线奖励"),
-    CONTINUITY = _("王城援军"),
+    CONTINUITY = _("第二条行军队列"),
     FIRST_IN_PURGURE = _("首次充值奖励"),
     PLAYER_LEVEL_UP = _("新手冲级奖励"),
 }
@@ -147,34 +147,6 @@ function GameUIActivityRewardNew:RefreshUI()
         self:RefreshLevelUpListView(false)
     elseif self:GetRewardType() == self.REWARD_TYPE.ONLINE then
         self:RefreshOnLineList(false)
-    end
-end
-
-function GameUIActivityRewardNew:OnTimer(current_time)
-    if self.online_time_label and self.online_time then
-        local time = self.online_time + current_time
-        self.online_time_label:setString(GameUtils:formatTimeStyle1(time))
-        --item update
-        for k,v in pairs(self.need_update_online_item) do
-            local diff_time = config_online[k].onLineMinutes * 60 - time
-            if diff_time > 0 then
-                v.time_label:setString(GameUtils:formatTimeStyle1(diff_time))
-                print("GameUtils:formatTimeStyle1(time)---->",GameUtils:formatTimeStyle1(time),GameUtils:formatTimeStyle1(diff_time))
-            else
-                self:RefreshOnLineList(false)
-                break
-            end
-        end
-    end
-    if self.level_up_time_label then
-        self.player_level_up_time_residue = self.player_level_up_time - current_time
-        if self.player_level_up_time_residue > 0 then
-            self.level_up_time_label:setString(GameUtils:formatTimeStyle1(self.player_level_up_time_residue))
-        else
-            self.level_up_time_label:hide()
-            self.level_up_time_desc_label:hide()
-            self.level_up_state_label:show()
-        end
     end
 end
 
@@ -353,37 +325,32 @@ end
 
 ----------------------
 function GameUIActivityRewardNew:ui_CONTINUITY()
-    local march_queue_bg = display.newSprite("box_118x118.png"):align(display.LEFT_TOP,30,self.height - 30):addTo(self.bg)
-    display.newSprite("tmp_march_queue_128x128.png"):align(display.CENTER,64,64):addTo(march_queue_bg):scale(0.8)
-    local title_bg = display.newScale9Sprite("title_blue_430x30.png",0,0,cc.size(416,30),cc.rect(20,10,390,10))
-        :addTo(self.bg):align(display.LEFT_TOP, march_queue_bg:getPositionX() + march_queue_bg:getContentSize().width + 10,self.height - 30)
-    UIKit:ttfLabel({
-        text = _("第二条行军队列"),
-        size = 22,
-        color= 0xffedae,
-    }):align(display.LEFT_CENTER,20,15):addTo(title_bg)
-    UIKit:ttfLabel({
-        text = _("三天后可激活"),
-        size = 20,
-        color= 0x403c2f,
-    }):align(display.LEFT_CENTER,title_bg:getPositionX(),self.height - 90):addTo(self.bg)
+    local march_queue_bg = display.newSprite("gem_logo_592x139_3.png"):align(display.LEFT_TOP,30,self.height - 20):addTo(self.bg):scale(554/592)
+    display.newScale9Sprite("box_50x50.png",0,0, cc.size(554,130), cc.rect(20,20,10,10)):align(display.LEFT_TOP,30,self.height - 20):addTo(self.bg)
+    display.newSprite("activity_layer_blue_586x114.png"):align(display.LEFT_TOP,-4,self.height - 28):addTo(self.bg)
+
     local text_1 = UIKit:ttfLabel({
         text = User.countInfo.day14 > 3 and 3 or User.countInfo.day14,
         size = 22,
         color= 0x238700,
-    }):align(display.LEFT_CENTER,title_bg:getPositionX(),self.height - 130):addTo(self.bg)
+    }):align(display.LEFT_CENTER,514,self.height - 55):addTo(self.bg)
     self.march_queue_text = text_1
     UIKit:ttfLabel({
         text = "/3",
         size = 22,
-        color= 0x403c2f,
-    }):align(display.LEFT_CENTER,text_1:getPositionX()+text_1:getContentSize().width,self.height - 130):addTo(self.bg)
+        color= 0x238700,
+    }):align(display.LEFT_CENTER,text_1:getPositionX()+text_1:getContentSize().width,self.height - 55):addTo(self.bg)
+    UIKit:ttfLabel({
+        text = _("三天后可激活"),
+        size = 20,
+        color= 0xffedae,
+    }):align(display.RIGHT_CENTER,text_1:getPositionX() - text_1:getContentSize().width - 10,self.height - 55):addTo(self.bg)
     local button = WidgetPushButton.new({normal = 'yellow_btn_up_148x58.png',pressed = 'yellow_btn_down_148x58.png',disabled = 'gray_btn_148x58.png'})
         :setButtonLabel("normal", UIKit:commonButtonLable({
             text = _("领取")
         }))
         :addTo(self.bg)
-        :align(display.RIGHT_CENTER,title_bg:getPositionX() + title_bg:getContentSize().width,self.height - 110)
+        :align(display.RIGHT_CENTER,550,self.height - 105)
         :onButtonClicked(function()
             NetManager:getUnlockPlayerSecondMarchQueuePromise():done(function (response)
                 GameGlobalUI:showTips(_("提示"),_("永久行军队列+1"))
@@ -399,10 +366,10 @@ function GameUIActivityRewardNew:ui_CONTINUITY()
             size = 22,
             color= 0x514d3e
         }):addTo(self.bg)
-            :align(display.RIGHT_CENTER,title_bg:getPositionX() + title_bg:getContentSize().width - 30,self.height - 90)
+            :align(display.RIGHT_CENTER,550,self.height - 105)
     end
     self.list_view = UIListView.new{
-        viewRect = cc.rect(26,20,556,590),
+        viewRect = cc.rect(26,20,556,584),
         direction = cc.ui.UIScrollView.DIRECTION_VERTICAL
     }:addTo(self.bg)
     self:RefreshContinutyList(true)

@@ -182,6 +182,7 @@ rgba444_single["player_icon_6.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RGB_A4444
 rgba444_single["player_icon_7.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RGB_A4444
 rgba444_single["player_icon_8.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RGB_A4444
 rgba444_single["player_icon_9.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RGB_A4444
+rgba444_single["player_icon_mod.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RGB_A4444
 rgba444_single["pureRunes_128x128.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RGB_A4444
 rgba444_single["quarterMaster_128x128.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RGB_A4444
 rgba444_single["quarterMaster_1_128x128.png"] = cc.TEXTURE2_D_PIXEL_FORMAT_RGB_A4444

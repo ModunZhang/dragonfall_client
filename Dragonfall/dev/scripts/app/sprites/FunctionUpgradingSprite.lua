@@ -2,9 +2,6 @@ local SpriteConfig = import(".SpriteConfig")
 local UpgradingSprite = import(".UpgradingSprite")
 local FunctionUpgradingSprite = class("FunctionUpgradingSprite", UpgradingSprite)
 
-function FunctionUpgradingSprite:OnTileLocked(city)
-    self:OnTileChanged(city)
-end
 function FunctionUpgradingSprite:OnTileUnlocked(city)
     self:OnTileChanged(city)
 end

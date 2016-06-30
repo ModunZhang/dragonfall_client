@@ -54,10 +54,10 @@ function GameUIMission:ctor(city,mission_type, need_tips)
 end
 function GameUIMission:OnMoveInStage()
     self:CreateTabButtons()
+    GameUIMission.super.OnMoveInStage(self)
     self.city:GetUser():AddListenOnType(self, "growUpTasks")
     self.city:GetUser():AddListenOnType(self, "dailyTasks")
     self.city:GetUser():AddListenOnType(self, "countInfo")
-    GameUIMission.super.OnMoveInStage(self)
 end
 function GameUIMission:OnMoveOutStage()
     self.city:GetUser():RemoveListenerOnType(self, "growUpTasks")
@@ -182,6 +182,9 @@ function GameUIMission:GetShakeAction(t)
     return action
 end
 function GameUIMission:RefreshAchievementList()
+    if not self.achievement_list then
+        return
+    end
     self.achievement_list:removeAllItems()
     local header = self:GetGetAchievementListHeaderItem(true)
     self.achievement_list:addItem(header)
@@ -653,9 +656,8 @@ function GameUIMission:dailyListviewListener(event)
                 app:EnterMyAllianceScene()
             end
         elseif pos == 9 then
-            local dragon_manger = city:GetDragonEyrie():GetDragonManager()
-            local dragon_type = dragon_manger:GetCanFightPowerfulDragonType()
-            if #dragon_type > 0 or UtilsForDragon:GetDefenceDragon(User) then
+            local fightPowerfulType = UtilsForDragon:GetCanFightPowerfulDragonType(city:GetUser())
+            if #fightPowerfulType > 0 or UtilsForDragon:GetDefenceDragon(User) then
                 app:EnterPVEScene(city:GetUser():GetLatestPveIndex())
             else
                 UIKit:showMessageDialog(_("主人"),_("需要一条空闲状态的魔龙才能探险"))

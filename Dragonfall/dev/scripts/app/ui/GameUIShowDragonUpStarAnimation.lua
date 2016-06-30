@@ -15,20 +15,20 @@ function GameUIShowDragonUpStarAnimation:ctor(dragon,isLevelUp)
     self.isLevelUp = isLevelUp
     GameUIShowDragonUpStarAnimation.super.ctor(self)
     app:GetAudioManager():PlayeEffectSoundWithKey("HOORAY")
-    local old_strenth,old_vitality,old_leadershiip
+    local attrs
     if isLevelUp then
-        old_strenth,old_vitality,old_leadershiip = dragon:GetLevelPromotionedOldVal()
+        attrs = UtilsForDragon:GetDragonAttributesByLevel(dragon, dragon.level - 1)
     else
-        old_strenth,old_vitality,old_leadershiip = dragon:GetPromotionedOldVal()
+        attrs = UtilsForDragon:GetDragonAttributesMaxByStar(dragon, dragon.star - 1)
     end
     self.buff_value = {
-        {dragon:Strength(),old_strenth},
-        {dragon:GetBasicMaxHP() ,old_vitality},
-        {dragon:LeadBasicCitizen() ,old_leadershiip},
+        {UtilsForDragon:GetDragonStrengthWithoutBuff(dragon),attrs.strength},
+        {UtilsForDragon:GetDragonMaxHpWithoutBuff(dragon),attrs.vitality},
+        {UtilsForDragon:LeaderShipWithoutBuff(dragon), attrs.leadership},
     }
-    self.dragon_iamge = UILib.dragon_head[dragon:Type()]
+    self.dragon_iamge = UILib.dragon_head[dragon.type]
     self:setNodeEventEnabled(true)
-    self.star_val = dragon:Star()
+    self.star_val = dragon.star
 end
 
 function GameUIShowDragonUpStarAnimation:onEnter()

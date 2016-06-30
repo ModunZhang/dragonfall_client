@@ -29,7 +29,9 @@ function GameUIAllianceBattle:OnMoveInStage()
         -- 获取历史记录
         if self.alliance.allianceFightReports == nil then
             NetManager:getAllianceFightReportsPromise(self.alliance._id):done(function ()
-                self:InitHistoryRecord()
+                if not tolua.isnull(self) then
+                    self:InitHistoryRecord()
+                end
             end)
         else
             self:InitHistoryRecord()
@@ -88,11 +90,15 @@ function GameUIAllianceBattle:InitBattleStatistics()
     local other_alliance = self.other_alliance
     layer:removeAllChildren()
     self.request_num_label = nil
-    local alliance_battle_bg_612x886 = "alliance_battle_bg_612x886.jpg" 
+    local alliance_battle_bg_612x886 = "alliance_battle_bg_612x886.jpg"
     display.newSprite(alliance_battle_bg_612x886):addTo(layer):align(display.TOP_CENTER,window.cx,window.top_bottom+28)
     local status = alliance.basicInfo.status
     -- local status = ""
     if status == "peace" or status == "protect" then
+        if not other_alliance then
+            self:LeftButtonClicked()
+            return
+        end
         local blue_bg = display.newSprite("back_ground_blue_308x96.png"):addTo(layer):align(display.RIGHT_CENTER,window.cx,window.top_bottom - 40)
         local red_bg = display.newSprite("back_ground_red_308x96.png"):addTo(layer):align(display.LEFT_CENTER,window.cx,window.top_bottom - 40)
 

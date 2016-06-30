@@ -12,15 +12,15 @@ function WidgetInput:ctor(params)
     WidgetInput.super.ctor(self,210,"调整数量",display.top-400)
     self:DisableCloseBtn()
     local body = self.body
-    local max = params.max
-    local current = params.current or 0
-    local min = params.min or 0
     local unit = params.unit or ""
-    local callback = params.callback or NOT_HANDLE
     local exchange = 1
     if unit == "K" then
         exchange = 1000
     end
+    local max = params.max * exchange
+    local current = (params.current or 0) * exchange
+    local min = (params.min or 0) * exchange
+    local callback = params.callback or NOT_HANDLE
     self.current_value = current
     -- max 有时会变化
     self.max = max
@@ -50,13 +50,13 @@ function WidgetInput:ctor(params)
                 end
                 editbox:setText(btn_value)
                 self.perfix_lable:setString(string.format(btn_unit.."/ %s", GameUtils:formatNumber(max)))
-                self.current_value = min*exchange
+                self.current_value = min
             else
                 local change_text = editbox:getText()
                 local change_value = change_text == "" and min or tonumber(change_text)
                 change_value = change_value < min and min or change_value
                 change_value = change_value > self.max and self.max or change_value
-                local e_value = math.floor(change_value*exchange)
+                local e_value = change_value
                 local btn_value
                 local btn_unit  = ""
                 if e_value>=1000 then

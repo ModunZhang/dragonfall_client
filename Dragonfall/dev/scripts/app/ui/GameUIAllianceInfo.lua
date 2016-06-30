@@ -92,7 +92,12 @@ function GameUIAllianceInfo:GetAllianceArchonData()
 end
 
 function GameUIAllianceInfo:GetAllianceArchonName()
-    return self:GetAllianceArchonData().name
+    local archon = self:GetAllianceArchonData()
+    if archon then
+        return archon.name
+    else
+        return _("无")
+    end
 end
 
 function GameUIAllianceInfo:onExit()
@@ -102,8 +107,10 @@ function GameUIAllianceInfo:onEnter()
     GameUIAllianceInfo.super.onEnter(self)
     NetManager:getAllianceInfoPromise(self.alliance_id, self.serverId):done(function(response)
         if response.success and response.msg.allianceData then
-            self:setAllianceData(response.msg.allianceData)
-            self:BuildUI()
+            if not tolua.isnull(self) then
+                self:setAllianceData(response.msg.allianceData)
+                self:BuildUI()
+            end
         end
     end):fail(function ()
         if self.LeftButtonClicked then
@@ -114,13 +121,22 @@ function GameUIAllianceInfo:onEnter()
 end
 
 function GameUIAllianceInfo:BuildUI()
-    WidgetRoundTabButtons.new({
-        {tag = "Info",label = _("信息"),default = self.default_tab == "Info"},
-        {tag = "Contact",label = _("联系盟主"),default = self.default_tab == "Contact"},
-        {tag = "Members",label = _("成员列表"),default = self.default_tab == "Members"},
-    }, function(tag)
-        self:OnTabButtonClicked(tag)
-    end,1):align(display.BOTTOM_CENTER,304,10):addTo(self:GetBody()):zorder(200)
+    local archon = self:GetAllianceArchonData()
+    if archon then
+        WidgetRoundTabButtons.new({
+            {tag = "Info",label = _("信息"),default = self.default_tab == "Info"},
+            {tag = "Contact",label = _("联系盟主"),default = self.default_tab == "Contact"},
+            {tag = "Members",label = _("成员列表"),default = self.default_tab == "Members"},
+        }, function(tag)
+            self:OnTabButtonClicked(tag)
+        end,1):align(display.BOTTOM_CENTER,304,10):addTo(self:GetBody()):zorder(200)
+    else
+        WidgetRoundTabButtons.new({
+            {tag = "Info",label = _("信息"),default = self.default_tab == "Info"},
+        }, function(tag)
+            self:OnTabButtonClicked(tag)
+        end,1):align(display.BOTTOM_CENTER,304,10):addTo(self:GetBody()):zorder(200)
+    end
 end
 
 function GameUIAllianceInfo:OnTabButtonClicked( tag )
@@ -214,7 +230,7 @@ function GameUIAllianceInfo:LoadInfo()
         :addTo(layer)
         :align(display.LEFT_TOP,titleBg:getPositionX() - titleBg:getContentSize().width, titleBg:getPositionY() - titleBg:getContentSize().height -12)
     local leaderLabel = UIKit:ttfLabel({
-        text = self:GetAllianceArchonName() or  "",
+        text = self:GetAllianceArchonName(),
         size = 22,
         color = 0x403c2f
     }):addTo(layer):align(display.LEFT_TOP,leaderIcon:getPositionX()+leaderIcon:getContentSize().width+15, leaderIcon:getPositionY()-4)
@@ -287,6 +303,10 @@ function GameUIAllianceInfo:OnJoinActionClicked(joinType,sender)
         if User.serverId ~= self.serverId then
             UIKit:showMessageDialog(_("提示"),_("不能申请加入其他服务器的联盟"))
             return
+        end
+        if #User.requestToAllianceEvents >= 5 then
+            UIKit:showMessageDialog(_("提示"),_("联盟申请已满，请撤消部分申请后再来申请"))
+            return 
         end
         for i,v in ipairs(User.requestToAllianceEvents) do
             if v.id == self:GetAllianceData().id then

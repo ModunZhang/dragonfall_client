@@ -33,13 +33,22 @@ function TownHallSprite:CheckEvent()
     if self:GetEntity():IsUnlocked() then
         local user = self:GetEntity():BelongCity():GetUser()
         if user:IsOnDailyQuestEvents() then
-            self:GetAniArray()[1]:show()
+            for i,v in ipairs(self:GetAniArray()) do
+                v:show()
+                break
+            end
             self:RemoveEmptyanimation()
         elseif user:IsFinishedAllDailyQuests() then
-            self:GetAniArray()[1]:hide()
+            for i,v in ipairs(self:GetAniArray()) do
+                v:hide()
+                break
+            end
             self:RemoveEmptyanimation()
         else
-            self:GetAniArray()[1]:hide()
+            for i,v in ipairs(self:GetAniArray()) do
+                v:hide()
+                break
+            end
             self:PlayEmptyAnimation()
         end
         if user:CouldGotDailyQuestReward() then

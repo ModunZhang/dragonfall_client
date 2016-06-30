@@ -37,16 +37,14 @@ function UtilsForTech:GetTechLocalize(tech_name)
     end
     return string.format(_("对%s的攻击"), Localize.soldier_category[category2])
 end
-
 function UtilsForTech:GetProductionTechConfig(tech_name)
     return productionTechs[tech_name]
 end
-
 local ProductionTechLevelUp = GameDatas.ProductionTechLevelUp
 local MilitaryTechLevelUp = GameDatas.MilitaryTechLevelUp
 function UtilsForTech:GetTechInfo(tech_name, level)
-    local config = ProductionTechLevelUp[tech_name] or MilitaryTechLevelUp[tech_name]
-    return level > #config and config[#config] or config[level]
+    local configs = ProductionTechLevelUp[tech_name] or MilitaryTechLevelUp[tech_name]
+    return configs[math.max(math.min(level, #configs), 1)]
 end
 function UtilsForTech:IsMaxLevel(tech_name, tech)
     return tech.level == self:MaxLevel(tech_name)
@@ -86,7 +84,7 @@ local map_resource = {
 function UtilsForTech:GetResourceBuff(tech_name, tech)
     if map_resource[tech_name] then
         local resource_type,buff_type = unpack(map_resource[tech_name])
-        
+
         return resource_type,buff_type,self:GetEffect(tech_name, tech)
     end
     return nil,nil,nil

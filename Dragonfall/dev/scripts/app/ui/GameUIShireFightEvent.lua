@@ -253,7 +253,10 @@ function GameUIShireFightEvent:DispathSoliderButtonClicked()
     local final_func = function ()
         local attack_func = function ()
             UIKit:newGameUI("GameUISendTroopNew",function(dragonType,soldiers,total_march_time,gameuialliancesendtroops)
-                if type(self.GetFightEvent) ~= 'function' then gameuialliancesendtroops:LeftButtonClicked() end
+                if type(self.GetFightEvent) ~= 'function' then 
+                    gameuialliancesendtroops:LeftButtonClicked() 
+                    return
+                end
                 if total_march_time >= UtilsForShrine:GetEventTime(self:GetFightEvent()) then
                     UIKit:showMessageDialog(_("提示"),
                         _("检测到你的行军时间大于圣地事件时间,可能部队未达到之前，圣地事件已结束。是否继续派兵?"),
@@ -275,7 +278,7 @@ function GameUIShireFightEvent:DispathSoliderButtonClicked()
                 end
             end,{toLocation = Alliance_Manager:GetMyAlliance():GetShrinePosition(), targetIsMyAlliance = true,returnCloseAction = true, targetAlliance = Alliance_Manager:GetMyAlliance()}):AddToCurrentScene(true)
         end
-        UIKit:showSendTroopMessageDialog(attack_func, "dragonMaterials", _("龙"))
+        UIKit:showSendTroopMessageDialog(attack_func, "dragonMaterials", _("龙材料"))
     end
     if Alliance_Manager:GetMyAlliance():GetSelf():IsProtected() then
         UIKit:showMessageDialog(_("提示"),_("进攻该目标将失去保护状态，确定继续派兵?"),final_func)

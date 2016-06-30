@@ -3,11 +3,12 @@ local promise = import("..utils.promise")
 local window = import("..utils.window")
 local WidgetChat = import("..widget.WidgetChat")
 local WidgetHomeBottom = import("..widget.WidgetHomeBottom")
+local WidgetPushButton = import("..widget.WidgetPushButton")
 local WidgetEventTabButtons = import("..widget.WidgetEventTabButtons")
 local UILib = import(".UILib")
 local WidgetChangeMap = import("..widget.WidgetChangeMap")
 local GameUIActivityRewardNew = import(".GameUIActivityRewardNew")
-local WidgetEventsList = import("..widget.WidgetEventsList")
+-- local WidgetEventsList = import("..widget.WidgetEventsList")
 local GameUIHome = UIKit:createUIClass('GameUIHome')
 local light_gem = import("..particles.light_gem")
 
@@ -114,11 +115,11 @@ function GameUIHome:onEnter()
     self.top = self:CreateTop()
     self.bottom = self:CreateBottom()
 
-    -- local ratio = self.bottom:getScale()
-    -- self.event_tab = WidgetEventTabButtons.new(self.city, ratio)
-    -- local rect1 = self.chat:getCascadeBoundingBox()
-    -- local x, y = rect1.x, rect1.y + rect1.height - 2
-    -- self.event_tab:addTo(self,0):pos(x, y)
+    local ratio = self.bottom:getScale()
+    self.event_tab = WidgetEventTabButtons.new(self.city, ratio)
+    local rect1 = self.chat:getCascadeBoundingBox()
+    local x, y = rect1.x, rect1.y + rect1.height - 4
+    self.event_tab:addTo(self,0):pos(x, y)
 
     self:AddOrRemoveListener(true)
     self:RefreshData()
@@ -138,6 +139,7 @@ function GameUIHome:onEnter()
         self.food_label:SetNumColor(User:IsResOverLimit("food") and red_color or normal_color)
         self.iron_label:SetNumColor(User:IsResOverLimit("iron") and red_color or normal_color)
         self.stone_label:SetNumColor(User:IsResOverLimit("stone") and red_color or normal_color)
+        self.promotionTime:setString(GameUtils:formatTimeStyle1(DataUtils:GetPromtionProductLessLeftTime()))
     end)
 end
 function GameUIHome:onExit()
@@ -264,7 +266,9 @@ function GameUIHome:CreateTop()
         local x, y = first_col + (i - 1) * padding_width, 16
         self.res_icon_map[v[3]] = display.newSprite(v[1]):addTo(button):pos(x, y):scale(0.3)
         local wp = self.res_icon_map[v[3]]:convertToWorldSpace(cc.p(0,0))
-        self.ResPositionMap[v[3]] = wp
+        if not GameUIHome.ResPositionMap[v[3]] then
+            GameUIHome.ResPositionMap[v[3]] = wp
+        end
         self[v[2]] = UIKit:CreateNumberImageNode({text = "",
             size = 18,
             color = 0xf3f0b6,
@@ -329,7 +333,27 @@ function GameUIHome:CreateTop()
         size = 20,
         color = 0xffd200,
     }):addTo(button):align(display.CENTER, -14, -1)
-    WidgetEventsList.new():addTo(self):align(display.LEFT_TOP, window.left + (display.width>640 and 14 or 0), display.top - 100)
+    -- WidgetEventsList.new():addTo(self):align(display.LEFT_TOP, window.left + (display.width>640 and 14 or 0), display.top - 100)
+
+    -- 促销活动
+    local box = ccs.Armature:create("AD_icon"):addTo(self):align(display.CENTER, display.right - 55, display.top - 170)
+    box:getAnimation():playWithIndex(0)
+    self.promotionTime = UIKit:ttfLabel({
+        text = GameUtils:formatTimeStyle1(DataUtils:GetPromtionProductLessLeftTime()),
+        size = 16,
+        color = 0xffedae,
+        shadow = true
+    }):align(display.CENTER, display.right - 55, display.top - 192)
+        :addTo(self)
+    local sale_button = WidgetPushButton.new()
+        :addTo(self):align(display.CENTER, display.right - 55, display.top - 170)
+        :onButtonClicked(function(event)
+            if event.name == "CLICKED_EVENT" then
+                UIKit:newGameUI("GameUISaleOne"):AddToCurrentScene()
+            end
+        end)
+    sale_button:setContentSize(cc.size(100,110))
+    sale_button:setTouchSwallowEnabled(true)
     return top_bg
 end
 function GameUIHome:GotoUnlockBuilding(location)
@@ -381,10 +405,11 @@ function GameUIHome:CreateBottom()
     self.chat = WidgetChat.new():addTo(bottom_bg)
         :align(display.CENTER, bottom_bg:getContentSize().width/2, bottom_bg:getContentSize().height)
     -- 任务条
+    local quest_node = display.newNode():addTo(bottom_bg):pos(420, bottom_bg:getContentSize().height + 56)
     local quest_bar_bg = cc.ui.UIPushButton.new(
         {normal = "quest_btn_unfinished_566x46.png",pressed = "quest_btn_unfinished_566x46.png"},
         {scale9 = false}
-    ):addTo(bottom_bg):pos(420, bottom_bg:getContentSize().height + 56):onButtonClicked(function(event)
+    ):addTo(quest_node):onButtonClicked(function(event)
         self:HideFinger()
         local task = self.task
         if task then
@@ -431,7 +456,17 @@ function GameUIHome:CreateBottom()
         end
     end)
     self.quest_bar_bg = quest_bar_bg
-    self.fingerNode = display.newNode():addTo(bottom_bg):pos(quest_bar_bg:getPosition())
+    self.fingerNode = display.newNode():addTo(quest_node)
+
+    quest_node:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
+        if self.event_tab and self.event_tab:isVisible() then
+            local node = self.event_tab.arrow
+            local attackWorldPoint = node:convertToWorldSpace(cc.p(0,90))
+            local attackNodePoint = quest_node:getParent():convertToNodeSpace(attackWorldPoint)
+            quest_node:setPositionY(attackNodePoint.y)
+        end
+    end)
+    quest_node:scheduleUpdate()
 
     local light = display.newSprite("quest_light_70x34.png"):addTo(quest_bar_bg):pos(-302, 2)
     light:runAction(
@@ -459,7 +494,7 @@ function GameUIHome:CreateBottom()
     return bottom_bg
 end
 function GameUIHome:CheckFinger(isFirst)
-    if self.task and 
+    if self.task and
         UtilsForFte:ShouldFingerOnTask(self.city:GetUser()) and
         self.city:GetUser().countInfo.isFTEFinished then
         if self.task.finished then
@@ -471,23 +506,23 @@ function GameUIHome:CheckFinger(isFirst)
     end
     self:HideFinger()
     self:HideClickReward()
-    if not UtilsForTask:NeedTips(self.city:GetUser()) 
-   and not Alliance_Manager:HasBeenJoinedAlliance() then
-        display.getRunningScene():FteAlliance() 
+    if not UtilsForTask:NeedTips(self.city:GetUser())
+        and not Alliance_Manager:HasBeenJoinedAlliance() then
+        display.getRunningScene():FteAlliance()
     end
 end
 local WidgetFteArrow = import("..widget.WidgetFteArrow")
 function GameUIHome:ShowClickReward()
-    if not self.quest_bar_bg:getChildByTag(222) then
+    if not self.fingerNode:getChildByTag(222) then
         WidgetFteArrow.new(_("点击领取奖励")):TurnDown()
-        :addTo(self.quest_bar_bg,10,222):pos(100,60)
+            :addTo(self.fingerNode,10,222):pos(100,60)
     end
-    self.quest_bar_bg:getChildByTag(222):show()
+    self.fingerNode:getChildByTag(222):show()
     self:HideFinger()
 end
 function GameUIHome:HideClickReward()
-    if self.quest_bar_bg:getChildByTag(222) then
-        self.quest_bar_bg:getChildByTag(222):hide()
+    if self.fingerNode:getChildByTag(222) then
+        self.fingerNode:getChildByTag(222):hide()
     end
 end
 local WidgetMaskFilter = import("..widget.WidgetMaskFilter")
@@ -504,7 +539,7 @@ function GameUIHome:ShowFinger(isFirst)
         rect.width = rect.width * 1.5
         rect.height = rect.height * 1.3
         local mask = WidgetMaskFilter.new()
-        :addTo(self,2000,123456789):pos(display.cx, display.cy)
+            :addTo(self,2000,123456789):pos(display.cx, display.cy)
         mask:FocusOnRect(rect)
         mask:setTouchEnabled(true)
         mask:setTouchSwallowEnabled(false)
@@ -565,6 +600,7 @@ function GameUIHome:RefreshVIP()
 end
 local POWER_ANI_TAG = 1001
 function GameUIHome:ShowPowerAni(wp, old_power)
+    if tolua.isnull(self) then return end
     local pnt = self.top
     self.power_label:hide()
     self.shadow_power_label:show():SetNumString(string.formatnumberthousands(old_power))
@@ -795,6 +831,10 @@ end
 
 
 return GameUIHome
+
+
+
+
 
 
 

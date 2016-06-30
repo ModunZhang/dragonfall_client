@@ -236,7 +236,7 @@ function UIKit:ttfLabel( params )
     end
     params.font = UIKit:getFontFilePath()
     params.UILabelType = cc.ui.UILabel.LABEL_TYPE_TTF
-    if params.color and 
+    if params.color and
         (type(params.color) == "number" or type(params.color) == "string") then
         params.color = self:hex2c3b(params.color)
     end
@@ -415,7 +415,7 @@ function UIKit:GetPlayerCommonIcon(key,isOnline)
 end
 
 function UIKit:GetPlayerIconImage(key)
-    return UILib.player_icon[tonumber(key)]
+    return UILib.player_icon[key == "__mod" and key or tonumber(key)]
 end
 
 function UIKit:GetPlayerIconOnly(key,isOnline)
@@ -825,7 +825,7 @@ function UIKit:showSendTroopMessageDialog(attack_func,material_name,effect_str,i
         if is_material_overhead then
             display.newSprite("icon_warning_22x42.png"):addTo(materialDepot_bg):align(display.CENTER, 75, materialDepot_bg:getContentSize().height/2 + 15)
             if #UtilsForBuilding:GetBuildingsBy(User, "materialDepot", 1) > 0 then
-                label_1 = string.format(_("%s材料已满"),effect_str)
+                label_1 = string.format(_("%s已满"),effect_str)
             else
                 label_1 = _("未解锁")
             end
@@ -1017,10 +1017,18 @@ end
 function UIKit:getDiscolorrationSprite(image)
     return display.newFilteredSprite(image, "CUSTOM", json.encode({frag = "shaders/ps_discoloration.fs",shaderName = "ps_discoloration"}))
 end
-
+function UIKit:getPromotionIapPackageName(productId)
+    local localizeKey = ""
+    for __,v in ipairs(GameDatas.StoreItems.promotionItems) do
+        if productId == v.productId then
+            localizeKey = v.name
+        end
+    end
+    return localizeKey ~= "" and Localize.promotion_items[localizeKey] or ""
+end
 
 function UIKit:getIapPackageName(productId)
-    return Localize.iap_package_name[productId]
+    return Localize.iap_package_name[productId] or self:getPromotionIapPackageName(productId)
 end
 
 function UIKit:addTipsToNode( node,tips , include_node ,tip_dimensions,offset_x,offset_y)
@@ -1112,6 +1120,8 @@ function UIKit:GetItemImage(reward_type,item_key)
         if item_key == 'marchQueue' then
             return "tmp_march_queue_128x128.png"
         end
+    elseif reward_type == 'soldiers' then
+        return UILib.soldier_images[item_key]
     end
 end
 
@@ -1627,7 +1637,7 @@ function UIKit:CreateDragonBattle(attackDragon, defenceDragon, gameController)
     local leftDragon = UIKit:CreateFightDragon(attackDragon, gameController)
     :SetPercent(attackDragon.hp/attackDragon.hpMax)
     :addTo(attackBone):pos(-360, -50)
-    
+
     attackBone:addDisplay(leftDragon, 0)
     attackBone:changeDisplayWithIndex(0, true)
 
@@ -1636,7 +1646,7 @@ function UIKit:CreateDragonBattle(attackDragon, defenceDragon, gameController)
     local rightDragon = UIKit:CreateFightDragon(defenceDragon, gameController)
     :SetPercent(defenceDragon.hp/defenceDragon.hpMax)
     :addTo(defenceBone):pos(238, -82)
-    
+
     defenceBone:addDisplay(rightDragon, 0)
     defenceBone:changeDisplayWithIndex(0, true)
 
@@ -2262,13 +2272,13 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
             self:Play("move_90", -1)
             local acts = transition.sequence({
                 cc.MoveTo:create(0.15,cc.p(x+d,y)),
-                cc.CallFunc:create(function() 
+                cc.CallFunc:create(function()
                     app:GetAudioManager()
                     :PlayeAttackSoundBySoldierName(self.soldierName, "rush")
-                    p1:resolve() 
+                    p1:resolve()
                 end),
                 cc.MoveTo:create(0.15,cc.p(x,y)),
-                cc.CallFunc:create(function() 
+                cc.CallFunc:create(function()
                     self:Idle()
                     p2:resolve()
                 end),
@@ -2308,7 +2318,7 @@ function UIKit:CreateFightTroops(soldierName, properties, gameController)
         else
             return self:PromiseOfAnimationFinished(self:GetAni())
         end
-        
+
     end
     function troopsNode:PromiseOfAnimationFinished(animation)
         local p = promise.new()
@@ -2744,10 +2754,15 @@ end
 
 
 function UIKit:CreateTerrainForNode(clip,terrain)
-    local city_terrain = terrain or User.basicInfo.terrain 
+    local city_terrain = terrain or User.basicInfo.terrain
     GameUtils:LoadImagesWithFormat(function()
-        cc.TMXTiledMap:create(string.format("tmxmaps/alliance_%s1.tmx",city_terrain))
-            :align(display.LEFT_BOTTOM, 0, 0):addTo(clip)
+        if isUseSdImage() then
+            local file = string.format("tmxmaps/alliance_%s1-sd.tmx", city_terrain)
+            cc.TMXTiledMap:create(file):addTo(clip):align(display.LEFT_BOTTOM):scale(2)
+        else
+            cc.TMXTiledMap:create(string.format("tmxmaps/alliance_%s1.tmx",city_terrain))
+                :align(display.LEFT_BOTTOM, 0, 0):addTo(clip)
+        end 
     end, cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565)
 
     local unlock_position = {
