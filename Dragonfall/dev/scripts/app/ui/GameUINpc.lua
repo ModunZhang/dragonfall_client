@@ -130,8 +130,8 @@ function GameUINpc:OnMoveInStage()
     self.ui_map = self:BuildUI()
     self:StartDialog()
     self:RefreshNpc(self:CurrentDialog())
-    self.btn:onButtonClicked(function()
-        self:OnClick()
+    self.btn:onButtonClicked(function(event)
+        self:OnClick(event)
     end)
 end
 function GameUINpc:onExit()
@@ -142,11 +142,18 @@ function GameUINpc:StartDialog()
     self:ShowWords(self:CurrentDialog())
     return self
 end
-function GameUINpc:OnClick()
+function GameUINpc:OnClick(event)
     if self.label and self.label:getActionByTag(LETTER_ACTION) then
         self:ShowWords(self:CurrentDialog(), false)
         self:OnDialogEnded(self.dialog_index)
     else
+        local rect = self.ui_map.background.rect
+        if rect
+        and type(self.click_func) == "function"
+        and cc.rectContainsPoint(rect, event) then
+            self.click_func(event)
+        end
+
         local index = self.dialog_index
         self:NextDialog()
         self:OnDialogClicked(index)
@@ -182,8 +189,10 @@ function GameUINpc:ShowWords(dialog, ani)
     end
     if dialog.focus_rect then
         self.ui_map.background:FocusOnRect(dialog.focus_rect)
+        self.click_func = dialog.click_func
     else
         self.ui_map.background:FocusOnRect()
+        self.click_func = nil
     end
     self:RefreshNpc(dialog)
     self.label = self:CreateLabel()
