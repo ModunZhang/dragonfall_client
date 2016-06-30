@@ -14,7 +14,21 @@ function GameUIWriteMail:ctor(send_type,contacts)
     self:DisableAutoClose()
     self.send_type = send_type
     self.contacts = contacts
+    if tolua.isnull(User.isMod) then
+        NetManager:getMyModDataPromise():done(function (response)
+            if response.msg.modData ~= json.null then
+                User.isMod = true
+            else
+                User.isMod = false
+            end
+            self:BuildWriteMailUI()
+        end)
+    else
+        self:BuildWriteMailUI()
+    end
 
+end
+function GameUIWriteMail:BuildWriteMailUI()
     -- bg
     local write_mail = self.body
     local r_size = write_mail:getContentSize()
@@ -25,14 +39,14 @@ function GameUIWriteMail:ctor(send_type,contacts)
             text =  _("收件人")..":",
             size = 20,
             color = 0x615b44
-        }):align(display.RIGHT_CENTER,120, r_size.height-70)
+        }):align(display.RIGHT_CENTER,120, r_size.height-50)
         :addTo(write_mail)
     self.addressee_title_label = UIKit:ttfLabel(
         {
             text = contacts and contacts.name,
             size = 20,
             color = 0x615b44
-        }):align(display.LEFT_CENTER,150, r_size.height-70)
+        }):align(display.LEFT_CENTER,150, r_size.height-50)
         :addTo(write_mail)
     -- 主题
     local subject_title_label = cc.ui.UILabel.new(
@@ -41,7 +55,7 @@ function GameUIWriteMail:ctor(send_type,contacts)
             font = UIKit:getFontFilePath(),
             size = 20,
             color = UIKit:hex2c3b(0x615b44)
-        }):align(display.RIGHT_CENTER,120, r_size.height-120)
+        }):align(display.RIGHT_CENTER,120, r_size.height-100)
         :addTo(write_mail)
 
     self.editbox_subject = cc.ui.UIInput.new({
@@ -57,24 +71,23 @@ function GameUIWriteMail:ctor(send_type,contacts)
     editbox_subject:setFontColor(cc.c3b(0,0,0))
     editbox_subject:setPlaceholderFontColor(cc.c3b(204,196,158))
     editbox_subject:setReturnType(cc.KEYBOARD_RETURNTYPE_DEFAULT)
-    editbox_subject:align(display.LEFT_TOP,150, r_size.height-100):addTo(write_mail)
+    editbox_subject:align(display.LEFT_TOP,150, r_size.height-80):addTo(write_mail)
 
     -- 分割线
-    display.newScale9Sprite("dividing_line.png",r_size.width/2, r_size.height-160,cc.size(594,2),cc.rect(10,2,382,2)):addTo(write_mail)
+    display.newScale9Sprite("dividing_line.png",r_size.width/2, r_size.height-140,cc.size(594,2),cc.rect(10,2,382,2)):addTo(write_mail)
     -- 内容
     cc.ui.UILabel.new(
         {cc.ui.UILabel.LABEL_TYPE_TTF,
             text = _("内容："),
             font = UIKit:getFontFilePath(),
             size = 20,
-            dimensions = cc.size(410,24),
             color = UIKit:hex2c3b(0x615b44)
-        }):align(display.LEFT_CENTER,58,r_size.height-180)
+        }):align(display.LEFT_CENTER,14,r_size.height-168)
         :addTo(write_mail)
     -- 回复的邮件内容
     self.textView = ccui.UITextView:create(cc.size(580,472),display.newScale9Sprite("background_88x42.png"))
     local textView = self.textView
-    textView:addTo(write_mail):align(display.CENTER_BOTTOM,r_size.width/2,76)
+    textView:addTo(write_mail):align(display.CENTER_BOTTOM,r_size.width/2,96)
     textView:setReturnType(cc.KEYBOARD_RETURNTYPE_DEFAULT)
     textView:setFont(UIKit:getEditBoxFont(), 24)
     textView:setMaxLength(1000)
@@ -94,14 +107,30 @@ function GameUIWriteMail:ctor(send_type,contacts)
         {normal = "yellow_btn_up_148x58.png", pressed = "yellow_btn_down_148x58.png"},
         {scale9 = false}
     ):setButtonLabel(send_label)
-        :addTo(write_mail):align(display.CENTER, write_mail:getContentSize().width-120, 40)
+        :addTo(write_mail):align(display.CENTER, write_mail:getContentSize().width-90, 52)
         :onButtonClicked(function(event)
             if event.name == "CLICKED_EVENT" then
                 self:SendMail(contacts and contacts.id, contacts and contacts.name,self.editbox_subject:getText(), self.textView:getText())
             end
         end)
     textView:setRectTrackedNode(self.send_button)
-
+    if User.isMod then
+        -- 以MODs身份发送邮件选项
+        self.check_box = cc.ui.UICheckBoxButton.new({
+            off = "checkbox_unselected.png",
+            off_pressed = "checkbox_unselected.png",
+            off_disabled = "checkbox_unselected.png",
+            on = "checkbox_selectd.png",
+            on_pressed = "checkbox_selectd.png",
+            on_disabled = "checkbox_selectd.png",
+        })
+            :align(display.LEFT_CENTER,14,52):addTo(write_mail)
+        UIKit:ttfLabel({
+            text = _("以MODs身份发送邮件"),
+            size = 22,
+            color = 0x403c2f
+            }):align(display.LEFT_CENTER,80,52):addTo(write_mail)
+    end
 end
 function GameUIWriteMail:SendMail(addressee,name,title,content)
     if not title or string.trim(title)=="" then
@@ -116,7 +145,8 @@ function GameUIWriteMail:SendMail(addressee,name,title,content)
             UIKit:showMessageDialog(_("主人"),_("请填写正确的收件人ID"))
             return
         end
-        NetManager:getSendPersonalMailPromise(addressee, title, content,self.contacts):done(function(result)
+        local asMod = self.check_box and self.check_box:isButtonSelected()
+        NetManager:getSendPersonalMailPromise(addressee, title, content,self.contacts,asMod):done(function(result)
             self:removeFromParent()
             return result
         end)
@@ -154,6 +184,7 @@ return GameUIWriteMail
 
 
    
+
 
 
 

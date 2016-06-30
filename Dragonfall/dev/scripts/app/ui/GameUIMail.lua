@@ -1143,6 +1143,7 @@ function GameUIMail:ShowSendMailDetails(mail)
     content_bg:align(display.LEFT_BOTTOM,(bg:getContentSize().width-content_bg:getContentSize().width)/2,80)
 
     -- player head icon
+    dump(mail)
     UIKit:GetPlayerCommonIcon(mail.fromIcon):align(display.CENTER, 76, bg:getContentSize().height - 90):addTo(bg)
     -- 收件人
     local subject_label = cc.ui.UILabel.new(
@@ -1249,7 +1250,7 @@ function GameUIMail:ShowMailDetails(mail)
 
     -- player head icon
     UIKit:GetPlayerCommonIcon(mail.fromIcon):align(display.CENTER, 76, size.height - 80):addTo(body)
-    if mail.fromName ~= "__system" then
+    if mail.fromName ~= "__system" and  mail.icon ~= -1 then
         WidgetPushTransparentButton.new(cc.rect(0,0,114,114)):addTo(body):align(display.CENTER, 76, size.height - 80):onButtonClicked(function()
             UIKit:newGameUI("GameUIAllianceMemberInfo",false,mail.fromId,nil,User.serverId):AddToCurrentScene(true)
         end)
@@ -1357,7 +1358,18 @@ function GameUIMail:ShowMailDetails(mail)
                 :addTo(body):align(display.CENTER, size.width-92, 42)
                 :onButtonClicked(function(event)
                     dialog:LeftButtonClicked()
-                    self:OpenReplyMail(mail)
+                    if tolua.isnull(User.isMod) then
+                        NetManager:getMyModDataPromise():done(function (response)
+                            if response.msg.modData ~= json.null then
+                                User.isMod = true
+                            else
+                                User.isMod = false
+                            end
+                            self:OpenReplyMail(mail)
+                        end)
+                    else
+                        self:OpenReplyMail(mail)
+                    end
                 end)
         else
             del_btn:setPositionX(size.width/2)
@@ -2358,6 +2370,24 @@ function GameUIMail:OpenReplyMail(mail)
         end)
     textView:setRectTrackedNode(send_label)
 
+    if User.isMod then
+        -- 以MODs身份发送邮件选项
+        self.mod_check_box = cc.ui.UICheckBoxButton.new({
+            off = "checkbox_unselected.png",
+            off_pressed = "checkbox_unselected.png",
+            off_disabled = "checkbox_unselected.png",
+            on = "checkbox_selectd.png",
+            on_pressed = "checkbox_selectd.png",
+            on_disabled = "checkbox_selectd.png",
+        })
+            :align(display.LEFT_CENTER,14,46):addTo(reply_mail)
+        UIKit:ttfLabel({
+            text = _("以MODs身份发送邮件"),
+            size = 22,
+            color = 0x403c2f
+        }):align(display.LEFT_CENTER,80,46):addTo(reply_mail)
+    end
+
     return reply_mail
 end
 
@@ -2387,12 +2417,13 @@ function GameUIMail:ReplyMail(mail,title,content)
         UIKit:showMessageDialog(_("提示"),_("请填写邮件内容"))
         return
     end
+    local asMod = self.mod_check_box and self.mod_check_box:isButtonSelected()
     NetManager:getSendPersonalMailPromise(addressee,title, content,{
-        id = mail.fromId,
+        id = mail.id,
         name = mail.fromName,
         icon = mail.fromIcon,
         allianceTag = mail.fromAllianceTag,
-    })
+    },asMod)
 end
 
 function GameUIMail:OnReportsChanged( changed_map )
@@ -2623,6 +2654,7 @@ end
 
 
 return GameUIMail
+
 
 
 

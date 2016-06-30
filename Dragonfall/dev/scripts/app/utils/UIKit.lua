@@ -415,7 +415,7 @@ function UIKit:GetPlayerCommonIcon(key,isOnline)
 end
 
 function UIKit:GetPlayerIconImage(key)
-    return UILib.player_icon[key == "__mod" and key or tonumber(key)]
+    return UILib.player_icon[tonumber(key)]
 end
 
 function UIKit:GetPlayerIconOnly(key,isOnline)

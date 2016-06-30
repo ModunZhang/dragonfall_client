@@ -1201,11 +1201,12 @@ function NetManager:getDailyQeustRewardPromise(questEventId)
         end)
 end
 -- 发送个人邮件
-function NetManager:getSendPersonalMailPromise(memberId, title, content , contacts)
+function NetManager:getSendPersonalMailPromise(memberId, title, content , contacts, asMod)
     return get_blocking_request_promise("logic.playerHandler.sendMail", {
         memberId = memberId,
         title = title,
         content = content,
+        asMod = asMod
     }, "发送个人邮件失败!"):done(get_response_msg):done(function ( response )
         GameGlobalUI:showTips(_("提示"),_("发送邮件成功"))
         app:GetAudioManager():PlayeEffectSoundWithKey("OPEN_MAIL")

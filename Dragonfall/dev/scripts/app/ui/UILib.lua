@@ -13,6 +13,7 @@ local function getAniNameFromAnimationFiles(animation_files)
 end
 
 local PLAYER_ICON = {
+    [-1] = "player_icon_mod.png", -- 墨子头像
     [0] = "empireRise.png", -- 系统头像
     "player_icon_1.png",
     "player_icon_2.png",
@@ -26,7 +27,6 @@ local PLAYER_ICON = {
     "player_icon_9.png",
     "player_icon_10.png",
     "player_icon_11.png",
-    __mod = "player_icon_mod.png",
 }
 local RESOURCE = {
     blood = "heroBlood_3_128x128.png",
