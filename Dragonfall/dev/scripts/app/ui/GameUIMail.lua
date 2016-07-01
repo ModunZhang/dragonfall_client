@@ -1291,7 +1291,7 @@ function GameUIMail:ShowMailDetails(mail)
         :addTo(body)
     -- 内容
     local content_listview = UIListView.new{
-        viewRect = cc.rect(0, 10, 550, 520),
+        viewRect = cc.rect(0, 30, 550, 500),
         direction = cc.ui.UIScrollView.DIRECTION_VERTICAL
     }:addTo(content_bg):pos(10, 0)
     local content_item = content_listview:newItem()
@@ -1312,6 +1312,25 @@ function GameUIMail:ShowMailDetails(mail)
     content_item:addContent(content_label)
     content_listview:addItem(content_item)
     content_listview:reload()
+
+    local translation_sp = WidgetPushButton.new({
+        normal = "tmp_brown_btn_up_36x24.png",
+        pressed= "tmp_brown_btn_down_36x24.png",
+    }):align(display.RIGHT_BOTTOM, 540,12):addTo(content_bg)
+    :onButtonClicked(function(event)
+            if event.name == "CLICKED_EVENT" then
+               GameUtils:Translate(mail_content,function(result,errText)
+                    print("result=",result)
+                    if result and not tolua.isnull(self) and not tolua.isnull(content_label)  then
+                        content_label:setString(result)
+                        content_item:setItemSize(550,content_label:getContentSize().height)
+                    else
+                        print('Translate error------->',errText)
+                    end
+                end)
+            end
+        end)
+    display.newSprite("tmp_icon_translate_26x20.png"):addTo(translation_sp):pos(-18,12)
 
     if tolua.type(mail.isSaved)~="nil" then
         -- 删除按钮
