@@ -46,7 +46,7 @@ function WidgetBuyGoods:ctor(item)
     if item.isAdvancedItem then
         super_item_count = Alliance_Manager:GetMyAlliance():GetItemCount(item.name)
     end
-    buy_max =math.min(math.floor(Alliance_Manager:GetMyAlliance():GetSelf():Loyalty()/item.sellPriceInAlliance),super_item_count)
+    buy_max =math.min(math.floor(User:Loyalty()/item.sellPriceInAlliance),super_item_count)
 
     local label_origin_x = 190
 
@@ -103,9 +103,8 @@ function WidgetBuyGoods:ctor(item)
         size = 20,
         color = 0x403c2f,
     }):addTo(back_ground):align(display.CENTER,300, 50)
-    local member = Alliance_Manager:GetMyAlliance():GetSelf()
     self.loyalty_label = UIKit:ttfLabel({
-        text = GameUtils:formatNumber(member:Loyalty()),
+        text = GameUtils:formatNumber(User:Loyalty()),
         size = 20,
         color = 0x403c2f,
     }):addTo(back_ground):align(display.RIGHT_CENTER,dividing:getPositionX()-4,50)
@@ -157,11 +156,10 @@ function WidgetBuyGoods:align(anchorPoint, x, y)
 end
 
 function WidgetBuyGoods:OnCountChanged(count)
-    local member = Alliance_Manager:GetMyAlliance():GetSelf()
-    local  need_loyalty = self.item.sellPriceInAlliance * count
-    self.loyalty_label:setString(GameUtils:formatNumber(member:Loyalty()))
+    local need_loyalty = self.item.sellPriceInAlliance * count
+    self.loyalty_label:setString(GameUtils:formatNumber(User:Loyalty()))
     self.need_loyalty_label:setString(GameUtils:formatNumber(need_loyalty))
-    self.loyalty_label:setColor(UIKit:hex2c4b(member:Loyalty()<need_loyalty and 0x7e0000 or 0x403c2f))
+    self.loyalty_label:setColor(UIKit:hex2c4b(User:Loyalty()<need_loyalty and 0x7e0000 or 0x403c2f))
 end
 return WidgetBuyGoods
 
