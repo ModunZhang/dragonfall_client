@@ -14,7 +14,7 @@ local WidgetShrineRewardsInfo = import("..widget.WidgetShrineRewardsInfo")
 local UILib = import(".UILib")
 local Localize = import("..utils.Localize")
 function GameUIAllianceShrineDetail:ctor(shrineStage,isActivate)
-    local HEIGHT = 738
+    local HEIGHT = 698
     self.isActivate_ = isActivate or false
     self.shrineStage_ = shrineStage
     local alliance = Alliance_Manager:GetMyAlliance()
@@ -82,7 +82,7 @@ function GameUIAllianceShrineDetail:BuildUI()
     local background = self:GetBody()
     if self:IsActivate() then
         local desc_label = UIKit:ttfLabel({
-            text = _("注:一场战斗中,每名玩家只能派出一支部队"),
+            text = _("注:一场战斗中,参加并获胜的玩家越多,联盟获得的奖励越多"),
             size = 20,
             color = 0x980101
         }):align(display.BOTTOM_CENTER,304,20):addTo(background)
@@ -141,10 +141,10 @@ function GameUIAllianceShrineDetail:BuildUI()
         :align(display.BOTTOM_CENTER,items_box_x,items_box_y)
 
     local soldier_x,soldier_y = 14,self:IsActivate() and items_box:getPositionY()+342+10 or 210
-    local info_box = display.newScale9Sprite("background_568x120.png", 0,0,cc.size(568,142),cc.rect(15,10,538,100))
+    local info_box = display.newScale9Sprite("background_568x120.png", 0,0,cc.size(568,102),cc.rect(15,10,538,100))
         :align(display.LEFT_BOTTOM,19,soldier_y+5):addTo(background)
     self.info_list = UIListView.new({
-        viewRect = cc.rect(11,10, 546, 122),
+        viewRect = cc.rect(11,10, 546, 82),
         direction = cc.ui.UIScrollView.DIRECTION_VERTICAL
     }):addTo(info_box,2)
     self:RefreshInfoListView()
@@ -152,7 +152,7 @@ function GameUIAllianceShrineDetail:BuildUI()
         text = _("敌方部队阵容"),
         size = 20,
         color = 0x403c2f
-    }):align(display.TOP_CENTER,304,soldier_y+370):addTo(background)
+    }):align(display.TOP_CENTER,304,soldier_y+330):addTo(background)
     self.soldier_list =  UIListView.new({
         viewRect = cc.rect(info_box:getPositionX(),info_box:getPositionY()+info_box:getContentSize().height+20, info_box:getContentSize().width, 180),
         direction = cc.ui.UIScrollView.DIRECTION_HORIZONTAL,
@@ -164,18 +164,18 @@ function GameUIAllianceShrineDetail:GetInfoData()
     local stage = self:GetShrineStage()
     local r = {}
     r[1] = {"dragon_strength_27x31.png",_("敌方总战斗力"),stage.enemyPower}
-    r[2] = {"res_citizen_88x82.png",_("建议玩家数量"),stage.suggestPlayer}
-    r[3] = {"dragon_strength_27x31.png",_("建议部队战斗力"),"> " .. stage.suggestPower}
+    -- r[2] = {"res_citizen_88x82.png",_("建议玩家数量"),stage.suggestPlayer}
+    r[2] = {"dragon_strength_27x31.png",_("建议部队战斗力"),"> " .. stage.suggestPower}
     return r
 end
 
 function GameUIAllianceShrineDetail:GetInfoListItem(index,image,title,val)
     local bg = display.newScale9Sprite(string.format("back_ground_548x40_%d.png",index%2==0 and 1 or 2)):size(544,40)
     local icon = display.newSprite(image):align(display.LEFT_CENTER,5,20):addTo(bg,2)
-    if index == 2 then
-        icon:scale(0.4)
-        icon:pos(4,20)
-    end
+    -- if index == 2 then
+    --     icon:scale(0.4)
+    --     icon:pos(4,20)
+    -- end
     UIKit:ttfLabel({
         text = title,
         color = 0x5d563f,

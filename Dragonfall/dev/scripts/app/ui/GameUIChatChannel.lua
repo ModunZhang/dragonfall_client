@@ -199,11 +199,11 @@ function GameUIChatChannel:CreateTabButtons()
             tag = "alliance",
             default = self.default_tag == "alliance",
         },
-    {
-        label = _("对战"),
-        tag = "allianceFight",
-        default = self.default_tag == "allianceFight",
-    },
+        {
+            label = _("对战"),
+            tag = "allianceFight",
+            default = self.default_tag == "allianceFight",
+        },
     },
     function(tag)
         self._channelType = tag
@@ -218,8 +218,8 @@ function GameUIChatChannel:CreateTabButtons()
             pageIdx = 1
         elseif tag == "alliance" then
             pageIdx = 2
-            else
-                pageIdx = 3
+        else
+            pageIdx = 3
         end
         app:GetChatManager():setChannelReadStatus(tag,false)
         app:GetGameDefautlt():setStringForKey("LAST_CHAT_CHANNEL",""..pageIdx)
@@ -748,9 +748,17 @@ function GameUIChatChannel:CreatePlayerMenu(event,chat)
                 ext.copyText(labelText)
                 GameGlobalUI:showTips(_("提示"),_("复制成功"))
             elseif data == 'blockChat' then
-                self:GetChatManager():AddBlockChat(chat)
-                self:RefreshListView()
-                GameGlobalUI:showTips(_("提示"),_("屏蔽成功"))
+                if #User.blocked >= GameDatas.PlayerInitData.intInit.MaxBlockedSize.value then
+                    UIKit:showMessageDialog(_("提示"),_("你的黑名单已满!"),function()end)
+                    return
+                end
+                local promise = self:GetChatManager():AddBlockChat(chat)
+                if promise then
+                    promise:done(function ()
+                        self:RefreshListView()
+                        GameGlobalUI:showTips(_("提示"),_("屏蔽成功"))
+                    end)
+                end
             elseif data == 'mutePlayer' then
                 UIKit:newGameUI("GameUIModMute",chat):AddToCurrentScene(true)
             elseif data == 'allianceInfo' then
@@ -805,6 +813,7 @@ function GameUIChatChannel:LeftButtonClicked()
 end
 
 return GameUIChatChannel
+
 
 
 

@@ -384,17 +384,26 @@ function GameUIAllianceShrine:BuildFightItemBox(event)
     local player_count_bg = display.newScale9Sprite("back_ground_548x40_2.png")
         :size(356,39):addTo(box)
         :align(display.LEFT_BOTTOM, 12,player_strengh_bg:getPositionY()+39)
-    display.newSprite("res_citizen_88x82.png"):scale(0.35):align(display.LEFT_CENTER,5,19):addTo(player_count_bg)
+    display.newSprite("dragon_strength_27x31.png"):align(display.LEFT_CENTER,5,19):addTo(player_count_bg)
     display.newSprite("dragon_strength_27x31.png"):align(display.LEFT_CENTER,5,19):addTo(player_strengh_bg)
     UIKit:ttfLabel({
-        text = _("建议玩家数量"),
+        text = _("敌方部队战斗力"),
         size = 18,
         color = 0x5d563f
     }):align(display.LEFT_CENTER, 40, 19):addTo(player_count_bg)
 
     local stageInfo = shrineStage[event.stageName]
+    local troops_temp = string.split(stageInfo.troops,",")
+    local soldier_power = 0
+    for i,suntroops in ipairs(troops_temp) do
+        local troops = string.split(suntroops,":")
+        if troops[1] ~= "dragon" then
+            local config = UtilsForSoldier:GetSoldierConfig(User,troops[1])
+            soldier_power = soldier_power + config.power * tonumber(troops[3])
+        end
+    end
     UIKit:ttfLabel({
-        text = string.format("%s/%s",#event.playerTroops, stageInfo.suggestPlayer),
+        text = string.format("%s",soldier_power),
         size = 20,
         color = 0x403c2f
     }):align(display.RIGHT_CENTER, 340, 19):addTo(player_count_bg)
@@ -530,7 +539,7 @@ function GameUIAllianceShrine:BuildReportItemBox(report)
         :size(356,39):addTo(box)
         :align(display.LEFT_BOTTOM, 12,player_strengh_bg:getPositionY()+39)
     display.newSprite("res_citizen_88x82.png"):scale(0.35):align(display.LEFT_CENTER,5,19):addTo(player_count_bg)
-    display.newSprite("dragon_strength_27x31.png"):align(display.LEFT_CENTER,5,19):addTo(player_strengh_bg)
+    display.newSprite("res_citizen_88x82.png"):scale(0.35):align(display.LEFT_CENTER,5,19):addTo(player_strengh_bg)
     UIKit:ttfLabel({
         text = _("参与玩家"),
         size = 18,
@@ -542,7 +551,7 @@ function GameUIAllianceShrine:BuildReportItemBox(report)
         color = 0x403c2f
     }):align(display.RIGHT_CENTER, 340, 19):addTo(player_count_bg)
     UIKit:ttfLabel({
-        text = _("人均战斗力"),
+        text = _("获胜玩家"),
         size = 18,
         color = 0x5d563f
     }):align(display.LEFT_CENTER, 40, 19):addTo(player_strengh_bg)
@@ -569,7 +578,13 @@ function GameUIAllianceShrine:fillReportItemContent(content,report,idx)
     end
     local box = content.box
     box.player_label:setString(#report.playerDatas)
-    box.power_label:setString(report.playerAvgPower)
+    local winCount = 0
+    for i,v in ipairs(report.playerDatas) do
+        if v.fightResult == "attackWin" then
+            winCount = winCount + 1
+        end
+    end
+    box.power_label:setString(winCount)
     content.date_label:setString(os.date("%Y-%m-%d",report.time/1000))
     content.time_label:setString(os.date("%H:%M:%S",report.time/1000))
     content.title_label:setString(Localize.shrine_desc[report.stageName][1])

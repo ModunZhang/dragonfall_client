@@ -7,11 +7,13 @@ local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local GameUISeasonRank = class("GameUISeasonRank", WidgetPopDialog)
 local window = import("..utils.window")
 local UIListView = import(".UIListView")
+local WidgetAllianceHelper = import("..widget.WidgetAllianceHelper")
+local ui_helper = WidgetAllianceHelper.new()
 local NORMAL_COLOR = UIKit:hex2c3b(0x403c2f)
 local MINE_COLOR = UIKit:hex2c3b(0xffedae)
 local function rank_filter(response)
     local data = response.msg
-    local is_not_nil = data.myData.index ~= json.null
+    local is_not_nil = data.myData ~= json.null and data.myData.index ~= json.null
     if is_not_nil then
         data.myData.index = data.myData.index + 1
     end
@@ -36,7 +38,8 @@ function GameUISeasonRank:onEnter()
         :align(display.TOP_CENTER, size.width / 2, size.height - 30)
     local activity_data = self.activity_data
     local activity_type = activity_data.activity.type
-    local myRank = ActivityManager:GetMyRank(activity_type)
+    local isAlliance = activity_data.isAlliance
+    local myRank = isAlliance and ActivityManager:GetMyAllianceRank(activity_type) or ActivityManager:GetMyRank(activity_type)
     self.my_ranking =UIKit:ttfLabel({
         text = myRank and string.format(_("我的排名：%d"),myRank) or _("暂无排名"),
         size = 22,
@@ -70,11 +73,17 @@ function GameUISeasonRank:onEnter()
     self.listview = list
     self.listview:setRedundancyViewVal(self.listview:getViewRect().height + 76 * 2)
     self.listview:setDelegate(handler(self, self.sourceDelegate))
-    NetManager:getPlayerTotalActivityRankPromise(self.activity_type):done(function(response)
-        self:ReloadRank(rank_filter(response).msg)
-    end)
+    if isAlliance then
+        NetManager:getAllianceTotalActivityRankPromise(self.activity_type):done(function(response)
+            self:ReloadRank(rank_filter(response).msg)
+        end)
+    else
+        NetManager:getPlayerTotalActivityRankPromise(self.activity_type):done(function(response)
+            self:ReloadRank(rank_filter(response).msg)
+        end)
+    end
 
-     UIKit:ttfLabel({
+    UIKit:ttfLabel({
         text = _("排行榜信息10分钟刷新一次"),
         size = 20,
         color = 0x403c2f,
@@ -148,10 +157,26 @@ function GameUISeasonRank:CreatePlayerContentByIndex(idx)
         color = 0x403c2f,
     }):align(display.RIGHT_CENTER, 520, 40):addTo(item)
 
+    local parent = self
     function item:SetData(data)
         self.name:setString(data.name)
         self.value:setString(string.formatnumberthousands(data.score))
-        item.player_icon:setTexture(UIKit:GetPlayerIconImage(data.icon))
+
+        if parent.activity_data.isAlliance then
+            bg:hide()
+            if self.flag then
+                self.flag:SetFlag(data.flag)
+            else
+                self.flag = ui_helper:CreateFlagContentSprite(data.flag)
+                    :addTo(self):align(display.CENTER, 80, 7):scale(0.45)
+            end
+        else
+            if self.flag then
+                self.flag:hide()
+            end
+            bg:show()
+            item.player_icon:setTexture(UIKit:GetPlayerIconImage(data.icon))
+        end
         return self
     end
     local ranklist = self
@@ -174,19 +199,28 @@ function GameUISeasonRank:LoadMore()
     self.is_loading = true
     local cur_datas = self.current_rank.datas
 
-    NetManager:getPlayerTotalActivityRankPromise(self.activity_type,#cur_datas):done(function(response)
-        load_more(cur_datas, rank_filter(response).msg.datas)
-    end):always(function()
-        self.is_loading = false
-    end)
+    if isAlliance then
+        NetManager:getAllianceTotalActivityRankPromise(self.activity_type,#cur_datas):done(function(response)
+            load_more(cur_datas, rank_filter(response).msg.datas)
+        end):always(function()
+            self.is_loading = false
+        end)
+    else
+        NetManager:getPlayerTotalActivityRankPromise(self.activity_type,#cur_datas):done(function(response)
+            load_more(cur_datas, rank_filter(response).msg.datas)
+        end):always(function()
+            self.is_loading = false
+        end)
+    end
 end
 function GameUISeasonRank:ReloadRank(rank)
-    if rank.myData.index == json.null then
+    if rank.myData == json.null or rank.myData.index == json.null then
         self.my_ranking:setString(_("暂无排名"))
     else
         self.my_ranking:setString(string.format(_("我的排名：%d"), rank.myData.index))
     end
     self.current_rank = rank
+    dump(rank)
     self.listview:releaseAllFreeItems_()
     self.listview:reload()
 end
@@ -198,10 +232,17 @@ function GameUISeasonRank:touchListener(event)
         end
         local id = self.current_rank.datas[event.itemPos].id
         app:GetAudioManager():PlayeEffectSoundWithKey("NORMAL_DOWN")
-        UIKit:newGameUI("GameUIAllianceMemberInfo",false,id,nil,DataManager:getUserData().serverId):AddToCurrentScene(true)
+        if self.activity_data.activity.isAlliance then
+            UIKit:newGameUI("GameUIAllianceInfo", id, nil, DataManager:getUserData().serverId):AddToCurrentScene(true)
+        else
+            UIKit:newGameUI("GameUIAllianceMemberInfo",false,id,nil,DataManager:getUserData().serverId):AddToCurrentScene(true)
+        end
+
     end
 end
 return GameUISeasonRank
+
+
 
 
 

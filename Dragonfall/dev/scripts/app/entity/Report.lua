@@ -79,7 +79,7 @@ function Report:GetEnemyPlayerData()
 end
 function Report:GetShrineRoundDatas()
     local data = self:GetData()
-    return data.roundDatas
+    return data
 end
 function Report:GetMyHelpFightTroop()
     local data = self:GetData()
@@ -445,7 +445,8 @@ function Report:GetReportTitle()
         local result = self:GetReportResult()
         return result and _("进攻黑龙军团成功") or _("进攻黑龙军团失败")
     elseif report_type=="attackShrine" then
-        return self:GetAttackTarget().isWin and _("攻打联盟圣地成功") or _("攻打联盟圣地失败")
+        local result = self:GetReportResult()
+        return result and _("攻打联盟圣地成功") or _("攻打联盟圣地失败")
     end
 end
 function Report:IsFromMe()
@@ -673,6 +674,13 @@ function Report:GetReportResult()
             return isWin
         elseif data.fightWithDefenceMonsterReports then
             local my_round = data.fightWithDefenceMonsterReports.soldierRoundDatas
+            local isWin = true
+            for i,v in ipairs(my_round[#my_round].attackResults) do
+                isWin = isWin and v.isWin
+            end
+            return isWin
+        elseif data.fightWithDefenceTroopReports then
+            local my_round = data.fightWithDefenceTroopReports.soldierRoundDatas
             local isWin = true
             for i,v in ipairs(my_round[#my_round].attackResults) do
                 isWin = isWin and v.isWin

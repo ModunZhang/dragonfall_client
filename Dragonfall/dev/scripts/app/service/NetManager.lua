@@ -584,7 +584,7 @@ local logic_event_map = {
         if DataManager:hasUserData() then
             local user_alliance_data = DataManager:getUserAllianceData()
             if type(user_alliance_data) == "table"
-            and response.targetAllianceId == user_alliance_data._id then
+                and response.targetAllianceId == user_alliance_data._id then
                 local edit = decodeInUserDataFromDeltaData(user_alliance_data, response.data)
                 DataManager:setUserAllianceData(user_alliance_data, edit)
                 -- LuaUtils:outputTable("onAllianceDataChanged", edit)
@@ -878,7 +878,7 @@ function NetManager:getLoginPromise(deviceId)
             else
                 LuaUtils:outputTable("logic.entryHandler.login", response)
                 -- if playerData.countInfo.isFTEFinished then
-                    -- GLOBAL_FTE = false
+                -- GLOBAL_FTE = false
                 -- end
                 self.m_netService:setDeltatime(delta_time)
                 local InitGame = import("app.service.InitGame")
@@ -2121,6 +2121,12 @@ function NetManager:getPlayerActivityRankPromise(rankType)
         rankType = rankType,
     },"获取玩家自身的活动排名失败!")
 end
+-- 获取联盟自身的活动排名
+function NetManager:getAllianceActivityRankPromise(rankType)
+    return get_blocking_request_promise("rank.rankHandler.getAllianceRank",{
+        rankType = rankType,
+    },"获取联盟自身的活动排名失败!")
+end
 -- 获取玩家活动排名信息列表
 function NetManager:getPlayerTotalActivityRankPromise(rankType,fromRank)
     return get_blocking_request_promise("rank.rankHandler.getPlayerActivityRankList",{
@@ -2128,7 +2134,13 @@ function NetManager:getPlayerTotalActivityRankPromise(rankType,fromRank)
         fromRank = fromRank or 0,
     },"获取玩家活动排名信息列表失败!")
 end
-
+-- 获取联盟活动排名信息列表
+function NetManager:getAllianceTotalActivityRankPromise(rankType,fromRank)
+    return get_blocking_request_promise("rank.rankHandler.getAllianceActivityRankList",{
+        rankType = rankType,
+        fromRank = fromRank or 0,
+    },"获取联盟活动排名信息列表失败!")
+end
 function NetManager:getAllianceRankPromise(rankType, fromRank)
     return get_blocking_request_promise("rank.rankHandler.getAllianceRankList",{
         rankType = rankType,
@@ -2242,6 +2254,18 @@ end
 function NetManager:getPlayerActivityRankRewardsPromise(rankType)
     return get_blocking_request_promise("logic.playerHandler.getPlayerActivityRankRewards",{rankType=rankType},"获取玩家活动排名奖励失败!"):done(get_player_response_msg)
 end
+--获取联盟活动信息
+function NetManager:getAllianceActivitiesPromise()
+    return get_blocking_request_promise("logic.allianceHandler.getAllianceActivities",{},"获取联盟活动信息失败!")
+end
+--获取联盟活动积分奖励
+function NetManager:getAllianceActivityScoreRewardsPromise(rankType)
+    return get_blocking_request_promise("logic.allianceHandler.getAllianceActivityScoreRewards",{rankType=rankType},"获取联盟活动积分奖励失败!"):done(get_player_response_msg)
+end
+--获取联盟活动排名奖励
+function NetManager:getAllianceActivityRankRewardsPromise(rankType)
+    return get_blocking_request_promise("logic.allianceHandler.getAllianceActivityRankRewards",{rankType=rankType},"获取联盟活动排名奖励失败!"):done(get_player_response_msg)
+end
 function NetManager:getMoveAlliancePromise(targetMapIndex)
     return get_blocking_request_promise("logic.allianceHandler.moveAlliance",{
         targetMapIndex = targetMapIndex,
@@ -2268,8 +2292,19 @@ function NetManager:getLeaveMapIndexPromise()
         return cocos_promise.defer()
     end
 end
-
-
+--添加黑名单
+function NetManager:getAddBlockedPromise(memberId,memberName,memberIcon)
+    return get_blocking_request_promise("logic.playerHandler.addBlocked",{
+            memberId=memberId,
+            memberName=memberName,
+            memberIcon=memberIcon,
+        },
+        "添加黑名单失败!"):done(get_player_response_msg)
+end
+--移除黑名单
+function NetManager:getRemoveBlockedPromise(memberId)
+    return get_blocking_request_promise("logic.playerHandler.removeBlocked",{memberId=memberId},"移除黑名单失败!"):done(get_player_response_msg)
+end
 
 ----------------------------------------------------------------------------------------------------------------
 function NetManager:getUpdateFileList(cb)
@@ -2334,6 +2369,7 @@ function NetManager:downloadFile(fileInfo, cb, progressCb)
         progressCb(totalSize, currentSize)
     end)
 end
+
 
 
 

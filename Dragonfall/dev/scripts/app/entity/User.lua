@@ -59,7 +59,9 @@ User.LISTEN_TYPE = Enum(
     "dailyQuestEvents",
     "inviteToAllianceEvents",
     "defenceTroop",
-    "activities")
+    "activities",
+    "allianceActivities",
+    "blocked")
 
 property(User, "id", 0)
 property(User, "soldierStars", {})
@@ -643,8 +645,16 @@ function User:IsAbleToMakeEquipment(equip_name)
     return true
 end
 --[[end]]
-
-
+-- [[blocked begin]]
+function User:IsBlocked(id)
+    for i,v in ipairs(self.blocked) do
+        if v.id == id then
+            return true
+        end
+    end
+    return false
+end
+--[[end]]
 
 --[[treat begin]]
 function User:IsWoundedSoldierOverflow()
@@ -1551,6 +1561,8 @@ local before_map = {
     inviteToAllianceEvents = function()end,
     defenceTroop = function()end,
     activities = function()end,
+    allianceActivities = function()end,
+    blocked = function()end,
     vipEvents = function(userData, deltaData)
         userData:RefreshOutput()
     end,

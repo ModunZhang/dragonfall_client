@@ -115,7 +115,7 @@ local Enum                = import("..utils.Enum")
 local PUSH_INTVAL         = 2 -- 推送的时间间隔
 local SIZE_MUST_PUSH      = 5 -- 如果队列中数量达到指定条数立即推送
 ChatManager.LISTEN_TYPE   = Enum("TO_TOP","TO_REFRESH")
-local BLOCK_LIST_KEY      = "CHAT_BLOCK_LIST"
+-- local BLOCK_LIST_KEY      = "CHAT_BLOCK_LIST"
 
 function ChatManager:ctor(gameDefault)
     ChatManager.super.ctor(self)
@@ -126,7 +126,7 @@ function ChatManager:ctor(gameDefault)
     self.allianceFight_channel = {}
     self.push_buff_queue       = {}
     self.___handle___          = scheduler.scheduleGlobal(handler(self, self.__checkNotifyIf),PUSH_INTVAL)
-    self._blockedIdList_       = self:GetGameDefault():getBasicInfoValueForKey(BLOCK_LIST_KEY,{})
+    -- self._blockedIdList_       = self:GetGameDefault():getBasicInfoValueForKey(BLOCK_LIST_KEY,{})
 end
 
 function ChatManager:GetEmojiUtil()
@@ -149,7 +149,8 @@ function ChatManager:__checkIsBlocked(msg)
             msg.allianceTag = alliacne.basicInfo.tag
         end
     end
-    return self._blockedIdList_[msg.id] ~= nil
+    return User:IsBlocked(msg.id)
+    -- self._blockedIdList_[msg.id] ~= nil
 end
 
 function ChatManager:__getMessageWithChannel(channel)
@@ -406,28 +407,35 @@ end
 
 function ChatManager:AddBlockChat(chat)
     if self:__checkIsBlocked(chat) then return false end
-    self._blockedIdList_[chat.id] = chat
-    self:__flush()
-    return true
+    return NetManager:getAddBlockedPromise(chat.id,chat.name,chat.icon)
+    -- self._blockedIdList_[chat.id] = chat
+    -- self:__flush()
+    -- return true
 end
 
 function ChatManager:GetBlockList()
-    return self._blockedIdList_
+    local blockedIdList = {}
+    for i,v in ipairs(User.blocked) do
+        blockedIdList[v.id] = v
+    end
+    return blockedIdList
+    -- return self._blockedIdList_
 end
 
 function ChatManager:RemoveItemFromBlockList(chat)
     if self:__checkIsBlocked(chat) then
-        self._blockedIdList_[chat.id] = nil
-        self:__flush()
-        return true
+        -- self._blockedIdList_[chat.id] = nil
+        -- self:__flush()
+        return NetManager:getRemoveBlockedPromise(chat.id)
+        -- return true
     end
-    return true
+    -- return true
 end
 
-function ChatManager:__flush()
-    self:GetGameDefault():setBasicInfoValueForKey(BLOCK_LIST_KEY,self._blockedIdList_)
-    self:GetGameDefault():flush()
-end
+-- function ChatManager:__flush()
+--     self:GetGameDefault():setBasicInfoValueForKey(BLOCK_LIST_KEY,self._blockedIdList_)
+--     self:GetGameDefault():flush()
+-- end
 
 function ChatManager:FetMessageFirstStartGame()
     if not self:isChannelInited('global') then

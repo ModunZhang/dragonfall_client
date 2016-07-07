@@ -249,6 +249,7 @@ function WidgetShortcutButtons:onEnter()
     User:AddListenOnType(self, "vipEvents")
     User:AddListenOnType(self, "dragons")
     User:AddListenOnType(self, "activities")
+    User:AddListenOnType(self, "allianceActivities")
 
     NewsManager:AddListenOnType(self,NewsManager.LISTEN_TYPE.UNREAD_NEWS_CHANGED)
 
@@ -258,6 +259,7 @@ function WidgetShortcutButtons:onEnter()
     my_allaince:AddListenOnType(self, "helpEvents")
     my_allaince:AddListenOnType(self, "marchEvents")
     my_allaince:AddListenOnType(self, "shrineEvents")
+    my_allaince:AddListenOnType(self, "activities")
     Alliance_Manager:AddHandle(self)
 end
 function WidgetShortcutButtons:onExit()
@@ -272,6 +274,7 @@ function WidgetShortcutButtons:onExit()
     User:RemoveListenerOnType(self, "vipEvents")
     User:RemoveListenerOnType(self, "dragons")
     User:RemoveListenerOnType(self, "activities")
+    User:RemoveListenerOnType(self, "allianceActivities")
     NewsManager:RemoveListenerOnType(self,NewsManager.LISTEN_TYPE.UNREAD_NEWS_CHANGED)
 
     local my_allaince = Alliance_Manager:GetMyAlliance()
@@ -280,6 +283,7 @@ function WidgetShortcutButtons:onExit()
     my_allaince:RemoveListenerOnType(self, "helpEvents")
     my_allaince:RemoveListenerOnType(self, "marchEvents")
     my_allaince:RemoveListenerOnType(self, "shrineEvents")
+    my_allaince:RemoveListenerOnType(self, "activities")
     Alliance_Manager:RemoveHandle(self)
 end
 function WidgetShortcutButtons:onCleanup()
@@ -351,7 +355,12 @@ end
 function WidgetShortcutButtons:OnUserDataChanged_activities()
     self:CheckAllianceRewardCount()
 end
-
+function WidgetShortcutButtons:OnUserDataChanged_allianceActivities()
+    self:CheckAllianceRewardCount()
+end
+function WidgetShortcutButtons:OnAllianceDataChanged_activities(alliance, deltaData)
+    self:CheckAllianceRewardCount()
+end
 function WidgetShortcutButtons:OnMapDataChanged()
     self.right_top_order:RefreshOrder()
 end

@@ -35,7 +35,7 @@ function GameUIShrineReport:GetSoldierKillScore(soldier_name,star,count)
 end
 
 function GameUIShrineReport:ctor(shrineReport)
-    GameUIShrineReport.super.ctor(self,750,_("事件详情"),window.top - 82)
+    GameUIShrineReport.super.ctor(self,700,_("事件详情"),window.top - 82)
     self.shrineReport_ = shrineReport
     self:adapterFightDataToListView()
     self.stageConfig = config_shrineStage[self:GetShrineReport().stageName]
@@ -63,12 +63,14 @@ end
 
 function GameUIShrineReport:BuildUI()
     local background = self:GetBody()
-    self.tab_buttons = WidgetRoundTabButtons.new({
-        {tag = "data_statistics",label = _("数据统计"),default = true},
-        {tag = "fight_detail",label = _("战斗详情")},
-    }, function(tag)
-        self:OnTabButtonClicked(tag)
-    end,1):align(display.BOTTOM_CENTER,background:getContentSize().width/2,16):addTo(background)
+    self:CreateIf_data_statistics():show()
+    self:RefreshUI("data_statistics")
+    -- self.tab_buttons = WidgetRoundTabButtons.new({
+    --     {tag = "data_statistics",label = _("数据统计"),default = true},
+    --     {tag = "fight_detail",label = _("战斗详情")},
+    -- }, function(tag)
+    --     self:OnTabButtonClicked(tag)
+    -- end,1):align(display.BOTTOM_CENTER,background:getContentSize().width/2,16):addTo(background)
 end
 
 function GameUIShrineReport:OnTabButtonClicked(tag)
@@ -234,27 +236,27 @@ function GameUIShrineReport:fillFightItemContent(item_content,list_data,item,ite
     end
 end
 function GameUIShrineReport:adapterFightDataToListView()
-    local data_source = {}
-    for i,rounds in ipairs(self:GetShrineReport().fightDatas) do
-        table.insert(data_source,{type = 1,data = i,index = i})
-        for j,r_data in ipairs(rounds.roundDatas) do
-            local data = r_data
-            data.killScore = r_data.playerKill
-            data.playerIcon = r_data.playerIcon
-            local normal_data = {type = 2,data = data,index = j}
-            table.insert(data_source,normal_data)
-        end
-    end
-    self.data_source = data_source
+    -- local data_source = {}
+    -- for i,rounds in ipairs(self:GetShrineReport().fightDatas) do
+    --     table.insert(data_source,{type = 1,data = i,index = i})
+    --     for j,r_data in ipairs(rounds.roundDatas) do
+    --         local data = r_data
+    --         data.killScore = r_data.playerKill
+    --         data.playerIcon = r_data.playerIcon
+    --         local normal_data = {type = 2,data = data,index = j}
+    --         table.insert(data_source,normal_data)
+    --     end
+    -- end
+    -- self.data_source = data_source
     self.player_data_source = clone(self:GetShrineReport().playerDatas)
 end
 
 function GameUIShrineReport:OnRePlayClicked(idx)
-    local list_data = self.data_source[idx]
-    if list_data and list_data.type == 2 then
-        local roundData = list_data.data
-        UIKit:newGameUI("GameUIReplay", UtilsForShrine:GetFightReport(roundData)):AddToCurrentScene(true)
-    end
+    -- local list_data = self.data_source[idx]
+    -- if list_data and list_data.type == 2 then
+    --     local roundData = list_data.data
+    --     UIKit:newGameUI("GameUIReplay", UtilsForShrine:GetFightReport(roundData)):AddToCurrentScene(true)
+    -- end
 end
 
 function GameUIShrineReport:RefreshUI(tag)
@@ -269,7 +271,7 @@ function GameUIShrineReport:CreateIf_data_statistics()
     if self.data_statistics_node then return self.data_statistics_node end
     local data_statistics_node = display.newNode():addTo(self:GetBody())
     local image = self:GetShrineReport().isWin and "report_victory_590x137.png" or "report_failure_590x137.png"
-    local logo = display.newSprite(image):align(display.LEFT_TOP, 20, 727):addTo(data_statistics_node)
+    local logo = display.newSprite(image):align(display.LEFT_TOP, 20, 677):addTo(data_statistics_node)
     local layer = UIKit:shadowLayer():size(590,30):addTo(logo)
     logo:scale(0.96)
     local honour_icon = display.newSprite("honour_128x128.png"):addTo(layer):pos(295,15):scale(0.2)
@@ -298,7 +300,7 @@ function GameUIShrineReport:CreateIf_data_statistics()
         async = true,
         -- bgColor = UIKit:hex2c4b(0x7a000000),
     }):addTo(list_node)
-    list_node:addTo(data_statistics_node):align(display.BOTTOM_CENTER, self:GetBody():getContentSize().width/2,100)
+    list_node:addTo(data_statistics_node):align(display.BOTTOM_CENTER, self:GetBody():getContentSize().width/2,50)
     self.data_statistics_list = list
     self.data_statistics_list:setDelegate(handler(self, self.sourceDelegate))
     return data_statistics_node
