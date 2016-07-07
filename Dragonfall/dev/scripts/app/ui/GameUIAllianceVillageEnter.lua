@@ -171,7 +171,7 @@ function GameUIAllianceVillageEnter:GetBuildingInfo()
         local collectCount = math.floor(collectSpeed * collectTime)
         local occupy_label = {
             {_("占领者"),0x615b44},
-            {_("未知"),0x403c2f}
+            {villageEvent.playerData.name,0x403c2f}
         }
         local current_collect_label =  {
             {_("当前采集"),0x615b44},
