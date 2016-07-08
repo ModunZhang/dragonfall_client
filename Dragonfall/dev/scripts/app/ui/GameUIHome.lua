@@ -415,6 +415,7 @@ function GameUIHome:CreateBottom()
         if task then
             if task.finished then
                 NetManager:getGrowUpTaskRewardsPromise(task:TaskType(), task.id):done(function()
+                    if tolua.isnull(self) then return end
                     if self.ShowResourceAni then
                         local x,y = self.quest_status_icon:getPosition()
                         local wp = self.quest_status_icon:getParent():convertToWorldSpace(cc.p(x,y))
