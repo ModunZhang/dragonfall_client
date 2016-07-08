@@ -139,7 +139,9 @@ function GameUIHome:onEnter()
         self.food_label:SetNumColor(User:IsResOverLimit("food") and red_color or normal_color)
         self.iron_label:SetNumColor(User:IsResOverLimit("iron") and red_color or normal_color)
         self.stone_label:SetNumColor(User:IsResOverLimit("stone") and red_color or normal_color)
-        self.promotionTime:setString(GameUtils:formatTimeStyle1(DataUtils:GetPromtionProductLessLeftTime()))
+        if self.promotionTime then
+            self.promotionTime:setString(GameUtils:formatTimeStyle1(DataUtils:GetPromtionProductLessLeftTime()))
+        end
     end)
 end
 function GameUIHome:onExit()
@@ -335,9 +337,27 @@ function GameUIHome:CreateTop()
     }):addTo(button):align(display.CENTER, -14, -1)
     -- WidgetEventsList.new():addTo(self):align(display.LEFT_TOP, window.left + (display.width>640 and 14 or 0), display.top - 100)
 
-    -- 促销活动
+    if not User.gameInfo then
+        NetManager:getGameInfoPromise():done(function (response)
+            User.gameInfo = response.msg.serverInfo
+            if User.gameInfo.promotionProductEnabled then
+                self:CreateADNode()
+            end
+        end)
+    else
+        if User.gameInfo.promotionProductEnabled then
+            self:CreateADNode()
+        end
+    end
+
+    return top_bg
+end
+-- 促销活动
+function GameUIHome:CreateADNode()
+    self:RemoveADNode()
     local box = ccs.Armature:create("AD_icon"):addTo(self):align(display.CENTER, display.right - 55, display.top - 170)
     box:getAnimation():playWithIndex(0)
+    self.ad_box = box
     self.promotionTime = UIKit:ttfLabel({
         text = GameUtils:formatTimeStyle1(DataUtils:GetPromtionProductLessLeftTime()),
         size = 16,
@@ -354,7 +374,21 @@ function GameUIHome:CreateTop()
         end)
     sale_button:setContentSize(cc.size(100,110))
     sale_button:setTouchSwallowEnabled(true)
-    return top_bg
+    self.sale_button = sale_button
+end
+function GameUIHome:RemoveADNode()
+    if self.sale_button then
+        self.sale_button:removeFromParent()
+        self.sale_button = nil
+    end
+    if self.ad_box then
+        self.ad_box:removeFromParent()
+        self.ad_box = nil
+    end
+    if self.promotionTime then
+        self.promotionTime:removeFromParent()
+        self.promotionTime = nil
+    end
 end
 function GameUIHome:GotoUnlockBuilding(location)
     self:GotoOpenBuildingUI(self.city:GetBuildingByLocationId(location))
@@ -831,6 +865,8 @@ end
 
 
 return GameUIHome
+
+
 
 
 

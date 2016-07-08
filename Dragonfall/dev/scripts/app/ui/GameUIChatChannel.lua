@@ -756,7 +756,6 @@ function GameUIChatChannel:CreatePlayerMenu(event,chat)
                 if promise then
                     promise:done(function ()
                         self:RefreshListView()
-                        GameGlobalUI:showTips(_("提示"),_("屏蔽成功"))
                     end)
                 end
             elseif data == 'mutePlayer' then

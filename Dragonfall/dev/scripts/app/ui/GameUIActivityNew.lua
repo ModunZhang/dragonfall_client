@@ -147,6 +147,10 @@ function GameUIActivityNew:OnSeasonListViewTouch(event)
         data.activity = content.activity
         data.status = content.status
         data.isAlliance = content.isAlliance
+        if content.isAlliance and Alliance_Manager:GetMyAlliance():IsDefault() then
+            UIKit:showMessageDialog(_("提示"),_("请加入联盟"))
+            return
+        end
         app:GetAudioManager():PlayeEffectSoundWithKey("NORMAL_DOWN")
         UIKit:newGameUI("GameUISeasonDetails",data):AddToCurrentScene()
     end

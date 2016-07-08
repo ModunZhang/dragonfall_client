@@ -683,6 +683,20 @@ local logic_event_map = {
             end
         end
     end,
+    onGameInfoChanged = function(success, response)
+        if success then
+            User.gameInfo["modApplyEnabled"] = response.modApplyEnabled
+            User.gameInfo["promotionProductEnabled"] = response.promotionProductEnabled
+            local home_page = display.getRunningScene():GetHomePage()
+            if home_page.CreateADNode then
+                if User.gameInfo.promotionProductEnabled then
+                    home_page:CreateADNode()
+                else
+                    home_page:RemoveADNode()
+                end
+            end
+        end
+    end,
 }
 ---
 function NetManager:InitEventsMap(...)
@@ -2299,13 +2313,18 @@ function NetManager:getAddBlockedPromise(memberId,memberName,memberIcon)
             memberName=memberName,
             memberIcon=memberIcon,
         },
-        "添加黑名单失败!"):done(get_player_response_msg)
+        "添加黑名单失败!"):done(get_player_response_msg):done(function ()
+            GameGlobalUI:showTips(_("提示"),_("屏蔽成功"))
+        end)
 end
 --移除黑名单
 function NetManager:getRemoveBlockedPromise(memberId)
     return get_blocking_request_promise("logic.playerHandler.removeBlocked",{memberId=memberId},"移除黑名单失败!"):done(get_player_response_msg)
 end
-
+--获取游戏状态信息
+function NetManager:getGameInfoPromise()
+    return get_blocking_request_promise("logic.playerHandler.getGameInfo",{},"获取游戏状态信息失败!")
+end
 ----------------------------------------------------------------------------------------------------------------
 function NetManager:getUpdateFileList(cb)
     local fileListJsonPath = string.format("%s:%s%s/res/fileList.json",self.m_updateServer.host,self.m_updateServer.port,self.m_updateServer.basePath)

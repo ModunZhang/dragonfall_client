@@ -61,28 +61,28 @@ function GameUIAllianceHome:onEnter()
     local x, y = rect1.x, rect1.y + rect1.height - 2
 
     if app:GetGameDefautlt():IsPassedAllianceFte(1,2,3,4,5)
-    and UtilsForFte:NeedTriggerTips(User)
-    and not UtilsForEvent:HaveMyMarchEvents()
-    and not app:GetGameDefautlt():IsPassedTriggerTips("regionHelps") then
+        and UtilsForFte:NeedTriggerTips(User)
+        and not UtilsForEvent:HaveMyMarchEvents()
+        and not app:GetGameDefautlt():IsPassedTriggerTips("regionHelps") then
         app:GetGameDefautlt():SetPassTriggerTips("regionHelps")
         self.clipNode = display.newClippingRegionNode(cc.rect(0,0,display.width,80))
-                        :addTo(self):pos(x,y)
+            :addTo(self):pos(x,y)
         local tipsNode = display.newNode():addTo(self.clipNode)
         UIKit:GetPlayerCommonIcon():addTo(tipsNode)
-        :scale(0.5):align(display.LEFT_BOTTOM,0,8)
+            :scale(0.5):align(display.LEFT_BOTTOM,0,8)
         local sprite = display.newScale9Sprite("word_bubble.png",
-                                                rect1.width,
-                                                5,
-                                                nil,
-                                                cc.rect(20,10,10,46))
-        :addTo(tipsNode):align(display.RIGHT_BOTTOM):size(545,56)
+            rect1.width,
+            5,
+            nil,
+            cc.rect(20,10,10,46))
+            :addTo(tipsNode):align(display.RIGHT_BOTTOM):size(545,56)
         UIKit:ttfLabel({
             text = _("大人：\n进攻其他领主有几率获得：英雄之血和龙的装材料"),
             size = 16,
             color = 0xffedae,
         }):addTo(sprite)
-        :align(display.LEFT_TOP, 15, 50)
-        :setMaxLineWidth(545)
+            :align(display.LEFT_TOP, 15, 50)
+            :setMaxLineWidth(545)
     end
 
     self.march = WidgetMarchEvents.new(ratio):addTo(self):pos(x, y)
@@ -103,26 +103,20 @@ function GameUIAllianceHome:onEnter()
     self:AddOrRemoveListener(true)
     self:Schedule()
     -- 促销活动
-    local box = ccs.Armature:create("AD_icon"):addTo(self):align(display.CENTER, display.right - 55, display.top - 205)
-    box:getAnimation():playWithIndex(0)
-    self.promotionTime = UIKit:ttfLabel({
-        text = GameUtils:formatTimeStyle1(DataUtils:GetPromtionProductLessLeftTime()),
-        size = 16,
-        color = 0xffedae,
-        shadow = true
-    }):align(display.CENTER, display.right - 55, display.top - 227)
-        :addTo(self)
-    local sale_button = WidgetPushButton.new()
-        :addTo(self):align(display.CENTER, display.right - 55, display.top - 205)
-        :onButtonClicked(function(event)
-            if event.name == "CLICKED_EVENT" then
-                UIKit:newGameUI("GameUISaleOne"):AddToCurrentScene()
+    if not User.gameInfo then
+        NetManager:getGameInfoPromise():done(function (response)
+            User.gameInfo = response.msg.serverInfo
+            if User.gameInfo.promotionProductEnabled then
+                self:CreateADNode()
             end
         end)
-    sale_button:setContentSize(cc.size(100,110))
-    sale_button:setTouchSwallowEnabled(true)
+    else
+        if User.gameInfo.promotionProductEnabled then
+            self:CreateADNode()
+        end
+    end
     if UtilsForFte:NeedTriggerTips(User)
-    and not app:GetGameDefautlt():IsPassedTriggerTips("allianceFight") then
+        and not app:GetGameDefautlt():IsPassedTriggerTips("allianceFight") then
         local status = self.alliance.basicInfo.status
         if (status == "fight" or status == "prepare")
             and self.self_power_label
@@ -140,16 +134,16 @@ function GameUIAllianceHome:onEnter()
             }):next(function()
                 UIKit:FingerAni():addTo(node,10,111):pos(src.x,src.y)
                 return GameUINpc:PromiseOfSay({
-                            focus_rect = cc.rectUnion( r1, r2 ),
-                            words = _("左上方为我方联盟击杀数量")
-                        })
+                    focus_rect = cc.rectUnion( r1, r2 ),
+                    words = _("左上方为我方联盟击杀数量")
+                })
             end):next(function()
                 local finger = node:getChildByTag(111)
                 finger:moveTo(0.6, dst.x, dst.y)
                 return GameUINpc:PromiseOfSay({
-                            focus_rect = cc.rectUnion( r1, r2 ),
-                            words = _("右上方为敌方联盟击杀数量")
-                        })
+                    focus_rect = cc.rectUnion( r1, r2 ),
+                    words = _("右上方为敌方联盟击杀数量")
+                })
             end):next(function()
                 node:removeFromParent()
                 return GameUINpc:PromiseOfSay({
@@ -160,6 +154,44 @@ function GameUIAllianceHome:onEnter()
                 return GameUINpc:PromiseOfLeave()
             end)
         end
+    end
+end
+-- 促销活动
+function GameUIAllianceHome:CreateADNode()
+    self:RemoveADNode()
+    local box = ccs.Armature:create("AD_icon"):addTo(self):align(display.CENTER, display.right - 55, display.top - 205)
+    box:getAnimation():playWithIndex(0)
+    self.ad_box = box
+    self.promotionTime = UIKit:ttfLabel({
+        text = GameUtils:formatTimeStyle1(DataUtils:GetPromtionProductLessLeftTime()),
+        size = 16,
+        color = 0xffedae,
+        shadow = true
+    }):align(display.CENTER, display.right - 55, display.top - 227)
+        :addTo(self)
+    local sale_button = WidgetPushButton.new()
+        :addTo(self):align(display.CENTER, display.right - 55, display.top - 205)
+        :onButtonClicked(function(event)
+            if event.name == "CLICKED_EVENT" then
+                UIKit:newGameUI("GameUISaleOne"):AddToCurrentScene()
+            end
+        end)
+    sale_button:setContentSize(cc.size(100,110))
+    sale_button:setTouchSwallowEnabled(true)
+    self.sale_button = sale_button
+end
+function GameUIAllianceHome:RemoveADNode()
+    if self.sale_button then
+        self.sale_button:removeFromParent()
+        self.sale_button = nil
+    end
+    if self.ad_box then
+        self.ad_box:removeFromParent()
+        self.ad_box = nil
+    end
+    if self.promotionTime then
+        self.promotionTime:removeFromParent()
+        self.promotionTime = nil
     end
 end
 function GameUIAllianceHome:onExit()
@@ -391,7 +423,7 @@ function GameUIAllianceHome:RefreshTop(force_refresh)
     local top_self_size = top_self_bg:getCascadeBoundingBox().size
     local top_enemy_size = top_enemy_bg:getCascadeBoundingBox().size
     if alliance.basicInfo.status == "fight"
-    or alliance.basicInfo.status == "prepare" then
+        or alliance.basicInfo.status == "prepare" then
         -- 己方联盟名字
         local self_name_bg = display.newSprite("title_green_292X32.png")
             :align(display.LEFT_CENTER, 0,-26)
@@ -911,8 +943,8 @@ function GameUIAllianceHome:ShowHonorFte(isshow)
     local fteNode = display.newNode():addTo(self,10,FTE_TAG)
     local r = self.page_top.honour_btn:getCascadeBoundingBox()
     local mark = WidgetFteMark.new():addTo(fteNode)
-    :size(r.width+30, r.height+30)
-    :pos(r.x + r.width/2, r.y + r.height/2)
+        :size(r.width+30, r.height+30)
+        :pos(r.x + r.width/2, r.y + r.height/2)
 
     local content = display.newNode()
     local totalsize = 0
@@ -927,7 +959,7 @@ function GameUIAllianceHome:ShowHonorFte(isshow)
     }) do
         local scale = UILib.resource.gem ~= v and 0.5 or 0.8
         local sprite = display.newSprite(v):addTo(content)
-        :align(display.LEFT_CENTER,totalsize,0):scale(scale)
+            :align(display.LEFT_CENTER,totalsize,0):scale(scale)
         local size = sprite:getContentSize()
         if maxheight < size.height * scale then
             maxheight = size.height * scale
@@ -936,7 +968,7 @@ function GameUIAllianceHome:ShowHonorFte(isshow)
     end
     content:setContentSize(cc.size(totalsize-15,maxheight))
     WidgetFteArrow.new(content):TurnUp(false):addTo(fteNode):scale(0.8)
-    :pos(r.x + r.width/2+(totalsize-15)/2, r.y - r.height/2 - maxheight + 35)
+        :pos(r.x + r.width/2+(totalsize-15)/2, r.y - r.height/2 - maxheight + 35)
 end
 function GameUIAllianceHome:ShowWorldMap(isshow)
     self:GetShortcutNode().world_map_btn:removeChildByTag(FTE_TAG)
@@ -947,12 +979,13 @@ function GameUIAllianceHome:ShowWorldMap(isshow)
         self:ShowWorldMap()
     end)
     WidgetFteArrow.new(_("世界地图")):TurnLeft()
-    :addTo(self:GetShortcutNode().world_map_btn,100,FTE_TAG)
-    :pos(200,0)
+        :addTo(self:GetShortcutNode().world_map_btn,100,FTE_TAG)
+        :pos(200,0)
 
 end
 
 return GameUIAllianceHome
+
 
 
 

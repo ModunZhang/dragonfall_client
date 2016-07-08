@@ -1250,7 +1250,7 @@ function DataUtils:GetResourceProtectPercent( resource_name )
     local vipBuffAddPercent = getPlayerVipForResourceLootPercentSubtract()
     local tech_effect = UtilsForTech:GetEffect("hideout", User.productionTechs["hideout"])
     local finalPercent = basePercent + buildingBuffAddPercent + vipBuffAddPercent + tech_effect
-    finalPercent = finalPercent > 0.9 and 0.9 or finalPercent < basePercent/100 and basePercent/100 or finalPercent
+    finalPercent = finalPercent > 0.9 and 0.9 or finalPercent < 0.1 and 0.1 or finalPercent
     return finalPercent
 end
 --根据MapIndex获取MapRound

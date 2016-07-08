@@ -54,11 +54,11 @@ function ActivityManager:GetActivitiesFromServer()
 end
 -- 从服务器获取所有联盟活动信息
 function ActivityManager:GetAllianceActivitiesFromServer()
-    if not self:IsAllianceDefault() then
-        NetManager:getAllianceActivitiesPromise():done(function (response)
-            if response.success then
-                self.alliance_activities = response.msg.activities
-                LuaUtils:outputTable("alliance_activities",self.alliance_activities)
+    NetManager:getAllianceActivitiesPromise():done(function (response)
+        if response.success then
+            self.alliance_activities = response.msg.activities
+            LuaUtils:outputTable("alliance_activities",self.alliance_activities)
+            if not self:IsAllianceDefault() then
                 self:IteratorAllianceActivityExpired(function (i,activity)
                     self:GetExpiredAllianceActivityPlayerRankFromServer(activity.type)
                     local ep_time = app.timer:GetServerTime() - (activity.removeTime/1000 - allianceType[activity.type].expireHours * 60 * 60) -- 过期后十分钟可以领取排行榜奖励
@@ -66,21 +66,21 @@ function ActivityManager:GetAllianceActivitiesFromServer()
                         self:SchedulerAllianceExpiredGetReward(activity.type,self.EXPIRED_GET_LIMIT - ep_time)
                     end
                 end)
-                if self.handle_alliance_next then
-                    scheduler.unscheduleGlobal(self.handle_alliance_next)
-                    self.handle_alliance_next = nil
-                end
-                if self.alliance_handle then
-                    scheduler.unscheduleGlobal(self.alliance_handle)
-                    self.alliance_handle = nil
-                end
-                self:addAllianceSchdulerRefresh__()
-                self:NotifyListeneOnType(ActivityManager.LISTEN_TYPE.ACTIVITY_CHANGED,function(listener)
-                    listener:OnActivitiesChanged()
-                end)
             end
-        end)
-    end
+            if self.handle_alliance_next then
+                scheduler.unscheduleGlobal(self.handle_alliance_next)
+                self.handle_alliance_next = nil
+            end
+            if self.alliance_handle then
+                scheduler.unscheduleGlobal(self.alliance_handle)
+                self.alliance_handle = nil
+            end
+            self:addAllianceSchdulerRefresh__()
+            self:NotifyListeneOnType(ActivityManager.LISTEN_TYPE.ACTIVITY_CHANGED,function(listener)
+                listener:OnActivitiesChanged()
+            end)
+        end
+    end)
 end
 -- 添加延时计时器更新活动信息
 function ActivityManager:addSchdulerRefresh__()
@@ -620,6 +620,7 @@ function ActivityManager:GetActivityScoreCondition(type)
     end
 end
 return ActivityManager
+
 
 
 

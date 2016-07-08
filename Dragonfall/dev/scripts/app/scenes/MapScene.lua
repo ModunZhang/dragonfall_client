@@ -66,7 +66,7 @@ function MapScene:onEnter()
             flag = Alliance_Manager:HasToMyCityEvents()
         end
         if flag then
-            if not GameDefautlt:IsPassedTriggerTips("warning") then
+            if not app:GetGameDefautlt():IsPassedTriggerTips("warning") then
                 app:GetGameDefautlt():SetPassTriggerTips("warning")
                 if UIKit:GetUIInstance("GameUINpc") then
                     UIKit:GetUIInstance("GameUINpc"):removeFromParent()

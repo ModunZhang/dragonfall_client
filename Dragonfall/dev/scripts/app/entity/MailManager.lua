@@ -255,7 +255,7 @@ function MailManager:GetSendMailIndexByServerIndex(serverIndex)
     end
     local sendMails = self.sendMails
     for i,v in ipairs(sendMails) do
-        print(".....v.index == index",v.title,v.index,serverIndex,v.index == serverIndex,i)
+        print(".发件箱....v.index == index",v.title,v.index,serverIndex,v.index == serverIndex,i)
     end
     for i,v in ipairs(sendMails) do
         if v.index == serverIndex then
@@ -431,7 +431,7 @@ function MailManager:OnNewMailsChanged( mails )
             for i,data in ipairs(mail) do
                 -- 收到
                 if not data.index then
-                    data.index = self.mails[1] and (self.mails[1].index + 1) or 0
+                    data.index = not LuaUtils:table_empty(self.mails) and (self.mails[#self.mails].index + 1) or 0
                 end
                 table.insert(add_mails, clone(data))
                 table.insert(self.mails, 1, clone(data))
@@ -506,7 +506,7 @@ function MailManager:OnNewSendMailsChanged( sendMails )
             for i,data in ipairs(mail) do
                 -- 收到
                 if not data.index then
-                    data.index = self.sendMails[1] and (self.sendMails[1].index + 1) or 0
+                    data.index = not LuaUtils:table_empty(self.sendMails) and (self.sendMails[#self.sendMails].index + 1) or 0
                 end
                 table.insert(add_mails, clone(data))
                 table.insert(self.sendMails, clone(data))
@@ -589,7 +589,7 @@ function MailManager:OnNewReportsChanged( __reports )
         if type == "add" then
             for k,data in pairs(rp) do
                 if not data.index then
-                    data.index = self.reports[1] and (self.reports[1]:Index() + 1) or 0
+                    data.index = not LuaUtils:table_empty(self.reports) and (self.reports[#self.reports]:Index() + 1) or 0
                 end
                 local c_report = Report:DecodeFromJsonData(clone(data))
                 table.insert(add_reports, c_report)
