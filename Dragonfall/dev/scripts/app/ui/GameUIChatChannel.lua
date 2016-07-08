@@ -612,13 +612,19 @@ function GameUIChatChannel:listviewListener(event)
                 if string.utf8len(final_chat_msg) == 0 then
                     return
                 end
-                if string.find(chat.text,"<report>.+<report>") then
-                    return
+                local report_str
+                if string.find(final_chat_msg,"<report>.+<report>") then
+                    local __,endIndex = string.find(final_chat_msg,"<report>",9)
+                    report_str = string.sub(final_chat_msg,1,endIndex+1)
+                    final_chat_msg = string.sub(final_chat_msg,endIndex+1,-1)
                 end
                 GameUtils:Translate(final_chat_msg,function(result,errText)
                     -- fix the nil error
                     if result and not tolua.isnull(self) and not tolua.isnull(contentLable)  then
                         chat._translate_ = result
+                        if report_str then
+                            chat._translate_ = report_str..result
+                        end
                         chat._translateMode_ = true
                         if string.lower(chat.id) == 'system' then
                             contentLable:Text(self:GetChatManager():GetEmojiUtil():FormatSystemChat(chat._translate_))
