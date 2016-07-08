@@ -1272,13 +1272,19 @@ end
 function NetManager:getDeleteSendMailsPromise(mailIds)
     return get_blocking_request_promise("logic.playerHandler.deleteSendMails", {
         mailIds = mailIds
-    }, "删除已发邮件失败!"):done(get_response_delete_send_mail_msg)
+    }, "删除已发邮件失败!"):done(get_response_delete_send_mail_msg):done(function ( response )
+        GameGlobalUI:showTips(_("提示"),_("已删除"))
+        return response
+    end)
 end
 -- 删除邮件
 function NetManager:getDeleteMailsPromise(mailIds)
     return get_blocking_request_promise("logic.playerHandler.deleteMails", {
         mailIds = mailIds
-    }, "删除邮件失败!"):done(get_response_delete_mail_msg)
+    }, "删除邮件失败!"):done(get_response_delete_mail_msg):done(function ( response )
+        GameGlobalUI:showTips(_("提示"),_("已删除"))
+        return response
+    end)
 end
 -- 从邮件获取奖励
 function NetManager:getMailRewardsPromise(mailId)
@@ -1333,7 +1339,10 @@ end
 function NetManager:getDeleteReportsPromise(reportIds)
     return get_blocking_request_promise("logic.playerHandler.deleteReports", {
         reportIds = reportIds
-    }, "删除战报失败!"):done(get_response_delete_report_msg)
+    }, "删除战报失败!"):done(get_response_delete_report_msg):done(function ( response )
+        GameGlobalUI:showTips(_("提示"),_("已删除"))
+        return response
+    end)
 end
 -- 获取战报详情
 function NetManager:getReportDetailPromise(memberId,reportId)

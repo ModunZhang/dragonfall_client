@@ -166,7 +166,7 @@ function MailManager:ModifyMail(mail)
             if mail.isSaved ~= v.isSaved then
                 self:OnNewSavedMailsChanged(mail)
             end
-            if mail.isRead ~= v.isSaved and mail.isRead then
+            if mail.isRead ~= v.isRead and mail.isRead then
                 self:OnNewSavedMailsChanged(mail,true)
             end
             for i,modify in pairs(mail) do
@@ -431,7 +431,7 @@ function MailManager:OnNewMailsChanged( mails )
             for i,data in ipairs(mail) do
                 -- 收到
                 if not data.index then
-                    data.index = not LuaUtils:table_empty(self.mails) and (self.mails[#self.mails].index + 1) or 0
+                    data.index = self.mails[1] and (self.mails[1].index + 1) or 0
                 end
                 table.insert(add_mails, clone(data))
                 table.insert(self.mails, 1, clone(data))
@@ -589,7 +589,7 @@ function MailManager:OnNewReportsChanged( __reports )
         if type == "add" then
             for k,data in pairs(rp) do
                 if not data.index then
-                    data.index = not LuaUtils:table_empty(self.reports) and (self.reports[#self.reports]:Index() + 1) or 0
+                    data.index = self.reports[1] and (self.reports[1]:Index() + 1) or 0
                 end
                 local c_report = Report:DecodeFromJsonData(clone(data))
                 table.insert(add_reports, c_report)

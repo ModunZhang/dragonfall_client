@@ -1317,9 +1317,9 @@ function GameUIMail:ShowMailDetails(mail)
         normal = "tmp_brown_btn_up_36x24.png",
         pressed= "tmp_brown_btn_down_36x24.png",
     }):align(display.RIGHT_BOTTOM, 556,12):addTo(content_bg)
-    :onButtonClicked(function(event)
+        :onButtonClicked(function(event)
             if event.name == "CLICKED_EVENT" then
-               GameUtils:Translate(mail_content,function(result,errText)
+                GameUtils:Translate(mail_content,function(result,errText)
                     print("result=",result)
                     if result and not tolua.isnull(self) and not tolua.isnull(content_label)  then
                         content_label:setString(result)
@@ -1391,32 +1391,35 @@ function GameUIMail:ShowMailDetails(mail)
                     end
                 end)
             -- 屏蔽按钮
-        local block_label = cc.ui.UILabel.new({
-            UILabelType = cc.ui.UILabel.LABEL_TYPE_TTF,
-            text = _("屏蔽"),
-            size = 20,
-            font = UIKit:getFontFilePath(),
-            color = UIKit:hex2c3b(0xfff3c7)})
-        block_label:enableShadow()
+            dump(mail)
+            if mail.fromIcon ~= -1 then
+                local block_label = cc.ui.UILabel.new({
+                    UILabelType = cc.ui.UILabel.LABEL_TYPE_TTF,
+                    text = _("屏蔽"),
+                    size = 20,
+                    font = UIKit:getFontFilePath(),
+                    color = UIKit:hex2c3b(0xfff3c7)})
+                block_label:enableShadow()
 
-        local block_btn = WidgetPushButton.new(
-            {normal = "red_btn_up_148x58.png", pressed = "red_btn_down_148x58.png"},
-            {scale9 = false}
-        ):setButtonLabel(block_label)
-            :addTo(body):align(display.CENTER, size.width/2, 42)
-            :onButtonClicked(function(event)
-                if event.name == "CLICKED_EVENT" then
-                    if #User.blocked >= GameDatas.PlayerInitData.intInit.MaxBlockedSize.value then
-                        UIKit:showMessageDialog(_("提示"),_("你的黑名单已满!"),function()end)
-                        return
-                    end
-                    NetManager:getAddBlockedPromise(mail.fromId,mail.fromName,mail.fromIcon):done(function ()
-                        if dialog then
-                            dialog:LeftButtonClicked()
+                local block_btn = WidgetPushButton.new(
+                    {normal = "red_btn_up_148x58.png", pressed = "red_btn_down_148x58.png"},
+                    {scale9 = false}
+                ):setButtonLabel(block_label)
+                    :addTo(body):align(display.CENTER, size.width/2, 42)
+                    :onButtonClicked(function(event)
+                        if event.name == "CLICKED_EVENT" then
+                            if #User.blocked >= GameDatas.PlayerInitData.intInit.MaxBlockedSize.value then
+                                UIKit:showMessageDialog(_("提示"),_("你的黑名单已满!"),function()end)
+                                return
+                            end
+                            NetManager:getAddBlockedPromise(mail.fromId,mail.fromName,mail.fromIcon):done(function ()
+                                if dialog then
+                                    dialog:LeftButtonClicked()
+                                end
+                            end)
                         end
                     end)
-                end
-            end)
+            end
         else
             del_btn:setPositionX(size.width/2)
         end
@@ -1653,7 +1656,7 @@ function GameUIMail:InitReport()
                 if #response.msg.reports > 0 then
                     local ispass = app:GetGameDefautlt():IsPassedTriggerTips("mail")
                     if UtilsForFte:NeedTriggerTips(User)
-                    and not ispass then
+                        and not ispass then
                         if response.msg.reports[1].type == "attackCity" then
                             local item = self.report_listview.items_[1]
                             UIKit:FingerAni():addTo(item:getContent(),10,111):pos(500, 50)
@@ -1755,7 +1758,7 @@ function GameUIMail:CreateReportContent()
                         UIKit:newGameUI("GameUIStrikeReport", report,true):AddToCurrentScene(true)
                     elseif report:Type() == "attackCity" or report:Type() == "attackVillage" then
                         if report:Type() == "attackCity"
-                        and not app:GetGameDefautlt():IsPassedTriggerTips("mail") then
+                            and not app:GetGameDefautlt():IsPassedTriggerTips("mail") then
                             app:GetGameDefautlt():SetPassTriggerTips("mail")
                         end
                         UIKit:newGameUI("GameUIWarReport", report,true):AddToCurrentScene(true)
@@ -2700,6 +2703,7 @@ end
 
 
 return GameUIMail
+
 
 
 
