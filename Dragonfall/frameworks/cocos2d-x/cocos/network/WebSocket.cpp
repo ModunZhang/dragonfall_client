@@ -595,7 +595,8 @@ namespace network {
         
         info.port = CONTEXT_PORT_NO_LISTEN;
         info.protocols = _wsProtocols;
-//        info.extensions = exts;
+        //dannyhe: should we comment this line?
+        //info.extensions = exts;
         
         info.gid = -1;
         info.uid = -1;
