@@ -34,7 +34,6 @@
 		3FABD26E1B9C3BF300C71BEB /* Droid Sans Fallback.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3FABD26D1B9C3BF300C71BEB /* Droid Sans Fallback.ttf */; };
 		3FABD29B1B9C72F300C71BEB /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FABD29A1B9C72F300C71BEB /* StoreKit.framework */; };
 		3FD7CAB11C8E7A0E00338869 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FD7CAB01C8E7A0E00338869 /* FBSDKShareKit.framework */; };
-		3FD7CAB51C8E7A5F00338869 /* AppsFlyerLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FD7CAB31C8E7A5F00338869 /* AppsFlyerLib.a */; };
 		3FDC687E1BB0F03300F29DE2 /* libcocos2d.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FDC687B1BB0EFF400F29DE2 /* libcocos2d.a */; };
 		3FDC69481BB0F08600F29DE2 /* libluacocos2d.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FDC69451BB0F07000F29DE2 /* libluacocos2d.a */; };
 		3FDC69F51BB0F0C700F29DE2 /* libquick_libs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FDC69F41BB0F0C000F29DE2 /* libquick_libs.a */; };
@@ -213,8 +212,6 @@
 		3FABD26D1B9C3BF300C71BEB /* Droid Sans Fallback.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Droid Sans Fallback.ttf"; path = "../../../dev/res/fonts/Droid Sans Fallback.ttf"; sourceTree = "<group>"; };
 		3FABD29A1B9C72F300C71BEB /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.4.sdk/System/Library/Frameworks/StoreKit.framework; sourceTree = DEVELOPER_DIR; };
 		3FD7CAB01C8E7A0E00338869 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = "../../../../external/iOS/FacebookSDKs-iOS-20151111/FBSDKShareKit.framework"; sourceTree = "<group>"; };
-		3FD7CAB31C8E7A5F00338869 /* AppsFlyerLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = AppsFlyerLib.a; sourceTree = "<group>"; };
-		3FD7CAB41C8E7A5F00338869 /* AppsFlyerTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppsFlyerTracker.h; sourceTree = "<group>"; };
 		3FDC6A051BB12D5300F29DE2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Dragonfall/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		5023810717EBBCAC00990C9B /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		5023810817EBBCAC00990C9B /* AppController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppController.mm; sourceTree = "<group>"; };
@@ -285,7 +282,6 @@
 				50805AAF17EBBEAA004CFAD3 /* UIKit.framework in Frameworks */,
 				5023817A17EBBE8300990C9B /* OpenGLES.framework in Frameworks */,
 				F293B3CD15EB7BE500256477 /* QuartzCore.framework in Frameworks */,
-				3FD7CAB51C8E7A5F00338869 /* AppsFlyerLib.a in Frameworks */,
 				F293B3D115EB7BE500256477 /* OpenAL.framework in Frameworks */,
 				F293B3D315EB7BE500256477 /* AudioToolbox.framework in Frameworks */,
 				F293B3D515EB7BE500256477 /* AVFoundation.framework in Frameworks */,
@@ -346,7 +342,6 @@
 				3F0ADC921CFF1A01001D609E /* tolua_market_sdk.h */,
 				3F08407C1B9BDFC300A52544 /* MarketSDKTool-ios.mm */,
 				3F08407D1B9BDFC300A52544 /* MarketSDKTool.h */,
-				3FD7CAB21C8E7A5F00338869 /* AppsFlyer */,
 				3F2DC6EA1BFAD06600D562F9 /* Facebook */,
 				3F08407E1B9BDFC300A52544 /* TalkingData */,
 			);
@@ -424,16 +419,6 @@
 			);
 			name = UICKeyChainStore;
 			path = ../../../extensions/ext/platform/apple/UICKeyChainStore;
-			sourceTree = "<group>";
-		};
-		3FD7CAB21C8E7A5F00338869 /* AppsFlyer */ = {
-			isa = PBXGroup;
-			children = (
-				3FD7CAB31C8E7A5F00338869 /* AppsFlyerLib.a */,
-				3FD7CAB41C8E7A5F00338869 /* AppsFlyerTracker.h */,
-			);
-			name = AppsFlyer;
-			path = ../../../external/iOS/AppsFlyer;
 			sourceTree = "<group>";
 		};
 		5023810617EBBCAC00990C9B /* ios */ = {
@@ -954,7 +939,7 @@
 					"CC_USE_FACEBOOK=1",
 					"CC_USE_POMELO_C_LIB=0",
 					"CC_USE_TAKING_DATA=1",
-					"CC_USE_APPSFLYER=1",
+					"CC_USE_APPSFLYER=0",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../Classes/protobuf-lite",
@@ -1019,7 +1004,7 @@
 					"CC_USE_FACEBOOK=1",
 					"CC_USE_POMELO_C_LIB=0",
 					"CC_USE_TAKING_DATA=1",
-					"CC_USE_APPSFLYER=1",
+					"CC_USE_APPSFLYER=0",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../Classes/protobuf-lite",
