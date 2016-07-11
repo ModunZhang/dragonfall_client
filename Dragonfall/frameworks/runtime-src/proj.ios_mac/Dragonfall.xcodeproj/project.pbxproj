@@ -34,7 +34,6 @@
 		3FABD26E1B9C3BF300C71BEB /* Droid Sans Fallback.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3FABD26D1B9C3BF300C71BEB /* Droid Sans Fallback.ttf */; };
 		3FABD29B1B9C72F300C71BEB /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FABD29A1B9C72F300C71BEB /* StoreKit.framework */; };
 		3FD7CAB11C8E7A0E00338869 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FD7CAB01C8E7A0E00338869 /* FBSDKShareKit.framework */; };
-		3FD7CAB51C8E7A5F00338869 /* AppsFlyerLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FD7CAB31C8E7A5F00338869 /* AppsFlyerLib.a */; };
 		3FDC687E1BB0F03300F29DE2 /* libcocos2d.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FDC687B1BB0EFF400F29DE2 /* libcocos2d.a */; };
 		3FDC69481BB0F08600F29DE2 /* libluacocos2d.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FDC69451BB0F07000F29DE2 /* libluacocos2d.a */; };
 		3FDC69F51BB0F0C700F29DE2 /* libquick_libs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FDC69F41BB0F0C000F29DE2 /* libquick_libs.a */; };
@@ -213,8 +212,6 @@
 		3FABD26D1B9C3BF300C71BEB /* Droid Sans Fallback.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Droid Sans Fallback.ttf"; path = "../../../dev/res/fonts/Droid Sans Fallback.ttf"; sourceTree = "<group>"; };
 		3FABD29A1B9C72F300C71BEB /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.4.sdk/System/Library/Frameworks/StoreKit.framework; sourceTree = DEVELOPER_DIR; };
 		3FD7CAB01C8E7A0E00338869 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = "../../../../external/iOS/FacebookSDKs-iOS-20151111/FBSDKShareKit.framework"; sourceTree = "<group>"; };
-		3FD7CAB31C8E7A5F00338869 /* AppsFlyerLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = AppsFlyerLib.a; sourceTree = "<group>"; };
-		3FD7CAB41C8E7A5F00338869 /* AppsFlyerTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppsFlyerTracker.h; sourceTree = "<group>"; };
 		3FDC6A051BB12D5300F29DE2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Dragonfall/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		5023810717EBBCAC00990C9B /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		5023810817EBBCAC00990C9B /* AppController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppController.mm; sourceTree = "<group>"; };
@@ -249,7 +246,7 @@
 		DA9E7D871AB1ABCC004B27C8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		DABC98D41A82028A00BF5CC4 /* quick_libs.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = quick_libs.xcodeproj; path = "../../../frameworks/cocos2d-x/cocos/quick_libs/proj.ios_mac/quick_libs.xcodeproj"; sourceTree = "<group>"; };
 		DABC99501A8214A100BF5CC4 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
-		F293B3C815EB7BE500256477 /* Dragonfall.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dragonfall.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F293B3C815EB7BE500256477 /* DragonfallWar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DragonfallWar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F293B3CC15EB7BE500256477 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		F293B3CE15EB7BE500256477 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		F293B3D015EB7BE500256477 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
@@ -285,7 +282,6 @@
 				50805AAF17EBBEAA004CFAD3 /* UIKit.framework in Frameworks */,
 				5023817A17EBBE8300990C9B /* OpenGLES.framework in Frameworks */,
 				F293B3CD15EB7BE500256477 /* QuartzCore.framework in Frameworks */,
-				3FD7CAB51C8E7A5F00338869 /* AppsFlyerLib.a in Frameworks */,
 				F293B3D115EB7BE500256477 /* OpenAL.framework in Frameworks */,
 				F293B3D315EB7BE500256477 /* AudioToolbox.framework in Frameworks */,
 				F293B3D515EB7BE500256477 /* AVFoundation.framework in Frameworks */,
@@ -346,7 +342,6 @@
 				3F0ADC921CFF1A01001D609E /* tolua_market_sdk.h */,
 				3F08407C1B9BDFC300A52544 /* MarketSDKTool-ios.mm */,
 				3F08407D1B9BDFC300A52544 /* MarketSDKTool.h */,
-				3FD7CAB21C8E7A5F00338869 /* AppsFlyer */,
 				3F2DC6EA1BFAD06600D562F9 /* Facebook */,
 				3F08407E1B9BDFC300A52544 /* TalkingData */,
 			);
@@ -424,16 +419,6 @@
 			);
 			name = UICKeyChainStore;
 			path = ../../../extensions/ext/platform/apple/UICKeyChainStore;
-			sourceTree = "<group>";
-		};
-		3FD7CAB21C8E7A5F00338869 /* AppsFlyer */ = {
-			isa = PBXGroup;
-			children = (
-				3FD7CAB31C8E7A5F00338869 /* AppsFlyerLib.a */,
-				3FD7CAB41C8E7A5F00338869 /* AppsFlyerTracker.h */,
-			);
-			name = AppsFlyer;
-			path = ../../../external/iOS/AppsFlyer;
 			sourceTree = "<group>";
 		};
 		5023810617EBBCAC00990C9B /* ios */ = {
@@ -527,7 +512,7 @@
 		F293B3C915EB7BE500256477 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F293B3C815EB7BE500256477 /* Dragonfall.app */,
+				F293B3C815EB7BE500256477 /* DragonfallWar.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -598,9 +583,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		F293B3C715EB7BE500256477 /* Dragonfall */ = {
+		F293B3C715EB7BE500256477 /* DragonfallWar */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F293B6C415EB7BEA00256477 /* Build configuration list for PBXNativeTarget "Dragonfall" */;
+			buildConfigurationList = F293B6C415EB7BEA00256477 /* Build configuration list for PBXNativeTarget "DragonfallWar" */;
 			buildPhases = (
 				F293B3C415EB7BE500256477 /* Sources */,
 				F293B3C515EB7BE500256477 /* Frameworks */,
@@ -614,9 +599,9 @@
 				3FDC69471BB0F07900F29DE2 /* PBXTargetDependency */,
 				3FDC687D1BB0F00300F29DE2 /* PBXTargetDependency */,
 			);
-			name = Dragonfall;
+			name = DragonfallWar;
 			productName = Dragonfall;
-			productReference = F293B3C815EB7BE500256477 /* Dragonfall.app */;
+			productReference = F293B3C815EB7BE500256477 /* DragonfallWar.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -626,11 +611,6 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0500;
-				TargetAttributes = {
-					F293B3C715EB7BE500256477 = {
-						DevelopmentTeam = B484Q6X8P4;
-					};
-				};
 			};
 			buildConfigurationList = F293B3C215EB7BE500256477 /* Build configuration list for PBXProject "Dragonfall" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -694,7 +674,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				F293B3C715EB7BE500256477 /* Dragonfall */,
+				F293B3C715EB7BE500256477 /* DragonfallWar */,
 			);
 		};
 /* End PBXProject section */
@@ -937,8 +917,8 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Alan Cooper (37X43D5H4Z)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Alan Cooper (37X43D5H4Z)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Pin Wen Huang (5S75Q755M3)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Pin Wen Huang (5S75Q755M3)";
 				COMPRESS_PNG_FILES = NO;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -959,7 +939,7 @@
 					"CC_USE_FACEBOOK=1",
 					"CC_USE_POMELO_C_LIB=0",
 					"CC_USE_TAKING_DATA=1",
-					"CC_USE_APPSFLYER=1",
+					"CC_USE_APPSFLYER=0",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../Classes/protobuf-lite",
@@ -987,8 +967,9 @@
 					"$(_COCOS_LIB_IOS_END)",
 					"$(PROJECT_SDK_ROOT)/TalkingData/libTalkingDataGA_iphonesimulator_x86.a",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.dragonrise.jlzbwor;
 				PROJECT_SDK_ROOT = "$(SRCROOT)/../../../extensions/sdk";
-				PROVISIONING_PROFILE = "c232557f-4aa7-4f01-84e3-4d3eeb084124";
+				PROVISIONING_PROFILE = "dc99e930-0d10-46ab-bff3-0a811db90016";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../../cocos2d-x/cocos/platform/ios $(_COCOS_HEADER_IOS_BEGIN) $(_COCOS_HEADER_IOS_END)";
@@ -1002,8 +983,8 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Alan Cooper (B484Q6X8P4)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Alan Cooper (B484Q6X8P4)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Pin Wen Huang (9RNQD8JEQ2)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Pin Wen Huang (9RNQD8JEQ2)";
 				COMPRESS_PNG_FILES = NO;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1023,7 +1004,7 @@
 					"CC_USE_FACEBOOK=1",
 					"CC_USE_POMELO_C_LIB=0",
 					"CC_USE_TAKING_DATA=1",
-					"CC_USE_APPSFLYER=1",
+					"CC_USE_APPSFLYER=0",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../Classes/protobuf-lite",
@@ -1051,8 +1032,9 @@
 					"$(_COCOS_LIB_IOS_END)",
 					"$(PROJECT_SDK_ROOT)/TalkingData/libTalkingDataGA_iphonesimulator_x86.a",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.dragonrise.jlzbwor;
 				PROJECT_SDK_ROOT = "$(SRCROOT)/../../../extensions/sdk";
-				PROVISIONING_PROFILE = "7f884fc4-abc7-4efd-bba6-c9297bf4fd3a";
+				PROVISIONING_PROFILE = "65ab5db9-8a57-4a7d-863e-260db8d96c56";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../../cocos2d-x/cocos/platform/ios $(_COCOS_HEADER_IOS_BEGIN) $(_COCOS_HEADER_IOS_END)";
@@ -1072,7 +1054,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F293B6C415EB7BEA00256477 /* Build configuration list for PBXNativeTarget "Dragonfall" */ = {
+		F293B6C415EB7BEA00256477 /* Build configuration list for PBXNativeTarget "DragonfallWar" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F293B6C515EB7BEA00256477 /* Debug */,

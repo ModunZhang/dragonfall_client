@@ -427,6 +427,13 @@ public class Cocos2dxHelper {
         editor.putString(key, value);
         editor.commit();
     }
+
+    public static void deleteValueForKey(String key) {
+        SharedPreferences settings = sActivity.getSharedPreferences(Cocos2dxHelper.PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.remove(key);
+        editor.commit();
+    }
     
     // ===========================================================
     // Inner and Anonymous Classes

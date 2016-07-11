@@ -3,9 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>AppHoc</key>
-	<false/>
+	<true/>
 	<key>AppMinVersion</key>
-	<string>1.1.2</string>
+	<string>1.0.0</string>
+	<key>GameChannel</key>
+	<string>gNetop</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleDisplayName</key>
@@ -15,7 +17,7 @@
 	<key>CFBundleIconFile</key>
 	<string></string>
 	<key>CFBundleIdentifier</key>
-	<string>com.batcatstudio.dragonfall</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -23,7 +25,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.1.3</string>
+	<string>1.0.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -31,14 +33,14 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1525134891121169</string>
+				<string>fb261407404233769</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>781</string>
 	<key>FacebookAppID</key>
-	<string>1525134891121169</string>
+	<string>261407404233769</string>
 	<key>FacebookDisplayName</key>
 	<string>Dragonfall</string>
 	<key>LSApplicationQueriesSchemes</key>

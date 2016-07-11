@@ -887,11 +887,32 @@ static int tolua_ext_isLowMemoryDevice(lua_State* tolua_S)
 	return 1;
 }
 
+static int tolua_ext_channelIsEqTo(lua_State* tolua_S)
+{
+    bool ret = ChannelIsEqTo(tolua_tocppstring(tolua_S, 1, 0));
+    tolua_pushboolean(tolua_S, ret);
+    return 1;
+}
+
+static int tolua_ext_marketIsEqTo(lua_State* tolua_S)
+{
+    bool ret = MarketIsEqTo(tolua_tocppstring(tolua_S, 1, 0));
+    tolua_pushboolean(tolua_S, ret);
+    return 1;
+}
+
 static int tolua_ext_getAppMemoryUsage(lua_State* tolua_S)
 {
 	auto ret = GetAppMemoryUsage();
 	tolua_pushnumber(tolua_S, ret);
 	return 1;
+}
+
+static int tolua_ext_getAppBundleId(lua_State* tolua_S)
+{
+    auto ret = GetAppBundleId();
+    tolua_pushcppstring(tolua_S, ret);
+    return 1;
 }
 
 #if  CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
@@ -975,6 +996,10 @@ static void ResgisterGlobalExtFunctions(lua_State* tolua_S)
     tolua_function(tolua_S, "isAppAdHoc",tolua_ext_is_app_hoc);
 	tolua_function(tolua_S, "isLowMemoryDevice", tolua_ext_isLowMemoryDevice);
     tolua_function(tolua_S, "getAppMemoryUsage", tolua_ext_getAppMemoryUsage);
+    tolua_function(tolua_S, "channelIsEqTo", tolua_ext_channelIsEqTo);
+    tolua_function(tolua_S, "marketIsEqTo", tolua_ext_marketIsEqTo);
+    tolua_function(tolua_S, "getAppBundleId", tolua_ext_getAppBundleId);
+    
 #if  CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 	tolua_function(tolua_S, "openURL", tolua_ext_open_url);
 	tolua_function(tolua_S, "showAlert", tolua_ext_show_alert);
