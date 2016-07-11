@@ -54,10 +54,12 @@ static NativeIOS *s_sharedInstance;
 //    [activityIndicatorView_ startAnimating];
     // dannyhe 修改hud
     CCLOG("[NativeIOS] showActivityIndicator()");
-    NSInteger count = [UIApplication sharedApplication].windows.count;
-    UIWindow* topWindow = [[UIApplication sharedApplication].windows objectAtIndex:count - 1];
-    MBProgressHUD* hud = [MBProgressHUD showHUDAddedTo:topWindow animated:NO];
-    hud.margin = 10;
+    UIView *view = [[[UIApplication sharedApplication]keyWindow]rootViewController].view;
+    if (view && [view respondsToSelector:@selector(handleTouchesAfterKeyboardShow)])
+    {
+        MBProgressHUD* hud = [MBProgressHUD showHUDAddedTo:view animated:NO];
+        hud.margin = 10;
+    }
 }
 
 - (void)hideActivityIndicator
@@ -73,9 +75,11 @@ static NativeIOS *s_sharedInstance;
 //    [activityIndicatorView_ release];
 //    activityIndicatorView_ = nil;
     CCLOG("[NativeIOS] hideActivityIndicator()");
-    NSInteger count = [UIApplication sharedApplication].windows.count;
-    UIWindow* topWindow = [[UIApplication sharedApplication].windows objectAtIndex:count - 1];
-    [MBProgressHUD hideAllHUDsForView:topWindow animated:NO];
+    UIView *view = [[[UIApplication sharedApplication]keyWindow]rootViewController].view;
+    if (view && [view respondsToSelector:@selector(handleTouchesAfterKeyboardShow)])
+    {
+        [MBProgressHUD hideAllHUDsForView:view animated:NO];
+    }
 }
 
 
