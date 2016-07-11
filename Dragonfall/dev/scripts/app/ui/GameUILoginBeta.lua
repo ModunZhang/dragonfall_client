@@ -514,7 +514,7 @@ function GameUILoginBeta:onCleanup()
     GameUILoginBeta.super.onCleanup(self)
     -- clean  all  unused textures
     removeImageByKey("splash_beta_bg_3987x1136.jpg")
-    removeImageByKey("splash_logo_516x92.png")
+    removeImageByKey(ext.channelIsEqTo("gNetop") and "splash_logo_war_514x92.png" or "splash_logo_516x92.png")
     removeImageByKey("splash_process_color_606x25.png")
     removeImageByKey("splash_process_bg_606x25.png")
     removeImageByKey("splash_tips_bg_544x30.png")

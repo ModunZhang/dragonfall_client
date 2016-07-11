@@ -249,7 +249,7 @@
 		DA9E7D871AB1ABCC004B27C8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		DABC98D41A82028A00BF5CC4 /* quick_libs.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = quick_libs.xcodeproj; path = "../../../frameworks/cocos2d-x/cocos/quick_libs/proj.ios_mac/quick_libs.xcodeproj"; sourceTree = "<group>"; };
 		DABC99501A8214A100BF5CC4 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
-		F293B3C815EB7BE500256477 /* Dragonfall.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dragonfall.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F293B3C815EB7BE500256477 /* DragonfallWar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DragonfallWar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F293B3CC15EB7BE500256477 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		F293B3CE15EB7BE500256477 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		F293B3D015EB7BE500256477 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
@@ -527,7 +527,7 @@
 		F293B3C915EB7BE500256477 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F293B3C815EB7BE500256477 /* Dragonfall.app */,
+				F293B3C815EB7BE500256477 /* DragonfallWar.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -598,9 +598,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		F293B3C715EB7BE500256477 /* Dragonfall */ = {
+		F293B3C715EB7BE500256477 /* DragonfallWar */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F293B6C415EB7BEA00256477 /* Build configuration list for PBXNativeTarget "Dragonfall" */;
+			buildConfigurationList = F293B6C415EB7BEA00256477 /* Build configuration list for PBXNativeTarget "DragonfallWar" */;
 			buildPhases = (
 				F293B3C415EB7BE500256477 /* Sources */,
 				F293B3C515EB7BE500256477 /* Frameworks */,
@@ -614,9 +614,9 @@
 				3FDC69471BB0F07900F29DE2 /* PBXTargetDependency */,
 				3FDC687D1BB0F00300F29DE2 /* PBXTargetDependency */,
 			);
-			name = Dragonfall;
+			name = DragonfallWar;
 			productName = Dragonfall;
-			productReference = F293B3C815EB7BE500256477 /* Dragonfall.app */;
+			productReference = F293B3C815EB7BE500256477 /* DragonfallWar.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -626,11 +626,6 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0500;
-				TargetAttributes = {
-					F293B3C715EB7BE500256477 = {
-						DevelopmentTeam = B484Q6X8P4;
-					};
-				};
 			};
 			buildConfigurationList = F293B3C215EB7BE500256477 /* Build configuration list for PBXProject "Dragonfall" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -694,7 +689,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				F293B3C715EB7BE500256477 /* Dragonfall */,
+				F293B3C715EB7BE500256477 /* DragonfallWar */,
 			);
 		};
 /* End PBXProject section */
@@ -937,8 +932,8 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Alan Cooper (37X43D5H4Z)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Alan Cooper (37X43D5H4Z)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Pin Wen Huang (5S75Q755M3)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Pin Wen Huang (5S75Q755M3)";
 				COMPRESS_PNG_FILES = NO;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -987,8 +982,9 @@
 					"$(_COCOS_LIB_IOS_END)",
 					"$(PROJECT_SDK_ROOT)/TalkingData/libTalkingDataGA_iphonesimulator_x86.a",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.dragonrise.jlzbwor;
 				PROJECT_SDK_ROOT = "$(SRCROOT)/../../../extensions/sdk";
-				PROVISIONING_PROFILE = "5f88f4fd-12f4-41d4-8626-8b0819cf6ca7";
+				PROVISIONING_PROFILE = "dc99e930-0d10-46ab-bff3-0a811db90016";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../../cocos2d-x/cocos/platform/ios $(_COCOS_HEADER_IOS_BEGIN) $(_COCOS_HEADER_IOS_END)";
@@ -1002,8 +998,8 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Alan Cooper (B484Q6X8P4)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Alan Cooper (B484Q6X8P4)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Pin Wen Huang (9RNQD8JEQ2)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Pin Wen Huang (9RNQD8JEQ2)";
 				COMPRESS_PNG_FILES = NO;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1051,8 +1047,9 @@
 					"$(_COCOS_LIB_IOS_END)",
 					"$(PROJECT_SDK_ROOT)/TalkingData/libTalkingDataGA_iphonesimulator_x86.a",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.dragonrise.jlzbwor;
 				PROJECT_SDK_ROOT = "$(SRCROOT)/../../../extensions/sdk";
-				PROVISIONING_PROFILE = "4537c8d4-befa-4c7a-adee-ddbb9ffcc287";
+				PROVISIONING_PROFILE = "65ab5db9-8a57-4a7d-863e-260db8d96c56";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../../cocos2d-x/cocos/platform/ios $(_COCOS_HEADER_IOS_BEGIN) $(_COCOS_HEADER_IOS_END)";
@@ -1072,7 +1069,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F293B6C415EB7BEA00256477 /* Build configuration list for PBXNativeTarget "Dragonfall" */ = {
+		F293B6C415EB7BEA00256477 /* Build configuration list for PBXNativeTarget "DragonfallWar" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F293B6C515EB7BEA00256477 /* Debug */,
