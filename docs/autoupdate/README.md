@@ -87,7 +87,7 @@ local imageName = ext.channelIsEqTo("gNetop") and "splash_logo_war_514x92.png" o
 
 类似 Apple GooglePlay 360 ...,和渠道相关的是内购
 
-#### 不同包的不同平台下配置
+#### 不同平台下的配置字段
 
 我们可以根据不同渠道和不同市场的组合，快速配置出我们需要的包
 
@@ -96,6 +96,37 @@ local imageName = ext.channelIsEqTo("gNetop") and "splash_logo_war_514x92.png" o
 渠道名		| GameChannel 				 | GAME_CHANNEL 			  	  | 空
 市场名   	| 定值 `Apple`                | GAME_MARKET	                  | 定值 `Microsoft`
 Bugly参数ID	| BuglyId            	     | BUGLY_ID           		      | 空
+
+#### 拓展Android: 如何快速给不同包加入统一的配置字段.并在Lua中获取值
+
+比如有个需求: 给`Android`加入一个新的配置 市场sdk的不同参数，字段名为`GAME_SDK_ID`,在`360`和`GooglePlay`的包中指定不同值，并在`Lua`中获取该值
+
+首先指定值
+
+`build.gradle`:
+
+~~~
+productFlavors {
+        googleplay {
+            ....
+            ....
+            buildConfigField "String", "GAME_SDK_ID", "\"googleplay_id\""
+        }
+        qihoo {
+            ....
+            ....
+            buildConfigField "String", "GAME_SDK_ID", "\"qihoo_id\""
+        }
+}
+~~~
+
+然后可以在`Lua`中获取:
+
+~~~
+local __,ret = luaj.callStaticMethod("com/batcatstudio/dragonfall/utils/CommonUtils", "GetBuildConfigField", {"GAME_SDK_ID"}, "(Ljava/lang/String;)Ljava/lang/String;")
+print("GAME_SDK_ID is ",ret)
+~~~
+
 
 ----
 By DannyHe 11/11/2015
