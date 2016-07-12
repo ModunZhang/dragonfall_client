@@ -48,7 +48,7 @@
 #define  LOG_TAG    "WebSocket.cpp"
 
 // Since CCLOG isn't thread safe, we uses LOGD for multi-thread logging.
-#if 0
+#if COCOS2D_DEBUG > 0
 #ifdef ANDROID
 #define  LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG,__VA_ARGS__)
 #else

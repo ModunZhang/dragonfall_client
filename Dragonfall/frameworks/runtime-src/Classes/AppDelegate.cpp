@@ -18,11 +18,15 @@
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
 #include "WinRTHelper.h"
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-#include "bugly/CrashReport.h"
 #define LOG_TAG ("AppDelegate.cpp")
 #define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__))
 #define LOGD(...) ((void)__android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__))
 #define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__))
+#endif /* CC_TARGET_PLATFORM == CC_PLATFORM_WINRT */
+
+//bugly just for android and iOS
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+#include "bugly/CrashReport.h"
 #endif
 
 using namespace CocosDenshion;
@@ -64,12 +68,25 @@ bool AppDelegate::applicationDidFinishLaunching()
     // set default FPS
     Director::getInstance()->setAnimationInterval(1.0 / 60.0f);
 
+//bugly init
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+    std::string buglyId = GetBuglyId();
+    bool isDebug = false;
+#if COCOS2D_DEBUG > 0
+    isDebug = true;
+#endif
+    if(buglyId.length() > 0) //如果Bugly的ID未设置,不启用Bugly
+    {
+        std::string version = GetAppVersion() + "(" + GetAppBundleVersion() + ")";
+        CrashReport::setAppVersion(version.c_str());
+        CrashReport::initCrashReport(buglyId.c_str(), isDebug);
+    }
+   #endif /* CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID */
+
+//autoupdate init
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
     AppDelegateExtern::initLuaEngine();
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-    std::string version = GetAppVersion() + "(" + GetAppBundleVersion() + ")";
-    CrashReport::setAppVersion(version.c_str());
-    CrashReport::initCrashReport("900025835", false);
     AndroidCheckFistInstall();
 #else
 	//normal execute lua file
@@ -88,7 +105,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 	    return false;
 	}
 
-#endif
+#endif /* CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_WINRT */
     return true;
 }
 
