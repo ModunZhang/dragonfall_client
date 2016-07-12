@@ -10,18 +10,22 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+
 import com.batcatstudio.dragonfall.google.gcm.GCMUtils;
-//#ifdef CC_USE_GOOGLE_PLAY_BILLING_V3
-//@import com.google.android.gms.common.ConnectionResult;
-//@import com.google.android.gms.common.GooglePlayServicesUtil;
-//#endif
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.xapcn.dragonfall.BuildConfig;
 import com.xapcn.dragonfall.R;
 
 import org.cocos2dx.lua.AppActivity;
 import org.cocos2dx.utils.PSNetwork;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Locale;
+
+//#ifdef CC_USE_GOOGLE_PLAY_BILLING_V3
+//#endif
 
 public class CommonUtils {
 	private static String TAG = "CommonUtils";
@@ -200,26 +204,55 @@ public class CommonUtils {
     private void RegisterGCMServiceIf()
     {
 //#ifdef CC_USE_GOOGLE_PLAY_BILLING_V3
-//@    	if(isGooglePlayServiceAvailable())
-//@    	{
-//@    		GCMUtils.registerGCMService(AppActivity.getGameActivity());
-//@    	}
+    	if(isGooglePlayServiceAvailable())
+    	{
+    		GCMUtils.registerGCMService(AppActivity.getGameActivity());
+    	}
 //#endif
     }
 	public static boolean isGooglePlayServiceAvailable () {
 //#ifdef CC_USE_GOOGLE_PLAY_BILLING_V3
-//@		int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(AppActivity.getGameActivity());
-//@		if (status == ConnectionResult.SUCCESS) {
-//@			return true;
-//@		} else {
-//@			return false;
-//@		}
+		int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(AppActivity.getGameActivity());
+		if (status == ConnectionResult.SUCCESS) {
+			return true;
+		} else {
+			return false;
+		}
 //#else
-		return false;
+//@		return false;
 //#endif
 	}
 
 	public static void terminateProcess(){
 		android.os.Process.killProcess(android.os.Process.myPid());
+	}
+
+	public  static String GetBuglyId(){
+		return BuildConfig.BUGLY_ID;
+	}
+
+	public static String GetAppBundleId(){
+		return GetBuildConfigField("APPLICATION_ID");
+	}
+
+	public static boolean ChannelIsEqTo(String channelName){
+		return BuildConfig.GAME_CHANNEL.equals(channelName);
+	}
+
+	public static boolean MarketIsEqTo(String marketName){
+		return BuildConfig.GAME_MARKET.equals(marketName);
+	}
+
+	public static String GetBuildConfigField(String fieldName) {
+		String ret = "unknown";
+		try{
+			Class ownerClass = Class.forName("com.xapcn.dragonfall.BuildConfig");
+			Field field = ownerClass.getField(fieldName);
+			ret = (String)field.get(ownerClass);
+		}catch (Exception e){
+			DebugUtil.LogException(TAG,e);
+		}finally{
+			return ret;
+		}
 	}
 }

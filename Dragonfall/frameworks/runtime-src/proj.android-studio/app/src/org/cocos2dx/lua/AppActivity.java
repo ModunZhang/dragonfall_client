@@ -58,10 +58,10 @@ import org.cocos2dx.lib.Cocos2dxActivity;
 
 import java.util.ArrayList;
 //#ifdef CC_USE_FACEBOOK
-//@import com.batcatstudio.dragonfall.sdk.FaceBookSDK;
+import com.batcatstudio.dragonfall.sdk.FaceBookSDK;
 //#endif
 //#ifdef CC_USE_GOOGLE_LOGIN
-//@import com.batcatstudio.dragonfall.sdk.GoogleSignSDK;
+import com.batcatstudio.dragonfall.sdk.GoogleSignSDK;
 //#endif
 
 public class AppActivity extends Cocos2dxActivity
@@ -69,12 +69,12 @@ public class AppActivity extends Cocos2dxActivity
 
     static String hostIPAdress = "0.0.0.0";
 //#ifdef CC_USE_GOOGLE_LOGIN
-//@    @Override
-//@    protected void onSaveInstanceState(Bundle outState) {
-//@        super.onSaveInstanceState(outState);
-//@        outState.putBoolean(GoogleSignSDK.KEY_IS_RESOLVING, GoogleSignSDK.getInstance().isResolving());
-//@		outState.putBoolean(GoogleSignSDK.KEY_SHOULD_RESOLVE, GoogleSignSDK.getInstance().isShouldResolve());
-//@    }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(GoogleSignSDK.KEY_IS_RESOLVING, GoogleSignSDK.getInstance().isResolving());
+		outState.putBoolean(GoogleSignSDK.KEY_SHOULD_RESOLVE, GoogleSignSDK.getInstance().isShouldResolve());
+    }
 //#endif
 
     @Override
@@ -93,14 +93,14 @@ public class AppActivity extends Cocos2dxActivity
 		}
         /** Init Java Native **/
 //#ifdef CC_USE_GOOGLE_LOGIN        
-//@        GoogleSignSDK.getInstance().Initialize(savedInstanceState);
+        GoogleSignSDK.getInstance().Initialize(savedInstanceState);
 //#endif
         CommonUtils.getInstance();
 		MarketSDK.initSDK();
 		StoreKit.init();
 		PayPalSDK.getInstance().init(this);
 //#ifdef CC_USE_FACEBOOK
-//@		FaceBookSDK.init();
+		FaceBookSDK.init();
 //#endif
 		DataHelper.initHelper();
     }
@@ -161,14 +161,14 @@ public class AppActivity extends Cocos2dxActivity
 	protected void onStart() {
 		super.onStart();
 //#ifdef CC_USE_GOOGLE_LOGIN
-//@		GoogleSignSDK.getInstance().onActivityStart(this);
+		GoogleSignSDK.getInstance().onActivityStart(this);
 //#endif
 	}
 	@Override
 	protected void onStop() {
 		fullBackground = true;
 //#ifdef CC_USE_GOOGLE_LOGIN
-//@		GoogleSignSDK.getInstance().onActivityStop(this);
+		GoogleSignSDK.getInstance().onActivityStop(this);
 //#endif
 		NotificationUtils.startLocalPushService();
 
@@ -193,11 +193,11 @@ public class AppActivity extends Cocos2dxActivity
 			super.onActivityResult(requestCode, resultCode, data);
 		}
 //#ifdef CC_USE_GOOGLE_LOGIN
-//@		GoogleSignSDK.getInstance().onActivityResult(requestCode, resultCode, data);
+		GoogleSignSDK.getInstance().onActivityResult(requestCode, resultCode, data);
 //#endif
 		PayPalSDK.getInstance().onActivityResult(requestCode, resultCode, data);
 //#ifdef CC_USE_FACEBOOK
-//@		FaceBookSDK.onActivityResult(this, requestCode, resultCode, data);
+		FaceBookSDK.onActivityResult(this, requestCode, resultCode, data);
 //#endif
 	}
 
@@ -206,7 +206,7 @@ public class AppActivity extends Cocos2dxActivity
 		StoreKit.purge();
 		PayPalSDK.getInstance().destroy(this);
 //#ifdef CC_USE_FACEBOOK
-//@		FaceBookSDK.onDestroy();
+		FaceBookSDK.onDestroy();
 //#endif
 		gameHandler = null;
 		gameActivity = null;

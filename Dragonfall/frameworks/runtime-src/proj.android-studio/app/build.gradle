@@ -41,6 +41,9 @@ android {
         minSdkVersion 15
         targetSdkVersion 15
         buildConfigField "String", "GAME_ID", "\"Batcat\"" //identity for unzip path on SD card
+        buildConfigField "String", "GAME_CHANNEL", "\"gNetTop\"" //identity for channel: gNetTop sugarcanetechnology etc..
+        buildConfigField "String", "GAME_MARKET", "\"GooglePlay\"" //identity for market:  Apple GooglePlay Microsoft 360 etc...
+        buildConfigField "String", "BUGLY_ID", "\"900025835\"" //id for bugly
     }
     // warning: we don't want read the password form console!
     signingConfigs {
@@ -83,6 +86,7 @@ android {
             versionName projectVersion()['versionName']
             signingConfig signingConfigs.googleplay
             buildConfigField "String", "GAME_ID", "\"dragonfall\""
+            buildConfigField "String", "GAME_MARKET", "\"GooglePlay\""
             manifestPlaceholders = ['APP_MIN_VERSION':projectVersion()['appMinVersion'],'APP_HOC':projectVersion()['appHoc'] as String]
         }
         paypal {
@@ -91,6 +95,7 @@ android {
             versionName projectVersion()['versionName']
             signingConfig signingConfigs.paypal
             buildConfigField "String", "GAME_ID", "\"dragonfall_paypal\""
+            buildConfigField "String", "GAME_MARKET", "\"Paypal\""
             manifestPlaceholders = ['APP_MIN_VERSION':projectVersion()['appMinVersion'],'APP_HOC':projectVersion()['appHoc'] as String]
         }
         qihoo {
@@ -99,6 +104,7 @@ android {
             versionName projectVersion()['versionName']
             signingConfig signingConfigs.paypal
             buildConfigField "String", "GAME_ID", "\"dragonfall_qihoo\""
+            buildConfigField "String", "GAME_MARKET", "\"360\""
             manifestPlaceholders = ['APP_MIN_VERSION':projectVersion()['appMinVersion'],'APP_HOC':projectVersion()['appHoc'] as String]
         }
 
@@ -109,6 +115,7 @@ android {
             versionName projectVersion()['versionName']
             signingConfig signingConfigs.paypal
             buildConfigField "String", "GAME_ID", "\"dragonfall_uc\""
+            buildConfigField "String", "GAME_MARKET", "\"9Game\""
             manifestPlaceholders = ['APP_MIN_VERSION':projectVersion()['appMinVersion'],'APP_HOC':projectVersion()['appHoc'] as String]
         }
     }
