@@ -85,7 +85,7 @@ local imageName = ext.channelIsEqTo("gNetop") and "splash_logo_war_514x92.png" o
 
 #### 市场
 
-类似 Apple GooglePlay 360 ...,和渠道相关的是内购
+类似 Apple GooglePlay 360 ...,和市场相关的是内购
 
 #### 不同平台下的配置字段
 
