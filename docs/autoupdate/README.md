@@ -96,5 +96,6 @@ local imageName = ext.channelIsEqTo("gNetop") and "splash_logo_war_514x92.png" o
 渠道名		| GameChannel 				 | GAME_CHANNEL 			  	  | 空
 市场名   	| 定值 `Apple`                | GAME_MARKET	                  | 定值 `Microsoft`
 Bugly参数ID	| BuglyId            	     | BUGLY_ID           		      | 空
+
 ----
 By DannyHe 11/11/2015
