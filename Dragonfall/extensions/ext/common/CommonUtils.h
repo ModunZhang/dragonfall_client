@@ -60,6 +60,8 @@ const bool ChannelIsEqTo(std::string channelName);
 
 std::string GetAppBundleId();
 
+std::string GetBuglyId();
+
 //marketName: Apple GooglePlay Microsoft 360 etc...
 const bool MarketIsEqTo(std::string marketName);
 
