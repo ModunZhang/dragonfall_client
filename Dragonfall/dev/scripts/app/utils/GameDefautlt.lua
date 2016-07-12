@@ -127,8 +127,17 @@ function GameDefautlt:IsReadNews(news_id)
     end
 end
 -- 邮件最近联系人
+local MAIL_FILE_PATH = device.writablePath.."mailContacts"
 function GameDefautlt:getRecentContacts()
-    return self:getTableForKey("RECENT_CONTACTS:"..User:Id(),{})
+    if cc.FileUtils:getInstance():isFileExist(MAIL_FILE_PATH) then
+        local file = io.open(MAIL_FILE_PATH)
+        local jsonString = file:read("*a")
+        file:close()
+        local t = json.decode(jsonString)
+        return t == nil and {} or t
+    else
+        return {}
+    end
 end
 -- 添加最近联系人
 function GameDefautlt:addRecentContacts(contacts)
@@ -150,8 +159,13 @@ function GameDefautlt:addRecentContacts(contacts)
         end
     end
     table.insert(recent_contacts, 1, new_contacts)
-    self:setTableForKey("RECENT_CONTACTS:"..User:Id(),recent_contacts)
-    self:flush()
+
+
+    local file = io.open(MAIL_FILE_PATH, "w")
+    if file then
+        file:write(json.encode(recent_contacts))
+        file:close()
+    end
 end
 -- basic info
 function GameDefautlt:setBasicInfoBoolValueForKey(key,val)
