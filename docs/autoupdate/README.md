@@ -73,5 +73,28 @@
 #### Android下的特殊说明
 最后一步打包生成apk前需要执行`create_android_zip.py`~~生成zip压缩文件后执行apk的打包~~将资源拷贝到assets中
 
+### 渠道和市场配置
+
+#### 渠道
+
+类似gNetTop、sugarcanetechnology,和渠道相关的主要是资源的不同,比如游戏中的Logo文件
+
+~~~
+local imageName = ext.channelIsEqTo("gNetop") and "splash_logo_war_514x92.png" or "splash_logo_516x92.png"
+~~~
+
+#### 市场
+
+类似 Apple GooglePlay 360 ...,和渠道相关的是内购
+
+#### 不同包的不同平台下配置
+
+我们可以根据不同渠道和不同市场的组合，快速配置出我们需要的包
+
+配置 		|iOS (Info.plist)            | Android (build.gradle)  		  | Windows Phone
+------------| ------------               | ------------- 				  | -------------
+渠道名		| GameChannel 				 | GAME_CHANNEL 			  	  | 空
+市场名   	| 定值 `Apple`                | GAME_MARKET	                  | 定值 `Microsoft`
+Bugly参数ID	| BuglyId            	     | BUGLY_ID           		      | 空
 ----
 By DannyHe 11/11/2015
