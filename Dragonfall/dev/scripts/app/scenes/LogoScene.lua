@@ -20,8 +20,8 @@ function LogoScene:onEnter()
     end
     
     self.layer = cc.LayerColor:create(cc.c4b(255,255,255,255)):addTo(self)
-    if device.platform == 'ios' then -- 兼容iOS线上版本
-        self.sprite = display.newSprite("batcat_logo_512x512.png", display.cx, display.cy):addTo(self.layer)
+    if device.platform == 'ios' or device.platform == 'mac' then -- 兼容iOS线上版本
+        self.sprite = display.newSprite("batcat_logo_368x472.png", display.cx, display.cy):addTo(self.layer)
     else
         self.sprite = display.newSprite("aiyingyong_512x512.png", display.cx, display.cy):addTo(self.layer):scale(display.height* 440/581632)
     end
@@ -30,7 +30,7 @@ end
 
 
 function LogoScene:beginAnimate()
-    if device.platform == 'ios' then -- 兼容iOS线上版本
+    if device.platform == 'ios' or device.platform == 'mac' then -- 兼容iOS线上版本
         local action = cc.Spawn:create({cc.ScaleTo:create(checknumber(2),1.5),cca.fadeTo(1.5,255/2)})
         self.sprite:runAction(action)
         local sequence = transition.sequence({
@@ -47,7 +47,7 @@ function LogoScene:beginAnimate()
         local sequence = transition.sequence({
             cc.FadeOut:create(0.5),
             cc.CallFunc:create(function()
-                self.sprite:setTexture("batcat_logo_512x512.png")
+                self.sprite:setTexture("batcat_logo_368x472.png")
             end),
             cc.FadeIn:create(0.4),
             cc.DelayTime:create(0.5),
@@ -75,7 +75,7 @@ end
 
 function LogoScene:onExit()
     removeImageByKey("aiyingyong_512x512.png")
-    removeImageByKey("batcat_logo_512x512.png")
+    removeImageByKey("batcat_logo_368x472.png")
 end
 
 return LogoScene
