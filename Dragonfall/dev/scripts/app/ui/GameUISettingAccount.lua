@@ -410,6 +410,8 @@ function GameUISettingAccount:ExchangeBindAccount()
         end)
     elseif select_facebook then
         select_facebook:setButtonSelected(true)
+    end
+    if select_facebook then
         select_facebook:onButtonStateChanged(function(event)
             local isOn = event.state == "on"
             if frist_select_box and frist_select_box:isButtonSelected() and isOn then
