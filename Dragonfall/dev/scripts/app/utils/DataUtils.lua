@@ -1394,6 +1394,7 @@ function DataUtils:IsMemberCanQuiteAlliance(memberObject)
 end
 -- 获取内购RMB价格
 function DataUtils:GetRMBPrice(d_price)
+    d_price = tonumber(d_price)
     if d_price == 0.99 then
         return 6
     elseif d_price == 4.99 then
