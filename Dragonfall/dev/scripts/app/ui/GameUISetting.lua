@@ -53,7 +53,8 @@ function GameUISetting:BuildUI()
 		{text = _("遇到问题"),image = "setting_help_64x65.png"},
 		{text = _("MOD"),image = "setting_mod_64x78.png"},
 	}
-	if device.platform == "ios" or device.platform == "android" then
+
+	if device.platform == "ios" or device.platform == "android" and GameUtils:GetGameLanguage() ~= 'cn' then
 		table.insert(buttons_info,{text = _("分享"),image = "setting_share_52x66.png"})
 	end
 	local x,y = window.left + 50,window.top_bottom - 80
@@ -90,10 +91,10 @@ function GameUISetting:BuildUI()
 	    end
 		x = x + 30 + 112
 	end
-	local version_info = string.format("Dragonfall %s (%s)", ext.getAppVersion(), app.client_tag or "0")
+	local version_info = string.format("%s (%s)", ext.getAppVersion(), app.client_tag or "0")
 	if  CONFIG_IS_NOT_UPDATE or device.platform == 'mac' or device.platform == 'windows' then
 		local __debugVer = require("debug_version")
-		version_info = string.format("Dragonfall %s (%s)", ext.getAppVersion(), __debugVer)
+		version_info = string.format("%s (%s)", ext.getAppVersion(), __debugVer)
 	end
 	UIKit:ttfLabel({
 		text = version_info,
