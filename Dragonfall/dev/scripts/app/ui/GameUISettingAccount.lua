@@ -50,7 +50,7 @@ function GameUISettingAccount:CreateUI()
                 self:CreateGameCenterPanel()
             end
         end
-        if User:IsBindFacebook() then
+        if User:IsBindFacebook() and GameUtils:GetGameLanguage() ~= 'cn' then
             self:CreateFacebookPanel()
         end
         if User:IsBindGoogle() then
@@ -62,7 +62,9 @@ function GameUISettingAccount:CreateUI()
         if device.platform == 'ios' then
             self:CreateGameCenterPanel()
         end
-        self:CreateFacebookPanel()
+        if GameUtils:GetGameLanguage() ~= 'cn' then
+            self:CreateFacebookPanel()
+        end
         if device.platform == 'android' then
             self:CreateGooglePanel()
         end
