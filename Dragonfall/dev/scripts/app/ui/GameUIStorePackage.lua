@@ -135,8 +135,9 @@ function GameUIStorePackage:CreateBuyButton()
 	})
 	button:setButtonLabel("normal", label)
 	button:setButtonLabelOffset(0, 20)
+    local isCn = GameUtils:GetGameLanguage() == 'cn'
 	UIKit:ttfLabel({
-		text = "$" .. self:GetData().price,
+		text = isCn and "￥" .. DataUtils:GetRMBPrice(self:GetData().price) or "$" .. self:GetData().price,
 		size =  24,
 		color= 0xffd200
 	}):addTo(icon):align(display.CENTER_BOTTOM, 166, 10)

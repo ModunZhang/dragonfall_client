@@ -1392,4 +1392,21 @@ function DataUtils:IsMemberCanQuiteAlliance(memberObject)
     local quiteAvailableTime = joinAllianceTime/1000 + GameDatas.PlayerInitData.intInit.quitAllianceCoolingMinutes.value * 60
     return quiteAvailableTime <= app.timer:GetServerTime(),GameUtils:formatTimeStyle1(quiteAvailableTime-app.timer:GetServerTime())
 end
+-- 获取内购RMB价格
+function DataUtils:GetRMBPrice(d_price)
+    if d_price == 0.99 then
+        return 6
+    elseif d_price == 4.99 then
+        return 30
+    elseif d_price == 9.99 then
+        return 68
+    elseif d_price == 19.99 then
+        return 128
+    elseif d_price == 49.99 then
+        return 328
+    elseif d_price == 99.99 then
+        return 648
+    end
+end
 return DataUtils
+
