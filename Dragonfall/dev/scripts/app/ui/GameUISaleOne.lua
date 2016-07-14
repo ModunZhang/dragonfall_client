@@ -213,20 +213,20 @@ function GameUISaleOne:CreateInfo()
             self:OnBuyButtonClicked()
         end)
         :setButtonSize(226,72)
-    display.newSprite("icon_arrow_18x18.png"):addTo(buy_btn)
-    display.newSprite("icon_x_70x20.png"):addTo(buy_btn,2):pos(-45,0)
+    self.arrow_icon = display.newSprite("icon_arrow_18x18.png"):addTo(buy_btn)
     self.original_cost = UIKit:ttfLabel({
         text = "$ 4.99",
         size = 22,
         color = 0xadacac,
         shadow = true
-    }):align(display.RIGHT_CENTER, -20,0):addTo(buy_btn)
+    }):align(display.RIGHT_CENTER, -12,9):addTo(self.arrow_icon)
+    display.newSprite("icon_x_70x20.png"):addTo(self.arrow_icon):pos(-45,9)
     self.current_price = UIKit:ttfLabel({
         text = "$ 1.99",
         size = 22,
         color = 0xffedae,
         shadow = true
-    }):align(display.LEFT_CENTER, 12,0):addTo(buy_btn)
+    }):align(display.LEFT_CENTER, 20,9):addTo(self.arrow_icon)
 end
 function GameUISaleOne:RefreshInfo()
     local curIndex = self.pv:getCurPageIdx()
@@ -242,7 +242,9 @@ function GameUISaleOne:RefreshInfo()
     local isCn = GameUtils:GetGameLanguage() == 'cn'
     self.original_cost:setString(isCn and "￥"..math.ceil(DataUtils:GetRMBPrice(pro_data.price) * pro_data.promotionPercent)  or "$"..string.format("%.2f",pro_data.price * pro_data.promotionPercent))
     self.current_price:setString(isCn and "￥"..DataUtils:GetRMBPrice(pro_data.price) or "$"..pro_data.price)
-
+    local l_width,r_width,mid_width = self.original_cost:getContentSize().width,self.current_price:getContentSize().width,self.arrow_icon:getContentSize().width
+    local offset = l_width + 12 + 9 - self.arrow_icon:getCascadeBoundingBox().size.width/2
+    self.arrow_icon:setPositionX(offset)
     local list = self.reward_list
     list:removeAllItems()
     local rewards = string.split(pro_data.rewards, ",")
