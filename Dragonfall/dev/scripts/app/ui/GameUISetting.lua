@@ -54,7 +54,7 @@ function GameUISetting:BuildUI()
 		{text = _("MOD"),image = "setting_mod_64x78.png"},
 	}
 
-	if device.platform == "ios" or device.platform == "android" and GameUtils:GetGameLanguage() ~= 'cn' then
+	if (device.platform == "ios" or device.platform == "android") and GameUtils:GetGameLanguage() ~= 'cn' then
 		table.insert(buttons_info,{text = _("分享"),image = "setting_share_52x66.png"})
 	end
 	local x,y = window.left + 50,window.top_bottom - 80
