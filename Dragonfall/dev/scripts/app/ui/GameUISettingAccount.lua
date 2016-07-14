@@ -304,8 +304,10 @@ function GameUISettingAccount:RefreshUI()
         if User:IsBindFacebook() then
             self.account_warn_label:setString(_("你的账号已经和Facebook绑定"))
             self.account_warn_label:setColor(UIKit:hex2c3b(0x008b0a))
-            self.facebook_bind_state_label:setString(string.format(_("%s(已绑定)"),User.gc.gcName))
-            self.facebook_bind_button:hide()
+            if self.facebook_bind_state_label then
+                self.facebook_bind_state_label:setString(string.format(_("%s(已绑定)"),User.gc.gcName))
+                self.facebook_bind_button:hide()
+            end
         end
         if User:IsBindGoogle() then
             self.account_warn_label:setString(_("你的账号已经和Google绑定"))
@@ -318,8 +320,10 @@ function GameUISettingAccount:RefreshUI()
             self.gamecenter_bind_state_label:setString(_("与当前的Game Center账号进行绑定"))
             self.gamecenter_bind_button:show()
         end
-        self.facebook_bind_state_label:setString(_("使用Facebook绑定账号"))
-        self.facebook_bind_button:show()
+        if self.facebook_bind_state_label then
+            self.facebook_bind_state_label:setString(_("使用Facebook绑定账号"))
+            self.facebook_bind_button:show()
+        end
         if self.google_bind_state_label then
             self.google_bind_state_label:setString(_("与当前的Google账号进行绑定"))
             self.google_bind_button:show()
@@ -375,20 +379,24 @@ function GameUISettingAccount:ExchangeBindAccount()
             :align(display.CENTER, bg_width - 40, bg_height/2):addTo(google_panel)
     end
     local frist_panel = google_panel or gamecenter_panel
-    local facebook_panel = WidgetUIBackGround.new({width = bg_width,height=bg_height},WidgetUIBackGround.STYLE_TYPE.STYLE_2)
-        :align(display.TOP_CENTER, 304, frist_panel and (frist_panel:getPositionY() - 130) or b_size.height - 30)
-        :addTo(body)
-    display.newSprite("icon_facebook_104x104.png"):align(display.LEFT_CENTER, 12, bg_height/2)
-        :addTo(facebook_panel)
-    local facebook_bind_state_label = UIKit:ttfLabel({
-        text = _("使用你的Facebook账号登录"),
-        size = 20,
-        color= 0x403c2f,
-        dimensions = cc.size(260,0)
-    }):align(display.LEFT_CENTER, 130, bg_height/2):addTo(facebook_panel)
+    local select_facebook
+    local facebook_panel
+    if GameUtils:GetGameLanguage() ~= 'cn' then
+        facebook_panel = WidgetUIBackGround.new({width = bg_width,height=bg_height},WidgetUIBackGround.STYLE_TYPE.STYLE_2)
+            :align(display.TOP_CENTER, 304, frist_panel and (frist_panel:getPositionY() - 130) or b_size.height - 30)
+            :addTo(body)
+        display.newSprite("icon_facebook_104x104.png"):align(display.LEFT_CENTER, 12, bg_height/2)
+            :addTo(facebook_panel)
+        UIKit:ttfLabel({
+            text = _("使用你的Facebook账号登录"),
+            size = 20,
+            color= 0x403c2f,
+            dimensions = cc.size(260,0)
+        }):align(display.LEFT_CENTER, 130, bg_height/2):addTo(facebook_panel)
 
-    local select_facebook = cc.ui.UICheckBoxButton.new(checkbox_image)
-        :align(display.CENTER, bg_width - 40, bg_height/2):addTo(facebook_panel)
+        select_facebook = cc.ui.UICheckBoxButton.new(checkbox_image)
+            :align(display.CENTER, bg_width - 40, bg_height/2):addTo(facebook_panel)
+    end
 
     local frist_select_box = select_gamecenter or select_google
 
@@ -396,19 +404,19 @@ function GameUISettingAccount:ExchangeBindAccount()
         frist_select_box:setButtonSelected(true)
         frist_select_box:onButtonStateChanged(function(event)
             local isOn = event.state == "on"
-            if select_facebook:isButtonSelected() and isOn then
+            if select_facebook and select_facebook:isButtonSelected() and isOn then
                 select_facebook:setButtonSelected(not isOn)
             end
         end)
-    else
+    elseif select_facebook then
         select_facebook:setButtonSelected(true)
+        select_facebook:onButtonStateChanged(function(event)
+            local isOn = event.state == "on"
+            if frist_select_box and frist_select_box:isButtonSelected() and isOn then
+                frist_select_box:setButtonSelected(not isOn)
+            end
+        end)
     end
-    select_facebook:onButtonStateChanged(function(event)
-        local isOn = event.state == "on"
-        if frist_select_box and frist_select_box:isButtonSelected() and isOn then
-            frist_select_box:setButtonSelected(not isOn)
-        end
-    end)
 
     -- 切换账号按钮
     cc.ui.UIPushButton.new({
@@ -463,7 +471,7 @@ function GameUISettingAccount:ExchangeBindAccount()
                             GameStatesHelper:getInstance():scheduleFunction(google_scheduleFunc,data)
                         end)
                     end,function()end)
-                elseif select_facebook:isButtonSelected() then
+                elseif select_facebook and select_facebook:isButtonSelected() then
                     local facebook_scheduleFunc = function(data)
                         if data.event == "login_success" then
                             local userid,username = data.userid,data.username
