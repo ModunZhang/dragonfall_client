@@ -122,7 +122,7 @@ function GameUILoginBeta:createTips()
 end
 
 function GameUILoginBeta:createStartGame()
-    local star_game_sprite = display.newSprite("start_game_292x28.png"):addTo(self.ui_layer):pos(display.cx,display.bottom+150):hide()
+    local star_game_sprite = display.newSprite(GameUtils:GetGameLanguage() == 'cn' and "start_game_cn_244x32.png" or "start_game_292x28.png"):addTo(self.ui_layer):pos(display.cx,display.bottom+150):hide()
     self.star_game_sprite = star_game_sprite
     local button = WidgetPushTransparentButton.new(cc.rect(0,0,display.width,display.height),nil,{nil,{down = "DRAGON_STRIKE"}})
         :addTo(self.ui_layer):hide():align(display.LEFT_BOTTOM, 0, 0)
@@ -514,11 +514,11 @@ function GameUILoginBeta:onCleanup()
     GameUILoginBeta.super.onCleanup(self)
     -- clean  all  unused textures
     removeImageByKey("splash_beta_bg_3987x1136.jpg")
-    removeImageByKey(ext.channelIsEqTo("gNetop") and "splash_logo_war_514x92.png" or "splash_logo_516x92.png")
+    removeImageByKey(UIKit:GetGameLogoImageName())
     removeImageByKey("splash_process_color_606x25.png")
     removeImageByKey("splash_process_bg_606x25.png")
     removeImageByKey("splash_tips_bg_544x30.png")
-    removeImageByKey("start_game_292x28.png.png")
+    removeImageByKey(GameUtils:GetGameLanguage() == 'cn' and "start_game_cn_244x32.png" or "start_game_292x28.png")
 end
 
 

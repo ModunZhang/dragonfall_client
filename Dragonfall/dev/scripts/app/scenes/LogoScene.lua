@@ -67,7 +67,7 @@ end
 --预先加载登录界面使用的大图
 function LogoScene:loadSplashResources()
     --加载splash界面使用的图片
-    local imageName = ext.channelIsEqTo("gNetop") and "splash_logo_war_514x92.png" or "splash_logo_516x92.png"
+    local imageName = UIKit:GetGameLogoImageName()
     display.addImageAsync(imageName,function()
         display.addImageAsync("splash_beta_bg_3987x1136.jpg",function()end)
     end)
