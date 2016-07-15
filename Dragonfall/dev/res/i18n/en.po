@@ -1,9 +1,9 @@
-# This file was generated from /Users/kennydai/Downloads/i18n(3)(3).xlsx
+# This file was generated from /Users/kennydai/Downloads/i18n(1)(1).xlsx
 msgid ""
 msgstr ""
 "Project-Id-Version: dragonfall\n"
-"POT-Creation-Date: 2016-07-15 14:30+0800\n"
-"PO-Revision-Date: 2016-07-15 14:30+0800\n"
+"POT-Creation-Date: 2016-07-15 15:39+0800\n"
+"PO-Revision-Date: 2016-07-15 15:39+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -1601,12 +1601,12 @@ msgstr "Just to make difference between the two Alliances"
 #: entity/ActivityManager.lua:119
 #, lua-format
 msgid "%s已经开始(个人)"
-msgstr ""
+msgstr "%s begins！(Solo)"
 
 #: entity/ActivityManager.lua:157
 #, lua-format
 msgid "%s已经开始(联盟)"
-msgstr ""
+msgstr "%s begins！(Alliance)"
 
 #: entity/ActivityManager.lua:574
 msgid "普通抽奖1次"
@@ -2464,7 +2464,7 @@ msgstr "Mail sent Successfully"
 #: service/NetManager.lua:1276 service/NetManager.lua:1285
 #: service/NetManager.lua:1343
 msgid "已删除"
-msgstr ""
+msgstr "Delete successfully"
 
 #: service/NetManager.lua:1360
 msgid "已向全体盟友发出帮助请求"
@@ -2928,7 +2928,7 @@ msgstr "News"
 
 #: ui/GameUIActivityNew.lua:151
 msgid "请加入联盟"
-msgstr ""
+msgstr "Please join an Alliance first"
 
 #: ui/GameUIActivityNew.lua:166 ui/GameUIAllianceShrine.lua:432
 msgid "进行中"
@@ -2945,7 +2945,7 @@ msgstr "Upcoming"
 #: ui/GameUIActivityNew.lua:239 ui/GameUIActivityNew.lua:267
 #: ui/GameUIActivityNew.lua:318
 msgid "联盟赛事"
-msgstr ""
+msgstr "Alliance Season"
 
 #: ui/GameUIActivityNew.lua:239 ui/GameUIActivityNew.lua:267
 #: ui/GameUIActivityNew.lua:318
@@ -4558,7 +4558,7 @@ msgstr "Survey"
 
 #: ui/GameUIAllianceShrine.lua:390
 msgid "敌方部队战斗力"
-msgstr ""
+msgstr "Enemy Power"
 
 #: ui/GameUIAllianceShrine.lua:411 ui/GameUIAllianceShrineDetail.lua:168
 msgid "建议部队战斗力"
@@ -4574,7 +4574,7 @@ msgstr "Involved Players"
 
 #: ui/GameUIAllianceShrine.lua:554
 msgid "获胜玩家"
-msgstr ""
+msgstr "Winning Players"
 
 #: ui/GameUIAllianceShrine.lua:600 ui/GameUIAllianceWatchTower.lua:200
 #: ui/GameUIAllianceWatchTower.lua:403
@@ -4592,7 +4592,7 @@ msgstr "In progress"
 
 #: ui/GameUIAllianceShrineDetail.lua:85
 msgid "注:一场战斗中,参加并获胜的玩家越多,联盟获得的奖励越多"
-msgstr ""
+msgstr "The more players join and win, the more rewards Alliance will earn"
 
 #: ui/GameUIAllianceShrineDetail.lua:96
 msgid "激活事件"
@@ -5073,7 +5073,7 @@ msgstr "Copied"
 
 #: ui/GameUIChatChannel.lua:758 ui/GameUIMail.lua:1412
 msgid "你的黑名单已满!"
-msgstr ""
+msgstr "Your block list is full"
 
 #: ui/GameUIChest.lua:63
 #, lua-format
@@ -7764,7 +7764,7 @@ msgstr "To be a MOD"
 
 #: ui/GameUISettingMod.lua:35
 msgid "MOD申请通道已关闭，请关注官方公告"
-msgstr ""
+msgstr "We have closed the MOD recruitment temporarily"
 
 #: ui/GameUISettingMod.lua:45 ui/GameUISettingMod.lua:52
 msgid "举报MOD"
@@ -13837,7 +13837,7 @@ msgstr "No Content"
 
 #: widget/WidgetInput.lua:12
 msgid "调整数量"
-msgstr ""
+msgstr "Config"
 
 #: widget/WidgetKingWarRule.lua:17 widget/WidgetKingWarRule.lua:21
 #: widget/WidgetKingWarRule.lua:25 widget/WidgetKingWarRule.lua:29
@@ -14430,36 +14430,3 @@ msgstr "Only the Chief and General can migrate the Alliance !"
 #: widget/WidgetWorldAllianceInfo.lua:500
 msgid "是否确认迁移联盟至该领土？"
 msgstr "Are you sure to migrate Alliance to this terrain ?"
-
-#~ msgid "%s已经开始"
-#~ msgstr "%s begins!"
-
-#~ msgid "协防玩家"
-#~ msgstr "Assistor"
-
-#~ msgid "是否确认撤防"
-#~ msgstr "Are you sure to retreat ?"
-
-#~ msgid "协防盟友将失去保护状态，确定继续派兵?"
-#~ msgstr "You'll lose your protection if you assist your allies,continue?"
-
-#~ msgid "已有协防部队正在行军"
-#~ msgstr "You've already sent assist troops to this ally"
-
-#~ msgid "目标协防数量已满，是否确认继续派兵？"
-#~ msgstr "Already Defended by other ally, continue ?"
-
-#~ msgid "建议玩家数量"
-#~ msgstr "Recommended troops amount"
-
-#~ msgid "人均战斗力"
-#~ msgstr "Average Power"
-
-#~ msgid "注:一场战斗中,每名玩家只能派出一支部队"
-#~ msgstr "You can only send one troop to the Shrine once"
-
-#~ msgid "战斗详情"
-#~ msgstr "Battle Info"
-
-#~ msgid "第%d支部队"
-#~ msgstr "Troop NO.%d"

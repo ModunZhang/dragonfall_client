@@ -71,7 +71,7 @@ function GameUISendTroopNew:GetMarchTime(soldier_show_table)
     local fromLocation = mapObject.location
     local target_alliance = self.targetAlliance
     local time = DataUtils:getPlayerSoldiersMarchTime(soldier_show_table,self:GetMyAlliance(),fromLocation,target_alliance,self.toLocation)
-    local buffTime = DataUtils:getPlayerMarchTimeBuffTime(time)
+    local buffTime = DataUtils:getPlayerMarchTimeBuffTime(time,self.dragon.type == "blueDragon")
     return time,buffTime
 end
 function GameUISendTroopNew:RefreshMarchTimeAndBuff()
@@ -342,6 +342,7 @@ function GameUISendTroopNew:RefreashDragon(dragon)
     if self.isPVE then
         GameUISendTroopNew.dragonType = dragonType
     end
+    self:RefreshMarchTimeAndBuff()
 end
 -- 单个格子最大带兵量
 function GameUISendTroopNew:GetUnitMaxCitizen()
@@ -500,7 +501,6 @@ function GameUISendTroopNew:RefreshSoldierNodes()
         end
     end
     self:RefreashDragon()
-    self:RefreshMarchTimeAndBuff()
     if has_soldiers then
         self.isMax = true
         self.max_btn:setButtonLabel(UIKit:ttfLabel({

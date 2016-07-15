@@ -533,8 +533,17 @@ function DataUtils:getPlayerMarchTimeBuffEffectValue()
     return effect
 end
 --获取攻击行军的buff时间
-function DataUtils:getPlayerMarchTimeBuffTime(fullTime)
+function DataUtils:getPlayerMarchTimeBuffTime(fullTime,isBlueDragon)
     local buff_value = DataUtils:getPlayerMarchTimeBuffEffectValue()
+    if isBlueDragon then
+        local dragon = UtilsForDragon:GetDragon(User, "blueDragon")
+        if dragon then
+            local skill = UtilsForDragon:GetSkillByName(dragon, "surge")
+            if skill then
+                buff_value = buff_value + UtilsForDragon:GetSkillEffect(skill)
+            end
+        end
+    end
     if buff_value > 0 then
         return DataUtils:getBuffEfffectTime(fullTime,buff_value)
     else
