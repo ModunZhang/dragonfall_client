@@ -68,14 +68,14 @@ function GameUIAllianceHome:onEnter()
         self.clipNode = display.newClippingRegionNode(cc.rect(0,0,display.width,80))
             :addTo(self):pos(x,y)
         local tipsNode = display.newNode():addTo(self.clipNode)
-        UIKit:GetPlayerCommonIcon():addTo(tipsNode)
-            :scale(0.5):align(display.LEFT_BOTTOM,0,8)
+        local w = UIKit:GetPlayerCommonIcon():addTo(tipsNode)
+            :scale(0.5):align(display.LEFT_BOTTOM,0,8):getCascadeBoundingBox().width
         local sprite = display.newScale9Sprite("word_bubble.png",
-            rect1.width,
+            w + 5,
             5,
             nil,
             cc.rect(20,10,10,46))
-            :addTo(tipsNode):align(display.RIGHT_BOTTOM):size(545,56)
+            :addTo(tipsNode):align(display.LEFT_BOTTOM):size(545,56)
         UIKit:ttfLabel({
             text = _("大人：\n进攻其他领主有几率获得：英雄之血和龙的装材料"),
             size = 16,
