@@ -21,6 +21,7 @@ function GameUISaleOne:onEnter()
     local body = display.newSprite("background_640x824.png"):align(display.TOP_CENTER, window.cx, window.top - 70)
     self.body = body
     self:addTouchAbleChild(body)
+    self.isVerify = string.find(NetManager.m_updateServer.basePath,'hotfix') -- 苹果审核
 
     self:CreateSalesBox()
     self:CreateInfo()
@@ -40,7 +41,13 @@ function GameUISaleOne:onEnter()
             for i,item in ipairs(self.pv.items_) do
                 local content_node = item.content_node
                 if content_node then
-                    local pro_data,leftTime = DataUtils:GetProductAndLeftTimeByIndex(i)
+                    -- local pro_data,leftTime = DataUtils:GetProductAndLeftTimeByIndex(i)
+                    local pro_data,leftTime
+                    if self.isVerify then
+                        pro_data,leftTime = GameDatas.StoreItems.promotionItems[i],100
+                    else
+                        pro_data,leftTime = DataUtils:GetProductAndLeftTimeByIndex(i)
+                    end
                     if pro_data.name ~= content_node.pro_data.name then
                         self:CreateSalesBox()
                         self.pv:gotoPage(cur_index)
@@ -55,7 +62,7 @@ function GameUISaleOne:onEnter()
 end
 
 function GameUISaleOne:onExit()
-    
+
     GameUISaleOne.super.onExit(self)
 end
 function GameUISaleOne:CreateSalesBox()
@@ -77,17 +84,28 @@ function GameUISaleOne:CreateSalesBox()
             self:RefreshInfo()
         end
     end):addTo(body)
-    local lessTime = math.huge
-    for i=1,4 do
-        local item = pv:newItem()
-        local pro_data,leftTime = DataUtils:GetProductAndLeftTimeByIndex(i)
-        if lessTime > leftTime then
-            lessTime = leftTime
+    if self.isVerify then
+        local promotionItems = GameDatas.StoreItems.promotionItems
+        for i,v in ipairs(promotionItems) do
+            local content_node = self:GetSalesItem(v,100):pos(278,109)
+            local item = pv:newItem()
+            item.content_node = content_node
+            item:addChild(content_node)
+            pv:addItem(item)
         end
-        local content_node = self:GetSalesItem(pro_data,leftTime):pos(278,109)
-        item.content_node = content_node
-        item:addChild(content_node)
-        pv:addItem(item)
+    else
+        local lessTime = math.huge
+        for i=1,4 do
+            local item = pv:newItem()
+            local pro_data,leftTime = DataUtils:GetProductAndLeftTimeByIndex(i)
+            if lessTime > leftTime then
+                lessTime = leftTime
+            end
+            local content_node = self:GetSalesItem(pro_data,leftTime):pos(278,109)
+            item.content_node = content_node
+            item:addChild(content_node)
+            pv:addItem(item)
+        end
     end
     pv:reload()
     self.pv = pv
@@ -113,6 +131,9 @@ function GameUISaleOne:GetSalesItem(pro_data,leftTime)
         size = 26,
         color = 0x60ff00
     }):align(display.CENTER, x, y - 52):addTo(content_node)
+    if self.isVerify then
+        content_node.leftTime:hide()
+    end
     content_node.pro_data = pro_data
     return content_node
 end
@@ -157,7 +178,11 @@ function GameUISaleOne:CreateInfo()
     local parent = self
     function currentPageNode:InitPageNode(current_page)
         self:removeAllChildren()
-        for i=1,4 do
+        local endIndex = 4
+        if parent.isVerify then
+            endIndex = 8
+        end
+        for i=1,endIndex do
             display.newSprite(current_page == i and "icon_page_1.png" or "icon_page_2.png"):align(display.LEFT_CENTER, (i - 1) * 20, 11):addTo(self)
         end
     end
@@ -188,31 +213,38 @@ function GameUISaleOne:CreateInfo()
             self:OnBuyButtonClicked()
         end)
         :setButtonSize(226,72)
-    display.newSprite("icon_arrow_18x18.png"):addTo(buy_btn)
-    display.newSprite("icon_x_70x20.png"):addTo(buy_btn,2):pos(-45,0)
+    self.arrow_icon = display.newSprite("icon_arrow_18x18.png"):addTo(buy_btn)
     self.original_cost = UIKit:ttfLabel({
         text = "$ 4.99",
         size = 22,
         color = 0xadacac,
         shadow = true
-    }):align(display.RIGHT_CENTER, -20,0):addTo(buy_btn)
+    }):align(display.RIGHT_CENTER, -12,9):addTo(self.arrow_icon)
+    display.newSprite("icon_x_70x20.png"):addTo(self.arrow_icon):pos(-45,9)
     self.current_price = UIKit:ttfLabel({
         text = "$ 1.99",
         size = 22,
         color = 0xffedae,
         shadow = true
-    }):align(display.LEFT_CENTER, 12,0):addTo(buy_btn)
+    }):align(display.LEFT_CENTER, 20,9):addTo(self.arrow_icon)
 end
 function GameUISaleOne:RefreshInfo()
     local curIndex = self.pv:getCurPageIdx()
     self.currentPageNode:InitPageNode(curIndex)
-    local pro_data,leftTime = DataUtils:GetProductAndLeftTimeByIndex(curIndex)
+    local pro_data,leftTime
+    if self.isVerify then
+        pro_data,leftTime = GameDatas.StoreItems.promotionItems[curIndex],100
+    else
+        pro_data,leftTime = DataUtils:GetProductAndLeftTimeByIndex(curIndex)
+    end
     self.box_name:setString(Localize.promotion_items[pro_data.name])
     self.gem_price:setString(string.formatnumberthousands(pro_data.gem))
-
-    self.original_cost:setString("$"..string.format("%.2f",pro_data.price * pro_data.promotionPercent))
-    self.current_price:setString("$"..pro_data.price)
-
+    local isCn = GameUtils:GetGameLanguage() == 'cn'
+    self.original_cost:setString(isCn and "￥"..math.ceil(DataUtils:GetRMBPrice(pro_data.price) * pro_data.promotionPercent)  or "$"..string.format("%.2f",pro_data.price * pro_data.promotionPercent))
+    self.current_price:setString(isCn and "￥"..DataUtils:GetRMBPrice(pro_data.price) or "$"..pro_data.price)
+    local l_width,r_width,mid_width = self.original_cost:getContentSize().width,self.current_price:getContentSize().width,self.arrow_icon:getContentSize().width
+    local offset = l_width + 12 + 9 - self.arrow_icon:getCascadeBoundingBox().size.width/2
+    self.arrow_icon:setPositionX(offset)
     local list = self.reward_list
     list:removeAllItems()
     local rewards = string.split(pro_data.rewards, ",")
@@ -245,7 +277,13 @@ function GameUISaleOne:RefreshInfo()
 end
 function GameUISaleOne:OnBuyButtonClicked()
     local curIndex = self.pv:getCurPageIdx()
-    local pro_data,leftTime = DataUtils:GetProductAndLeftTimeByIndex(curIndex)
+    -- local pro_data,leftTime = DataUtils:GetProductAndLeftTimeByIndex(curIndex)
+    local pro_data,leftTime
+    if self.isVerify then
+        pro_data,leftTime = GameDatas.StoreItems.promotionItems[curIndex],100
+    else
+        pro_data,leftTime = DataUtils:GetProductAndLeftTimeByIndex(curIndex)
+    end
     local productId = pro_data.productId
     device.showActivityIndicator()
     if device.platform == 'android' and not ext.paypal.isPayPalSupport() and  not app:getStore().canMakePurchases() then
@@ -259,6 +297,7 @@ function GameUISaleOne:OnBuyButtonClicked()
     end
 end
 return GameUISaleOne
+
 
 
 

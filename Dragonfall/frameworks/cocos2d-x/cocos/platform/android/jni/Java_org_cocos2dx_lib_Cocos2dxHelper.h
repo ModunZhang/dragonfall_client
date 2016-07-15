@@ -51,6 +51,8 @@ extern void setIntegerForKeyJNI(const char* key, int value);
 extern void setFloatForKeyJNI(const char* key, float value);
 extern void setDoubleForKeyJNI(const char* key, double value);
 extern void setStringForKeyJNI(const char* key, const char* value);
+extern void deleteValueForKeyJNI(const char* key);
+
 //Added for new Android EditBox
 extern int addEditBoxJNI(int left, int top, int width, int height, float scaleX);
 extern void removeEditBoxJNI(int index);

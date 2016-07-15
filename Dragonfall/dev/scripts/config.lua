@@ -42,13 +42,13 @@ CONFIG_REMOTE_SERVER = {
 -- app store url
 CONFIG_APP_URL = {
     -- ios = "https://itunes.apple.com/us/app/dragonfall-the-1st-moba-slg/id993631614?l=zh&ls=1&mt=8",
-    ios = "itms-apps://itunes.apple.com/app/993631614",
+    ios = "itms-apps://itunes.apple.com/app/1132046034",
     android = "market://details?id=com.xapcn.dragonfall",
     winrt = "ms-windows-store:navigate?appid=aa155f39-6b85-4c52-a388-4eacd55bbcb5",
 }
 -- 评价app的商店地址
 CONFIG_APP_REVIEW = {
-    ios = "itms-apps://itunes.apple.com/app/993631614",
+    ios = "itms-apps://itunes.apple.com/app/1132046034",
     android = "market://details?id=com.xapcn.dragonfall",
     winrt = "ms-windows-store:reviewapp?appid=aa155f39-6b85-4c52-a388-4eacd55bbcb5",
 }

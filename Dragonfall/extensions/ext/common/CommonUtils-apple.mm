@@ -22,6 +22,7 @@
 //we want to sync the openudid to NSUserDefaults
 #define kSyncOpenUDIDToUserDefaults 1
 
+static NSString *s_ChannelName = NULL;
 void CopyText(std::string text)
 {
     [UIPasteboard generalPasteboard].string = [NSString stringWithUTF8String:text.c_str()];
@@ -280,11 +281,6 @@ long GetAppMemoryUsage()
 #endif
 }
 
-bool IsGoogleStore()
-{
-    return false;
-}
-
 //just for android IMEI,other platform return "unknown"
 std::string GetDeviceId()
 {
@@ -294,5 +290,31 @@ std::string GetDeviceId()
 std::string GetAndroidId()
 {
     return "unknown";
+}
+
+const bool ChannelIsEqTo(std::string channelName)
+{
+    
+    if(!s_ChannelName){
+        s_ChannelName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"GameChannel"];
+    }
+    
+    return s_ChannelName != nil ? [[NSString stringWithUTF8String:channelName.c_str()] isEqualToString:s_ChannelName] : [[NSString stringWithUTF8String:channelName.c_str()] isEqualToString:@"unknown"];
+}
+
+std::string GetAppBundleId()
+{
+    return [[[NSBundle mainBundle]bundleIdentifier]UTF8String];
+}
+
+std::string GetBuglyId()
+{
+    NSString *buglyId = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"BuglyId"];
+    return buglyId != nil ? [buglyId UTF8String] : "";
+}
+
+const bool MarketIsEqTo(std::string marketName)
+{
+    return marketName == "Apple";
 }
 #endif

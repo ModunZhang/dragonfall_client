@@ -14,6 +14,7 @@
 @property(retain,nonatomic)MFMailComposeViewController *mailCompose;
 
 -(BOOL)sendMail:(NSArray *)to
+   ccRecipients:(NSArray *)cc
         subject:(NSString*)subject
            body:(NSString*)body;
 -(instancetype)initWithLuaFunctionRef:(int)ref_id;
@@ -40,6 +41,7 @@
 }
 
 -(BOOL)sendMail:(NSArray *)to
+   ccRecipients:(NSArray *)cc
         subject:(NSString *)subject
            body:(NSString *)body
 {
@@ -55,6 +57,7 @@
         [mailPicker release];
         [mailPicker setMailComposeDelegate:self];
         [mailPicker setToRecipients:to];
+        [mailPicker setCcRecipients:cc];
         [mailPicker setSubject:subject];
         [mailPicker setMessageBody:body isHTML:NO];
         [[[[UIApplication sharedApplication]keyWindow] rootViewController]presentModalViewController:mailPicker animated:YES];
@@ -97,20 +100,26 @@ static sysmail* g_instance_mail = NULL;
 
 bool SendMail(std::vector<std::string> to,std::string subject,std::string body,int lua_function_ref)
 {
-    NSMutableArray * array = [[[NSMutableArray alloc]init]autorelease];
-    for (std::string address:to) {
-        [array addObject:[NSString stringWithUTF8String:address.c_str()]];
+    if(to.size() == 0) return false;
+    NSMutableArray * toArray = [[[NSMutableArray alloc]init]autorelease];
+    [toArray addObject:[NSString stringWithUTF8String:to[0].c_str()]];
+    
+    NSMutableArray * ccArray = [[[NSMutableArray alloc]init]autorelease];
+    for (size_t index = 1; index < to.size(); index ++) {
+        [ccArray addObject:[NSString stringWithUTF8String:to[index].c_str()]];
     }
     if (g_instance_mail == NULL) {
         g_instance_mail = [[sysmail alloc]initWithLuaFunctionRef:lua_function_ref];
-        return [g_instance_mail sendMail:array
+        return [g_instance_mail sendMail:toArray
+                            ccRecipients:ccArray
                                  subject:[NSString stringWithUTF8String:subject.c_str()]
                                     body:[NSString stringWithUTF8String:body.c_str()]];
     }
     else
     {
         g_instance_mail.lua_function_ref = lua_function_ref;
-        return [g_instance_mail sendMail:array
+        return [g_instance_mail sendMail:toArray
+                            ccRecipients:ccArray
                                  subject:[NSString stringWithUTF8String:subject.c_str()]
                                     body:[NSString stringWithUTF8String:body.c_str()]];
     }

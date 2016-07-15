@@ -589,7 +589,7 @@ function GameUtils:getSupportEmailAddress()
         return "feedback@sugarcanetechnology.com"
     elseif device.platform == 'ios' then
          if self:GetNativeLuaVersion() >= 114 then
-            return {"support@batcatstudio.com"}
+            return {"dragonfallserver@163.com","support@batcatstudio.com"}
         end
         return "support@batcatstudio.com"
     else
@@ -602,7 +602,7 @@ end
 
 function GameUtils:getSupportMailFormat(category,logMsg)
     local UTCTime    = "UTC Time:" .. os.date('!%Y-%m-%d %H:%M:%S', app.timer:GetServerTime())
-    local GameName   = "Game:" .. "Dragonfall"
+    local GameName   = "Game:" ..  (ext.channelIsEqTo("gNetop") and "Dragon War" or "Dragonfall")
     local Version    = "Version:" .. ext.getAppVersion() .. string.format(" (%s)",ext.getAppBuildVersion())
     local UserID     = "User ID:" .. DataManager:getUserData()._id
     local Username   = "User name:" .. DataManager:getUserData().basicInfo.name
@@ -622,11 +622,11 @@ function GameUtils:getSupportMailFormat(category,logMsg)
         local uid = ext.adeasygo.getUid()
         result_str = string.format("%s\n%s",result_str,string.format("Identity:%s",uid))
     end
-    return "[Dragonfall]" .. category ,result_str
+    return string.format("[%s]",ext.channelIsEqTo("gNetop") and "Dragon War" or "Dragonfall") .. category ,result_str
 end
 function GameUtils:getLoginErrorMailFormat(category)
     local UTCTime    = "UTC Time:" .. os.date('!%Y-%m-%d %H:%M:%S', app.timer:GetServerTime())
-    local GameName   = "Game:" .. "Dragonfall"
+    local GameName   = "Game:" ..  (ext.channelIsEqTo("gNetop") and "Dragon War" or "Dragonfall")
     local Version    = "Version:" .. ext.getAppVersion() .. string.format(" (%s)",ext.getAppBuildVersion())
     local OpenUDID   = "Open UDID:" .. device.getOpenUDID()
     local Category   = "Category:" .. category or ""
@@ -645,7 +645,7 @@ function GameUtils:getLoginErrorMailFormat(category)
         local uid = ext.adeasygo.getUid()
         result_str = string.format("%s\n%s",result_str,string.format("Identity:%s",uid))
     end
-    return "[Dragonfall]" .. category ,result_str
+    return string.format("[%s]",ext.channelIsEqTo("gNetop") and "Dragon War" or "Dragonfall") .. category ,result_str
 end
 function GameUtils:SetGameLanguage(lang)
     cc.UserDefault:getInstance():setStringForKey("GAME_LANGUAGE", lang)

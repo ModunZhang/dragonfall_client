@@ -295,6 +295,7 @@ function PlatformAdapter:mac()
         return getOpenUDID().."_"..run_pids_map[pid]
             -- return "0a0608b995423eec21bc4d6e00e0467404a69dfb"
     end
+    ext.channelIsEqTo = function(...) return false end
 end
 
 function PlatformAdapter:windows()

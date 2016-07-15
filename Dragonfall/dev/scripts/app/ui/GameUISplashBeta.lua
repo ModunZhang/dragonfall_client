@@ -19,8 +19,14 @@ function GameUISplashBeta:onEnter()
     app:GetAudioManager():PlayGameMusicOnSceneEnter("MainScene",true)
     self.bottom_layer = self:CreateOneLayer():addTo(self,GLOBAL_ZORDER.BOTTOM)
     self.ui_layer = self:CreateOneLayer():addTo(self,GLOBAL_ZORDER.UI)
-    self.logo = display.newSprite("splash_logo_516x92.png")
-        :align(display.TOP_CENTER, display.cx, display.top - 100)
+    local imageName = UIKit:GetGameLogoImageName()
+    local posY = display.top - 100
+    -- chinese logo:巨龙争霸
+    if ext.channelIsEqTo("gNetop")  and GameUtils:GetGameLanguage() == 'cn' then
+         posY = display.top - 70
+    end
+    self.logo = display.newSprite(imageName)
+        :align(display.TOP_CENTER, display.cx, posY)
         :addTo(self.ui_layer)
     self:CreateBottomAnimate()
 end

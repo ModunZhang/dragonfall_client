@@ -55,6 +55,16 @@ std::string GetDeviceId();
 //just for android id,other platform return "unknown"
 std::string GetAndroidId();
 
+//channelName:  gNetTop sugarcanetechnology etc..
+const bool ChannelIsEqTo(std::string channelName);
+
+std::string GetAppBundleId();
+
+std::string GetBuglyId();
+
+//marketName: Apple GooglePlay Microsoft 360 etc...
+const bool MarketIsEqTo(std::string marketName);
+
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 
 void OpenUrl(std::string url);

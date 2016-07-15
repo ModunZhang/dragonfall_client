@@ -2822,3 +2822,10 @@ function UIKit:CreateTerrainForNode(clip,terrain)
         :setScaleY(900/2)
     return clip
 end
+
+function UIKit:GetGameLogoImageName()
+    if ext.channelIsEqTo("gNetop") then
+        return GameUtils:GetGameLanguage() == 'cn' and "splash_logo_war_cn_574x146.png" or "splash_logo_war_514x92.png"
+    end
+    return "splash_logo_516x92.png"
+end

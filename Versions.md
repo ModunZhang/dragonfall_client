@@ -47,3 +47,4 @@ Version | Git SHA-1 | Release Notes
 1.1.4(2062)  | a588cbc       | appVersion: 1.1.4 appMinVersion:1.1.3 appx 1.1.4.6
 1.1.5(2219)  | c855e54       | appVersion: 1.1.5 appMinVersion:1.1.3 appx 1.1.5.7
 1.1.5(2266)  | 9da6028       | 
+1.1.6(2305)  | 0300caa       | appVersion: 1.1.6.0 appMinVersion:1.1.3 appx
