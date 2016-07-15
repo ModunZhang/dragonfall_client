@@ -301,7 +301,7 @@ function GameUIPveSummary:BuildDefeatUI(param)
         self:LeftButtonClicked()
     end)
     local dragon_bg = display.newSprite("dragon_bg_114x114.png"):addTo(dragon):pos(-180, 0):scale(0.6)
-    self.dragon_img = display.newSprite(UILib.dragon_head[param.dragonType])
+    self.dragon_img = display.newSprite(UILib.dragon_head[param.dragonType or "redDragon"])
         :align(display.CENTER, dragon_bg:getContentSize().width/2, dragon_bg:getContentSize().height/2+5):addTo(dragon_bg)
 
     UIKit:ttfLabel({
