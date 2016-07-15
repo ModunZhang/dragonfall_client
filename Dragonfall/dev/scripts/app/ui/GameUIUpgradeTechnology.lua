@@ -352,6 +352,11 @@ function GameUIUpgradeTechnology:BuildUI()
         self.time_label:hide()
         self.buff_time_label:hide()
     end
+    scheduleAt(self, function()
+        if not UtilsForTech:IsMaxLevel(tech_name, tech) then
+            self:RefreshRequirementList()
+        end
+    end)
 end
 
 
