@@ -100,7 +100,7 @@ function GameUISeasonDetails:GetListNode()
             end
 
             UIKit:ttfLabel({
-                text = string.format(_("我的排名：%s"),myRank and ""..myRank or _("无")),
+                text = string.format(isAlliance and _("联盟排名：%s") or _("我的排名：%s"),myRank and ""..myRank or _("无")),
                 size = 20,
                 color = 0x403c2f,
             }):align(display.LEFT_CENTER,12,reward_content:getContentSize().height + 60)
@@ -374,7 +374,7 @@ function GameUISeasonDetails:GetListNode()
         :align(display.LEFT_BOTTOM, 0,citizen_num_bg:getPositionY() + 511 + 20)
         :addTo(content)
     UIKit:ttfLabel({
-        text = string.format(_("我的分数：%s"),status ~= "next" and isValid and string.formatnumberthousands(my_score) or "0"),
+        text = string.format(isAlliance and _("联盟分数：%s") or _("我的分数：%s"),status ~= "next" and isValid and string.formatnumberthousands(my_score) or "0"),
         size = 22,
         color = 0xffcb4e,
         shadow = true
