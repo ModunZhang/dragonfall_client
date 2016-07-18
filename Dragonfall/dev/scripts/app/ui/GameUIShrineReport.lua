@@ -283,9 +283,14 @@ function GameUIShrineReport:CreateIf_data_statistics()
     }):align(display.
     RIGHT_CENTER,honour_icon:getPositionX()-20,honour_icon:getPositionY()):addTo(layer)
     local shrineStage = GameDatas.AllianceInitData.shrineStage
-
+    local win_count = 0
+    for i,v in ipairs(self:GetShrineReport().playerDatas) do
+        if v.fightResult == "attackWin" then
+            win_count = win_count + 1
+        end
+    end
     UIKit:ttfLabel({
-        text = shrineStage[self:GetShrineReport().stageName].honour or 0,
+        text = shrineStage[self:GetShrineReport().stageName].honour.." X "..win_count or 0,
         size = 20,
         color = 0xffedae,
         shadow= true,
