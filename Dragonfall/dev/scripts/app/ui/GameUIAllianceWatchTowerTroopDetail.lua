@@ -284,13 +284,15 @@ function GameUIAllianceWatchTowerTroopDetail:GetSubItem(ITEM_TYPE,index,item_dat
         display.newSprite(UILib.soldier_color_bg_images[item_data[1]]):align(display.LEFT_CENTER,12,33):addTo(item):scale(58/128)
         local soldier_head_icon = display.newSprite(soldier_ui_config):align(display.LEFT_CENTER,12,33):addTo(item):scale(58/128)
         local soldier_head_bg  = display.newSprite("box_soldier_128x128.png"):addTo(soldier_head_icon):pos(soldier_head_icon:getContentSize().width/2,soldier_head_icon:getContentSize().height/2)
-       
-        StarBar.new({
-            max = 3,
-            bg = "Stars_bar_bg.png",
-            fill = "Stars_bar_highlight.png",
-            num = item_data[3],
-        }):addTo(item):align(display.LEFT_CENTER,80, 19):scale(0.8)
+
+        if self:CanShowSoliderStar() then
+            StarBar.new({
+                max = 3,
+                bg = "Stars_bar_bg.png",
+                fill = "Stars_bar_highlight.png",
+                num = item_data[3],
+            }):addTo(item):align(display.LEFT_CENTER,80, 19):scale(0.8)
+        end
 
         local val_label = UIKit:ttfLabel({
             text = self:FileterSoliderCount(item_data[2]),
