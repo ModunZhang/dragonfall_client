@@ -118,6 +118,9 @@ function GameUIDragonEquipmentMake:BuildUI()
         height = 160,
         contents = requirements,
     }):addTo(node):pos(30,20)
+    scheduleAt(self, function()
+        self.listView:RefreshListView(self:GetMakeRequirement())
+    end)
 end
 
 function GameUIDragonEquipmentMake:GetMakeRequirement()

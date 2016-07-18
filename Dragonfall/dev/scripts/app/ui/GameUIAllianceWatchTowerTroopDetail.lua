@@ -196,14 +196,14 @@ function GameUIAllianceWatchTowerTroopDetail:GetItem(ITEM_TYPE,item_data)
             end
         elseif ITEM_TYPE == self.ITEM_TYPE.SOLIDERS then
             if self:CanShowSoliderName() then
-                local y = 0
+                local y = (#item_data.soldiers - 1) * 66
                 for i,v in ipairs(item_data.soldiers) do
                     local name = string.format(_("[%d星]%s"),v.star,Localize.soldier_name[v.name])
                     if not self:CanShowSoliderStar() then
                         name = Localize.soldier_name[v.name]
                     end
                     self:GetSubItem(ITEM_TYPE,i,{v.name,v.count,v.star}):addTo(bg):align(display.LEFT_BOTTOM,0, y)
-                    y = y + 66
+                    y = y - 66
                 end
             else
                 self:GetTipsItem():addTo(bg):align(display.LEFT_BOTTOM, 0, 0)
