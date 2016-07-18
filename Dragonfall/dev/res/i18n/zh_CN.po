@@ -1,9 +1,9 @@
-# This file was generated from /Users/kennydai/Downloads/i18n(1)(1).xlsx
+# This file was generated from /Users/kennydai/Downloads/i18n(2).xlsx
 msgid ""
 msgstr ""
 "Project-Id-Version: dragonfall\n"
-"POT-Creation-Date: 2016-07-15 15:40+0800\n"
-"PO-Revision-Date: 2016-07-15 15:40+0800\n"
+"POT-Creation-Date: 2016-07-18 16:18+0800\n"
+"PO-Revision-Date: 2016-07-18 16:18+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zh_CN\n"
@@ -195,11 +195,10 @@ msgstr "服务器连接断开,请检测你的网络环境后重试!"
 #: widget/WidgetMakeEquip.lua:507 widget/WidgetMakeEquip.lua:512
 #: widget/WidgetMakeEquip.lua:517 widget/WidgetManufactureNew.lua:199
 #: widget/WidgetManufactureNew.lua:382 widget/WidgetMarchEvents.lua:628
-#: widget/WidgetMarchEvents.lua:632 widget/WidgetMoveHouse.lua:27
-#: widget/WidgetPlayerNode.lua:222 widget/WidgetPromoteSoldier.lua:130
-#: widget/WidgetRecruitSoldier.lua:306 widget/WidgetRecruitSoldier.lua:387
-#: widget/WidgetRecruitSoldier.lua:394 widget/WidgetRecruitSoldier.lua:422
-#: widget/WidgetRecruitSoldier.lua:428
+#: widget/WidgetMoveHouse.lua:27 widget/WidgetPlayerNode.lua:222
+#: widget/WidgetPromoteSoldier.lua:130 widget/WidgetRecruitSoldier.lua:306
+#: widget/WidgetRecruitSoldier.lua:387 widget/WidgetRecruitSoldier.lua:394
+#: widget/WidgetRecruitSoldier.lua:422 widget/WidgetRecruitSoldier.lua:428
 #: widget/WidgetRequirementListview.lua:233
 #: widget/WidgetRequirementListview.lua:245
 #: widget/WidgetShortcutButtons.lua:218 widget/WidgetSpeedUp.lua:119
@@ -355,10 +354,9 @@ msgid ""
 "择撤军来避免损失。"
 msgstr ""
 "您只有加入联盟后，才可以采集村落的资源，但也可能会成为其他敌对联盟领主的攻击"
-"目标。当遭到攻击时，请邀请己方的盟友进行协防，或者使用城防道具降低损失。如果"
-"您选择不驻防，那么您城市中的部队将不会参加防御，不会产生伤亡。但您可能会损失"
-"一定未被暗仓保护的资源。此外，当您采集村落的部队遭到敌方领主的攻击，您可以选"
-"择撤军来避免损失。"
+"目标。当遭到攻击时，请使用城防道具降低损失。如果您选择不驻防，那么您城市中的"
+"部队将不会参加防御，不会产生伤亡。但您可能会损失一定未被暗仓保护的资源。此"
+"外，当您采集村落的部队遭到敌方领主的攻击，您可以选择撤军来避免损失。"
 
 #: datas/ClientInitGame_FAQ.lua:35
 msgid "联盟战是什么？"
@@ -1428,123 +1426,123 @@ msgstr "%s已经开始(个人)"
 msgid "%s已经开始(联盟)"
 msgstr "%s已经开始(联盟)"
 
-#: entity/ActivityManager.lua:574
+#: entity/ActivityManager.lua:583
 msgid "普通抽奖1次"
 msgstr "普通抽奖1次"
 
-#: entity/ActivityManager.lua:575
+#: entity/ActivityManager.lua:584
 msgid "高级抽奖1次"
 msgstr "高级抽奖1次"
 
-#: entity/ActivityManager.lua:579
+#: entity/ActivityManager.lua:588
 msgid "村落每采集1单位的木材"
 msgstr "村落每采集1单位的木材"
 
-#: entity/ActivityManager.lua:580
+#: entity/ActivityManager.lua:589
 msgid "村落每采集1单位的石料"
 msgstr "村落每采集1单位的石料"
 
-#: entity/ActivityManager.lua:581
+#: entity/ActivityManager.lua:590
 msgid "村落每采集1单位的铁矿"
 msgstr "村落每采集1单位的铁矿"
 
-#: entity/ActivityManager.lua:582
+#: entity/ActivityManager.lua:591
 msgid "村落每采集1单位的粮食"
 msgstr "村落每采集1单位的粮食"
 
-#: entity/ActivityManager.lua:583
+#: entity/ActivityManager.lua:592
 msgid "村落每采集1单位的银币"
 msgstr "村落每采集1单位的银币"
 
-#: entity/ActivityManager.lua:584
+#: entity/ActivityManager.lua:593
 msgid "掠夺玩家1单位的木材"
 msgstr "掠夺玩家1单位的木材"
 
-#: entity/ActivityManager.lua:585
+#: entity/ActivityManager.lua:594
 msgid "掠夺玩家1单位的石料"
 msgstr "掠夺玩家1单位的石料"
 
-#: entity/ActivityManager.lua:586
+#: entity/ActivityManager.lua:595
 msgid "掠夺玩家1单位的铁矿"
 msgstr "掠夺玩家1单位的铁矿"
 
-#: entity/ActivityManager.lua:587
+#: entity/ActivityManager.lua:596
 msgid "掠夺玩家1单位的粮食"
 msgstr "掠夺玩家1单位的粮食"
 
-#: entity/ActivityManager.lua:588
+#: entity/ActivityManager.lua:597
 msgid "掠夺玩家1单位的银币"
 msgstr "掠夺玩家1单位的银币"
 
-#: entity/ActivityManager.lua:592
+#: entity/ActivityManager.lua:601
 msgid "探索1-4章的1个关卡"
 msgstr "探索1-4章的1个关卡"
 
-#: entity/ActivityManager.lua:593
+#: entity/ActivityManager.lua:602
 msgid "探索5-8章的1个关卡"
 msgstr "探索5-8章的1个关卡"
 
-#: entity/ActivityManager.lua:594
+#: entity/ActivityManager.lua:603
 msgid "探索9-12章的1个关卡"
 msgstr "探索9-12章的1个关卡"
 
-#: entity/ActivityManager.lua:595
+#: entity/ActivityManager.lua:604
 msgid "探索13-16章的1个关卡"
 msgstr "探索13-16章的1个关卡"
 
-#: entity/ActivityManager.lua:596
+#: entity/ActivityManager.lua:605
 msgid "探索17-20章的1个关卡"
 msgstr "探索17-20章的1个关卡"
 
-#: entity/ActivityManager.lua:597
+#: entity/ActivityManager.lua:606
 msgid "探索21-24章的1个关卡"
 msgstr "探索21-24章的1个关卡"
 
-#: entity/ActivityManager.lua:601
+#: entity/ActivityManager.lua:610
 msgid "黑龙军团Lv1-Lv8"
 msgstr "击败黑龙军团Lv1-Lv8"
 
-#: entity/ActivityManager.lua:602
+#: entity/ActivityManager.lua:611
 msgid "黑龙军团Lv9-Lv16"
 msgstr "击败黑龙军团Lv9-Lv16"
 
-#: entity/ActivityManager.lua:603
+#: entity/ActivityManager.lua:612
 msgid "黑龙军团Lv17-Lv24"
 msgstr "击败黑龙军团Lv17-Lv24"
 
-#: entity/ActivityManager.lua:604
+#: entity/ActivityManager.lua:613
 msgid "黑龙军团Lv25-Lv32"
 msgstr "击败黑龙军团Lv25-Lv32"
 
-#: entity/ActivityManager.lua:605
+#: entity/ActivityManager.lua:614
 msgid "黑龙军团Lv33-Lv40"
 msgstr "击败黑龙军团Lv33-Lv40"
 
-#: entity/ActivityManager.lua:609
+#: entity/ActivityManager.lua:618
 msgid "获取1单位的英雄之血"
 msgstr "获取1单位的英雄之血"
 
-#: entity/ActivityManager.lua:613
+#: entity/ActivityManager.lua:622
 msgid "招募部队Ⅰ：步兵/弓兵"
 msgstr "招募部队Ⅰ：步兵/弓兵"
 
-#: entity/ActivityManager.lua:614
+#: entity/ActivityManager.lua:623
 msgid "招募部队Ⅰ：骑兵/攻城武器"
 msgstr "招募部队Ⅰ：骑兵/攻城武器"
 
-#: entity/ActivityManager.lua:615
+#: entity/ActivityManager.lua:624
 msgid "招募部队Ⅱ：步兵/弓兵"
 msgstr "招募部队Ⅱ：步兵/弓兵"
 
-#: entity/ActivityManager.lua:616
+#: entity/ActivityManager.lua:625
 msgid "招募部队Ⅱ：骑兵/攻城武器"
 msgstr "招募部队Ⅱ：骑兵/攻城武器"
 
-#: entity/ActivityManager.lua:617
+#: entity/ActivityManager.lua:626
 msgid "招募部队Ⅲ：步兵/弓兵"
 msgstr "招募部队Ⅲ：步兵/弓兵"
 
-#: entity/ActivityManager.lua:618
+#: entity/ActivityManager.lua:627
 msgid "招募部队Ⅲ：骑兵/攻城武器"
 msgstr "招募部队Ⅲ：骑兵/攻城武器"
 
@@ -2735,13 +2733,25 @@ msgstr "已过期"
 msgid "即将来临"
 msgstr "即将来临"
 
-#: ui/GameUIActivityNew.lua:239 ui/GameUIActivityNew.lua:267
-#: ui/GameUIActivityNew.lua:318
+#: ui/GameUIActivityNew.lua:227 ui/GameUIActivityNew.lua:269
+#: ui/GameUIActivityNew.lua:307 ui/GameUIAlliance.lua:34
+#: ui/GameUIAllianceMemberInfo.lua:275 ui/GameUIAllianceMemberInfo.lua:278
+#: ui/GameUIChatChannel.lua:198 ui/GameUIShareReport.lua:199
+#: ui/GameUIThroneMain.lua:42 ui/GameUIVipNew.lua:95
+#: widget/WidgetHomeBottom.lua:45
+msgid "联盟"
+msgstr "联盟"
+
+#: ui/GameUIActivityNew.lua:227 ui/GameUIActivityNew.lua:269
+#: ui/GameUIActivityNew.lua:307
+msgid "个人"
+msgstr "个人"
+
+#: ui/GameUIActivityNew.lua:239 ui/GameUIActivityNew.lua:318
 msgid "联盟赛事"
 msgstr "联盟赛事"
 
-#: ui/GameUIActivityNew.lua:239 ui/GameUIActivityNew.lua:267
-#: ui/GameUIActivityNew.lua:318
+#: ui/GameUIActivityNew.lua:239 ui/GameUIActivityNew.lua:318
 msgid "个人赛事"
 msgstr "个人赛事"
 
@@ -2966,13 +2976,6 @@ msgstr "还不能领取"
 #, lua-format
 msgid "在线%s分钟"
 msgstr "在线%s分钟"
-
-#: ui/GameUIAlliance.lua:34 ui/GameUIAllianceMemberInfo.lua:275
-#: ui/GameUIAllianceMemberInfo.lua:278 ui/GameUIChatChannel.lua:198
-#: ui/GameUIShareReport.lua:199 ui/GameUIThroneMain.lua:42
-#: ui/GameUIVipNew.lua:95 widget/WidgetHomeBottom.lua:45
-msgid "联盟"
-msgstr "联盟"
 
 #: ui/GameUIAlliance.lua:178 widget/WidgetAllianceCreateOrEdit.lua:44
 msgid "创建"
@@ -4585,7 +4588,7 @@ msgid "部队详情"
 msgstr "部队详情"
 
 #: ui/GameUIAllianceWatchTowerTroopDetail.lua:163
-#: ui/GameUIDragonEquipment.lua:250 ui/GameUIDragonEquipmentMake.lua:192
+#: ui/GameUIDragonEquipment.lua:250 ui/GameUIDragonEquipmentMake.lua:195
 #: ui/GameUIDragonEyrieDetail.lua:803 ui/GameUIDragonEyrieMain.lua:474
 #: ui/GameUIHelpDefence.lua:377 ui/GameUIIntensifyEquipment.lua:269
 #: ui/GameUISendTroopNew.lua:201 ui/GameUIShowDragonUpStarAnimation.lua:68
@@ -4597,7 +4600,7 @@ msgid "生命值"
 msgstr "生命值"
 
 #: ui/GameUIAllianceWatchTowerTroopDetail.lua:166
-#: ui/GameUIDragonEquipment.lua:251 ui/GameUIDragonEquipmentMake.lua:193
+#: ui/GameUIDragonEquipment.lua:251 ui/GameUIDragonEquipmentMake.lua:196
 #: ui/GameUIDragonEyrieDetail.lua:788 ui/GameUIDragonEyrieMain.lua:463
 #: ui/GameUIHelpDefence.lua:391 ui/GameUIIntensifyEquipment.lua:272
 #: ui/GameUISendTroopNew.lua:217 ui/GameUIShowDragonUpStarAnimation.lua:60
@@ -5119,7 +5122,7 @@ msgstr "重置"
 msgid "属性"
 msgstr "属性"
 
-#: ui/GameUIDragonEquipment.lua:252 ui/GameUIDragonEquipmentMake.lua:194
+#: ui/GameUIDragonEquipment.lua:252 ui/GameUIDragonEquipmentMake.lua:197
 #: ui/GameUIDragonEyrieDetail.lua:820 ui/GameUIDragonEyrieDetail.lua:852
 #: ui/GameUIDragonEyrieMain.lua:486 ui/GameUIIntensifyEquipment.lua:275
 #: ui/GameUISendTroopNew.lua:264 ui/GameUIShowDragonUpStarAnimation.lua:76
@@ -5145,11 +5148,11 @@ msgstr "升级铁匠铺到%d级后解锁"
 msgid "需要材料"
 msgstr "需要材料"
 
-#: ui/GameUIDragonEquipmentMake.lua:135
+#: ui/GameUIDragonEquipmentMake.lua:138
 msgid "铁匠铺还未解锁"
 msgstr "铁匠铺还未解锁"
 
-#: ui/GameUIDragonEquipmentMake.lua:195
+#: ui/GameUIDragonEquipmentMake.lua:198
 msgid "附加随机属性数量"
 msgstr "附加随机属性数量"
 
@@ -7105,6 +7108,11 @@ msgstr "获得"
 
 #: ui/GameUISeasonDetails.lua:103
 #, lua-format
+msgid "联盟排名：%s"
+msgstr "联盟排名：%s"
+
+#: ui/GameUISeasonDetails.lua:103
+#, lua-format
 msgid "我的排名：%s"
 msgstr "我的排名：%s"
 
@@ -7136,6 +7144,11 @@ msgstr "分数"
 #: ui/GameUISeasonDetails.lua:367 ui/GameUISeasonDetails.lua:429
 msgid "过期"
 msgstr "过期"
+
+#: ui/GameUISeasonDetails.lua:377
+#, lua-format
+msgid "联盟分数：%s"
+msgstr "联盟分数：%s"
 
 #: ui/GameUISeasonDetails.lua:377
 #, lua-format
@@ -8484,7 +8497,7 @@ msgstr "去联盟领地搜索目标"
 
 #: ui/GameUIWatchTower.lua:599 ui/GameUIWatchTower.lua:609
 #: ui/GameUIWathTowerRegion.lua:592 ui/GameUIWathTowerRegion.lua:602
-#: widget/WidgetMarchEvents.lua:628 widget/WidgetMarchEvents.lua:632
+#: widget/WidgetMarchEvents.lua:628
 msgid "确定撤军?"
 msgstr "确定撤军?"
 
@@ -10339,36 +10352,35 @@ msgstr "可以查看其他玩家的城市的具体建筑等级"
 
 #: utils/Localize.lua:543
 msgid "可以查看目标城市协防部队的详细信息：龙的类型，等级和星级"
-msgstr "可以查看目标城市协防部队的详细信息：龙的类型，等级和星级"
+msgstr "可以查看目标城市详细信息：龙的类型，等级和星级"
 
 #: utils/Localize.lua:544
 msgid "可以查看目标城市协防部队的详细信息：龙的力量，当前生命值和生命值上限"
-msgstr ""
-"可以查看目标城市协防部队的详细信息：龙的攻击力，当前生命值和生命值上限"
+msgstr "可以查看目标城市的详细信息：龙的攻击力，当前生命值和生命值上限"
 
 #: utils/Localize.lua:545
 msgid "可以查看目标城市协防部队的详细信息：显示兵种的名称，排序"
-msgstr "可以查看目标城市协防部队的详细信息：显示兵种的名称，排序"
+msgstr "可以查看目标城市的详细信息：显示兵种的名称，排序"
 
 #: utils/Localize.lua:546
 msgid "可以查看目标城市协防部队的详细信息：显示兵种的星级"
-msgstr "可以查看目标城市协防部队的详细信息：显示兵种的星级"
+msgstr "可以查看目标城市的详细信息：显示兵种的星级"
 
 #: utils/Localize.lua:547
 msgid "可以查看目标城市协防部队的详细信息：显示兵种的模糊数量"
-msgstr "可以查看目标城市协防部队的详细信息：显示兵种的模糊数量"
+msgstr "可以查看目标城市的详细信息：显示兵种的模糊数量"
 
 #: utils/Localize.lua:548
 msgid "可以查看目标城市协防部队的详细信息：显示龙的装备及其星级"
-msgstr "可以查看目标城市协防部队的详细信息：显示龙的装备及其星级"
+msgstr "可以查看目标城市的详细信息：显示龙的装备及其星级"
 
 #: utils/Localize.lua:549
 msgid "可以查看目标城市协防部队的详细信息：显示龙的技能等级"
-msgstr "可以查看目标城市协防部队的详细信息：显示龙的技能等级"
+msgstr "可以查看目标城市的详细信息：显示龙的技能等级"
 
 #: utils/Localize.lua:550
 msgid "可以查看目标城市协防部队的详细信息：显示敌方单位的具体数量"
-msgstr "可以查看目标城市协防部队的详细信息：显示敌方单位的具体数量"
+msgstr "可以查看目标城市的详细信息：显示敌方单位的具体数量"
 
 #: utils/Localize.lua:573
 msgid ""
@@ -12730,7 +12742,7 @@ msgstr "减少25%的维护费用"
 msgid ""
 "敌方突袭成功后无法获得侦查情报，也无法抢到银币（仅对玩家本人有效，对协防玩家"
 "无效）"
-msgstr "敌方侦察成功后无法获得情报（仅对玩家本人有效，对协防玩家无效）"
+msgstr "敌方侦察成功后无法获得情报"
 
 #: utils/Localize_item.lua:220 utils/Localize_item.lua:221
 #: utils/Localize_item.lua:222
@@ -13568,11 +13580,6 @@ msgstr ""
 msgid "撤退"
 msgstr "撤退"
 
-#: widget/WidgetMarchEvents.lua:494
-#, lua-format
-msgid "正在协防 %s (%s)"
-msgstr "正在协防 %s (%s)"
-
 #: widget/WidgetMaterialDetails.lua:27
 msgid "材料详情"
 msgstr "材料详情"
@@ -13985,8 +13992,8 @@ msgstr "准备期：发起联盟战后，双方联盟有一段准备时间"
 msgid ""
 "战前期：就是干（注意协防己方玩家城市）。击溃敌方城市可获得额外联盟荣耀值。"
 msgstr ""
-"战争期：击杀敌方以获得积分（注意协防己方玩家城市），积分高低是判定胜负的唯一"
-"标准。击溃敌方城市可获得额外联盟荣耀值。"
+"战争期：击杀敌方以获得积分，积分高低是判定胜负的唯一标准。击溃敌方城市可获得"
+"额外联盟荣耀值。"
 
 #: widget/WidgetWarIntroduce.lua:44
 msgid ""

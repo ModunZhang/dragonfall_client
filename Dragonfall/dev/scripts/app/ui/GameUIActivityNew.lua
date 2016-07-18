@@ -224,7 +224,7 @@ function GameUIActivityNew:GetSeasonItem(season_type,activity,isAlliance)
         content.status = "on"
         local title_bg = display.newSprite("title_blue_522x54.png"):align(display.LEFT_CENTER, - 2, item_height - 40):addTo(content)
         local title_label = UIKit:ttfLabel({
-            text = ActivityManager:GetActivityLocalize(activity.type),
+            text = ActivityManager:GetActivityLocalize(activity.type).." ["..(isAlliance and _("联盟") or _("个人")).."]",
             size = 20,
             color = 0xffcb4e,
             shadow = true
@@ -264,9 +264,9 @@ function GameUIActivityNew:GetSeasonItem(season_type,activity,isAlliance)
         content.isAlliance = isAlliance
         content.status = "expired"
         local title_bg = display.newSprite("title_red_522x54.png"):align(display.LEFT_CENTER, -2, item_height - 40):addTo(content)
-        local dscc = isAlliance and _("联盟赛事") or _("个人赛事")
+        
         local title_label = UIKit:ttfLabel({
-            text = ActivityManager:GetActivityLocalize(activity.type).." ("..dscc..")",
+            text = ActivityManager:GetActivityLocalize(activity.type).." ["..(isAlliance and _("联盟") or _("个人")).."]",
             size = 20,
             color = 0xffcb4e,
             shadow = true
@@ -304,7 +304,7 @@ function GameUIActivityNew:GetSeasonItem(season_type,activity,isAlliance)
         content.status = "next"
         local title_bg = display.newSprite("title_blue_522x54.png"):align(display.LEFT_CENTER, -2, item_height - 40):addTo(content)
         local title_label = UIKit:ttfLabel({
-            text = ActivityManager:GetActivityLocalize(activity.type),
+            text = ActivityManager:GetActivityLocalize(activity.type).." ["..(isAlliance and _("联盟") or _("个人")).."]",
             size = 20,
             color = 0xffcb4e,
             shadow = true
