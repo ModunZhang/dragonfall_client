@@ -156,7 +156,7 @@ function GameUISeasonDetails:GetListNode()
         end
     else
         local reward = isAlliance and ActivityManager:GetAllianceActivityRankReward(activity_type) or ActivityManager:GetActivityRankReward(activity_type)
-        local region = ActivityManager:GetActivityRankRewardRegion()
+        local region = isAlliance and ActivityManager:GetActivityAllianceRankRewardRegion() or ActivityManager:GetActivityRankRewardRegion()
         local reward_data = {}
         local reward_height = 18
         for i = #reward,1 ,-1 do
@@ -266,7 +266,7 @@ function GameUISeasonDetails:GetListNode()
         :addTo(content)
         :scale(121/170)
     local reward_points = isAlliance and ActivityManager:GetAllianceActivityScorePonits(activity_type) or ActivityManager:GetActivityScorePonits(activity_type)
-    local gotIndex
+    local gotIndex = 0
     if isValid then
         if isAlliance then
             gotIndex = ActivityManager:GetAllianceActivityScoreIndex(activity_type)

@@ -231,7 +231,6 @@ function ActivityManager:GetHaveRewardActivitiesCount()
             end
         end
     end)
-    print("···1count",count)
     self:IteratorActivityExpired(function (i,serverActivity)
         if self:IsPlayerExpiredActivityValid(serverActivity.type) then
             if self:GetActivityScoreGotIndex(serverActivity.type) > 0 then
@@ -245,15 +244,12 @@ function ActivityManager:GetHaveRewardActivitiesCount()
         end
     end)
     self:IteratorAllianceActivityOn(function (i,serverActivity)
-        print("···serverActivity.type",serverActivity.type,self:IsAllianceExpiredActivityValid(serverActivity.type))
         if self:IsAllianceExpiredActivityValid(serverActivity.type) then
-            print("self:GetAllianceActivityScoreGotIndex(serverActivity.type)",self:GetAllianceActivityScoreGotIndex(serverActivity.type))
             if self:GetAllianceActivityScoreGotIndex(serverActivity.type) > 0 then
                 count = count + 1
             end
         end
     end)
-    print("···2count",count)
     self:IteratorAllianceActivityExpired(function (i,serverActivity)
         if self:IsAllianceExpiredActivityValid(serverActivity.type) then
             if self:GetAllianceActivityScoreGotIndex(serverActivity.type) > 0 then
@@ -508,7 +504,7 @@ function ActivityManager:GetMyAllianceActivityRankReward(type)
     local myRank = self.alliance_rank[type]
     local config = self:GetAllianceActivityConfig(type)
     if self:IsAllianceExpiredActivityValid(type) and not User.allianceActivities[type].rankRewardsGeted and myRank and myRank <= config.maxRank then
-        for i,v in ipairs(self:GetActivityRankRewardRegion()) do
+        for i,v in ipairs(self:GetActivityAllianceRankRewardRegion()) do
             local point = config["rankPoint"..i]
             if myRank <= v[2] and myRank >= v[1] then
                 local reward = string.split(config["rankRewards"..i],',')
@@ -560,6 +556,19 @@ function ActivityManager:GetActivityRankRewardRegion()
         {26,50},
         {51,75},
         {76,100},
+    }
+end
+-- 排名联盟奖励范围区间
+function ActivityManager:GetActivityAllianceRankRewardRegion()
+    return {
+        {1,1},
+        {2,2},
+        {3,3},
+        {4,4},
+        {5,7},
+        {8,10},
+        {11,14},
+        {15,20},
     }
 end
 -- 获取活动本地化
