@@ -338,7 +338,9 @@ function AllianceManager:OnAllianceDataChanged(allianceData,refresh_time,deltaDa
     end
     self.my_mapIndex = allianceData.mapIndex
     self.status = allianceData.basicInfo.status
-    ActivityManager:GetAllianceActivitiesFromServer()
+    if not ActivityManager:IsInitAllianceActivity() then
+        ActivityManager:GetAllianceActivitiesFromServer()
+    end
 end
 
 
