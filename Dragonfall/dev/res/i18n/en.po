@@ -1,9 +1,9 @@
-# This file was generated from /Users/kennydai/Downloads/i18n(4)(3).xlsx
+# This file was generated from /Users/kennydai/Downloads/i18n(4)(5).xlsx
 msgid ""
 msgstr ""
 "Project-Id-Version: dragonfall\n"
-"POT-Creation-Date: 2016-07-19 14:47+0800\n"
-"PO-Revision-Date: 2016-07-19 14:47+0800\n"
+"POT-Creation-Date: 2016-07-19 17:13+0800\n"
+"PO-Revision-Date: 2016-07-19 17:14+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -77,18 +77,17 @@ msgstr ""
 #: ui/GameUIAlliance.lua:2177 ui/GameUIAlliance.lua:2182
 #: ui/GameUIAllianceBattle.lua:277 ui/GameUIAllianceBattle.lua:281
 #: ui/GameUIAllianceBattle.lua:285 ui/GameUIAllianceCityEnter.lua:226
-#: ui/GameUIAllianceCityEnter.lua:251 ui/GameUIAllianceCityEnter.lua:262
-#: ui/GameUIAllianceCityEnter.lua:284 ui/GameUIAllianceContribute.lua:328
-#: ui/GameUIAllianceContribute.lua:333 ui/GameUIAllianceContribute.lua:344
-#: ui/GameUIAllianceHome.lua:722 ui/GameUIAllianceInfo.lua:287
-#: ui/GameUIAllianceInfo.lua:292 ui/GameUIAllianceInfo.lua:299
-#: ui/GameUIAllianceInfo.lua:304 ui/GameUIAllianceInfo.lua:308
-#: ui/GameUIAllianceInfo.lua:313 ui/GameUIAllianceJoinTips.lua:146
-#: ui/GameUIAllianceMemberInfo.lua:131 ui/GameUIAllianceMemberInfo.lua:134
-#: ui/GameUIAllianceMemberInfo.lua:182 ui/GameUIAllianceMemberInfo.lua:212
-#: ui/GameUIAllianceMemberInfo.lua:238 ui/GameUIAllianceMemberInfo.lua:247
-#: ui/GameUIAllianceMemberInfo.lua:418 ui/GameUIAllianceMemberInfo.lua:423
-#: ui/GameUIAllianceMosterEnter.lua:169
+#: ui/GameUIAllianceCityEnter.lua:251 ui/GameUIAllianceCityEnter.lua:284
+#: ui/GameUIAllianceContribute.lua:328 ui/GameUIAllianceContribute.lua:333
+#: ui/GameUIAllianceContribute.lua:344 ui/GameUIAllianceHome.lua:722
+#: ui/GameUIAllianceInfo.lua:287 ui/GameUIAllianceInfo.lua:292
+#: ui/GameUIAllianceInfo.lua:299 ui/GameUIAllianceInfo.lua:304
+#: ui/GameUIAllianceInfo.lua:308 ui/GameUIAllianceInfo.lua:313
+#: ui/GameUIAllianceJoinTips.lua:146 ui/GameUIAllianceMemberInfo.lua:131
+#: ui/GameUIAllianceMemberInfo.lua:134 ui/GameUIAllianceMemberInfo.lua:182
+#: ui/GameUIAllianceMemberInfo.lua:212 ui/GameUIAllianceMemberInfo.lua:238
+#: ui/GameUIAllianceMemberInfo.lua:247 ui/GameUIAllianceMemberInfo.lua:418
+#: ui/GameUIAllianceMemberInfo.lua:423 ui/GameUIAllianceMosterEnter.lua:169
 #: ui/GameUIAllianceNoticeOrDescEdit.lua:89
 #: ui/GameUIAllianceNoticeOrDescEdit.lua:95 ui/GameUIAlliancePalace.lua:304
 #: ui/GameUIAlliancePalace.lua:308 ui/GameUIAlliancePalace.lua:464
@@ -3867,10 +3866,6 @@ msgstr "You'll lose your protection if you attack others' city,continue?"
 #: ui/GameUIStrikePlayer.lua:88
 msgid "突袭"
 msgstr "Scout"
-
-#: ui/GameUIAllianceCityEnter.lua:262
-msgid "突袭玩家城市将失去保护状态，确定继续派兵?"
-msgstr "You'll lose your protection if you scout enemy city,continue?"
 
 #: ui/GameUIAllianceCityEnter.lua:284
 msgid "巨石阵等级不足，不能进入其他联盟玩家城市"
@@ -13103,7 +13098,9 @@ msgstr "Advanced War Hourglass"
 #: utils/Localize_item.lua:211 utils/Localize_item.lua:212
 #: utils/Localize_item.lua:213
 msgid "战败时无法被掠夺资源，但城墙会受到攻击。同时防御时的战损下降20%"
-msgstr "Prevent to be plundered during the battle"
+msgstr ""
+"You won't be attacked, but you will lose the protection if you attack other "
+"enemy Lords"
 
 #: utils/Localize_item.lua:214 utils/Localize_item.lua:215
 #: utils/Localize_item.lua:216
@@ -13835,7 +13832,7 @@ msgstr "Browse your own buildings"
 msgid "物品"
 msgstr "Item"
 
-#: widget/WidgetHomeBottom.lua:210
+#: widget/WidgetHomeBottom.lua:213
 msgid ""
 "加入或创建联盟\n"
 "开启多人团战玩法"
@@ -14437,3 +14434,6 @@ msgstr "Only the Chief and General can migrate the Alliance !"
 #: widget/WidgetWorldAllianceInfo.lua:500
 msgid "是否确认迁移联盟至该领土？"
 msgstr "Are you sure to migrate Alliance to this terrain ?"
+
+#~ msgid "突袭玩家城市将失去保护状态，确定继续派兵?"
+#~ msgstr "You'll lose your protection if you scout enemy city,continue?"
