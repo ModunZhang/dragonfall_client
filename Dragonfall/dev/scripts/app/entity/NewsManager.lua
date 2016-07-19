@@ -6,15 +6,25 @@ local Enum = import("..utils.Enum")
 local MultiObserver = import("..entity.MultiObserver")
 local NewsManager = class("NewsManager", MultiObserver)
 NewsManager.LISTEN_TYPE = Enum("NEWS_CHANGED","UNREAD_NEWS_CHANGED")
-
+local function fliter_news( datas )
+    local filter_data = {}
+    for i,v in ipairs(datas) do
+        if v.time > User.countInfo.registerTime then
+            table.insert(filter_data, v)
+        end
+    end
+    return filter_data
+end
 function NewsManager:ctor()
     NewsManager.super.ctor(self)
     self:GetAllNewsFromServer()
 end
+
 --从服务器获取所有新闻
 function NewsManager:GetAllNewsFromServer()
     NetManager:getServerNoticesPromise():done(function (response)
-        self.newsData = response.msg.notices
+        self.newsData = fliter_news(response.msg.notices)
+        dump(self.newsData)
     end)
 end
 -- 所有新闻
