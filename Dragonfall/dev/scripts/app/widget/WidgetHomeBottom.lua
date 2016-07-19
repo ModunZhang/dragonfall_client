@@ -131,6 +131,9 @@ function WidgetHomeBottom:OnBottomButtonClicked(event)
         if event.target:getChildByTag(111) then
             needTips = true
             event.target:removeChildByTag(111)
+            if not app:GetGameDefautlt():IsPassedTriggerTips("mail") then
+                app:GetGameDefautlt():SetPassTriggerTips("mail")
+            end
         end
         UIKit:newGameUI('GameUIMail',self.city,needTips):AddToCurrentScene(true)
     elseif tag == 2 then
