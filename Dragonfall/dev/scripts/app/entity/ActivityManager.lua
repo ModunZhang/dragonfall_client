@@ -426,6 +426,9 @@ function ActivityManager:IsAllianceGetIndexValid(activity_type)
 end
 -- 获取联盟活动积分奖励当前可领取index
 function ActivityManager:GetAllianceActivityScoreGotIndex(type)
+    if self:IsAllianceDefault() then
+        return 0
+    end
     local scoreRewardedIndex = self:IsAllianceGetIndexValid(type) and User.allianceActivities[type].scoreRewardedIndex or 0
     local allianceActiviy = Alliance_Manager:GetMyAlliance().activities[type]
     if scoreRewardedIndex < 5 then
