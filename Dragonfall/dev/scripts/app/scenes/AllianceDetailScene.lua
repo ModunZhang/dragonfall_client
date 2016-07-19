@@ -337,8 +337,10 @@ function AllianceDetailScene:onEnter()
                     break
                 end
             end
+
+            local needtips = UtilsForFte:NeedTriggerTips(User)
             -- step 1
-            if not app:GetGameDefautlt():IsPassedAllianceFte(1) then
+            if not app:GetGameDefautlt():IsPassedAllianceFte(1) and needtips then
                 alliance:IteratorVillages(function(k,v)
                     local x,y = DataUtils:GetAbsolutePosition(alliance.mapIndex, v.location.x, v.location.y)
                     self:GotoPosition(x,y)
@@ -368,7 +370,7 @@ function AllianceDetailScene:onEnter()
 
             -- step 2
             if app:GetGameDefautlt():IsPassedAllianceFte(1) and
-            not app:GetGameDefautlt():IsPassedAllianceFte(2) then
+            not app:GetGameDefautlt():IsPassedAllianceFte(2) and needtips then
                 local x,y = DataUtils:GetAbsolutePosition(alliance.mapIndex,8,10)
                 self:GotoPosition(x,y)
                 self:GetSceneLayer():AddUpgradeFlag(alliance.mapIndex)
@@ -391,7 +393,7 @@ function AllianceDetailScene:onEnter()
 
             -- step 3
              if app:GetGameDefautlt():IsPassedAllianceFte(1,2) and
-             not app:GetGameDefautlt():IsPassedAllianceFte(3) then
+             not app:GetGameDefautlt():IsPassedAllianceFte(3) and needtips then
                 local monster,mapobj
                 alliance:IteratorMonsters(function(k,v)
                     local mon = alliance:GetAllianceMonsterInfosById(v.id)
@@ -426,7 +428,7 @@ function AllianceDetailScene:onEnter()
 
             -- step 4
             if app:GetGameDefautlt():IsPassedAllianceFte(1,2,3) and
-             not app:GetGameDefautlt():IsPassedAllianceFte(4) then
+             not app:GetGameDefautlt():IsPassedAllianceFte(4) and needtips then
                 local x,y = DataUtils:GetAbsolutePosition(alliance.mapIndex,8,12)
                 self:GotoPosition(x,y)
                 self:GetSceneLayer():AddShrineFlag(alliance.mapIndex)
@@ -443,7 +445,7 @@ function AllianceDetailScene:onEnter()
 
             -- step 5
             if app:GetGameDefautlt():IsPassedAllianceFte(1,2,3,4) and
-             not app:GetGameDefautlt():IsPassedAllianceFte(5) then
+             not app:GetGameDefautlt():IsPassedAllianceFte(5) and needtips then
                 local mapObj = alliance:FindMapObjectById(alliance:GetSelf().mapId)
                 local x,y = DataUtils:GetAbsolutePosition(alliance.mapIndex, mapObj.location.x, mapObj.location.y)
                 self:GotoPosition(x,y)
