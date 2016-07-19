@@ -652,7 +652,7 @@ function Report:GetFightReports()
 end
 function Report:GetReportResult()
     local data = self.data
-    if data.attackPlayerData.id == self.player_id then
+    if data.attackPlayerData and data.attackPlayerData.id == self.player_id then
         if data.fightWithHelpDefencePlayerReports then
             local my_round = data.fightWithHelpDefencePlayerReports.soldierRoundDatas
             local isWin = true
