@@ -9,7 +9,9 @@ local WidgetInfoWithTitle = import("..widget.WidgetInfoWithTitle")
 local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local StarBar = import("..ui.StarBar")
 local UILib = import(".UILib")
+local GameUINpc = import("..ui.GameUINpc")
 local Localize = import("..utils.Localize")
+local promise = import("..utils.promise")
 local scheduler = require(cc.PACKAGE_NAME .. ".scheduler")
 local intInit = GameDatas.PlayerInitData.intInit
 local WidgetInfo = import("..widget.WidgetInfo")
@@ -20,12 +22,41 @@ function GameUITownHall:ctor(city, townHall,default_tab)
     GameUITownHall.super.ctor(self, city, _("市政厅"), townHall,default_tab)
     self.town_hall_city = city
     self.town_hall = townHall
+    self.tipsPromise = promise.new()
 end
 function GameUITownHall:OnMoveInStage()
     GameUITownHall.super.OnMoveInStage(self)
     self:CreateDwelling()
     self:TabButtons()
     self:UpdateDwellingCondition()
+
+    if self.needTips then
+        promise.all(GameUINpc:PromiseOfSay(
+            {npc = "woman", words = _("领主大人，在市政厅附近修建住宅，可获得银币产出加成，多多益善！")}
+        ), self.tipsPromise):next(function()
+            local btn
+            local rect
+            if #self.quest_list_view.items_ > 0 then
+                btn = self.quest_list_view.items_[1].control_btn
+                UIKit:FingerAni()
+                :addTo(btn,10,111)
+                :pos(-20, -50)
+                rect = btn:getCascadeBoundingBox()
+            end
+            return GameUINpc:PromiseOfSay({
+                focus_rect = rect,
+                click_func = function(e)
+                    if btn then
+                        btn:dispatchEvent({name = btn.CLICKED_EVENT, x = e.x, y = e.y, touchInTarget = true})
+                    end
+                end,
+                words = _("同时，您也可在此通过小任务，花费一定的时间获得大量的资源奖励！")
+            })
+        end):next(function()
+            app:GetGameDefautlt():SetPassTriggerTips("townHall")
+            return GameUINpc:PromiseOfLeave()
+        end)
+    end
 end
 function GameUITownHall:onExit()
     User:RemoveListenerOnType(self, "dailyQuests")
@@ -172,6 +203,10 @@ function GameUITownHall:CreateAllQuests(daily_quests)
             self:CreateQuestItem(quest)
         end
         self.quest_list_view:reload()
+        if self.tipsPromise then
+            self.tipsPromise:resolve()
+            self.tipsPromise = nil
+        end
     end
 end
 
@@ -262,9 +297,11 @@ function GameUITownHall:CreateQuestItem(quest,index)
 
     local control_btn = WidgetPushButton.new()
         :align(display.RIGHT_CENTER,item_width-10,108)
-        :addTo(body)
+        :addTo(body,1)
 
     local reward_bg = display.newScale9Sprite("back_ground_166x84.png", item_width/2,34,cc.size(548,52),cc.rect(15,10,136,64)):addTo(body)
+
+    item.control_btn = control_btn
 
     local TownHallUI = self
     function item:SetStar(quest)
@@ -332,6 +369,7 @@ function GameUITownHall:CreateQuestItem(quest,index)
                     text  = _("开始")
                 })
             ):onButtonClicked(function(event)
+                event.target:removeChildByTag(111)
                 if User:CouldGotDailyQuestReward() then
                     UIKit:showMessageDialog(_("主人"),_("请先领取已经完成的任务的奖励"))
                     return

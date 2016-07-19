@@ -6,7 +6,6 @@ local UILib = import("..ui.UILib")
 local Alliance = import("..entity.Alliance")
 local SpriteConfig = import("..sprites.SpriteConfig")
 local WidgetAllianceHelper = import("..widget.WidgetAllianceHelper")
-local fire = import("..particles.fire")
 local smoke_city = import("..particles.smoke_city")
 local NormalMapAnchorBottomLeftReverseY = import("..map.NormalMapAnchorBottomLeftReverseY")
 local MapLayer = import(".MapLayer")
@@ -71,10 +70,10 @@ function AllianceLayer:onEnter()
     --         {x = i, y = y + 10, index = 0},
     --         timer:GetServerTime(),
     --         timer:GetServerTime() + 100,
-    --         "redDragon",
-    --         {{name = "swordsman", star = 1}},
+    --         {dragon = {type = "redDragon"}, {{name = "swordsman", star = 1}}},
     --         FRIEND,
-    --         "hello"
+    --         "hello",
+    --         false
     --     )
     --     count = count + 1
     -- end
@@ -208,7 +207,7 @@ function AllianceLayer:StartCorpsTimer()
                     local line = self.map_lines[id]
                     local program = line:getFilter():getGLProgramState()
                     program:setUniformFloat("percent", math.fmod(time - math.floor(time), 1.0))
-                    program:setUniformFloat("elapse", line.is_enemy and (cc.pGetLength(cc.pSub(cur_vec, march_info.origin_start)) / march_info.origin_length) or 0)
+                    program:setUniformFloat("elapse", line.isTruncate and (cc.pGetLength(cc.pSub(cur_vec, march_info.origin_start)) / march_info.origin_length) or 0)
 
                     if self.track_id == id then
                         self:GotoMapPositionInMiddle(cur_vec.x, cur_vec.y)
@@ -253,10 +252,10 @@ function AllianceLayer:CreateOrUpdateCorpsBy(event, isreturn)
             {x = event.fromAlliance.location.x, y = event.fromAlliance.location.y, index = dest_index},
             event.startTime / 1000,
             event.arriveTime / 1000,
-            event.attackPlayerData.dragon.type,
-            event.attackPlayerData.soldiers,
+            event.attackPlayerData,
             getAllyFromEvent(event),
-            string.format("[%s]%s", event.fromAlliance.tag, event.attackPlayerData.name)
+            string.format("[%s]%s", event.fromAlliance.tag, event.attackPlayerData.name),
+            isreturn
         )
 
         if event.marchType == "monster"
@@ -283,14 +282,16 @@ function AllianceLayer:CreateOrUpdateCorpsBy(event, isreturn)
             {x = event.toAlliance.location.x, y = event.toAlliance.location.y, index = dest_index},
             event.startTime / 1000,
             event.arriveTime / 1000,
-            event.attackPlayerData.dragon.type,
-            event.attackPlayerData.soldiers,
+            event.attackPlayerData,
             getAllyFromEvent(event),
-            string.format("[%s]%s", event.fromAlliance.tag, event.attackPlayerData.name)
+            string.format("[%s]%s", event.fromAlliance.tag, event.attackPlayerData.name),
+            isreturn
         )
     end
 end
-function AllianceLayer:CreateOrUpdateCorps(id, start_pos, end_pos, start_time, finish_time, dragonType, soldiers, ally, banner_name)
+function AllianceLayer:CreateOrUpdateCorps(id,start_pos,end_pos,start_time,finish_time,troops,ally,banner,isreturn)
+    local dragonType = troops.dragon.type
+    local soldiers = troops.soldiers
     if finish_time <= timer:GetServerTime() then return end
     local march_info = self:GetMarchInfoWith(id, start_pos, end_pos)
     if start_time == march_info.start_time and
@@ -309,21 +310,21 @@ function AllianceLayer:CreateOrUpdateCorps(id, start_pos, end_pos, start_time, f
         else
             corpsNode = UIKit:CreateMoveSoldiers(march_info.degree, {dragonType = dragonType, soldiers = soldiers}):addTo(corps)
         end
-        if (ally == MINE or ally == FRIEND) and banner_name then
+        if (ally == MINE or ally == FRIEND) and banner then
             if is_strike then
-                UIKit:CreateNameBanner(banner_name, dragonType)
+                UIKit:CreateNameBanner(banner, dragonType)
                 :addTo(corps,1):pos(0, 80)
             else
                 local wp = corpsNode.dragon:convertToWorldSpace(cc.p(0,0))
                 local lp = corps:convertToNodeSpace(wp)
-                UIKit:CreateNameBanner(banner_name, dragonType)
+                UIKit:CreateNameBanner(banner, dragonType)
                 :addTo(corps,1):pos(lp.x, lp.y + 80)
             end
         end
         corps.march_info = march_info
         corps:pos(march_info.start_info.real.x, march_info.start_info.real.y)
         self.map_corps[id] = corps
-        self:CreateLine(id, march_info, ally)
+        self:CreateLine(id, march_info, ally, isreturn)
     else
         self:UpdateCorpsBy(self.map_corps[id], march_info)
     end
@@ -398,7 +399,7 @@ local line_ally_map = {
     [FRIEND] = "arrow_blue_22x32.png",
     [ENEMY] = "arrow_red_22x32.png",
 }
-function AllianceLayer:CreateLine(id, march_info, ally)
+function AllianceLayer:CreateLine(id, march_info, ally, isreturn)
     if self.map_lines[id] then
         self.map_lines[id]:removeFromParent()
     end
@@ -420,7 +421,7 @@ function AllianceLayer:CreateLine(id, march_info, ally)
         })
     ))
     line:setScaleY(scale)
-    line.is_enemy = ally == ENEMY
+    line.isTruncate = ally == ENEMY and isreturn
     self.map_lines[id] = line
     return line
 end
@@ -537,9 +538,10 @@ function AllianceLayer:AddMapObjectByIndex(index, mapObject, alliance)
     local alliance_object = self.alliance_objects[index]
     if alliance_object then
         if not alliance_object.mapObjects[mapObject.id] then
-            local object = self:AddMapObject(alliance_object, mapObject, alliance)
-            if object then
-                self:RefreshObjectInfo(object, mapObject, alliance)
+            local ltx,lty,rdx,rdy = self:GetVisibleBoundary()
+            local x,y = DataUtils:GetAbsolutePosition(index,mapObject.location.x,mapObject.location.y)
+            if x >= ltx and x <= rdx and y >= lty and y <= rdy then
+                self:AddMapObject(alliance_object, mapObject, alliance)
             end
         end
     end
@@ -558,7 +560,6 @@ function AllianceLayer:RefreshMapObjectByIndex(index, mapObject, alliance)
     if alliance_object and alliance_object.mapObjects then
         local object = alliance_object.mapObjects[mapObject.id]
         if object then
-            self:RefreshMapObjectPosition(object, mapObject)
             self:RefreshObjectInfo(object, mapObject, alliance)
         end
     end
@@ -584,6 +585,51 @@ function AllianceLayer:RefreshBuildingByIndex(index, building, alliance)
         end
     end
 end
+--
+local DataUtils = DataUtils
+function AllianceLayer:LoadVisibleMapObjects(mapIndex)
+    local ltx,lty,rdx,rdy = self:GetVisibleBoundary()
+    local mapIndexes
+    if mapIndex then
+        mapIndexes = { mapIndex }
+    else
+        mapIndexes = self:GetVisibleAllianceIndexs()
+    end
+
+    for _,index in ipairs(mapIndexes) do
+        local objects_node = self.alliance_objects[index]
+        local allianceData = Alliance_Manager:GetAllianceByCache(index)
+        if objects_node and allianceData then
+            local map_obj_id = {}
+            for k,v in pairs(allianceData.mapObjects) do
+                map_obj_id[v.id] = true
+            end
+            for _,mapObj in pairs(allianceData.mapObjects) do
+                local x,y = DataUtils:GetAbsolutePosition(index,mapObj.location.x,mapObj.location.y)
+                if x >= ltx and x <= rdx and y >= lty and y <= rdy then
+                    local object = objects_node.mapObjects[mapObj.id]
+                    if not object then
+                        object = self:AddMapObject(objects_node,mapObj,allianceData)
+                    end
+                    local mapObjects = objects_node.mapObjects
+                    for id,v in pairs(mapObjects) do
+                        if not map_obj_id[id] then
+                            self:RemoveMapObject(v)
+                            mapObjects[id] = nil
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+function AllianceLayer:GetVisibleBoundary()
+    local leftTopPoint = self.map:convertToNodeSpace(cc.p(0,display.height))
+    local ltx,lty = self:GetLogicMap():ConvertToLogicPosition(leftTopPoint.x,leftTopPoint.y)
+    local rightDownPoint = self.map:convertToNodeSpace(cc.p(display.width,0))
+    local rdx,rdy = self:GetLogicMap():ConvertToLogicPosition(rightDownPoint.x,rightDownPoint.y)
+    return ltx,lty,rdx,rdy
+end
 function AllianceLayer:LoadAllianceByIndex(index, alliance)
     local allianceData = (alliance ~= nil and alliance ~= json.null) and alliance or nil
     local isMyAlliance = index == Alliance_Manager:GetMyAlliance().mapIndex
@@ -591,26 +637,6 @@ function AllianceLayer:LoadAllianceByIndex(index, alliance)
     self:LoadBackground(index, allianceData)
     self:LoadObjects(index, allianceData, function(objects_node)
         if allianceData then
-            local map_obj_id = {}
-            for k,v in pairs(allianceData.mapObjects) do
-                map_obj_id[v.id] = true
-            end
-            for _,mapObj in pairs(allianceData.mapObjects) do
-                local object = objects_node.mapObjects[mapObj.id]
-                if not object then
-                    object = self:AddMapObject(objects_node, mapObj, allianceData)
-                end
-                if object then
-                    self:RefreshObjectInfo(object, mapObj, allianceData)
-                end
-            end
-            local mapObjects = objects_node.mapObjects
-            for id,v in pairs(mapObjects) do
-                if not map_obj_id[id] then
-                    self:RemoveMapObject(v)
-                    mapObjects[id] = nil
-                end
-            end
             for name,v in pairs(objects_node.buildings) do
                 if name ~= "bloodSpring" then
                     local b = Alliance.FindAllianceBuildingInfoByName(allianceData, name)
@@ -654,6 +680,7 @@ function AllianceLayer:RemoveMapObject(mapObj)
     mapObj:removeFromParent()
 end
 function AllianceLayer:AddMapObject(objects_node, mapObj, alliance)
+    local x,y = mapObj.location.x, mapObj.location.y
     local sprite,soldierName
     if mapObj.name == "member" then
         sprite = createEffectSprite("my_keep_1.png")
@@ -702,7 +729,7 @@ function AllianceLayer:AddMapObject(objects_node, mapObj, alliance)
     node.info = self:CreateInfoBanner()
     node.name = mapObj.name
     objects_node.mapObjects[mapObj.id] = node
-    self:RefreshMapObjectPosition(node, mapObj)
+    self:RefreshObjectInfo(node, mapObj, alliance)
     return node
 end
 local function resetStatus(sprite)
@@ -771,6 +798,11 @@ local FIRE_TAG = 11900
 local SMOKE_TAG = 12000
 local VILLAGE_TAG = 120990
 function AllianceLayer:RefreshObjectInfo(object, mapObj, alliance)
+    local x,y = mapObj.location.x, mapObj.location.y
+    object.x = x
+    object.y = y
+    object:zorder(getZorderByXY(x, y)):pos(self:GetInnerMapPosition(x, y))
+
     local info = object.info
     local isenemy = User.allianceId ~= alliance._id
     local banners = isenemy and UILib.enemy_city_banner or UILib.my_city_banner
@@ -789,12 +821,12 @@ function AllianceLayer:RefreshObjectInfo(object, mapObj, alliance)
         else
             info.name:setString(string.format("%s", member.name))
         end
-        if member.isProtected then
+        if member.masterOfDefender then
             if object:getChildByTag(SMOKE_TAG) then
                 object:removeChildByTag(SMOKE_TAG)
             end
             if not object:getChildByTag(FIRE_TAG) then
-                fire():addTo(object, 2, FIRE_TAG):pos(0,-50)
+                UIKit:ProtectedAni():addTo(object, 2, FIRE_TAG):pos(0,40):scale(1)
             end
         else
             if object:getChildByTag(FIRE_TAG) then
@@ -890,12 +922,6 @@ function AllianceLayer:CreateVillageFlag(e)
             cc.RepeatForever:create(transition.sequence{cc.RotateBy:create(2, -360)})
         )
     return flag
-end
-function AllianceLayer:RefreshMapObjectPosition(object, mapObject)
-    local x,y = mapObject.location.x, mapObject.location.y
-    object.x = x
-    object.y = y
-    object:zorder(getZorderByXY(x, y)):pos(self:GetInnerMapPosition(x, y))
 end
 function AllianceLayer:FreeInvisible()
     local background = self.background_node

@@ -11,10 +11,11 @@ local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local UILib = import(".UILib")
 local GameUtils = GameUtils
 --异步列表按钮事件修复
-function GameUIAllianceShrine:ctor(city,default_tab,building)
+function GameUIAllianceShrine:ctor(city,default_tab,building,needTips)
     GameUIAllianceShrine.super.ctor(self, city, _("联盟圣地"),default_tab,building)
     self.default_tab = default_tab
     self.my_alliance = Alliance_Manager:GetMyAlliance()
+    self.needTips = needTips
 end
 function GameUIAllianceShrine:OnAllianceDataChanged_shrineReports()
     self:RefreshUI()
@@ -76,6 +77,10 @@ function GameUIAllianceShrine:OnMoveInStage()
                 assert(self.currentContent)
                 self.currentContent:show()
                 self:RefreshUI()
+                if tag == "fight_event" and self.needTips then
+                    local node = self.fight_list.items_[1]:getContent().button
+                    UIKit:FingerAni():addTo(node,10,111):pos(-20,-20)
+                end
             else
                 if self.currentContent then
                     self.currentContent:hide()
@@ -379,17 +384,26 @@ function GameUIAllianceShrine:BuildFightItemBox(event)
     local player_count_bg = display.newScale9Sprite("back_ground_548x40_2.png")
         :size(356,39):addTo(box)
         :align(display.LEFT_BOTTOM, 12,player_strengh_bg:getPositionY()+39)
-    display.newSprite("res_citizen_88x82.png"):scale(0.35):align(display.LEFT_CENTER,5,19):addTo(player_count_bg)
+    display.newSprite("dragon_strength_27x31.png"):align(display.LEFT_CENTER,5,19):addTo(player_count_bg)
     display.newSprite("dragon_strength_27x31.png"):align(display.LEFT_CENTER,5,19):addTo(player_strengh_bg)
     UIKit:ttfLabel({
-        text = _("建议玩家数量"),
+        text = _("敌方部队战斗力"),
         size = 18,
         color = 0x5d563f
     }):align(display.LEFT_CENTER, 40, 19):addTo(player_count_bg)
 
     local stageInfo = shrineStage[event.stageName]
+    local troops_temp = string.split(stageInfo.troops,",")
+    local soldier_power = 0
+    for i,suntroops in ipairs(troops_temp) do
+        local troops = string.split(suntroops,":")
+        if troops[1] ~= "dragon" then
+            local config = UtilsForSoldier:GetSoldierConfig(User,troops[1])
+            soldier_power = soldier_power + config.power * tonumber(troops[3])
+        end
+    end
     UIKit:ttfLabel({
-        text = string.format("%s/%s",#event.playerTroops, stageInfo.suggestPlayer),
+        text = string.format("%s",soldier_power),
         size = 20,
         color = 0x403c2f
     }):align(display.RIGHT_CENTER, 340, 19):addTo(player_count_bg)
@@ -433,15 +447,17 @@ function GameUIAllianceShrine:GetFight_List_Item(event)
             size = 20,
             color = 0xfff3c7
         }))
-        :onButtonClicked(function()
-            -- if self.my_alliance:GetSelf():IsProtected() then
-            --     UIKit:showMessageDialog(_("提示"),_("进攻该目标将失去保护状态，确定继续派兵?"),function()
-            --         self:OnDispatchSoliderButtonClicked(event)
-            --     end)
-            -- else
-                self:OnDispatchSoliderButtonClicked(event)
-            -- end
+        :onButtonClicked(function(evt)
+            local needTips
+            if evt.target:getChildByTag(111) then
+                evt.target:removeChildByTag(111)
+                self.needTips = false
+                needTips = true
+            end
+            self:OnDispatchSoliderButtonClicked(event,needTips)
         end)
+
+    bg.button = button
 
     local time_label = UIKit:ttfLabel({
         text = GameUtils:formatTimeStyle1(event.startTime/1000 - app.timer:GetServerTime()),
@@ -466,8 +482,8 @@ function GameUIAllianceShrine:RefreshFightListView()
     self.fight_list:reload()
 end
 
-function GameUIAllianceShrine:OnDispatchSoliderButtonClicked(event)
-    UIKit:newGameUI("GameUIShireFightEvent",event):AddToCurrentScene(true)
+function GameUIAllianceShrine:OnDispatchSoliderButtonClicked(event, needTips)
+    UIKit:newGameUI("GameUIShireFightEvent",event,needTips):AddToCurrentScene(true)
 end
 
 --事件记录
@@ -523,7 +539,7 @@ function GameUIAllianceShrine:BuildReportItemBox(report)
         :size(356,39):addTo(box)
         :align(display.LEFT_BOTTOM, 12,player_strengh_bg:getPositionY()+39)
     display.newSprite("res_citizen_88x82.png"):scale(0.35):align(display.LEFT_CENTER,5,19):addTo(player_count_bg)
-    display.newSprite("dragon_strength_27x31.png"):align(display.LEFT_CENTER,5,19):addTo(player_strengh_bg)
+    display.newSprite("res_citizen_88x82.png"):scale(0.35):align(display.LEFT_CENTER,5,19):addTo(player_strengh_bg)
     UIKit:ttfLabel({
         text = _("参与玩家"),
         size = 18,
@@ -535,7 +551,7 @@ function GameUIAllianceShrine:BuildReportItemBox(report)
         color = 0x403c2f
     }):align(display.RIGHT_CENTER, 340, 19):addTo(player_count_bg)
     UIKit:ttfLabel({
-        text = _("人均战斗力"),
+        text = _("获胜玩家"),
         size = 18,
         color = 0x5d563f
     }):align(display.LEFT_CENTER, 40, 19):addTo(player_strengh_bg)
@@ -562,7 +578,13 @@ function GameUIAllianceShrine:fillReportItemContent(content,report,idx)
     end
     local box = content.box
     box.player_label:setString(#report.playerDatas)
-    box.power_label:setString(report.playerAvgPower)
+    local winCount = 0
+    for i,v in ipairs(report.playerDatas) do
+        if v.fightResult == "attackWin" then
+            winCount = winCount + 1
+        end
+    end
+    box.power_label:setString(winCount)
     content.date_label:setString(os.date("%Y-%m-%d",report.time/1000))
     content.time_label:setString(os.date("%H:%M:%S",report.time/1000))
     content.title_label:setString(Localize.shrine_desc[report.stageName][1])

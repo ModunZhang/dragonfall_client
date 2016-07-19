@@ -5,6 +5,7 @@ local WidgetPushButton = import(".WidgetPushButton")
 local WidgetUIBackGround = import(".WidgetUIBackGround")
 local WidgetPopDialog = import(".WidgetPopDialog")
 local UILib = import("..ui.UILib")
+local GameUINpc = import("..ui.GameUINpc")
 
 
 local WidgetMakeEquip = class("WidgetMakeEquip", WidgetPopDialog)
@@ -26,8 +27,9 @@ local EQUIP_MAKE = Localize.equip_make
 local DRAGON_LOCALIZE = Localize.dragon
 local DRAGON_ONLY = Localize.dragon_only
 local BODY_LOCALIZE = Localize.body
-function WidgetMakeEquip:ctor(equip_type, black_smith, city)
+function WidgetMakeEquip:ctor(equip_type, black_smith, city, needTips)
     WidgetMakeEquip.super.ctor(self,862,_("制造装备"),display.top-80)
+    self.needTips = needTips
     self.equip_type = equip_type
     self.black_smith = black_smith
     self.city = city
@@ -192,9 +194,18 @@ function WidgetMakeEquip:ctor(equip_type, black_smith, city)
             shadow = true
         }))
         :onButtonClicked(function(event)
+            event.target:removeChildByTag(111)
             if self:IsAbleToMakeEqui(false) then
+                local needTips = self.needTips
                 NetManager:getMakeDragonEquipmentPromise(equip_type):done(function (response)
                     GameGlobalUI:showTips(_("提示"), EQUIP_MAKE[equip_type])
+                    if needTips then
+                        GameUINpc:PromiseOfSay(
+                            {npc = "woman", words = _("好样的领主！等待打造完成后，您即可在“龙巢”中为巨龙穿上该装备！")}
+                        ):next(function()
+                            return GameUINpc:PromiseOfLeave()
+                        end)
+                    end
                     return response
                 end)
 
@@ -202,6 +213,10 @@ function WidgetMakeEquip:ctor(equip_type, black_smith, city)
             end
         end)
     self.normal_build_btn = button
+
+    if self.needTips then
+        UIKit:FingerAni():addTo(self.normal_build_btn,10,111):pos(50, -50)
+    end
 
     -- 时间glass
     cc.ui.UIImage.new("hourglass_30x38.png"):addTo(button, 2)

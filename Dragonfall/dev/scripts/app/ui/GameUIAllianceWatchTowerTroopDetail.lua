@@ -109,7 +109,7 @@ function GameUIAllianceWatchTowerTroopDetail:GetItem(ITEM_TYPE,item_data)
         height   = sub_line * 38
     elseif ITEM_TYPE == self.ITEM_TYPE.DRAGON_EQUIPMENT then
         if self:CanShowDragonEquipment() then
-            sub_line = #item_data.dragon.equipments
+            sub_line = table.nums(item_data.dragon.equipments)
             height = sub_line * 36
             height = height == 0 and 36 or height
         else
@@ -137,7 +137,7 @@ function GameUIAllianceWatchTowerTroopDetail:GetItem(ITEM_TYPE,item_data)
             height = 36
         end
     elseif ITEM_TYPE == self.ITEM_TYPE.DRAGON_SKILL then
-        sub_line = #item_data.dragon.skills
+        sub_line = table.nums(item_data.dragon.skills)
         height = sub_line * 36
         height = height == 0 and 36 or height
     end
@@ -182,9 +182,25 @@ function GameUIAllianceWatchTowerTroopDetail:GetItem(ITEM_TYPE,item_data)
         }):addTo(title_bar):align(display.CENTER, 274, 19)
         if ITEM_TYPE == self.ITEM_TYPE.DRAGON_EQUIPMENT then
             if self:CanShowDragonEquipment() then
-                if #item_data.dragon.equipments > 0 then
+                local equipments = {}
+                for k,v in pairs(item_data.dragon.equipments) do
+                    table.insert(equipments, {k, v})
+                end
+                local seqs = {
+                    ["crown"] = 1,
+                    ["chest"] = 2,
+                    ["armguardLeft"] = 3,
+                    ["armguardRight"] = 4,
+                    ["sting"] = 5,
+                    ["orb"] = 6,
+                }
+                table.sort(equipments, function(a,b)
+                    return seqs[a[1]] < seqs[b[1]]
+                end)
+                if #equipments > 0 then
                     local y = 0
-                    for i,v in ipairs(item_data.dragon.equipments) do
+                    for i,v in ipairs(equipments) do
+                        local v = v[2]
                         self:GetSubItem(ITEM_TYPE,i,{Localize.equip[v.name],v.star}):addTo(bg):align(display.LEFT_BOTTOM,0, y)
                         y = y + 36
                     end
@@ -196,14 +212,14 @@ function GameUIAllianceWatchTowerTroopDetail:GetItem(ITEM_TYPE,item_data)
             end
         elseif ITEM_TYPE == self.ITEM_TYPE.SOLIDERS then
             if self:CanShowSoliderName() then
-                local y = 0
+                local y = (#item_data.soldiers - 1) * 66
                 for i,v in ipairs(item_data.soldiers) do
                     local name = string.format(_("[%d星]%s"),v.star,Localize.soldier_name[v.name])
                     if not self:CanShowSoliderStar() then
                         name = Localize.soldier_name[v.name]
                     end
                     self:GetSubItem(ITEM_TYPE,i,{v.name,v.count,v.star}):addTo(bg):align(display.LEFT_BOTTOM,0, y)
-                    y = y + 66
+                    y = y - 66
                 end
             else
                 self:GetTipsItem():addTo(bg):align(display.LEFT_BOTTOM, 0, 0)
@@ -231,9 +247,18 @@ function GameUIAllianceWatchTowerTroopDetail:GetItem(ITEM_TYPE,item_data)
                 self:GetTipsItem():addTo(bg):align(display.LEFT_BOTTOM, 0, 0)
             end
         elseif ITEM_TYPE == self.ITEM_TYPE.DRAGON_SKILL then
-            if #item_data.dragon.skills >0 then
+            local skills = {}
+            for k,v in pairs(item_data.dragon.skills) do
+                table.insert(skills, {k, v})
+            end
+            table.sort(skills, function(a,b)
+                return tonumber(string.split(a[1], "_")[2])
+                     < tonumber(string.split(b[1], "_")[2])
+            end)
+            if #skills >0 then
                 local y = 0
-                for i,v in ipairs(item_data.dragon.skills) do
+                for i,v in ipairs(skills) do
+                    local v = v[2]
                     local val_str = '?'
                     if self:CanShowDragonSkill() then
                         val_str = _("等级") .. ":" .. v.level
@@ -284,13 +309,15 @@ function GameUIAllianceWatchTowerTroopDetail:GetSubItem(ITEM_TYPE,index,item_dat
         display.newSprite(UILib.soldier_color_bg_images[item_data[1]]):align(display.LEFT_CENTER,12,33):addTo(item):scale(58/128)
         local soldier_head_icon = display.newSprite(soldier_ui_config):align(display.LEFT_CENTER,12,33):addTo(item):scale(58/128)
         local soldier_head_bg  = display.newSprite("box_soldier_128x128.png"):addTo(soldier_head_icon):pos(soldier_head_icon:getContentSize().width/2,soldier_head_icon:getContentSize().height/2)
-       
-        StarBar.new({
-            max = 3,
-            bg = "Stars_bar_bg.png",
-            fill = "Stars_bar_highlight.png",
-            num = item_data[3],
-        }):addTo(item):align(display.LEFT_CENTER,80, 19):scale(0.8)
+
+        if self:CanShowSoliderStar() then
+            StarBar.new({
+                max = 3,
+                bg = "Stars_bar_bg.png",
+                fill = "Stars_bar_highlight.png",
+                num = item_data[3],
+            }):addTo(item):align(display.LEFT_CENTER,80, 19):scale(0.8)
+        end
 
         local val_label = UIKit:ttfLabel({
             text = self:FileterSoliderCount(item_data[2]),

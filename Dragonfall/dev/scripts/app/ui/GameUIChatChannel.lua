@@ -199,11 +199,11 @@ function GameUIChatChannel:CreateTabButtons()
             tag = "alliance",
             default = self.default_tag == "alliance",
         },
-    -- {
-    --     label = _("对战"),
-    --     tag = "allianceFight",
-    --     default = self.default_tag == "allianceFight",
-    -- },
+        {
+            label = _("对战"),
+            tag = "allianceFight",
+            default = self.default_tag == "allianceFight",
+        },
     },
     function(tag)
         self._channelType = tag
@@ -218,8 +218,8 @@ function GameUIChatChannel:CreateTabButtons()
             pageIdx = 1
         elseif tag == "alliance" then
             pageIdx = 2
-            -- else
-            --     pageIdx = 3
+        else
+            pageIdx = 3
         end
         app:GetChatManager():setChannelReadStatus(tag,false)
         app:GetGameDefautlt():setStringForKey("LAST_CHAT_CHANNEL",""..pageIdx)
@@ -478,11 +478,11 @@ function GameUIChatChannel:HandleCellUIData(mainContent,chat,update_time)
     local titleLabel = currentContent.from_label
     local system_label = currentContent.system_label
     local vipLabel = currentContent.vip_label
-    local name_title = chat.name == "System" and _("赛琳娜") or (chat.icon == "__mod" or chat.allianceTag == "") and chat.name or string.format("[ %s ] %s",chat.allianceTag,chat.name)
+    local name_title = chat.name == "System" and _("赛琳娜") or (chat.icon == -1 or chat.allianceTag == "") and chat.name or string.format("[ %s ] %s",chat.allianceTag,chat.name)
     titleLabel:setString(name_title)
     -- if not isSelf then
     local system_flag = currentContent.system_flag
-    if string.lower(chat.id) == 'system' or chat.icon == '__mod' then
+    if string.lower(chat.id) == 'system' or chat.icon == -1 then
         system_flag:show()
         titleLabel:pos(17 + currentContent.system_flag_with, 15)
         titleLabel:setColor(NAME_COLOR_SYSTEM)
@@ -512,7 +512,7 @@ function GameUIChatChannel:HandleCellUIData(mainContent,chat,update_time)
     if chat._translate_ and chat._translateMode_ then
         labelText = chat._translate_
     end
-    if chat.icon == '__mod' then
+    if chat.icon == -1 then
         content_label:SetColor(0xbf6e17)
     else
         content_label:SetColor(0x403c2f)
@@ -591,7 +591,7 @@ function GameUIChatChannel:listviewListener(event)
         local item = event.item
         if not item then return end
         local chat = self.dataSource_[item.idx_]
-        if not chat or chat.icon == "__mod" then return end
+        if not chat then return end
         local isSelf = User:Id() == chat.id
         if isSelf or not chat then return end
         local content = item:getContent().other_content
@@ -612,13 +612,19 @@ function GameUIChatChannel:listviewListener(event)
                 if string.utf8len(final_chat_msg) == 0 then
                     return
                 end
-                if string.find(chat.text,"<report>.+<report>") then
-                    return
+                local report_str
+                if string.find(final_chat_msg,"<report>.+<report>") then
+                    local __,endIndex = string.find(final_chat_msg,"<report>",9)
+                    report_str = string.sub(final_chat_msg,1,endIndex+1)
+                    final_chat_msg = string.sub(final_chat_msg,endIndex+1,-1)
                 end
                 GameUtils:Translate(final_chat_msg,function(result,errText)
                     -- fix the nil error
                     if result and not tolua.isnull(self) and not tolua.isnull(contentLable)  then
                         chat._translate_ = result
+                        if report_str then
+                            chat._translate_ = report_str..result
+                        end
                         chat._translateMode_ = true
                         if string.lower(chat.id) == 'system' then
                             contentLable:Text(self:GetChatManager():GetEmojiUtil():FormatSystemChat(chat._translate_))
@@ -669,6 +675,9 @@ function GameUIChatChannel:listviewListener(event)
         nodePoint = listView:getScrollNode():convertToNodeSpace(nodePoint)
         bound.x = nodePoint.x
         bound.y = nodePoint.y
+        if chat.icon == -1 then
+            return
+        end
         local isTouchChatIcon = cc.rectContainsPoint(bound,event.point)
         if isTouchChatIcon then
             UIKit:newGameUI("GameUIAllianceMemberInfo",false,chat.id,nil,chat.serverId):AddToCurrentScene(true)
@@ -745,9 +754,16 @@ function GameUIChatChannel:CreatePlayerMenu(event,chat)
                 ext.copyText(labelText)
                 GameGlobalUI:showTips(_("提示"),_("复制成功"))
             elseif data == 'blockChat' then
-                self:GetChatManager():AddBlockChat(chat)
-                self:RefreshListView()
-                GameGlobalUI:showTips(_("提示"),_("屏蔽成功"))
+                if #User.blocked >= GameDatas.PlayerInitData.intInit.MaxBlockedSize.value then
+                    UIKit:showMessageDialog(_("提示"),_("你的黑名单已满!"),function()end)
+                    return
+                end
+                local promise = self:GetChatManager():AddBlockChat(chat)
+                if promise then
+                    promise:done(function ()
+                        self:RefreshListView()
+                    end)
+                end
             elseif data == 'mutePlayer' then
                 UIKit:newGameUI("GameUIModMute",chat):AddToCurrentScene(true)
             elseif data == 'allianceInfo' then
@@ -802,6 +818,7 @@ function GameUIChatChannel:LeftButtonClicked()
 end
 
 return GameUIChatChannel
+
 
 
 

@@ -34,6 +34,11 @@ function GameUIToolShop:TabButtons()
             end
         elseif tag == "manufacture" then
             self.manufacture = WidgetManufactureNew.new(self.toolShop,self.sub_tab):addTo(self:GetView())
+            if self.needTips then
+                self.needTips = false
+                self.manufacture:TriggerTips()
+                app:GetGameDefautlt():SetPassTriggerTips("toolShop")
+            end
         end
     end):pos(window.cx, window.bottom + 34)
 end

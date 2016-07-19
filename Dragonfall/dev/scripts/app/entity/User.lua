@@ -59,7 +59,9 @@ User.LISTEN_TYPE = Enum(
     "dailyQuestEvents",
     "inviteToAllianceEvents",
     "defenceTroop",
-    "activities")
+    "activities",
+    "allianceActivities",
+    "blocked")
 
 property(User, "id", 0)
 property(User, "soldierStars", {})
@@ -317,6 +319,34 @@ function User:HavePlayerLevelUpReward()
             end
         end
     end
+end
+--[[end]]
+-- 在线奖励
+function User:HaveOnlineReward()
+    return self:GetOnlineRewardCount() > 0
+end
+local online = GameDatas.Activities.online
+function User:GetOnlineRewardCount()
+    local countInfo = self.countInfo
+    local secs = math.floor((countInfo.todayOnLineTime+(NetManager:getServerTime()-countInfo.lastLoginTime)) / 1000)
+    local mins = math.floor(secs / 60)
+    local count = 0
+    for __,v in pairs(online) do
+        if v.onLineMinutes <= mins then
+            if not self:IsTimePointRewarded(v.timePoint) then
+                count = count + 1
+            end
+        end
+    end
+    return count
+end
+function User:IsTimePointRewarded(timepoint)
+    for __,v in ipairs(self.countInfo.todayOnLineTimeRewards) do
+        if v == timepoint then
+            return true
+        end
+    end
+    return false
 end
 --[[end]]
 
@@ -615,8 +645,16 @@ function User:IsAbleToMakeEquipment(equip_name)
     return true
 end
 --[[end]]
-
-
+-- [[blocked begin]]
+function User:IsBlocked(id)
+    for i,v in ipairs(self.blocked) do
+        if v.id == id then
+            return true
+        end
+    end
+    return false
+end
+--[[end]]
 
 --[[treat begin]]
 function User:IsWoundedSoldierOverflow()
@@ -1523,6 +1561,8 @@ local before_map = {
     inviteToAllianceEvents = function()end,
     defenceTroop = function()end,
     activities = function()end,
+    allianceActivities = function()end,
+    blocked = function()end,
     vipEvents = function(userData, deltaData)
         userData:RefreshOutput()
     end,

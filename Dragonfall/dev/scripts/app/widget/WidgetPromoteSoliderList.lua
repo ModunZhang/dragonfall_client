@@ -56,7 +56,8 @@ function WidgetPromoteSoliderList:CreateItem(soldier_type,star)
     local total_width = 3 * 148 + 2*gap_x
     local origin_x = (item_width - total_width)/2 + 148/2
     for i=1,max_star do
-        table.insert(self.boxes, self:CreateSoliderBox(soldier_type,i,star):addTo(content):pos(origin_x+(i-1)*(gap_x+148),item_height-120))
+        local soldierBox = self:CreateSoliderBox(soldier_type,i,star)
+        table.insert(self.boxes, soldierBox:addTo(content,1,i):pos(origin_x+(i-1)*(gap_x+148),item_height-120))
     end
 
     return item
@@ -119,7 +120,17 @@ function WidgetPromoteSoliderList:CreateSoliderBox(soldier_type,index,star)
                     shadow = true
                 }))
                 :onButtonClicked(function(event)
-                    UIKit:newWidgetUI("WidgetSoldierPromoteDetails",soldier_type,star,self.building):AddToCurrentScene()
+                    local needTips
+                    if soldier_box:getChildByTag(111) then
+                        needTips = true
+                        soldier_box:removeChildByTag(111)
+                    end
+                    UIKit:newWidgetUI("WidgetSoldierPromoteDetails",
+                                      soldier_type,
+                                      star,
+                                      self.building,
+                                      nil,
+                                      needTips):AddToCurrentScene()
                 end)
         end
     end

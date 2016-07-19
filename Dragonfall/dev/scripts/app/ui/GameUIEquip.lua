@@ -268,7 +268,12 @@ function GameUIEquip:CreateEquipmentByType(equip_type)
     local equipment_btn = WidgetPushButton.new(
         {normal = "back_ground_104x132.png"})
         :onButtonClicked(function(event)
-            UIKit:newWidgetUI("WidgetMakeEquip", equip_type, self.black_smith, self.black_smith_city):AddToCurrentScene()
+            local needTips
+            if event.target:getChildByTag(111) then
+                event.target:removeChildByTag(111)
+                needTips = true
+            end
+            UIKit:newWidgetUI("WidgetMakeEquip", equip_type, self.black_smith, self.black_smith_city, needTips):AddToCurrentScene()
         end)
     local bg = STAR_BG[equip_config.maxStar]
     local eq_bg = cc.ui.UIImage.new(bg):addTo(equipment_btn)
@@ -308,6 +313,27 @@ function GameUIEquip:CreateEquipmentByType(equip_type)
 
 
     return equipment_btn:CheckMaterials()
+end
+
+local GameUINpc = import("..ui.GameUINpc")
+function GameUIEquip:TriggerTips(dragonType)
+    local color = unpack(string.split(dragonType, "Dragon"))
+    local btn = self.equip_map[color.."Crown_s1"]:zorder(10)
+    local rect = btn:getCascadeBoundingBox()
+
+    UIKit:FingerAni():addTo(btn,10,111):pos(50, -50)
+
+    GameUINpc:PromiseOfSay({
+        focus_rect = rect,
+        click_func = function(event)
+            btn:dispatchEvent({name = btn.CLICKED_EVENT, x = event.x, y = event.y, touchInTarget = true})
+        end,
+        npc = "woman",
+        words = _("领主，您可以在铁匠铺内为您的巨龙打造装备，强化它的实力！")
+    }):next(function()
+        app:GetGameDefautlt():SetPassTriggerTips("blackSmith")
+        return GameUINpc:PromiseOfLeave()
+    end)
 end
 
 return GameUIEquip

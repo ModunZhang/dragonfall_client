@@ -17,10 +17,11 @@ local config_intInit = GameDatas.PlayerInitData.intInit
 local WidgetUseItems = import("..widget.WidgetUseItems")
 local WidgetDragons = import("..widget.WidgetDragons")
 local UILib = import(".UILib")
+local GameUINpc = import(".GameUINpc")
 local WidgetPushTransparentButton = import("..widget.WidgetPushTransparentButton")
 local GameUIShowDragonUpStarAnimation = import(".GameUIShowDragonUpStarAnimation")
 -- building = DragonEyrie
-function GameUIDragonEyrieDetail:ctor(city,building,dragonType)
+function GameUIDragonEyrieDetail:ctor(city,building,dragonType,needTips)
     GameUIDragonEyrieDetail.super.ctor(self,city,_("龙巢"))
     self.building = building
     self.draong_index = 1
@@ -29,6 +30,7 @@ function GameUIDragonEyrieDetail:ctor(city,building,dragonType)
     for k,dragon in pairs(User.dragons) do
         self.dragonsStar[k] = dragon.star
     end
+    self.needTips = needTips
 end
 
 
@@ -88,6 +90,16 @@ function GameUIDragonEyrieDetail:CreateBetweenBgAndTitle()
     self.star_bar = star_bar
     self.tab_buttons = WidgetDragonTabButtons.new(function(tag)
         self:OnTabButtonClicked(tag)
+        if tag == "skill"
+        and UtilsForFte:NeedTriggerTips(User)
+        and not app:GetGameDefautlt():IsPassedTriggerTips("dragonEyrie_skill") then
+            GameUINpc:PromiseOfSay(
+                {npc = "woman", words = _("领主大人，消耗英雄之血提升巨龙的技能等级也将使您的巨龙变得更为强力！英雄之血可以通过击杀敌方玩家和直接购买获得。")}
+            ):next(function()
+                app:GetGameDefautlt():SetPassTriggerTips("dragonEyrie_skill")
+                return GameUINpc:PromiseOfLeave()
+            end)
+        end
     end):addTo(self.dragon_base):pos(-4,-42)
     --lv label 是公用
     self.lv_label = UIKit:ttfLabel({
@@ -167,7 +179,7 @@ end
 function GameUIDragonEyrieDetail:GetDragonTypeByIndex(index)
     local t = UtilsForDragon:GetSortDragonTypes(User)
     local powerfulType = UtilsForDragon:GetPowerfulDragonType(User)
-    table.sort(t, function(a,b) 
+    table.sort(t, function(a,b)
         return powerfulType == a
     end)
 
@@ -227,6 +239,16 @@ function GameUIDragonEyrieDetail:OnMoveInStage()
     end)
     self.draongContentNode:OnEnterIndex(math.abs(0))
     GameUIDragonEyrieDetail.super.OnMoveInStage(self)
+
+
+    if self.needTips then
+        self.tab_buttons:SelectButtonByTag("equipment")
+        GameUINpc:PromiseOfSay(
+            {npc = "woman", words = _("当巨龙达到当前最大等级并集齐所有满星装备后，即可晋级，晋级后的巨龙实力将大幅增强！")}
+        ):next(function()
+            return GameUINpc:PromiseOfLeave()
+        end)
+    end
 end
 function GameUIDragonEyrieDetail:onExit()
     User:RemoveListenerOnType(self, "dragons")
@@ -290,7 +312,7 @@ function GameUIDragonEyrieDetail:RefreshUI()
         self.lv_label:show()
         self.dragon_hp_label:setString(string.formatnumberthousands(dragon.exp) .. "/" .. string.formatnumberthousands(expNeed))
         self.hp_process_timer:setPercentage(dragon.exp/expNeed * 100)
-        self.hp_process_timer.add_button:setVisible(isHated) 
+        self.hp_process_timer.add_button:setVisible(isHated)
         self.hp_process_bg:show()
         self.equipment_ui.promotionLevel_label:setString(self:GetUpgradDragonStarTips(dragon))
         local canloadAnyEq = self:FillEquipemtBox()
@@ -306,7 +328,7 @@ function GameUIDragonEyrieDetail:RefreshUI()
         self.lv_label:show()
         self.dragon_hp_label:setString(string.formatnumberthousands(dragon.exp) .. "/" .. string.formatnumberthousands(expNeed))
         self.hp_process_timer:setPercentage(dragon.exp/expNeed * 100)
-        self.hp_process_timer.add_button:setVisible(isHated) 
+        self.hp_process_timer.add_button:setVisible(isHated)
         self.hp_process_bg:show()
         self:RefreshInfoListView()
         if dragon and dragon.star > 0 then
@@ -536,8 +558,8 @@ function GameUIDragonEyrieDetail:CheckCanLoadEquipment(equipment_obj)
     local dragon = self:GetCurrentDragon()
     local equipment,part = unpack(equipment_obj)
     local loaded = #equipment.name > 0
-    if not UtilsForDragon:IsPartUnLocked(dragon, part) or loaded then 
-        return false 
+    if not UtilsForDragon:IsPartUnLocked(dragon, part) or loaded then
+        return false
     end
     local equip = UtilsForDragon:GetCanEquipedByDragonPart(dragon, part)
     return (User.dragonEquipments[equip.name] or 0) > 0
@@ -833,7 +855,7 @@ function GameUIDragonEyrieDetail:GetInfomationData()
                 table.insert(r,{Localize.dragon_buff_effection[v[1]] or v[1],string.format("%d%%",v[2]*100)})
             end
         end
-        
+
         for __,v in ipairs(UtilsForDragon:GetSkillEffects(dragon)) do
             if v[2]*100 > 0 then
                 table.insert(r,{Localize.dragon_skill_effection[v[1]] or v[1],string.format("%d%%",v[2]*100)})

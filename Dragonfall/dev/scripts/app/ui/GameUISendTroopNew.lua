@@ -71,7 +71,7 @@ function GameUISendTroopNew:GetMarchTime(soldier_show_table)
     local fromLocation = mapObject.location
     local target_alliance = self.targetAlliance
     local time = DataUtils:getPlayerSoldiersMarchTime(soldier_show_table,self:GetMyAlliance(),fromLocation,target_alliance,self.toLocation)
-    local buffTime = DataUtils:getPlayerMarchTimeBuffTime(time)
+    local buffTime = DataUtils:getPlayerMarchTimeBuffTime(time,self.dragon.type == "blueDragon")
     return time,buffTime
 end
 function GameUISendTroopNew:RefreshMarchTimeAndBuff()
@@ -118,8 +118,12 @@ function GameUISendTroopNew:ctor(march_callback,params)
 end
 
 function GameUISendTroopNew:OnMoveInStage()
-
     GameUISendTroopNew.super.OnMoveInStage(self)
+    if self.params.needTips then
+        scheduleAt(self, function()
+            self:CheckRate()
+        end, 0.618)
+    end
 end
 function GameUISendTroopNew:CreateBetweenBgAndTitle()
     GameUISendTroopNew.super.CreateBetweenBgAndTitle(self)
@@ -322,7 +326,7 @@ function GameUISendTroopNew:RefreashDragon(dragon)
     local isfree = UtilsForDragon:IsDragonFree(User, dragonType)
     local isdead = UtilsForDragon:IsDragonDead(User, dragonType)
     self.dragon_status:setColor(UIKit:hex2c3b(isfree and not isdead and 0xffedae or 0xff3c00))
-    
+
     local hp = UtilsForDragon:GetDragonHp(User, dragonType)
     local hpMax = UtilsForDragon:GetDragonMaxHp(User.dragons[dragonType])
     self.dragon_hp:setString(string.formatnumberthousands(hp).."/"..string.formatnumberthousands(hpMax))
@@ -338,6 +342,7 @@ function GameUISendTroopNew:RefreashDragon(dragon)
     if self.isPVE then
         GameUISendTroopNew.dragonType = dragonType
     end
+    self:RefreshMarchTimeAndBuff()
 end
 -- 单个格子最大带兵量
 function GameUISendTroopNew:GetUnitMaxCitizen()
@@ -496,7 +501,6 @@ function GameUISendTroopNew:RefreshSoldierNodes()
         end
     end
     self:RefreashDragon()
-    self:RefreshMarchTimeAndBuff()
     if has_soldiers then
         self.isMax = true
         self.max_btn:setButtonLabel(UIKit:ttfLabel({
@@ -576,7 +580,7 @@ function GameUISendTroopNew:CreateBottomPart()
             self.march_btn:onButtonClicked(function()
                 self.march_btn:removeChildByTag(111)
             end)
-        end)      
+        end)
     end
     local march_btn = WidgetPushButton.new({normal = "red_btn_up_148x58.png",pressed = "red_btn_down_148x58.png"},nil,nil)
         :setButtonLabel(UIKit:ttfLabel({
@@ -696,6 +700,7 @@ function GameUISendTroopNew:SetMaxSoldier()
         color = 0xffedae,
         shadow= true
     }))
+    self:CheckRate()
 end
 -- 根据一格最大带兵量获取按战斗力排序的士兵列表
 function GameUISendTroopNew:GetSortSoldierMax()
@@ -797,6 +802,23 @@ function GameUISendTroopNew:PromiseOfAttack()
     self:GetFteLayer():SetTouchObject(self.march_btn)
     WidgetFteArrow.new(_("点击按钮：驻防")):addTo(self:GetFteLayer())
     :TurnRight():align(display.RIGHT_CENTER, r.x - 10, r.y + r.height/2)
+end
+function GameUISendTroopNew:CheckRate()
+    if not self.params.needTips then return end
+    local showTips = false
+    local _,_,citizen = self:GetTotalSoldierInfo()
+    local rate = citizen / UtilsForDragon:GetLeadershipByCitizen(User,self.dragon.type)
+    if self.__rate then
+        if math.abs(self.__rate - rate) <= 0.1 and rate > 0 then
+            showTips = true
+        end
+    else
+        showTips = rate > 0.5
+    end
+    self.__rate = rate
+    if not self.march_btn:getChildByTag(111) and showTips then
+        UIKit:FingerAni():addTo(self.march_btn,10,111):pos(-15,-40)
+    end
 end
 
 

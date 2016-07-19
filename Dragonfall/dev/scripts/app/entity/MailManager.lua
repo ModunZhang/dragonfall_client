@@ -49,7 +49,7 @@ function MailManager:IncreaseUnReadReportNum(num,report)
     end
     GameGlobalUI:showTips(_("你有一封新的战报"),report:Type() == "collectResource" and _("采集村落") or report:GetReportTitle(),3)
     self:NotifyListeneOnType(MailManager.LISTEN_TYPE.UNREAD_MAILS_CHANGED,function(listener)
-        listener:MailUnreadChanged({report=self.unread_report})
+        listener:MailUnreadChanged({report=self.unread_report, _report_ = report})
     end)
 end
 
@@ -166,7 +166,7 @@ function MailManager:ModifyMail(mail)
             if mail.isSaved ~= v.isSaved then
                 self:OnNewSavedMailsChanged(mail)
             end
-            if mail.isRead ~= v.isSaved and mail.isRead then
+            if mail.isRead ~= v.isRead and mail.isRead then
                 self:OnNewSavedMailsChanged(mail,true)
             end
             for i,modify in pairs(mail) do
@@ -255,7 +255,7 @@ function MailManager:GetSendMailIndexByServerIndex(serverIndex)
     end
     local sendMails = self.sendMails
     for i,v in ipairs(sendMails) do
-        print(".....v.index == index",v.title,v.index,serverIndex,v.index == serverIndex,i)
+        print(".发件箱....v.index == index",v.title,v.index,serverIndex,v.index == serverIndex,i)
     end
     for i,v in ipairs(sendMails) do
         if v.index == serverIndex then
@@ -506,7 +506,7 @@ function MailManager:OnNewSendMailsChanged( sendMails )
             for i,data in ipairs(mail) do
                 -- 收到
                 if not data.index then
-                    data.index = self.sendMails[1] and (self.sendMails[1].index + 1) or 0
+                    data.index = not LuaUtils:table_empty(self.sendMails) and (self.sendMails[#self.sendMails].index + 1) or 0
                 end
                 table.insert(add_mails, clone(data))
                 table.insert(self.sendMails, clone(data))

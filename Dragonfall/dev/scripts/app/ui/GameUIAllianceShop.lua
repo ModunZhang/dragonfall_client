@@ -6,6 +6,7 @@ local WidgetPushButton = import("..widget.WidgetPushButton")
 local GameUIAllianceShop = UIKit:createUIClass('GameUIAllianceShop', "GameUIAllianceBuilding")
 local UIListView = import(".UIListView")
 local UILib = import(".UILib")
+local GameUINpc = import(".GameUINpc")
 local Localize = import("..utils.Localize")
 local Localize_item = import("..utils.Localize_item")
 local shop = GameDatas.AllianceBuilding.shop
@@ -54,6 +55,14 @@ function GameUIAllianceShop:OnMoveInStage()
             -- 打开商店,更新查看新货物状态
             if self.alliance.isNewGoodsCome then
                 self.alliance:SetNewGoodsCome(false)
+            end
+            if not app:GetGameDefautlt():IsPassedTriggerTips("allianceShop") then
+                GameUINpc:PromiseOfSay(
+                    {npc = "woman", words = _("领主大人，您可以使用忠诚值在联盟商店内购买各种道具(可通过协助盟友加速、捐赠等获得忠诚值)。")}
+                ):next(function()
+                    return GameUINpc:PromiseOfLeave()
+                end)
+                app:GetGameDefautlt():SetPassTriggerTips("allianceShop")
             end
         else
             self.goods_layer:setVisible(false)

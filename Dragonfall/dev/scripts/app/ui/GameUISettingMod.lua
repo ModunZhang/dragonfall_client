@@ -25,10 +25,14 @@ function GameUISettingMod:BuildUI()
         }))
         :onButtonClicked(function(event)
             if event.name == "CLICKED_EVENT" then
-                local subject,body = GameUtils:getSupportMailFormat(_("成为MOD"))
-                local canSendMail = ext.sysmail.sendMail(address,subject,body,function()end)
-                if not canSendMail then
-                    UIKit:showMessageDialog(_("错误"),_("您尚未设置邮件：请前往IOS系统“设置”-“邮件、通讯录、日历”-“添加账户”处设置"),function()end)
+                if User.gameInfo.modApplyEnabled then
+                    local subject,body = GameUtils:getSupportMailFormat(_("成为MOD"))
+                    local canSendMail = ext.sysmail.sendMail(address,subject,body,function()end)
+                    if not canSendMail then
+                        UIKit:showMessageDialog(_("错误"),_("您尚未设置邮件：请前往IOS系统“设置”-“邮件、通讯录、日历”-“添加账户”处设置"),function()end)
+                    end
+                else
+                    UIKit:showMessageDialog(_("提示"),_("MOD申请通道已关闭，请关注官方公告"),function()end)
                 end
             end
         end)
@@ -74,6 +78,8 @@ function GameUISettingMod:BuildUI()
 
 end
 return GameUISettingMod
+
+
 
 
 

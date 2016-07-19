@@ -548,9 +548,11 @@ require("app.datas.PvE_stages")
 
 GameDatas.ScheduleActivities = {
 	["type"] = {},
+	["allianceType"] = {},
 	["scoreCondition"] = {},
 }
 require("app.datas.ScheduleActivities_type")
+require("app.datas.ScheduleActivities_allianceType")
 require("app.datas.ScheduleActivities_scoreCondition")
 
 GameDatas.Soldiers = {

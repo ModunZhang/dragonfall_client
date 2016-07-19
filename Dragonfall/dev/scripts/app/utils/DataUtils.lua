@@ -267,7 +267,7 @@ local config_dragonStar = GameDatas.Dragons.dragonStar
 local config_dragonSkill = GameDatas.DragonSkills
 
 local config_equipments = GameDatas.DragonEquipments.equipments
-local config_dragoneyrie = GameDatas.DragonEquipments
+local DragonEquipments = GameDatas.DragonEquipments
 
 function DataUtils:getDragonTotalStrengthFromJson(star,level,skills,equipments)
     local strength,__ = self:getDragonBaseStrengthAndVitality(star,level)
@@ -276,7 +276,7 @@ function DataUtils:getDragonTotalStrengthFromJson(star,level,skills,equipments)
     for body,equipemt in pairs(equipments) do
         if equipemt.name ~= "" then
             local config = self:getDragonEquipmentConfig(equipemt.name)
-            local attribute = self:getDragonEquipmentAttribute(equipemt.type,config.maxStar,equipemt.star)
+            local attribute = self:getDragonEquipmentAttribute(config.category,config.maxStar,equipemt.star)
             strength = attribute and (strength + attribute.strength) or strength
         end
     end
@@ -290,7 +290,7 @@ function DataUtils:getTotalVitalityFromJson(star,level,skills,equipments)
     for body,equipemt in pairs(equipments) do
         if equipemt.name ~= "" then
             local config = self:getDragonEquipmentConfig(equipemt.name)
-            local attribute = self:getDragonEquipmentAttribute(equipemt.type,config.maxStar,equipemt.star)
+            local attribute = self:getDragonEquipmentAttribute(config.category,config.maxStar,equipemt.star)
             vitality = attribute and (vitality + attribute.vitality) or vitality
         end
     end
@@ -313,7 +313,7 @@ function DataUtils:getDragonBaseStrengthAndVitality(star,level)
 end
 
 function DataUtils:getDragonEquipmentAttribute(body,max_star,star)
-    return config_dragoneyrie[body][max_star .. "_" .. star]
+    return DragonEquipments[string.split(body, ",")[1]][max_star .. "_" .. star]
 end
 
 function DataUtils:getDragonEquipmentConfig(name)
@@ -533,8 +533,17 @@ function DataUtils:getPlayerMarchTimeBuffEffectValue()
     return effect
 end
 --获取攻击行军的buff时间
-function DataUtils:getPlayerMarchTimeBuffTime(fullTime)
+function DataUtils:getPlayerMarchTimeBuffTime(fullTime,isBlueDragon)
     local buff_value = DataUtils:getPlayerMarchTimeBuffEffectValue()
+    if isBlueDragon then
+        local dragon = UtilsForDragon:GetDragon(User, "blueDragon")
+        if dragon then
+            local skill = UtilsForDragon:GetSkillByName(dragon, "surge")
+            if skill then
+                buff_value = buff_value + UtilsForDragon:GetSkillEffect(skill)
+            end
+        end
+    end
     if buff_value > 0 then
         return DataUtils:getBuffEfffectTime(fullTime,buff_value)
     else
@@ -583,7 +592,7 @@ function DataUtils:getSoldierRecruitBuffTime(soldier_type,time)
     return 0
 end
 function DataUtils:getBuffEfffectTime(time,decreasePercent)
-    return time - math.floor(time / (1 + decreasePercent))
+    return time - math.ceil(time / (1 + decreasePercent))
 end
 -- 各种升级事件免费加速门坎 单位：秒
 function DataUtils:getFreeSpeedUpLimitTime()
@@ -1250,7 +1259,7 @@ function DataUtils:GetResourceProtectPercent( resource_name )
     local vipBuffAddPercent = getPlayerVipForResourceLootPercentSubtract()
     local tech_effect = UtilsForTech:GetEffect("hideout", User.productionTechs["hideout"])
     local finalPercent = basePercent + buildingBuffAddPercent + vipBuffAddPercent + tech_effect
-    finalPercent = finalPercent > 0.9 and 0.9 or finalPercent < basePercent/100 and basePercent/100 or finalPercent
+    finalPercent = finalPercent > 0.9 and 0.9 or finalPercent < 0.1 and 0.1 or finalPercent
     return finalPercent
 end
 --根据MapIndex获取MapRound

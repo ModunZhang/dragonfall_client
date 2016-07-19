@@ -12,9 +12,10 @@ local Alliance = import("..entity.Alliance")
 local Dragon_head_image = import(".UILib").dragon_head
 local WidgetPushTransparentButton = import("..widget.WidgetPushTransparentButton")
 local GameUtils = GameUtils
-function GameUIShireFightEvent:ctor(fight_event)
+function GameUIShireFightEvent:ctor(fight_event,needTips)
     GameUIShireFightEvent.super.ctor(self,790,_("事件详情"),window.top - 50)
     self.fight_event = fight_event
+    self.needTips = needTips
 end
 
 function GameUIShireFightEvent:onEnter()
@@ -34,6 +35,11 @@ function GameUIShireFightEvent:onEnter()
             end
         end
     end)
+
+
+    if self.needTips then
+        UIKit:FingerAni():addTo(self.dispath_button,10,111):pos(-15,-20)
+    end
 end
 function GameUIShireFightEvent:onCleanup()
     local alliance = Alliance_Manager:GetMyAlliance()
@@ -84,8 +90,13 @@ function GameUIShireFightEvent:BuildUI()
         normal = "blue_btn_up_148x58.png",
         pressed = "blue_btn_down_148x58.png",
         disabled= "grey_btn_148x58.png",
-    }):align(display.RIGHT_BOTTOM,580,22):addTo(background):setButtonLabel("normal",UIKit:commonButtonLable({text = _("参战")})):onButtonClicked(function()
-        self:DispathSoliderButtonClicked()
+    }):align(display.RIGHT_BOTTOM,580,22):addTo(background):setButtonLabel("normal",UIKit:commonButtonLable({text = _("参战")})):onButtonClicked(function(event)
+            local needTips
+            if event.target:getChildByTag(111) then
+                event.target:removeChildByTag(111)
+                needTips = true
+            end
+        self:DispathSoliderButtonClicked(needTips)
     end)
     self.dispath_button = dispath_button
     local list,list_node = UIKit:commonListView({
@@ -245,7 +256,7 @@ end
 function GameUIShireFightEvent:GetFightEvent()
     return self.fight_event
 end
-function GameUIShireFightEvent:DispathSoliderButtonClicked()
+function GameUIShireFightEvent:DispathSoliderButtonClicked(needTips)
     if not Alliance_Manager:GetMyAlliance():CanSendTroopToShrine(User._id) then
         UIKit:showMessageDialog(nil,_("你已经向圣地派遣了部队"))
         return
@@ -253,8 +264,8 @@ function GameUIShireFightEvent:DispathSoliderButtonClicked()
     local final_func = function ()
         local attack_func = function ()
             UIKit:newGameUI("GameUISendTroopNew",function(dragonType,soldiers,total_march_time,gameuialliancesendtroops)
-                if type(self.GetFightEvent) ~= 'function' then 
-                    gameuialliancesendtroops:LeftButtonClicked() 
+                if type(self.GetFightEvent) ~= 'function' then
+                    gameuialliancesendtroops:LeftButtonClicked()
                     return
                 end
                 if total_march_time >= UtilsForShrine:GetEventTime(self:GetFightEvent()) then
@@ -276,15 +287,21 @@ function GameUIShireFightEvent:DispathSoliderButtonClicked()
                     end)
                     gameuialliancesendtroops:LeftButtonClicked()
                 end
-            end,{toLocation = Alliance_Manager:GetMyAlliance():GetShrinePosition(), targetIsMyAlliance = true,returnCloseAction = true, targetAlliance = Alliance_Manager:GetMyAlliance()}):AddToCurrentScene(true)
+            end,{
+            toLocation = Alliance_Manager:GetMyAlliance():GetShrinePosition(),
+            targetIsMyAlliance = true,
+            returnCloseAction = true,
+            targetAlliance = Alliance_Manager:GetMyAlliance(),
+            needTips = needTips
+            }):AddToCurrentScene(true)
         end
         UIKit:showSendTroopMessageDialog(attack_func, "dragonMaterials", _("龙材料"))
     end
-    if Alliance_Manager:GetMyAlliance():GetSelf():IsProtected() then
-        UIKit:showMessageDialog(_("提示"),_("进攻该目标将失去保护状态，确定继续派兵?"),final_func)
-    else
+    -- if Alliance_Manager:GetMyAlliance():GetSelf().masterOfDefender then
+    --     UIKit:showMessageDialog(_("提示"),_("进攻该目标将失去保护状态，确定继续派兵?"),final_func)
+    -- else
         final_func()
-    end
+    -- end
 end
 local shrineStage = GameDatas.AllianceInitData.shrineStage
 function GameUIShireFightEvent:InfomationButtonClicked()

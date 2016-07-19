@@ -19,7 +19,12 @@ end)
 local ALLIANCE_TAG = 222
 
 
-function WidgetHomeBottom:MailUnreadChanged(...)
+function WidgetHomeBottom:MailUnreadChanged(param)
+    if param and param._report_ then
+        if param._report_.type == "attackCity" then
+            self:TipsOnMails()
+        end
+    end
     self.mail_count:SetNumber(MailManager:GetUnReadMailsNum()+MailManager:GetUnReadReportsNum())
 end
 function WidgetHomeBottom:OnUserDataChanged_growUpTasks()
@@ -61,6 +66,7 @@ function WidgetHomeBottom:ctor(city)
             self.task_count = WidgetNumberTips.new():addTo(self):pos(x+20, first_row+20)
             self.task_count:setLocalZOrder(11)
         elseif i == 3 then
+            self.mail_btn = button
             self.mail_count = WidgetNumberTips.new():addTo(self):pos(x+20, first_row+20)
             self.mail_count:setLocalZOrder(11)
         elseif i == 4 then
@@ -121,7 +127,12 @@ function WidgetHomeBottom:OnBottomButtonClicked(event)
         end
         self.alliance_btn:removeChildByTag(ALLIANCE_TAG)
     elseif tag == 3 then
-        UIKit:newGameUI('GameUIMail',self.city):AddToCurrentScene(true)
+        local needTips = false
+        if event.target:getChildByTag(111) then
+            needTips = true
+            event.target:removeChildByTag(111)
+        end
+        UIKit:newGameUI('GameUIMail',self.city,needTips):AddToCurrentScene(true)
     elseif tag == 2 then
         UIKit:newGameUI('GameUIItems',self.city,"shop"):AddToCurrentScene(true)
     elseif tag == 1 then
@@ -203,7 +214,11 @@ function WidgetHomeBottom:TipsOnAlliance()
     self:stopAllActions()
     self:performWithDelay(function() self.alliance_btn:removeChildByTag(ALLIANCE_TAG) end, 5)
 end
-
+function WidgetHomeBottom:TipsOnMails()
+    if not self.mail_btn:getChildByTag(111) then
+        UIKit:FingerAni():addTo(self.mail_btn,10,111):pos(40, -40):scale(0.85)
+    end
+end
 
 return WidgetHomeBottom
 

@@ -10,6 +10,7 @@ local Localize_item = import("..utils.Localize_item")
 local UIListView = import(".UIListView")
 local UILib = import(".UILib")
 local ScheduleActivities = GameDatas.ScheduleActivities.type
+local allianceType = GameDatas.ScheduleActivities.allianceType
 local WidgetPushButton = import("..widget.WidgetPushButton")
 local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 function GameUISeasonDetails:ctor(activity_data)
@@ -47,15 +48,27 @@ function GameUISeasonDetails:GetListNode()
     local item = list:newItem()
     local content = display.newNode()
     local activity_data = self.activity_data
+    local isAlliance = activity_data.isAlliance
     local activity_type = activity_data.activity.type
-    local isValid = ActivityManager:IsPlayerExpiredActivityValid(activity_type)
-    local myRank = ActivityManager:GetMyRank(activity_type)
+    local isValid
+    if isAlliance then
+        isValid = ActivityManager:IsAllianceExpiredActivityValid(activity_type)
+    else
+        isValid = ActivityManager:IsPlayerExpiredActivityValid(activity_type)
+    end
+    local myRank
+    if isAlliance then
+        myRank = ActivityManager:GetMyAllianceRank(activity_type)
+    else
+        myRank = ActivityManager:GetMyRank(activity_type)
+    end
+    local config = isAlliance and allianceType or ScheduleActivities
     -- 奖励列表
     -- 过期活动显示我的奖励
     local status = activity_data.status
     local reward_y = 0
     if status == "expired" then
-        local reward = ActivityManager:GetMyActivityRankReward(activity_type)
+        local reward = isAlliance and ActivityManager:GetMyAllianceActivityRankReward(activity_type) or ActivityManager:GetMyActivityRankReward(activity_type)
         if #reward > 0 then
             local reward_height = 18 + #reward * 64
             local reward_content = WidgetUIBackGround.new({width = 540,height = reward_height},WidgetUIBackGround.STYLE_TYPE.STYLE_6)
@@ -87,7 +100,7 @@ function GameUISeasonDetails:GetListNode()
             end
 
             UIKit:ttfLabel({
-                text = string.format(_("我的排名：%s"),myRank and ""..myRank or _("无")),
+                text = string.format(isAlliance and _("联盟排名：%s") or _("我的排名：%s"),myRank and ""..myRank or _("无")),
                 size = 20,
                 color = 0x403c2f,
             }):align(display.LEFT_CENTER,12,reward_content:getContentSize().height + 60)
@@ -102,14 +115,22 @@ function GameUISeasonDetails:GetListNode()
             })):addTo(content):align(display.LEFT_BOTTOM, 416, reward_content:getContentSize().height + 16)
                 :onButtonClicked(function(event)
                     if event.name == "CLICKED_EVENT" then
-                        NetManager:getPlayerActivityRankRewardsPromise(activity_type):done(function ()
-                            app:GetAudioManager():PlayeEffectSoundWithKey("BUY_ITEM")
-                            GameGlobalUI:showTips(_("提示"),got_tips)
-                            self:LeftButtonClicked()
-                        end)
+                        if isAlliance then
+                            NetManager:getAllianceActivityRankRewardsPromise(activity_type):done(function ()
+                                app:GetAudioManager():PlayeEffectSoundWithKey("BUY_ITEM")
+                                GameGlobalUI:showTips(_("提示"),got_tips)
+                                self:LeftButtonClicked()
+                            end)
+                        else
+                            NetManager:getPlayerActivityRankRewardsPromise(activity_type):done(function ()
+                                app:GetAudioManager():PlayeEffectSoundWithKey("BUY_ITEM")
+                                GameGlobalUI:showTips(_("提示"),got_tips)
+                                self:LeftButtonClicked()
+                            end)
+                        end
                     end
                 end)
-            local ep_time = app.timer:GetServerTime() - (activity_data.activity.removeTime/1000 - ScheduleActivities[activity_type].expireHours * 60 * 60) -- 过期后十分钟可以领取排行榜奖励
+            local ep_time = app.timer:GetServerTime() - (activity_data.activity.removeTime/1000 - config[activity_type].expireHours * 60 * 60) -- 过期后十分钟可以领取排行榜奖励
             local could_got = ep_time > ActivityManager.EXPIRED_GET_LIMIT
             local my_reward_label = UIKit:ttfLabel({
                 text = _("我的奖励"),
@@ -120,7 +141,7 @@ function GameUISeasonDetails:GetListNode()
             if not could_got  then
                 btn:setButtonEnabled(false)
                 scheduleAt(self, function()
-                    local ep_time = app.timer:GetServerTime() - (activity_data.activity.removeTime/1000 - ScheduleActivities[activity_type].expireHours * 60 * 60) -- 过期后十分钟可以领取排行榜奖励
+                    local ep_time = app.timer:GetServerTime() - (activity_data.activity.removeTime/1000 - config[activity_type].expireHours * 60 * 60) -- 过期后十分钟可以领取排行榜奖励
                     if ep_time <= ActivityManager.EXPIRED_GET_LIMIT then
                         my_reward_label:setString(string.format(_("奖励在%s后可领取"),GameUtils:formatTimeStyle1(ActivityManager.EXPIRED_GET_LIMIT - ep_time)))
                         my_reward_label:setColor(UIKit:hex2c4b(0x7e0000))
@@ -134,8 +155,8 @@ function GameUISeasonDetails:GetListNode()
             reward_y = reward_content:getContentSize().height + 88
         end
     else
-        local reward = ActivityManager:GetActivityRankReward(activity_type)
-        local region = ActivityManager:GetActivityRankRewardRegion()
+        local reward = isAlliance and ActivityManager:GetAllianceActivityRankReward(activity_type) or ActivityManager:GetActivityRankReward(activity_type)
+        local region = isAlliance and ActivityManager:GetActivityAllianceRankRewardRegion() or ActivityManager:GetActivityRankRewardRegion()
         local reward_data = {}
         local reward_height = 18
         for i = #reward,1 ,-1 do
@@ -244,9 +265,27 @@ function GameUISeasonDetails:GetListNode()
         :align(display.LEFT_BOTTOM, 6, season_pro_bg:getPositionY() + season_pro_bg:getContentSize().height + 16)
         :addTo(content)
         :scale(121/170)
-    local reward_points = ActivityManager:GetActivityScorePonits(activity_type)
-    local gotIndex = isValid and User.activities[activity_type].scoreRewardedIndex or 0
-    local my_score = isValid and User.activities[activity_type].score or 0
+    local reward_points = isAlliance and ActivityManager:GetAllianceActivityScorePonits(activity_type) or ActivityManager:GetActivityScorePonits(activity_type)
+    local gotIndex = 0
+    if isValid then
+        if isAlliance then
+            gotIndex = ActivityManager:GetAllianceActivityScoreIndex(activity_type)
+        else
+            gotIndex = ActivityManager:GetActivityScoreIndex(activity_type)
+        end
+    else
+        gotIndex = 0
+    end
+    local my_score
+    if isValid then
+        if isAlliance then
+            my_score = Alliance_Manager:GetMyAlliance().activities[activity_type].score
+        else
+            my_score = User.activities[activity_type].score
+        end
+    else
+        my_score = 0
+    end
     local progress_percent = 0
     for i,v in ipairs(reward_points) do
         if v <= my_score then
@@ -279,7 +318,7 @@ function GameUISeasonDetails:GetListNode()
             shadow = true
         }):align(display.CENTER,point_bg:getContentSize().width/2,point_bg:getContentSize().height/2 + 2)
             :addTo(point_bg)
-        local item_rewards = ActivityManager:GetActivityScoreByIndex(activity_type,i)
+        local item_rewards = isAlliance and ActivityManager:GetAllianceActivityScoreByIndex(activity_type,i) or ActivityManager:GetActivityScoreByIndex(activity_type,i)
         local item_bg = display.newSprite("box_118x118.png"):align(display.LEFT_BOTTOM, 228, y):addTo(content):scale(74/118)
         local sp = display.newSprite(UIKit:GetItemImage("items",item_rewards[1].name),59,59):addTo(item_bg)
         local size = sp:getContentSize()
@@ -300,16 +339,26 @@ function GameUISeasonDetails:GetListNode()
         })):addTo(content):align(display.LEFT_BOTTOM, 416, y)
             :onButtonClicked(function(event)
                 if event.name == "CLICKED_EVENT" then
-                    if (User.activities[activity_type].scoreRewardedIndex + 1) ~= i then
+                    local scoreRewardedIndex = isAlliance and ActivityManager:GetAllianceActivityScoreGotIndex(activity_type) or ActivityManager:GetActivityScoreGotIndex(activity_type)
+                    if scoreRewardedIndex ~= i then
                         UIKit:showMessageDialog(_("提示"),_("请首先领取前面的奖励"))
                         return
                     end
-                    NetManager:getPlayerActivityScoreRewardsPromise(activity_type):done(function ()
-                        self:RefreshAfterGotPointReward()
-                        app:GetAudioManager():PlayeEffectSoundWithKey("BUY_ITEM")
-                        GameGlobalUI:showTips(_("提示"),
-                            _("获得").." "..Localize_item.item_name[item_rewards[1].name].." X "..item_rewards[1].count.." , "..Localize_item.item_name[item_rewards[2].name].." X "..item_rewards[2].count)
-                    end)
+                    if isAlliance then
+                        NetManager:getAllianceActivityScoreRewardsPromise(activity_type):done(function ()
+                            self:RefreshAfterGotPointReward()
+                            app:GetAudioManager():PlayeEffectSoundWithKey("BUY_ITEM")
+                            GameGlobalUI:showTips(_("提示"),
+                                _("获得").." "..Localize_item.item_name[item_rewards[1].name].." X "..item_rewards[1].count.." , "..Localize_item.item_name[item_rewards[2].name].." X "..item_rewards[2].count)
+                        end)
+                    else
+                        NetManager:getPlayerActivityScoreRewardsPromise(activity_type):done(function ()
+                            self:RefreshAfterGotPointReward()
+                            app:GetAudioManager():PlayeEffectSoundWithKey("BUY_ITEM")
+                            GameGlobalUI:showTips(_("提示"),
+                                _("获得").." "..Localize_item.item_name[item_rewards[1].name].." X "..item_rewards[1].count.." , "..Localize_item.item_name[item_rewards[2].name].." X "..item_rewards[2].count)
+                        end)
+                    end
                 end
             end)
         self.pointbtn[i]:setButtonEnabled(gotIndex < i and my_score >= v)
@@ -325,7 +374,7 @@ function GameUISeasonDetails:GetListNode()
         :align(display.LEFT_BOTTOM, 0,citizen_num_bg:getPositionY() + 511 + 20)
         :addTo(content)
     UIKit:ttfLabel({
-        text = string.format(_("我的分数：%s"),status ~= "next" and isValid and string.formatnumberthousands(my_score) or "0"),
+        text = string.format(isAlliance and _("联盟分数：%s") or _("我的分数：%s"),status ~= "next" and isValid and string.formatnumberthousands(my_score) or "0"),
         size = 22,
         color = 0xffcb4e,
         shadow = true
@@ -368,9 +417,11 @@ function GameUISeasonDetails:GetListNode()
 end
 function GameUISeasonDetails:RefreshAfterGotPointReward()
     local activity_type = self.activity_data.activity.type
-    local my_score = User.activities[activity_type].score
-    local gotIndex = User.activities[activity_type].scoreRewardedIndex
-    local reward_points = ActivityManager:GetActivityScorePonits(activity_type)
+    local isAlliance = self.activity_data.isAlliance
+    local activity = isAlliance and Alliance_Manager:GetMyAlliance().activities or User.activities
+    local my_score = activity[activity_type].score
+    local gotIndex = isAlliance and ActivityManager:GetAllianceActivityScoreIndex(activity_type) or ActivityManager:GetActivityScoreIndex(activity_type)
+    local reward_points = isAlliance and ActivityManager:GetAllianceActivityScorePonits(activity_type) or ActivityManager:GetActivityScorePonits(activity_type)
     for i,v in ipairs(reward_points) do
         self.pointbtn[i]:setButtonEnabled(gotIndex < i and my_score >= v)
         self.pointbtn[i]:setVisible(self.activity_data.status == "expired" and gotIndex < i and my_score >= v or self.activity_data.status ~= "expired" and gotIndex < i)
@@ -382,6 +433,10 @@ function GameUISeasonDetails:OnActivitiesChanged()
     self:LeftButtonClicked()
 end
 return GameUISeasonDetails
+
+
+
+
 
 
 

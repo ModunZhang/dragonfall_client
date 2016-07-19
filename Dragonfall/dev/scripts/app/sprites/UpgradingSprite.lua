@@ -27,6 +27,18 @@ function UpgradingSprite:UpgradeBegin()
     self:StartBuildingAnimation()
 end
 
+function UpgradingSprite:ShowFinger()
+    if not self:getChildByTag(111) then
+        local x,y = self:GetSpriteOffset()
+        UIKit:FingerAni():addTo(self,10,111):pos(x+50,y-50)
+    end
+end
+function UpgradingSprite:HideFinger()
+    self:removeChildByTag(111)
+end
+function UpgradingSprite:IsFingerOn()
+    return not not self:getChildByTag(111)
+end
 function UpgradingSprite:UpgradeFinished()
     self:RefreshSprite()
     self:StopBuildingAnimation()

@@ -9,7 +9,7 @@ local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local WidgetInput = class("WidgetInput", WidgetPopDialog)
 
 function WidgetInput:ctor(params)
-    WidgetInput.super.ctor(self,210,"调整数量",display.top-400)
+    WidgetInput.super.ctor(self,210,_("调整数量"),display.top-400)
     self:DisableCloseBtn()
     local body = self.body
     local unit = params.unit or ""

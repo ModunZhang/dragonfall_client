@@ -130,8 +130,8 @@ function GameUINpc:OnMoveInStage()
     self.ui_map = self:BuildUI()
     self:StartDialog()
     self:RefreshNpc(self:CurrentDialog())
-    self.btn:onButtonClicked(function()
-        self:OnClick()
+    self.btn:onButtonClicked(function(event)
+        self:OnClick(event)
     end)
 end
 function GameUINpc:onExit()
@@ -142,11 +142,18 @@ function GameUINpc:StartDialog()
     self:ShowWords(self:CurrentDialog())
     return self
 end
-function GameUINpc:OnClick()
+function GameUINpc:OnClick(event)
     if self.label and self.label:getActionByTag(LETTER_ACTION) then
         self:ShowWords(self:CurrentDialog(), false)
         self:OnDialogEnded(self.dialog_index)
     else
+        local rect = self.ui_map.background.rect
+        if rect
+        and type(self.click_func) == "function"
+        and cc.rectContainsPoint(rect, event) then
+            self.click_func(event)
+        end
+
         local index = self.dialog_index
         self:NextDialog()
         self:OnDialogClicked(index)
@@ -175,8 +182,17 @@ function GameUINpc:ShowWords(dialog, ani)
             self.ui_map.woman:getAnimation():playWithIndex(0, -1, 0)
         end
     end
-    if dialog.hide_bg then
+    if dialog.hide_bg == true then
         self.ui_map.background:hide()
+    elseif dialog.hide_bg == false then
+        self.ui_map.background:show()
+    end
+    if dialog.focus_rect then
+        self.ui_map.background:FocusOnRect(dialog.focus_rect)
+        self.click_func = dialog.click_func
+    else
+        self.ui_map.background:FocusOnRect()
+        self.click_func = nil
     end
     self:RefreshNpc(dialog)
     self.label = self:CreateLabel()
@@ -293,7 +309,7 @@ function GameUINpc:BuildUI()
         cc.MoveBy:create(0.4, cc.p(5, 0)),
         cc.MoveBy:create(0.4, cc.p(-5, 0))
     }))
-    
+
     ui_map.woman = ccs.Armature:create("npc_nv"):addTo(ui_map.dialog_bg)
         :align(display.BOTTOM_CENTER, 130, 0):hide()
     ui_map.man = display.newSprite("npc_man.png"):addTo(ui_map.dialog_bg)

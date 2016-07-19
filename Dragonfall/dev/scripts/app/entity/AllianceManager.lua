@@ -26,7 +26,7 @@ end
 function AllianceManager:HasToMyCityEvents()
     local marchEvents = self:GetMyAllianceMarchEvents()
     for k,event in pairs(marchEvents.attackMarchEvents) do
-        if event ~= json.null 
+        if event ~= json.null
             and event.defencePlayerData
             and event.defencePlayerData.id == User._id
             and event.fromAlliance.id ~= self.my_alliance._id then
@@ -48,8 +48,8 @@ function AllianceManager:GetToMineMarchEvents()
     local marchEvents = self:GetMyAllianceMarchEvents()
     for k,kindsOfEvents in pairs(marchEvents) do
         for id,event in pairs(kindsOfEvents) do
-            if event ~= json.null 
-            and event.defencePlayerData 
+            if event ~= json.null
+            and event.defencePlayerData
             and event.defencePlayerData.id == User:Id() then
                 event.eventType = k
                 table.insert(to_my_events, event)
@@ -90,9 +90,9 @@ function AllianceManager:GetMyBeAttackingEvent()
     local marchEvents = self:GetMyAllianceMarchEvents()
     for k,kindsOfEvents in pairs(marchEvents) do
         for id,event in pairs(kindsOfEvents) do
-            if event ~= json.null 
+            if event ~= json.null
             and event.defencePlayerData
-            and event.defencePlayerData.id == User:Id() 
+            and event.defencePlayerData.id == User:Id()
             and event.fromAlliance.id ~= self:GetMyAlliance()._id then
                 event.eventType = k
                 table.insert(to_my_events, event)
@@ -106,8 +106,8 @@ function AllianceManager:GetToMyAllianceMarchEvents()
     local marchEvents = self:GetMyAllianceMarchEvents()
     for k,kindsOfEvents in pairs(marchEvents) do
         for id,event in pairs(kindsOfEvents) do
-            if event ~= json.null 
-            and event.toAlliance.id == self.my_alliance._id 
+            if event ~= json.null
+            and event.toAlliance.id == self.my_alliance._id
             and event.fromAlliance.id ~= self.my_alliance._id then
                 event.eventType = k
                 table.insert(to_my_events, event)
@@ -293,7 +293,7 @@ function AllianceManager:OnAllianceDataChanged(allianceData,refresh_time,deltaDa
                 app:EnterMyAllianceScene()
             end
         end
-        if allianceData.basicInfo.status == 'prepare' 
+        if allianceData.basicInfo.status == 'prepare'
         or allianceData.basicInfo.status == 'fight' then
             self:RefreshAllianceSceneIf()
         end
@@ -316,7 +316,7 @@ function AllianceManager:OnAllianceDataChanged(allianceData,refresh_time,deltaDa
         end
         if self.status and self.status ~= allianceData.basicInfo.status then
             self:RefreshAllianceSceneIf(self.status)
-            
+
             if self.status == "prepare"
            and allianceData.basicInfo.status == "fight" then
                 app:GetAudioManager():PlayeEffectSoundWithKey("BATTLE_START")
@@ -338,6 +338,7 @@ function AllianceManager:OnAllianceDataChanged(allianceData,refresh_time,deltaDa
     end
     self.my_mapIndex = allianceData.mapIndex
     self.status = allianceData.basicInfo.status
+    ActivityManager:GetAllianceActivitiesFromServer()
 end
 
 

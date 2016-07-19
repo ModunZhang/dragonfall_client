@@ -7,16 +7,18 @@ local StarBar = import("..ui.StarBar")
 local window = import("..utils.window")
 local Localize = import("..utils.Localize")
 local UILib = import("..ui.UILib")
+local GameUINpc = import("..ui.GameUINpc")
 local WidgetRequirementListview = import(".WidgetRequirementListview")
 local NORMAL = GameDatas.Soldiers.normal
 
 local WidgetPromoteSoldier = class("WidgetPromoteSoldier", WidgetPopDialog)
 
-function WidgetPromoteSoldier:ctor(soldier_type,building_type)
+function WidgetPromoteSoldier:ctor(soldier_type,building_type,needTips)
     WidgetPromoteSoldier.super.ctor(self,780,_("兵种晋级"))
     self.soldier_type = soldier_type
     self.building_type = building_type
     self.star = UtilsForSoldier:SoldierStarByName(User, soldier_type)
+    self.needTips = needTips
 end
 
 function WidgetPromoteSoldier:onEnter()
@@ -28,6 +30,22 @@ function WidgetPromoteSoldier:onEnter()
     scheduleAt(self, function()
         self:UpgradeRequirement()
     end)
+
+
+
+    local level_up_config = self:GetNextLevelConfig()
+    if self.needTips and level_up_config then
+        local tech_points = User:GetTechPoints(self:GetSoldierMapToBuilding())
+        if tech_points >= level_up_config.upgradeTechPointNeed then
+            UIKit:FingerAni():addTo(self.btn:zorder(10),10,111):pos(150, -20)
+        else
+            GameUINpc:PromiseOfSay(
+                {npc = "woman", words = _("领主大人，当前科技等级不足，快去升级您的士兵吧！")}
+            ):next(function()
+                return GameUINpc:PromiseOfLeave()
+            end)
+        end
+    end
 end
 function WidgetPromoteSoldier:onExit()
     User:RemoveListenerOnType(self, "soldierStars")
@@ -133,6 +151,7 @@ function WidgetPromoteSoldier:UpgradeButtons()
             style = UIKit.BTN_COLOR.YELLOW,
             labelParams={text = _("晋级")},
             listener = function ()
+                self.btn:removeChildByTag(111)
                 local upgrade_listener = function()
                     NetManager:getUpgradeSoldierStarPromise(self.soldier_type)
                     self:LeftButtonClicked()
@@ -167,6 +186,7 @@ function WidgetPromoteSoldier:UpgradeButtons()
         }
     ):pos(size.width/2+180, size.height-230)
         :addTo(body)
+    self.btn = btn_bg
 
 
     -- 立即升级所需金龙币

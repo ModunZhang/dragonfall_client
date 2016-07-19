@@ -584,7 +584,7 @@ local logic_event_map = {
         if DataManager:hasUserData() then
             local user_alliance_data = DataManager:getUserAllianceData()
             if type(user_alliance_data) == "table"
-            and response.targetAllianceId == user_alliance_data._id then
+                and response.targetAllianceId == user_alliance_data._id then
                 local edit = decodeInUserDataFromDeltaData(user_alliance_data, response.data)
                 DataManager:setUserAllianceData(user_alliance_data, edit)
                 -- LuaUtils:outputTable("onAllianceDataChanged", edit)
@@ -680,6 +680,20 @@ local logic_event_map = {
                 uiInstance:OnNewChatComing()
             else
                 UIKit:newGameUI("GameUIGMChat",response):AddToCurrentScene()
+            end
+        end
+    end,
+    onGameInfoChanged = function(success, response)
+        if success then
+            User.gameInfo["modApplyEnabled"] = response.modApplyEnabled
+            User.gameInfo["promotionProductEnabled"] = response.promotionProductEnabled
+            local home_page = display.getRunningScene():GetHomePage()
+            if home_page.CreateADNode then
+                if User.gameInfo.promotionProductEnabled then
+                    home_page:CreateADNode()
+                else
+                    home_page:RemoveADNode()
+                end
             end
         end
     end,
@@ -878,7 +892,7 @@ function NetManager:getLoginPromise(deviceId)
             else
                 LuaUtils:outputTable("logic.entryHandler.login", response)
                 -- if playerData.countInfo.isFTEFinished then
-                    -- GLOBAL_FTE = false
+                -- GLOBAL_FTE = false
                 -- end
                 self.m_netService:setDeltatime(delta_time)
                 local InitGame = import("app.service.InitGame")
@@ -1201,11 +1215,12 @@ function NetManager:getDailyQeustRewardPromise(questEventId)
         end)
 end
 -- 发送个人邮件
-function NetManager:getSendPersonalMailPromise(memberId, title, content , contacts)
+function NetManager:getSendPersonalMailPromise(memberId, title, content , contacts, asMod)
     return get_blocking_request_promise("logic.playerHandler.sendMail", {
         memberId = memberId,
         title = title,
         content = content,
+        asMod = asMod
     }, "发送个人邮件失败!"):done(get_response_msg):done(function ( response )
         GameGlobalUI:showTips(_("提示"),_("发送邮件成功"))
         app:GetAudioManager():PlayeEffectSoundWithKey("OPEN_MAIL")
@@ -1257,13 +1272,19 @@ end
 function NetManager:getDeleteSendMailsPromise(mailIds)
     return get_blocking_request_promise("logic.playerHandler.deleteSendMails", {
         mailIds = mailIds
-    }, "删除已发邮件失败!"):done(get_response_delete_send_mail_msg)
+    }, "删除已发邮件失败!"):done(get_response_delete_send_mail_msg):done(function ( response )
+        GameGlobalUI:showTips(_("提示"),_("已删除"))
+        return response
+    end)
 end
 -- 删除邮件
 function NetManager:getDeleteMailsPromise(mailIds)
     return get_blocking_request_promise("logic.playerHandler.deleteMails", {
         mailIds = mailIds
-    }, "删除邮件失败!"):done(get_response_delete_mail_msg)
+    }, "删除邮件失败!"):done(get_response_delete_mail_msg):done(function ( response )
+        GameGlobalUI:showTips(_("提示"),_("已删除"))
+        return response
+    end)
 end
 -- 从邮件获取奖励
 function NetManager:getMailRewardsPromise(mailId)
@@ -1318,7 +1339,10 @@ end
 function NetManager:getDeleteReportsPromise(reportIds)
     return get_blocking_request_promise("logic.playerHandler.deleteReports", {
         reportIds = reportIds
-    }, "删除战报失败!"):done(get_response_delete_report_msg)
+    }, "删除战报失败!"):done(get_response_delete_report_msg):done(function ( response )
+        GameGlobalUI:showTips(_("提示"),_("已删除"))
+        return response
+    end)
 end
 -- 获取战报详情
 function NetManager:getReportDetailPromise(memberId,reportId)
@@ -2120,6 +2144,12 @@ function NetManager:getPlayerActivityRankPromise(rankType)
         rankType = rankType,
     },"获取玩家自身的活动排名失败!")
 end
+-- 获取联盟自身的活动排名
+function NetManager:getAllianceActivityRankPromise(rankType)
+    return get_blocking_request_promise("rank.rankHandler.getAllianceRank",{
+        rankType = rankType,
+    },"获取联盟自身的活动排名失败!")
+end
 -- 获取玩家活动排名信息列表
 function NetManager:getPlayerTotalActivityRankPromise(rankType,fromRank)
     return get_blocking_request_promise("rank.rankHandler.getPlayerActivityRankList",{
@@ -2127,7 +2157,13 @@ function NetManager:getPlayerTotalActivityRankPromise(rankType,fromRank)
         fromRank = fromRank or 0,
     },"获取玩家活动排名信息列表失败!")
 end
-
+-- 获取联盟活动排名信息列表
+function NetManager:getAllianceTotalActivityRankPromise(rankType,fromRank)
+    return get_blocking_request_promise("rank.rankHandler.getAllianceActivityRankList",{
+        rankType = rankType,
+        fromRank = fromRank or 0,
+    },"获取联盟活动排名信息列表失败!")
+end
 function NetManager:getAllianceRankPromise(rankType, fromRank)
     return get_blocking_request_promise("rank.rankHandler.getAllianceRankList",{
         rankType = rankType,
@@ -2241,6 +2277,18 @@ end
 function NetManager:getPlayerActivityRankRewardsPromise(rankType)
     return get_blocking_request_promise("logic.playerHandler.getPlayerActivityRankRewards",{rankType=rankType},"获取玩家活动排名奖励失败!"):done(get_player_response_msg)
 end
+--获取联盟活动信息
+function NetManager:getAllianceActivitiesPromise()
+    return get_blocking_request_promise("logic.allianceHandler.getAllianceActivities",{},"获取联盟活动信息失败!")
+end
+--获取联盟活动积分奖励
+function NetManager:getAllianceActivityScoreRewardsPromise(rankType)
+    return get_blocking_request_promise("logic.allianceHandler.getAllianceActivityScoreRewards",{rankType=rankType},"获取联盟活动积分奖励失败!"):done(get_player_response_msg)
+end
+--获取联盟活动排名奖励
+function NetManager:getAllianceActivityRankRewardsPromise(rankType)
+    return get_blocking_request_promise("logic.allianceHandler.getAllianceActivityRankRewards",{rankType=rankType},"获取联盟活动排名奖励失败!"):done(get_player_response_msg)
+end
 function NetManager:getMoveAlliancePromise(targetMapIndex)
     return get_blocking_request_promise("logic.allianceHandler.moveAlliance",{
         targetMapIndex = targetMapIndex,
@@ -2267,9 +2315,25 @@ function NetManager:getLeaveMapIndexPromise()
         return cocos_promise.defer()
     end
 end
-
-
-
+--添加黑名单
+function NetManager:getAddBlockedPromise(memberId,memberName,memberIcon)
+    return get_blocking_request_promise("logic.playerHandler.addBlocked",{
+            memberId=memberId,
+            memberName=memberName,
+            memberIcon=memberIcon,
+        },
+        "添加黑名单失败!"):done(get_player_response_msg):done(function ()
+            GameGlobalUI:showTips(_("提示"),_("屏蔽成功"))
+        end)
+end
+--移除黑名单
+function NetManager:getRemoveBlockedPromise(memberId)
+    return get_blocking_request_promise("logic.playerHandler.removeBlocked",{memberId=memberId},"移除黑名单失败!"):done(get_player_response_msg)
+end
+--获取游戏状态信息
+function NetManager:getGameInfoPromise()
+    return get_blocking_request_promise("logic.playerHandler.getGameInfo",{},"获取游戏状态信息失败!")
+end
 ----------------------------------------------------------------------------------------------------------------
 function NetManager:getUpdateFileList(cb)
     local fileListJsonPath = string.format("%s:%s%s/res/fileList.json",self.m_updateServer.host,self.m_updateServer.port,self.m_updateServer.basePath)
@@ -2333,6 +2397,7 @@ function NetManager:downloadFile(fileInfo, cb, progressCb)
         progressCb(totalSize, currentSize)
     end)
 end
+
 
 
 

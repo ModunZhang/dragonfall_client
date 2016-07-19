@@ -9,6 +9,7 @@ local Alliance = import("..entity.Alliance")
 local WidgetInfoWithTitle = import("..widget.WidgetInfoWithTitle")
 local WidgetInfoNotListView = import("..widget.WidgetInfoNotListView")
 local Localize = import("..utils.Localize")
+local GameUINpc = import(".GameUINpc")
 local WidgetInfo = import("..widget.WidgetInfo")
 local WidgetPopDialog = import("..widget.WidgetPopDialog")
 local WidgetSliderWithInput = import("..widget.WidgetSliderWithInput")
@@ -44,6 +45,14 @@ function GameUIAlliancePalace:OnMoveInStage()
         if tag == 'info' then
             self.info_layer:setVisible(true)
             self:InitInfoPart()
+            if not app:GetGameDefautlt():IsPassedTriggerTips("alliancePalace") then
+                GameUINpc:PromiseOfSay(
+                    {npc = "woman", words = _("联盟盟主有权力对联盟地形进行修改，联盟地形会影响到圣地的龙装备产出类型。")}
+                ):next(function()
+                    return GameUINpc:PromiseOfLeave()
+                end)
+                app:GetGameDefautlt():SetPassTriggerTips("alliancePalace")
+            end
         else
             self.info_layer:setVisible(false)
             self.info_layer:Clear()

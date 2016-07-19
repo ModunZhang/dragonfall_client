@@ -415,7 +415,7 @@ function UIKit:GetPlayerCommonIcon(key,isOnline)
 end
 
 function UIKit:GetPlayerIconImage(key)
-    return UILib.player_icon[key == "__mod" and key or tonumber(key)]
+    return UILib.player_icon[tonumber(key)]
 end
 
 function UIKit:GetPlayerIconOnly(key,isOnline)
@@ -2566,7 +2566,23 @@ function UIKit:ScaleAni()
                     }
                 )
 end
-
+function UIKit:ProtectedAni()
+    local protect = display.newSprite("protect_1.png"):scale(0.8)
+    protect:runAction(cc.RepeatForever:create(
+        transition.sequence{
+            cc.FadeTo:create(1, 255 * 0.7),
+            cc.FadeTo:create(1, 255 * 1.0),
+        }))
+    local size = protect:getContentSize()
+    display.newSprite("protect_2.png")
+        :addTo(protect):pos(size.width/2, size.height/2)
+        :opacity(255 * 0.7):runAction(cc.RepeatForever:create(
+        transition.sequence{
+            cc.FadeTo:create(1, 255 * 1.0),
+            cc.FadeTo:create(1, 255 * 0.7),
+        }))
+    return protect
+end
 function UIKit:FingerAni()
     local node = display.newNode()
     display.newSprite("finger.png"):addTo(node,1,1):runAction(self:GetFingerAni())
@@ -2762,7 +2778,7 @@ function UIKit:CreateTerrainForNode(clip,terrain)
         else
             cc.TMXTiledMap:create(string.format("tmxmaps/alliance_%s1.tmx",city_terrain))
                 :align(display.LEFT_BOTTOM, 0, 0):addTo(clip)
-        end 
+        end
     end, cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565)
 
     local unlock_position = {

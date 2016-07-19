@@ -427,21 +427,7 @@ function WorldLayer:GetAllianceStatus(aln)
     return status
 end
 function WorldLayer:CreateProtect()
-    local protect = display.newSprite("protect_1.png"):scale(0.8)
-    protect:runAction(cc.RepeatForever:create(
-        transition.sequence{
-            cc.FadeTo:create(1, 255 * 0.7),
-            cc.FadeTo:create(1, 255 * 1.0),
-        }))
-    local size = protect:getContentSize()
-    display.newSprite("protect_2.png")
-        :addTo(protect):pos(size.width/2, size.height/2)
-        :opacity(255 * 0.7):runAction(cc.RepeatForever:create(
-        transition.sequence{
-            cc.FadeTo:create(1, 255 * 1.0),
-            cc.FadeTo:create(1, 255 * 0.7),
-        }))
-    return protect
+    return UIKit:ProtectedAni()
 end
 function WorldLayer:CraeteLineWith(from, to)
     local line_key = string.format("%d_%d", from, to)

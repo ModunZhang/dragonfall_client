@@ -21,11 +21,12 @@ local GameUIMail = class('GameUIMail', GameUIWithCommonHeader)
 GameUIMail.ONE_TIME_LOADING_MAILS = 10
 GameUIMail.ONE_TIME_LOADING_REPORTS = 10
 
-function GameUIMail:ctor(city)
+function GameUIMail:ctor(city,needTips)
     GameUIMail.super.ctor(self)
     self.title = _("邮件")
     self.city = city
     self.manager = MailManager
+    self.needTips = needTips
 
     app:GetAudioManager():PlayeEffectSoundWithKey("OPEN_MAIL")
 end
@@ -38,11 +39,12 @@ function GameUIMail:OnMoveInStage()
         {
             label = _("收件箱"),
             tag = "inbox",
-            default = true,
+            default = not self.needTips and true or false,
         },
         {
             label = _("战报"),
             tag = "report",
+            default = self.needTips,
         },
         {
             label = _("收藏夹"),
@@ -1141,6 +1143,7 @@ function GameUIMail:ShowSendMailDetails(mail)
     content_bg:align(display.LEFT_BOTTOM,(bg:getContentSize().width-content_bg:getContentSize().width)/2,80)
 
     -- player head icon
+    dump(mail)
     UIKit:GetPlayerCommonIcon(mail.fromIcon):align(display.CENTER, 76, bg:getContentSize().height - 90):addTo(bg)
     -- 收件人
     local subject_label = cc.ui.UILabel.new(
@@ -1247,7 +1250,7 @@ function GameUIMail:ShowMailDetails(mail)
 
     -- player head icon
     UIKit:GetPlayerCommonIcon(mail.fromIcon):align(display.CENTER, 76, size.height - 80):addTo(body)
-    if mail.fromName ~= "__system" then
+    if mail.fromName ~= "__system" and  mail.icon ~= -1 then
         WidgetPushTransparentButton.new(cc.rect(0,0,114,114)):addTo(body):align(display.CENTER, 76, size.height - 80):onButtonClicked(function()
             UIKit:newGameUI("GameUIAllianceMemberInfo",false,mail.fromId,nil,User.serverId):AddToCurrentScene(true)
         end)
@@ -1288,7 +1291,7 @@ function GameUIMail:ShowMailDetails(mail)
         :addTo(body)
     -- 内容
     local content_listview = UIListView.new{
-        viewRect = cc.rect(0, 10, 550, 520),
+        viewRect = cc.rect(0, 30, 550, 500),
         direction = cc.ui.UIScrollView.DIRECTION_VERTICAL
     }:addTo(content_bg):pos(10, 0)
     local content_item = content_listview:newItem()
@@ -1309,6 +1312,25 @@ function GameUIMail:ShowMailDetails(mail)
     content_item:addContent(content_label)
     content_listview:addItem(content_item)
     content_listview:reload()
+
+    local translation_sp = WidgetPushButton.new({
+        normal = "tmp_brown_btn_up_36x24.png",
+        pressed= "tmp_brown_btn_down_36x24.png",
+    }):align(display.RIGHT_BOTTOM, 556,12):addTo(content_bg)
+        :onButtonClicked(function(event)
+            if event.name == "CLICKED_EVENT" then
+                GameUtils:Translate(mail_content,function(result,errText)
+                    print("result=",result)
+                    if result and not tolua.isnull(self) and not tolua.isnull(content_label)  then
+                        content_label:setString(result)
+                        content_item:setItemSize(550,content_label:getContentSize().height)
+                    else
+                        print('Translate error------->',errText)
+                    end
+                end)
+            end
+        end)
+    display.newSprite("tmp_icon_translate_26x20.png"):addTo(translation_sp):pos(-18,12)
 
     if tolua.type(mail.isSaved)~="nil" then
         -- 删除按钮
@@ -1355,8 +1377,49 @@ function GameUIMail:ShowMailDetails(mail)
                 :addTo(body):align(display.CENTER, size.width-92, 42)
                 :onButtonClicked(function(event)
                     dialog:LeftButtonClicked()
-                    self:OpenReplyMail(mail)
+                    if tolua.isnull(User.isMod) then
+                        NetManager:getMyModDataPromise():done(function (response)
+                            if response.msg.modData ~= json.null then
+                                User.isMod = true
+                            else
+                                User.isMod = false
+                            end
+                            self:OpenReplyMail(mail)
+                        end)
+                    else
+                        self:OpenReplyMail(mail)
+                    end
                 end)
+            -- 屏蔽按钮
+            dump(mail)
+            if mail.fromIcon ~= -1 then
+                local block_label = cc.ui.UILabel.new({
+                    UILabelType = cc.ui.UILabel.LABEL_TYPE_TTF,
+                    text = _("屏蔽"),
+                    size = 20,
+                    font = UIKit:getFontFilePath(),
+                    color = UIKit:hex2c3b(0xfff3c7)})
+                block_label:enableShadow()
+
+                local block_btn = WidgetPushButton.new(
+                    {normal = "red_btn_up_148x58.png", pressed = "red_btn_down_148x58.png"},
+                    {scale9 = false}
+                ):setButtonLabel(block_label)
+                    :addTo(body):align(display.CENTER, size.width/2, 42)
+                    :onButtonClicked(function(event)
+                        if event.name == "CLICKED_EVENT" then
+                            if #User.blocked >= GameDatas.PlayerInitData.intInit.MaxBlockedSize.value then
+                                UIKit:showMessageDialog(_("提示"),_("你的黑名单已满!"),function()end)
+                                return
+                            end
+                            NetManager:getAddBlockedPromise(mail.fromId,mail.fromName,mail.fromIcon):done(function ()
+                                if dialog then
+                                    dialog:LeftButtonClicked()
+                                end
+                            end)
+                        end
+                    end)
+            end
         else
             del_btn:setPositionX(size.width/2)
         end
@@ -1590,6 +1653,16 @@ function GameUIMail:InitReport()
                 if self.report_listview then
                     self.report_listview:reload()
                 end
+                if #response.msg.reports > 0 then
+                    local ispass = app:GetGameDefautlt():IsPassedTriggerTips("mail")
+                    if UtilsForFte:NeedTriggerTips(User)
+                        and not ispass then
+                        if response.msg.reports[1].type == "attackCity" then
+                            local item = self.report_listview.items_[1]
+                            UIKit:FingerAni():addTo(item:getContent(),10,111):pos(500, 50)
+                        end
+                    end
+                end
                 return response
             end)
         end
@@ -1642,6 +1715,15 @@ function GameUIMail:DelegateReport( listView, tag, idx )
         end
     end
 end
+local GameUINpc = import("..ui.GameUINpc")
+local function ShowReportTips(enable)
+    if not enable then return end
+    GameUINpc:PromiseOfSay(
+        {npc = "woman", words = _("领主，战报中会显示您这次战斗所获得的战利品及双方伤亡情况，您也可以在此观察战斗动画或把它分享给大家！")}
+    ):next(function()
+        return GameUINpc:PromiseOfLeave()
+    end)
+end
 function GameUIMail:CreateReportContent()
     local item_width, item_height = 568,150
     local content = display.newNode()
@@ -1657,6 +1739,11 @@ function GameUIMail:CreateReportContent()
         local c_size = self:getContentSize()
         WidgetPushButton.new({normal = "back_ground_568x150.png"})
             :onButtonClicked(function(event)
+                local needTips
+                if self:getChildByTag(111) then
+                    self:removeChildByTag(111)
+                    needTips = true
+                end
                 if event.name == "CLICKED_EVENT" then
                     parent:SelectAllMailsOrReports(false)
                     if not report:IsRead() then
@@ -1670,7 +1757,12 @@ function GameUIMail:CreateReportContent()
                         or report:Type() == "villageBeStriked" or report:Type()== "strikeVillage" then
                         UIKit:newGameUI("GameUIStrikeReport", report,true):AddToCurrentScene(true)
                     elseif report:Type() == "attackCity" or report:Type() == "attackVillage" then
+                        if report:Type() == "attackCity"
+                            and not app:GetGameDefautlt():IsPassedTriggerTips("mail") then
+                            app:GetGameDefautlt():SetPassTriggerTips("mail")
+                        end
                         UIKit:newGameUI("GameUIWarReport", report,true):AddToCurrentScene(true)
+                        ShowReportTips(needTips)
                     elseif report:Type() == "collectResource" then
                         UIKit:newGameUI("GameUICollectReport", report):AddToCurrentScene(true)
                     elseif report:Type() == "attackMonster" then
@@ -2327,6 +2419,24 @@ function GameUIMail:OpenReplyMail(mail)
         end)
     textView:setRectTrackedNode(send_label)
 
+    if User.isMod then
+        -- 以MODs身份发送邮件选项
+        self.mod_check_box = cc.ui.UICheckBoxButton.new({
+            off = "checkbox_unselected.png",
+            off_pressed = "checkbox_unselected.png",
+            off_disabled = "checkbox_unselected.png",
+            on = "checkbox_selectd.png",
+            on_pressed = "checkbox_selectd.png",
+            on_disabled = "checkbox_selectd.png",
+        })
+            :align(display.LEFT_CENTER,14,46):addTo(reply_mail)
+        UIKit:ttfLabel({
+            text = _("以MODs身份发送邮件"),
+            size = 22,
+            color = 0x403c2f
+        }):align(display.LEFT_CENTER,80,46):addTo(reply_mail)
+    end
+
     return reply_mail
 end
 
@@ -2339,7 +2449,7 @@ end
     回复邮件
     @param addressee 收件人
     @param title 邮件主题
-    @param content 邮件内容 
+    @param content 邮件内容
 ]]
 function GameUIMail:ReplyMail(mail,title,content)
     local addressee = mail.fromId
@@ -2356,12 +2466,13 @@ function GameUIMail:ReplyMail(mail,title,content)
         UIKit:showMessageDialog(_("提示"),_("请填写邮件内容"))
         return
     end
+    local asMod = self.mod_check_box and self.mod_check_box:isButtonSelected()
     NetManager:getSendPersonalMailPromise(addressee,title, content,{
-        id = mail.fromId,
+        id = mail.id,
         name = mail.fromName,
         icon = mail.fromIcon,
         allianceTag = mail.fromAllianceTag,
-    })
+    },asMod)
 end
 
 function GameUIMail:OnReportsChanged( changed_map )
@@ -2590,7 +2701,10 @@ function GameUIMail:GetEnemyAllianceTag(report)
     end
 end
 
+
 return GameUIMail
+
+
 
 
 

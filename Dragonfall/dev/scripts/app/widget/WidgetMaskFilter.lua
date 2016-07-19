@@ -14,6 +14,7 @@ local function clamp(s,e,n)
     return n < s and s or (n > e and e or n)
 end
 function WidgetMaskFilter:FocusOnRect(rect)
+    self.rect = rect
     if not rect then
         self:clearFilter()
         self:setFilter(filter.newFilter("CUSTOM", json.encode({

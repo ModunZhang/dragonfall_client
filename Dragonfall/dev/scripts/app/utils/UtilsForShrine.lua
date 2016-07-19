@@ -132,8 +132,9 @@ function UtilsForShrine:FormatShrineTroops(stageinfo)
 		local troops = string.split(suntroops,":")
 		local troop_type,star = troops[1],troops[2]
 		local count =  checknumber(troops[3])
-		local count_str = math.ceil(count*0.9) * stageinfo.suggestPlayer .. "~" .. math.ceil(count*1.1)* stageinfo.suggestPlayer
-		table.insert(r,{type = troop_type,count = count_str,star = tonumber(star)})
+		-- local count_str = math.ceil(count*0.9) * stageinfo.suggestPlayer .. "~" .. math.ceil(count*1.1)* stageinfo.suggestPlayer
+		-- table.insert(r,{type = troop_type,count = count_str,star = tonumber(star)})
+		table.insert(r,{type = troop_type,count = count,star = tonumber(star)})
 	end
 	return r
 end

@@ -46,7 +46,7 @@ function GameUIDragonEyrieMain:IsDragonLock()
 end
 function GameUIDragonEyrieMain:OnUserDataChanged_buildings(userData, deltaData)
     local ok,value = deltaData("buildings.location_4")
-    if ok and self.hate_button then 
+    if ok and self.hate_button then
         self.hate_button:setButtonEnabled(UtilsForDragon:CanHatchAnyDragons(userData))
     end
 end
@@ -62,7 +62,7 @@ function GameUIDragonEyrieMain:OnUserDataChanged_dragons(userData, deltaData)
             end
         end
     end
-    if deltaData("dragons") then 
+    if deltaData("dragons") then
         self:RefreshUI()
     end
 end
@@ -78,7 +78,7 @@ end
 
 function GameUIDragonEyrieMain:CreateBetweenBgAndTitle()
     GameUIDragonEyrieMain.super.CreateBetweenBgAndTitle(self)
-    self.dragonNode = display.newNode():size(window.width,window.height):addTo(self:GetView())
+    self.dragonNode = display.newNode():size(window.width,window.height):addTo(self:GetView(),3)
 end
 
 
@@ -106,7 +106,7 @@ function GameUIDragonEyrieMain:OnMoveInStage()
             self.dragon_death_label:setString(GameUtils:formatTimeStyleDayHour(time))
         end
 
-        if dragon.star > 0 then 
+        if dragon.star > 0 then
             if self.dragon_hp_label and self.dragon_hp_label:isVisible() then
                 local hp = UtilsForDragon:GetDragonHp(User, dragon.type)
                 local hpMax = UtilsForDragon:GetDragonMaxHp(User.dragons[dragon.type])
@@ -115,6 +115,16 @@ function GameUIDragonEyrieMain:OnMoveInStage()
             end
         end
     end)
+    if UtilsForFte:NeedTriggerTips(User) and
+        not app:GetGameDefautlt():IsPassedTriggerTips(self.building:GetType()) then
+        UIKit:FingerAni():addTo(self.detailButton:zorder(10),10,111):pos(-10,-20)
+        GameUINpc:PromiseOfSay(
+            {npc = "woman", words = _("领主大人，巨龙的攻击力将直接影响战斗中龙战斗的胜负；而带兵量即为当前巨龙能带领出征的士兵数量。")}
+        ):next(function()
+            app:GetGameDefautlt():SetPassTriggerTips(self.building:GetType())
+            return GameUINpc:PromiseOfLeave()
+        end)
+    end
 end
 function GameUIDragonEyrieMain:onExit()
     User:RemoveListenerOnType(self, "dragons")
@@ -201,7 +211,7 @@ function GameUIDragonEyrieMain:RefreshUI()
             local hpMax = UtilsForDragon:GetDragonMaxHp(User.dragons[dragon.type])
             self.dragon_hp_label:setString(string.formatnumberthousands(hp) .. "/" .. string.formatnumberthousands(hpMax))
             self.progress_hated:setPercentage(hp/hpMax * 100)
-            
+
             self.state_label:setString(Localize.dragon_status[dragon.status])
             if dragon.status == "defence" or dragon.status == "free" then
                 self.state_label:setColor(UIKit:hex2c3b(0x07862b))
@@ -496,8 +506,17 @@ function GameUIDragonEyrieMain:CreateDragonContentNodeIf()
             size = 24,
             color = 0xffedae,
             shadow = true
-        })):addTo(info_panel):align(display.RIGHT_BOTTOM,540,5):onButtonClicked(function()
-            UIKit:newGameUI("GameUIDragonEyrieDetail",self.city,self.building,self:GetCurrentDragon().type):AddToCurrentScene(false)
+        })):addTo(info_panel):align(display.RIGHT_BOTTOM,540,5):onButtonClicked(function(event)
+            local triggerTips
+            if event.target:getChildByTag(111) then
+                triggerTips = true
+                event.target:removeChildByTag(111)
+            end
+            UIKit:newGameUI("GameUIDragonEyrieDetail",
+                            self.city,
+                            self.building,
+                            self:GetCurrentDragon().type,
+                            triggerTips):AddToCurrentScene(false)
             self:LeftButtonClicked()
         end)
         self.detailButton = detailButton
@@ -566,7 +585,7 @@ end
 function GameUIDragonEyrieMain:GetDragonIndexByType(dragonType)
     local t = UtilsForDragon:GetSortDragonTypes(User)
     local powerfulType = UtilsForDragon:GetPowerfulDragonType(User)
-    table.sort(t, function(a,b) 
+    table.sort(t, function(a,b)
         return powerfulType == a
     end)
     if self.dragonType then
@@ -590,7 +609,7 @@ end
 function GameUIDragonEyrieMain:GetDragonTypeByIndex(index)
     local t = UtilsForDragon:GetSortDragonTypes(User)
     local powerfulType = UtilsForDragon:GetPowerfulDragonType(User)
-    table.sort(t, function(a,b) 
+    table.sort(t, function(a,b)
         return powerfulType == a
     end)
     if self.dragonType then
@@ -764,11 +783,11 @@ function GameUIDragonEyrieMain:PromiseOfHate()
     :TurnUp():pos(r.x + r.width/2, r.y - 40)
 
     self.hatchPromise = promise.new()
-    return self.hatchPromise:next(function() 
+    return self.hatchPromise:next(function()
         if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEventAF then
             ext.market_sdk.onPlayerEventAF("强制引导-孵化巨龙", "empty")
         end
-        self:DestroyFteLayer() 
+        self:DestroyFteLayer()
     end)
 end
 function GameUIDragonEyrieMain:PormiseOfDefence()
@@ -784,7 +803,7 @@ function GameUIDragonEyrieMain:PormiseOfDefence()
     local r = self:FindGarrisonBtn():getCascadeBoundingBox()
     WidgetFteArrow.new(_("点击设置：巨龙在城市驻防，如果敌军入侵，巨龙会自动带领士兵进行防御"))
         :addTo(self:GetFteLayer()):TurnUp(false):align(display.LEFT_TOP, r.x + 30, r.y - 20)
-        
+
     self.defencePromise = promise.new()
     return self.defencePromise:next(function()
         if checktable(ext.market_sdk) and ext.market_sdk.onPlayerEventAF then

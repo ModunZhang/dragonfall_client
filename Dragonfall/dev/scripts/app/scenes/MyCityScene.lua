@@ -49,9 +49,11 @@ function MyCityScene:onEnter()
     -- :align(display.RIGHT_TOP, display.width, display.height)
 
     alliance:AddListenOnType(self, "operation")
+    alliance:AddListenOnType(self, "shrineEvents")
     self:GetCity():GetUser():AddListenOnType(self, "soldierEvents")
     self:GetCity():GetUser():AddListenOnType(self, "houseEvents")
     self:GetCity():GetUser():AddListenOnType(self, "buildingEvents")
+    self:GetCity():GetUser():AddListenOnType(self, "buildings")
 
     if self.operetion == "twinkle_military" then
         self:GotoLogicPointInstant(22, 50)
@@ -70,7 +72,6 @@ function MyCityScene:onEnter()
             end
         end
     end
-    -- showMemoryUsage()
 end
 function MyCityScene:onExit()
     self.home_page = nil
@@ -243,6 +244,11 @@ function MyCityScene:OnAllianceDataChanged_operation(alliance, op)
         end
     end
 end
+function MyCityScene:OnAllianceDataChanged_shrineEvents(alliance, deltaData)
+    if deltaData("shrineEvents") then
+
+    end
+end
 function MyCityScene:onEnterTransitionFinish()
     MyCityScene.super.onEnterTransitionFinish(self)
     if ext.registereForRemoteNotifications then
@@ -282,6 +288,78 @@ function MyCityScene:onEnterTransitionFinish()
 
     if type(self.callback) == "function" then
         self:callback()
+    else
+        if UtilsForFte:NeedTriggerTips(self:GetCity():GetUser()) then
+            local checktips = true
+            if self.home_page.order_shortcut then
+                if UtilsForFte:HasAnyShrineEvents()
+                and not app:GetGameDefautlt():IsPassedTriggerTips("shrineEvents") then
+                    GameUINpc:PromiseOfSay(
+                        {npc = "woman",
+                        words = _("领主大人，圣地战被激活了，快去参加吧！参与的成员越多，更容易获得珍贵的龙装备材料哦！")}
+                    ):next(function()
+                        return GameUINpc:PromiseOfLeave()
+                    end)
+                    self.home_page.order_shortcut:TipsOnShrine()
+                    checktips = false
+                -- elseif User:HaveEveryDayLoginReward()
+                --     and not app:GetGameDefautlt():IsPassedTriggerTips("everyDayLogin") then
+                --     self.home_page.order_shortcut:TipsOnReward()
+                -- elseif User:HaveContinutyReward()
+                --     and not app:GetGameDefautlt():IsPassedTriggerTips("continuty") then
+                --     self.home_page.order_shortcut:TipsOnReward()
+                -- elseif User:HavePlayerLevelUpReward()
+                --     and not app:GetGameDefautlt():IsPassedTriggerTips("playerLevelUp") then
+                --     self.home_page.order_shortcut:TipsOnReward()
+                -- elseif User:HaveOnlineReward()
+                --     and not app:GetGameDefautlt():IsPassedTriggerTips("online") then
+                --     app:GetGameDefautlt():SetPassTriggerTips("online")
+                --     self.home_page.order_shortcut:TipsOnReward(true)
+                end
+            end
+            if checktips then
+                self:CheckBuildingFte()
+            end
+            if DataManager:getUserData().countInfo.isFTEFinished then
+                scheduleAt(self, function()
+                    local time = app.timer:GetServerTime()
+                    MyCityScene.triggerTipsTime = MyCityScene.triggerTipsTime or time
+                    if time - MyCityScene.triggerTipsTime > 10 * 60 then
+                        MyCityScene.triggerTipsTime = time
+                        self:GetSceneLayer():GetInfoLayer():removeAllChildren()
+                        if self.home_page.order_shortcut and
+                            self.home_page.order_shortcut:HasAnyTips() then
+                            return
+                        end
+                        local t = {}
+                        local User = self:GetCity():GetUser()
+                        if UtilsForFte:CanUpgradeAnySkills(User) then
+                            table.insert(t, self.ShowTipsOnDragonEyrie)
+                        end
+                        if UtilsForFte:CanMakeAnyEquipment(User) then
+                            table.insert(t, self.ShowTipsOnBlackSmith)
+                        end
+                        if User:HasAnyStamina(10) then
+                            table.insert(t, self.ShowTipsOnAirShip)
+                        end
+                        if UtilsForFte:CanMakeAnyMaterials(User) then
+                            table.insert(t, self.ShowTipsOnToolShop)
+                        end
+                        if UtilsForFte:CanStartDailyQuest(User) then
+                            table.insert(t, self.ShowTipsOnTownHall)
+                        end
+                        local name = UtilsForFte:CanUpgradeMilitaryTechs(User)
+                        if name then
+                            local location = City:GetLocationIdByBuildingType(name)
+                            table.insert(t, function(self) self:ShowTipsOnBuilding(location) end)
+                        end
+                        if #t > 0 then
+                            t[math.random(#t)](self)
+                        end
+                    end
+                end, 60)
+            end
+        end
     end
 end
 function MyCityScene:CreateHomePage()
@@ -326,6 +404,7 @@ function MyCityScene:OnUserDataChanged_buildingEvents(userData, deltaData)
         end
         self:GetSceneLayer():CheckCanUpgrade()
     end
+    self:CheckBuildingFte()
 end
 function MyCityScene:OnUserDataChanged_soldierEvents(userData, deltaData)
     if deltaData("soldierEvents.add") then
@@ -352,6 +431,9 @@ function MyCityScene:OnUserDataChanged_basicInfo(userData, deltaData)
         self:GetHomePage():ShowPowerAni(cc.p(display.cx, display.cy), userData.basicInfo.power)
     end
 end
+function MyCityScene:OnUserDataChanged_buildings(userData, deltaData)
+    self:CheckBuildingFte()
+end
 function MyCityScene:OnTilesChanged(tiles)
     self:GetTopLayer():removeAllChildren()
     local city = self:GetCity()
@@ -371,6 +453,11 @@ function MyCityScene:OnTouchClicked(pre_x, pre_y, x, y)
 
     local building = self:GetSceneLayer():GetClickedObject(x, y)
     if building then
+        local triggerTips
+        if building.IsFingerOn then
+            triggerTips = building:IsFingerOn()
+            building:HideFinger()
+        end
         app:lockInput(true);self.util_node:performWithDelay(function()app:lockInput()end,0.3)
         Sprite:PromiseOfFlash(unpack(self:CollectBuildings(building))):next(function()
             if self:IsEditMode() then
@@ -378,7 +465,7 @@ function MyCityScene:OnTouchClicked(pre_x, pre_y, x, y)
                 return
             end
             self:CheckClickPromise(building, function()
-                self:OpenUI(building)
+                self:OpenUI(building, nil, nil, nil, triggerTips)
             end)
         end)
     elseif self:IsEditMode() then
@@ -418,7 +505,8 @@ local ui_map = setmetatable({
     FairGround     = {},
     square         = {},
 }, {__index = function() assert(false) end})
-function MyCityScene:OpenUI(building, default_tab, need_tips, build_name)
+function MyCityScene:OpenUI(building, default_tab, need_tips, build_name, triggerTips)
+    self:GetSceneLayer():GetInfoLayer():removeAllChildren()
     local city = self:GetCity()
     local User = city:GetUser()
     if iskindof(building, "HelpedTroopsSprite") then
@@ -456,15 +544,18 @@ function MyCityScene:OpenUI(building, default_tab, need_tips, build_name)
     else
         if entity:IsUnlocked() then
             local ui = UIKit:newGameUI(uiarrays[1], city, entity, default_tab or uiarrays[2], uiarrays[3]):AddToScene(self, true)
-            if ui and need_tips then
-                ui.needTips = UtilsForTask:NeedTips(self:GetCity():GetUser())
+            if ui then
+                if need_tips then
+                    ui.needTips = UtilsForTask:NeedTips(self:GetCity():GetUser())
+                else
+                    ui.needTips = triggerTips
+                end
             end
         else
-            local ui = UIKit:newGameUI("GameUIUnlockBuilding", city, city:GetTileWhichBuildingBelongs(entity), need_tips):AddToScene(self, true)
+            UIKit:newGameUI("GameUIUnlockBuilding", city, city:GetTileWhichBuildingBelongs(entity), need_tips):AddToScene(self, true)
         end
     end
 end
-
 
 
 -- fte
@@ -659,6 +750,132 @@ function MyCityScene:CheckClickPromise(building, func)
     else
         func()
     end
+end
+
+function MyCityScene:CheckBuildingFte()
+    local User = self:GetCity():GetUser()
+    if not UtilsForFte:NeedTriggerTips(User) then
+        return
+    end
+    if self:ShowBuildingTips(9) then
+        return
+    end
+    local ispassany = false
+    for location = 10, 13 do
+        local building = UtilsForBuilding:GetBuildingByLocation(User, location)
+        local ispassed = UtilsForFte:IsPassedBuildingTips(User, building.type)
+        ispassany = ispassed and true or ispassany
+    end
+    if not ispassany then
+        for location = 10, 13 do
+            if self:ShowBuildingTips(location) then
+                return
+            end
+        end
+    end
+    for location = 14, 16 do
+        if self:ShowBuildingTips(location) then
+            return
+        end
+    end
+
+    local ispassany = false
+    for location = 17, 20 do
+        local building = UtilsForBuilding:GetBuildingByLocation(User, location)
+        local ispassed = UtilsForFte:IsPassedBuildingTips(User, building.type)
+        ispassany = ispassed and true or ispassany
+    end
+    if not ispassany then
+        for location = 17, 20 do
+            if self:ShowBuildingTips(location) then
+                return
+            end
+        end
+    end
+end
+function MyCityScene:ShowBuildingTips(location)
+    if location == 9 then -- blackSmith
+        if UtilsForFte:IsMakeAnyEquip(User) then
+            return false
+        end
+    end
+    if location == 16 then
+        if UtilsForFte:IsMakeAnyMaterial(User) then
+            return false
+        end
+    end
+    if location >= 17 and location <= 20 then
+        if UtilsForFte:IsUpgradeAnyMilitaryTech(User) then
+            return false
+        end
+    end
+    local building = UtilsForBuilding:GetBuildingByLocation(User, location)
+    local ispassed = UtilsForFte:IsPassedBuildingTips(User, building.type)
+    local needTips = building.level > 0 and not ispassed
+    if needTips then
+        for i,v in ipairs(self:GetSceneLayer():GetBuildings(location)) do
+            v:ShowFinger()
+            return true
+        end
+    else
+        for i,v in ipairs(self:GetSceneLayer():GetBuildings(location)) do
+            v:HideFinger()
+        end
+    end
+    return false
+end
+function MyCityScene:ShowTipsOnDragonEyrie()
+    local info_layer = self:GetSceneLayer():GetInfoLayer()
+    if info_layer:getChildByTag(ARROW_TAG) then return end
+    local building = self:GetSceneLayer():GetBuildings(4)[1]
+    local __,top = building:GetWorldPosition()
+    local top_point = info_layer:convertToNodeSpace(top)
+    local arrow = WidgetFteArrow.new(_("提升巨龙的技能\n增加部队战斗力"))
+        :addTo(info_layer, 1, ARROW_TAG):TurnDown():pos(top_point.x, top_point.y + 50)
+end
+function MyCityScene:ShowTipsOnBlackSmith()
+    local info_layer = self:GetSceneLayer():GetInfoLayer()
+    if info_layer:getChildByTag(ARROW_TAG) then return end
+    local building = self:GetSceneLayer():GetBuildings(9)[1]
+    local __,top = building:GetWorldPosition()
+    local top_point = info_layer:convertToNodeSpace(top)
+    local arrow = WidgetFteArrow.new(_("有装备可以制造\n装备提升龙的战斗力"))
+        :addTo(info_layer, 1, ARROW_TAG):TurnDown():pos(top_point.x, top_point.y + 50)
+end
+function MyCityScene:ShowTipsOnAirShip()
+    local info_layer = self:GetSceneLayer():GetInfoLayer()
+    if info_layer:getChildByTag(ARROW_TAG) then return end
+    local __,top = self:GetSceneLayer().pve_airship:GetWorldPosition()
+    local top_point = info_layer:convertToNodeSpace(top)
+    local arrow = WidgetFteArrow.new(_("派遣巨龙探索能获得经验值\n巨龙升级后将增加出征部队数量"))
+        :addTo(info_layer, 1, ARROW_TAG):TurnUp():pos(top_point.x-25, top_point.y - 230)
+end
+function MyCityScene:ShowTipsOnToolShop()
+    local info_layer = self:GetSceneLayer():GetInfoLayer()
+    if info_layer:getChildByTag(ARROW_TAG) then return end
+    local building = self:GetSceneLayer():GetBuildings(16)[1]
+    local __,top = building:GetWorldPosition()
+    local top_point = info_layer:convertToNodeSpace(top)
+    local arrow = WidgetFteArrow.new(_("制造建筑材料用于高级建筑升级\n制造军事材料用于研发军事科技"))
+        :addTo(info_layer, 1, ARROW_TAG):TurnDown():pos(top_point.x, top_point.y + 50)
+end
+function MyCityScene:ShowTipsOnTownHall()
+    local info_layer = self:GetSceneLayer():GetInfoLayer()
+    if info_layer:getChildByTag(ARROW_TAG) then return end
+    local building = self:GetSceneLayer():GetBuildings(15)[1]
+    local __,top = building:GetWorldPosition()
+    local top_point = info_layer:convertToNodeSpace(top)
+    local arrow = WidgetFteArrow.new(_("完成每日任务\n获得资源奖励"))
+        :addTo(info_layer, 1, ARROW_TAG):TurnDown():pos(top_point.x, top_point.y + 50)
+end
+function MyCityScene:ShowTipsOnBuilding(buildingLocation)
+    local info_layer = self:GetSceneLayer():GetInfoLayer()
+    if info_layer:getChildByTag(ARROW_TAG) then return end
+    local building = self:GetSceneLayer():GetBuildings(buildingLocation)[1]
+    local __,top = building:GetWorldPosition()
+    local top_point = info_layer:convertToNodeSpace(top)
+    local arrow = WidgetFteArrow.new(_("研发军事科技\n提升兵种的战斗力"))
+        :addTo(info_layer, 1, ARROW_TAG):TurnDown():pos(top_point.x, top_point.y + 50)
 end
 
 return MyCityScene

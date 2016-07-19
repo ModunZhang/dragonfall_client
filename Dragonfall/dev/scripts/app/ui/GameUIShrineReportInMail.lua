@@ -48,7 +48,7 @@ function GameUIShrineReportInMail:onEnter()
         end):align(display.CENTER, title:getContentSize().width-26, title:getContentSize().height-26)
         :addTo(title)
     -- 战争结果图片
-    local result_img = self.report:GetAttackTarget().isWin and "report_victory_590x137.png" or "report_failure_590x137.png"
+    local result_img = self.report:GetReportResult() and "report_victory_590x137.png" or "report_failure_590x137.png"
     local war_result_image = display.newSprite(result_img)
         :align(display.CENTER_TOP, rb_size.width/2, rb_size.height-16)
         :addTo(report_body)
@@ -144,11 +144,27 @@ function GameUIShrineReportInMail:onEnter()
         local share_button = WidgetPushButton.new(
             {normal = "tmp_blue_btn_up_64x56.png", pressed = "tmp_blue_btn_down_64x56.png"},
             {scale9 = false}
-        ):addTo(report_body):align(display.CENTER, report_body:getContentSize().width-80, rb_size.height-186)
+        ):addTo(report_body):align(display.CENTER, report_body:getContentSize().width-210, rb_size.height-186)
             :onButtonClicked(function(event)
                 UIKit:newGameUI("GameUIShareReport", report):AddToCurrentScene()
             end)
         display.newSprite("tmp_icon_share_24x34.png"):addTo(share_button)
+
+        -- 回放按钮
+        local replay_label = UIKit:ttfLabel({
+            text = _("回放"),
+            size = 20,
+            color = 0xfff3c7})
+
+        replay_label:enableShadow()
+        WidgetPushButton.new(
+            {normal = "yellow_btn_up_148x58.png", pressed = "yellow_btn_down_148x58.png"},
+            {scale9 = false}
+        ):setButtonLabel(replay_label)
+            :addTo(report_body):align(display.CENTER, report_body:getContentSize().width-100, rb_size.height-186)
+            :onButtonClicked(function(event)
+                UIKit:newGameUI("GameUIReplay",self:GetFightReportObjectWithJson(report:GetData())):AddToCurrentScene(true)
+            end)
     end
 end
 
@@ -240,15 +256,15 @@ function GameUIShrineReportInMail:CreateWarStatisticsPart()
         war_s_label_item:addContent(g)
         self.details_view:addItem(war_s_label_item)
     else
-        for i,data in ipairs(roundDatas) do
-            self:FightReportsData(i,data)
-        end
+        -- for i,data in ipairs(roundDatas) do
+        self:FightReportsData(roundDatas)
+        -- end
     end
 end
 
-function GameUIShrineReportInMail:FightReportsData(round,data)
-    local report = self.report
-    self:CreateReplay(round,data)
+function GameUIShrineReportInMail:FightReportsData(data)
+    -- local report = self.report
+    -- self:CreateReplay(round,data)
     -- 交战双方信息
     local left_player = data.attackPlayerData
     local right_player = data.defenceTroopData
@@ -562,12 +578,12 @@ function GameUIShrineReportInMail:CreateShrineItem(shrine)
     }):align(display.CENTER,170, height-25)
         :addTo(player_item)
 
-    UIKit:ttfLabel({
-        text = string.format(_("第%d支部队"),shrine.stageTroopNumber),
-        size = 22,
-        color = 0xffedae
-    }):align(display.CENTER,170,  height-75)
-        :addTo(player_item)
+    -- UIKit:ttfLabel({
+    --     text = string.format(_("第%d支部队"),shrine.stageTroopNumber),
+    --     size = 22,
+    --     color = 0xffedae
+    -- }):align(display.CENTER,170,  height-75)
+    --     :addTo(player_item)
 
     return player_item
 end
@@ -772,6 +788,7 @@ function ShrinePlayFightReport:IsFightWithBlackTroops()
 end
 
 return GameUIShrineReportInMail
+
 
 
 
