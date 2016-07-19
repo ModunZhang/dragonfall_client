@@ -47,7 +47,9 @@ function OtherCityScene:OnTouchClicked(pre_x, pre_y, x, y)
             local type = building:GetEntity():GetType()
             if (type == "dragonEyrie"
             or type == "wall")
-            and self.showDragon then
+            and self.showDragon
+            and self.user.defenceTroop
+            and self.user.defenceTroop ~= json.null then
                 local troopDetail = clone(self.user.defenceTroop)
                 for i,v in ipairs(troopDetail.soldiers) do
                     v.star = UtilsForSoldier:SoldierStarByName(self.user, v.name)
