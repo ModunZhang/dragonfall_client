@@ -1,9 +1,9 @@
-# This file was generated from /Users/kennydai/Downloads/i18n(2).xlsx
+# This file was generated from /Users/kennydai/Downloads/i18n(4)(2).xlsx
 msgid ""
 msgstr ""
 "Project-Id-Version: dragonfall\n"
-"POT-Creation-Date: 2016-07-18 16:18+0800\n"
-"PO-Revision-Date: 2016-07-18 16:18+0800\n"
+"POT-Creation-Date: 2016-07-19 10:58+0800\n"
+"PO-Revision-Date: 2016-07-19 10:58+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -2176,6 +2176,7 @@ msgid "点击建筑：%s"
 msgstr "Tap building:%s"
 
 #: scenes/MyCityFteScene.lua:211 scenes/MyCityScene.lua:535
+#: scenes/OtherCityScene.lua:67 scenes/OtherCityScene.lua:71
 #: ui/FullScreenPopDialogUI.lua:36 ui/GameUIAllianceBattle.lua:288
 #: ui/GameUIAllianceInfo.lua:410 ui/GameUIAllianceInfo.lua:413
 #: ui/GameUIAllianceInfo.lua:417 ui/GameUIAllianceInfo.lua:421
@@ -2422,6 +2423,14 @@ msgid ""
 "研发军事科技\n"
 "提升兵种的战斗力"
 msgstr "Raise your troop power by researching Military Sciences"
+
+#: scenes/OtherCityScene.lua:67
+msgid "玩家未驻防！"
+msgstr "The Lord is not garrisoned!"
+
+#: scenes/OtherCityScene.lua:71
+msgid "巨石阵等级大于13才可以查看驻防信息！"
+msgstr "You need a Lv 13(or above) Stonehenge to detect the enemy info!"
 
 #: scenes/PVESceneNewFte.lua:74 scenes/PVESceneNewFte.lua:86
 #: scenes/PVESceneNewFte.lua:98
@@ -2986,7 +2995,7 @@ msgstr "Get rewards by upgrading Castle"
 #: ui/GameUIActivityNew.lua:456
 #, lua-format
 msgid "首次充值%s金额"
-msgstr "First charge %s"
+msgstr "First Top-Up %s"
 
 #: ui/GameUIActivityNew.lua:459
 msgid "任意"
@@ -3032,7 +3041,7 @@ msgstr "not yet"
 
 #: ui/GameUIActivityNew.lua:559
 msgid "永久获得第二条建筑队列"
-msgstr "Get a additional build queue"
+msgstr "Get an additional build queue"
 
 #: ui/GameUIActivityNew.lua:567
 msgid "活动时间类，升级智慧中心，获得丰厚奖励"
