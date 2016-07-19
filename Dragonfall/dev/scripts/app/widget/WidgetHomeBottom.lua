@@ -218,7 +218,8 @@ function WidgetHomeBottom:TipsOnAlliance()
     self:performWithDelay(function() self.alliance_btn:removeChildByTag(ALLIANCE_TAG) end, 5)
 end
 function WidgetHomeBottom:TipsOnMails()
-    if not self.mail_btn:getChildByTag(111) then
+    if not self.mail_btn:getChildByTag(111)
+    and not app:GetGameDefautlt():IsPassedTriggerTips("mail") then
         UIKit:FingerAni():addTo(self.mail_btn,10,111):pos(40, -40):scale(0.85)
     end
 end
