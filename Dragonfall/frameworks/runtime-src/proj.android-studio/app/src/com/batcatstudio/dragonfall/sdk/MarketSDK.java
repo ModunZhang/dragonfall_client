@@ -2,12 +2,12 @@ package com.batcatstudio.dragonfall.sdk;
 
 import java.util.HashMap;
 import android.app.Activity;
+import com.batcatstudio.dragonfall.utils.CommonUtils;
 //#ifdef CC_USE_TALKING_DATA
 import org.cocos2dx.lua.AppActivity;
 
 import com.appsflyer.AFInAppEventParameterName;
 import com.appsflyer.AFInAppEventType;
-import com.batcatstudio.dragonfall.utils.CommonUtils;
 import com.batcatstudio.dragonfall.utils.DebugUtil;
 import com.tendcloud.tenddata.TDGAAccount;
 import com.tendcloud.tenddata.TDGAItem;

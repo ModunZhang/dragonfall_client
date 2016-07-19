@@ -73,5 +73,60 @@
 #### Android下的特殊说明
 最后一步打包生成apk前需要执行`create_android_zip.py`~~生成zip压缩文件后执行apk的打包~~将资源拷贝到assets中
 
+### 渠道和市场配置
+
+#### 渠道
+
+类似gNetTop、sugarcanetechnology,和渠道相关的主要是资源的不同,比如游戏中的Logo文件
+
+~~~
+local imageName = ext.channelIsEqTo("gNetop") and "splash_logo_war_514x92.png" or "splash_logo_516x92.png"
+~~~
+
+#### 市场
+
+类似 Apple GooglePlay 360 ...,和市场相关的是内购
+
+#### 不同平台下的配置字段
+
+我们可以根据不同渠道和不同市场的组合，快速配置出我们需要的包
+
+配置 		|iOS (Info.plist)            | Android (build.gradle)  		  | Windows Phone
+------------| ------------               | ------------- 				  | -------------
+渠道名		| GameChannel 				 | GAME_CHANNEL 			  	  | 定值 `sugarcanetechnology`
+市场名   	| 定值 `Apple`                | GAME_MARKET	                  | 定值 `Microsoft`
+Bugly参数ID	| BuglyId            	     | BUGLY_ID           		      | 空
+
+#### 拓展Android: 如何快速给不同包加入统一的配置字段.并在Lua中获取值
+
+比如有个需求: 给`Android`加入一个新的配置 市场sdk的不同参数，字段名为`GAME_SDK_ID`,在`360`和`GooglePlay`的包中指定不同值，并在`Lua`中获取该值
+
+首先指定值
+
+`build.gradle`:
+
+~~~
+productFlavors {
+        googleplay {
+            ....
+            ....
+            buildConfigField "String", "GAME_SDK_ID", "\"googleplay_id\""
+        }
+        qihoo {
+            ....
+            ....
+            buildConfigField "String", "GAME_SDK_ID", "\"qihoo_id\""
+        }
+}
+~~~
+
+然后可以在`Lua`中获取:
+
+~~~
+local __,ret = luaj.callStaticMethod("com/batcatstudio/dragonfall/utils/CommonUtils", "GetBuildConfigField", {"GAME_SDK_ID"}, "(Ljava/lang/String;)Ljava/lang/String;")
+print("GAME_SDK_ID is ",ret)
+~~~
+
+
 ----
 By DannyHe 11/11/2015

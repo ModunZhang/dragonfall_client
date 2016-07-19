@@ -155,6 +155,11 @@
 	public static boolean isGameLaunched();
 	public static java.lang.String getAndroidId();
 	public static java.lang.String getDeviceId();
+	public static java.lang.String GetBuglyId();
+	public static java.lang.String GetAppBundleId();
+	public static java.lang.String GetBuildConfigField(...);
+	public static boolean ChannelIsEqTo(...);
+	public static boolean MarketIsEqTo(...);
 }
 
 -keep class com.batcatstudio.dragonfall.io.JniFileOperation {

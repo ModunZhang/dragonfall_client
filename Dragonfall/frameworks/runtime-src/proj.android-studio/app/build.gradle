@@ -25,7 +25,7 @@ def Properties projectVersion() {
 
 // read the game id for each flavors
 def String gameIdForFlavors(name) {
-    def gameIdOfFlavors = ['googleplay':'dragonfall','paypal':'dragonfall_paypal']
+    def gameIdOfFlavors = ['googleplay':'dragonfall','paypal':'dragonfall_paypal','qihoo':'dragonfall_qihoo','ucgame':'dragonfall_uc']
     return gameIdOfFlavors[name]
 }
 
@@ -41,6 +41,9 @@ android {
         minSdkVersion 15
         targetSdkVersion 15
         buildConfigField "String", "GAME_ID", "\"Batcat\"" //identity for unzip path on SD card
+        buildConfigField "String", "GAME_CHANNEL", "\"gNetTop\"" //identity for channel: gNetTop sugarcanetechnology etc..
+        buildConfigField "String", "GAME_MARKET", "\"GooglePlay\"" //identity for market:  Apple GooglePlay Microsoft 360 etc...
+        buildConfigField "String", "BUGLY_ID", "\"900025835\"" //id for bugly
     }
     // warning: we don't want read the password form console!
     signingConfigs {
@@ -51,8 +54,24 @@ android {
             keyPassword "twhsMbcZxJ4isvgWX4BJ"
         }
 
-         paypal {
+        paypal {
             //TODO:replace the paypal's keystore file before release!
+            storeFile file("keystore/dragonfall_google_play.keystore")
+            storePassword "yAb7E9oJ3mooW9Il2coW"
+            keyAlias "batcatstudio"
+            keyPassword "yAb7E9oJ3mooW9Il2coW"
+        }
+
+        qihoo {
+            //TODO: 设置新的KeySotre
+            storeFile file("keystore/dragonfall_google_play.keystore")
+            storePassword "yAb7E9oJ3mooW9Il2coW"
+            keyAlias "batcatstudio"
+            keyPassword "yAb7E9oJ3mooW9Il2coW"
+        }
+
+        ucgame {
+            //TODO: 设置新的KeySotre 
             storeFile file("keystore/dragonfall_google_play.keystore")
             storePassword "yAb7E9oJ3mooW9Il2coW"
             keyAlias "batcatstudio"
@@ -67,6 +86,7 @@ android {
             versionName projectVersion()['versionName']
             signingConfig signingConfigs.googleplay
             buildConfigField "String", "GAME_ID", "\"dragonfall\""
+            buildConfigField "String", "GAME_MARKET", "\"GooglePlay\""
             manifestPlaceholders = ['APP_MIN_VERSION':projectVersion()['appMinVersion'],'APP_HOC':projectVersion()['appHoc'] as String]
         }
         paypal {
@@ -75,10 +95,32 @@ android {
             versionName projectVersion()['versionName']
             signingConfig signingConfigs.paypal
             buildConfigField "String", "GAME_ID", "\"dragonfall_paypal\""
+            buildConfigField "String", "GAME_MARKET", "\"Paypal\""
+            manifestPlaceholders = ['APP_MIN_VERSION':projectVersion()['appMinVersion'],'APP_HOC':projectVersion()['appHoc'] as String]
+        }
+        qihoo {
+            applicationId "com.batcatstudio.dragonfall_qihoo"
+            versionCode projectVersion()['versionCode'] as int
+            versionName projectVersion()['versionName']
+            signingConfig signingConfigs.paypal
+            buildConfigField "String", "GAME_ID", "\"dragonfall_qihoo\""
+            buildConfigField "String", "GAME_MARKET", "\"360\""
+            manifestPlaceholders = ['APP_MIN_VERSION':projectVersion()['appMinVersion'],'APP_HOC':projectVersion()['appHoc'] as String]
+        }
+
+        ucgame {
+            //TODO: 
+            applicationId "com.batcatstudio.dragonfall_uc"
+            versionCode projectVersion()['versionCode'] as int
+            versionName projectVersion()['versionName']
+            signingConfig signingConfigs.paypal
+            buildConfigField "String", "GAME_ID", "\"dragonfall_uc\""
+            buildConfigField "String", "GAME_MARKET", "\"9Game\""
             manifestPlaceholders = ['APP_MIN_VERSION':projectVersion()['appMinVersion'],'APP_HOC':projectVersion()['appHoc'] as String]
         }
     }
 
+    // sourceSets
     sourceSets.main {
         java.srcDir "src"
         res.srcDir "res"
@@ -93,10 +135,23 @@ android {
         res.srcDir "res-googleplay"
         assets.srcDir "assets-googleplay"
     }
+
     sourceSets.paypal {
         manifest.srcFile "AndroidManifestPayPal.xml"
         res.srcDir "res-paypal"
         assets.srcDir "assets-paypal"
+    }
+
+    sourceSets.qihoo {
+        manifest.srcFile "AndroidManifestQihoo.xml"
+        res.srcDir "res-qihoo"
+        assets.srcDir "assets-qihoo"
+    }
+
+    sourceSets.ucgame {
+        manifest.srcFile "AndroidManifestUC.xml"
+        res.srcDir "res-uc"
+        assets.srcDir "assets-uc"
     }
 
     buildTypes {
@@ -150,6 +205,12 @@ dependencies {
 
     paypalCompile 'com.google.android.gms:play-services-plus:8.1.0'
 
+    //qihoo Market
+    //TODO bugly
+    qihooCompile files('libs/bugly_1.2.9_release.jar','libs/bugly_cocos2dx_1.2.9_path.jar')
+
+    //UC Market
+    ucgameCompile files('libs/bugly_1.2.9_release.jar','libs/bugly_cocos2dx_1.2.9_path.jar')
 }
 
 // We add some tasks to help us,use the command 'gradle tasks' see all tasks
@@ -160,6 +221,8 @@ dependencies {
 // def the marcos for different markets,all marcos defined in "dev_android/README.md"
 def GooglePlayMarcos = "CC_USE_FACEBOOK,CC_USE_GOOGLE_LOGIN,CC_USE_GOOGLE_PLAY_BILLING_V3,CC_USE_TALKING_DATA,CC_USE_APPSFLYER"
 def PayPalMarcos = "CC_USE_FACEBOOK,CC_USE_GOOGLE_LOGIN,CC_USE_SDK_PAYPAL"
+def QihooMarcos  = "CC_USE_QIHOO"
+def UCGameMarcos = "CC_USE_9GAME"
 
 ant.properties['wtk.home'] = "tools"
 ant.taskdef( name: "wtkpreprocess", classname: "de.pleumann.antenna.WtkPreprocess", classpath:"../tools/antenna-bin-1.0.2.jar")
@@ -200,12 +263,52 @@ task PreprocessGooglePlay(group:'GameHelper',description:'Preprocess java source
     }
 }
 
+// Qihoo market,support `up-to-date`
+task PreprocessQihoo(group:'GameHelper',description:'Preprocess java source code for qihoo market.') {
+    inputs.dir "src"
+    outputs.dir "src"
+    doLast {
+        ant.echo(message: "Process java codes:" + QihooMarcos)
+        ant.wtkpreprocess(
+            srcdir: "src",
+            destdir: "src", 
+            verbose:true,
+            printsymbols:true,
+            debuglevel:"debug",
+            encoding:"UTF-8",
+            symbols:QihooMarcos
+        )
+    }
+}
+
+// UC market,support `up-to-date`
+task PreprocessUC(group:'GameHelper',description:'Preprocess java source code for UC market.') {
+    inputs.dir "src"
+    outputs.dir "src"
+    doLast {
+        ant.echo(message: "Process java codes:" + UCGameMarcos)
+        ant.wtkpreprocess(
+            srcdir: "src",
+            destdir: "src", 
+            verbose:true,
+            printsymbols:true,
+            debuglevel:"debug",
+            encoding:"UTF-8",
+            symbols:UCGameMarcos
+        )
+    }
+}
+
 android.applicationVariants.all { variant ->
     variant.productFlavors.each { flavor ->
         if (flavor.name.equals('googleplay')) {
             variant.javaCompile.dependsOn(PreprocessGooglePlay)
         }else if(flavor.name.equals('paypal')) {
             variant.javaCompile.dependsOn(PreprocessPayPal)
+        }else if(flavor.name.equals('qihoo')) {
+            variant.javaCompile.dependsOn(PreprocessQihoo)
+        }else if(flavor.name.equals('ucgame')) {
+            variant.javaCompile.dependsOn(PreprocessUC)
         }
     }
     variant.outputs.each { output ->

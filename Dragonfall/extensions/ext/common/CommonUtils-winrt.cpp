@@ -247,4 +247,26 @@ std::string GetAndroidId()
 {
     return "unknown";
 }
+
+//channelName:  gNetTop sugarcanetechnology etc..
+const bool ChannelIsEqTo(std::string channelName)
+{
+	return "sugarcanetechnology" == channelName;
+}
+
+std::string GetAppBundleId()
+{
+	return "aa155f39-6b85-4c52-a388-4eacd55bbcb5";
+}
+
+std::string GetBuglyId()
+{
+	return "";
+}
+
+//marketName: Apple GooglePlay Microsoft 360 etc...
+const bool MarketIsEqTo(std::string marketName)
+{
+	return "Microsoft" == marketName;
+}
 #endif

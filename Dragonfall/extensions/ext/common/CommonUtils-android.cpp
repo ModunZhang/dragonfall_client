@@ -298,4 +298,63 @@ std::string GetAndroidId()
     }
     return ret;
 }
+//channelName:  gNetTop sugarcanetechnology etc..
+const bool ChannelIsEqTo(std::string channelName)
+{
+    cocos2d::JniMethodInfo t;
+    bool ret = false;
+    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "ChannelIsEqTo", "(Ljava/lang/String;)Z"))
+    {
+        jstring jChannelName = t.env->NewStringUTF(channelName.c_str());
+        ret = t.env->CallStaticBooleanMethod(t.classID,t.methodID,jChannelName);
+        t.env->DeleteLocalRef(jChannelName);
+        t.env->DeleteLocalRef(t.classID);
+    }
+    return ret;
+}
+
+std::string GetAppBundleId()
+{
+    cocos2d::JniMethodInfo t;
+    std::string ret("unknown");
+
+    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "GetAppBundleId", "()Ljava/lang/String;")) 
+    {
+        jstring jResult = (jstring)t.env->CallStaticObjectMethod(t.classID, t.methodID);
+        t.env->DeleteLocalRef(t.classID);
+        ret = cocos2d::JniHelper::jstring2string(jResult);
+        t.env->DeleteLocalRef(jResult);
+    }
+    return ret;
+}
+
+std::string GetBuglyId()
+{
+    cocos2d::JniMethodInfo t;
+    std::string ret("unknown");
+
+    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "GetBuglyId", "()Ljava/lang/String;")) 
+    {
+        jstring jResult = (jstring)t.env->CallStaticObjectMethod(t.classID, t.methodID);
+        t.env->DeleteLocalRef(t.classID);
+        ret = cocos2d::JniHelper::jstring2string(jResult);
+        t.env->DeleteLocalRef(jResult);
+    }
+    return ret;
+}
+
+//marketName: Apple GooglePlay Microsoft 360 etc...
+const bool MarketIsEqTo(std::string marketName)
+{
+    cocos2d::JniMethodInfo t;
+    bool ret = false;
+    if (cocos2d::JniHelper::getStaticMethodInfo(t, CLASS_NAME, "MarketIsEqTo", "(Ljava/lang/String;)Z"))
+    {
+        jstring jmarketName = t.env->NewStringUTF(marketName.c_str());
+        ret = t.env->CallStaticBooleanMethod(t.classID,t.methodID,jmarketName);
+        t.env->DeleteLocalRef(jmarketName);
+        t.env->DeleteLocalRef(t.classID);
+    }
+    return ret;
+}
 #endif
