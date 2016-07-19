@@ -197,23 +197,23 @@ function GameUIAllianceCityEnter:GetEnterButtons()
                 app:EnterFriendCityScene(member.id, location)
                 self:LeftButtonClicked()
             end)
-            local mail_button = self:BuildOneButton("mail_56x40.png",_("邮件")):onButtonClicked(function()
-                local mail = GameUIWriteMail.new(GameUIWriteMail.SEND_TYPE.PERSONAL_MAIL,{
-                    id = member.id,
-                    name = member.name,
-                    icon = member.icon,
-                    allianceTag = self:GetCurrentAlliance().basicInfo.tag,
-                })
-                mail:SetTitle(_("个人邮件"))
-                mail:SetAddressee(member.name)
-                mail:AddToCurrentScene()
-                self:LeftButtonClicked()
-            end)
-            local info_button = self:BuildOneButton("icon_info_56x56.png",_("信息")):onButtonClicked(function()
-                UIKit:newGameUI("GameUIAllianceMemberInfo",true,member.id):AddToCurrentScene(true)
-                self:LeftButtonClicked()
-            end)
-            buttons = {enter_button,mail_button,info_button}
+        local mail_button = self:BuildOneButton("mail_56x40.png",_("邮件")):onButtonClicked(function()
+            local mail = GameUIWriteMail.new(GameUIWriteMail.SEND_TYPE.PERSONAL_MAIL,{
+                id = member.id,
+                name = member.name,
+                icon = member.icon,
+                allianceTag = self:GetCurrentAlliance().basicInfo.tag,
+            })
+            mail:SetTitle(_("个人邮件"))
+            mail:SetAddressee(member.name)
+            mail:AddToCurrentScene()
+            self:LeftButtonClicked()
+        end)
+        local info_button = self:BuildOneButton("icon_info_56x56.png",_("信息")):onButtonClicked(function()
+            UIKit:newGameUI("GameUIAllianceMemberInfo",true,member.id):AddToCurrentScene(true)
+            self:LeftButtonClicked()
+        end)
+        buttons = {enter_button,mail_button,info_button}
         end
     else -- 敌方玩家
         local isProtected = self:CheckMeIsProtectedWarinng()
@@ -258,13 +258,13 @@ function GameUIAllianceCityEnter:GetEnterButtons()
         -- attack_button:setButtonEnabled(my_allaince.basicInfo.status == "fight")
         local strike_button = self:BuildOneButton("strike_66x62.png",_("突袭")):onButtonClicked(function()
             local toLocation = self:GetLogicPosition()
-            if isProtected then
-                UIKit:showMessageDialog(_("提示"),_("突袭玩家城市将失去保护状态，确定继续派兵?"),function ()
-                    UIKit:newGameUI("GameUIStrikePlayer",1,{memberId = member.id,alliance = alliance, toLocation = toLocation,targetIsProtected = member.masterOfDefender}):AddToCurrentScene(true)
-                end)
-            else
-                UIKit:newGameUI("GameUIStrikePlayer",1,{memberId = member.id,alliance = alliance,toLocation = toLocation,targetIsProtected = member.masterOfDefender}):AddToCurrentScene(true)
-            end
+            -- if isProtected then
+            --     UIKit:showMessageDialog(_("提示"),_("突袭玩家城市将失去保护状态，确定继续派兵?"),function ()
+            --         UIKit:newGameUI("GameUIStrikePlayer",1,{memberId = member.id,alliance = alliance, toLocation = toLocation,targetIsProtected = member.masterOfDefender}):AddToCurrentScene(true)
+            --     end)
+            -- else
+            UIKit:newGameUI("GameUIStrikePlayer",1,{memberId = member.id,alliance = alliance,toLocation = toLocation,targetIsProtected = member.masterOfDefender}):AddToCurrentScene(true)
+            -- end
             self:LeftButtonClicked()
         end)
         -- strike_button:setButtonEnabled(my_allaince.basicInfo.status == "fight")
@@ -297,6 +297,7 @@ function GameUIAllianceCityEnter:GetEnterButtons()
 end
 
 return GameUIAllianceCityEnter
+
 
 
 
