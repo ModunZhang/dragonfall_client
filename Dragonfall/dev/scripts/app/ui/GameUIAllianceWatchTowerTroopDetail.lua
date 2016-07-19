@@ -109,7 +109,7 @@ function GameUIAllianceWatchTowerTroopDetail:GetItem(ITEM_TYPE,item_data)
         height   = sub_line * 38
     elseif ITEM_TYPE == self.ITEM_TYPE.DRAGON_EQUIPMENT then
         if self:CanShowDragonEquipment() then
-            sub_line = #item_data.dragon.equipments
+            sub_line = table.nums(item_data.dragon.equipments)
             height = sub_line * 36
             height = height == 0 and 36 or height
         else
@@ -137,7 +137,7 @@ function GameUIAllianceWatchTowerTroopDetail:GetItem(ITEM_TYPE,item_data)
             height = 36
         end
     elseif ITEM_TYPE == self.ITEM_TYPE.DRAGON_SKILL then
-        sub_line = #item_data.dragon.skills
+        sub_line = table.nums(item_data.dragon.skills)
         height = sub_line * 36
         height = height == 0 and 36 or height
     end
@@ -182,9 +182,25 @@ function GameUIAllianceWatchTowerTroopDetail:GetItem(ITEM_TYPE,item_data)
         }):addTo(title_bar):align(display.CENTER, 274, 19)
         if ITEM_TYPE == self.ITEM_TYPE.DRAGON_EQUIPMENT then
             if self:CanShowDragonEquipment() then
-                if #item_data.dragon.equipments > 0 then
+                local equipments = {}
+                for k,v in pairs(item_data.dragon.equipments) do
+                    table.insert(equipments, {k, v})
+                end
+                local seqs = {
+                    ["crown"] = 1,
+                    ["chest"] = 2,
+                    ["armguardLeft"] = 3,
+                    ["armguardRight"] = 4,
+                    ["sting"] = 5,
+                    ["orb"] = 6,
+                }
+                table.sort(equipments, function(a,b)
+                    return seqs[a[1]] < seqs[b[1]]
+                end)
+                if #equipments > 0 then
                     local y = 0
-                    for i,v in ipairs(item_data.dragon.equipments) do
+                    for i,v in ipairs(equipments) do
+                        local v = v[2]
                         self:GetSubItem(ITEM_TYPE,i,{Localize.equip[v.name],v.star}):addTo(bg):align(display.LEFT_BOTTOM,0, y)
                         y = y + 36
                     end
@@ -231,9 +247,18 @@ function GameUIAllianceWatchTowerTroopDetail:GetItem(ITEM_TYPE,item_data)
                 self:GetTipsItem():addTo(bg):align(display.LEFT_BOTTOM, 0, 0)
             end
         elseif ITEM_TYPE == self.ITEM_TYPE.DRAGON_SKILL then
-            if #item_data.dragon.skills >0 then
+            local skills = {}
+            for k,v in pairs(item_data.dragon.skills) do
+                table.insert(skills, {k, v})
+            end
+            table.sort(skills, function(a,b)
+                return tonumber(string.split(a[1], "_")[2])
+                     < tonumber(string.split(b[1], "_")[2])
+            end)
+            if #skills >0 then
                 local y = 0
-                for i,v in ipairs(item_data.dragon.skills) do
+                for i,v in ipairs(skills) do
+                    local v = v[2]
                     local val_str = '?'
                     if self:CanShowDragonSkill() then
                         val_str = _("等级") .. ":" .. v.level
