@@ -179,7 +179,7 @@ namespace ui {
 	{
 		RemoveTextBox();
 		m_textBox = ref new TextBox;
-		m_textBox->Text = m_strText;
+		
 		m_textBox->Name = "cocos2d_editbox_textbox";
 		m_textBox->MinWidth = 200;
 		m_textBox->PlaceholderText = m_strPlaceholder;
@@ -190,7 +190,9 @@ namespace ui {
 		m_textBox->MaxHeight = 200;
 		m_textBox->TextWrapping = Windows::UI::Xaml::TextWrapping::Wrap;
 		m_textBox->AcceptsReturn = true;
+	
 		SetInputScope(m_textBox, m_inputMode);
+		m_textBox->Text = m_strText;
 		auto g = findXamlElement(m_flyout->Content, "cocos2d_editbox_grid");
 		auto grid = dynamic_cast<Grid^>(g);
 		grid->Children->InsertAt(0, m_textBox);
@@ -519,13 +521,24 @@ namespace ui {
 
 	}
 
+	static std::string&   replace_all_distinct(std::string&   str, const   std::string&   old_value, const  std::string&   new_value)
+	{
+		for (std::string::size_type pos(0); pos != std::string::npos; pos += new_value.length())   {
+			if ((pos = str.find(old_value, pos)) != std::string::npos)
+				str.replace(pos, old_value.length(), new_value);
+			else   break;
+		}
+		return   str;
+	}
+
 	Platform::String^ UITextViewImplWinrt::stringToPlatformString(std::string strSrc)
 	{
+		std::string newSrc = replace_all_distinct(strSrc, "\n", "\r\n");
 		// to wide char
-		int nStrLen = MultiByteToWideChar(CP_UTF8, 0, strSrc.c_str(), -1, NULL, 0);
+		int nStrLen = MultiByteToWideChar(CP_UTF8, 0, newSrc.c_str(), -1, NULL, 0);
 		wchar_t* pWStr = new wchar_t[nStrLen + 1];
 		memset(pWStr, 0, nStrLen + 1);
-		MultiByteToWideChar(CP_UTF8, 0, strSrc.c_str(), -1, pWStr, nStrLen);
+		MultiByteToWideChar(CP_UTF8, 0, newSrc.c_str(), -1, pWStr, nStrLen);
 		Platform::String^ strDst = ref new Platform::String(pWStr);
 		delete[] pWStr;
 		return strDst;
@@ -542,7 +555,8 @@ namespace ui {
 		std::string strDst = std::string(pStr);
 
 		delete[] pStr;
-		return strDst;
+		std::string ret = replace_all_distinct(strDst, "\r\n", "\n");
+		return ret;
 	}
 
 }
