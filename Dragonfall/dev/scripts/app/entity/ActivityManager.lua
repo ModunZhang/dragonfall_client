@@ -19,11 +19,15 @@ function ActivityManager:ctor()
     self.alliance_rank = {}
     self.activities = {on = {},next = {},expired = {}}
     self.alliance_activities = {on = {},next = {},expired = {}}
+    self.isInitAllianceActivity = false
     self:GetActivitiesFromServer()
     self:GetAllianceActivitiesFromServer()
 end
 function ActivityManager:IsAllianceDefault()
     return Alliance_Manager:GetMyAlliance():IsDefault()
+end
+function ActivityManager:IsInitAllianceActivity()
+    return self.isInitAllianceActivity
 end
 -- 从服务器获取所有活动信息
 function ActivityManager:GetActivitiesFromServer()
@@ -54,6 +58,7 @@ function ActivityManager:GetActivitiesFromServer()
 end
 -- 从服务器获取所有联盟活动信息
 function ActivityManager:GetAllianceActivitiesFromServer()
+    self.isInitAllianceActivity = true
     NetManager:getAllianceActivitiesPromise():done(function (response)
         if response.success then
             self.alliance_activities = response.msg.activities
