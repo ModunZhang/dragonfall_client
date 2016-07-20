@@ -12,10 +12,10 @@ local BUILDING_MATERIALS = {
 }
 
 local TECHNOLOGY_MATERIALS = {
-    "saddle",
-    "bowTarget",
-    "ironPart",
     "trainingFigure",
+    "bowTarget",
+    "saddle",
+    "ironPart",
 }
 
 local DRAGON_MATERIALS = {
