@@ -17,6 +17,11 @@ function GameUISettingAccount:onEnter()
     self:UpdateGcName()
     self:CheckGameCenter()
 end
+
+function GameUISettingAccount:facebookIsEnable()
+    return device.platform == 'winrt' or GameUtils:GetGameLanguage() ~= 'cn'
+end
+
 function GameUISettingAccount:onExit()
     GameUISettingAccount.super.onExit(self)
 end
@@ -50,7 +55,7 @@ function GameUISettingAccount:CreateUI()
                 self:CreateGameCenterPanel()
             end
         end
-        if User:IsBindFacebook() and GameUtils:GetGameLanguage() ~= 'cn' then
+        if User:IsBindFacebook() and self:facebookIsEnable() then
             self:CreateFacebookPanel()
         end
         if User:IsBindGoogle() then
@@ -62,7 +67,7 @@ function GameUISettingAccount:CreateUI()
         if device.platform == 'ios' then
             self:CreateGameCenterPanel()
         end
-        if GameUtils:GetGameLanguage() ~= 'cn' then
+        if self:facebookIsEnable() then
             self:CreateFacebookPanel()
         end
         if device.platform == 'android' then
@@ -381,7 +386,7 @@ function GameUISettingAccount:ExchangeBindAccount()
     local frist_panel = google_panel or gamecenter_panel
     local select_facebook
     local facebook_panel
-    if GameUtils:GetGameLanguage() ~= 'cn' then
+    if self:facebookIsEnable() then
         facebook_panel = WidgetUIBackGround.new({width = bg_width,height=bg_height},WidgetUIBackGround.STYLE_TYPE.STYLE_2)
             :align(display.TOP_CENTER, 304, frist_panel and (frist_panel:getPositionY() - 130) or b_size.height - 30)
             :addTo(body)
