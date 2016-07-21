@@ -247,18 +247,9 @@ function GameUIAllianceWatchTowerTroopDetail:GetItem(ITEM_TYPE,item_data)
                 self:GetTipsItem():addTo(bg):align(display.LEFT_BOTTOM, 0, 0)
             end
         elseif ITEM_TYPE == self.ITEM_TYPE.DRAGON_SKILL then
-            local skills = {}
-            for k,v in pairs(item_data.dragon.skills) do
-                table.insert(skills, {k, v})
-            end
-            table.sort(skills, function(a,b)
-                return tonumber(string.split(a[1], "_")[2])
-                     < tonumber(string.split(b[1], "_")[2])
-            end)
-            if #skills >0 then
+            if #item_data.dragon.skills >0 then
                 local y = 0
-                for i,v in ipairs(skills) do
-                    local v = v[2]
+                for i,v in ipairs(item_data.dragon.skills) do
                     local val_str = '?'
                     if self:CanShowDragonSkill() then
                         val_str = _("等级") .. ":" .. v.level

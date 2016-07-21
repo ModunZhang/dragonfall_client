@@ -173,11 +173,33 @@ end
 function GameUIWarReport:GetBooty()
     local booty = {}
     for k,v in pairs(self:GetRewards()) do
-        table.insert(booty, {
-            resource_type = Localize.fight_reward[v.name] or Localize.equip_material[v.name],
-            icon= UILib.resource[v.name] or UILib.dragon_material_pic_map[v.name],
-            value = v.count
-        })
+        local index
+        if v.name == "wood" then
+            index = 2
+        elseif v.name == "stone" then
+            index = 3
+        elseif v.name == "food" then
+            index = 4
+        elseif v.name == "iron" then
+            index = 5
+        elseif v.name == "coin" then
+            index = 6
+        elseif v.name == "blood" then
+            index = 1
+        end
+        if index then
+            table.insert(booty, index,{
+                resource_type = Localize.fight_reward[v.name] or Localize.equip_material[v.name],
+                icon= UILib.resource[v.name] or UILib.dragon_material_pic_map[v.name],
+                value = v.count
+            })
+        else
+            table.insert(booty, {
+                resource_type = Localize.fight_reward[v.name] or Localize.equip_material[v.name],
+                icon= UILib.resource[v.name] or UILib.dragon_material_pic_map[v.name],
+                value = v.count
+            })
+        end
     end
     return booty
 end
@@ -734,6 +756,8 @@ function GameUIWarReport:GetRewards()
     return  self.report:GetMyRewards()
 end
 return GameUIWarReport
+
+
 
 
 

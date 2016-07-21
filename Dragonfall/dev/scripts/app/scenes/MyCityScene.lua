@@ -28,7 +28,6 @@ end
 function MyCityScene:onEnter()
     MyCityScene.super.onEnter(self)
     self.home_page = self:CreateHomePage()
-
     local alliance = Alliance_Manager:GetMyAlliance()
     self.firstJoinAllianceRewardGeted = DataManager:getUserData().countInfo.firstJoinAllianceRewardGeted
     if not UIKit:GetUIInstance('GameUIWarSummary') and alliance:LastAllianceFightReport() then
@@ -266,7 +265,9 @@ function MyCityScene:onEnterTransitionFinish()
             if not_buy_any_gems then
                 UIKit:newGameUI("GameUIActivityRewardNew",GameUIActivityRewardNew.REWARD_TYPE.FIRST_IN_PURGURE):AddToScene(self, true)
             else
-                UIKit:newGameUI("GameUISaleOne"):AddToCurrentScene()
+                if User.gameInfo and User.gameInfo.promotionProductEnabled then
+                    UIKit:newGameUI("GameUISaleOne"):AddToCurrentScene()
+                end
             end
         end
         --开启屏幕锁定定时器(前面已经关闭)
