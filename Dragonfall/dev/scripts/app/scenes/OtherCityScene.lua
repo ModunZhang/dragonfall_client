@@ -25,6 +25,58 @@ function OtherCityScene:onEnter()
                     :GetAllianceBuildingInfoByName("watchTower").level
     if level >= 13 then
         self.showDragon = true
+        if self.user.defenceTroop and self.user.defenceTroop ~= json.null then
+            local troopDetail = clone(self.user.defenceTroop)
+
+            -- soldiers
+            for i,v in ipairs(troopDetail.soldiers) do
+                v.star = UtilsForSoldier:SoldierStarByName(self.user, v.name)
+            end
+
+            -- dragon
+            troopDetail.dragon = self.user.dragons[self.user.defenceTroop.dragonType]
+
+            -- skills
+            local skills = {}
+            for k,v in pairs(troopDetail.dragon.skills) do
+                table.insert(skills, {k, v})
+            end
+            table.sort(skills, function(a,b) return a[1] > b[1] end)
+            local t = {}
+            for i,v in ipairs(skills) do
+                table.insert(t, v[2])
+            end
+            skills = t
+            troopDetail.dragon.skills = skills
+
+            -- equipments
+            local equipments = {}
+            for type,v in pairs(troopDetail.dragon.equipments) do
+                table.insert(equipments, {type, v.name, v.star})
+            end
+            local seqs = {
+                ["crown"] = 1,
+                ["chest"] = 2,
+                ["armguardLeft"] = 3,
+                ["armguardRight"] = 4,
+                ["sting"] = 5,
+                ["orb"] = 6,
+            }
+            table.sort(equipments, function(a,b)
+                return seqs[a[1]] < seqs[b[1]]
+            end)
+            local t = {}
+            for i,v in ipairs(equipments) do
+                local type, name, star = unpack(v)
+                table.insert(t, {type = type, name = name, star = star})
+            end
+            troopDetail.dragon.equipments = t
+
+            troopDetail.militaryTechs = {}
+            troopDetail.militaryBuffs = {}
+
+            self.troopDetail = troopDetail
+        end
     end
     if not self.showDragon then
         for k,v in pairs(self:GetSceneLayer().buildings) do
@@ -48,16 +100,10 @@ function OtherCityScene:OnTouchClicked(pre_x, pre_y, x, y)
                 local type = building:GetEntity():GetType()
                 if (type == "dragonEyrie"
                 or type == "wall") then
-                    if self.user.defenceTroop and
-                        self.user.defenceTroop ~= json.null then
-                        local troopDetail = clone(self.user.defenceTroop)
-                        for i,v in ipairs(troopDetail.soldiers) do
-                            v.star = UtilsForSoldier:SoldierStarByName(self.user, v.name)
-                        end
-                        troopDetail.dragon = self.user.dragons[self.user.defenceTroop.dragonType]
+                    if self.troopDetail then
                         UIKit:newGameUI(
                             "GameUIAllianceWatchTowerTroopDetail",
-                            troopDetail,
+                            self.troopDetail,
                             Alliance_Manager:GetMyAlliance():GetAllianceBuildingInfoByName("watchTower").level,
                             true,
                             GameUIAllianceWatchTowerTroopDetail.DATA_TYPE.MARCH,
