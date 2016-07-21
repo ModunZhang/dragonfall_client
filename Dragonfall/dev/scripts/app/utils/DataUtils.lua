@@ -521,7 +521,6 @@ function DataUtils:getPlayerSoldiersMarchTime(soldiers,fromAllianceDoc, fromLoca
         table.foreachi(UtilsForDragon:GetEquipmentEffects(dragon),function(__,buffData)
             if buffData[1] == equipmentBuffKey then
                 equipmentBuff = equipmentBuff + buffData[2]
-                print("···buffData[2]",buffData[2])
             end
         end)
         totalCount = totalCount + soldier_info.count

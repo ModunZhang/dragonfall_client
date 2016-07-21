@@ -12,6 +12,7 @@ local Alliance = import("..entity.Alliance")
 local WidgetUseItems = class("WidgetUseItems")
 
 function WidgetUseItems:Create(params)
+    dump(params)
     local item_name = params.item_name
     local dialog
     if item_name == "changePlayerName" then
@@ -20,13 +21,13 @@ function WidgetUseItems:Create(params)
         dialog = self:OpenHeroBloodDialog(item_name)
     elseif item_name == "stamina_1" then
         dialog = self:OpenStrengthDialog(item_name)
-    elseif string.find(item_name,"dragonHp") then
+    elseif string.find(item_name,"dragonHp") and not string.find(item_name,"dragonHpBonus") then
         if params.dragon then
             dialog = self:OpenOneDragonHPItemDialog(item_name, params.dragon)
         else
             dialog = self:OpenIncreaseDragonExpOrHp(item_name)
         end
-    elseif string.find(item_name,"dragonExp") then
+    elseif string.find(item_name,"dragonExp") and not string.find(item_name,"dragonExpBonus") then
         if params.dragon then
             dialog = self:OpenOneDragonItemExpDialog(item_name, params.dragon)
         else
