@@ -396,6 +396,6 @@ end
 
 --------------------------------------------------------------------
 if PlatformAdapter[device.platform] then
-    PlatformAdapter[device.platform]()
+    PlatformAdapter[device.platform](PlatformAdapter)
 end
 PlatformAdapter:common()
