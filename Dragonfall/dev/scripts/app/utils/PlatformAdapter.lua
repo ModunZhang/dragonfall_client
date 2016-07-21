@@ -142,6 +142,7 @@ function PlatformAdapter:winrt()
             end)
         end
     end
+    self:fixWinRTExtFunction() -- fix ext functions
 end
 
 function PlatformAdapter:mac()
@@ -378,9 +379,23 @@ function PlatformAdapter:gameCenter()
     end
 end
 
+------------fix ext
+function PlatformAdapter:fixWinRTExtFunction()
+    if not ext.channelIsEqTo then
+        ext.channelIsEqTo = function(channelName)
+            return channelName == "sugarcanetechnology"
+        end
+        ext.marketIsEqTo = function(marketName)
+            return "Microsoft" == marketName
+        end
+        ext.getAppBundleId = function()
+            return "aa155f39-6b85-4c52-a388-4eacd55bbcb5"
+        end
+    end
+end
+
 --------------------------------------------------------------------
 if PlatformAdapter[device.platform] then
     PlatformAdapter[device.platform]()
 end
 PlatformAdapter:common()
-
