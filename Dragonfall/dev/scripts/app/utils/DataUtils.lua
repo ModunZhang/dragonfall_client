@@ -511,14 +511,23 @@ end
     ---> 行军的真实时间
 ]]--
 --获取攻击行军总时间
-function DataUtils:getPlayerSoldiersMarchTime(soldiers,fromAllianceDoc, fromLocation, toAllianceDoc, toLocation)
+function DataUtils:getPlayerSoldiersMarchTime(soldiers,fromAllianceDoc, fromLocation, toAllianceDoc, toLocation, dragon)
     local distance = DataUtils:getAllianceLocationDistance(fromAllianceDoc, fromLocation, toAllianceDoc, toLocation)
-    local baseSpeed,totalSpeed,totalCitizen = 2000,0,0
+    local baseSpeed,totalSpeed,totalCount = 2000,0,0
     for __,soldier_info in ipairs(soldiers) do
-        totalCitizen = totalCitizen + soldier_info.soldier_citizen
-        totalSpeed = totalSpeed + baseSpeed / soldier_info.soldier_march * soldier_info.soldier_citizen
+        local soldier_type = soldier_info.soldier_category
+        local equipmentBuffKey = soldier_type.."MarchAdd"
+        local equipmentBuff = 0
+        table.foreachi(UtilsForDragon:GetEquipmentEffects(dragon),function(__,buffData)
+            if buffData[1] == equipmentBuffKey then
+                equipmentBuff = equipmentBuff + buffData[2]
+                print("···buffData[2]",buffData[2])
+            end
+        end)
+        totalCount = totalCount + soldier_info.count
+        totalSpeed = totalSpeed + baseSpeed / soldier_info.soldier_march * soldier_info.count * (1 + equipmentBuff)
     end
-    return totalCitizen == 0 and 0 or math.ceil(totalSpeed / totalCitizen * distance)
+    return totalCount == 0 and 0 or math.ceil(totalSpeed / totalCount * distance)
 end
 
 function DataUtils:getPlayerMarchTimeBuffEffectValue()
@@ -1419,4 +1428,5 @@ function DataUtils:GetRMBPrice(d_price)
     end
 end
 return DataUtils
+
 

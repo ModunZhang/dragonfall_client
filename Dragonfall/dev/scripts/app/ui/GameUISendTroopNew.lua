@@ -70,7 +70,7 @@ function GameUISendTroopNew:GetMarchTime(soldier_show_table)
     local mapObject = self:GetMyAlliance():FindMapObjectById(self:GetMyAlliance():GetSelf():MapId())
     local fromLocation = mapObject.location
     local target_alliance = self.targetAlliance
-    local time = DataUtils:getPlayerSoldiersMarchTime(soldier_show_table,self:GetMyAlliance(),fromLocation,target_alliance,self.toLocation)
+    local time = DataUtils:getPlayerSoldiersMarchTime(soldier_show_table,self:GetMyAlliance(),fromLocation,target_alliance,self.toLocation,self.dragon)
     local buffTime = DataUtils:getPlayerMarchTimeBuffTime(time,self.dragon.type == "blueDragon")
     return time,buffTime
 end
@@ -80,7 +80,7 @@ function GameUISendTroopNew:RefreshMarchTimeAndBuff()
         local settingSoldiers = self:GetSettingSoldiers()
         for i,soldier in ipairs(settingSoldiers) do
             local config = UtilsForSoldier:GetSoldierConfig(User,soldier.name)
-            table.insert(soldier_show_table, {soldier_citizen = config.citizen * soldier.count,soldier_march = config.march})
+            table.insert(soldier_show_table, {count = soldier.count,soldier_march = config.march,soldier_category = config.type})
         end
         local time,buffTime = self:GetMarchTime(soldier_show_table)
         self.march_time:setString(GameUtils:formatTimeStyle1(time))
