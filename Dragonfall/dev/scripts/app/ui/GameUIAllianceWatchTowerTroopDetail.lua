@@ -124,14 +124,14 @@ function GameUIAllianceWatchTowerTroopDetail:GetItem(ITEM_TYPE,item_data)
         end
     elseif ITEM_TYPE == self.ITEM_TYPE.BUFF_EFFECT then
         if self:CanShowTechnologyAndBuffEffect() then
-            sub_line = #item_data.militaryBuffs
+            sub_line = table.nums(item_data.militaryBuffs)
             height   = sub_line * 36
         else
             height = 36
         end
     elseif ITEM_TYPE == self.ITEM_TYPE.TECHNOLOGY then
         if self:CanShowTechnologyAndBuffEffect() then
-            sub_line = #item_data.militaryTechs
+            sub_line = table.nums(item_data.militaryTechs)
             height   = sub_line * 36
         else
             height = 36
@@ -182,25 +182,9 @@ function GameUIAllianceWatchTowerTroopDetail:GetItem(ITEM_TYPE,item_data)
         }):addTo(title_bar):align(display.CENTER, 274, 19)
         if ITEM_TYPE == self.ITEM_TYPE.DRAGON_EQUIPMENT then
             if self:CanShowDragonEquipment() then
-                local equipments = {}
-                for k,v in pairs(item_data.dragon.equipments) do
-                    table.insert(equipments, {k, v})
-                end
-                local seqs = {
-                    ["crown"] = 1,
-                    ["chest"] = 2,
-                    ["armguardLeft"] = 3,
-                    ["armguardRight"] = 4,
-                    ["sting"] = 5,
-                    ["orb"] = 6,
-                }
-                table.sort(equipments, function(a,b)
-                    return seqs[a[1]] < seqs[b[1]]
-                end)
-                if #equipments > 0 then
+                if #item_data.dragon.equipments > 0 then
                     local y = 0
-                    for i,v in ipairs(equipments) do
-                        local v = v[2]
+                    for i,v in ipairs(item_data.dragon.equipments) do
                         self:GetSubItem(ITEM_TYPE,i,{Localize.equip[v.name],v.star}):addTo(bg):align(display.LEFT_BOTTOM,0, y)
                         y = y + 36
                     end
@@ -441,6 +425,8 @@ end
 function GameUIAllianceWatchTowerTroopDetail:CanShowTechnologyAndBuffEffect()
     if self:IsFromEnemy() then
         return self:GetWatchTowerLevel() >= 10
+    else
+        return true
     end
 end
 
