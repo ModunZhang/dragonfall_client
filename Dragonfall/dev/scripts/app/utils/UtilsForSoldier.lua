@@ -70,6 +70,11 @@ function UtilsForSoldier:GetSoldierConfig(userData, soldier_name)
         and soldiers_special[soldier_name]
          or soldiers_normal[soldier_name.."_"..self:SoldierStarByName(userData, soldier_name)]
 end
+function UtilsForSoldier:GetSoldierConfigByStar(soldier_name,star)
+    return  self:IsSpecial(soldier_name)
+        and soldiers_special[soldier_name]
+         or soldiers_normal[soldier_name.."_"..star]
+end
 function UtilsForSoldier:SoldierStarByName(userData, soldier_name)
     return  self:IsSpecial(soldier_name)
         and soldiers_special[soldier_name].star
