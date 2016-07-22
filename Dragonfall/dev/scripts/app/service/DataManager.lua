@@ -2,9 +2,8 @@ DataManager = {
     need_notify = true,
 }
 local initData = import("..fte.initData")
-function DataManager:setUserData( userData, deltaData, originDeltaData )
+function DataManager:setUserData( userData, deltaData )
     self.user = userData
-    self.originDeltaData = originDeltaData
     -- LuaUtils:TimeCollect(function()
     self:OnUserDataChanged(self.user, app.timer:GetServerTime(), deltaData)
     -- end, "DataManager:setUserData")
@@ -63,7 +62,7 @@ function DataManager:OnUserDataChanged(userData, timer, deltaData)
     LuaUtils:TimeCollect(function()
         City:OnUserDataChanged(userData, timer, deltaData)
     end, "City:OnUserDataChanged")
-    
+
     if self.need_notify then
         User:OnDeltaDataChanged(deltaData)
     end
@@ -71,7 +70,7 @@ function DataManager:OnUserDataChanged(userData, timer, deltaData)
     LuaUtils:TimeCollect(function()
         Alliance_Manager:OnUserDataChanged(userData, timer, deltaData)
     end, "Alliance_Manager:OnUserDataChanged")
-    
+
     LuaUtils:TimeCollect(function()
         MailManager:OnUserDataChanged(userData, timer, deltaData)
     end, "MailManager:OnUserDataChanged")

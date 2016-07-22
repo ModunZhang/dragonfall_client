@@ -16,6 +16,7 @@ local function get_player_response_msg(response)
         local user_data = DataManager:getUserData()
         local edit = decodeInUserDataFromDeltaData(user_data, response.msg.playerData)
         -- LuaUtils:outputTable("get_player_response_msg edit",edit)
+        DataManager.originDeltaData = response.msg.playerData
         DataManager:setUserData(user_data, edit, response.msg.playerData)
         return response
     end
