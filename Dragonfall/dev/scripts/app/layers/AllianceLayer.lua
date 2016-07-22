@@ -548,7 +548,7 @@ function AllianceLayer:AddMapObjectByIndex(index, mapObject, alliance)
 end
 function AllianceLayer:RemoveMapObjectByIndex(index, mapObject)
     local alliance_object = self.alliance_objects[index]
-    if alliance_object then
+    if alliance_object and alliance_object.mapObjects then
         if alliance_object.mapObjects[mapObject.id] then
             self:RemoveMapObject(alliance_object.mapObjects[mapObject.id])
             alliance_object.mapObjects[mapObject.id] = nil
@@ -808,6 +808,9 @@ function AllianceLayer:RefreshObjectInfo(object, mapObj, alliance)
     local banners = isenemy and UILib.enemy_city_banner or UILib.my_city_banner
     if mapObj.name == "member" then
         local member = Alliance.GetMemberByMapObjectsId(alliance, mapObj.id)
+        if not member then
+            return
+        end
         local config = SpriteConfig[isenemy and "other_keep" or "my_keep"]
             :GetConfigByLevel(member.keepLevel)
         object:GetSprite():setTexture(config.png)

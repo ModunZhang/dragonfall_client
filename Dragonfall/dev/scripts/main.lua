@@ -25,12 +25,13 @@ function __G__TRACKBACK__(errorMessage)
         end
     else
         if device.platform == 'winrt' then
-            local errDesc = string.format("LuaTag:%s\n[%s]\n[%s]\n[%s] %s\n%s",
+            local errDesc = string.format("LuaTag:%s\n[%s]\n[%s]\n[%s]\n[%s] %s\n%s",
                 tostring(app.client_tag or "unknown"),
                 json.encode(DataManager.latestUserData),
                 json.encode(DataManager.latestDeltaData),
-                os.date("%Y-%m-%d %H:%M:%S",math.floor(ext.now()/1000)), 
-                tostring(errorMessage), 
+                json.encode(DataManager.originDeltaData),
+                os.date("%Y-%m-%d %H:%M:%S",math.floor(ext.now()/1000)),
+                tostring(errorMessage),
                 debug.traceback("", 2)
             )
             table.insert(errorMessages, errDesc)

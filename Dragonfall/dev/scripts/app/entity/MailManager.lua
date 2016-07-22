@@ -98,7 +98,7 @@ end
 function MailManager:DecreaseUnReadReportsNumByIds(ids)
     local reports = self.reports
     local num = 0
-    for _,report in pairs(reports) do
+    for _,report in pairs(reports or {}) do
         for _,id in pairs(ids) do
             if id==report.id and not report.isRead then
                 num = num + 1
@@ -426,7 +426,7 @@ function MailManager:OnNewMailsChanged( mails )
     local add_mails = {}
     local remove_mails = {}
     local edit_mails = {}
-    for type,mail in pairs(mails) do
+    for type,mail in pairs(mails or {}) do
         if type == "add" then
             for i,data in ipairs(mail) do
                 -- 收到
@@ -675,15 +675,17 @@ function MailManager:DeleteReport( report )
             end
         end
     end
-    for k,v in pairs(DataManager:getUserData().reports) do
-        if v.index > delete_report_server_index then
-            local old = clone(v.index)
-            v.index = old - 1
+    if delete_report_server_index then
+        for k,v in pairs(DataManager:getUserData().reports) do
+            if v.index > delete_report_server_index then
+                local old = clone(v.index)
+                v.index = old - 1
+            end
         end
-    end
-    for k,v in pairs(self.reports) do
-        if v:Index() > delete_report_server_index then
-            v:SetIndex(v:Index() - 1)
+        for k,v in pairs(self.reports) do
+            if v:Index() > delete_report_server_index then
+                v:SetIndex(v:Index() - 1)
+            end
         end
     end
 end

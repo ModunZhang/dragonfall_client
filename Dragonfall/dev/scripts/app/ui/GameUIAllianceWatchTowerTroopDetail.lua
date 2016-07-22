@@ -126,6 +126,7 @@ function GameUIAllianceWatchTowerTroopDetail:GetItem(ITEM_TYPE,item_data)
         if self:CanShowTechnologyAndBuffEffect() then
             sub_line = table.nums(item_data.militaryBuffs)
             height   = sub_line * 36
+            height   = height == 0 and 36 or height
         else
             height = 36
         end
@@ -133,6 +134,7 @@ function GameUIAllianceWatchTowerTroopDetail:GetItem(ITEM_TYPE,item_data)
         if self:CanShowTechnologyAndBuffEffect() then
             sub_line = table.nums(item_data.militaryTechs)
             height   = sub_line * 36
+            height   = height == 0 and 36 or height
         else
             height = 36
         end
@@ -210,22 +212,30 @@ function GameUIAllianceWatchTowerTroopDetail:GetItem(ITEM_TYPE,item_data)
             end
         elseif ITEM_TYPE == self.ITEM_TYPE.BUFF_EFFECT then
             if self:CanShowTechnologyAndBuffEffect() then
-                local y = 0
-                for i,v in ipairs(item_data.militaryBuffs) do
-                    local name = Localize_item.item_category_name[v.type]
-                    self:GetSubItem(ITEM_TYPE,i,{name,_("已激活")}):addTo(bg):align(display.LEFT_BOTTOM,0, y)
-                    y = y + 36
+                if #item_data.militaryBuffs > 0 then
+                    local y = 0
+                    for i,v in ipairs(item_data.militaryBuffs) do
+                        local name = Localize_item.item_category_name[v.type]
+                        self:GetSubItem(ITEM_TYPE,i,{name,_("已激活")}):addTo(bg):align(display.LEFT_BOTTOM,0, y)
+                        y = y + 36
+                    end
+                else
+                    self:GetTipsItem(_("无")):addTo(bg):align(display.LEFT_BOTTOM, 0, 0)
                 end
             else
                 self:GetTipsItem():addTo(bg):align(display.LEFT_BOTTOM, 0, 0)
             end
         elseif ITEM_TYPE == self.ITEM_TYPE.TECHNOLOGY then
             if self:CanShowTechnologyAndBuffEffect() then
-                local y = 0
-                for i,v in ipairs(item_data.militaryTechs) do
-                    local name = Localize.getMilitaryTechnologyName(v.name)
-                    self:GetSubItem(ITEM_TYPE,i,{name,"Lv"..v.level}):addTo(bg):align(display.LEFT_BOTTOM,0, y)
-                    y = y + 36
+                if #item_data.militaryTechs > 0 then
+                    local y = 0
+                    for i,v in ipairs(item_data.militaryTechs) do
+                        local name = Localize.getMilitaryTechnologyName(v.name)
+                        self:GetSubItem(ITEM_TYPE,i,{name,"Lv"..v.level}):addTo(bg):align(display.LEFT_BOTTOM,0, y)
+                        y = y + 36
+                    end
+                else
+                    self:GetTipsItem(_("无")):addTo(bg):align(display.LEFT_BOTTOM, 0, 0)
                 end
             else
                 self:GetTipsItem():addTo(bg):align(display.LEFT_BOTTOM, 0, 0)

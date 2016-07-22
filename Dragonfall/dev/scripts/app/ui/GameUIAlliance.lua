@@ -326,6 +326,7 @@ function GameUIAlliance:GetJoinList(tag)
         if self.isLoadingJoin then return end
         self.isLoadingJoin = true
         NetManager:getFetchCanDirectJoinAlliancesPromise(0):done(function(response)
+            if tolua.isnull(self) then return end
             if not response.msg or not response.msg.allianceDatas then return end
             if response.msg.allianceDatas then
                 if self.joinNode then

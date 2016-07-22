@@ -108,6 +108,12 @@ function WidgetSliderWithInput:ctor(params)
     self.text_btn:align(display.CENTER, self.soldier_total_count:getPositionX() - self.soldier_total_count:getContentSize().width - 10 - self.text_btn:getCascadeBoundingBox().size.width/2,30):addTo(self)
 end
 function WidgetSliderWithInput:SetValue(value)
+    if value < self.slider.min_ then
+        value = self.slider.min_
+    end
+    if value > self.slider.max_ then
+        value = self.slider.max_
+    end
     self.slider:setSliderValue(value)
 end
 function WidgetSliderWithInput:SetMax(max)

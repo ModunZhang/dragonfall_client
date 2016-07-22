@@ -289,7 +289,9 @@ function GameUIAllianceBattle:InitBattleStatistics()
                             {
                                 listener = function ()
                                     NetManager:getAttackAlliancePromose(other_alliance._id)
-                                    self:LeftButtonClicked()
+                                    if not tolua.isnull(self) then
+                                        self:LeftButtonClicked()
+                                    end
                                 end
                             }
                         )

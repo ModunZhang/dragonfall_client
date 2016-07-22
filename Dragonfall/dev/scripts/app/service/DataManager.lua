@@ -2,10 +2,11 @@ DataManager = {
     need_notify = true,
 }
 local initData = import("..fte.initData")
-function DataManager:setUserData( userData, deltaData )
+function DataManager:setUserData( userData, deltaData, originDeltaData )
     self.user = userData
+    self.originDeltaData = originDeltaData
     -- LuaUtils:TimeCollect(function()
-        self:OnUserDataChanged(self.user, app.timer:GetServerTime(), deltaData)
+    self:OnUserDataChanged(self.user, app.timer:GetServerTime(), deltaData)
     -- end, "DataManager:setUserData")
 end
 function DataManager:setUserAllianceData(allianceData,deltaData)

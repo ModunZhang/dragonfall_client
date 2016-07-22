@@ -540,6 +540,9 @@ function WorldLayer:IsFightWithOtherAlliance(aln, index)
     end
 
     local status, mapIndex = self:GetAllianceStatus(aln)
+    if not mapIndex then
+        return false
+    end
     if status == "fight" or status == "prepare" then
         return true, math.min(index, mapIndex), math.max(index, mapIndex)
     end

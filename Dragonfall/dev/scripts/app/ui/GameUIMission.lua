@@ -523,6 +523,9 @@ end
 function GameUIMission:OpenGetDailyRewardDialog(reward_index,flag)
     local rewards = string.split(dailyTaskRewardsConfig[reward_index].rewards,";")
     local dialog = UIKit:newWidgetUI("WidgetPopDialog", #rewards * 130 + 140,_("奖励"),window.top-130):AddToCurrentScene(true)
+    if not dialog then
+        return
+    end
     local body = dialog:GetBody()
     local size = body:getContentSize()
     local list_bg = display.newScale9Sprite("background_568x120.png",size.width/2,(#rewards * 130+24)/2+90,cc.size(568,#rewards * 130+22),cc.rect(10,10,548,100))

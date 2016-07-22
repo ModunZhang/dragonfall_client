@@ -16,7 +16,7 @@ local function get_player_response_msg(response)
         local user_data = DataManager:getUserData()
         local edit = decodeInUserDataFromDeltaData(user_data, response.msg.playerData)
         -- LuaUtils:outputTable("get_player_response_msg edit",edit)
-        DataManager:setUserData(user_data, edit)
+        DataManager:setUserData(user_data, edit, response.msg.playerData)
         return response
     end
 
@@ -664,7 +664,7 @@ local logic_event_map = {
         end
     end,
     onServerNoticeChanged = function(success, response)
-        if success then
+        if success and NewsManager then
             NewsManager:OnNewsChanged(response)
         end
     end,

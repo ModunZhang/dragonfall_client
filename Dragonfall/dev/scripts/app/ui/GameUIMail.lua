@@ -2530,11 +2530,15 @@ end
 function GameUIMail:SaveOrUnsaveReport(report,target)
     if target:isButtonSelected() then
         NetManager:getSaveReportPromise(report:Id()):fail(function()
-            target:setButtonSelected(false,true)
+            if not tolua.isnull(self) then
+                target:setButtonSelected(false,true)
+            end
         end)
     else
         NetManager:getUnSaveReportPromise(report:Id()):fail(function()
-            target:setButtonSelected(true,true)
+            if not tolua.isnull(self) then
+                target:setButtonSelected(true,true)
+            end
         end)
     end
 end
