@@ -286,7 +286,11 @@ function GameUIAllianceVillageEnter:OnVillageEventsDataChanged(changed_map)
 end
 
 function GameUIAllianceVillageEnter:GetLevelLabelText()
-    return _("等级") .. self:GetVillageInfo().level
+    if self:GetVillageInfo() then
+        return _("等级") .. self:GetVillageInfo().level
+    else
+        return _("未知")
+    end
 end
 --关闭了进攻和突袭的条件判断
 function GameUIAllianceVillageEnter:CheckCanAttackVillage()

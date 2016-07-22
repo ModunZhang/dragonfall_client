@@ -228,11 +228,16 @@ function GameUITradeGuild:RefreshSellListView(goods_type,selected)
     local list_view = self:GetSellListViewByGoodsType(goods_type)
     if not list_view then return end
     list_view:removeAllItems()
-    NetManager:getGetSellItemsPromise(self:GetGoodsTypeMapToString(goods_type),goods_type[selected]):done(function(response)
-        for k,v in pairs(response.msg.itemDocs) do
-            self:CreateSellItemForListView(list_view,v)
+    NetManager:getGetSellItemsPromise(
+        self:GetGoodsTypeMapToString(goods_type),
+        goods_type[selected])
+    :done(function(response)
+        if not tolua.isnull(self) then
+            for k,v in pairs(response.msg.itemDocs) do
+                self:CreateSellItemForListView(list_view,v)
+            end
+            list_view:reload()
         end
-        list_view:reload()
     end)
 end
 function GameUITradeGuild:CreateSellItemForListView(listView,goods)

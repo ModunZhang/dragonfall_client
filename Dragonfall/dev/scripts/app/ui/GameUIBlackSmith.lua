@@ -19,7 +19,9 @@ function GameUIBlackSmith:OnMoveInStage()
     self:TabButtons()
 end
 function GameUIBlackSmith:onExit()
-    self.euip_view:UnInit()
+    if self.euip_view then
+        self.euip_view:UnInit()
+    end
     GameUIBlackSmith.super.onExit(self)
 end
 function GameUIBlackSmith:TabButtons()

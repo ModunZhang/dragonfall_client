@@ -335,14 +335,16 @@ function GameUIAllianceMemberInfo:WidgetPlayerNode_PlayerCanClickedButton(name,a
 end
 --数据回调
 function GameUIAllianceMemberInfo:WidgetPlayerNode_DataSource(name)
-    print("UIKit:GetPlayerIconImage(self.player_info.icon)--->",UIKit:GetPlayerIconImage(self.player_info.icon))
+    print("UIKit:GetPlayerIconImage(self.player_info.icon)--->",UIKit:GetPlayerIconImage(self.player_info.icon), name)
     if name == 'BasicInfoData' then
-        local location
+        local location = ""
         if self.isMyAlliance then
             local alliacne = Alliance_Manager:GetMyAlliance()
             local member = alliacne:GetMemeberById(self.player_info.id)
-            local allianceObj = alliacne:FindMapObjectById(member:MapId())
-            location = string.format("(%d,%d)",Alliance:GetLogicPositionWithMapObj(allianceObj))
+            if member then
+                local allianceObj = alliacne:FindMapObjectById(member:MapId())
+                location = string.format("(%d,%d)",Alliance:GetLogicPositionWithMapObj(allianceObj))
+            end
         end
         local level = User:GetPlayerLevelByExp(self.player_info.levelExp)
         local exp_config = config_playerLevel[level]

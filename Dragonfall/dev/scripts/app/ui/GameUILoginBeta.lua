@@ -585,6 +585,7 @@ function GameUILoginBeta:connectGateServer()
     end):fail(function()
         -- 1是连接游戏服务器失败 0是本地网络有问题
         GameUtils:PingSearchEngine(function(success)
+            if tolua.isnull(self) then return end
             local errorCode = success and 1 or 0
             self:showErrorForReTry(string.format("%s[%d]",_("连接网关服务器失败!"),errorCode),function()
                 self:performWithDelay(function()

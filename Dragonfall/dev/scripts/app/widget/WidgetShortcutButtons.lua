@@ -372,6 +372,7 @@ function WidgetShortcutButtons:NewsUnreadChanged()
     self:CheckAllianceRewardCount()
 end
 function WidgetShortcutButtons:CheckAllianceRewardCount()
+    if not NewsManager then return end
     if not self.tips_button then return end
     local newsCount = NewsManager:GetUnreadCount()
     local activityCount = ActivityManager:GetHaveRewardActivitiesCount()

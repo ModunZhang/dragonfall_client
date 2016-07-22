@@ -107,7 +107,9 @@ function GameUIAllianceHome:onEnter()
         NetManager:getGameInfoPromise():done(function (response)
             User.gameInfo = response.msg.serverInfo
             if User.gameInfo.promotionProductEnabled then
-                self:CreateADNode()
+                if not tolua.isnull(self) then
+                    self:CreateADNode()
+                end
             end
         end)
     else
@@ -250,8 +252,11 @@ function GameUIAllianceHome:OnAllianceDataChanged_basicInfo(alliance,deltaData)
         self.page_top:SetHonour(GameUtils:formatNumber(new_honour))
     elseif ok_status then
         if alliance.allianceFightReports then
-            NetManager:getAllianceFightReportsPromise(self.alliance.id):done(function ( ... )
-                self:RefreshTop()
+            NetManager:getAllianceFightReportsPromise(self.alliance.id)
+            :done(function ( ... )
+                if not tolua.isnull(self) then
+                    self:RefreshTop()
+                end
             end)
         else
             self:RefreshTop()
@@ -307,13 +312,16 @@ function GameUIAllianceHome:InitArrow()
         if not mapIndex then return self.arrow_enemy:hide() end
         local scene = display.getRunningScene()
         if Alliance_Manager:GetAllianceByCache(mapIndex) then
-            if scene.GetSceneLayer then
+            if not tolua.isnull(scene) then
                 scene:GotoAllianceByXY(scene:GetSceneLayer():IndexToLogic(mapIndex))
             end
         else
-            if scene.GetSceneLayer then
+            if not tolua.isnull(scene) then
                 scene:FetchAllianceDatasByIndex(mapIndex, function()
-                    scene:GotoAllianceByXY(scene:GetSceneLayer():IndexToLogic(mapIndex))
+                    if tolua.isnull(scene) then return end
+                    scene:GotoAllianceByXY(
+                        scene:GetSceneLayer():IndexToLogic(mapIndex)
+                    )
                 end)
             end
         end

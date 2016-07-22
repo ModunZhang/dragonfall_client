@@ -151,3 +151,14 @@ function UtilsForShrine:FormatShrineRewards(stageinfo, index, terrain)
 	end
 	return r
 end
+function UtilsForShrine:GetEnemyPower(stageinfo)
+    local enemyPower = 0
+    local troops = string.split(stageinfo.troops,",")
+    for i,troop in ipairs(troops) do
+        if not string.find(troop,"dragon") then
+            local soldierInfo =  string.split(troop,":")
+            enemyPower = enemyPower + UtilsForSoldier:GetSoldierConfigByStar(soldierInfo[1],soldierInfo[2]).power * tonumber(soldierInfo[3])
+        end
+    end
+    return enemyPower
+end

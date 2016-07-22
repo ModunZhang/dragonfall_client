@@ -313,7 +313,7 @@ function GameUIAllianceShrine:GetStageListItem(index,stage_obj)
             :align(display.LEFT_CENTER,-10,13)
             :addTo(power_bg)
         UIKit:ttfLabel({
-            text = string.formatnumberthousands(stage_obj.enemyPower),
+            text = string.formatnumberthousands(UtilsForShrine:GetEnemyPower(stage_obj)),
             size = 20,
             color = 0xfff3c7
         }):align(display.LEFT_CENTER,20,13):addTo(power_bg)
@@ -413,7 +413,7 @@ function GameUIAllianceShrine:BuildFightItemBox(event)
         color = 0x5d563f
     }):align(display.LEFT_CENTER, 40, 19):addTo(player_strengh_bg)
     UIKit:ttfLabel({
-        text = "> " .. string.formatnumberthousands(stageInfo.suggestPower),
+        text = "> " .. string.formatnumberthousands(UtilsForShrine:GetEnemyPower(stageInfo) * 2),
         size = 20,
         color = 0x403c2f
     }):align(display.RIGHT_CENTER, 340, 19):addTo(player_strengh_bg)

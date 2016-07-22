@@ -53,7 +53,9 @@ function OtherCityScene:onEnter()
             local equipments = {}
             for type,v in pairs(troopDetail.dragon.equipments) do
                 if #v.name > 0 then
-                    table.insert(equipments, {type, v.name, v.star})
+                    table.insert(equipments,{
+                        type = type, name = v.name, star = v.star
+                    })
                 end
             end
             local seqs = {
@@ -65,17 +67,43 @@ function OtherCityScene:onEnter()
                 ["orb"] = 6,
             }
             table.sort(equipments, function(a,b)
-                return seqs[a[1]] < seqs[b[1]]
+                return seqs[a.type] > seqs[b.type]
             end)
-            local t = {}
-            for i,v in ipairs(equipments) do
-                local type, name, star = unpack(v)
-                table.insert(t, {type = type, name = name, star = star})
-            end
-            troopDetail.dragon.equipments = t
+            troopDetail.dragon.equipments = equipments
 
-            troopDetail.militaryTechs = {}
-            troopDetail.militaryBuffs = {}
+            -- militaryTechs
+            local militaryTechs = {}
+            for name,v in pairs(self.user.militaryTechs) do
+                if v.level > 0 then
+                    table.insert(militaryTechs, {name = name, level = v.level})
+                end
+            end
+            table.sort(militaryTechs, function(a, b) return a.name > b.name end)
+            troopDetail.militaryTechs = militaryTechs
+
+
+            -- militaryBuffs
+            local militaryBuffs = {}
+            local buff_key = {
+                troopSizeBonus  = 1,
+                dragonHpBonus   = 2,
+                dragonExpBonus  = 3,
+                marchSpeedBonus = 4,
+                unitHpBonus     = 5,
+                infantryAtkBonus= 6,
+                archerAtkBonus  = 7,
+                cavalryAtkBonus = 8,
+                siegeAtkBonus   = 9,
+            }
+            for i,v in ipairs(self.user.itemEvents) do
+                if buff_key[v.type] then
+                    table.insert(militaryBuffs, v)
+                end
+            end
+            table.sort(militaryBuffs, function(a,b)
+                return buff_key[a.type] > buff_key[b.type]
+            end)
+            troopDetail.militaryBuffs = militaryBuffs
 
             self.troopDetail = troopDetail
         end

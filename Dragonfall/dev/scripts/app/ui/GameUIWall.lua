@@ -292,7 +292,17 @@ function GameUIWall:CreateMilitaryUIIf()
                         self:RefreshUIAfterSelectDragon(UtilsForDragon:GetDragon(User,dragonType),soldiers)
                     end)
                 end)
-            end,{dragon = self:GetDragon(), isMilitary = true,terrain = not Alliance_Manager:GetMyAlliance():IsDefault() and Alliance_Manager:GetMyAlliance().basicInfo.terrain or User.basicInfo.terrain,title = _("驻防部队"),military_soldiers = User.defenceTroop.soldiers}):AddToCurrentScene(true)
+            end,{
+                dragon      = self:GetDragon(),
+                isMilitary  = true,
+                terrain     = not Alliance_Manager:GetMyAlliance():IsDefault()
+                              and Alliance_Manager:GetMyAlliance().basicInfo.terrain
+                              or User.basicInfo.terrain,
+                title       = _("驻防部队"),
+                military_soldiers = (User.defenceTroop == nil
+                                    or User.defenceTroop == json.null)
+                                    and {} or User.defenceTroop.soldiers
+            }):AddToCurrentScene(true)
         end)
     self.edit_troop_btn = edit_button
     if dragon then
