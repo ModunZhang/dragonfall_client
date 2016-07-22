@@ -354,7 +354,7 @@ function MyApp:retryConnectServer(need_disconnect)
             local ui = display.getRunningScene().ui
             if ui then
                 ui:stopAllActions()
-                ui:loginAction() 
+                ui:loginAction()
             end
         end
         return
@@ -421,9 +421,47 @@ end
 function MyApp:EnterPlayerCityScene(id, location)
     self:EnterCitySceneByPlayerAndAlliance(id, false, location)
 end
+local mock = {
+    "houseEvents",
+    "buildingEvents",
+    "dailyQuestEvents",
+    "dragonEquipmentEvents",
+    "treatSoldierEvents",
+    "materialEvents",
+    "dragonHatchEvents",
+    "dragonDeathEvents",
+    "productionTechEvents",
+    "soldierEvents",
+    "soldierStarEvents",
+    "militaryTechEvents",
+    "vipEvents",
+}
 function MyApp:EnterCitySceneByPlayerAndAlliance(id, is_my_alliance, location)
     NetManager:getPlayerCityInfoPromise(id):done(function(response)
         local user_data = response.msg.playerViewData
+        for i,v in ipairs(mock) do
+            user_data[v] = {}
+        end
+        user_data.resources = {
+            cart = 0,
+            casinoToken = 0,
+            food = 0,
+            blood = 0,
+            stamina = 0,
+            wood = 0,
+            wallHp = 0,
+            stone = 0,
+            coin = 0,
+            iron = 0,
+            gem = 0,
+            citizen = 0,
+            refreshTime = app.timer:GetServerTime()
+        }
+        user_data.dailyQuests = {
+            quests = { },
+            refreshTime = 0
+        }
+        dump(user_data, nil, 10)
         local user = User_.new(user_data):OnUserDataChanged(user_data)
         local city = City.new(user):InitWithJsonData(user_data)
             :OnUserDataChanged(user_data, app.timer:GetServerTime())
@@ -617,7 +655,7 @@ function MyApp:verifyGooglePlayPurchase(orderId,purchaseData,signature)
                 string.format(_("您已获得%s,到物品里面查看"),
                     UIKit:getIapPackageName(transaction.productIdentifier)),
                 openRewardIf)
-            
+
             ext.market_sdk.onPlayerChargeSuccess(transaction.transactionIdentifier)
         end
     end):catch(function( err )
