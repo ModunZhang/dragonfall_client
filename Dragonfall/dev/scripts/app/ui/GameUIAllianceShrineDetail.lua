@@ -163,9 +163,9 @@ end
 function GameUIAllianceShrineDetail:GetInfoData()
     local stage = self:GetShrineStage()
     local r = {}
-    r[1] = {"dragon_strength_27x31.png",_("敌方总战斗力"),stage.enemyPower}
+    r[1] = {"dragon_strength_27x31.png",_("敌方总战斗力"),UtilsForShrine:GetEnemyPower(stage)}
     -- r[2] = {"res_citizen_88x82.png",_("建议玩家数量"),stage.suggestPlayer}
-    r[2] = {"dragon_strength_27x31.png",_("建议部队战斗力"),"> " .. stage.suggestPower}
+    r[2] = {"dragon_strength_27x31.png",_("建议部队战斗力"),"> " .. UtilsForShrine:GetEnemyPower(stage) * 2}
     return r
 end
 
