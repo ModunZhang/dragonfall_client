@@ -52,7 +52,9 @@ function OtherCityScene:onEnter()
             -- equipments
             local equipments = {}
             for type,v in pairs(troopDetail.dragon.equipments) do
-                table.insert(equipments, {type, v.name, v.star})
+                if #v.name > 0 then
+                    table.insert(equipments, {type, v.name, v.star})
+                end
             end
             local seqs = {
                 ["crown"] = 1,
