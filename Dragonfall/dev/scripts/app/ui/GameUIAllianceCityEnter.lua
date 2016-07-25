@@ -216,7 +216,6 @@ function GameUIAllianceCityEnter:GetEnterButtons()
             buttons = {help_button,enter_button,mail_button,info_button}
         end
     else -- 敌方玩家
-        local isProtected = self:CheckMeIsProtectedWarinng()
         local toLocation = self:GetLogicPosition()
         local alliance = self.focus_alliance
         local attack_button = self:BuildOneButton("attack_58x56.png",_("进攻")):onButtonClicked(function()
@@ -246,9 +245,18 @@ function GameUIAllianceCityEnter:GetEnterButtons()
                 end
                 UIKit:showSendTroopMessageDialog(attack_func, "dragonMaterials",_("龙材料"))
             end
-
-            if isProtected then
-                UIKit:showMessageDialog(_("提示"),_("进攻玩家城市将失去保护状态，确定继续派兵?"),final_func)
+            local me = self:GetMyAlliance():GetSelf()
+            if me.isProtected or me.newbeeProtect or me.masterOfDefender then
+                local text
+                local protected = me.isProtected and me.newbeeProtect
+                if protected and me.masterOfDefender then
+                    text = _("进攻玩家城市将失去保护状态以及城防大师效果,确定继续派兵?")
+                elseif protected then
+                    text = _("进攻玩家城市将失去保护状态，确定继续派兵?")
+                elseif me.masterOfDefender then
+                    text = _("进攻玩家城市将失去城防大师效果,确定继续派兵?")
+                end
+                UIKit:showMessageDialog(_("提示"),text,final_func)
             else
                 final_func()
             end
