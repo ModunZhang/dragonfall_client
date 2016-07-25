@@ -795,9 +795,10 @@ local flag_map = {
     [FRIEND] = {"village_flag_friend.png", "village_icon_friend.png"},
     [ENEMY] = {"village_flag_enemy.png", "village_icon_enemy.png"},
 }
-local FIRE_TAG = 11900
-local SMOKE_TAG = 12000
-local VILLAGE_TAG = 120990
+local FIRE_TAG = 11901
+local NEWBEE_TAG = 11902
+local SMOKE_TAG = 12003
+local VILLAGE_TAG = 120994
 function AllianceLayer:RefreshObjectInfo(object, mapObj, alliance)
     local x,y = mapObj.location.x, mapObj.location.y
     object.x = x
@@ -825,13 +826,21 @@ function AllianceLayer:RefreshObjectInfo(object, mapObj, alliance)
         else
             info.name:setString(string.format("%s", member.name))
         end
+        if member.newbeeProtect then
+            if not object:getChildByTag(NEWBEE_TAG) then
+                UIKit:ProtectedAni():addTo(object, 2, NEWBEE_TAG):pos(0,40):scale(1)
+            end
+        else
+            if object:getChildByTag(NEWBEE_TAG) then
+                object:removeChildByTag(NEWBEE_TAG)
+            end
+        end
         if member.isProtected then
             if object:getChildByTag(SMOKE_TAG) then
                 object:removeChildByTag(SMOKE_TAG)
             end
             if not object:getChildByTag(FIRE_TAG) then
                 fire():addTo(object, 2, FIRE_TAG):pos(0,-50)
-                -- UIKit:ProtectedAni():addTo(object, 2, FIRE_TAG):pos(0,40):scale(1)
             end
         else
             if object:getChildByTag(FIRE_TAG) then
