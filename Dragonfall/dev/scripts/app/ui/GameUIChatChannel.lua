@@ -60,6 +60,7 @@ function GameUIChatChannel:TO_TOP(chat_data)
     for i,v in ipairs(chat_data) do
         if v.channel ~= self._channelType then
             self.tab_buttons:SetGreenTipsShow(v.channel,true)
+            table.remove(chat_data,i)
         end
     end
     local data = chat_data
