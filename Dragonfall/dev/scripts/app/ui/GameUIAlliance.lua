@@ -2090,10 +2090,10 @@ function GameUIAlliance:OnInfoButtonClicked(tag)
             UIKit:showMessageDialog(_("提示"),_("联盟正在战争准备期或战争期,不能退出联盟"), function()end)
             return
         end
-        if #Alliance_Manager:GetMyBeAttackingEvent() > 0 then
-            UIKit:showMessageDialog(_("提示"),_("你即将被攻打，不能退出联盟"))
-            return
-        end
+        -- if #Alliance_Manager:GetMyBeAttackingEvent() > 0 then
+        --     UIKit:showMessageDialog(_("提示"),_("你即将被攻打，不能退出联盟"))
+        --     return
+        -- end
         local canQuite,quiteTime = DataUtils:IsMemberCanQuiteAlliance(Alliance_Manager:GetMyAlliance():GetSelf())
         if not canQuite then
             local dialog = UIKit:showMessageDialog(_("提示"),string.format(_("%s后才可以退出联盟"),quiteTime))

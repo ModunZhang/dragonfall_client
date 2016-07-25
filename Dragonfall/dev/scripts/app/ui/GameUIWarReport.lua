@@ -175,24 +175,22 @@ function GameUIWarReport:GetBooty()
     for k,v in pairs(self:GetRewards()) do
         local index
         if v.name == "wood" then
-            index = 2
-        elseif v.name == "stone" then
-            index = 3
-        elseif v.name == "food" then
-            index = 4
-        elseif v.name == "iron" then
-            index = 5
-        elseif v.name == "coin" then
-            index = 6
-        elseif v.name == "blood" then
             index = 1
+        elseif v.name == "stone" then
+            index = 2
+        elseif v.name == "food" then
+            index = 3
+        elseif v.name == "iron" then
+            index = 4
+        elseif v.name == "coin" then
+            index = 5
         end
         if index then
-            table.insert(booty, index,{
+            booty[index] = {
                 resource_type = Localize.fight_reward[v.name] or Localize.equip_material[v.name],
                 icon= UILib.resource[v.name] or UILib.dragon_material_pic_map[v.name],
                 value = v.count
-            })
+            }
         else
             table.insert(booty, {
                 resource_type = Localize.fight_reward[v.name] or Localize.equip_material[v.name],
@@ -212,8 +210,17 @@ function GameUIWarReport:CreateBootyPart()
     -- cc.ui.UIGroup.new()
     local booty_list_bg
     if booty_count>0 then
+        local reward_text
+        local report_data = self.report:GetData()
+        if report_data.defencePlayerData and report_data.defencePlayerData.masterOfDefender then
+            if report_data.defencePlayerData.id == User:Id() then
+                reward_text = _("由于使用了城防大师，敌方无法掠夺资源")
+            else
+                reward_text = _("由于敌方使用了城防大师，无法掠夺资源")
+            end
+        end
         local item_height = 46
-        local booty_list_height = booty_count * item_height
+        local booty_list_height = (booty_count + (reward_text and 1 or 0)) * item_height
 
         -- 战利品列表
         booty_list_bg = WidgetUIBackGround.new({width = item_width,height = booty_list_height+16},WidgetUIBackGround.STYLE_TYPE.STYLE_6)
@@ -225,6 +232,7 @@ function GameUIWarReport:CreateBootyPart()
         -- 构建所有战利品标签项
         local booty_item_bg_color_flag = true
         local added_booty_item_count = 0
+        dump(self:GetBooty())
         for k,booty_parms in pairs(self:GetBooty()) do
             local booty_item_bg_image = booty_item_bg_color_flag and "back_ground_548x40_1.png" or "back_ground_548x40_2.png"
             local booty_item_bg = display.newScale9Sprite(booty_item_bg_image):size(520,46)
@@ -245,6 +253,20 @@ function GameUIWarReport:CreateBootyPart()
 
             added_booty_item_count = added_booty_item_count + 1
             booty_item_bg_color_flag = not booty_item_bg_color_flag
+        end
+        if reward_text then
+            local booty_item_bg_image = booty_item_bg_color_flag and "back_ground_548x40_1.png" or "back_ground_548x40_2.png"
+            local booty_item_bg = display.newScale9Sprite(booty_item_bg_image):size(520,46)
+                :align(display.TOP_CENTER, booty_list_bg_size.width/2, booty_list_bg_size.height-item_height*added_booty_item_count-6)
+                :addTo(booty_list_bg,2)
+            UIKit:ttfLabel({
+                text = reward_text ,
+                size = 20,
+                color = 0x615b44,
+                valign = cc.ui.TEXT_VALIGN_CENTER,
+                align = cc.ui.TEXT_ALIGN_CENTER,
+                dimensions = cc.size(480,0)
+            }):align(display.CENTER,booty_item_bg:getContentSize().width/2,booty_item_bg:getContentSize().height/2):addTo(booty_item_bg)
         end
     else
         booty_list_bg = WidgetUIBackGround.new({width = item_width,height = 100},WidgetUIBackGround.STYLE_TYPE.STYLE_6)
@@ -756,6 +778,8 @@ function GameUIWarReport:GetRewards()
     return  self.report:GetMyRewards()
 end
 return GameUIWarReport
+
+
 
 
 
