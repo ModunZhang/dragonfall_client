@@ -357,7 +357,7 @@ end
 function GameUIAllianceEnterBase:CheckMeIsProtectedWarinng()
     local alliance = self:GetMyAlliance()
     local me = alliance:GetSelf()
-    return me.isProtected
+    return me.isProtected or me.newbeeProtect
 end
 
 function GameUIAllianceEnterBase:BuildOneButton(image,title,music_info)

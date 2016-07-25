@@ -820,7 +820,9 @@ function AllianceLayer:RefreshObjectInfo(object, mapObj, alliance)
         local helpedByTroopsCount = member.beHelped and 1 or 0
         info.banner:setTexture(banners[helpedByTroopsCount])
         info.level:setString(member.keepLevel)
+        local isself = false
         if member.id == User._id then
+            isself = true
             info.name:setString(_("我的城市"))
             info.name:setColor(UIKit:hex2c4b(0xa1dd00))
         else
@@ -828,7 +830,24 @@ function AllianceLayer:RefreshObjectInfo(object, mapObj, alliance)
         end
         if member.newbeeProtect then
             if not object:getChildByTag(NEWBEE_TAG) then
-                UIKit:ProtectedAni():addTo(object, 2, NEWBEE_TAG):pos(0,40):scale(1)
+                local proteced = UIKit:ProtectedAni()
+                                :addTo(object, 2, NEWBEE_TAG)
+                                :pos(0,40):scale(1)
+                if isself then
+                    local time_bg = display.newSprite("online_time_bg_96x36.png")
+                                    :align(display.CENTER_BOTTOM,120,-10)
+                                    :addTo(proteced):scale(0.8)
+
+                    local label = UIKit:CreateNumberImageNode({
+                            size = 20,
+                            color = 0xffffffff,
+                        }):addTo(time_bg):align(display.CENTER,96/2,36/2)
+                    label:scheduleAt(function()
+                        local _,time =
+                        UtilsForItem:IsItemEventActive(User, "newbeeProtect")
+                        label:SetNumString(GameUtils:formatTimeStyle1(time))
+                    end)
+                end
             end
         else
             if object:getChildByTag(NEWBEE_TAG) then

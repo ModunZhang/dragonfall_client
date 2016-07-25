@@ -361,7 +361,13 @@ end
 
 --[[items begin]]
 function User:IsAnyItmeEventActive()
-    return next(self.itemEvents)
+    local unusecount = 0
+    for i,v in ipairs(self.itemEvents) do
+        if v.type == "newbeeProtect" then
+            unusecount = unusecount + 1
+        end
+    end
+    return #self.itemEvents - unusecount > 0
 end
 function User:IsItemVisible(item_name)
     return self:GetItemCount(item_name) >= 1 or
