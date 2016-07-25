@@ -222,7 +222,7 @@ function GameUIAllianceCityEnter:GetEnterButtons()
         local attack_button = self:BuildOneButton("attack_58x56.png",_("进攻")):onButtonClicked(function()
             local final_func = function ()
                 local attack_func = function ()
-                    if member.masterOfDefender then
+                    if member.isProtected then
                         UIKit:showMessageDialog(_("提示"),_("目标城市已被击溃并进入保护期，可能无法发生战斗，你是否继续派兵?"), function()
                             UIKit:newGameUI('GameUISendTroopNew',function(dragonType,soldiers,total_march_time,gameuialliancesendtroops)
                                 NetManager:getAttackPlayerCityPromise(dragonType, soldiers, alliance._id, member.id):done(function()
@@ -263,7 +263,7 @@ function GameUIAllianceCityEnter:GetEnterButtons()
             --         UIKit:newGameUI("GameUIStrikePlayer",1,{memberId = member.id,alliance = alliance, toLocation = toLocation,targetIsProtected = member.masterOfDefender}):AddToCurrentScene(true)
             --     end)
             -- else
-            UIKit:newGameUI("GameUIStrikePlayer",1,{memberId = member.id,alliance = alliance,toLocation = toLocation,targetIsProtected = member.masterOfDefender}):AddToCurrentScene(true)
+            UIKit:newGameUI("GameUIStrikePlayer",1,{memberId = member.id,alliance = alliance,toLocation = toLocation,targetIsProtected = member.isProtected}):AddToCurrentScene(true)
             -- end
             self:LeftButtonClicked()
         end)
