@@ -524,7 +524,7 @@ function Report:IsWin()
     elseif report_type=="attackMonster" then
         return self:GetReportResult()
     elseif report_type=="attackShrine" then
-        return self:GetAttackTarget().isWin
+        return self:GetReportResult()
     end
 end
 function Report:IsHasHelpDefencePlayer()
