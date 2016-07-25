@@ -358,7 +358,7 @@ function GameUIActivityRewardNew:ui_CONTINUITY()
                 return response
             end)
         end)
-        :setButtonEnabled(User.countInfo.day14==7)
+        :setButtonEnabled(User.countInfo.day14 >= 3)
     if User.basicInfo.marchQueue == 2 then
         button:setVisible(false)
         local title_label = UIKit:ttfLabel({
