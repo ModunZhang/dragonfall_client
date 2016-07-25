@@ -840,7 +840,7 @@ function AllianceLayer:RefreshObjectInfo(object, mapObj, alliance)
 
                     local label = UIKit:CreateNumberImageNode({
                             size = 20,
-                            color = 0xffffffff,
+                            color = 0xffedaeff,
                         }):addTo(time_bg):align(display.CENTER,96/2,36/2)
                     label:scheduleAt(function()
                         local _,time =
