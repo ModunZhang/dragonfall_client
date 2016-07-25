@@ -248,7 +248,7 @@ function GameUIAllianceCityEnter:GetEnterButtons()
             local me = self:GetMyAlliance():GetSelf()
             if me.isProtected or me.newbeeProtect or me.masterOfDefender then
                 local text
-                local protected = me.isProtected and me.newbeeProtect
+                local protected = me.isProtected or me.newbeeProtect
                 if protected and me.masterOfDefender then
                     text = _("进攻玩家城市将失去保护状态以及城防大师效果,确定继续派兵?")
                 elseif protected then
