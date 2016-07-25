@@ -41,9 +41,9 @@ end
 
 ---------------------------
 --Observer Methods
--- function WidgetMarchEvents:OnUserDataChanged_helpToTroops(userData, deltaData)
---     self:PromiseOfSwitch()
--- end
+function WidgetMarchEvents:OnUserDataChanged_helpToTroops(userData, deltaData)
+    self:PromiseOfSwitch()
+end
 local function HasMyEvent(ok, events)
     if ok then
         for i,v in ipairs(events) do
@@ -86,11 +86,11 @@ function WidgetMarchEvents:AddOrRemoveAllianceEvent(isAdd)
     local User = User
     local alliance = Alliance_Manager:GetMyAlliance()
     if isAdd then
-        -- User:AddListenOnType(self, "helpToTroops")
+        User:AddListenOnType(self, "helpToTroops")
         alliance:AddListenOnType(self, "marchEvents")
         alliance:AddListenOnType(self, "villageEvents")
     else
-        -- User:RemoveListenerOnType(self, "helpToTroops")
+        User:RemoveListenerOnType(self, "helpToTroops")
         alliance:RemoveListenerOnType(self, "marchEvents")
         alliance:RemoveListenerOnType(self, "villageEvents")
     end
@@ -286,10 +286,10 @@ function WidgetMarchEvents:Load()
             table.insert(items, item)
         end
     end
-    -- for i,v in ipairs(User.helpToTroops) do
-    --     local item = self:CreateDefenceItem(v, "helpToTroops")
-    --     table.insert(items, item)
-    -- end
+    for i,v in ipairs(User.helpToTroops) do
+        local item = self:CreateDefenceItem(v, "helpToTroops")
+        table.insert(items, item)
+    end
     for _,event in ipairs(alliance.shrineEvents) do
         for _,v in ipairs(event.playerTroops) do
             if v.id == User._id then
@@ -489,14 +489,14 @@ function WidgetMarchEvents:CreateDefenceItem(event, eventType)
         display_text = string.format("%s %d%%", node.prefix, collectPercent)
         node.progress:setPercentage(collectPercent)
         dragonType = event.playerData.dragon.type
-    -- elseif eventType == "helpToTroops" then
-    --     local target_pos = event.location.x .. "," .. event.location.y
-    --     node.prefix = string.format(_("正在协防 %s (%s)"),
-    --         event.name, target_pos)
-    --     node.progress:setPercentage(100)
-    --     display_text = node.prefix
-    --     time_str = ""
-    --     dragonType = event.dragon
+    elseif eventType == "helpToTroops" then
+        local target_pos = event.location.x .. "," .. event.location.y
+        node.prefix = string.format(_("正在协防 %s (%s)"),
+            event.name, target_pos)
+        node.progress:setPercentage(100)
+        display_text = node.prefix
+        time_str = ""
+        dragonType = event.dragon
     elseif eventType == "shrineEvents" then
         node.prefix = UtilsForEvent:GetMarchEventPrefix(event, eventType)
         display_text = node.prefix
@@ -563,9 +563,9 @@ function WidgetMarchEvents:CreateDefenceItem(event, eventType)
 end
 
 function WidgetMarchEvents:HasAnyMarchEvent()
-    -- if #User.helpToTroops > 0 then
-    --     return true
-    -- end
+    if #User.helpToTroops > 0 then
+        return true
+    end
     local alliance = Alliance_Manager:GetMyAlliance()
     for i,v in ipairs(alliance.marchEvents.strikeMarchEvents) do
         if UtilsForEvent:IsMyMarchEvent(v) then
@@ -628,21 +628,19 @@ function WidgetMarchEvents:OnRetreatButtonClicked(event, eventType)
         UIKit:showMessageDialog(_("提示"),_("确定撤军?"),function()
             NetManager:getRetreatFromVillagePromise(event.id)
         end)
-    -- elseif eventType == "helpToTroops" then
-    --     UIKit:showMessageDialog(_("提示"),_("确定撤军?"),function()
-    --         NetManager:getRetreatFromHelpedAllianceMemberPromise(event.id)
-    --     end)
+    elseif eventType == "helpToTroops" then
+        UIKit:showMessageDialog(_("提示"),_("确定撤军?"),function()
+            NetManager:getRetreatFromHelpedAllianceMemberPromise(event.id)
+        end)
     end
 end
 
 function WidgetMarchEvents:MoveToTargetAction(event,eventType)
-    dump(event,"event")
     local location,mapIndex
-    -- if eventType == 'helpToTroops' then
-    --     location = event.location
-    --     mapIndex = Alliance_Manager:GetMyAlliance().mapIndex
-    -- else
-    if eventType == 'shrineEvents' then
+    if eventType == 'helpToTroops' then
+        location = event.location
+        mapIndex = Alliance_Manager:GetMyAlliance().mapIndex
+    elseif eventType == 'shrineEvents' then
         location = Alliance_Manager:GetMyAlliance():GetShrinePosition()
         mapIndex = Alliance_Manager:GetMyAlliance().mapIndex
     else
