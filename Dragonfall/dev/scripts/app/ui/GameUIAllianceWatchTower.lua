@@ -66,9 +66,9 @@ function GameUIAllianceWatchTower:GetAllOrderedMarchEvents()
     for eventType,marchEventRoot in pairs(marchEvents) do
         for _,marchEvent in ipairs(marchEventRoot) do
             marchEvent.eventType = eventType -- 添加一个事件类型，突袭，进攻
-            if marchEvent.marchType ~= "shrine" and not string.find(eventType,"Return") then -- 过滤掉圣地事件和返回事件
-                -- 目的地是我方联盟，并且出发地不是我方联盟，或者是协防事件:来袭事件
-                if marchEvent.toAlliance.id == alliance._id and marchEvent.fromAlliance.id ~= alliance._id or marchEvent.marchType == "helpDefence" then
+            if marchEvent.marchType ~= "shrine" and not string.find(eventType,"Return") and not marchEvent.marchType == "helpDefence" then -- 过滤掉圣地事件和返回事件
+                -- 目的地是我方联盟，并且出发地不是我方联盟
+                if marchEvent.toAlliance.id == alliance._id and marchEvent.fromAlliance.id ~= alliance._id then
                     table.insert(beStrikedEvents, marchEvent)
             else
                 table.insert(attackEvents, marchEvent)
@@ -85,10 +85,10 @@ function GameUIAllianceWatchTower:GetAllOrderedMarchEvents()
                     -- 目的地是我方联盟，并且出发地不是我方联盟，或者是协防事件:来袭事件
                     if marchEvent.toAlliance.id == alliance._id and marchEvent.fromAlliance.id ~= alliance._id or marchEvent.marchType == "helpDefence" then
                         table.insert(beStrikedEvents, marchEvent)
-                    end
-                    if marchEvent.fromAlliance.id == alliance._id and marchEvent.marchType ~= "helpDefence" then
-                        table.insert(attackEvents, marchEvent)
-                    end
+                end
+                if marchEvent.fromAlliance.id == alliance._id and marchEvent.marchType ~= "helpDefence" then
+                    table.insert(attackEvents, marchEvent)
+                end
                 end
             end
         end
@@ -266,7 +266,7 @@ function GameUIAllianceWatchTower:CreateBeStrikedContent()
             dragon_head:setDragonImg("unknown_dragon_icon_112x112.png")
         end
 
-        
+
         local defencer = beStriked_event.defencePlayerData or beStriked_event.defenceVillageData or beStriked_event.defenceMonsterData
         if beStriked_event.defencePlayerData then
             defencer = beStriked_event.defencePlayerData.name
@@ -516,6 +516,7 @@ end
 
 
 return GameUIAllianceWatchTower
+
 
 
 
