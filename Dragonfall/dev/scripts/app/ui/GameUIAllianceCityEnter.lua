@@ -149,6 +149,10 @@ function GameUIAllianceCityEnter:GetEnterButtons()
             else
                 help_button = self:BuildOneButton("help_defense_44x56.png",_("协防")):onButtonClicked(function()
                     local function helpDefencePlayer()
+                        if alliance:GetSelf().helpDefenceDisableFinishTime /1000 > app.timer:GetServerTime() then
+                            UIKit:showMessageDialog(_("提示"), _("协防冷却中"), function()end)
+                            return
+                        end
                         local playerId = member.id
                         if not alliance:CheckHelpDefenceMarchEventsHaveTarget(playerId) then
                             local toLocation = self:GetLogicPosition()
@@ -276,11 +280,11 @@ function GameUIAllianceCityEnter:GetEnterButtons()
             --     end)
             -- else
             UIKit:newGameUI("GameUIStrikePlayer",1,{
-                            memberId = member.id,
-                            alliance = alliance,
-                            toLocation = toLocation,
-                            targetIsProtected = member.isProtected
-                                             or member.newbeeProtect
+                memberId = member.id,
+                alliance = alliance,
+                toLocation = toLocation,
+                targetIsProtected = member.isProtected
+                or member.newbeeProtect
             }):AddToCurrentScene(true)
             -- end
             self:LeftButtonClicked()
@@ -315,6 +319,7 @@ function GameUIAllianceCityEnter:GetEnterButtons()
 end
 
 return GameUIAllianceCityEnter
+
 
 
 
