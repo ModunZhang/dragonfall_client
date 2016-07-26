@@ -143,7 +143,7 @@ function WorldLayer:CreateMap()
     GameUtils:LoadImagesWithFormat(function()
         if isUseSdImage() then
             cc.TMXTiledMap:create("tmxmaps/worldlayer-sd.tmx")
-            :align(display.LEFT_BOTTOM, 0, 0):addTo(clip):scale(2.01)
+            :align(display.LEFT_BOTTOM, 0, 0):addTo(clip):scale(2)
         else
             cc.TMXTiledMap:create("tmxmaps/worldlayer.tmx")
             :align(display.LEFT_BOTTOM, 0, 0):addTo(clip)
