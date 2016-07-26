@@ -156,18 +156,18 @@ function GameUIAllianceCityEnter:GetEnterButtons()
                         local playerId = member.id
                         if not alliance:CheckHelpDefenceMarchEventsHaveTarget(playerId) then
                             local toLocation = self:GetLogicPosition()
-                            if alliance:GetSelf().masterOfDefender then
-                                UIKit:showMessageDialog(_("提示"),_("协防盟友将失去保护状态，确定继续派兵?"),function()
-                                    local attack_func = function ()
-                                        UIKit:newGameUI('GameUISendTroopNew',function(dragonType,soldiers)
-                                            NetManager:getHelpAllianceMemberDefencePromise(dragonType, soldiers, playerId):done(function()
-                                                app:GetAudioManager():PlayeEffectSoundWithKey("TROOP_SENDOUT")
-                                            end)
-                                        end,{targetAlliance = alliance,toLocation = toLocation}):AddToCurrentScene(true)
-                                    end
-                                    UIKit:showSendTroopMessageDialog(attack_func, "dragonMaterials",_("龙材料"))
-                                end,function()end)
-                            else
+                            -- if alliance:GetSelf().masterOfDefender then
+                            --     UIKit:showMessageDialog(_("提示"),_("协防盟友将失去保护状态，确定继续派兵?"),function()
+                            --         local attack_func = function ()
+                            --             UIKit:newGameUI('GameUISendTroopNew',function(dragonType,soldiers)
+                            --                 NetManager:getHelpAllianceMemberDefencePromise(dragonType, soldiers, playerId):done(function()
+                            --                     app:GetAudioManager():PlayeEffectSoundWithKey("TROOP_SENDOUT")
+                            --                 end)
+                            --             end,{targetAlliance = alliance,toLocation = toLocation}):AddToCurrentScene(true)
+                            --         end
+                            --         UIKit:showSendTroopMessageDialog(attack_func, "dragonMaterials",_("龙材料"))
+                            --     end,function()end)
+                            -- else
                                 local attack_func = function ()
                                     UIKit:newGameUI('GameUISendTroopNew',function(dragonType,soldiers)
                                         NetManager:getHelpAllianceMemberDefencePromise(dragonType, soldiers, playerId):done(function()
@@ -176,7 +176,7 @@ function GameUIAllianceCityEnter:GetEnterButtons()
                                     end,{targetAlliance = alliance,toLocation = toLocation}):AddToCurrentScene(true)
                                 end
                                 UIKit:showSendTroopMessageDialog(attack_func, "dragonMaterials",_("龙材料"))
-                            end
+                            -- end
                         else
                             UIKit:showMessageDialog(_("错误"), _("已有协防部队正在行军"), function()end)
                             self:LeftButtonClicked()
