@@ -1,9 +1,9 @@
-# This file was generated from /Users/kennydai/Downloads/i18n(5)(2).xlsx
+# This file was generated from /Users/kennydai/Downloads/i18n(6).xlsx
 msgid ""
 msgstr ""
 "Project-Id-Version: dragonfall\n"
-"POT-Creation-Date: 2016-07-25 19:21+0800\n"
-"PO-Revision-Date: 2016-07-25 19:21+0800\n"
+"POT-Creation-Date: 2016-07-26 15:44+0800\n"
+"PO-Revision-Date: 2016-07-26 15:44+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: MyApp.lua:266 MyApp.lua:277 MyApp.lua:281 MyApp.lua:304 MyApp.lua:308
 #: MyApp.lua:314 MyApp.lua:322 MyApp.lua:734 service/NetManager.lua:407
-#: ui/GameUIAllianceCityEnter.lua:176 ui/GameUIChatChannel.lua:116
+#: ui/GameUIAllianceCityEnter.lua:181 ui/GameUIChatChannel.lua:116
 #: ui/GameUIChatChannel.lua:160 ui/GameUIGMChat.lua:367
 #: ui/GameUIGMChat.lua:400 ui/GameUILoginBeta.lua:235
 #: ui/GameUILoginBeta.lua:487 ui/GameUILoginBeta.lua:504
@@ -74,13 +74,13 @@ msgstr ""
 #: ui/GameUIAlliance.lua:1913 ui/GameUIAlliance.lua:1949
 #: ui/GameUIAlliance.lua:1957 ui/GameUIAlliance.lua:2081
 #: ui/GameUIAlliance.lua:2086 ui/GameUIAlliance.lua:2090
-#: ui/GameUIAlliance.lua:2094 ui/GameUIAlliance.lua:2099
-#: ui/GameUIAlliance.lua:2178 ui/GameUIAlliance.lua:2183
-#: ui/GameUIAllianceBattle.lua:277 ui/GameUIAllianceBattle.lua:281
-#: ui/GameUIAllianceBattle.lua:285 ui/GameUIAllianceCityEnter.lua:141
-#: ui/GameUIAllianceCityEnter.lua:155 ui/GameUIAllianceCityEnter.lua:183
-#: ui/GameUIAllianceCityEnter.lua:225 ui/GameUIAllianceCityEnter.lua:259
-#: ui/GameUIAllianceCityEnter.lua:298 ui/GameUIAllianceContribute.lua:328
+#: ui/GameUIAlliance.lua:2099 ui/GameUIAlliance.lua:2178
+#: ui/GameUIAlliance.lua:2183 ui/GameUIAllianceBattle.lua:277
+#: ui/GameUIAllianceBattle.lua:281 ui/GameUIAllianceBattle.lua:285
+#: ui/GameUIAllianceCityEnter.lua:142 ui/GameUIAllianceCityEnter.lua:153
+#: ui/GameUIAllianceCityEnter.lua:160 ui/GameUIAllianceCityEnter.lua:188
+#: ui/GameUIAllianceCityEnter.lua:233 ui/GameUIAllianceCityEnter.lua:267
+#: ui/GameUIAllianceCityEnter.lua:306 ui/GameUIAllianceContribute.lua:328
 #: ui/GameUIAllianceContribute.lua:333 ui/GameUIAllianceContribute.lua:344
 #: ui/GameUIAllianceHome.lua:730 ui/GameUIAllianceInfo.lua:287
 #: ui/GameUIAllianceInfo.lua:292 ui/GameUIAllianceInfo.lua:299
@@ -3337,8 +3337,8 @@ msgstr "Overview"
 msgid "建筑"
 msgstr "Building"
 
-#: ui/GameUIAlliance.lua:897 ui/GameUIAllianceCityEnter.lua:212
-#: ui/GameUIAllianceCityEnter.lua:304 ui/GameUIAllianceInfo.lua:127
+#: ui/GameUIAlliance.lua:897 ui/GameUIAllianceCityEnter.lua:220
+#: ui/GameUIAllianceCityEnter.lua:312 ui/GameUIAllianceInfo.lua:127
 #: ui/GameUIAllianceInfo.lua:135 ui/GameUIAlliancePalace.lua:33
 #: ui/GameUIAlliancePalace.lua:491 ui/GameUIAlliancePalaceEnter.lua:59
 #: ui/GameUICrownEnter.lua:190 ui/GameUIDwelling.lua:31 ui/GameUIKeep.lua:87
@@ -3503,10 +3503,6 @@ msgid "联盟正在战争准备期或战争期,不能退出联盟"
 msgstr ""
 "You can't leave Alliance when your Alliance is at the Preparation or Battle "
 "Period"
-
-#: ui/GameUIAlliance.lua:2094
-msgid "你即将被攻打，不能退出联盟"
-msgstr "You can't quit Alliance when you are under attack"
 
 #: ui/GameUIAlliance.lua:2099 ui/GameUIAlliance.lua:2103
 #, lua-format
@@ -3782,7 +3778,7 @@ msgstr "Winrate"
 msgid "和平期"
 msgstr "Peace"
 
-#: ui/GameUIAllianceCityEnter.lua:23 ui/GameUIAllianceEnterBase.lua:204
+#: ui/GameUIAllianceCityEnter.lua:24 ui/GameUIAllianceEnterBase.lua:204
 #: ui/GameUIAllianceVillageEnter.lua:290
 #: ui/GameUIAllianceWatchTowerTroopDetail.lua:171
 #: ui/GameUIAllianceWatchTowerTroopDetail.lua:249
@@ -3806,14 +3802,14 @@ msgstr "Peace"
 #: ui/GameUIMonsterReport.lua:393 ui/GameUIOrderHall.lua:160
 #: ui/GameUIOrderHall.lua:204 ui/GameUIOrderHall.lua:383
 #: ui/GameUIShrineReportInMail.lua:472 ui/GameUIUpgradeTechnology.lua:64
-#: ui/GameUIUpgradeTechnology.lua:66 ui/GameUIWarReport.lua:481
+#: ui/GameUIUpgradeTechnology.lua:66 ui/GameUIWarReport.lua:503
 #: ui/GameUIWatchTowerMyTroopsDetail.lua:155
 #: ui/GameUIWatchTowerTroopDetail.lua:208
 #: ui/GameUIWatchTowerTroopDetail.lua:274
 msgid "等级"
 msgstr "Lv"
 
-#: ui/GameUIAllianceCityEnter.lua:108 ui/GameUIAllianceDecorateEnter.lua:66
+#: ui/GameUIAllianceCityEnter.lua:109 ui/GameUIAllianceDecorateEnter.lua:66
 #: ui/GameUIAllianceEnterBase.lua:83 ui/GameUIAllianceHome.lua:762
 #: ui/GameUIAllianceMoonGateEnter.lua:32
 #: ui/GameUIAllianceOrderHallEnter.lua:36 ui/GameUIAlliancePalaceEnter.lua:37
@@ -3825,96 +3821,100 @@ msgstr "Lv"
 msgid "坐标"
 msgstr "Coordinate"
 
-#: ui/GameUIAllianceCityEnter.lua:112 ui/GameUIWatchTower.lua:395
+#: ui/GameUIAllianceCityEnter.lua:113 ui/GameUIWatchTower.lua:395
 #: ui/GameUIWathTowerRegion.lua:385
 msgid "玩家"
 msgstr "Player"
 
-#: ui/GameUIAllianceCityEnter.lua:118
+#: ui/GameUIAllianceCityEnter.lua:119
 msgid "协防玩家"
 msgstr "Assistor"
 
-#: ui/GameUIAllianceCityEnter.lua:131 ui/GameUIAllianceCityEnter.lua:190
-#: ui/GameUIAllianceCityEnter.lua:288
+#: ui/GameUIAllianceCityEnter.lua:132 ui/GameUIAllianceCityEnter.lua:198
+#: ui/GameUIAllianceCityEnter.lua:296
 msgid "进入"
 msgstr "Enter"
 
-#: ui/GameUIAllianceCityEnter.lua:140 ui/GameUIWall.lua:260
+#: ui/GameUIAllianceCityEnter.lua:141 ui/GameUIWall.lua:260
 msgid "撤防"
 msgstr "Withdraw"
 
-#: ui/GameUIAllianceCityEnter.lua:141
+#: ui/GameUIAllianceCityEnter.lua:142
 msgid "是否确认撤防"
 msgstr "Are you sure to retreat ?"
 
-#: ui/GameUIAllianceCityEnter.lua:149 ui/GameUIHelpDefence.lua:87
+#: ui/GameUIAllianceCityEnter.lua:150 ui/GameUIHelpDefence.lua:87
 msgid "协防"
 msgstr "Assist"
 
-#: ui/GameUIAllianceCityEnter.lua:155
+#: ui/GameUIAllianceCityEnter.lua:153
+msgid "协防冷却中"
+msgstr "You can't assist now, please wait"
+
+#: ui/GameUIAllianceCityEnter.lua:160
 msgid "协防盟友将失去保护状态，确定继续派兵?"
 msgstr "You'll lose your protection if you assist your allies,continue?"
 
-#: ui/GameUIAllianceCityEnter.lua:163 ui/GameUIAllianceCityEnter.lua:173
-#: ui/GameUIAllianceCityEnter.lua:246 ui/GameUIAllianceVillageEnter.lua:336
+#: ui/GameUIAllianceCityEnter.lua:168 ui/GameUIAllianceCityEnter.lua:178
+#: ui/GameUIAllianceCityEnter.lua:254 ui/GameUIAllianceVillageEnter.lua:336
 #: ui/GameUIAllianceVillageEnter.lua:363 ui/GameUIAllianceVillageEnter.lua:400
 #: ui/GameUIShireFightEvent.lua:298
 msgid "龙材料"
 msgstr "Dragon Material"
 
-#: ui/GameUIAllianceCityEnter.lua:176
+#: ui/GameUIAllianceCityEnter.lua:181
 msgid "已有协防部队正在行军"
 msgstr "You've already sent assist troops to this ally"
 
-#: ui/GameUIAllianceCityEnter.lua:183
+#: ui/GameUIAllianceCityEnter.lua:188
 msgid "目标协防数量已满，是否确认继续派兵？"
 msgstr "Already Defended by other ally, continue ?"
 
-#: ui/GameUIAllianceCityEnter.lua:200 ui/GameUIAllianceMemberInfo.lua:66
+#: ui/GameUIAllianceCityEnter.lua:208 ui/GameUIAllianceMemberInfo.lua:66
 #: ui/GameUIAllianceMemberInfo.lua:80 ui/GameUIAllianceMemberInfo.lua:152
 #: ui/GameUIMail.lua:26 ui/GameUIMail.lua:165 ui/GameUIMail.lua:1985
 #: widget/WidgetHomeBottom.lua:44 widget/WidgetMailContacts.lua:106
 msgid "邮件"
 msgstr "Mail"
 
-#: ui/GameUIAllianceCityEnter.lua:207 ui/GameUIAllianceMemberInfo.lua:166
+#: ui/GameUIAllianceCityEnter.lua:215 ui/GameUIAllianceMemberInfo.lua:166
 #: ui/GameUIAllianceMemberInfo.lua:260 ui/GameUIChatChannel.lua:748
 #: widget/WidgetMailContacts.lua:114
 msgid "个人邮件"
 msgstr "Mail"
 
-#: ui/GameUIAllianceCityEnter.lua:221 ui/GameUIAllianceMosterEnter.lua:189
+#: ui/GameUIAllianceCityEnter.lua:229 ui/GameUIAllianceMosterEnter.lua:189
 #: ui/GameUIAttackPlayerCity.lua:104 ui/GameUIPveAttack.lua:344
 msgid "进攻"
 msgstr "Attack"
 
-#: ui/GameUIAllianceCityEnter.lua:225
+#: ui/GameUIAllianceCityEnter.lua:233
 msgid "目标城市已被击溃并进入保护期，可能无法发生战斗，你是否继续派兵?"
 msgstr ""
 "The target city is under protection，you may not be able to hurt and plunder "
 "it, continue? "
 
-#: ui/GameUIAllianceCityEnter.lua:253
+#: ui/GameUIAllianceCityEnter.lua:261
 msgid "进攻玩家城市将失去保护状态以及城防大师效果,确定继续派兵?"
 msgstr ""
 "You'll lose your protection and the Defence Master effect if you attack "
 "others' city,continue?"
 
-#: ui/GameUIAllianceCityEnter.lua:255
+#: ui/GameUIAllianceCityEnter.lua:263
 msgid "进攻玩家城市将失去保护状态，确定继续派兵?"
 msgstr "You'll lose your protection if you attack others' city,continue?"
 
-#: ui/GameUIAllianceCityEnter.lua:257
+#: ui/GameUIAllianceCityEnter.lua:265
 msgid "进攻玩家城市将失去城防大师效果,确定继续派兵?"
 msgstr ""
 "You'll lose the Defence Master effect if you attack others' city,continue?"
 
-#: ui/GameUIAllianceCityEnter.lua:267 ui/GameUIAllianceVillageEnter.lua:373
+#: ui/GameUIAllianceCityEnter.lua:275 ui/GameUIAllianceVillageEnter.lua:373
 #: ui/GameUIStrikePlayer.lua:88
 msgid "突袭"
 msgstr "Scout"
 
-#: ui/GameUIAllianceCityEnter.lua:298
+#: ui/GameUIAllianceCityEnter.lua:306
 msgid "巨石阵等级不足，不能进入其他联盟玩家城市"
 msgstr "Need Lv3 Stonehenge to enter the target city"
 
@@ -4361,7 +4361,7 @@ msgstr "Disappear after:%s"
 #: ui/GameUIAllianceMosterEnter.lua:89 ui/GameUIMonsterReport.lua:464
 #: ui/GameUIMonsterReport.lua:487 ui/GameUIShrineReportInMail.lua:544
 #: ui/GameUIStrikeReport.lua:335 ui/GameUIStrikeReport.lua:609
-#: ui/GameUIWarReport.lua:549
+#: ui/GameUIWarReport.lua:571
 #, lua-format
 msgid "等级%d"
 msgstr "Lv%d"
@@ -4720,7 +4720,7 @@ msgid "撤军"
 msgstr "Withdraw"
 
 #: ui/GameUIAllianceVillageEnter.lua:314 ui/GameUIMonsterReport.lua:366
-#: ui/GameUIShrineReportInMail.lua:445 ui/GameUIWarReport.lua:454
+#: ui/GameUIShrineReportInMail.lua:445 ui/GameUIWarReport.lua:476
 #: widget/WidgetMarchEvents.lua:388 widget/WidgetMarchEvents.lua:555
 msgid "部队"
 msgstr "Troop"
@@ -5324,7 +5324,7 @@ msgstr "Delete"
 
 #: ui/GameUICollectReport.lua:133 ui/GameUIMonsterReport.lua:234
 #: ui/GameUIShrineReportInMail.lua:233 ui/GameUIStrikeReport.lua:256
-#: ui/GameUIWarReport.lua:284
+#: ui/GameUIWarReport.lua:306
 msgid "战利品"
 msgstr "Loots"
 
@@ -5333,9 +5333,9 @@ msgstr "Loots"
 msgid "无战利品"
 msgstr "No loot"
 
-#: ui/GameUICollectReport.lua:145 ui/GameUIMonsterReport.lua:621
+#: ui/GameUICollectReport.lua:147 ui/GameUIMonsterReport.lua:623
 #: ui/GameUIShrineReportInMail.lua:695 ui/GameUIStrikeReport.lua:34
-#: ui/GameUIWarReport.lua:753
+#: ui/GameUIWarReport.lua:777
 #, lua-format
 msgid "Battle at %s (%d,%d)"
 msgstr "Battle at %s (%d,%d)"
@@ -6681,47 +6681,47 @@ msgid "回放"
 msgstr "Replay"
 
 #: ui/GameUIMonsterReport.lua:255 ui/GameUIStrikeReport.lua:273
-#: ui/GameUIWarReport.lua:310 ui/GameUIWarReport.lua:358
+#: ui/GameUIWarReport.lua:332 ui/GameUIWarReport.lua:380
 msgid "战斗统计"
 msgstr "Statistics"
 
 #: ui/GameUIMonsterReport.lua:294 ui/GameUIShrineReportInMail.lua:373
-#: ui/GameUIWarReport.lua:389
+#: ui/GameUIWarReport.lua:411
 msgid "你的部队"
 msgstr "Your Troops"
 
 #: ui/GameUIMonsterReport.lua:299 ui/GameUIShrineReportInMail.lua:378
-#: ui/GameUIWarReport.lua:394
+#: ui/GameUIWarReport.lua:416
 msgid "敌方部队"
 msgstr "Enemy Troops"
 
 #: ui/GameUIMonsterReport.lua:371 ui/GameUIShrineReportInMail.lua:450
-#: ui/GameUIWarReport.lua:459
+#: ui/GameUIWarReport.lua:481
 msgid "存活"
 msgstr "Survived"
 
 #: ui/GameUIMonsterReport.lua:376 ui/GameUIShrineReportInMail.lua:455
-#: ui/GameUIWarReport.lua:464
+#: ui/GameUIWarReport.lua:486
 msgid "伤兵"
 msgstr "Wounded"
 
 #: ui/GameUIMonsterReport.lua:381 ui/GameUIShrineReportInMail.lua:460
-#: ui/GameUIWarReport.lua:469
+#: ui/GameUIWarReport.lua:491
 msgid "被消灭"
 msgstr "Killed"
 
 #: ui/GameUIMonsterReport.lua:398 ui/GameUIShrineReportInMail.lua:477
-#: ui/GameUIWarReport.lua:486
+#: ui/GameUIWarReport.lua:508
 msgid "XP"
 msgstr "XP"
 
 #: ui/GameUIMonsterReport.lua:403 ui/GameUIShrineReportInMail.lua:482
-#: ui/GameUIWarReport.lua:491
+#: ui/GameUIWarReport.lua:513
 msgid "HP"
 msgstr "HP"
 
 #: ui/GameUIMonsterReport.lua:411 ui/GameUIShrineReportInMail.lua:490
-#: ui/GameUIWarReport.lua:499
+#: ui/GameUIWarReport.lua:521
 msgid "无部队"
 msgstr "No Troop"
 
@@ -7228,7 +7228,7 @@ msgstr "Upgrade this Science to increase your Construct speed"
 msgid "升级石雕技巧的好处"
 msgstr "Upgrade this Science to increase your Stone output"
 
-#: ui/GameUIReplay.lua:156 ui/GameUIWarReport.lua:669 utils/Localize.lua:719
+#: ui/GameUIReplay.lua:156 ui/GameUIWarReport.lua:691 utils/Localize.lua:719
 #: utils/Localize.lua:806 utils/Localize.lua:852
 #: widget/WidgetTreatSoldier.lua:32
 msgid "城墙"
@@ -8729,36 +8729,36 @@ msgstr ""
 msgid "选择%s会获得战斗力加成"
 msgstr "Choose %s to get extra power"
 
-#: ui/GameUIWarReport.lua:262
+#: ui/GameUIWarReport.lua:217 ui/GameUIWarReport.lua:284
 msgid "由于使用了城防大师，敌方无法掠夺资源"
 msgstr "The enemy has plundered nothing because of the Defence Master"
 
-#: ui/GameUIWarReport.lua:264
+#: ui/GameUIWarReport.lua:219 ui/GameUIWarReport.lua:286
 msgid "由于敌方使用了城防大师，无法掠夺资源"
 msgstr "You have plundered nothing because of the Defence Master used by enemy"
 
-#: ui/GameUIWarReport.lua:267
+#: ui/GameUIWarReport.lua:289
 msgid "未获得战利品"
 msgstr "No Trophy"
 
-#: ui/GameUIWarReport.lua:358
+#: ui/GameUIWarReport.lua:380
 msgid "由于敌方未驻防，战斗未发生"
 msgstr "No battle happened since the enemy wasn't garrisoned"
 
-#: ui/GameUIWarReport.lua:358
+#: ui/GameUIWarReport.lua:380
 msgid "由于我方未驻防，战斗未发生"
 msgstr "No battle happened since you weren't garrisoned"
 
-#: ui/GameUIWarReport.lua:565 ui/GameUIWarReport.lua:580
+#: ui/GameUIWarReport.lua:587 ui/GameUIWarReport.lua:602
 #, lua-format
 msgid "%s损失"
 msgstr "%s Loss"
 
-#: ui/GameUIWarReport.lua:691 utils/Localize.lua:592
+#: ui/GameUIWarReport.lua:713 utils/Localize.lua:592
 msgid "城墙生命值"
 msgstr "Wall Durability"
 
-#: ui/GameUIWarReport.lua:697
+#: ui/GameUIWarReport.lua:719
 msgid "城墙受损"
 msgstr "Damaged"
 
