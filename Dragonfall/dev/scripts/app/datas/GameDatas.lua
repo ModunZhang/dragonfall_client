@@ -91,6 +91,7 @@ GameDatas.AllianceInitData = {
 	["donate"] = {},
 	["shrineStage"] = {},
 	["monsters"] = {},
+	["grabResourceFix"] = {},
 }
 require("app.datas.AllianceInitData_intInit")
 require("app.datas.AllianceInitData_stringInit")
@@ -98,6 +99,7 @@ require("app.datas.AllianceInitData_right")
 require("app.datas.AllianceInitData_donate")
 require("app.datas.AllianceInitData_shrineStage")
 require("app.datas.AllianceInitData_monsters")
+require("app.datas.AllianceInitData_grabResourceFix")
 
 GameDatas.AllianceMap = {
 	["buildingName"] = {},
