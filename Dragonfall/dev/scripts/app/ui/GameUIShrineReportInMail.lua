@@ -280,7 +280,7 @@ function GameUIShrineReportInMail:FightReportsData(data)
     -- RoundDatas
     local left_round = data.fightWithDefenceTroopReports.soldierRoundDatas
 
-    local right_round =data.fightWithDefenceTroopReports.soldierRoundDatas
+    local right_round = data.fightWithDefenceTroopReports.soldierRoundDatas
     if left_player_troop then
         self:CreateArmyGroup(left_player_troop,right_player_troop,left_player_dragon,right_player_dragon,left_round,right_round)
     end
@@ -427,15 +427,29 @@ function GameUIShrineReportInMail:CreateArmyItem(title,troop,dragon,enemy_troop,
         for k,v in pairs(troop) do
             troopTotal = troopTotal + v.count
         end
-        for k,v in ipairs(enemy_round_datas) do
-            for i,v in ipairs(v.defenceResults) do
-                killed = killed + v.soldierDamagedCount
+        if isSelf then
+            for k,v in ipairs(enemy_round_datas) do
+                for i,v in ipairs(v.defenceResults) do
+                    killed = killed + v.soldierDamagedCount
+                end
             end
-        end
-        for k,v in ipairs(round_datas) do
-            for i,v in ipairs(v.attackResults) do
-                totalDamaged = totalDamaged + v.soldierDamagedCount
-                totalWounded = totalWounded + v.soldierWoundedCount
+            for k,v in ipairs(round_datas) do
+                for i,v in ipairs(v.attackResults) do
+                    totalDamaged = totalDamaged + v.soldierDamagedCount
+                    totalWounded = totalWounded + v.soldierWoundedCount
+                end
+            end
+        else
+            for k,v in ipairs(enemy_round_datas) do
+                for i,v in ipairs(v.attackResults) do
+                    killed = killed + v.soldierDamagedCount
+                end
+            end
+            for k,v in ipairs(round_datas) do
+                for i,v in ipairs(v.defenceResults) do
+                    totalDamaged = totalDamaged + v.soldierDamagedCount
+                    totalWounded = totalWounded + v.soldierWoundedCount
+                end
             end
         end
 
