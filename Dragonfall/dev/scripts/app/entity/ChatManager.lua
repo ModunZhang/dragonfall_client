@@ -162,24 +162,45 @@ function ChatManager:__getMessageWithChannel(channel)
         return self.alliance_channel
     end
 end
-
-
+-- 检查列表中是否已经存在此条信息
+function ChatManager:checkMsgIsExistInList_(msg,list)
+    if type(list) ~= 'table' then return false end
+    for __,iMsg in ipairs(list) do
+        if iMsg.id == msg.id and iMsg.time == msg.time then
+            return true
+        end
+    end
+    return false
+end
+-- 检查聊天中是否已经存在此条信息
+function ChatManager:checkMsgIsExistInChannel_(msg)
+    if not msg.channel return true end
+    local msg_type = string.lower(msg.channel)
+    if msg_type =='global' or msg_type == 'system' then
+        return self:checkMsgIsExistInList_(msg,self.global_channel)
+    elseif msg_type == 'alliance' then
+        return self:checkMsgIsExistInList_(msg,self.alliance_channel)
+    elseif msg_type == 'alliancefight' then
+        return self:checkMsgIsExistInList_(msg,self.allianceFight_channel)
+    end
+    return false
+end
 
 function ChatManager:insertNormalMessage_(msg)
     if not msg.channel then return end
     local msg_type = string.lower(msg.channel)
     if msg_type =='global' or msg_type == 'system' then
-        if not self:__checkIsBlocked(msg) then
+        if not self:__checkIsBlocked(msg) and not self:checkMsgIsExistInChannel_(msg) then
             table.insert(self.global_channel,1,msg)
             return true
         end
     elseif msg_type == 'alliance' then
-        if not self:__checkIsBlocked(msg) then
+        if not self:__checkIsBlocked(msg) and not self:checkMsgIsExistInChannel_(msg) then
             table.insert(self.alliance_channel,1,msg)
             return true
         end
     elseif msg_type == 'alliancefight' then
-        if not self:__checkIsBlocked(msg) then
+        if not self:__checkIsBlocked(msg) and not self:checkMsgIsExistInChannel_(msg) then
             table.insert(self.allianceFight_channel,1,msg)
             return true
         end
