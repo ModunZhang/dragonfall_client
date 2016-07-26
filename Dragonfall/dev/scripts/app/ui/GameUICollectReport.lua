@@ -142,7 +142,9 @@ end
 function GameUICollectReport:GetFightTarget()
     local battleAt = self.report:GetBattleAt()
     local location = self.report:GetBattleLocation()
-    return string.format(_("Battle at %s (%d,%d)"),battleAt,location.x,location.y)
+    local mapIndex = self.report:GetAttackTarget().alliance.mapIndex
+    local x , y =DataUtils:GetAbsolutePosition(mapIndex,location.x,location.y)
+    return string.format(_("Battle at %s (%d,%d)"),battleAt,x,y)
 end
 function GameUICollectReport:GetBooty()
     local booty = {}

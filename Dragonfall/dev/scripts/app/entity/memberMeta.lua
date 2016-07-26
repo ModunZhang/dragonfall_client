@@ -29,6 +29,8 @@ property(memberMeta, "helpedByTroopsCount", 0)
 property(memberMeta, "lastRewardData")
 property(memberMeta, "lastThreeDaysKillData")
 property(memberMeta, "joinAllianceTime")
+property(memberMeta, "helpDefenceDisableFinishTime",0)
+
 
 local titles_enum = Enum("member",
     "elite",

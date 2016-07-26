@@ -316,7 +316,7 @@ function GameUIShrineReport:GetPlayerDataItemContent()
     local bg0 = display.newScale9Sprite("back_ground_548x40_1.png"):size(548,80):align(display.LEFT_BOTTOM,0,0):addTo(content)
     local bg1 = display.newScale9Sprite("back_ground_548x40_2.png"):size(548,80):align(display.LEFT_BOTTOM,0,0):addTo(content)
     local bg2 = display.newScale9Sprite("shire_rank_bg_548x66.png"):size(548,80):align(display.LEFT_BOTTOM,0,0):addTo(content)
-    local reward3 = display.newSprite("goldKill_icon_76x84.png"):align(display.LEFT_CENTER,12, 40):addTo(content):scale(0.8)
+    local reward3 = display.newSprite("goldKill_icon_76x84.png"):align(display.LEFT_CENTER,20, 40):addTo(content):scale(0.8)
     local reward2 = display.newSprite("silverKill_icon_76x84.png"):align(display.LEFT_CENTER,20, 40):addTo(content):scale(0.8)
     local reward1 = display.newSprite("bronzeKill_icon_76x84.png"):align(display.LEFT_CENTER,20, 40):addTo(content):scale(0.8)
 

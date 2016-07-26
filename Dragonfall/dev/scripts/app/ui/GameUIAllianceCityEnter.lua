@@ -8,6 +8,7 @@ local GameUIWriteMail = import(".GameUIWriteMail")
 local SpriteConfig = import("..sprites.SpriteConfig")
 local Alliance = import("..entity.Alliance")
 local UILib = import(".UILib")
+local WidgetProgressCountDown = import("..widget.WidgetProgressCountDown")
 
 function GameUIAllianceCityEnter:ctor(mapObj,alliance)
     GameUIAllianceCityEnter.super.ctor(self,mapObj,alliance)
@@ -186,6 +187,9 @@ function GameUIAllianceCityEnter:GetEnterButtons()
                     end
                 end)
                 help_button:setTouchSwallowEnabled(true)
+                if self:GetMyAlliance():GetSelf().helpDefenceDisableFinishTime/1000 > app.timer:GetServerTime() then
+                    WidgetProgressCountDown.new(self:GetMyAlliance():GetSelf().helpDefenceDisableFinishTime/1000):addTo(help_button):pos(-138/2,-110/2)
+                end
             end
             local enter_button = self:BuildOneButton("alliance_enter_city_56x68.png",_("进入")):onButtonClicked(function()
                 local location = self:GetLogicPosition()
