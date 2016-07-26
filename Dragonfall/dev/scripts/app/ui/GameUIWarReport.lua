@@ -175,15 +175,17 @@ function GameUIWarReport:GetBooty()
     for k,v in pairs(self:GetRewards()) do
         local index
         if v.name == "wood" then
-            index = 1
-        elseif v.name == "stone" then
             index = 2
-        elseif v.name == "food" then
+        elseif v.name == "stone" then
             index = 3
-        elseif v.name == "iron" then
+        elseif v.name == "food" then
             index = 4
-        elseif v.name == "coin" then
+        elseif v.name == "iron" then
             index = 5
+        elseif v.name == "coin" then
+            index = 6
+        elseif v.name == "blood" then
+            index = 1
         end
         if index then
             booty[index] = {
