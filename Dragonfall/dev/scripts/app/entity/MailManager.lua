@@ -147,6 +147,9 @@ function MailManager:DeleteMail(mail)
             end
         end
     end
+    if not delete_mail_server_index then
+        return
+    end
     for k,v in pairs(DataManager:getUserData().mails) do
         if v.index > delete_mail_server_index then
             local old = clone(v.index)

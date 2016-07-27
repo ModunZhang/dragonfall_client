@@ -142,13 +142,10 @@ end
 function GameUICollectReport:GetFightTarget()
     local battleAt = self.report:GetBattleAt()
     local location = self.report:GetBattleLocation()
-    local mapIndex = self.report:GetAttackTarget().alliance.mapIndex
-    local x , y =DataUtils:GetAbsolutePosition(mapIndex,location.x,location.y)
-    return string.format(_("Battle at %s (%d,%d)"),battleAt,x,y)
+    return string.format(_("Battle at %s (%d,%d)"),battleAt,location.x,location.y)
 end
 function GameUICollectReport:GetBooty()
     local booty = {}
-    LuaUtils:outputTable("self.report:GetMyRewards()", self.report:GetMyRewards())
     for k,v in pairs(self.report:GetMyRewards()) do
         table.insert(booty, {
             resource_type = Localize.fight_reward[v.name],

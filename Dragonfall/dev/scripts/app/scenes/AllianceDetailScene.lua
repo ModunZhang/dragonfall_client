@@ -575,10 +575,12 @@ end
 function AllianceDetailScene:GotoAllianceByXY(x, y)
     local point = self:GetSceneLayer():ConvertLogicPositionToAlliancePosition(x,y)
     self:GetSceneLayer():GotoMapPositionInMiddle(point.x, point.y)
+    self:GetSceneLayer():TrackCorpsById(nil)
 end
 function AllianceDetailScene:GotoPosition(x,y)
     local point = self:GetSceneLayer():ConvertLogicPositionToMapPosition(x,y)
     self:GetSceneLayer():GotoMapPositionInMiddle(point.x, point.y)
+    self:GetSceneLayer():TrackCorpsById(nil)
 end
 function AllianceDetailScene:OnTouchBegan(...)
     AllianceDetailScene.super.OnTouchBegan(self, ...)

@@ -601,6 +601,9 @@ function GameUIAllianceBattle:OpenAllianceDetails(isOur)
 
     -- 玩家击杀列表
     local player_kill = target_alliance.playerKills
+    if not player_kill or #player_kill == 0 then
+        return
+    end
 
     local body = UIKit:newWidgetUI("WidgetPopDialog",630,_("击杀排行")):AddToCurrentScene():GetBody()
     local rb_size = body:getContentSize()

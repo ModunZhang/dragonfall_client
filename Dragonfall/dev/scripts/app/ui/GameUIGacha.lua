@@ -507,8 +507,10 @@ function GameUIGacha:InitOrdinary()
                                 end
                             end
                             -- 首先重置gacha池
-                            self.OrdinaryGachaPool:ResetPool()
-                            self.OrdinaryGachaPool:StartLotteryDraw(items)
+                            if not tolua.isnull(self) then
+                                self.OrdinaryGachaPool:ResetPool()
+                                self.OrdinaryGachaPool:StartLotteryDraw(items)
+                            end
                         end
                     end)
                 end
