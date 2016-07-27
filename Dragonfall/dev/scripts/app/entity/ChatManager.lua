@@ -174,7 +174,7 @@ function ChatManager:checkMsgIsExistInList_(msg,list)
 end
 -- 检查聊天中是否已经存在此条信息
 function ChatManager:checkMsgIsExistInChannel_(msg)
-    if not msg.channel return true end
+    if not msg.channel then return true end
     local msg_type = string.lower(msg.channel)
     if msg_type =='global' or msg_type == 'system' then
         return self:checkMsgIsExistInList_(msg,self.global_channel)
