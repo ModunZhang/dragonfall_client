@@ -18,7 +18,7 @@ void main(void)
 	vec2 point = gl_FragCoord.xy/iResolution.xy - MIDDLE;
 	float d = max(abs(point.x) - len, abs(point.y) - len);
 	float alpha = smoothstep(0.0, transit, (d / RADIUS)) * ratio;
-	gl_FragColor = vec4(0.8 * alpha, 0.14 * alpha, 0.0, 0.8 * alpha);
+	gl_FragColor = vec4(0.9 * alpha, 0.14 * alpha, 0.0, alpha);
 }
 
 // void main(void)
