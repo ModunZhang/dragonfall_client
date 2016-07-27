@@ -1218,6 +1218,7 @@ function CommonUpgradeUI:PopNotSatisfyDialog(listener,can_not_update_type)
     end
 end
 function CommonUpgradeUI:UpgradeDwelling()
+    if tolua.isnull(self) or not self.building then return end
     local CITIZEN_GUIDE = app:GetGameDefautlt():getStringForKey("CITIZEN_GUIDE:"..User:Id())
     if CITIZEN_GUIDE == "" then
         local config = self.building.config_building_levelup[self.building:GetType()]

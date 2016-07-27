@@ -8,17 +8,17 @@ varying vec2 v_texCoord;
 // 分辨率
 uniform vec2 iResolution;
 uniform float ratio;
-float RADIUS = distance(vec2(0.6), vec2(0.0));
+float RADIUS = distance(vec2(0.5), vec2(0.0));
 vec2 MIDDLE = vec2(0.5, 0.5);
 const float len = 0.2;
-const float transit = 0.3;
+const float transit = 0.4;
 
 void main(void)
 {
 	vec2 point = gl_FragCoord.xy/iResolution.xy - MIDDLE;
 	float d = max(abs(point.x) - len, abs(point.y) - len);
 	float alpha = smoothstep(0.0, transit, (d / RADIUS)) * ratio;
-	gl_FragColor = vec4(1.0 * alpha, 0.14 * alpha, 0.0, alpha);
+	gl_FragColor = vec4(0.8 * alpha, 0.14 * alpha, 0.0, 0.8 * alpha);
 }
 
 // void main(void)
