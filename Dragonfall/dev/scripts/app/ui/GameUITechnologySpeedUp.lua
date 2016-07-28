@@ -27,7 +27,9 @@ function GameUITechnologySpeedUp:ctor()
                 local event = User.productionTechEvents[1]
                 local time, percent = UtilsForEvent:GetEventInfo(event)
                 self:SetProgressInfo(time, percent)
-                self:CheckCanSpeedUpFree()
+                if self.CheckCanSpeedUpFree then
+                    self:CheckCanSpeedUpFree()
+                end
             end
         end)
     end

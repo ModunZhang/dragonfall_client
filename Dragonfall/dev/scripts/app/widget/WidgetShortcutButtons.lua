@@ -251,7 +251,9 @@ function WidgetShortcutButtons:onEnter()
     User:AddListenOnType(self, "activities")
     User:AddListenOnType(self, "allianceActivities")
 
-    NewsManager:AddListenOnType(self,NewsManager.LISTEN_TYPE.UNREAD_NEWS_CHANGED)
+    if NewsManager then
+        NewsManager:AddListenOnType(self,NewsManager.LISTEN_TYPE.UNREAD_NEWS_CHANGED)
+    end
 
     local my_allaince = Alliance_Manager:GetMyAlliance()
     my_allaince:AddListenOnType(self, "operation")
@@ -275,7 +277,9 @@ function WidgetShortcutButtons:onExit()
     User:RemoveListenerOnType(self, "dragons")
     User:RemoveListenerOnType(self, "activities")
     User:RemoveListenerOnType(self, "allianceActivities")
-    NewsManager:RemoveListenerOnType(self,NewsManager.LISTEN_TYPE.UNREAD_NEWS_CHANGED)
+    if NewsManager then
+        NewsManager:RemoveListenerOnType(self,NewsManager.LISTEN_TYPE.UNREAD_NEWS_CHANGED)
+    end
 
     local my_allaince = Alliance_Manager:GetMyAlliance()
     my_allaince:RemoveListenerOnType(self, "operation")
