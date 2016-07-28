@@ -1231,6 +1231,11 @@ function NetManager:getSendPersonalMailPromise(memberId, title, content , contac
             app:GetGameDefautlt():addRecentContacts(contacts)
         end
         return response
+    end):fail(function ()
+        if contacts then
+            -- 删除联系人
+            app:GetGameDefautlt():removeRecentContacts(contacts)
+        end
     end)
 end
 -- 获取收件箱邮件
