@@ -239,7 +239,7 @@ function GameUISeasonRank:touchListener(event)
         end
         local id = self.current_rank.datas[event.itemPos].id
         app:GetAudioManager():PlayeEffectSoundWithKey("NORMAL_DOWN")
-        if self.activity_data.activity.isAlliance then
+        if self.activity_data.isAlliance then
             UIKit:newGameUI("GameUIAllianceInfo", id, nil, DataManager:getUserData().serverId):AddToCurrentScene(true)
         else
             UIKit:newGameUI("GameUIAllianceMemberInfo",false,id,nil,DataManager:getUserData().serverId):AddToCurrentScene(true)
