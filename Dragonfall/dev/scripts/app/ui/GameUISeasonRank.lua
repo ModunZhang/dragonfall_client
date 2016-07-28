@@ -163,12 +163,19 @@ function GameUISeasonRank:CreatePlayerContentByIndex(idx)
         self.value:setString(string.formatnumberthousands(data.score))
 
         if parent.activity_data.isAlliance then
-            bg:hide()
-            if self.flag then
-                self.flag:SetFlag(data.flag)
+            if data.flag then
+                bg:hide()
+                if self.flag then
+                    self.flag:SetFlag(data.flag)
+                else
+                    self.flag = ui_helper:CreateFlagContentSprite(data.flag)
+                        :addTo(self):align(display.CENTER, 80, 7):scale(0.45)
+                end
             else
-                self.flag = ui_helper:CreateFlagContentSprite(data.flag)
-                    :addTo(self):align(display.CENTER, 80, 7):scale(0.45)
+                if self.flag then
+                    self.flag:hide()
+                end
+                bg:show()
             end
         else
             if self.flag then
@@ -241,6 +248,7 @@ function GameUISeasonRank:touchListener(event)
     end
 end
 return GameUISeasonRank
+
 
 
 
