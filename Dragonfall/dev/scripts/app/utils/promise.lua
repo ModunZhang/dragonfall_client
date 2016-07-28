@@ -4,6 +4,10 @@ err_class.__index = err_class
 function err_class.new(...)
     local r = {}
     setmetatable(r, err_class)
+    local content = ...
+    if type(content) == "table" then
+        content.stacktrace = debug.traceback("", 2)
+    end
     r:ctor(...)
     return r
 end
@@ -105,19 +109,17 @@ local function handle_next_failed(p, err)
             p.result = err
             return p
         end
-        dump(err)
-        err = err or ""
-        if type(err) == "table" then
-            local t = {}
-            for k,v in pairs(err) do
-                if type(v) == "string" then
-                    table.insert(t, string.format("%s=%s", k, v))
-                end
+        local error_msg = ""
+        if is_error(err) then
+            if type(err.errcode[1]) == "string" then
+                error_msg = string.format("\n%s:\n%s",
+                                err.errcode[2], err.errcode[1])
+            elseif type(err.errcode[1]) == "table" then
+                error_msg = string.format("\n%s:\n%s",
+                                err.errcode[2], err.errcode[1].stacktrace)
             end
-            assert(false, "你应该捕获这个错误!" ..  table.concat(t,";"))
-        else
-            assert(false, "你应该捕获这个错误!" .. err)
         end
+        assert(false, "你应该捕获这个错误!" .. error_msg)
     else
         next_promise.state_ = REJECTED
     end
