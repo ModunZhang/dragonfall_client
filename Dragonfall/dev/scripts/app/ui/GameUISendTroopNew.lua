@@ -83,9 +83,9 @@ function GameUISendTroopNew:RefreshMarchTimeAndBuff()
             table.insert(soldier_show_table, {count = soldier.count,soldier_march = config.march,soldier_category = config.type})
         end
         local time,buffTime = self:GetMarchTime(soldier_show_table)
-        self.march_time:setString(GameUtils:formatTimeStyle1(time))
-        self.buff_reduce_time:setString(string.format("-(%s)",GameUtils:formatTimeStyle1(buffTime)))
         self.total_march_time = time - buffTime
+        self.march_time:setString(GameUtils:formatTimeStyle1(self.total_march_time))
+        -- self.buff_reduce_time:setString(string.format("-(%s)",GameUtils:formatTimeStyle1(buffTime)))
     end
 end
 
@@ -572,6 +572,21 @@ function GameUISendTroopNew:CreateBottomPart()
         end):align(display.LEFT_CENTER,30,bottom_bg:getContentSize().height/2):addTo(bottom_bg)
     self.max_btn = max_btn
 
+    local formation_btn = WidgetPushButton.new({normal = "yellow_btn_up_148x58.png",pressed = "yellow_btn_down_148x58.png"})
+        :setButtonLabel(UIKit:ttfLabel({
+            text = _("阵型"),
+            size = 24,
+            color = 0xffedae,
+            shadow= true
+        }))
+        :onButtonClicked(function(event)
+            if event.name == "CLICKED_EVENT" then
+                UIKit:newWidgetUI("WidgetTroopFormation", self:GetSettingSoldiers(),function (formation)
+                    self:SetMaxSoldierByFormation(formation)
+                end):AddToCurrentScene()
+            end
+        end):align(display.CENTER,bottom_bg:getContentSize().width/2,bottom_bg:getContentSize().height/2):addTo(bottom_bg)
+
     if self.params.needTips and UtilsForTask:NeedTips(User) then
         UIKit:FingerAni():addTo(self.max_btn,11,111):rotation(-80):pos(170,30)
         self.max_btn:onButtonClicked(function()
@@ -658,8 +673,10 @@ function GameUISendTroopNew:CreateBottomPart()
                     self:CallFuncMarch_Callback(dragonType,soldiers)
                 end
             end
-
         end):align(display.RIGHT_CENTER,bottom_bg:getContentSize().width-30,bottom_bg:getContentSize().height/2):addTo(bottom_bg)
+    if not self.isMilitary then
+        march_btn:setButtonLabelOffset(0, 10)
+    end
     self.march_btn = march_btn
     if not self.isPVE and not self.isMilitary then
         --行军所需时间
@@ -667,16 +684,16 @@ function GameUISendTroopNew:CreateBottomPart()
             text = "00:00:00",
             size = 18,
             color = 0xffedae
-        }):align(display.RIGHT_CENTER,march_btn:getPositionX() - march_btn:getCascadeBoundingBox().size.width - 10,50):addTo(bottom_bg)
+        }):align(display.CENTER,-74,-16):addTo(march_btn)
 
         -- 科技减少行军时间
-        self.buff_reduce_time = UIKit:ttfLabel({
-            text = "-(00:00:00)",
-            size = 18,
-            color = 0x7eff00
-        }):align(display.RIGHT_CENTER,march_btn:getPositionX() - march_btn:getCascadeBoundingBox().size.width - 10,30):addTo(bottom_bg)
-        display.newSprite("hourglass_30x38.png", self.buff_reduce_time:getPositionX() - self.buff_reduce_time:getContentSize().width - 20, bottom_bg:getContentSize().height/2)
-            :addTo(bottom_bg):scale(0.8)
+        -- self.buff_reduce_time = UIKit:ttfLabel({
+        --     text = "-(00:00:00)",
+        --     size = 18,
+        --     color = 0x7eff00
+        -- }):align(display.RIGHT_CENTER,march_btn:getPositionX() - march_btn:getCascadeBoundingBox().size.width - 10,30):addTo(bottom_bg)
+        -- display.newSprite("hourglass_30x38.png", self.buff_reduce_time:getPositionX() - self.buff_reduce_time:getContentSize().width - 20, bottom_bg:getContentSize().height/2)
+        --     :addTo(bottom_bg):scale(0.8)
     end
 end
 function GameUISendTroopNew:SetMaxSoldier()
@@ -702,10 +719,53 @@ function GameUISendTroopNew:SetMaxSoldier()
     }))
     self:CheckRate()
 end
--- 根据一格最大带兵量获取按战斗力排序的士兵列表
-function GameUISendTroopNew:GetSortSoldierMax()
-    local max_citizen = self:GetUnitMaxCitizen()
+-- 用阵型替换当前士兵配置
+function GameUISendTroopNew:SetMaxSoldierByFormation(formation)
+    local own_soldiers = self:GetOwnSoldiers()
+    if #own_soldiers == 0 then
+        UIKit:showMessageDialog(_("提示"),_("阵型中的所有士兵均没有,读取失败!"))
+        return
+    end
+    -- 匹配阵型中的士兵
     local sort_soldiers = {}
+    local max_citizen = self:GetUnitMaxCitizen()
+    for __,f_soldier in ipairs(formation) do
+        for i,soldier in ipairs(own_soldiers) do
+            if f_soldier == soldier.name then
+                local config = UtilsForSoldier:GetSoldierConfig(User,soldier.name)
+                local soldier_unit_citizen = config.citizen
+                local curren_max_citizen = soldier_unit_citizen * soldier.count
+                local max_soldier = curren_max_citizen > max_citizen and math.floor(max_citizen/soldier_unit_citizen) or soldier.count
+                table.insert(sort_soldiers, {name = soldier.name,count = max_soldier,power = max_soldier * config.power})
+                own_soldiers[i].count = soldier.count - max_soldier
+                if own_soldiers[i].count == 0 then
+                    table.remove(own_soldiers,i)
+                end
+                break
+            end
+        end
+    end
+    if #sort_soldiers == 0 then
+        UIKit:showMessageDialog(_("提示"),_("阵型中的所有士兵均没有,读取失败!"))
+        return
+    end
+    self:ResetSoldierNode()
+    for i,soldier_node in ipairs(self.soldier_node_table) do
+        if sort_soldiers[i] then
+            soldier_node:SetSoldier(sort_soldiers[i].name,sort_soldiers[i].count):SetStatus(2)
+        end
+    end
+    self:RefreshSoldierNodes()
+    self.isMax = true
+    self.max_btn:setButtonLabel(UIKit:ttfLabel({
+        text = _("最小"),
+        size = 24,
+        color = 0xffedae,
+        shadow= true
+    }))
+    self:CheckRate()
+end
+function GameUISendTroopNew:GetOwnSoldiers()
     local own_soldiers = {}
     for i, soldier_type in ipairs({
         "swordsman_1", "ranger_1", "lancer_1", "catapult_1",
@@ -729,6 +789,13 @@ function GameUISendTroopNew:GetSortSoldierMax()
             table.insert(own_soldiers, {name = soldier_type,count = soldier_count})
         end
     end
+    return own_soldiers
+end
+-- 根据一格最大带兵量获取按战斗力排序的士兵列表
+function GameUISendTroopNew:GetSortSoldierMax()
+    local max_citizen = self:GetUnitMaxCitizen()
+    local sort_soldiers = {}
+    local own_soldiers = self:GetOwnSoldiers()
     while #sort_soldiers < 6 and #own_soldiers > 0 do
         -- 按兵钟总战斗力排序
         table.sort( own_soldiers, function ( a,b )
@@ -801,7 +868,7 @@ function GameUISendTroopNew:PromiseOfAttack()
     local r = self.march_btn:getCascadeBoundingBox()
     self:GetFteLayer():SetTouchObject(self.march_btn)
     WidgetFteArrow.new(_("点击按钮：驻防")):addTo(self:GetFteLayer())
-    :TurnRight():align(display.RIGHT_CENTER, r.x - 10, r.y + r.height/2)
+        :TurnRight():align(display.RIGHT_CENTER, r.x - 10, r.y + r.height/2)
 end
 function GameUISendTroopNew:CheckRate()
     if not self.params.needTips then return end
@@ -824,6 +891,15 @@ end
 
 
 return GameUISendTroopNew
+
+
+
+
+
+
+
+
+
 
 
 
