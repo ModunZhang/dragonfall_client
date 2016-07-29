@@ -340,7 +340,7 @@ function GameUIHome:CreateTop()
     if not User.gameInfo then
         NetManager:getGameInfoPromise():done(function (response)
             User.gameInfo = response.msg.serverInfo
-            if User.gameInfo.promotionProductEnabled then
+            if User.gameInfo.promotionProductEnabled and not tolua.isnull(self) then
                 self:CreateADNode()
             end
         end)

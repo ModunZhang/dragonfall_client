@@ -312,7 +312,7 @@ function WidgetUpgradeMilitaryTech:OnUserDataChanged_militaryTechs(userData, del
                 self.line1:SetText((effect * 100).."%", (next_effect * 100).."%")
 
                 local tech_point = UtilsForTech:GetTechPoint(tech_name, tech)
-                local next_tech_point = UtilsForTech:GetTechPoint(tech_name, tech)
+                local next_tech_point = UtilsForTech:GetNextLevelTechPoint(tech_name, tech)
                 self.line2:SetText(tech_point, next_tech_point)
 
                 self:UpgradeRequirement()
