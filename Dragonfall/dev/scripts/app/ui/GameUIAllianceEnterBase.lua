@@ -357,7 +357,9 @@ end
 function GameUIAllianceEnterBase:CheckMeIsProtectedWarinng()
     local alliance = self:GetMyAlliance()
     local me = alliance:GetSelf()
-    return me.isProtected or me.newbeeProtect
+    local newbeeProtect = NetManager:getServerTime()
+                        < me.newbeeProtectFinishTime
+    return me.isProtected or newbeeProtect
 end
 
 function GameUIAllianceEnterBase:BuildOneButton(image,title,music_info)
