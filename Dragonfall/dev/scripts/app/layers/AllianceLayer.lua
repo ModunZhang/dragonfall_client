@@ -828,7 +828,9 @@ function AllianceLayer:RefreshObjectInfo(object, mapObj, alliance)
         else
             info.name:setString(string.format("%s", member.name))
         end
-        if member.newbeeProtect then
+        local newbeeProtect = NetManager:getServerTime()
+                            < member.newbeeProtectFinishTime
+        if newbeeProtect then
             if not object:getChildByTag(NEWBEE_TAG) then
                 local proteced = UIKit:ProtectedAni()
                                 :addTo(object, 2, NEWBEE_TAG)
