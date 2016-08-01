@@ -448,7 +448,14 @@ function AllianceLayer:GetVisibleAllianceIndexs()
 
     local point = self.map:convertToNodeSpace(cc.p(display.width, 0))
     t[4] = self:LogicToIndex(self:GetAllianceLogicMap():ConvertToLogicPosition(point.x, point.y))
-    return t
+    table.sort(t)
+    local nt = {}
+    for i,v in ipairs(t) do
+        if nt[#nt] ~= v then
+            table.insert(nt,v)
+        end
+    end
+    return nt
 end
 function AllianceLayer:GetLogicMap()
     return self.normal_map
@@ -1021,29 +1028,24 @@ function AllianceLayer:LoadObjects(index, alliance, func)
 end
 function AllianceLayer:FreeObjects(obj)
     if not obj then return end
-    obj:removeChildByTag(CLOUD_TAG)
+    if obj:getChildByTag(CLOUD_TAG) then
+        obj:removeChildByTag(CLOUD_TAG)
+    end
 
     -- 如果是中间王座，直接持有，从父节点移除就行了
     if obj.isCrown then
-        if obj:getParent() then
-            obj:retain()
-            obj:getParent():removeChild(obj, false)
-        end
-        return
+        self:FreeCrown(obj)
+    elseif obj.nomanland then
+        self:FreeNomanLand(obj)
+    else
+        self:FreeAllianceObjects(obj)
     end
-
-    if obj.nomanland then
-        if obj:getParent() then
-            obj:retain()
-            obj:getParent():removeChild(obj, false)
-        end
-        table.insert(self.alliance_nomanland[obj.nomanland_style], obj)
-        return
-    end
-
+end
+function AllianceLayer:FreeAllianceObjects(obj)
     for k,v in pairs(obj.mapObjects) do
         self:RemoveMapObject(v)
     end
+    obj.mapObjects = {}
 
     for name,v in pairs(obj.buildings) do
         v.info:hide()
@@ -1061,12 +1063,37 @@ function AllianceLayer:FreeObjects(obj)
         end
     end
 
-    obj.mapObjects = {}
+    if #self.alliance_objects_free[obj.style] > 0 then
+        obj:removeFromParent()
+        print("alliance_objects_free")
+        self:Print()
+    else
+        if obj:getParent() then
+            obj:retain()
+            obj:getParent():removeChild(obj, false)
+        end
+        table.insert(self.alliance_objects_free[obj.style], obj)
+    end
+end
+function AllianceLayer:FreeCrown(obj)
     if obj:getParent() then
         obj:retain()
         obj:getParent():removeChild(obj, false)
     end
-    table.insert(self.alliance_objects_free[obj.style], obj)
+end
+function AllianceLayer:FreeNomanLand(obj)
+    assert(obj.nomanland_style)
+    if #self.alliance_nomanland[obj.nomanland_style] > 0 then
+        obj:removeFromParent()
+        print("alliance_nomanland")
+        self:Print()
+    else
+        if obj:getParent() then
+            obj:retain()
+            obj:getParent():removeChild(obj, false)
+        end
+        table.insert(self.alliance_nomanland[obj.nomanland_style], obj)
+    end
 end
 local NoManMap_max = 0
 for k,v in pairs(GameDatas.NoManMap) do
@@ -1418,12 +1445,18 @@ function AllianceLayer:GetRightDownTerrain(index)
 end
 function AllianceLayer:FreeBackground(bg)
     if not bg then return end
-    if bg:getParent() then
-        bg:retain()
-        table.insert(self.alliance_bg_free[bg.terrain], bg)
-        bg:getParent():removeChild(bg, false)
+    if #self.alliance_bg_free[bg.terrain] > 0 then
+        bg:removeFromParent()
+        print("alliance_bg_free")
+        self:Print()
     else
-        table.insert(self.alliance_bg_free[bg.terrain], bg)
+        if bg:getParent() then
+            bg:retain()
+            table.insert(self.alliance_bg_free[bg.terrain], bg)
+            bg:getParent():removeChild(bg, false)
+        else
+            table.insert(self.alliance_bg_free[bg.terrain], bg)
+        end
     end
 end
 local terrain_map = {
