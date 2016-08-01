@@ -118,9 +118,6 @@ function GameUIWatchTowerMyTroopsDetail:GetItem(ITEM_TYPE,item_data)
         if not item_data.soldiers then
             sub_line = 0
         else
-            table.sort( item_data.soldiers, function(a,b)
-                return a.count < b.count
-            end)
             sub_line = #item_data.soldiers
         end
         height   = sub_line * 66
