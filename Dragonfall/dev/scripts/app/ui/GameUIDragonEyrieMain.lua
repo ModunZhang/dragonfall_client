@@ -52,7 +52,7 @@ function GameUIDragonEyrieMain:OnUserDataChanged_buildings(userData, deltaData)
 end
 function GameUIDragonEyrieMain:OnUserDataChanged_dragons(userData, deltaData)
     for dragonType,dragon in pairs(userData.dragons) do
-        if deltaData(string.format("dragons.%s.star", dragonType)) then
+        if deltaData(string.format("dragons.%s", dragonType)) then
             local localIndex = self:GetDragonIndexByType(dragonType) - 1
             local eyrie = self.draongContentNode:GetItemByIndex(localIndex)
             if eyrie.dragon_image:isVisible() then
@@ -91,7 +91,7 @@ function GameUIDragonEyrieMain:OnMoveInStage()
     User:AddListenOnType(self, "dragonDeathEvents")
 
     scheduleAt(self, function()
-        local dragon =self:GetCurrentDragon()
+        local dragon = self:GetCurrentDragon()
         local event
         for i,v in ipairs(User.dragonDeathEvents) do
             if v.dragonType == dragon.type then
@@ -572,7 +572,8 @@ function GameUIDragonEyrieMain:OnEnergyButtonClicked()
     end
 
     local level = UtilsForDragon:HowManyLevelsCanHatchDragons(User)
-    return NetManager:getHatchDragonPromise(self:GetCurrentDragon().type):done(function ()
+    return NetManager:getHatchDragonPromise(self:GetCurrentDragon().type)
+    :done(function ()
         self.hate_label:setString(level and string.format(_("龙巢%d级时可孵化新的巨龙"),level) or "")
         self.hate_button:setButtonEnabled(UtilsForDragon:CanHatchAnyDragons(User))
         if self.hatchPromise then
