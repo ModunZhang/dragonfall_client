@@ -39,6 +39,27 @@ function GameUIDragonEyrieMain:ctor(city,building,default_tab,lockDragon,dragonT
     else
         self.dragonType = dragonType
     end
+
+    if not self.dragonSeq then
+        local t = UtilsForDragon:GetSortDragonTypes(User)
+        local powerfulType = UtilsForDragon:GetPowerfulDragonType(User)
+        table.sort(t, function(a,b)
+            return powerfulType == a
+        end)
+        if self.dragonType then
+            local index = table.indexof(t,self.dragonType)
+            local count = #t
+            local dest = {}
+            for i= index,count do
+                table.insert(dest,t[i])
+            end
+            for i=1,index - 1 do
+                table.insert(dest,t[i])
+            end
+            t = dest
+        end
+        self.dragonSeq = t
+    end
 end
 
 function GameUIDragonEyrieMain:IsDragonLock()
@@ -586,11 +607,7 @@ function GameUIDragonEyrieMain:GetCurrentDragon()
     return User.dragons[self:GetDragonTypeByIndex(self.draong_index)]
 end
 function GameUIDragonEyrieMain:GetDragonIndexByType(dragonType)
-    local t = UtilsForDragon:GetSortDragonTypes(User)
-    local powerfulType = UtilsForDragon:GetPowerfulDragonType(User)
-    table.sort(t, function(a,b)
-        return powerfulType == a
-    end)
+    local t = self.dragonSeq
     if self.dragonType then
         local index = table.indexof(t,self.dragonType)
         local count = #t
@@ -610,24 +627,7 @@ function GameUIDragonEyrieMain:GetDragonIndexByType(dragonType)
     end
 end
 function GameUIDragonEyrieMain:GetDragonTypeByIndex(index)
-    local t = UtilsForDragon:GetSortDragonTypes(User)
-    local powerfulType = UtilsForDragon:GetPowerfulDragonType(User)
-    table.sort(t, function(a,b)
-        return powerfulType == a
-    end)
-    if self.dragonType then
-        local index = table.indexof(t,self.dragonType)
-        local count = #t
-        local dest = {}
-        for i= index,count do
-            table.insert(dest,t[i])
-        end
-        for i=1,index - 1 do
-            table.insert(dest,t[i])
-        end
-        t = dest
-    end
-    return t[index]
+    return self.dragonSeq[index]
 end
 function GameUIDragonEyrieMain:CreateDragonScrollNode()
     local clipNode = display.newClippingRegionNode(cc.rect(0,0,620,600))
