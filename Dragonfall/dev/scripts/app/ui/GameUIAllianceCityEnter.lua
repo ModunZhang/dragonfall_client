@@ -229,7 +229,9 @@ function GameUIAllianceCityEnter:GetEnterButtons()
         local attack_button = self:BuildOneButton("attack_58x56.png",_("进攻")):onButtonClicked(function()
             local final_func = function ()
                 local attack_func = function ()
-                    if member.isProtected or member.newbeeProtect then
+                    local newbeeProtect = NetManager:getServerTime()
+                                        < member.newbeeProtectFinishTime
+                    if member.isProtected or newbeeProtect then
                         UIKit:showMessageDialog(_("提示"),_("目标城市已被击溃并进入保护期，可能无法发生战斗，你是否继续派兵?"), function()
                             UIKit:newGameUI('GameUISendTroopNew',function(dragonType,soldiers,total_march_time,gameuialliancesendtroops)
                                 NetManager:getAttackPlayerCityPromise(dragonType, soldiers, alliance._id, member.id):done(function()
@@ -254,14 +256,17 @@ function GameUIAllianceCityEnter:GetEnterButtons()
                 UIKit:showSendTroopMessageDialog(attack_func, "dragonMaterials",_("龙材料"))
             end
             local me = self:GetMyAlliance():GetSelf()
-            if me.isProtected or me.newbeeProtect or me.masterOfDefender then
+            local masterOfDefender = UtilsForItem:IsItemEventActive(User, "masterOfDefender")
+            local newbeeProtect = NetManager:getServerTime()
+                                < me.newbeeProtectFinishTime
+            if me.isProtected or newbeeProtect or masterOfDefender then
                 local text
-                local protected = me.isProtected or me.newbeeProtect
-                if protected and me.masterOfDefender then
+                local protected = me.isProtected or newbeeProtect
+                if protected and masterOfDefender then
                     text = _("进攻玩家城市将失去保护状态以及城防大师效果,确定继续派兵?")
                 elseif protected then
                     text = _("进攻玩家城市将失去保护状态，确定继续派兵?")
-                elseif me.masterOfDefender then
+                elseif masterOfDefender then
                     text = _("进攻玩家城市将失去城防大师效果,确定继续派兵?")
                 end
                 UIKit:showMessageDialog(_("提示"),text,final_func)

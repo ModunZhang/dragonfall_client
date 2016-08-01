@@ -163,12 +163,19 @@ function GameUISeasonRank:CreatePlayerContentByIndex(idx)
         self.value:setString(string.formatnumberthousands(data.score))
 
         if parent.activity_data.isAlliance then
-            bg:hide()
-            if self.flag then
-                self.flag:SetFlag(data.flag)
+            if data.flag then
+                bg:hide()
+                if self.flag then
+                    self.flag:SetFlag(data.flag)
+                else
+                    self.flag = ui_helper:CreateFlagContentSprite(data.flag)
+                        :addTo(self):align(display.CENTER, 80, 7):scale(0.45)
+                end
             else
-                self.flag = ui_helper:CreateFlagContentSprite(data.flag)
-                    :addTo(self):align(display.CENTER, 80, 7):scale(0.45)
+                if self.flag then
+                    self.flag:hide()
+                end
+                bg:show()
             end
         else
             if self.flag then
@@ -232,7 +239,7 @@ function GameUISeasonRank:touchListener(event)
         end
         local id = self.current_rank.datas[event.itemPos].id
         app:GetAudioManager():PlayeEffectSoundWithKey("NORMAL_DOWN")
-        if self.activity_data.activity.isAlliance then
+        if self.activity_data.isAlliance then
             UIKit:newGameUI("GameUIAllianceInfo", id, nil, DataManager:getUserData().serverId):AddToCurrentScene(true)
         else
             UIKit:newGameUI("GameUIAllianceMemberInfo",false,id,nil,DataManager:getUserData().serverId):AddToCurrentScene(true)
@@ -241,6 +248,7 @@ function GameUISeasonRank:touchListener(event)
     end
 end
 return GameUISeasonRank
+
 
 
 

@@ -2468,7 +2468,7 @@ function GameUIMail:ReplyMail(mail,title,content)
     end
     local asMod = self.mod_check_box and self.mod_check_box:isButtonSelected()
     NetManager:getSendPersonalMailPromise(addressee,title, content,{
-        id = mail.id,
+        id = mail.fromId,
         name = mail.fromName,
         icon = mail.fromIcon,
         allianceTag = mail.fromAllianceTag,

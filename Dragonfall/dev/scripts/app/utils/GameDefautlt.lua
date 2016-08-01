@@ -167,6 +167,20 @@ function GameDefautlt:addRecentContacts(contacts)
         file:close()
     end
 end
+-- 删除最近联系人
+function GameDefautlt:removeRecentContacts(contacts)
+    local recent_contacts = self:getRecentContacts() or {}
+    for i,v in ipairs(recent_contacts) do
+        if v.id == contacts.id then
+            table.remove(recent_contacts,i)
+        end
+    end
+    local file = io.open(MAIL_FILE_PATH, "w")
+    if file then
+        file:write(json.encode(recent_contacts))
+        file:close()
+    end
+end
 -- basic info
 function GameDefautlt:setBasicInfoBoolValueForKey(key,val)
     val = checkbool(val)
