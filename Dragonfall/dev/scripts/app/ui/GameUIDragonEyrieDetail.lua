@@ -31,6 +31,27 @@ function GameUIDragonEyrieDetail:ctor(city,building,dragonType,needTips)
         self.dragonsStar[k] = dragon.star
     end
     self.needTips = needTips
+
+    if not self.dragonSeq then
+        local t = UtilsForDragon:GetSortDragonTypes(User)
+        local powerfulType = UtilsForDragon:GetPowerfulDragonType(User)
+        table.sort(t, function(a,b)
+            return powerfulType == a
+        end)
+        if self.dragonType then
+            local index = table.indexof(t,self.dragonType)
+            local count = #t
+            local dest = {}
+            for i= index,count do
+                table.insert(dest,t[i])
+            end
+            for i=1,index - 1 do
+                table.insert(dest,t[i])
+            end
+            t = dest
+        end
+        self.dragonSeq = t
+    end
 end
 
 
@@ -177,25 +198,7 @@ function GameUIDragonEyrieDetail:GetCurrentDragon()
     return User.dragons[self:GetDragonTypeByIndex(self.draong_index)]
 end
 function GameUIDragonEyrieDetail:GetDragonTypeByIndex(index)
-    local t = UtilsForDragon:GetSortDragonTypes(User)
-    local powerfulType = UtilsForDragon:GetPowerfulDragonType(User)
-    table.sort(t, function(a,b)
-        return powerfulType == a
-    end)
-
-    if self.dragonType then
-        local index = table.indexof(t,self.dragonType)
-        local count = #t
-        local dest = {}
-        for i= index,count do
-            table.insert(dest,t[i])
-        end
-        for i=1,index - 1 do
-            table.insert(dest,t[i])
-        end
-        t = dest
-    end
-    return t[index]
+    return self.dragonSeq[index]
 end
 function GameUIDragonEyrieDetail:CreateProgressTimer()
     local bg,progressTimer = nil,nil
