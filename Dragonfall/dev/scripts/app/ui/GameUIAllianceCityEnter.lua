@@ -256,16 +256,17 @@ function GameUIAllianceCityEnter:GetEnterButtons()
                 UIKit:showSendTroopMessageDialog(attack_func, "dragonMaterials",_("龙材料"))
             end
             local me = self:GetMyAlliance():GetSelf()
+            local masterOfDefender = UtilsForItem:IsItemEventActive(User, "masterOfDefender")
             local newbeeProtect = NetManager:getServerTime()
                                 < me.newbeeProtectFinishTime
-            if me.isProtected or newbeeProtect or me.masterOfDefender then
+            if me.isProtected or newbeeProtect or masterOfDefender then
                 local text
                 local protected = me.isProtected or newbeeProtect
-                if protected and me.masterOfDefender then
+                if protected and masterOfDefender then
                     text = _("进攻玩家城市将失去保护状态以及城防大师效果,确定继续派兵?")
                 elseif protected then
                     text = _("进攻玩家城市将失去保护状态，确定继续派兵?")
-                elseif me.masterOfDefender then
+                elseif masterOfDefender then
                     text = _("进攻玩家城市将失去城防大师效果,确定继续派兵?")
                 end
                 UIKit:showMessageDialog(_("提示"),text,final_func)
