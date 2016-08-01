@@ -1065,8 +1065,8 @@ function AllianceLayer:FreeAllianceObjects(obj)
 
     if #self.alliance_objects_free[obj.style] > 0 then
         obj:removeFromParent()
-        print("alliance_objects_free")
-        self:Print()
+        -- print("alliance_objects_free")
+        -- self:Print()
     else
         if obj:getParent() then
             obj:retain()
@@ -1085,8 +1085,8 @@ function AllianceLayer:FreeNomanLand(obj)
     assert(obj.nomanland_style)
     if #self.alliance_nomanland[obj.nomanland_style] > 0 then
         obj:removeFromParent()
-        print("alliance_nomanland")
-        self:Print()
+        -- print("alliance_nomanland")
+        -- self:Print()
     else
         if obj:getParent() then
             obj:retain()
@@ -1447,8 +1447,8 @@ function AllianceLayer:FreeBackground(bg)
     if not bg then return end
     if #self.alliance_bg_free[bg.terrain] > 0 then
         bg:removeFromParent()
-        print("alliance_bg_free")
-        self:Print()
+        -- print("alliance_bg_free")
+        -- self:Print()
     else
         if bg:getParent() then
             bg:retain()
