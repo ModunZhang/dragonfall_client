@@ -779,6 +779,8 @@ function WidgetUseItems:OpenMoveTheCityDialog( item_name ,params)
         function ()
             if #UtilsForEvent:GetAllMyMarchEvents() > 0 then
                 UIKit:showMessageDialog(_("提示"),_("部队在外时不能移城"))
+            elseif #UtilsForEvent:GetAttackMeMarchEvents() > 0 then
+                UIKit:showMessageDialog(_("提示"),_("正遭受攻击,不能移动城市"))
             elseif Alliance_Manager:GetMyAlliance().basicInfo.status == "fight" then
                 UIKit:showMessageDialog(_("提示"),_("战争期不能移城"))
             else
@@ -798,6 +800,8 @@ function WidgetUseItems:OpenMoveTheCityDialog( item_name ,params)
         function ()
             if #UtilsForEvent:GetAllMyMarchEvents() > 0  then
                 UIKit:showMessageDialog(_("提示"),_("部队在外时不能移城"))
+            elseif #UtilsForEvent:GetAttackMeMarchEvents() > 0 then
+                UIKit:showMessageDialog(_("提示"),_("正遭受攻击,不能移动城市"))
             elseif Alliance_Manager:GetMyAlliance().basicInfo.status == "fight" then
                 UIKit:showMessageDialog(_("提示"),_("战争期不能移城"))
             else
@@ -1217,6 +1221,7 @@ end
 
 
 return WidgetUseItems
+
 
 
 

@@ -6,6 +6,7 @@ local WidgetPopDialog = import("..widget.WidgetPopDialog")
 local WidgetAllianceHelper = import("..widget.WidgetAllianceHelper")
 local WidgetPushButton = import("..widget.WidgetPushButton")
 local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
+local WidgetInfoText = import("..widget.WidgetInfoText")
 
 local GameUIWarSummary = class("GameUIWarSummary", WidgetPopDialog)
 
@@ -159,11 +160,24 @@ function GameUIWarSummary:InitWarSummary(report)
         b_flag = not b_flag
     end
 
-
+     -- 奖励
+    WidgetPushButton.new(
+        {normal = "blue_btn_up_148x58.png",pressed = "blue_btn_down_148x58.png"}
+    ):addTo(content):align(display.CENTER,120,45)
+        :setButtonLabel(UIKit:ttfLabel({
+            text = _("奖励"),
+            size = 24,
+            color = 0xffedae,
+            shadow= true
+        })):onButtonClicked(function(event)
+        if event.name == "CLICKED_EVENT" then
+            self:OpenWarRewardDetails(report.playerDatas)
+        end
+        end)
     -- 确定返回自己却与地图按钮
     WidgetPushButton.new(
         {normal = "yellow_btn_up_148x58.png",pressed = "yellow_btn_down_148x58.png"}
-    ):addTo(content):align(display.CENTER,w/2,45)
+    ):addTo(content):align(display.CENTER,w-120,45)
         :setButtonLabel(UIKit:ttfLabel({
             text = _("确定"),
             size = 24,
@@ -174,6 +188,52 @@ function GameUIWarSummary:InitWarSummary(report)
             self:LeftButtonClicked()
         end
         end)
+end
+function GameUIWarSummary:OpenWarRewardDetails(datas)
+    local layer = UIKit:newWidgetUI("WidgetPopDialog",420,_("奖励")):AddToCurrentScene()
+    local body = layer:GetBody()
+    local rb_size = body:getContentSize()
+    UIKit:ttfLabel({
+        text = _("玩家"),
+        size = 20,
+        color = 0x403c2f,
+    }):align(display.LEFT_CENTER, 64, 380):addTo(body)
+    UIKit:ttfLabel({
+        text = _("击杀"),
+        size = 20,
+        color = 0x403c2f,
+    }):align(display.CENTER, rb_size.width/2, 380):addTo(body)
+    UIKit:ttfLabel({
+        text = _("忠诚值"),
+        size = 20,
+        color = 0x403c2f,
+    }):align(display.RIGHT_CENTER, rb_size.width-40, 380):addTo(body)
+    local info = {}
+    for i,v in ipairs(datas) do
+        table.insert(info, {
+            {
+                text = i.."  "..v.name,
+                size = 22,
+                color = 0x403c2f,
+            },
+            {
+                text = string.formatnumberthousands(v.kill),
+                size = 22,
+                color = 0x403c2f,
+            },
+            {
+                text = string.formatnumberthousands(v.loyalty),
+                size = 22,
+                color = 0x403c2f,
+            }
+        }
+        )
+    end
+    WidgetInfoText.new({
+        info=info,
+        h = 340
+    }):align(display.BOTTOM_CENTER, rb_size.width/2 , 20)
+        :addTo(body)
 end
 return GameUIWarSummary
 

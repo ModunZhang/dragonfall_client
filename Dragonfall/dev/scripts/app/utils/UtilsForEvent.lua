@@ -344,8 +344,23 @@ function UtilsForEvent:GetAllMyMarchEvents()
     end
     return events
 end
-
-
+-- 获取攻打或者突袭自己的事件
+function UtilsForEvent:GetAttackMeMarchEvents()
+    local marchEvents = Alliance_Manager:GetMyAllianceMarchEvents()
+    local events = {}
+    if marchEvents then
+        for eventType,bigTypeEvent in pairs(marchEvents) do
+            if not string.find(eventType,"Return") then
+                for i,event in pairs(bigTypeEvent) do
+                    if event.defencePlayerData.id == User._id then
+                        table.insert(events, event)
+                    end
+                end
+            end
+        end
+    end
+    return events
+end
 
 
 
