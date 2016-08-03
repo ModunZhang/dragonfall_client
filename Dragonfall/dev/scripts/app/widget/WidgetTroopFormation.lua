@@ -59,13 +59,16 @@ function WidgetTroopFormation:onEnter()
                 }))
                 :onButtonClicked(function(event)
                     if event.name == "CLICKED_EVENT" then
-                    	if LuaUtils:table_empty(self.soldiers) then
+                        if LuaUtils:table_empty(self.soldiers) then
                             UIKit:showMessageDialog(_("主人"),_("请为阵型加入士兵"))
                             return
                         end
-                        self:SetFormation(title:getString(),self.soldiers,i)
-                        UIKit:showMessageDialog(_("主人"),_("覆盖阵型成功"))
-                    	self:LeftButtonClicked()
+                        UIKit:showMessageDialog(_("主人"),_("是否确认覆盖"),function ( ... )
+                            self:SetFormation(title:getString(),self.soldiers,i)
+                            GameGlobalUI:showTips(_("提示"),_("覆盖阵型成功"))
+                            self:LeftButtonClicked()
+                        end,function ()
+                        end)
                     end
                 end):align(display.CENTER,150,45):addTo(content)
             WidgetPushButton.new({normal = "yellow_btn_up_148x58.png",pressed = "yellow_btn_down_148x58.png"})
@@ -77,8 +80,9 @@ function WidgetTroopFormation:onEnter()
                 }))
                 :onButtonClicked(function(event)
                     if event.name == "CLICKED_EVENT" then
-                    	self.cb(formation.soldiers)
-                    	self:LeftButtonClicked()
+                        self.cb(formation.soldiers)
+                        GameGlobalUI:showTips(_("提示"),_("读取阵型成功"))
+                        self:LeftButtonClicked()
                     end
                 end):align(display.CENTER,556 - 150, 45):addTo(content)
             title:setString(formation.name)
@@ -97,8 +101,8 @@ function WidgetTroopFormation:onEnter()
                             return
                         end
                         self:SetFormation(title:getString(),self.soldiers,i)
-                        UIKit:showMessageDialog(_("主人"),_("存储阵型成功"))
-                    	self:LeftButtonClicked()
+                        GameGlobalUI:showTips(_("提示"),_("存储阵型成功"))
+                        self:LeftButtonClicked()
                     end
                 end):align(display.CENTER,556/2, 45):addTo(content)
             title:setString(_("阵型").." "..i)
@@ -134,7 +138,7 @@ function WidgetTroopFormation:OpenChangeFormationName(index)
         font = UIKit:getFontFilePath(),
     })
     editbox:setPlaceHolder(eidtbox_holder)
-    editbox:setMaxLength(12)
+    editbox:setMaxLength(20)
     editbox:setFont(UIKit:getEditBoxFont(),22)
     editbox:setFontColor(cc.c3b(0,0,0))
     editbox:setPlaceholderFontColor(cc.c3b(204,196,158))
@@ -161,6 +165,7 @@ function WidgetTroopFormation:OpenChangeFormationName(index)
         end):align(display.CENTER,size.width/2, 60):addTo(body)
 end
 return WidgetTroopFormation
+
 
 
 

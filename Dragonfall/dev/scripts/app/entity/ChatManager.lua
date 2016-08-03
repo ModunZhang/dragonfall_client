@@ -47,10 +47,40 @@ function EmojiUtil:ConvertEmojiToRichText(chatmsg,func_handler_dest,chat)
             if r_s and r_e then
                 local report = string.sub(result,r_s+8,r_e-8)
                 local r_msg = string.split(report,",")
+                if #r_msg > 3 then
+                    local first_str = ""
+                    for i=1,#r_msg - 2 do
+                        if i ~= #r_msg - 2 then
+                            first_str = first_str..r_msg[i]..","
+                        else
+                            first_str = first_str..r_msg[i]
+                        end
+                    end
+                    while #r_msg > 2 do
+                        table.remove(r_msg,1)
+                    end
+                    table.insert(r_msg, 1,first_str)
+                end
+
                 local msg_value , reportId ,userId = ""
                 for __,r in ipairs(r_msg) do
                     if string.find(r,"reportName") then
-                        msg_value =  "[" ..string.split(r,":")[2] .. "]"
+                        local name_value = string.split(r,":")
+                        if #name_value > 2 then
+                            local end_str = ""
+                            for i=2,#name_value do
+                                if i ~= #name_value then
+                                    end_str = end_str..name_value[i]..":"
+                                else
+                                    end_str = end_str..name_value[i]
+                                end
+                            end
+                            while #name_value > 1 do
+                                table.remove(name_value,#name_value)
+                            end
+                            table.insert(name_value,#name_value+1,end_str)
+                        end
+                        msg_value =  "[" ..name_value[2] .. "]"
                     elseif string.find(r,"userId") then
                         userId = string.split(r,":")[2]
                     elseif string.find(r,"reportId") then
@@ -150,7 +180,7 @@ function ChatManager:__checkIsBlocked(msg)
         end
     end
     return User:IsBlocked(msg.id)
-    -- self._blockedIdList_[msg.id] ~= nil
+        -- self._blockedIdList_[msg.id] ~= nil
 end
 
 function ChatManager:__getMessageWithChannel(channel)
@@ -429,9 +459,9 @@ end
 function ChatManager:AddBlockChat(chat)
     if self:__checkIsBlocked(chat) then return false end
     return NetManager:getAddBlockedPromise(chat.id,chat.name,chat.icon)
-    -- self._blockedIdList_[chat.id] = chat
-    -- self:__flush()
-    -- return true
+        -- self._blockedIdList_[chat.id] = chat
+        -- self:__flush()
+        -- return true
 end
 
 function ChatManager:GetBlockList()
@@ -440,7 +470,7 @@ function ChatManager:GetBlockList()
         blockedIdList[v.id] = v
     end
     return blockedIdList
-    -- return self._blockedIdList_
+        -- return self._blockedIdList_
 end
 
 function ChatManager:RemoveItemFromBlockList(chat)
@@ -448,7 +478,7 @@ function ChatManager:RemoveItemFromBlockList(chat)
         -- self._blockedIdList_[chat.id] = nil
         -- self:__flush()
         return NetManager:getRemoveBlockedPromise(chat.id)
-        -- return true
+            -- return true
     end
     -- return true
 end
@@ -479,6 +509,7 @@ function ChatManager:FetMessageFirstStartGame()
 end
 
 return ChatManager
+
 
 
 

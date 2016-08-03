@@ -142,6 +142,6 @@ intInit["canBuyAllianceArchonMinutes"] = {
 }
 intInit["helpDefenceDisableMinutes"] = {
 	["type"] = "helpDefenceDisableMinutes",
-	["value"] = 5,
+	["value"] = 2,
 	["desc"] = "禁止协防冷却分钟数"
 }

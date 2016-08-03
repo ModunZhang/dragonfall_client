@@ -24,11 +24,11 @@ end
 function GameUIAlliancePalace:OnMoveInStage()
     GameUIAlliancePalace.super.OnMoveInStage(self)
     self:CreateTabButtons({
-        {
-            label = _("奖励"),
-            tag = "impose",
-            default = "impose" == self.default_tab,
-        },
+        -- {
+        --     label = _("奖励"),
+        --     tag = "impose",
+        --     default = "impose" == self.default_tab,
+        -- },
         {
             label = _("信息"),
             tag = "info",

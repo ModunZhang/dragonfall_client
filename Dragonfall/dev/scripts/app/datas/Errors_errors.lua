@@ -1105,3 +1105,8 @@ errors["canNotHelpDefenceNow"] = {
 	["code"] = 725,
 	["message"] = "现在还不能进行协防"
 }
+errors["beAttackedNowCanNotMoveCityNow"] = {
+	["key"] = "beAttackedNowCanNotMoveCityNow",
+	["code"] = 726,
+	["message"] = "正遭受攻击,不能退出移动城市"
+}

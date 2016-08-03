@@ -60,14 +60,14 @@ function GameUIAlliancePalaceEnter:GetNormalButton()
 		UIKit:newGameUI('GameUIAlliancePalace',City,"info",self:GetBuilding()):AddToCurrentScene(true)
 		self:LeftButtonClicked()
 	end)
-	local tax_button = self:BuildOneButton("icon_award_52x54.png",_("奖励")):onButtonClicked(function()
-		 UIKit:newGameUI('GameUIAlliancePalace',City,"impose",self:GetBuilding()):AddToCurrentScene(true)
-		self:LeftButtonClicked()
-	end)
+	-- local tax_button = self:BuildOneButton("icon_award_52x54.png",_("奖励")):onButtonClicked(function()
+	-- 	 UIKit:newGameUI('GameUIAlliancePalace',City,"impose",self:GetBuilding()):AddToCurrentScene(true)
+	-- 	self:LeftButtonClicked()
+	-- end)
 	local upgrade_button = self:BuildOneButton("icon_upgrade_1.png",_("升级")):onButtonClicked(function()
 		UIKit:newGameUI('GameUIAlliancePalace',City,"upgrade",self:GetBuilding()):AddToCurrentScene(true)
 		self:LeftButtonClicked()
 	end)
-	return {info_button,tax_button,upgrade_button}
+	return {info_button,upgrade_button}
 end
 return GameUIAlliancePalaceEnter

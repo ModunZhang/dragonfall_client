@@ -572,20 +572,20 @@ function GameUISendTroopNew:CreateBottomPart()
         end):align(display.LEFT_CENTER,30,bottom_bg:getContentSize().height/2):addTo(bottom_bg)
     self.max_btn = max_btn
 
-    -- local formation_btn = WidgetPushButton.new({normal = "yellow_btn_up_148x58.png",pressed = "yellow_btn_down_148x58.png"})
-    --     :setButtonLabel(UIKit:ttfLabel({
-    --         text = _("阵型"),
-    --         size = 24,
-    --         color = 0xffedae,
-    --         shadow= true
-    --     }))
-    --     :onButtonClicked(function(event)
-    --         if event.name == "CLICKED_EVENT" then
-    --             UIKit:newWidgetUI("WidgetTroopFormation", self:GetSettingSoldiers(),function (formation)
-    --                 self:SetMaxSoldierByFormation(formation)
-    --             end):AddToCurrentScene()
-    --         end
-    --     end):align(display.CENTER,bottom_bg:getContentSize().width/2,bottom_bg:getContentSize().height/2):addTo(bottom_bg)
+    local formation_btn = WidgetPushButton.new({normal = "yellow_btn_up_148x58.png",pressed = "yellow_btn_down_148x58.png"})
+        :setButtonLabel(UIKit:ttfLabel({
+            text = _("阵型"),
+            size = 24,
+            color = 0xffedae,
+            shadow= true
+        }))
+        :onButtonClicked(function(event)
+            if event.name == "CLICKED_EVENT" then
+                UIKit:newWidgetUI("WidgetTroopFormation", self:GetSettingSoldiers(),function (formation)
+                    self:SetMaxSoldierByFormation(formation)
+                end):AddToCurrentScene()
+            end
+        end):align(display.CENTER,bottom_bg:getContentSize().width/2,bottom_bg:getContentSize().height/2):addTo(bottom_bg)
 
     if self.params.needTips and UtilsForTask:NeedTips(User) then
         UIKit:FingerAni():addTo(self.max_btn,11,111):rotation(-80):pos(170,30)
@@ -674,7 +674,7 @@ function GameUISendTroopNew:CreateBottomPart()
                 end
             end
         end):align(display.RIGHT_CENTER,bottom_bg:getContentSize().width-30,bottom_bg:getContentSize().height/2):addTo(bottom_bg)
-    if not self.isMilitary then
+    if not self.isMilitary and not self.isPVE then
         march_btn:setButtonLabelOffset(0, 10)
     end
     self.march_btn = march_btn
