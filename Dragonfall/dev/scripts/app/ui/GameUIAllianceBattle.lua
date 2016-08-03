@@ -848,7 +848,7 @@ function GameUIAllianceBattle:CreateHistoryContent()
         {normal = "blue_btn_up_148x58.png",pressed = "blue_btn_down_148x58.png"},
         {scale9 = false},
         {disabled = {name = "GRAY", params = {0.2, 0.3, 0.5, 0.1}}}
-    ):addTo(content):align(display.CENTER,568/2,40)
+    ):addTo(content):align(display.CENTER,568/2 + 30,40)
         :setButtonLabel(UIKit:ttfLabel({
             text = _("奖励"),
             size = 24,
@@ -966,7 +966,7 @@ function GameUIAllianceBattle:OpenWarRewardDetails(datas)
     for i,v in ipairs(datas) do
         table.insert(info, {
             {
-                text = v.name,
+                text = i.."  "..v.name,
                 size = 22,
                 color = 0x403c2f,
             },
