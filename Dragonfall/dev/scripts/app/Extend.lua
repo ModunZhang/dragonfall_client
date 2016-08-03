@@ -640,6 +640,31 @@ end
 
 
 string.th000 = string.formatnumberthousands
+function string.trimEmoj(input)
+    local t = {}
+    local len  = string.len(input)
+    local left = len
+    local arr  = {0, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc}
+    while left ~= 0 do
+        local tmp = string.byte(input, -left)
+        local i   = #arr
+        while arr[i] do
+            if tmp >= arr[i] then
+                if i < 4 then
+                    table.insert(t, string.sub(input, -left, i - left - 1))
+                end
+                left = left - i
+                break
+            end
+            i = i - 1
+        end
+    end
+    return table.concat(t, "")
+end
+-- local trim = string.trim
+-- string.trim = function(input)
+--     return trim(string.trimEmoj(input))
+-- end
 
 --打开json对null的支持
 local cjson = require("cjson")

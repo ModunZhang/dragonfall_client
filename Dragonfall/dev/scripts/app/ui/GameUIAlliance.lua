@@ -2158,6 +2158,21 @@ function GameUIAlliance:CreateInvateUI()
         UIInputType = 1,
         image = "input_box.png",
         size = cc.size(422,40),
+        listener = function(event, editbox)
+            if event == "began" then
+                -- 开始输入
+            elseif event == "changed" then
+                local noemoj = string.trimEmoj(editbox:getText())
+                if noemoj ~= editbox:getText() then
+                    editbox:setText(noemoj)
+                end
+                -- 输入框内容发生变化
+            elseif event == "ended" then
+                -- 输入结束
+            elseif event == "return" then
+                -- 从输入框返回
+            end
+        end
     })
     editbox:setFont(UIKit:getEditBoxFont(),18)
     editbox:setFontColor(cc.c3b(0,0,0))
