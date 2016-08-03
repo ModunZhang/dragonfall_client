@@ -674,7 +674,7 @@ function GameUISendTroopNew:CreateBottomPart()
                 end
             end
         end):align(display.RIGHT_CENTER,bottom_bg:getContentSize().width-30,bottom_bg:getContentSize().height/2):addTo(bottom_bg)
-    if not self.isMilitary then
+    if not self.isMilitary and not self.isPVE then
         march_btn:setButtonLabelOffset(0, 10)
     end
     self.march_btn = march_btn
