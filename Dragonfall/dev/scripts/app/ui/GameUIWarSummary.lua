@@ -163,7 +163,7 @@ function GameUIWarSummary:InitWarSummary(report)
      -- 奖励
     WidgetPushButton.new(
         {normal = "blue_btn_up_148x58.png",pressed = "blue_btn_down_148x58.png"}
-    ):addTo(content):align(display.CENTER,80,45)
+    ):addTo(content):align(display.CENTER,120,45)
         :setButtonLabel(UIKit:ttfLabel({
             text = _("奖励"),
             size = 24,
@@ -177,7 +177,7 @@ function GameUIWarSummary:InitWarSummary(report)
     -- 确定返回自己却与地图按钮
     WidgetPushButton.new(
         {normal = "yellow_btn_up_148x58.png",pressed = "yellow_btn_down_148x58.png"}
-    ):addTo(content):align(display.CENTER,w-80,45)
+    ):addTo(content):align(display.CENTER,w-120,45)
         :setButtonLabel(UIKit:ttfLabel({
             text = _("确定"),
             size = 24,
@@ -197,7 +197,7 @@ function GameUIWarSummary:OpenWarRewardDetails(datas)
         text = _("玩家"),
         size = 20,
         color = 0x403c2f,
-    }):align(display.LEFT_CENTER, 50, 380):addTo(body)
+    }):align(display.LEFT_CENTER, 64, 380):addTo(body)
     UIKit:ttfLabel({
         text = _("击杀"),
         size = 20,
@@ -207,7 +207,7 @@ function GameUIWarSummary:OpenWarRewardDetails(datas)
         text = _("忠诚值"),
         size = 20,
         color = 0x403c2f,
-    }):align(display.RIGHT_CENTER, rb_size.width-50, 380):addTo(body)
+    }):align(display.RIGHT_CENTER, rb_size.width-40, 380):addTo(body)
     local info = {}
     for i,v in ipairs(datas) do
         table.insert(info, {

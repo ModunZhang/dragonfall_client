@@ -951,7 +951,7 @@ function GameUIAllianceBattle:OpenWarRewardDetails(datas)
         text = _("玩家"),
         size = 20,
         color = 0x403c2f,
-    }):align(display.LEFT_CENTER, 50, 380):addTo(body)
+    }):align(display.LEFT_CENTER, 64, 380):addTo(body)
     UIKit:ttfLabel({
         text = _("击杀"),
         size = 20,
@@ -961,7 +961,7 @@ function GameUIAllianceBattle:OpenWarRewardDetails(datas)
         text = _("忠诚值"),
         size = 20,
         color = 0x403c2f,
-    }):align(display.RIGHT_CENTER, rb_size.width-50, 380):addTo(body)
+    }):align(display.RIGHT_CENTER, rb_size.width-40, 380):addTo(body)
     local info = {}
     for i,v in ipairs(datas) do
         table.insert(info, {
