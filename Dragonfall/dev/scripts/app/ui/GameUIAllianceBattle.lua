@@ -4,6 +4,7 @@ local WidgetPushButton = import("..widget.WidgetPushButton")
 local WidgetPopDialog = import("..widget.WidgetPopDialog")
 local WidgetPages = import("..widget.WidgetPages")
 local WidgetInfo = import("..widget.WidgetInfo")
+local WidgetInfoText = import("..widget.WidgetInfoText")
 local WidgetInfoAllianceKills = import("..widget.WidgetInfoAllianceKills")
 local WidgetInfoWithTitle = import("..widget.WidgetInfoWithTitle")
 local Alliance = import("..entity.Alliance")
@@ -31,9 +32,11 @@ function GameUIAllianceBattle:OnMoveInStage()
             NetManager:getAllianceFightReportsPromise(self.alliance._id):done(function ()
                 if not tolua.isnull(self) then
                     self:InitHistoryRecord()
+                    LuaUtils:outputTable(self.alliance.allianceFightReports)
                 end
             end)
         else
+            LuaUtils:outputTable(self.alliance.allianceFightReports)
             self:InitHistoryRecord()
         end
     elseif tag == "fight" then
@@ -748,18 +751,13 @@ end
 function GameUIAllianceBattle:CreateHistoryContent()
     local w,h = 568,338 + 5 * 46
     local content = WidgetUIBackGround.new({height=h,width=w},WidgetUIBackGround.STYLE_TYPE.STYLE_2)
-    UIKit:ttfLabel({
-        text = _("立即定位到敌方联盟"),
-        size = 20,
-        color = 0x615b44,
-    }):align(display.LEFT_CENTER,20, 50)
-        :addTo(content)
+
     -- 战斗发生时间
     local fight_time = UIKit:ttfLabel({
         text = "",
         size = 20,
         color = 0x615b44,
-    }):align(display.LEFT_CENTER,20, 20)
+    }):align(display.LEFT_CENTER,20, 40)
         :addTo(content)
 
     local fight_bg = display.newSprite("report_back_ground.png")
@@ -845,7 +843,18 @@ function GameUIAllianceBattle:CreateHistoryContent()
             color = 0xffedae,
             shadow= true
         }))
-
+    -- 奖励按钮
+    local reward_button = WidgetPushButton.new(
+        {normal = "blue_btn_up_148x58.png",pressed = "blue_btn_down_148x58.png"},
+        {scale9 = false},
+        {disabled = {name = "GRAY", params = {0.2, 0.3, 0.5, 0.1}}}
+    ):addTo(content):align(display.CENTER,568/2,40)
+        :setButtonLabel(UIKit:ttfLabel({
+            text = _("奖励"),
+            size = 24,
+            color = 0xffedae,
+            shadow= true
+        }))
     local parent = self
     local ui_helper = self.a_helper
     function content:SetData( idx )
@@ -924,11 +933,62 @@ function GameUIAllianceBattle:CreateHistoryContent()
                 app:EnterMyAllianceScene({mapIndex = enemyAlliance.mapIndex})
             end
         end)
+        reward_button:removeEventListenersByEvent("CLICKED_EVENT")
+        reward_button:onButtonClicked(function(event)
+            if event.name == "CLICKED_EVENT" then
+                parent:OpenWarRewardDetails(report.playerDatas)
+            end
+        end)
     end
 
     return content
 end
-
+function GameUIAllianceBattle:OpenWarRewardDetails(datas)
+    local layer = UIKit:newWidgetUI("WidgetPopDialog",420,_("奖励")):AddToCurrentScene()
+    local body = layer:GetBody()
+    local rb_size = body:getContentSize()
+    UIKit:ttfLabel({
+        text = _("玩家"),
+        size = 20,
+        color = 0x403c2f,
+    }):align(display.LEFT_CENTER, 50, 380):addTo(body)
+    UIKit:ttfLabel({
+        text = _("击杀"),
+        size = 20,
+        color = 0x403c2f,
+    }):align(display.CENTER, rb_size.width/2, 380):addTo(body)
+    UIKit:ttfLabel({
+        text = _("忠诚值"),
+        size = 20,
+        color = 0x403c2f,
+    }):align(display.RIGHT_CENTER, rb_size.width-50, 380):addTo(body)
+    local info = {}
+    for i,v in ipairs(datas) do
+        table.insert(info, {
+            {
+                text = v.name,
+                size = 22,
+                color = 0x403c2f,
+            },
+            {
+                text = string.formatnumberthousands(v.kill),
+                size = 22,
+                color = 0x403c2f,
+            },
+            {
+                text = string.formatnumberthousands(v.loyalty),
+                size = 22,
+                color = 0x403c2f,
+            }
+        }
+        )
+    end
+    WidgetInfoText.new({
+        info=info,
+        h = 340
+    }):align(display.BOTTOM_CENTER, rb_size.width/2 , 20)
+        :addTo(body)
+end
 function GameUIAllianceBattle:InitOtherAlliance()
     local layer = self.other_alliance_layer
 
@@ -1191,4 +1251,5 @@ function GameUIAllianceBattle:GetAlliancePeriod()
 end
 
 return GameUIAllianceBattle
+
 
