@@ -94,6 +94,10 @@ function GameUIChatChannel:CreateTextFieldBody()
 
     local function onEdit(event, editbox)
         if event == "return" then
+            local noemoj = string.trimEmoj(editbox:getText())
+            if noemoj ~= editbox:getText() then
+                editbox:setText(noemoj)
+            end
             if not self.sendChatButton:CanSendChat() then
                 GameGlobalUI:showTips(_("提示"),_("对不起你的聊天频率太频繁"))
                 return
@@ -122,11 +126,6 @@ function GameUIChatChannel:CreateTextFieldBody()
                     self.sendChatButton:StartTimer()
                 end
             end)
-        elseif event == "changed" then
-            local noemoj = string.trimEmoj(editbox:getText())
-            if noemoj ~= editbox:getText() then
-                editbox:setText(noemoj)
-            end
         end
     end
 

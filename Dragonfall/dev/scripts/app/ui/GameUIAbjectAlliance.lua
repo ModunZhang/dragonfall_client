@@ -69,18 +69,11 @@ function GameUIAbjectAlliance:onEnter()
         image = "input_box.png",
         size = cc.size(544,48),
         listener = function(event, editbox)
-            if event == "began" then
-                -- 开始输入
-            elseif event == "changed" then
+            if event == "return" then
                 local noemoj = string.trimEmoj(editbox:getText())
                 if noemoj ~= editbox:getText() then
                     editbox:setText(noemoj)
                 end
-                -- 输入框内容发生变化
-            elseif event == "ended" then
-                -- 输入结束
-            elseif event == "return" then
-                -- 从输入框返回
             end
         end
     })
@@ -91,7 +84,7 @@ function GameUIAbjectAlliance:onEnter()
     editbox:setReturnType(cc.KEYBOARD_RETURNTYPE_DEFAULT)
     editbox:align(display.CENTER_TOP,window.cx,content:getPositionY() - content:getContentSize().height - 20):addTo(view)
 
-    
+
     local abject_btn = WidgetPushButton.new({normal = "red_btn_up_186x66.png",pressed = "red_btn_down_186x66.png",disabled = "grey_btn_186x66.png"})
         :setButtonLabel(UIKit:ttfLabel({text = _("驱逐"),
             size = 20,

@@ -306,7 +306,7 @@ function GameUIAllianceInfo:OnJoinActionClicked(joinType,sender)
         end
         if #User.requestToAllianceEvents >= 5 then
             UIKit:showMessageDialog(_("提示"),_("联盟申请已满，请撤消部分申请后再来申请"))
-            return 
+            return
         end
         for i,v in ipairs(User.requestToAllianceEvents) do
             if v.id == self:GetAllianceData().id then
@@ -356,18 +356,11 @@ function GameUIAllianceInfo:LoadContact()
         size = cc.size(446,40),
         font = UIKit:getFontFilePath(),
         listener = function(event, editbox)
-            if event == "began" then
-                -- 开始输入
-            elseif event == "changed" then
+            if event == "return" then
                 local noemoj = string.trimEmoj(editbox:getText())
                 if noemoj ~= editbox:getText() then
                     editbox:setText(noemoj)
                 end
-                -- 输入框内容发生变化
-            elseif event == "ended" then
-                -- 输入结束
-            elseif event == "return" then
-                -- 从输入框返回
             end
         end
     })
