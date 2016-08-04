@@ -136,6 +136,14 @@ function WidgetTroopFormation:OpenChangeFormationName(index)
         image = "input_box.png",
         size = cc.size(576,48),
         font = UIKit:getFontFilePath(),
+        listener = function(event, editbox)
+            if event == "changed" then
+                local noemoj = string.trimEmoj(editbox:getText())
+                if noemoj ~= editbox:getText() then
+                    editbox:setText(noemoj)
+                end
+            end
+        end
     })
     editbox:setPlaceHolder(eidtbox_holder)
     editbox:setMaxLength(20)

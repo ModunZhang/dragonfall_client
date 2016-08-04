@@ -6,13 +6,13 @@
     --适配相应平台的Lua接口文件
 
     --UITextView
-        iOS模拟器和真机支持ccui.UITextView 
+        iOS模拟器和真机支持ccui.UITextView
         函数名和参数同EditBox 构造函数不同
         player/android 暂不支持
-        
+
         local textView = ccui.UITextView:create(cc.size(549,379),display.newScale9Sprite(""))
         textView:addTo(self):center()
-        textView:setReturnType(cc.KEYBOARD_RETURNTYPE_SEND)    
+        textView:setReturnType(cc.KEYBOARD_RETURNTYPE_SEND)
         textView:setFont(UIKit:getFontFilePath(), 24)
         textView:registerScriptTextViewHandler(function(event,textView)
 
@@ -189,7 +189,7 @@ function PlatformAdapter:mac()
     ext.getAppMemoryUsage = function()
         return 0
     end
-    
+
     ext.google = {}
     ext.google.login = function(func)
         func({event = "login_success",userid = "121312321",username = "test"})
@@ -293,8 +293,8 @@ function PlatformAdapter:mac()
 
     local getOpenUDID = device.getOpenUDID
     device.getOpenUDID = function()
-        return getOpenUDID().."_"..run_pids_map[pid]
-            -- return "0a0608b995423eec21bc4d6e00e0467404a69dfb"
+        -- return getOpenUDID().."_"..run_pids_map[pid]
+            return "1029148"
     end
     ext.channelIsEqTo = function(...) return false end
 end

@@ -73,7 +73,7 @@ function WidgetAllianceCreateOrEdit:Helper()
 end
 
 function WidgetAllianceCreateOrEdit:IsCreate()
-	return self.isModify ~= true 
+	return self.isModify ~= true
 end
 
 -- api
@@ -82,7 +82,7 @@ function WidgetAllianceCreateOrEdit:CreateAllianceButtonClicked()
 	local errMsg = ""
 	if string.utf8len(data.name) < 3 or string.utf8len(data.name) > 20 or string.find(data.name,"%p") then
 		errMsg = _("联盟名称不合法只允许字母、数字和空格，需要3~20个字符")
-	end 
+	end
 	if string.utf8len(data.tag) < 1 or string.utf8len(data.tag) > 3 or not string.match(data.tag,"^%w%w?%w?$") then
 		errMsg = _("联盟标签不合法只允许字母、数字需要1~3个字符")
 	end
@@ -111,7 +111,7 @@ function WidgetAllianceCreateOrEdit:CreateAllianceButtonClicked()
 		else
   			UIKit:showMessageDialog(_("错误"),errMsg)
 		end
-		return 
+		return
 	end
 	if self:IsCreate() then
 		NetManager:getCreateAlliancePromise(data.name,data.tag,data.country,data.terrain,data.flag):done(function()
@@ -119,9 +119,9 @@ function WidgetAllianceCreateOrEdit:CreateAllianceButtonClicked()
 		end)
 	else
 		local my_alliance = Alliance_Manager:GetMyAlliance()
-		if self:GetFlagInfomation() == Alliance_Manager:GetMyAlliance().basicInfo.flag and 
-			my_alliance.basicInfo.tag == data.tag and 
-			my_alliance.basicInfo.name == data.name and 
+		if self:GetFlagInfomation() == Alliance_Manager:GetMyAlliance().basicInfo.flag and
+			my_alliance.basicInfo.tag == data.tag and
+			my_alliance.basicInfo.name == data.name and
 			my_alliance.basicInfo.country == data.country then
 			UIKit:showMessageDialog(_("提示"),_("联盟信息当前没有任何改动!"))
 		else
@@ -154,7 +154,7 @@ function WidgetAllianceCreateOrEdit:createFlagPanel()
 		:setButtonEnabled(form ~= 1)
 	self.colorButton_right = colorButton_right
 	local colorButton_left = WidgetSequenceButton.new(
-			{normal = "alliance_flag_button_n_92x88.png",pressed = "alliance_flag_button_h_92x88.png"}, 
+			{normal = "alliance_flag_button_n_92x88.png",pressed = "alliance_flag_button_h_92x88.png"},
 			{scale9 = false},
 			{{image="alliance_flag_color_62x62.png"}},
 			self:Helper():GetAllColorsForSeqButton(),
@@ -166,7 +166,7 @@ function WidgetAllianceCreateOrEdit:createFlagPanel()
 
 
 	local flag_type_button = WidgetSequenceButton.new(
-			{normal = "alliance_flag_button_1_n_92x88.png",pressed = "alliance_flag_button_1_h_92x88.png"}, 
+			{normal = "alliance_flag_button_1_n_92x88.png",pressed = "alliance_flag_button_1_h_92x88.png"},
 			{scale9 = false},
 			self:Helper():GetBackStylesForSeqButton(),
 			nil,
@@ -179,7 +179,7 @@ function WidgetAllianceCreateOrEdit:createFlagPanel()
 
 
 	local graphic_type_button = WidgetSequenceButton.new(
-			{normal = "alliance_flag_button_1_n_92x88.png",pressed = "alliance_flag_button_1_h_92x88.png"}, 
+			{normal = "alliance_flag_button_1_n_92x88.png",pressed = "alliance_flag_button_1_h_92x88.png"},
 			{scale9 = false,scale = 0.8},
 			self:Helper():GetAllGraphicsForSeqButton(),
 			nil,
@@ -191,7 +191,7 @@ function WidgetAllianceCreateOrEdit:createFlagPanel()
 
 
 	local graphic_right_button = WidgetSequenceButton.new(
-			{normal = "alliance_flag_button_n_92x88.png",pressed = "alliance_flag_button_n_92x88.png"}, 
+			{normal = "alliance_flag_button_n_92x88.png",pressed = "alliance_flag_button_n_92x88.png"},
 			{scale9 = false},
 			{{image="alliance_flag_color_62x62.png"}},
 			self:Helper():GetAllColorsForSeqButton(),
@@ -300,6 +300,14 @@ function WidgetAllianceCreateOrEdit:createTextfieldPanel()
     	UIInputType = 1,
         image = "input_box.png",
         size = cc.size(552,48),
+        listener = function(event, editbox)
+            if event == "changed" then
+                local noemoj = string.trimEmoj(editbox:getText())
+                if noemoj ~= editbox:getText() then
+                    editbox:setText(noemoj)
+                end
+            end
+        end
     })
     editbox_tag:setPlaceHolder(string.format(_("最多可输入%d字符"),3))
     editbox_tag:setFont(UIKit:getEditBoxFont(),18)
@@ -329,6 +337,14 @@ function WidgetAllianceCreateOrEdit:createTextfieldPanel()
     	UIInputType = 1,
         image = "input_box.png",
         size = cc.size(510,48),
+        listener = function(event, editbox)
+            if event == "changed" then
+                local noemoj = string.trimEmoj(editbox:getText())
+                if noemoj ~= editbox:getText() then
+                    editbox:setText(noemoj)
+                end
+            end
+        end
     })
     editbox_name:setPlaceHolder(string.format(_("最多可输入%d字符"),20))
     editbox_name:setFont(UIKit:getEditBoxFont(),18)
@@ -439,7 +455,7 @@ end
 function WidgetAllianceCreateOrEdit:GetColorIndex(colorseq)
 	if type(colorseq) == 'string' and string.find(colorseq,"colors_") then
         colorseq = string.sub(colorseq,8)
-    end   
+    end
     return tonumber(colorseq)
 end
 function WidgetAllianceCreateOrEdit:GetColorSeq(colorindex)

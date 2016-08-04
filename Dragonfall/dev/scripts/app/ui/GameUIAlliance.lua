@@ -2158,6 +2158,14 @@ function GameUIAlliance:CreateInvateUI()
         UIInputType = 1,
         image = "input_box.png",
         size = cc.size(422,40),
+        listener = function(event, editbox)
+            if event == "changed" then
+                local noemoj = string.trimEmoj(editbox:getText())
+                if noemoj ~= editbox:getText() then
+                    editbox:setText(noemoj)
+                end
+            end
+        end
     })
     editbox:setFont(UIKit:getEditBoxFont(),18)
     editbox:setFontColor(cc.c3b(0,0,0))

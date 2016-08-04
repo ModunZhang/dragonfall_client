@@ -64,6 +64,14 @@ function GameUIWriteMail:BuildWriteMailUI()
         image = "input_box.png",
         size = cc.size(422,40),
         font = UIKit:getFontFilePath(),
+        listener = function(event, editbox)
+            if event == "changed" then
+                local noemoj = string.trimEmoj(editbox:getText())
+                if noemoj ~= editbox:getText() then
+                    editbox:setText(noemoj)
+                end
+            end
+        end
     })
     local editbox_subject = self.editbox_subject
     editbox_subject:setPlaceHolder(string.format(_("最多可输入%d字符"),140))
@@ -188,7 +196,7 @@ return GameUIWriteMail
 
 
 
-   
+
 
 
 

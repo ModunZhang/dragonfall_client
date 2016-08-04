@@ -306,7 +306,7 @@ function GameUIAllianceInfo:OnJoinActionClicked(joinType,sender)
         end
         if #User.requestToAllianceEvents >= 5 then
             UIKit:showMessageDialog(_("提示"),_("联盟申请已满，请撤消部分申请后再来申请"))
-            return 
+            return
         end
         for i,v in ipairs(User.requestToAllianceEvents) do
             if v.id == self:GetAllianceData().id then
@@ -355,6 +355,14 @@ function GameUIAllianceInfo:LoadContact()
         image = "input_box.png",
         size = cc.size(446,40),
         font = UIKit:getFontFilePath(),
+        listener = function(event, editbox)
+            if event == "changed" then
+                local noemoj = string.trimEmoj(editbox:getText())
+                if noemoj ~= editbox:getText() then
+                    editbox:setText(noemoj)
+                end
+            end
+        end
     })
     editbox_subject:setPlaceHolder(string.format(_("最多可输入%d字符"),140))
     editbox_subject:setMaxLength(140)

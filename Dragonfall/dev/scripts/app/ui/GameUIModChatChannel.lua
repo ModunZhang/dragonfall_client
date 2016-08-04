@@ -106,6 +106,11 @@ function GameUIModChatChannel:CreateTextFieldBody()
                     self.sendChatButton:StartTimer()
                 end
             end)
+        elseif event == "changed" then
+            local noemoj = string.trimEmoj(editbox:getText())
+            if noemoj ~= editbox:getText() then
+                editbox:setText(noemoj)
+            end
         end
     end
 

@@ -24,10 +24,16 @@ function GameUIEditName:ctor(callback)
         UIInputType = 1,
         image = "input_box.png",
         size = cc.size(350,48),
-        listener = function()
+        font = UIKit:getFontFilePath(),
+        listener = function(event, editbox)
+            if event == "changed" then
+                local noemoj = string.trimEmoj(editbox:getText())
+                if noemoj ~= editbox:getText() then
+                    editbox:setText(noemoj)
+                end
+            end
             self.confirm:setButtonEnabled(string.len(string.trim(self.editbox:getText())) > 0)
         end,
-        font = UIKit:getFontFilePath(),
     })
     editbox:setPlaceHolder(_("输入新的名字"))
     editbox:setMaxLength(12)
