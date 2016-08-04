@@ -137,7 +137,7 @@ function WidgetTroopFormation:OpenChangeFormationName(index)
         size = cc.size(576,48),
         font = UIKit:getFontFilePath(),
         listener = function(event, editbox)
-            if event == "return" then
+            if event == "changed" then
                 local noemoj = string.trimEmoj(editbox:getText())
                 if noemoj ~= editbox:getText() then
                     editbox:setText(noemoj)

@@ -356,7 +356,7 @@ function GameUIAllianceInfo:LoadContact()
         size = cc.size(446,40),
         font = UIKit:getFontFilePath(),
         listener = function(event, editbox)
-            if event == "return" then
+            if event == "changed" then
                 local noemoj = string.trimEmoj(editbox:getText())
                 if noemoj ~= editbox:getText() then
                     editbox:setText(noemoj)

@@ -301,7 +301,7 @@ function WidgetAllianceCreateOrEdit:createTextfieldPanel()
         image = "input_box.png",
         size = cc.size(552,48),
         listener = function(event, editbox)
-            if event == "return" then
+            if event == "changed" then
                 local noemoj = string.trimEmoj(editbox:getText())
                 if noemoj ~= editbox:getText() then
                     editbox:setText(noemoj)
@@ -338,7 +338,7 @@ function WidgetAllianceCreateOrEdit:createTextfieldPanel()
         image = "input_box.png",
         size = cc.size(510,48),
         listener = function(event, editbox)
-            if event == "return" then
+            if event == "changed" then
                 local noemoj = string.trimEmoj(editbox:getText())
                 if noemoj ~= editbox:getText() then
                     editbox:setText(noemoj)
