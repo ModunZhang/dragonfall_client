@@ -191,6 +191,9 @@ function GameUIWarSummary:InitWarSummary(report)
 end
 function GameUIWarSummary:OpenWarRewardDetails(datas)
     local layer = UIKit:newWidgetUI("WidgetPopDialog",420,_("奖励")):AddToCurrentScene()
+    if not layer then
+        return
+    end
     local body = layer:GetBody()
     local rb_size = body:getContentSize()
     UIKit:ttfLabel({

@@ -49,7 +49,6 @@ function WidgetTroopFormation:onEnter()
         button:setContentSize(cc.size(100,32))
         button:setTouchSwallowEnabled(true)
         local formation = formation_soldiers[i]
-        dump(formation,i)
 
         if formation and tolua.type(formation) == "table" and not LuaUtils:table_empty(formation) then
             WidgetPushButton.new({normal = "red_btn_up_148x58.png",pressed = "red_btn_down_148x58.png"})
