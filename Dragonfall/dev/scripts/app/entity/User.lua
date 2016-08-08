@@ -741,6 +741,25 @@ function User:GetSoldierEventsBySeq()
     table.sort(events, function(a, b) return a.finishTime < b.finishTime end)
     return events
 end
+function User:GetTreatSoldierEventsBySeq()
+    local events = {}
+    for _,v in ipairs(self.treatSoldierEvents) do
+        table.insert(events, v)
+    end
+    table.sort(events, function(a, b) return a.finishTime < b.finishTime end)
+    return events
+end
+function User:GetSoldierAndTreatEventsBySeq()
+    local events = {}
+    for _,v in ipairs(self.soldierEvents) do
+        table.insert(events, v)
+    end
+    for _,v in ipairs(self.treatSoldierEvents) do
+        table.insert(events, v)
+    end
+    table.sort(events, function(a, b) return a.finishTime < b.finishTime end)
+    return events
+end
 function User:GetBuildingSoldiersInfo(building)
     if building == "trainingGround" then
         return {
@@ -1045,6 +1064,24 @@ end
 
 
 --[[materialEvents begin]]
+function User:GetMakingMaterialsAnddailyQuestEventsBySeq()
+    local events = {}
+    for i,v in ipairs(self.materialEvents) do
+        if v.finishTime ~= 0 then
+            table.insert(events, v)
+        end
+    end
+    for i,v in ipairs(self.dailyQuestEvents) do
+        if v.finishTime ~= 0 then
+            table.insert(events, v)
+        end
+    end
+    for i,v in ipairs(self.dragonEquipmentEvents) do
+        table.insert(events, v)
+    end
+    table.sort(events, function(a, b) return a.finishTime < b.finishTime end)
+    return events
+end
 function User:GetMakingMaterialsEventsBySeq()
     local events = {}
     for i,v in ipairs(self.materialEvents) do
