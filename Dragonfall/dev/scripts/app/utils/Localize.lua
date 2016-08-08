@@ -767,7 +767,9 @@ end
 local ALLIANCE_EVENTS = {
     donate = _("向联盟慷慨捐赠，提升荣耀值%s"),
     promotionDown = _("的联盟职位被%s降级为%s"),
-    join = _("一个新成员加入联盟"),
+    directJoin = _("一个新成员加入联盟"),
+    inviteJoin = _("%s被%s邀请加入本联盟"),
+    handleJoin = _("%s被%s批准加入联盟"),
     kick = _("被%s踢出了联盟"),
     quit = _("退出了联盟"),
     request = _("一个玩家申请加入我们的联盟"),
