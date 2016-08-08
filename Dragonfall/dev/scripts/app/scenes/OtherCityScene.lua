@@ -126,10 +126,9 @@ function OtherCityScene:OnTouchClicked(pre_x, pre_y, x, y)
         app:lockInput(true);self:performWithDelay(function()app:lockInput()end,0.3)
         Sprite:PromiseOfFlash(unpack(self:CollectBuildings(building)))
         :next(function()
-            if self.showDragon then
-                local type = building:GetEntity():GetType()
-                if (type == "dragonEyrie"
-                or type == "wall") then
+            local type = building:GetEntity():GetType()
+            if type == "dragonEyrie" or type == "wall" then
+                if self.showDragon then
                     if self.troopDetail then
                         UIKit:newGameUI(
                             "GameUIAllianceWatchTowerTroopDetail",
@@ -142,9 +141,10 @@ function OtherCityScene:OnTouchClicked(pre_x, pre_y, x, y)
                     else
                         UIKit:showMessageDialog(_("主人"),_("玩家未驻防！"))
                     end
+                else
+                    UIKit:showMessageDialog(_("主人"),
+                                            _("巨石阵等级大于13才可以查看驻防信息！"))
                 end
-            else
-                UIKit:showMessageDialog(_("主人"),_("巨石阵等级大于13才可以查看驻防信息！"))
             end
         end)
     end

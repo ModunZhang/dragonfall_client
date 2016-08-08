@@ -282,7 +282,7 @@ function GameUIAlliance:NoAllianceTabEvent_joinIf()
     :onButtonStateChanged(function(event)
         GameUIAlliance.isCheckBoxButtonSelected = event.target:isButtonSelected()
         self:GetJoinList()
-    end):setButtonSelected(not not GameUIAlliance.isCheckBoxButtonSelected)
+    end):setButtonSelected(true)
     display.newSprite("activity_check_bg_55x51.png"):addTo(checkbox,-101)
 
     UIKit:ttfLabel({
