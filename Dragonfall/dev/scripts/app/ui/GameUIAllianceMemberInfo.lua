@@ -284,7 +284,7 @@ function GameUIAllianceMemberInfo:AdapterPlayerList()
             table.insert(r,{_("最后登陆"),NetService:formatTimeAsTimeAgoStyleByServerTime(player.lastLogoutTime)})
         end
     end
-    table.insert(r,{_("服务器"),Localize.server_name[User.serverId]})
+    table.insert(r,{_("服务器"),Localize.server_name[self.serverId_]})
     table.insert(r,{_("战斗力"),string.formatnumberthousands(player.power)})
     table.insert(r,{_("击杀"),string.formatnumberthousands(player.kill)})
 
