@@ -38,18 +38,19 @@ function WidgetTroopFormation:onEnter()
             color = 0xffedae,
         }):align(display.CENTER, title_bg:getContentSize().width/2, title_bg:getContentSize().height/2):addTo(title_bg)
         self.formation_names[i] = title
-        display.newSprite("alliance_notice_icon_26x26.png"):addTo(title_bg):align(display.RIGHT_CENTER,title_bg:getContentSize().width - 20,title_bg:getContentSize().height/2)
-        local button = WidgetPushButton.new()
-            :addTo(title_bg):align(display.RIGHT_CENTER, title_bg:getContentSize().width - 20,title_bg:getContentSize().height/2)
-            :onButtonClicked(function(event)
-                if event.name == "CLICKED_EVENT" then
-                    self:OpenChangeFormationName(i)
-                end
-            end)
-        button:setContentSize(cc.size(100,32))
-        button:setTouchSwallowEnabled(true)
         local formation = formation_soldiers[i]
-        if formation and not LuaUtils:table_empty(formation) then
+
+        if formation and tolua.type(formation) == "table" and not LuaUtils:table_empty(formation) then
+            display.newSprite("alliance_notice_icon_26x26.png"):addTo(title_bg):align(display.RIGHT_CENTER,title_bg:getContentSize().width - 20,title_bg:getContentSize().height/2)
+            local button = WidgetPushButton.new()
+                :addTo(title_bg):align(display.RIGHT_CENTER, title_bg:getContentSize().width - 20,title_bg:getContentSize().height/2)
+                :onButtonClicked(function(event)
+                    if event.name == "CLICKED_EVENT" then
+                        self:OpenChangeFormationName(i,formation)
+                    end
+                end)
+            button:setContentSize(cc.size(100,32))
+            button:setTouchSwallowEnabled(true)
             WidgetPushButton.new({normal = "red_btn_up_148x58.png",pressed = "red_btn_down_148x58.png"})
                 :setButtonLabel(UIKit:ttfLabel({
                     text = _("覆盖"),
@@ -63,7 +64,7 @@ function WidgetTroopFormation:onEnter()
                             UIKit:showMessageDialog(_("主人"),_("请为阵型加入士兵"))
                             return
                         end
-                        UIKit:showMessageDialog(_("主人"),_("是否确认覆盖"),function ( ... )
+                        UIKit:showMessageDialog(_("主人"),_("是否确认覆盖"),function ()
                             self:SetFormation(title:getString(),self.soldiers,i)
                             GameGlobalUI:showTips(_("提示"),_("覆盖阵型成功"))
                             self:LeftButtonClicked()
@@ -127,7 +128,7 @@ function WidgetTroopFormation:SetFormation(formation_name,soldiers,index)
     table.insert(formation_soldiers, index, formation)
     return app:GetGameDefautlt():setTableForKey("Formation:"..User._id,formation_soldiers)
 end
-function WidgetTroopFormation:OpenChangeFormationName(index)
+function WidgetTroopFormation:OpenChangeFormationName(index,formation)
     local dialog = UIKit:newWidgetUI("WidgetPopDialog",180,_("更改阵型名称"),window.top-230):AddToCurrentScene()
     local body = dialog:GetBody()
     local size = body:getContentSize()
@@ -166,13 +167,16 @@ function WidgetTroopFormation:OpenChangeFormationName(index)
                 if string.len(newName) == 0 then
                     UIKit:showMessageDialog(_("主人"),_("请输入新的阵型名称"))
                 else
+                    GameGlobalUI:showTips(_("提示"),_("修改阵型名称成功"))
                     self.formation_names[index]:setString(newName)
+                    self:SetFormation(newName,formation.soldiers,index)
                     dialog:LeftButtonClicked()
                 end
             end
         end):align(display.CENTER,size.width/2, 60):addTo(body)
 end
 return WidgetTroopFormation
+
 
 
 
