@@ -609,7 +609,7 @@ function UtilsForTask:GetAvailableTaskByTag(growUpTasks, tag)
     -- 找到每个任务类型的第一个
     local available_map = {}
     for tasKey,id in pairs(firstTaskMap[tag]) do
-        available_map[tasKey] = id
+        available_map[tasKey] = {id}
     end
 
     -- 找到未完成的任务id
@@ -619,20 +619,25 @@ function UtilsForTask:GetAvailableTaskByTag(growUpTasks, tag)
         local key      = keyFunc(configs[v.id])
         local nextTask = configs[v.id + 1]
         -- 还有没做完的此类型的任务
-        if nextTask then
-            available_map[key] = nextTask.id
-        else -- 没有所有此类型的任务已经做完
-            available_map[key] = nil
+        if nextTask and key == keyFunc(nextTask) then
+            available_map[key] = {nextTask.id}
+        else
+            available_map[key] = {v.id, true}
         end
     end
 
     -- 找到未完成的任务
     local r = {}
     local count = 0
-    for k,id in pairs(available_map) do
+    for k,ids in pairs(available_map) do
+        local id,finished = unpack(ids)
         local t = configs[id]
-        count = count + t.index - 1
-        table.insert(r, setmetatable(t, meta_map[tag]))
+        if finished then
+            count = count + t.index
+        else
+            count = count + t.index - 1
+            table.insert(r, setmetatable(t, meta_map[tag]))
+        end
     end
     return r, count, #configs + 1
 end
