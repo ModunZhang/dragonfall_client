@@ -1138,7 +1138,7 @@ local GAME_LANGUAGE = {
     en = _("英文"),
     cn = _("简体中文"),
     tw = _("繁体中文"),
-
+    fr = _("法语")
 }
 
 local DAILY_TASKS = {
