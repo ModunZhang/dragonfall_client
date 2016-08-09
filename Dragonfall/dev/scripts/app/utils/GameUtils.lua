@@ -532,8 +532,7 @@ function GameUtils:GetGameLanguageFromNative()
         then
         return 'tw'
     end
-    -- 查询代码对应的po文件名,如果查询不到则返回英语代码
-    return self:GetPoFileNameWithCode(device.language) and device.language or 'en' 
+    return device.language
 
     ---------------------------------------------------------------------------------------------------
     -- -- define the native language map
