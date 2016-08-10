@@ -258,18 +258,27 @@ function MyCityScene:onEnterTransitionFinish()
     app:sendPlayerLanguageCodeIf()
     app:sendApnIdIf()
 
-    local isFinished_fte = DataManager:getUserData().countInfo.isFTEFinished
-    local not_buy_any_gems = DataManager:getUserData().countInfo.iapCount == 0
-    if isFinished_fte then
-        if not_buy_any_gems then
-            UIKit:newGameUI("GameUIActivityRewardNew",GameUIActivityRewardNew.REWARD_TYPE.FIRST_IN_PURGURE):AddToScene(self, true)
-        else
-            if User.gameInfo and User.gameInfo.promotionProductEnabled then
-                UIKit:newGameUI("GameUISaleOne"):AddToCurrentScene()
+    if self.isFromLogin then
+        local isFinished_fte = DataManager:getUserData().countInfo.isFTEFinished
+        local not_buy_any_gems = DataManager:getUserData().countInfo.iapCount == 0
+        if isFinished_fte then
+            if not_buy_any_gems then
+                UIKit:newGameUI("GameUIActivityRewardNew",GameUIActivityRewardNew.REWARD_TYPE.FIRST_IN_PURGURE):AddToCurrentScene()
+            else
+                if not User.gameInfo then
+                    NetManager:getGameInfoPromise():done(function (response)
+                        User.gameInfo = response.msg.serverInfo
+                        if User.gameInfo.promotionProductEnabled then
+                            UIKit:newGameUI("GameUISaleOne"):AddToCurrentScene()
+                        end
+                    end)
+                else
+                    if User.gameInfo.promotionProductEnabled then
+                        UIKit:newGameUI("GameUISaleOne"):AddToCurrentScene()
+                    end
+                end
             end
         end
-    end
-    if self.isFromLogin then
         --开启屏幕锁定定时器(前面已经关闭)
         -- if ext.disableIdleTimer then
         --     ext.disableIdleTimer(false)
@@ -880,6 +889,7 @@ function MyCityScene:ShowTipsOnBuilding(buildingLocation)
 end
 
 return MyCityScene
+
 
 
 

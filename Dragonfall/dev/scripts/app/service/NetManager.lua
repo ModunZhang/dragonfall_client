@@ -1216,12 +1216,13 @@ function NetManager:getDailyQeustRewardPromise(questEventId)
         end)
 end
 -- 发送个人邮件
-function NetManager:getSendPersonalMailPromise(memberId, title, content , contacts, asMod)
+function NetManager:getSendPersonalMailPromise(memberId, title, content , contacts, sendAsMod,replyMod)
     return get_blocking_request_promise("logic.playerHandler.sendMail", {
         memberId = memberId,
         title = title,
         content = content,
-        asMod = asMod
+        sendAsMod = sendAsMod,
+        replyMod = replyMod,
     }, "发送个人邮件失败!"):done(get_response_msg):done(function ( response )
         GameGlobalUI:showTips(_("提示"),_("发送邮件成功"))
         app:GetAudioManager():PlayeEffectSoundWithKey("OPEN_MAIL")
@@ -1471,10 +1472,9 @@ function NetManager:getRequestToJoinAlliancePromise(allianceId)
     }, "请求加入联盟失败!"):done(get_player_response_msg)
 end
 -- 获取玩家信息
-function NetManager:getPlayerInfoPromise(memberId,serverId)
+function NetManager:getPlayerInfoPromise(memberId)
     return get_blocking_request_promise("logic.playerHandler.getPlayerInfo", {
-        memberId = memberId,
-        serverId = serverId
+        memberId = memberId
     }, "获取玩家信息失败!"):done(get_player_response_msg)
 end
 -- 获取服务器公告列表
