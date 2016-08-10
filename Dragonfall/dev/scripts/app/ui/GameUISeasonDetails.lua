@@ -388,13 +388,13 @@ function GameUISeasonDetails:GetListNode()
         size = 20,
         color = 0x403c2f,
         dimensions = cc.size(400,0)
-    }):align(display.LEFT_TOP,season_icon:getPositionX() + season_icon:getContentSize().width + 10,season_icon:getPositionY() + 100)
+    }):align(display.LEFT_TOP,season_icon:getPositionX() + season_icon:getContentSize().width + 10,season_icon:getPositionY() + 120)
         :addTo(content)
     local finish_time_label = UIKit:ttfLabel({
         text = "",
         size = 18,
         color = 0x7e0000
-    }):addTo(content):align(display.LEFT_TOP,season_desc_label:getPositionX(),season_desc_label:getPositionY() - 55)
+    }):addTo(content):align(display.LEFT_TOP,season_desc_label:getPositionX(),season_desc_label:getPositionY() - season_desc_label:getContentSize().height )
     if activity_data.status == "on" then
         scheduleAt(self, function()
             finish_time_label:setString(string.format(_("结束时间：%s"),GameUtils:formatTimeStyle1(activity_data.activity.finishTime/1000 - app.timer:GetServerTime())))
