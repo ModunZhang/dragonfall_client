@@ -75,11 +75,13 @@ function GameUIDragonEyrieMain:OnUserDataChanged_dragons(userData, deltaData)
     for dragonType,dragon in pairs(userData.dragons) do
         if deltaData(string.format("dragons.%s", dragonType)) then
             local localIndex = self:GetDragonIndexByType(dragonType) - 1
-            local eyrie = self.draongContentNode:GetItemByIndex(localIndex)
-            if eyrie.dragon_image:isVisible() then
-                eyrie.dragon_image:hide()
-                eyrie.armature:show()
-                eyrie.armature:Resume()
+            if self.draongContentNode then
+                local eyrie = self.draongContentNode:GetItemByIndex(localIndex)
+                if eyrie.dragon_image:isVisible() then
+                    eyrie.dragon_image:hide()
+                    eyrie.armature:show()
+                    eyrie.armature:Resume()
+                end
             end
         end
     end

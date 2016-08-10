@@ -205,6 +205,7 @@ function GameUISeasonRank:LoadMore()
     if self.is_loading or #self.current_rank.datas >= 100 then return end
     self.is_loading = true
     local cur_datas = self.current_rank.datas
+    local isAlliance = self.activity_data.isAlliance
 
     if isAlliance then
         NetManager:getAllianceTotalActivityRankPromise(self.activity_type,#cur_datas):done(function(response)

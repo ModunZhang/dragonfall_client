@@ -1143,7 +1143,6 @@ function GameUIMail:ShowSendMailDetails(mail)
     content_bg:align(display.LEFT_BOTTOM,(bg:getContentSize().width-content_bg:getContentSize().width)/2,80)
 
     -- player head icon
-    dump(mail)
     UIKit:GetPlayerCommonIcon(mail.fromIcon):align(display.CENTER, 76, bg:getContentSize().height - 90):addTo(bg)
     -- 收件人
     local subject_label = cc.ui.UILabel.new(
@@ -1391,7 +1390,6 @@ function GameUIMail:ShowMailDetails(mail)
                     end
                 end)
             -- 屏蔽按钮
-            dump(mail)
             if mail.fromIcon ~= -1 then
                 local block_label = cc.ui.UILabel.new({
                     UILabelType = cc.ui.UILabel.LABEL_TYPE_TTF,
@@ -1438,7 +1436,6 @@ function GameUIMail:ShowMailDetails(mail)
 end
 -- 奖励邮件详情弹出框
 function GameUIMail:ShowRewardMailDetails(mail)
-    dump(mail,"ShowRewardMailDetails")
     local name = Localize.mails[mail.fromName] or mail.fromName
     local title_string = (mail.fromAllianceTag~="" and "["..mail.fromAllianceTag.."] "..name) or name
     local dialog = WidgetPopDialog.new(768,title_string):addTo(self,201)
@@ -2467,12 +2464,13 @@ function GameUIMail:ReplyMail(mail,title,content)
         return
     end
     local asMod = self.mod_check_box and self.mod_check_box:isButtonSelected()
+    local replayMod = mail.fromIcon == -1
     NetManager:getSendPersonalMailPromise(addressee,title, content,{
         id = mail.fromId,
         name = mail.fromName,
         icon = mail.fromIcon,
         allianceTag = mail.fromAllianceTag,
-    },asMod)
+    },asMod,replayMod)
 end
 
 function GameUIMail:OnReportsChanged( changed_map )

@@ -282,7 +282,7 @@ function GameUIAlliance:NoAllianceTabEvent_joinIf()
     :onButtonStateChanged(function(event)
         GameUIAlliance.isCheckBoxButtonSelected = event.target:isButtonSelected()
         self:GetJoinList()
-    end):setButtonSelected(not not GameUIAlliance.isCheckBoxButtonSelected)
+    end):setButtonSelected(true)
     display.newSprite("activity_check_bg_55x51.png"):addTo(checkbox,-101)
 
     UIKit:ttfLabel({
@@ -1151,6 +1151,12 @@ end
 function GameUIAlliance:GetEventContent(event)
     local event_type = event.type
     local params_,params = event.params,{}
+    if 'inviteJoin' == event_type then
+        table.insert(params, event.key)
+    end
+    if 'handleJoin' == event_type then
+        table.insert(params, event.key)
+    end
     for _,v in ipairs(params_) do
         if 'promotionDown' == event_type or 'promotionUp' == event_type then
             if Localize.alliance_title[v] then
@@ -1181,6 +1187,7 @@ function GameUIAlliance:GetEventContent(event)
         end
         table.insert(params, v)
     end
+    
     return string.format(Localize.alliance_events[event_type],unpack(params))
 end
 

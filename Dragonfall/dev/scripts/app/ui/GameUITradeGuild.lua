@@ -79,15 +79,15 @@ function GameUITradeGuild:OnMoveInStage()
             self:LoadMyGoodsPage()
 
             if UtilsForFte:NeedTriggerTips(User) and
-            not app:GetGameDefautlt():IsPassedTriggerTips("tradeGuild_myGoods") then
+                not app:GetGameDefautlt():IsPassedTriggerTips("tradeGuild_myGoods") then
                 GameUINpc:PromiseOfSay(
                     {npc = "woman", words = _("当然，您也可以将您多余的资源或材料售出，赚取银币！")}
                 ):next(function()
                     app:GetGameDefautlt():SetPassTriggerTips("tradeGuild_myGoods")
                     if self.my_goods_listview.items_[1].sellbtn then
                         UIKit:FingerAni()
-                        :addTo(self.my_goods_listview.items_[1]:zorder(10).sellbtn,10,111)
-                        :pos(-20, -50)
+                            :addTo(self.my_goods_listview.items_[1]:zorder(10).sellbtn,10,111)
+                            :pos(-20, -50)
                     end
                 end):next(function()
                     return GameUINpc:PromiseOfLeave()
@@ -128,6 +128,26 @@ end
 
 function GameUITradeGuild:LoadBuyPage()
     local layer = self.buy_layer
+    local ss = UIKit:ttfLabel({
+        text = _("我的银币"),
+        size = 22,
+        color = 0x403c2f
+    }):align(display.CENTER, window.cx - 30, window.bottom_top + 25)
+        :addTo(layer)
+    display.newSprite("res_coin_81x68.png"):align(display.CENTER, ss:getPositionX() + ss:getContentSize().width/2 + 20, ss:getPositionY())
+        :addTo(layer)
+        :scale(0.3)
+    local my_coin = UIKit:ttfLabel({
+        text = GameUtils:formatNumber(User:GetResValueByType("coin")),
+        size = 22,
+        color = 0x403c2f
+    }):align(display.LEFT_CENTER, ss:getPositionX() + ss:getContentSize().width/2 + 40, ss:getPositionY())
+        :addTo(layer)
+
+    scheduleAt(self, function()
+        local User = self.city:GetUser()
+        my_coin:setString(GameUtils:formatNumber(User:GetResValueByType("coin")))
+    end)
     self.resource_drop_list =  WidgetRoundTabButtons.new(
         {
             {tag = "resource",label = _("基本资源"),default = true},
@@ -188,10 +208,10 @@ function GameUITradeGuild:LoadResource(goods_details,goods_type)
 
     -- 展示出售中的资源列表
     local list_view ,listnode=  UIKit:commonListView({
-        viewRect = cc.rect(0, 0, 568, 520),
+        viewRect = cc.rect(0, 0, 568, 490),
         direction = cc.ui.UIScrollView.DIRECTION_VERTICAL
     })
-    listnode:addTo(layer):align(display.BOTTOM_CENTER,window.width/2,20)
+    listnode:addTo(layer):align(display.BOTTOM_CENTER,window.width/2,50)
     -- 列名
     UIKit:ttfLabel(
         {
@@ -231,14 +251,14 @@ function GameUITradeGuild:RefreshSellListView(goods_type,selected)
     NetManager:getGetSellItemsPromise(
         self:GetGoodsTypeMapToString(goods_type),
         goods_type[selected])
-    :done(function(response)
-        if not tolua.isnull(self) then
-            for k,v in pairs(response.msg.itemDocs) do
-                self:CreateSellItemForListView(list_view,v)
+        :done(function(response)
+            if not tolua.isnull(self) then
+                for k,v in pairs(response.msg.itemDocs) do
+                    self:CreateSellItemForListView(list_view,v)
+                end
+                list_view:reload()
             end
-            list_view:reload()
-        end
-    end)
+        end)
 end
 function GameUITradeGuild:CreateSellItemForListView(listView,goods)
     local item = listView:newItem()
@@ -1159,7 +1179,7 @@ end
 function GameUITradeGuild:OnUserDataChanged_technologyMaterials(userData, deltaData)
     local ok, value = deltaData("technologyMaterials")
     if ok then
-         if self.martial_material_options then
+        if self.martial_material_options then
             local options =  self.martial_material_options
             for k,v in pairs(value) do
                 options:getButtonAtIndex(self:GetMaterialIndexByName(k)):SetValue(v)
@@ -1184,6 +1204,10 @@ function GameUITradeGuild:GetMaterialIndexByName(material_type)
     return build_temp[material_type] or teach_temp[material_type]
 end
 return GameUITradeGuild
+
+
+
+
 
 
 

@@ -518,47 +518,64 @@ end
 
 -- get game language through native setting 
 function GameUtils:GetGameLanguageFromNative()
-    -- define the native language map
-    local apple_language_map = 
-    {
-        ['zh-Hans'] = 'cn',
-        ['zh-Hant'] = 'tw',
-        ['en'] = 'en',
-    }
-    local windowsrt_language_map = 
-    {
-        ['zh-Hans-CN'] = 'cn',
-        ['zh-Hant-TW'] = 'tw',
-        ['en'] = 'en',
-    }
-    -- android: http://developer.android.com/reference/java/util/Locale.html
-    local android_language_map = 
-    {
-        ['zh_CN'] = 'cn',
-        ['zh_TW'] = 'tw',
-        ['en'] = 'en',
-    }
-    local target_map
-    if device.platform == 'ios' or device.platform == 'mac' then
-        target_map = apple_language_map
-    elseif device.platform == 'winrt' or device.platform == 'windows' then
-        target_map = windowsrt_language_map
-    elseif device.platform == 'android' then
-        target_map = android_language_map
+    -- 从底层获取原始语言代码
+    local device_language_code = ext.getDeviceLanguage()
+    -- 检查是否是繁体,转换为'tw'
+    if device_language_code == 'zh-Hant-TW' -- winrt
+        or device_language_code == 'zh_TW'  -- android
+        --[[ iOS:
+        iOS7之前是zh-Hans: 简体 zh-Hant: 繁体
+        iOS8之前是zh-Hans: 简体 zh-Hant: 繁体 zh-HK: 香港繁体（增加）
+        iOS9是 zh-Hans-CN: 简体（改变）zh-Hant-CN: 繁体（改变）zh-HK: 香港繁体  zh-TW:  台湾繁体（增加） 
+        --]]
+        or device_language_code == 'zh-Hant' or device_language_code == 'zh-HK' or device_language_code == 'zh-Hant-CN' or device_language_code == 'zh-TW'
+        then
+        return 'tw'
     end
-    local code = ext.getDeviceLanguage()
-    if string.find(code,'en') then
-        code = 'en'
-    end
-    if device.platform == 'ios' or device.platform == 'mac' then -- fix iOS9
-        for k,v in pairs(target_map) do
-            local transferred = string.gsub(k,"%-","%%-")
-            if string.find(code, transferred) then
-                return v
-            end
-        end
-    end
-    return target_map[code] or 'en' -- we can not find the right language ,'en' as the default value
+    return device.language
+
+    ---------------------------------------------------------------------------------------------------
+    -- -- define the native language map
+    -- local apple_language_map = 
+    -- {
+    --     ['zh-Hans'] = 'cn',
+    --     ['zh-Hant'] = 'tw',
+    --     ['en'] = 'en',
+    -- }
+    -- local windowsrt_language_map = 
+    -- {
+    --     ['zh-Hans-CN'] = 'cn',
+    --     ['zh-Hant-TW'] = 'tw',
+    --     ['en'] = 'en',
+    -- }
+    -- -- android: http://developer.android.com/reference/java/util/Locale.html
+    -- local android_language_map = 
+    -- {
+    --     ['zh_CN'] = 'cn',
+    --     ['zh_TW'] = 'tw',
+    --     ['en'] = 'en',
+    -- }
+    -- local target_map
+    -- if device.platform == 'ios' or device.platform == 'mac' then
+    --     target_map = apple_language_map
+    -- elseif device.platform == 'winrt' or device.platform == 'windows' then
+    --     target_map = windowsrt_language_map
+    -- elseif device.platform == 'android' then
+    --     target_map = android_language_map
+    -- end
+    -- local code = ext.getDeviceLanguage()
+    -- if string.find(code,'en') then
+    --     code = 'en'
+    -- end
+    -- if device.platform == 'ios' or device.platform == 'mac' then -- fix iOS9
+    --     for k,v in pairs(target_map) do
+    --         local transferred = string.gsub(k,"%-","%%-")
+    --         if string.find(code, transferred) then
+    --             return v
+    --         end
+    --     end
+    -- end
+    -- return target_map[code] or 'en' -- we can not find the right language ,'en' as the default value
 end
 
 -- get po file name with game language code
@@ -568,7 +585,8 @@ function GameUtils:GetPoFileNameWithCode(code)
     {
         en = 'en',
         cn = 'zh_CN',
-        tw = 'zh_TW'
+        tw = 'zh_TW',
+        fr = 'fr'
     }
     return game_language_to_po_file[code]
 end
@@ -634,7 +652,6 @@ function GameUtils:getLoginErrorMailFormat(category)
     local DeviceType = "Device Type:" ..ext.getDeviceModel()
     local OSVersion  = "OS Version:" .. ext.getOSVersion()
     local Tag        = "Tag:" .. app.client_tag or "unknown"
-    print("....---",UTCTime,GameName,Version,OpenUDID,Category,Language,DeviceType,OSVersion)
 
     local format_str = "\n\n\n\n\n---------------%s---------------\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s"
     local result_str = string.format(format_str,_("不能删除"),UTCTime,GameName,Version,OpenUDID,Category,Language,DeviceType,OSVersion,Tag)

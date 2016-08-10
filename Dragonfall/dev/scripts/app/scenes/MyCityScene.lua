@@ -257,16 +257,25 @@ function MyCityScene:onEnterTransitionFinish()
     end
     app:sendPlayerLanguageCodeIf()
     app:sendApnIdIf()
-    if self.isFromLogin then
 
+    if self.isFromLogin then
         local isFinished_fte = DataManager:getUserData().countInfo.isFTEFinished
         local not_buy_any_gems = DataManager:getUserData().countInfo.iapCount == 0
         if isFinished_fte then
             if not_buy_any_gems then
-                UIKit:newGameUI("GameUIActivityRewardNew",GameUIActivityRewardNew.REWARD_TYPE.FIRST_IN_PURGURE):AddToScene(self, true)
+                UIKit:newGameUI("GameUIActivityRewardNew",GameUIActivityRewardNew.REWARD_TYPE.FIRST_IN_PURGURE):AddToCurrentScene()
             else
-                if User.gameInfo and User.gameInfo.promotionProductEnabled then
-                    UIKit:newGameUI("GameUISaleOne"):AddToCurrentScene()
+                if not User.gameInfo then
+                    NetManager:getGameInfoPromise():done(function (response)
+                        User.gameInfo = response.msg.serverInfo
+                        if User.gameInfo.promotionProductEnabled then
+                            UIKit:newGameUI("GameUISaleOne"):AddToCurrentScene()
+                        end
+                    end)
+                else
+                    if User.gameInfo.promotionProductEnabled then
+                        UIKit:newGameUI("GameUISaleOne"):AddToCurrentScene()
+                    end
                 end
             end
         end
@@ -294,28 +303,28 @@ function MyCityScene:onEnterTransitionFinish()
             local checktips = true
             if self.home_page.order_shortcut then
                 if UtilsForFte:HasAnyShrineEvents()
-                and not app:GetGameDefautlt():IsPassedTriggerTips("shrineEvents") then
+                    and not app:GetGameDefautlt():IsPassedTriggerTips("shrineEvents") then
                     GameUINpc:PromiseOfSay(
                         {npc = "woman",
-                        words = _("领主大人，圣地战被激活了，快去参加吧！参与的成员越多，更容易获得珍贵的龙装备材料哦！")}
+                            words = _("领主大人，圣地战被激活了，快去参加吧！参与的成员越多，更容易获得珍贵的龙装备材料哦！")}
                     ):next(function()
                         return GameUINpc:PromiseOfLeave()
                     end)
                     self.home_page.order_shortcut:TipsOnShrine()
                     checktips = false
-                -- elseif User:HaveEveryDayLoginReward()
-                --     and not app:GetGameDefautlt():IsPassedTriggerTips("everyDayLogin") then
-                --     self.home_page.order_shortcut:TipsOnReward()
-                -- elseif User:HaveContinutyReward()
-                --     and not app:GetGameDefautlt():IsPassedTriggerTips("continuty") then
-                --     self.home_page.order_shortcut:TipsOnReward()
-                -- elseif User:HavePlayerLevelUpReward()
-                --     and not app:GetGameDefautlt():IsPassedTriggerTips("playerLevelUp") then
-                --     self.home_page.order_shortcut:TipsOnReward()
-                -- elseif User:HaveOnlineReward()
-                --     and not app:GetGameDefautlt():IsPassedTriggerTips("online") then
-                --     app:GetGameDefautlt():SetPassTriggerTips("online")
-                --     self.home_page.order_shortcut:TipsOnReward(true)
+                    -- elseif User:HaveEveryDayLoginReward()
+                    --     and not app:GetGameDefautlt():IsPassedTriggerTips("everyDayLogin") then
+                    --     self.home_page.order_shortcut:TipsOnReward()
+                    -- elseif User:HaveContinutyReward()
+                    --     and not app:GetGameDefautlt():IsPassedTriggerTips("continuty") then
+                    --     self.home_page.order_shortcut:TipsOnReward()
+                    -- elseif User:HavePlayerLevelUpReward()
+                    --     and not app:GetGameDefautlt():IsPassedTriggerTips("playerLevelUp") then
+                    --     self.home_page.order_shortcut:TipsOnReward()
+                    -- elseif User:HaveOnlineReward()
+                    --     and not app:GetGameDefautlt():IsPassedTriggerTips("online") then
+                    --     app:GetGameDefautlt():SetPassTriggerTips("online")
+                    --     self.home_page.order_shortcut:TipsOnReward(true)
                 end
             end
             if checktips then
@@ -798,7 +807,7 @@ function MyCityScene:ShowBuildingTips(location)
     if location == 9 then -- blackSmith
         if UtilsForFte:IsMakeAnyEquip(User) then
             return false
-        end
+    end
     end
     if location == 16 then
         if UtilsForFte:IsMakeAnyMaterial(User) then
@@ -880,6 +889,8 @@ function MyCityScene:ShowTipsOnBuilding(buildingLocation)
 end
 
 return MyCityScene
+
+
 
 
 
