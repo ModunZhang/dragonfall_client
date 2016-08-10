@@ -67,7 +67,7 @@ function GameUISettingLanguage:GetItem(iamge,language_code,selected)
                 return
             end
 
-            dialog:ReserveBlankLines(2)
+            dialog:ReserveBlankLines(3)
 
             local thanks_title = UIKit:ttfLabel({
                 text = "Remerciements spéciaux:",
