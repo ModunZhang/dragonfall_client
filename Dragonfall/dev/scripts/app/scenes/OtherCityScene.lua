@@ -35,7 +35,7 @@ function OtherCityScene:onEnter()
                 size = 20,
                 color = 0xffedae,
                 align = cc.ui.UILabel.TEXT_ALIGN_CENTER,
-            }):addTo(helpedByTroop,10)
+            }):addTo(helpedByTroop,10):align(display.CENTER)
             :pos(x,y)
         end
 
