@@ -44,7 +44,7 @@ function GameUISettingLanguage:BuildUI()
 		item:addTo(bg):align(display.LEFT_TOP, x, y)
 		x = x + 144
 		if i%4 == 0 then
-			x = 20 
+			x = 20
 			y = y - 168 - 10
 		end
 	end
@@ -59,9 +59,43 @@ function GameUISettingLanguage:GetItem(iamge,language_code,selected)
 	WidgetPushTransparentButton.new(cc.rect(0,0,130,168)):addTo(sp):align(display.LEFT_BOTTOM, 0, 0):onButtonClicked(function()
 		local code = GameUtils:GetGameLanguage()
 		if code ~= language_code then
-			UIKit:showMessageDialog(_("提示"),string.format(_("修改游戏语言为%s?\n确认后游戏将重新启动"),Localize.game_language[language_code]),function()
+			local dialog = UIKit:showMessageDialog(_("提示"),string.format(_("修改游戏语言为%s?\n确认后游戏将重新启动"),Localize.game_language[language_code]),function()
 				self:SendCodeToServer(language_code)
 			end,function()end,false)
+
+            if language_code ~= "fr" then
+                return
+            end
+
+            dialog:ReserveBlankLines(2)
+
+            local thanks_title = UIKit:ttfLabel({
+                text = "Remerciements spéciaux:",
+                size = 20,
+                color = 0x403c2f,
+                align = cc.ui.UILabel.TEXT_ALIGN_CENTER,
+                dimensions = cc.size(300, 0),
+            })
+            local h = thanks_title:getContentSize().height
+            local item = dialog.listview:newItem()
+            item:setItemSize(300,h)
+            item:addContent(thanks_title)
+            dialog.listview:addItem(item)
+
+            local thanks_names = UIKit:ttfLabel({
+                text = "Morphus & Lune",
+                size = 20,
+                color = 0x403c2f,
+                align = cc.ui.UILabel.TEXT_ALIGN_CENTER,
+                dimensions = cc.size(300, 0),
+            })
+            local h = thanks_names:getContentSize().height
+            local item = dialog.listview:newItem()
+            item:setItemSize(300,h)
+            item:addContent(thanks_names)
+            dialog.listview:addItem(item)
+
+            dialog.listview:reload()
 		end
 	end)
 	return sp
