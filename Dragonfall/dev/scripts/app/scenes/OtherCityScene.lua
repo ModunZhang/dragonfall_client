@@ -24,6 +24,22 @@ function OtherCityScene:onEnter()
     local level = Alliance_Manager:GetMyAlliance()
                     :GetAllianceBuildingInfoByName("watchTower").level
     if level >= 13 then
+        local helpedByTroop = self:GetSceneLayer().helpedByTroops[1]
+        if helpedByTroop:isVisible() then
+            helpedByTroop:zorder(99999999)
+            local x,y = helpedByTroop:GetSpriteTopPosition()
+            display.newSprite("alliance_banner.png")
+            :addTo(helpedByTroop,10):pos(x,y)
+            UIKit:ttfLabel({
+                text = self.user.helpedByTroop.name,
+                size = 20,
+                color = 0xffedae,
+                align = cc.ui.UILabel.TEXT_ALIGN_CENTER,
+            }):addTo(helpedByTroop,10)
+            :pos(x,y)
+        end
+
+
         self.showDragon = true
         if self.user.defenceTroop and self.user.defenceTroop ~= json.null then
             local troopDetail = clone(self.user.defenceTroop)
