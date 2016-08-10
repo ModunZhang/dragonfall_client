@@ -282,6 +282,29 @@ function WorldLayer:LoadAlliance()
     for i,v in ipairs(indexes) do
         key_map[tostring(v)] = json.null
     end
+    if isUseSdImage() then
+        local sprites = {}
+        for k,v in pairs(self.allainceSprites) do
+            if key_map[k] then
+                sprites[k] = v
+            else
+                v:removeFromParent()
+            end
+        end
+        self.allainceSprites = sprites
+
+        local flags = {}
+        for k,v in pairs(self.flagSprites) do
+            if key_map[k] then
+                flags[k] = v
+            else
+                v:removeFromParent()
+            end
+        end
+        self.flagSprites = flags
+    end
+
+
     if not next(indexes) then
         if UIKit:GetUIInstance("GameUIWorldMap") then
             UIKit:GetUIInstance("GameUIWorldMap"):HideLoading()
