@@ -53,7 +53,7 @@ local function promiseFilterNetError(p,need_catch)
                     app:retryConnectServer()
                 end)
             else
-                local code = content.code
+                local code = content.code or -1
                 UIKit:showMessageDialog(_("错误"), content.msg .. string.format("[%d]",code),function()end,nil,false)
             end
         end

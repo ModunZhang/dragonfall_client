@@ -13,7 +13,9 @@ local WidgetProgressCountDown = import("..widget.WidgetProgressCountDown")
 function GameUIAllianceCityEnter:ctor(mapObj,alliance)
     GameUIAllianceCityEnter.super.ctor(self,mapObj,alliance)
     self.member = alliance:GetMemberByMapObjectsId(self:GetBuilding().id)
-    assert(self.member)
+    if not self.member then
+        self:LeftButtonClicked()
+    end
 end
 
 function GameUIAllianceCityEnter:GetMember()

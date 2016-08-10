@@ -268,11 +268,14 @@ function GameUIShireFightEvent:DispathSoliderButtonClicked(needTips)
                     gameuialliancesendtroops:LeftButtonClicked()
                     return
                 end
-                if total_march_time >= UtilsForShrine:GetEventTime(self:GetFightEvent()) then
+                local event = self:GetFightEvent()
+                if total_march_time >= UtilsForShrine:GetEventTime(event) then
                     UIKit:showMessageDialog(_("提示"),
                         _("检测到你的行军时间大于圣地事件时间,可能部队未达到之前，圣地事件已结束。是否继续派兵?"),
                         function()
-                            NetManager:getMarchToShrinePromose(self:GetFightEvent().id,dragonType,soldiers):done(function()
+                            NetManager:getMarchToShrinePromose(
+                                                     event.id,dragonType,soldiers)
+                            :done(function()
                                 app:GetAudioManager():PlayeEffectSoundWithKey("TROOP_SENDOUT")
                             end)
                             if gameuialliancesendtroops and gameuialliancesendtroops.LeftButtonClicked then

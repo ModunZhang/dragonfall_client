@@ -485,7 +485,9 @@ function GameUIAlliance:OnJoinListActionButtonClicked(idx)
             return
     end
     NetManager:getJoinAllianceDirectlyPromise(alliance.id):fail(function()
-        self:SearchAllianAction(self.editbox_tag_search:getText())
+        if not tolua.isnull(self) then
+            self:SearchAllianAction(self.editbox_tag_search:getText())
+        end
     end):done(function()
         GameGlobalUI:showTips(_("提示"),string.format(_("加入%s联盟成功!"),alliance.name))
     end)

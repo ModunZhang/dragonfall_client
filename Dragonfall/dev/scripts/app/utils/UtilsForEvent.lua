@@ -352,7 +352,8 @@ function UtilsForEvent:GetAttackMeMarchEvents()
         for eventType,bigTypeEvent in pairs(marchEvents) do
             if not string.find(eventType,"Return") then
                 for i,event in pairs(bigTypeEvent) do
-                    if event.defencePlayerData.id == User._id then
+                    if  event.defencePlayerData
+                    and event.defencePlayerData.id == User._id then
                         table.insert(events, event)
                     end
                 end

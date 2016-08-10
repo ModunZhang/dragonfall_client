@@ -841,6 +841,7 @@ function GameUIReplay:GetOriginPoint(troops)
 end
 function GameUIReplay:Delay(time)
     return function(obj)
+        if tolua.isnull(self) then return end
         return self:PromiseOfDelay(time, function() return obj end)
     end
 end

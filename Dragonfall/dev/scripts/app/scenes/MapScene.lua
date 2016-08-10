@@ -1,4 +1,5 @@
 local window = import("..utils.window")
+local GameUINpc = import("..ui.GameUINpc")
 local WidgetMaskFilter = import("..widget.WidgetMaskFilter")
 local EventManager = import("..layers.EventManager")
 local TouchJudgment = import("..layers.TouchJudgment")

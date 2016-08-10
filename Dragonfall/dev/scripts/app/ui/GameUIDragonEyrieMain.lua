@@ -539,7 +539,9 @@ function GameUIDragonEyrieMain:CreateDragonContentNodeIf()
             GameUINpc:PromiseOfSay(
                 {npc = "woman", words = _("领主大人，巨龙的攻击力将直接影响战斗中龙战斗的胜负；而带兵量即为当前巨龙能带领出征的士兵数量。")}
             ):next(function()
-                app:GetGameDefautlt():SetPassTriggerTips(self.building:GetType())
+                if not tolua.isnull(self) then
+                    app:GetGameDefautlt():SetPassTriggerTips(self.building:GetType())
+                end
                 return GameUINpc:PromiseOfLeave()
             end)
         end
