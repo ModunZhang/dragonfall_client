@@ -97,6 +97,22 @@ function FullScreenPopDialogUI:SetPopMessage(message)
     self.listview = listview
     return self
 end
+function FullScreenPopDialogUI:ReserveBlankLines(num)
+    for i = 1, num do
+        local thanks_title = UIKit:ttfLabel({
+            text = " ",
+            size = 20,
+            color = 0x403c2f,
+            align = cc.ui.UILabel.TEXT_ALIGN_CENTER,
+            dimensions = cc.size(300, 0),
+        })
+        local h = thanks_title:getContentSize().height
+        local item = self.listview:newItem()
+        item:setItemSize(300,h)
+        item:addContent(thanks_title)
+        self.listview:addItem(item)
+    end
+end
 function FullScreenPopDialogUI:CreateOKButton(params)
     if self.ok_button then
         self.ok_button:removeFromParent(true)
