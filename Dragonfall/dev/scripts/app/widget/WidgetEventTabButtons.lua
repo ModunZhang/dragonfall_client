@@ -852,7 +852,8 @@ function WidgetEventTabButtons:LoadSoldierEvents()
     end):SetLabel(_("查看现有的士兵")))
 
     local User = self.city:GetUser()
-    if #User.treatSoldierEvents == 0 then
+    if User:IsBuildingUnlockedBy("hospital") and
+        #User.treatSoldierEvents == 0 then
         self:InsertItem(self:CreateBottom():OnOpenClicked(function(event)
             UIKit:newGameUI('GameUIHospital', self.city, self.city:GetFirstBuildingByType("hospital"), "heal"):AddToCurrentScene(true)
         end):SetLabel(_("查看治疗的士兵")))
@@ -892,7 +893,8 @@ function WidgetEventTabButtons:LoadMaterialEvents()
         ):AddToCurrentScene(true)
     end):SetLabel(_("查看材料")))
 
-    if #User.dailyQuestEvents == 0 or User.dailyQuestEvents[1].finishTime == 0 then
+    if User:IsBuildingUnlockedBy("townHall") and
+        (#User.dailyQuestEvents == 0 or User.dailyQuestEvents[1].finishTime == 0) then
         self:InsertItem(self:CreateBottom():OnOpenClicked(function(event)
             UIKit:newGameUI("GameUITownHall", self.city,
                             self.city:GetFirstBuildingByType("townHall"),
