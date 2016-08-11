@@ -74,7 +74,7 @@ function WidgetAccelerateGroup:ctor(eventType,speedUpEvent)
         local acc_button = WidgetPushButton.new({normal = "upgrade_acc_button_1.png",pressed="upgrade_acc_button_2.png"})
         time_button:onButtonClicked(function(event)
             if event.name == "CLICKED_EVENT" then
-                if string.find(own_label:getString(),_("拥有")) then
+                if speedUp_item_num > 0 then
                     local leftTime = UtilsForEvent:GetEventInfo(UtilsForEvent:GetEventById(User,speedUpEvent.id))
                     local effect = UtilsForItem:IsSpeedUpItem(speedUp_item_name).effect * 60
                     local max_count = math.min(math.ceil(leftTime/effect), User:GetItemCount(speedUp_item_name))
