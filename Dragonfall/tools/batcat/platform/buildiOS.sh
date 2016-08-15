@@ -1,82 +1,121 @@
-#!/bin/bash
+#!/bin/bash --login
 #---------------------------------------------------
 # build the iOS project with xcode command line tools
-# Date: 2016/05/16
-# Version: 1.0.0
+# Date: 2016/08/15
+# Version: 1.0.0 beta
 # by dannyhe
 #---------------------------------------------------
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-PrjDir="$DIR/../../../frameworks/runtime-src/proj.ios_mac"
-PrjName="Dragonfall"
-ProvisionType="Distribution" # Inhouse
-#Distribution config
-DistributionProvision="7f884fc4-abc7-4efd-bba6-c9297bf4fd3a"
-DistributionCodeIdentity="iPhone Distribution: Alan Cooper (B484Q6X8P4)"
-#Inhouse config
-InhouseProvision="0bed58fb-1068-4d04-b1b4-959212c36644"
-InhouseCodeIdentity="iPhone Developer: Alan Cooper (37X43D5H4Z)"
-TargetName="Dragonfall"
-BuildConfig="Release"
-ProductDir=build/Release-iphoneos
-TargetInfoPlistPath=ios/Info.plist
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" # current dir path
+#---------------------------------------------------
+# build argments
+ProvisionType="Inhouse" # Development/Inhouse/Distribution. defalts Distribution
+TargetName="DragonfallWar"
+SchemeName="DragonWar"
+#---------------------------------------------------
+# Project 
+PrjDir="${DIR}/../../../frameworks/runtime-src/proj.ios_mac" # project path
+PrjName="Dragonfall" # xcode project filename: Dragonfall.xcodeproj
+InfoPlistPath="${PrjDir}/ios/Info.plist"
+ExportOptionsPlistPath="${DIR}/iOSExportOptions.plist" # for script
+#---------------------------------------------------
+# Xcode
+TeamID="9RNQD8JEQ2" # The Developer Portal team to use for this export.
+# CodeIdentity
+DistributionCodeIdentity="iPhone Distribution: Pin Wen Huang (9RNQD8JEQ2)" # Inhouse and Distribution build
+# Provision
+DistributionProvision="65ab5db9-8a57-4a7d-863e-260db8d96c56" # Distribution profile identifier
 
-cd "${PrjDir}"
+BuildVer=`/usr/libexec/PlistBuddy -c "print CFBundleShortVersionString" $InfoPlistPath`
+OutputName=`date "+%Y-%m-%d_%H_%M_%S"`_${TargetName}_${BuildVer}
+ArchiveFileFullPath=${PrjDir}/Archive/${OutputName}.xcarchive
+IpaFileDirectory=${PrjDir}/Archive/Outputs/${OutputName}
 
-BuildVer=`/usr/libexec/PlistBuddy -c "print CFBundleShortVersionString" $TargetInfoPlistPath`
-BuildMinVer=`/usr/libexec/PlistBuddy -c "print AppMinVersion" $TargetInfoPlistPath`
-IpaName="${TargetName}_${BuildConfig}_${BuildVer}_m${BuildMinVer}.ipa"
-FinalZipName="${TargetName}_${BuildConfig}_${BuildVer}_m${BuildMinVer}.zip"
-#clean 
-if [ -d ${ProductDir} ]; then
-    rm -rf ${ProductDir}/*
+function getProvisionMethod()
+{
+	case $1 in 
+		Distribution)
+			echo "app-store"
+		;;
+		Development)
+			echo "development"
+		;;
+		Inhouse)
+			echo "ad-hoc"
+		;;
+		*)
+			echo "app-store"
+	esac
+}
+
+function setBuildMethod()
+{
+	/usr/libexec/PlistBuddy -c "set method $1" $ExportOptionsPlistPath
+}
+
+function getBuildMethod()
+{
+	echo `/usr/libexec/PlistBuddy -c 'print method' $ExportOptionsPlistPath`
+}
+
+function setBuildTeamID()
+{
+	/usr/libexec/PlistBuddy -c "set method ${TeamID}" $ExportOptionsPlistPath
+}
+
+function archiveProject()
+{
+	cd $PrjDir
+	xcodebuild clean
+	xcodebuild -sdk iphoneos -configuration Release -scheme ${SchemeName} -target "${TargetName}" -archivePath ${ArchiveFileFullPath} CODE_SIGN_IDENTITY="${DistributionCodeIdentity}" PROVISIONING_PROFILE="${DistributionProvision}" archive
+	cd $DIR
+}
+
+function exportArchive()
+{
+	BakMethod=$(getBuildMethod)
+	setBuildMethod $(getProvisionMethod $ProvisionType)
+	echo "---------------------------------------------------"
+	/usr/libexec/PlistBuddy -c 'print' ${ExportOptionsPlistPath}
+	echo "---------------------------------------------------"
+	xcodebuild -exportArchive -exportOptionsPlist ${ExportOptionsPlistPath} -archivePath ${ArchiveFileFullPath} -exportPath ${IpaFileDirectory}
+	setBuildMethod $BakMethod
+	/usr/libexec/PlistBuddy -c 'print' ${ExportOptionsPlistPath}
+}
+
+function normalArchiveAndExport()
+{
+	echo "--Begin--"
+	echo "Archive"
+	echo "---------------------------------------------------"
+	archiveProject
+	echo "PackageApplication"
+	echo "---------------------------------------------------"
+	exportArchive
+	echo "---------------------------------------------------"
+	echo "--End--"
+}
+
+function exportArchiveWithConfig()
+{
+	echo "--Begin--"
+	iArchiveFileFullPath=$1
+	iIpaFileDirectory=$2
+	iProvisionType=$3
+	BakMethod=$(getBuildMethod)
+	setBuildMethod $(getProvisionMethod $iProvisionType)
+	echo "---------------------------------------------------"
+	/usr/libexec/PlistBuddy -c 'print' ${ExportOptionsPlistPath}
+	echo "---------------------------------------------------"
+	xcodebuild -exportArchive -exportOptionsPlist ${ExportOptionsPlistPath} -archivePath ${iArchiveFileFullPath} -exportPath ${iIpaFileDirectory}
+	setBuildMethod $BakMethod
+	/usr/libexec/PlistBuddy -c 'print' ${ExportOptionsPlistPath}
+	echo "--End--"
+}
+
+#---------------------------------------------------
+if [ $# -eq 3 ];then
+	exportArchiveWithConfig $@
+else
+	normalArchiveAndExport
 fi
-
-if [ "${ProvisionType}" == "Inhouse" ]; then
-	sed -i.bak "s/\"CODE_SIGN_IDENTITY\[sdk=iphoneos\*\]\" = .*;/\"CODE_SIGN_IDENTITY\[sdk=iphoneos\*\]\" = \"${InhouseCodeIdentity}\";/g;s/CODE_SIGN_IDENTITY = .*;/CODE_SIGN_IDENTITY = \"${InhouseCodeIdentity}\";/g;s/\"PROVISIONING_PROFILE\[sdk=iphoneos\*\]\" = .*;/\"PROVISIONING_PROFILE\[sdk=iphoneos\*\]\" = \"${InhouseProvision}\";/g;s/PROVISIONING_PROFILE = .*;/PROVISIONING_PROFILE = \"${InhouseProvision}\";/g" "${PrjName}".xcodeproj/project.pbxproj
-elif [ "${ProvisionType}" == "Distribution" ]; then
-	sed -i.bak "s/\"CODE_SIGN_IDENTITY\[sdk=iphoneos\*\]\" = .*;/\"CODE_SIGN_IDENTITY\[sdk=iphoneos\*\]\" = \"${DistributionCodeIdentity}\";/g;s/CODE_SIGN_IDENTITY = .*;/CODE_SIGN_IDENTITY = \"${DistributionCodeIdentity}\";/g;s/\"PROVISIONING_PROFILE\[sdk=iphoneos\*\]\" = .*;/\"PROVISIONING_PROFILE\[sdk=iphoneos\*\]\" = \"${DistributionProvision}\";/g;s/PROVISIONING_PROFILE = .*;/PROVISIONING_PROFILE = \"${DistributionProvision}\";/g" "${PrjName}".xcodeproj/project.pbxproj
-fi
-
-#security unlock-keychain -p pwd
-# xcodebuild clean
-xcodebuild -configuration ${BuildConfig} -target "${TargetName}" GCC_PREPROCESSOR_DEFINITIONS="\${GCC_PREPROCESSOR_DEFINITIONS}" WARNING_LDFLAGS="\${WARNING_LDFLAGS} -w"
-
-#check
-if [ $? != 0 ]; then
-	echo "Build Error: xcode build ${BuildConfig} Error!"
-	exit 1
-fi
-
-if [ ! -d "${ProductDir}/${TargetName}.app" ]; then
-	echo "App Error: File ${ProductDir}/${TargetName}.app not exist!"
-	exit 1
-fi
-
-if [ ! -d "${ProductDir}/${TargetName}.app.dSYM" ]; then
-	echo "dSYM Error: File ${ProductDir}/${TargetName}.app.dSYM not exist!"
-	exit 1
-fi
-
-# Build ipa
-
-xcrun -sdk iphoneos PackageApplication -v "${ProductDir}/${TargetName}.app" -o "${PrjDir}/${IpaName}"
-
-if [ $? != 0 ]; then
-	echo "Build Error: xcode PackageApplication ${BuildConfig} Error!"
-	exit 1
-fi
-
-mv -f ${PrjDir}/${IpaName} ${ProductDir}/${IpaName}
-
-zip -r build/${FinalZipName} ${ProductDir} -x "*.DS_Store" "*.bytes" "*.tmp" -7 -TX -q
-
-if [ $? != 0 ]; then
-	echo "Zip Error: ${FinalZipName} Error!"
-	exit 1
-fi
-echo "-----------------------------------------"
-echo "Build Success"
-echo "-----------------------------------------"
-ls -l build
-cd ${DIR}
