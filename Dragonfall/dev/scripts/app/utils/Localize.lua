@@ -1310,6 +1310,8 @@ local PROMOTION_ITEMS = {
     promotion_product_3_2 = _("英雄之血特惠"),
     promotion_product_4_1 = _("不死军团特惠"),
     promotion_product_4_2 = _("金龙币特惠"),
+    promotion_product_5_1 = _("金龙币小袋"),
+    promotion_product_5_2 = _("金龙币福袋"),
 }
 local USER_AGREEMENT = {
     agreement = _("Batcatstudio游戏用户使用许可协议本地化ID")

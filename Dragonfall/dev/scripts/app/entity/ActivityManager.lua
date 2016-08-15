@@ -163,6 +163,54 @@ function ActivityManager:addAllianceSchdulerRefresh__()
         end, next_time)
     end
 end
+-- 获得进行中最快要结束的活动时间
+function ActivityManager:GetOnActivityMinTime()
+    local activities = self.alliance_activities
+    local on_alliance_time
+    for i,onActivity in ipairs(activities.on) do
+        local tmpTime = onActivity.finishTime/1000
+        if not on_alliance_time or tmpTime < on_alliance_time then
+            on_alliance_time = tmpTime
+        end
+    end
+    local activities = self.activities
+    local on_time
+    for i,onActivity in ipairs(activities.on) do
+        local tmpTime = onActivity.finishTime/1000
+        if not on_time or tmpTime < on_time then
+            on_time = tmpTime
+        end
+    end
+    if on_time and on_alliance_time then
+        return math.min(on_alliance_time,on_time)
+    elseif on_time then
+        return on_time
+    elseif on_alliance_time then
+        return on_alliance_time
+    end
+end
+function ActivityManager:IsAnyActivityEnable()
+    local isEnable = false
+    self:IteratorActivityOn(function (activity)
+        isEnable = true
+    end)
+    self:IteratorActivityExpired(function (activity)
+        isEnable = true
+    end)
+    self:IteratorActivityNext(function (activity)
+        isEnable = true
+    end)
+    self:IteratorAllianceActivityOn(function (activity)
+        isEnable = true
+    end)
+    self:IteratorAllianceActivityExpired(function (activity)
+        isEnable = true
+    end)
+    self:IteratorAllianceActivityNext(function (activity)
+        isEnable = true
+    end)
+    return isEnable
+end
 -- 获取已经结束的活动的玩家排行
 function ActivityManager:GetExpiredActivityPlayerRankFromServer(type)
     NetManager:getPlayerActivityRankPromise(type):done(function ( response )
@@ -637,6 +685,8 @@ function ActivityManager:GetActivityScoreCondition(type)
     end
 end
 return ActivityManager
+
+
 
 
 

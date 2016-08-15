@@ -89,15 +89,15 @@ function GameUIActivityNew:OnMoveInStage()
     GameUIActivityNew.super.OnMoveInStage(self)
     self.tab_buttons = self:CreateTabButtons(
         {
-            {
-                label = _("赛季"),
-                tag = "season",
-                default = true and not self.needTips,
-            },
+            -- {
+            --     label = _("赛季"),
+            --     tag = "season",
+            --     default = true and not self.needTips,
+            -- },
             {
                 label = _("活动"),
                 tag = "activity",
-                default = self.needTips,
+                default = true,
             },
             {
                 label = _("新闻"),
@@ -108,7 +108,7 @@ function GameUIActivityNew:OnMoveInStage()
             self:OnTabButtonClicked(tag)
         end
     ):pos(window.cx, window.bottom + 34)
-    self:RefreshSeasonCountTips()
+    -- self:RefreshSeasonCountTips()
     self:RefreshNewsCountTips()
     self:RefreshActivityCountTips()
 end

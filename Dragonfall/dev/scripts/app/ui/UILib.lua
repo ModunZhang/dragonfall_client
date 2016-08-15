@@ -834,6 +834,8 @@ local PROMOTION_ITEMS = {
     promotion_product_3_2 = "sale_bloodOfHero.png",
     promotion_product_4_1 = "sale_undeadLegion.png",
     promotion_product_4_2 = "sale_dragonCoin.png",
+    promotion_product_5_1 = "sale_small_dragonCoin.png",
+    promotion_product_5_2 = "sale_lucky_dragonCoin.png",
 }
 local ACTVITIES = {
     gacha = "activity_gacha_134x134.png",
