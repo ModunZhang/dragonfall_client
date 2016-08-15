@@ -624,7 +624,7 @@ function GameUtils:getSupportMailFormat(category,logMsg)
     local Version    = "Version:" .. ext.getAppVersion() .. string.format(" (%s)",ext.getAppBuildVersion())
     local UserID     = "User ID:" .. DataManager:getUserData()._id
     local Username   = "User name:" .. DataManager:getUserData().basicInfo.name
-    local Server     = "Server:" .. "World"
+    local Server     = "Server:" .. (User.serverId or "unknown")
     local OpenUDID   = "Open UDID:" .. device.getOpenUDID()
     local Category   = "Category:" .. category or ""
     local Language   = "Language:" .. GameUtils:GetGameLanguage()
