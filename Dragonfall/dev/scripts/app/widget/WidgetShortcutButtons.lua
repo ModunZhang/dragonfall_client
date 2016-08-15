@@ -157,9 +157,9 @@ function WidgetShortcutButtons:ctor(city)
 
     self.left_order_group = order
 
-    local right_top_order = WidgetAutoOrder.new(WidgetAutoOrder.ORIENTATION.TOP_TO_BOTTOM,50,true):addTo(self):pos(display.right - 50, display.top-260)
+    local right_top_order = WidgetAutoOrder.new(WidgetAutoOrder.ORIENTATION.TOP_TO_BOTTOM,50,true):addTo(self):pos(display.right - 50, display.top-270)
     -- right_top_order:EnableDropBtn()
-    local season_button = WidgetAutoSeasonButton.new():scale(SCALE)
+    local season_button = WidgetAutoSeasonButton.new()
     right_top_order:AddElement(season_button)
     -- 活动按钮
     local button = cc.ui.UIPushButton.new(

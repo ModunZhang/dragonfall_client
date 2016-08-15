@@ -9,6 +9,8 @@ function WidgetAutoSeasonButton:ctor()
     WidgetAutoSeasonButton.super.ctor(self,{normal = "season_icon_79x90.png"})
     self:setNodeEventEnabled(true)
     self:onButtonClicked(handler(self, self.OnSeasonButtonClicked))
+    ActivityManager:GetActivitiesFromServer()
+    ActivityManager:GetAllianceActivitiesFromServer()
 end
 
 function WidgetAutoSeasonButton:OnSeasonButtonClicked()
@@ -30,7 +32,7 @@ function WidgetAutoSeasonButton:SetTimeInfo(time)
             size = 16,
             color = 0xffedae,
         })
-        local time_bg = display.newSprite("red_title_98x30.png"):addTo(self):align(display.CENTER,0,-55)
+        local time_bg = display.newSprite("red_title_98x30.png"):addTo(self):align(display.CENTER,0,-40)
         label:addTo(time_bg):align(display.CENTER,48,18)
         self.time_bg = time_bg
         self.time_label = label
@@ -51,6 +53,8 @@ function WidgetAutoSeasonButton:onEnter()
     scheduleAt(self, function()
     	if self.min_time then
     		self:SetTimeInfo(self.min_time - app.timer:GetServerTime())
+    	else
+    		self:SetTimeInfo(0)
     	end
     end)
 end
@@ -93,7 +97,7 @@ function WidgetAutoSeasonButton:CheckVisible()
 end
 
 function WidgetAutoSeasonButton:GetElementSize()
-    return {width = 68, height = 90 * self:getScaleY()}
+    return {width = 68, height = 100 * self:getScaleY()}
 end
 
 return WidgetAutoSeasonButton

@@ -1873,7 +1873,7 @@ function NetManager:getUpgradeProductionTechPromise(techName,finishNow)
             GameGlobalUI:showTips(
                 _("生产科技升级完成"),
                 Localize.productiontechnology_name[techName]
-                .."Lv"..User.productionTechs[techName].level)
+                .._("Lv")..User.productionTechs[techName].level)
         end
         app:GetAudioManager():PlayeEffectSoundWithKey("TECHNOLOGY")
     end)
@@ -1887,7 +1887,7 @@ local function upgrade_military_tech_promise(techName,finishNow)
         if finishNow then
             GameGlobalUI:showTips(_("军事科技升级完成"),
                 UtilsForTech:GetTechLocalize(techName)
-                .."Lv"..
+                .._("Lv")..
                 User.militaryTechs[techName].level)
             app:GetAudioManager():PlayeEffectSoundWithKey("COMPLETE")
         end

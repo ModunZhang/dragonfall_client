@@ -89,7 +89,7 @@ function WidgetUpgradeMilitaryTech:CurrentInfo()
         :addTo(body)
 
     self.upgrade_tip = UIKit:ttfLabel({
-        text = UtilsForTech:GetTechLocalize(self.tech_name).." Lv" .. tech.level,
+        text = UtilsForTech:GetTechLocalize(self.tech_name).." ".._("Lv") .. tech.level,
         size = 22,
         color = 0xffedae,
     }):align(display.LEFT_CENTER, 20 , bg:getContentSize().height/2)
@@ -305,7 +305,7 @@ function WidgetUpgradeMilitaryTech:OnUserDataChanged_militaryTechs(userData, del
                 local gems = userData:GetInstantUpgradeMilitaryTechGems(tech_name, tech)
                 self.upgrade_now_need_gems_label:setString(string.formatnumberthousands(gems))
 
-                self.upgrade_tip:setString(UtilsForTech:GetTechLocalize(tech_name).." Lv" .. tech.level)
+                self.upgrade_tip:setString(UtilsForTech:GetTechLocalize(tech_name).." ".._("Lv") .. tech.level)
 
                 local effect = UtilsForTech:GetEffect(tech_name, tech)
                 local next_effect = UtilsForTech:GetNextLevelEffect(tech_name, tech)

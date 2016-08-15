@@ -347,7 +347,7 @@ function GameUIWorldMap:LoadRoundInfo(mapIndex)
         buff_num_label:setString(DataUtils:getMapBuffNumByMapIndex(mapIndex))
         current_round_label:setString(string.format(_("%d 圈"),map_round + 1))
         local levels = string.split(buff["monsterLevel"],"_")
-        monster_levels:setString(string.format("Lv%s~Lv%s",levels[1],levels[2]))
+        monster_levels:setString(string.format(_("Lv%s~Lv%s"),levels[1],levels[2]))
         local bigMapLength = bigMapLength_value
         local offset_x,offset_y = x / bigMapLength, 1 - y / bigMapLength
         current_position_sprite:setPosition(124 * offset_x, 124 * offset_y)

@@ -1345,7 +1345,7 @@ function DataUtils:GetAllianceMapBuffByRound(round)
             local levels = string.split(aliance_buff[v],"_")
             table.insert(buff_info, {
                 {Localize.alliance_buff[v],0x403c2f},
-                {string.format("Lv%s~Lv%s",levels[1],levels[2]),0x288400}
+                {string.format(_("Lv%s~Lv%s"),levels[1],levels[2]),0x288400}
             })
         else
             table.insert(buff_info, {

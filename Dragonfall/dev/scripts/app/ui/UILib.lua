@@ -627,7 +627,9 @@ local ACTIVITY_IMAGE_CONFIG = {
     EVERY_DAY_LOGIN = "activity_logo_589x138.png",
     CONTINUITY = "gem_logo_592x139_3.png",
     FIRST_IN_PURGURE = "gem_logo_592x139_4.png",
-    PLAYER_LEVEL_UP = "gem_logo_592x139_1.png"
+    PLAYER_LEVEL_UP = "gem_logo_592x139_1.png",
+    MONTH_CARD = "gem_logo_592x139_6.png",
+    IAP_REWARD = "gem_logo_592x139_5.png"
 }
 
 local PRODUC_TIONTECHS_IMAGE = {

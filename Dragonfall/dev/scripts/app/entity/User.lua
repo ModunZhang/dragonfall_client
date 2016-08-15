@@ -1377,7 +1377,7 @@ local before_map = {
                 GameGlobalUI:showTips(
                     _("生产科技升级完成"),
                     Localize.productiontechnology_name[v.name]
-                    .."Lv"..userData.productionTechs[v.name].level)
+                    .._("Lv")..userData.productionTechs[v.name].level)
             end
         end
 
@@ -1410,7 +1410,7 @@ local before_map = {
                 app:GetPushManager():CancelTechnologyPush(v.id)
                 GameGlobalUI:showTips(_("军事科技升级完成"),
                     UtilsForTech:GetTechLocalize(v.name)
-                    .."Lv"..militaryTechs[v.name].level)
+                    .._("Lv")..militaryTechs[v.name].level)
             end
         end
 

@@ -125,7 +125,7 @@ function UtilsForEvent:GetMarchEventPrefix(event, eventType)
         event.toAlliance.location.y)
     local target_pos = string.format("%s,%s", x, y)
     if event.marchType == "village" then
-        local target_str = string.format("%sLv%s",
+        local target_str = string.format(_("%sLv%s"),
             Localize.village_name[event.defenceVillageData.name],
             event.defenceVillageData.level)
         if eventType == "strikeMarchEvents" then
@@ -136,7 +136,7 @@ function UtilsForEvent:GetMarchEventPrefix(event, eventType)
         local corps = string.split(monsters[event.defenceMonsterData.level].soldiers, ";")
         local soldiers = string.split(corps[event.defenceMonsterData.index + 1], ",")
         local soldierName = string.split(soldiers[1],":")[1]
-        local target_str = string.format("%sLv%s",
+        local target_str = string.format(_("%sLv%s"),
             Localize.soldier_name[soldierName],
             event.defenceMonsterData.level)
         return string.format(_("正在进攻 %s(%s)"), target_str, target_pos)
@@ -199,20 +199,20 @@ function UtilsForEvent:GetDestination(event)
     if eventType == "helpToTroops" then
         return event.name
     elseif eventType == "villageEvents" then
-        return Localize.village_name[event.villageData.name] .. "Lv" .. event.villageData.level
+        return Localize.village_name[event.villageData.name] .. _("Lv") .. event.villageData.level
     elseif eventType == "strikeMarchEvents" or eventType == "attackMarchEvents" then
         if event.marchType == 'city' or event.marchType == 'helpDefence' then
             return event.defencePlayerData.name
         elseif event.marchType == 'village' then
             local village_data = event.defenceVillageData
-            return Localize.village_name[village_data.name] .. "Lv" .. village_data.level
+            return Localize.village_name[village_data.name] .. _("Lv") .. village_data.level
         elseif event.marchType == 'shrine' then
             return _("圣地")
         elseif event.marchType == 'monster' then
             local corps = string.split(monsters[event.defenceMonsterData.level].soldiers, ";")
             local soldiers = string.split(corps[event.defenceMonsterData.index + 1], ",")
             local infos = string.split(soldiers[1],":")
-            return string.format("%s Lv%s",Localize.soldier_name[infos[1]], event.defenceMonsterData.level)
+            return string.format(_("%s Lv%s"),Localize.soldier_name[infos[1]], event.defenceMonsterData.level)
         end
     elseif eventType == "strikeMarchReturnEvents" or eventType == "attackMarchReturnEvents" then
         return event.attackPlayerData.name

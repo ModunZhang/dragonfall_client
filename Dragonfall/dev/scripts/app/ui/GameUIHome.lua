@@ -362,7 +362,6 @@ function GameUIHome:CreateADNode()
         text = GameUtils:formatTimeStyle1(DataUtils:GetPromtionProductLessLeftTime()),
         size = 16,
         color = 0xffedae,
-        shadow = true
     }):align(display.CENTER, display.right - 55, display.top - 192)
         :addTo(self)
     local sale_button = WidgetPushButton.new()

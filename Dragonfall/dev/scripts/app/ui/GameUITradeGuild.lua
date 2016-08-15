@@ -684,7 +684,7 @@ function GameUITradeGuild:CreateSellItem(list,index)
             title_label:setString(_("未解锁"))
             UIKit:ttfLabel(
                 {
-                    text = _("需要贸易行会").." Lv "..UtilsForBuilding:GetUnlockSellQueueLevel(index),
+                    text = _("需要贸易行会").." ".._("Lv").." "..UtilsForBuilding:GetUnlockSellQueueLevel(index),
                     size = 20,
                     color = 0x403c2f,
                     dimensions = cc.size(200,0)

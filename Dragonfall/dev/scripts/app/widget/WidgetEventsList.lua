@@ -536,7 +536,7 @@ function WidgetEventsList:TechDescribe(event)
     local str
     if User:IsProductionTechEvent(event) then
         local next_level = User.productionTechs[event.name].level + 1
-        str = _("研发") .. string.format(" %s Lv %d", Localize.productiontechnology_name[event.name], next_level)
+        str = _("研发") .. string.format(_(" %s Lv %d"), Localize.productiontechnology_name[event.name], next_level)
     elseif User:IsSoldierStarEvent(event) then
         str = UtilsForEvent:GetMilitaryTechEventLocalize(event.name, UtilsForSoldier:SoldierStarByName(User, event.name))
     elseif User:IsMilitaryTechEvent(event) then
