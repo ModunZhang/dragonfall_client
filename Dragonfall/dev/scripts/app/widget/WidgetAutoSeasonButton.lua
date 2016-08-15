@@ -4,7 +4,7 @@
 --
 local WidgetNumberTips = import(".WidgetNumberTips")
 local WidgetAutoSeasonButton = class("WidgetAutoSeasonButton",cc.ui.UIPushButton)
-
+local light_events = import("..particles.light_events")
 function WidgetAutoSeasonButton:ctor()
     WidgetAutoSeasonButton.super.ctor(self,{normal = "season_icon_79x90.png"})
     self:setNodeEventEnabled(true)
@@ -47,6 +47,7 @@ function WidgetAutoSeasonButton:onEnter()
     ActivityManager:AddListenOnType(self,ActivityManager.LISTEN_TYPE.ACTIVITY_CHANGED)
     ActivityManager:AddListenOnType(self,ActivityManager.LISTEN_TYPE.ON_RANK_CHANGED)
     ActivityManager:AddListenOnType(self,ActivityManager.LISTEN_TYPE.ON_LIMIT_CHANGED)
+    light_events():addTo(self, 1)
     self.tips_button_count = WidgetNumberTips.new():addTo(self):pos(24,-24)
     self.tips_button_count:SetNumber(ActivityManager:GetHaveRewardActivitiesCount())
     self.min_time = ActivityManager:GetOnActivityMinTime()
