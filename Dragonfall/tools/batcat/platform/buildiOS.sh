@@ -17,7 +17,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" # current dir path
 #---------------------------------------------------
 # build argments
-ProvisionType="Inhouse" # Development/Inhouse/Distribution. defalts Distribution
+ProvisionType="Distribution" # Development/Inhouse/Distribution. defalts Distribution
 TargetName="DragonfallWar"
 SchemeName="DragonWar"
 #---------------------------------------------------
