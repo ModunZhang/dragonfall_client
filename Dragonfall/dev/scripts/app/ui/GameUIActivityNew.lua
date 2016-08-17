@@ -44,9 +44,12 @@ function GameUIActivityNew:ctor(city, needTips)
     scheduleAt(self, function()
         local current_time = app.timer:GetServerTime()
         if self.activity_list_view and self.tab_buttons:GetSelectedButtonTag() == 'activity' then
-            local count = #self.activity_list_view:getItems()
-            local item = self.activity_list_view:getItems()[count]
-            if item.item_type ~= self.ITEMS_TYPE.PLAYER_LEVEL_UP then return end
+            local item
+            for i,v in ipairs(self.activity_list_view:getItems()) do
+                if v.item_type == self.ITEMS_TYPE.PLAYER_LEVEL_UP then
+                    item = v
+                end
+            end
             if current_time <= self.player_level_up_time and item then
                 if not item.time_label then return end
                 self.player_level_up_time_residue = self.player_level_up_time - current_time
@@ -76,9 +79,10 @@ end
 function GameUIActivityNew:onCleanup()
     User:RemoveListenerOnType(self, "countInfo")
     -- User:RemoveListenerOnType(self, "activities")
-    User:RemoveListenerOnType(self, "allianceActivities")
+    -- User:RemoveListenerOnType(self, "allianceActivities")
     -- Alliance_Manager:GetMyAlliance():RemoveListenerOnType(self, "activities")
     -- User:RemoveListenerOnType(self, "iapGifts")
+    User:RemoveListenerOnType(self, "monthCard")
     User:RemoveListenerOnType(self, "buildings")
     NewsManager:RemoveListenerOnType(self,NewsManager.LISTEN_TYPE.NEWS_CHANGED)
     -- ActivityManager:RemoveListenerOnType(self,ActivityManager.LISTEN_TYPE.ACTIVITY_CHANGED)
@@ -338,6 +342,7 @@ function GameUIActivityNew:CreateTabIf_activity()
         self:RefreshActivityListView()
         User:AddListenOnType(self, "countInfo")
         User:AddListenOnType(self, "buildings")
+        User:AddListenOnType(self, "monthCard")
     else
         self:RefreshActivityListView()
     end
@@ -389,10 +394,15 @@ function GameUIActivityNew:RefreshActivityListView()
             hasTips = true
         end
     end
-    item = self:GetActivityItem(self.ITEMS_TYPE.MONTH_CARD):zorder(2)
-    self.activity_list_view:addItem(item)
-    item = self:GetActivityItem(self.ITEMS_TYPE.IAP_REWARD):zorder(1)
-    self.activity_list_view:addItem(item)
+    local isHotfixServer = string.find(NetManager.m_updateServer.basePath,'hotfix') -- 苹果审核
+    if not isHotfixServer then
+        item = self:GetActivityItem(self.ITEMS_TYPE.MONTH_CARD):zorder(2)
+        self.activity_list_view:addItem(item)
+    end
+    if User:IsIapActived() then
+        item = self:GetActivityItem(self.ITEMS_TYPE.IAP_REWARD):zorder(1)
+        self.activity_list_view:addItem(item)
+    end
     self.activity_list_view:reload()
 end
 
@@ -415,6 +425,10 @@ function GameUIActivityNew:CheckFinishAllLevelUpActiIf()
     return true
 end
 function GameUIActivityNew:OnUserDataChanged_countInfo()
+    self:RefreshActivityListView()
+    self:RefreshActivityCountTips()
+end
+function GameUIActivityNew:OnUserDataChanged_monthCard()
     self:RefreshActivityListView()
     self:RefreshActivityCountTips()
 end
@@ -627,10 +641,33 @@ function GameUIActivityNew:GetActivityItem(item_type)
             :align(display.RIGHT_CENTER, size.width + 10,size.height/2+10)
             :addTo(bg)
         display.newSprite("icon_box_98x108.png"):align(display.LEFT_CENTER,205,82):addTo(bg)
-        local sign_str,sign_color = _("已领取"),0xa2ff00
-        if flag then
-            sign_str = _("未领取")
+        local sign_str,sign_color
+        if not User:IsMonthCardActived() then
+            sign_str = _("未激活")
             sign_color = 0xff4e00
+            local title_label = UIKit:ttfLabel({
+                text = _("连续登录30日每日获得奖励"),
+                size = 20,
+                color= 0xffedae,
+                align = cc.TEXT_ALIGNMENT_LEFT,
+                shadow= true,
+                dimensions = cc.size(272, 0)
+            }):align(display.LEFT_TOP,330,115):addTo(bg)
+        else
+            if User:IsMonthCardTodayRewardsGet() then
+                sign_str = _("已领取")
+                sign_color = 0xa2ff00
+            else
+                sign_str = _("未领取")
+                sign_color = 0xff4e00
+            end
+            local str_1 = _("已激活(%s)")
+            local s,e = string.find(str_1,"%%s")
+            local days = GameDatas.PlayerInitData.intInit.monthCardTotalDays.value
+            local str = string.format("[{\"type\":\"text\", \"value\":\"%s\"},{\"type\":\"text\",\"color\":0xa2ff00,\"size\":22,\"value\":\"%s\"},{\"type\":\"text\", \"value\":\"%s\"}]",
+                string.sub(str_1,1,s - 1),User:GetMonthCardActivateDay().."/"..days,string.sub(str_1,e+1))
+            local title_label = RichText.new({width = 400,size = 20,color = 0xffedae,shadow = true})
+            title_label:Text(str):align(display.LEFT_BOTTOM,330,88):addTo(bg)
         end
         local sign_bg = display.newSprite("activity_day_bg_104x34.png")
             :align(display.LEFT_BOTTOM,330,45)
@@ -640,13 +677,6 @@ function GameUIActivityNew:GetActivityItem(item_type)
             size = 20,
             color= sign_color
         }):align(display.CENTER, 52, 17):addTo(sign_bg)
-        local str_1 = _("已激活(%s)")
-        local s,e = string.find(str_1,"%%s")
-        local str = string.format("[{\"type\":\"text\", \"value\":\"%s\"},{\"type\":\"text\",\"color\":0xa2ff00,\"size\":22,\"value\":\"%s\"},{\"type\":\"text\", \"value\":\"%s\"}]",
-            string.sub(str_1,1,s - 1),"28/30",string.sub(str_1,e+1))
-        local title_label = RichText.new({width = 400,size = 20,color = 0xffedae,shadow = true})
-        title_label:Text(str):align(display.LEFT_BOTTOM,330,88):addTo(bg)
-
     elseif item_type == self.ITEMS_TYPE.IAP_REWARD then
         display.newSprite("store_desc_black_335x92.png"):align(display.RIGHT_CENTER, size.width + 10,size.height/2+14):addTo(bg)
         display.newSprite("store_gem_260x116.png"):align(display.LEFT_CENTER,130,86):addTo(bg)
@@ -661,9 +691,22 @@ function GameUIActivityNew:GetActivityItem(item_type)
         local str_1 = _("%s后结束")
         local s,e = string.find(str_1,"%%s")
         local str = string.format("[{\"type\":\"text\", \"value\":\"%s\"},{\"type\":\"text\",\"color\":0xa2ff00,\"size\":22,\"value\":\"%s\"},{\"type\":\"text\", \"value\":\"%s\"}]",
-            string.sub(str_1,1,s - 1),"00:20:00",string.sub(str_1,e+1))
+            string.sub(str_1,1,s - 1),User:GetIapLeftTime(),string.sub(str_1,e+1))
         local title_label = RichText.new({width = 400,size = 20,color = 0xffedae,shadow = true})
         title_label:Text(str):align(display.LEFT_BOTTOM,330,50):addTo(bg)
+        self.iap_title_label = title_label
+        scheduleAt(self, function()
+            if User:IsIapActived() then
+                local str_1 = _("%s后结束")
+                local s,e = string.find(str_1,"%%s")
+                local str = string.format("[{\"type\":\"text\", \"value\":\"%s\"},{\"type\":\"text\",\"color\":0xa2ff00,\"size\":22,\"value\":\"%s\"},{\"type\":\"text\", \"value\":\"%s\"}]",
+                    string.sub(str_1,1,s - 1),User:GetIapLeftTime(),string.sub(str_1,e+1))
+                self.iap_title_label:Text(str)
+            else
+                self:RefreshActivityListView()
+                self:RefreshActivityCountTips()
+            end
+        end)
     end
     -- bg:size(576,190)
     item:addContent(bg)
@@ -767,7 +810,20 @@ function GameUIActivityNew:GetNewsListContent()
     return content
 end
 function GameUIActivityNew:FillNewsItemContent(content,data,idx)
-    content.news_name:setString(data.title)
+    dump(data)
+    local title
+    local language = GameUtils:GetGameLanguageFromNative()
+    if data.title[language] then
+        title = data.title[language]
+    elseif data.title['en'] then
+        title = data.title['en']
+    else
+        for k,v in pairs(data.title) do
+            title = v
+            break
+        end
+    end
+    content.news_name:setString(title)
     content.news_time:setString(GameUtils:formatTimeStyle2(data.time/1000))
     content.idx = idx
     content.isRead = false
@@ -795,8 +851,30 @@ function GameUIActivityNew:OpenNewsDetails(data,content)
     dialog.close_btn:setPosition(dialog.title_sprite:getContentSize().width - 25,dialog.title_sprite:getContentSize().height/2+16)
     local body = dialog:GetBody()
     local size = body:getContentSize()
+    local language = GameUtils:GetGameLanguageFromNative()
+    local title,new_content
+    if data.content[language] then
+        new_content = data.content[language]
+    elseif data.content['en'] then
+        new_content = data.content['en']
+    else
+        for k,v in pairs(data.content) do
+            new_content = v
+            break
+        end
+    end
+    if data.title[language] then
+        title = data.title[language]
+    elseif data.title['en'] then
+        title = data.title['en']
+    else
+        for k,v in pairs(data.title) do
+            title = v
+            break
+        end
+    end
     UIKit:ttfLabel({
-        text = data.title,
+        text = title,
         size = 22,
         color = 0x403c2f
     }):addTo(body):align(display.CENTER,size.width/2,size.height- 60)
@@ -809,7 +887,7 @@ function GameUIActivityNew:OpenNewsDetails(data,content)
     local content_bg = WidgetUIBackGround.new({width = 556,height = 526},WidgetUIBackGround.STYLE_TYPE.STYLE_5)
         :addTo(body):align(display.TOP_CENTER,size.width/2,size.height- 140)
     local message_label = UIKit:ttfLabel({
-        text = data.content,
+        text = new_content,
         size = 20,
         color = 0x403c2f,
         align = cc.ui.UILabel.TEXT_ALIGN_CENTER,
@@ -910,6 +988,12 @@ function GameUIActivityNew:RefreshActivityCountTips()
             award_num = award_num + 1
         end
         if User:HavePlayerLevelUpReward() then
+            award_num = award_num + 1
+        end
+        if User:IsMonthCardActived() and not User:IsMonthCardTodayRewardsGet() then
+            award_num = award_num + 1
+        end
+        if User:IsIapActived() and User:GetIapRewardedGotIndex() > -1 then
             award_num = award_num + 1
         end
         self.tab_buttons:SetButtonTipNumber('activity', award_num)
@@ -1090,6 +1174,15 @@ function GameUIActivityNew:OnAwardButtonClicked(idx)
 end
 
 return GameUIActivityNew
+
+
+
+
+
+
+
+
+
 
 
 

@@ -37,7 +37,7 @@ function WidgetShortcutButtons:ctor(city)
         end
     end)
     order:scheduleUpdate()
-     --在线活动
+    --在线活动
     local activity_button = WidgetAutoOrderAwardButton.new():scale(SCALE)
     activity_button:onButtonClicked(function(event)
         if event.target:getChildByTag(111) then
@@ -152,7 +152,7 @@ function WidgetShortcutButtons:ctor(city)
     end
     self.world_map_btn_bg = world_map_btn_bg
     order:AddElement(world_map_btn_bg)
-    
+
     order:RefreshOrder()
 
     self.left_order_group = order
@@ -403,6 +403,12 @@ function WidgetShortcutButtons:CheckAllianceRewardCount()
     if User:HavePlayerLevelUpReward() then
         award_num = award_num + 1
     end
+    if User:IsMonthCardActived() and not User:IsMonthCardTodayRewardsGet() then
+        award_num = award_num + 1
+    end
+    if User:IsIapActived() and User:GetIapRewardedGotIndex() > -1 then
+        award_num = award_num + 1
+    end
     self.tips_button.tips_button_count:SetNumber(newsCount + award_num)
 end
 -- function WidgetShortcutButtons:HasAnyRewards()
@@ -438,6 +444,7 @@ function WidgetShortcutButtons:HasAnyTips()
         or self.shrine_event_button:getChildByTag(111)
 end
 return WidgetShortcutButtons
+
 
 
 

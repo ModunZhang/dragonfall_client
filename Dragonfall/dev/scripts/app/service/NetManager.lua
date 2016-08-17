@@ -652,7 +652,17 @@ local logic_event_map = {
         if success then
             local running_scene = display.getRunningScene().__cname
             if running_scene ~= "MainScene" and running_scene ~= "LogoScene" then
-                GameGlobalUI:showNotice(response.type,response.content)
+                local language = GameUtils:GetGameLanguageFromNative()
+                if response.content[language] then
+                    GameGlobalUI:showNotice(response.type,response.content[language])
+                elseif response.content['en'] then
+                    GameGlobalUI:showNotice(response.type,response.content['en'])
+                else
+                    for k,v in pairs(response.content) do
+                        GameGlobalUI:showNotice(response.type,v)
+                        break
+                    end
+                end
             end
         end
     end,
@@ -688,6 +698,7 @@ local logic_event_map = {
         if success then
             User.gameInfo["modApplyEnabled"] = response.modApplyEnabled
             User.gameInfo["promotionProductEnabled"] = response.promotionProductEnabled
+            User.gameInfo["iapGemEventFinishTime"] = response.iapGemEventFinishTime
             local home_page = display.getRunningScene():GetHomePage()
             if home_page.CreateADNode then
                 if User.gameInfo.promotionProductEnabled then
@@ -695,6 +706,9 @@ local logic_event_map = {
                 else
                     home_page:RemoveADNode()
                 end
+            end
+            if home_page.GetShortcutNode then
+               home_page:GetShortcutNode().right_top_order:RefreshOrder()
             end
         end
     end,
@@ -2340,6 +2354,15 @@ end
 function NetManager:getGameInfoPromise()
     return get_blocking_request_promise("logic.playerHandler.getGameInfo",{},"获取游戏状态信息失败!")
 end
+-- 领取月卡每日奖励
+function NetManager:getMothcardRewardsPromise()
+    return get_blocking_request_promise("logic.playerHandler.getMothcardRewards",{},"领取月卡每日奖励失败!"):done(get_player_response_msg)
+end
+-- 获取累计充值奖励
+function NetManager:getTotalIAPRewardsPromise()
+    return get_blocking_request_promise("logic.playerHandler.getTotalIAPRewards",{},"获取累计充值奖励失败!"):done(get_player_response_msg)
+end
+
 ----------------------------------------------------------------------------------------------------------------
 function NetManager:getUpdateFileList(cb)
     local fileListJsonPath = string.format("%s:%s%s/res/fileList.json",self.m_updateServer.host,self.m_updateServer.port,self.m_updateServer.basePath)

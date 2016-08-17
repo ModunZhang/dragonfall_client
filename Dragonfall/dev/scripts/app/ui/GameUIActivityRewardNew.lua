@@ -21,6 +21,8 @@ local Localize = import("..utils.Localize")
 local UILib = import(".UILib")
 local Localize_item = import("..utils.Localize_item")
 local lights = import("..particles.lights")
+local light_gem = import("..particles.light_gem")
+local RichText = import("..widget.RichText")
 
 local height_config = {
     EVERY_DAY_LOGIN = 850,
@@ -28,6 +30,17 @@ local height_config = {
     ONLINE = 762,
     FIRST_IN_PURGURE = 720,
     PLAYER_LEVEL_UP = 762,
+    MONTH_CARD = 602,
+    IAP_REWARD = 850,
+}
+local y_offset = {
+    EVERY_DAY_LOGIN = 60,
+    CONTINUITY = 0,
+    ONLINE = 0,
+    FIRST_IN_PURGURE = 0,
+    PLAYER_LEVEL_UP = 0,
+    MONTH_CARD = -60,
+    IAP_REWARD = 20,
 }
 local ui_titles = {
     EVERY_DAY_LOGIN = _("每日登陆奖励"),
@@ -35,9 +48,11 @@ local ui_titles = {
     CONTINUITY = _("第二条行军队列"),
     FIRST_IN_PURGURE = _("首次充值奖励"),
     PLAYER_LEVEL_UP = _("新手冲级奖励"),
+    MONTH_CARD = _("月卡"),
+    IAP_REWARD = _("活动"),
 }
 
-GameUIActivityRewardNew.REWARD_TYPE = Enum("EVERY_DAY_LOGIN","ONLINE","CONTINUITY","FIRST_IN_PURGURE","PLAYER_LEVEL_UP")
+GameUIActivityRewardNew.REWARD_TYPE = Enum("EVERY_DAY_LOGIN","ONLINE","CONTINUITY","FIRST_IN_PURGURE","PLAYER_LEVEL_UP","MONTH_CARD","IAP_REWARD")
 
 function GameUIActivityRewardNew:ctor(reward_type)
     GameUIActivityRewardNew.super.ctor(self)
@@ -157,7 +172,7 @@ function GameUIActivityRewardNew:BuildUI()
     local bg = WidgetUIBackGround.new({height=height})
     self:addTouchAbleChild(bg)
     self.bg = bg
-    bg:pos(((display.width - bg:getContentSize().width)/2),window.bottom_top - (self:GetRewardType() == self.REWARD_TYPE.EVERY_DAY_LOGIN and 60 or 0))
+    bg:pos(((display.width - bg:getContentSize().width)/2),window.bottom_top - y_offset[self.REWARD_TYPE[self:GetRewardType()]])
     local is_first_in_purgure = self:GetRewardType() == self.REWARD_TYPE.FIRST_IN_PURGURE
     local titleBar = display.newSprite(is_first_in_purgure and "title_red_634x134.png" or "title_blue_600x56.png")
         :align(display.LEFT_BOTTOM,is_first_in_purgure and -13 or 3,is_first_in_purgure and height - 80 or height - 15):addTo(bg):zorder(2)
@@ -1156,28 +1171,364 @@ function GameUIActivityRewardNew:GetNextOnlineTimePoint()
         end
     end
 end
+----------------------
+function GameUIActivityRewardNew:ui_MONTH_CARD()
+    self:CreateMonthCardBuyButton()
+    self:CreateMonthCardListView()
+    self:CreateMonthCardItemLogo()
+end
+function GameUIActivityRewardNew:GetMonthCardData()
+    local v = GameDatas.PlayerInitData.monthCard[0]
+    local temp_data = {}
+    temp_data['productId'] = v.productId
+    temp_data['price'] = string.format("%.2f",v.price)
+    temp_data['name'] = _("连续30天每天获得奖励")
+    local rewards,rewards_price = self:FormatGemRewards(v.dailyRewards)
+    temp_data['rewards'] = rewards
+    temp_data['rewards_price'] = rewards_price
+    temp_data['config'] = UILib.iap_package_image[v.name]
+    return temp_data
+end
 
+function GameUIActivityRewardNew:CreateMonthCardItemLogo()
+    local data = self:GetMonthCardData()
+    local content = display.newSprite(data.config.small_content)
+        :align(display.CENTER_BOTTOM, 304, 380)
+        :addTo(self.bg)
+    UIKit:ttfLabel({
+        text = data.name,
+        color= 0xfed36c,
+        size = 24,
+        align = cc.TEXT_ALIGNMENT_CENTER,
+    }):align(display.CENTER_TOP, 294, 182):addTo(content)
+    local clip_rect = display.newClippingRegionNode(cc.rect(0,0,549,138)):addTo(content)
+    local logo = display.newSprite(data.config.logo)
+    local logo_box = display.newSprite("store_logo_box_592x141.png",296,69):addTo(logo):zorder(5)
+    local bg = display.newScale9Sprite(data.config.desc):size(335,92)
+    bg:align(display.RIGHT_CENTER, 592, 69):addTo(logo)
+    -- local gem_box = display.newSprite("store_gem_box_260x116.png"):align(display.CENTER, 0, 46):addTo(bg)
+    local gem_icon = display.newSprite(data.config.npc, 0, 54):addTo(bg)
+    -- light_gem():addTo(gem_icon, 1022):pos(gem_icon:getContentSize().width/2,gem_icon:getContentSize().height/2):scale(1.2)
+    UIKit:ttfLabel({
+        text = _("礼包中包含下列所有物品"),
+        size = 16,
+        color= 0xfed36c
+    }):align(display.BOTTOM_CENTER, 167,16):addTo(bg)
+    UIKit:ttfLabel({
+        text = "1200 X 30 = 36000",
+        size = 20,
+        color= 0xffd200
+    }):align(display.CENTER, 167,60):addTo(bg)
+    logo:align(display.LEFT_BOTTOM,0,2):addTo(clip_rect)
+end
+
+function GameUIActivityRewardNew:CreateMonthCardListView()
+    local list_bg = display.newScale9Sprite("background_568x120.png", 0,0,cc.size(546,216),cc.rect(15,10,538,100))
+        :addTo(self.bg)
+        :align(display.BOTTOM_CENTER, 304, 138)
+    self.mc_info_list = UIListView.new({
+        viewRect = cc.rect(11,10, 524, 196),
+        direction = cc.ui.UIScrollView.DIRECTION_VERTICAL
+    }):addTo(list_bg)
+    self:RefreshMonthCardListView()
+end
+
+function GameUIActivityRewardNew:RefreshMonthCardListView()
+    self.mc_info_list:removeAllItems()
+    local rewards = self:GetMonthCardData().rewards
+    for index,v in ipairs(rewards) do
+        local item = self:GetMonthCardItem(index,v)
+        self.mc_info_list:addItem(item)
+    end
+    self.mc_info_list:reload()
+end
+function GameUIActivityRewardNew:FormatGemRewards(rewards)
+    local result_rewards = {}
+    local rewards_price = {}
+    local all_rewards = string.split(rewards, ",")
+    for __,v in ipairs(all_rewards) do
+        local one_reward = string.split(v,":")
+        local category,key,count = unpack(one_reward)
+        table.insert(result_rewards,{category = category,key = key,count = count})
+        rewards_price[key] = count
+    end
+    return result_rewards,DataUtils:getItemsPrice(rewards_price)
+end
+function GameUIActivityRewardNew:GetMonthCardItem(index,reward)
+    local item = self.mc_info_list:newItem()
+    local content = display.newScale9Sprite(string.format("back_ground_548x40_%d.png", index % 2 == 0 and 1 or 2)):size(524,48)
+    local bg = display.newSprite("box_118x118.png"):align(display.LEFT_CENTER, 14, 24):addTo(content)
+    local icon = display.newSprite(UILib.item[reward.key]):align(display.CENTER, 59, 58):addTo(bg)
+    icon:scale(100/math.max(icon:getContentSize().width,icon:getContentSize().height))
+    bg:scale(0.3)
+    -- local icon = display.newSprite(UILib.item[reward.key]):align(display.LEFT_CENTER, 14, 24):addTo(content)
+    -- icon:scale(36/math.max(icon:getContentSize().width,icon:getContentSize().height))
+    local item_name = Localize_item.item_name[reward.key]
+    UIKit:ttfLabel({
+        text = item_name,
+        size = 22,
+        color= 0x403c2f
+    }):align(display.LEFT_CENTER, 62, 24):addTo(content)
+
+    UIKit:ttfLabel({
+        text = "x " .. reward.count,
+        size = 22,
+        color= 0x403c2f,
+        align = cc.TEXT_ALIGNMENT_RIGHT,
+    }):align(display.RIGHT_CENTER, 507, 24):addTo(content)
+    item:addContent(content)
+    item:setItemSize(524, 48)
+    return item
+end
+
+function GameUIActivityRewardNew:CreateMonthCardBuyButton()
+    if User:IsMonthCardActived() then
+        local button = WidgetPushButton.new({
+            normal = "yellow_btn_up_186x66.png",
+            pressed= "yellow_btn_down_186x66.png"
+        }):setButtonLabel(UIKit:ttfLabel({
+            text = _("领取"),
+            size = 24,
+            color= 0xfff3c7,
+            shadow = true,
+        })):onButtonClicked(function()
+            if User:IsMonthCardTodayRewardsGet() then
+                UIKit:showMessageDialog(_("错误"),_("今日月卡奖励已领取"))
+            else
+                NetManager:getMothcardRewardsPromise():done(function ()
+                    GameGlobalUI:showTips(_("提示"),_("今日月卡奖励领取成功"))
+                end)
+            end
+            self:LeftButtonClicked()
+        end):addTo(self.bg):pos(304,64)
+        local days = GameDatas.PlayerInitData.intInit.monthCardTotalDays.value
+        UIKit:ttfLabel({
+            text = string.format(_("已激活(%s)"),User:GetMonthCardActivateDay().."/"..days),
+            size = 22,
+            color= 0x007c23,
+        }):addTo(self.bg):align(display.CENTER,304,110)
+    else
+        local button = WidgetPushButton.new({
+            normal = "store_buy_button_n_332x76.png",
+            pressed= "store_buy_button_l_332x76.png"
+        })
+        local icon = display.newSprite("store_buy_icon_332x76.png"):addTo(button)
+        local label = UIKit:ttfLabel({
+            text = _("购买"),
+            size = 24,
+            color= 0xfff3c7,
+            shadow= true,
+        })
+        button:setButtonLabel("normal", label)
+        button:setButtonLabelOffset(0, 20)
+
+        local isCn = GameUtils:GetGameLanguage() == 'cn'
+        UIKit:ttfLabel({
+            text = isCn and "￥" .. DataUtils:GetRMBPrice(71.93) or "$71.93",
+            size =  24,
+            color= 0xffd200
+        }):addTo(icon):align(display.RIGHT_BOTTOM, 146, 10)
+        display.newSprite("icon_x_70x20.png"):addTo(icon):align(display.RIGHT_BOTTOM, 146, 14)
+
+        display.newSprite("icon_arrow_18x18.png"):align(display.CENTER_BOTTOM, 166, 14):addTo(icon)
+        UIKit:ttfLabel({
+            text = isCn and "￥" .. DataUtils:GetRMBPrice(self:GetMonthCardData().price) or "$" .. self:GetMonthCardData().price,
+            size =  24,
+            color= 0xffd200
+        }):addTo(icon):align(display.LEFT_BOTTOM, 186, 10)
+        button:addTo(self.bg):pos(304,64)
+        button:onButtonClicked(function()
+            self:OnBuyMonthCardButtonClicked()
+        end)
+        UIKit:ttfLabel({
+            text = _("未激活"),
+            size = 22,
+            color= 0x403c2f,
+        }):addTo(self.bg):align(display.CENTER,304,120)
+    end
+end
+
+function GameUIActivityRewardNew:OnBuyMonthCardButtonClicked()
+    if device.platform == 'android' and not app:getStore().canMakePurchases() and not ext.paypal.isPayPalSupport() then
+        UIKit:showMessageDialog(_("错误"),_("Google Play商店暂时不能购买,请检查手机Google Play商店的相关设置"))
+        return
+    end
+    if device.platform == 'android' and ext.paypal.isPayPalSupport() then
+        local productId = self:GetMonthCardData().productId
+        local info = DataUtils:getIapInfo(productId)
+        ext.paypal.buy(UIKit:getIapPackageName(productId),productId,tonumber(string.format("%.2f",info.price)))
+    else
+        app:getStore().purchaseWithProductId(self:GetMonthCardData().productId,1)
+    end
+    device.showActivityIndicator()
+    self:LeftButtonClicked()
+end
+----------------------
+function GameUIActivityRewardNew:ui_IAP_REWARD()
+    self:CreateIapRewardItemLogo()
+    self:CreateIapRewardItem()
+end
+
+function GameUIActivityRewardNew:CreateIapRewardItemLogo()
+    local content = display.newSprite("store_item_content_red_s_588x186.png")
+        :align(display.CENTER_BOTTOM, 304, 628)
+        :addTo(self.bg)
+    UIKit:ttfLabel({
+        text = _("累计充值大回馈"),
+        color= 0xfed36c,
+        size = 24,
+        align = cc.TEXT_ALIGNMENT_CENTER,
+    }):align(display.CENTER_TOP, 284, 182):addTo(content)
+    local clip_rect = display.newClippingRegionNode(cc.rect(0,0,549,138)):addTo(content)
+    local logo = display.newSprite("gem_logo_592x139_5.png")
+    local logo_box = display.newSprite("store_logo_box_592x141.png",296,69):addTo(logo):zorder(5)
+    local bg = display.newScale9Sprite("store_desc_black_335x92.png")
+    bg:align(display.RIGHT_CENTER, 592, 69):addTo(logo)
+    local gem_box = display.newSprite("store_gem_box_260x116.png"):align(display.CENTER, 0, 46):addTo(bg)
+    local gem_icon = display.newSprite("store_gem_260x116.png", 0, 50):addTo(bg)
+    light_gem():addTo(gem_icon, 1022):pos(gem_icon:getContentSize().width/2,gem_icon:getContentSize().height/2):scale(1.2)
+    UIKit:ttfLabel({
+        text = _("购买金龙币可获得丰厚奖励"),
+        size = 20,
+        color= 0xffedae,
+        align = cc.TEXT_ALIGNMENT_LEFT,
+        shadow= true,
+        dimensions = cc.size(200, 0)
+    }):align(display.LEFT_CENTER, 60,60):addTo(bg)
+    local str_1 = _("%s后结束")
+    local s,e = string.find(str_1,"%%s")
+    local str = string.format("[{\"type\":\"text\", \"value\":\"%s\"},{\"type\":\"text\",\"color\":0xa2ff00,\"size\":22,\"value\":\"%s\"},{\"type\":\"text\", \"value\":\"%s\"}]",
+        string.sub(str_1,1,s - 1),User:GetIapLeftTime(),string.sub(str_1,e+1))
+    local title_label = RichText.new({width = 400,size = 20,color = 0xffedae,shadow = true})
+    title_label:Text(str):align(display.LEFT_BOTTOM,60,10):addTo(bg)
+    scheduleAt(self, function()
+        if User:IsIapActived() then
+            local str_1 = _("%s后结束")
+            local s,e = string.find(str_1,"%%s")
+            local str = string.format("[{\"type\":\"text\", \"value\":\"%s\"},{\"type\":\"text\",\"color\":0xa2ff00,\"size\":22,\"value\":\"%s\"},{\"type\":\"text\", \"value\":\"%s\"}]",
+                string.sub(str_1,1,s - 1),User:GetIapLeftTime(),string.sub(str_1,e+1))
+            title_label:Text(str)
+        else
+            self:LeftButtonClicked()
+        end
+    end)
+    logo:align(display.LEFT_BOTTOM,0,2):addTo(clip_rect)
+end
+function GameUIActivityRewardNew:CreateIapRewardItem()
+    local buy_gem_bg = display.newSprite("title_red_564x54_1.png")
+        :align(display.TOP_CENTER, 304,600)
+        :addTo(self.bg)
+    local my_score = User:GetIapGemCount()
+    UIKit:ttfLabel({
+        text = string.format(_("已购买:%s"),my_score),
+        size = 22,
+        color = 0xffcb4e,
+        shadow = true
+    }):align(display.CENTER,buy_gem_bg:getContentSize().width/2,buy_gem_bg:getContentSize().height/2 + 6)
+        :addTo(buy_gem_bg)
+
+
+    local citizen_num_bg = display.newSprite("citizen_num_bg_170x714.png")
+        :align(display.LEFT_BOTTOM, 16, 20)
+        :addTo(self.bg)
+        :scale(121/170)
+
+    local iapRewards = GameDatas.PlayerInitData.iapRewards
+    local progress_percent = 0
+    for i=0,4 do
+        local v = iapRewards[i]
+        if v.gemNeed <= my_score then
+            progress_percent = progress_percent + 0.2
+        else
+            local pre_value = iapRewards[i - 1] and iapRewards[i - 1].gemNeed or 0
+            local gap = v.gemNeed - pre_value
+            local pass = my_score - pre_value
+            progress_percent = progress_percent + 0.2 * pass / gap
+            break
+        end
+    end
+    if progress_percent > 0 then
+        display.newScale9Sprite("line_92x1.png"):align(display.LEFT_TOP, 30, 36 + 478)
+            :addTo(self.bg)
+            :size(92,478 * progress_percent)
+    end
+    self.iap_btns = {}
+    self.iap_labels = {}
+    for i=0,4 do
+        local v = iapRewards[i]
+        local y = citizen_num_bg:getPositionY() + (#iapRewards - i) * 478/5
+        local point_bg = display.newSprite(my_score >= v.gemNeed and "title_yellow_80x30.png" or "title_blue_80x30.png")
+            :align(display.LEFT_BOTTOM, 128, y)
+            :addTo(self.bg)
+        UIKit:ttfLabel({
+            text = GameUtils:formatNumber(v.gemNeed),
+            size = 22,
+            color = 0xffedae,
+            shadow = true
+        }):align(display.CENTER,point_bg:getContentSize().width/2,point_bg:getContentSize().height/2 + 2)
+            :addTo(point_bg)
+
+        local item_rewards = {}
+        local tmp_rewards = string.split(v.rewards,",")
+        for i,v in ipairs(tmp_rewards) do
+            local tt = string.split(v,":")
+            table.insert(item_rewards, {name = tt[2],count = tt[3]})
+        end
+        local item_bg = display.newSprite("box_118x118.png"):align(display.LEFT_BOTTOM, 238, y):addTo(self.bg):scale(74/118)
+        local sp = display.newSprite(UIKit:GetItemImage("items",item_rewards[1].name),59,59):addTo(item_bg)
+        local size = sp:getContentSize()
+        sp:scale(90/math.max(size.width,size.height))
+        UIKit:addTipsToNode(item_bg,Localize_item.item_name[item_rewards[1].name].." X "..item_rewards[1].count,self:getParent(),nil,50,10)
+        local item_bg = display.newSprite("box_118x118.png"):align(display.LEFT_BOTTOM, 332, y):addTo(self.bg):scale(74/118)
+        local sp = display.newSprite(UIKit:GetItemImage("items",item_rewards[2].name),59,59):addTo(item_bg)
+        local size = sp:getContentSize()
+        sp:scale(90/math.max(size.width,size.height))
+        UIKit:addTipsToNode(item_bg,Localize_item.item_name[item_rewards[2].name].." X "..item_rewards[2].count,self:getParent(),nil,50,10)
+        local button = WidgetPushButton.new(
+            {normal = "yellow_btn_up_148x58.png", pressed = "yellow_btn_down_148x58.png",disabled = "grey_btn_148x58.png"}
+        ):setButtonLabel(UIKit:ttfLabel({
+            text = _("领取"),
+            size = 20,
+            color = 0xfff3c7,
+            shadow = true
+        })):addTo(self.bg):align(display.LEFT_BOTTOM, 426, y)
+            :onButtonClicked(function(event)
+                if event.name == "CLICKED_EVENT" then
+                    local scoreRewardedIndex = User:GetIapRewardedIndex()+ 1
+                    if scoreRewardedIndex ~= i then
+                        UIKit:showMessageDialog(_("提示"),_("请首先领取前面的奖励"))
+                        return
+                    end
+                    NetManager:getTotalIAPRewardsPromise():done(function ()
+                        app:GetAudioManager():PlayeEffectSoundWithKey("BUY_ITEM")
+                        GameGlobalUI:showTips(_("提示"),
+                            _("获得").." "..Localize_item.item_name[item_rewards[1].name].." X "..item_rewards[1].count.." , "..Localize_item.item_name[item_rewards[2].name].." X "..item_rewards[2].count)
+                        self:RefreshIaps()
+                    end)
+                end
+            end)
+        button:setButtonEnabled(User:GetIapRewardedIndex() < i and my_score >= v.gemNeed)
+        button:setVisible(User:GetIapRewardedIndex() < i)
+        self.iap_btns[i] = button
+        local label = UIKit:ttfLabel({
+            text = _("已领取"),
+            size = 22,
+            color = 0x403c2f,
+        }):addTo(self.bg):align(display.CENTER_BOTTOM, 500, y + 20)
+        label:setVisible(User:GetIapRewardedIndex() >= i)
+        self.iap_labels[i] = label
+    end
+end
+function GameUIActivityRewardNew:RefreshIaps()
+    local my_score = User:GetIapGemCount()
+    local iapRewards = GameDatas.PlayerInitData.iapRewards
+    for i,label in pairs(self.iap_labels) do
+        label:setVisible(User:GetIapRewardedIndex() >= i)
+    end
+    for i,button in pairs(self.iap_btns) do
+        local v = iapRewards[i]
+        button:setButtonEnabled(User:GetIapRewardedIndex() < i and my_score >= v.gemNeed)
+        button:setVisible(User:GetIapRewardedIndex() < i)
+    end
+end
 return GameUIActivityRewardNew
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -262,27 +262,21 @@ local WidgetFteArrow = import("..widget.WidgetFteArrow")
 
 function GameUISeason:OnUserDataChanged_activities()
     self:RefreshSeasonList()
-    self:RefreshSeasonCountTips()
 end
 function GameUISeason:OnUserDataChanged_allianceActivities()
     self:RefreshSeasonList()
-    self:RefreshSeasonCountTips()
 end
 function GameUISeason:OnAllianceDataChanged_activities()
     self:RefreshSeasonList()
-    self:RefreshSeasonCountTips()
 end
 function GameUISeason:OnActivitiesChanged()
     self:RefreshSeasonList()
-    self:RefreshSeasonCountTips()
 end
 function GameUISeason:OnActivitiesExpiredLimitChanged()
     self:RefreshSeasonList()
-    self:RefreshSeasonCountTips()
 end
 function GameUISeason:OnRankChanged()
     self:RefreshSeasonList()
-    self:RefreshSeasonCountTips()
 end
 
 return GameUISeason

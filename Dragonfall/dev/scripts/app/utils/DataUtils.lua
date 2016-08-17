@@ -1424,6 +1424,8 @@ function DataUtils:GetRMBPrice(d_price)
         return 328
     elseif d_price == 99.99 then
         return 648
+    elseif d_price == 71.93 then
+        return 432
     end
 end
 return DataUtils
