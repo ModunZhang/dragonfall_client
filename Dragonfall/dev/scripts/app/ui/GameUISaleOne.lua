@@ -223,7 +223,7 @@ function GameUISaleOne:CreateInfo()
     local parent = self
     function currentPageNode:InitPageNode(current_page)
         self:removeAllChildren()
-        local endIndex = 6
+        local endIndex = #parent.pv.items_
         if parent.isVerify then
             endIndex = 10
         end

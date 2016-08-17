@@ -699,6 +699,7 @@ local logic_event_map = {
             User.gameInfo["modApplyEnabled"] = response.modApplyEnabled
             User.gameInfo["promotionProductEnabled"] = response.promotionProductEnabled
             User.gameInfo["iapGemEventFinishTime"] = response.iapGemEventFinishTime
+            User.gameInfo["limitedProductBuyEnabled"] = response.limitedProductBuyEnabled
             local home_page = display.getRunningScene():GetHomePage()
             if home_page.CreateADNode then
                 if User.gameInfo.promotionProductEnabled then
@@ -710,6 +711,10 @@ local logic_event_map = {
             if home_page.GetShortcutNode then
                home_page:GetShortcutNode().right_top_order:RefreshOrder()
             end
+            if UIKit:GetUIInstance("GameUISaleOne") and response.limitedProductBuyEnabled then
+                UIKit:GetUIInstance("GameUISaleOne"):LeftButtonClicked()
+            end
+            
         end
     end,
 }

@@ -351,6 +351,15 @@ end
 local WidgetFteArrow = import("..widget.WidgetFteArrow")
 function GameUIActivityNew:RefreshActivityListView()
     self.activity_list_view:removeAllItems()
+    local isHotfixServer = string.find(NetManager.m_updateServer.basePath,'hotfix') -- 苹果审核
+    if not isHotfixServer then
+        item = self:GetActivityItem(self.ITEMS_TYPE.MONTH_CARD):zorder(2)
+        self.activity_list_view:addItem(item)
+    end
+    if User:IsIapActived() then
+        item = self:GetActivityItem(self.ITEMS_TYPE.IAP_REWARD):zorder(1)
+        self.activity_list_view:addItem(item)
+    end
     local countInfo = User.countInfo
     local item = self:GetActivityItem(self.ITEMS_TYPE.EVERY_DAY_LOGIN):zorder(6)
     self.activity_list_view:addItem(item)
@@ -393,15 +402,6 @@ function GameUIActivityNew:RefreshActivityListView()
                 :addTo(item,100,111):pos(612/2, 30)
             hasTips = true
         end
-    end
-    local isHotfixServer = string.find(NetManager.m_updateServer.basePath,'hotfix') -- 苹果审核
-    if not isHotfixServer then
-        item = self:GetActivityItem(self.ITEMS_TYPE.MONTH_CARD):zorder(2)
-        self.activity_list_view:addItem(item)
-    end
-    if User:IsIapActived() then
-        item = self:GetActivityItem(self.ITEMS_TYPE.IAP_REWARD):zorder(1)
-        self.activity_list_view:addItem(item)
     end
     self.activity_list_view:reload()
 end
@@ -497,7 +497,78 @@ function GameUIActivityNew:GetActivityItem(item_type)
     end
     display.newSprite("next_32x38.png"):align(display.LEFT_CENTER, 566, 80):addTo(bg)
 
-    if item_type == self.ITEMS_TYPE.EVERY_DAY_LOGIN then
+    if item_type == self.ITEMS_TYPE.MONTH_CARD then
+        display.newScale9Sprite("store_desc_red_282x92.png",0,0, cc.size(354,92), cc.rect(10,10,262,72))
+            :align(display.RIGHT_CENTER, size.width + 10,size.height/2+10)
+            :addTo(bg)
+        display.newSprite("icon_box_98x108.png"):align(display.LEFT_CENTER,205,82):addTo(bg)
+        local sign_str,sign_color
+        if not User:IsMonthCardActived() then
+            sign_str = _("未激活")
+            sign_color = 0xff4e00
+            local title_label = UIKit:ttfLabel({
+                text = _("连续登录30日每日获得奖励"),
+                size = 20,
+                color= 0xffedae,
+                align = cc.TEXT_ALIGNMENT_LEFT,
+                shadow= true,
+                dimensions = cc.size(272, 0)
+            }):align(display.LEFT_TOP,330,115):addTo(bg)
+        else
+            if User:IsMonthCardTodayRewardsGet() then
+                sign_str = _("已领取")
+                sign_color = 0xa2ff00
+            else
+                sign_str = _("未领取")
+                sign_color = 0xff4e00
+            end
+            local str_1 = _("已激活(%s)")
+            local s,e = string.find(str_1,"%%s")
+            local days = GameDatas.PlayerInitData.intInit.monthCardTotalDays.value
+            local str = string.format("[{\"type\":\"text\", \"value\":\"%s\"},{\"type\":\"text\",\"color\":0xa2ff00,\"size\":22,\"value\":\"%s\"},{\"type\":\"text\", \"value\":\"%s\"}]",
+                string.sub(str_1,1,s - 1),User:GetMonthCardActivateDay().."/"..days,string.sub(str_1,e+1))
+            local title_label = RichText.new({width = 400,size = 20,color = 0xffedae,shadow = true})
+            title_label:Text(str):align(display.LEFT_BOTTOM,330,88):addTo(bg)
+        end
+        local sign_bg = display.newSprite("activity_day_bg_104x34.png")
+            :align(display.LEFT_BOTTOM,441,45)
+            :addTo(bg)
+        local content_label = UIKit:ttfLabel({
+            text = sign_str,
+            size = 20,
+            color= sign_color
+        }):align(display.CENTER, 52, 17):addTo(sign_bg)
+    elseif item_type == self.ITEMS_TYPE.IAP_REWARD then
+        display.newSprite("store_desc_black_335x92.png"):align(display.RIGHT_CENTER, size.width + 10,size.height/2+14):addTo(bg)
+        display.newSprite("store_gem_260x116.png"):align(display.LEFT_CENTER,130,86):addTo(bg)
+        local title_label = UIKit:ttfLabel({
+            text = _("购买金龙币可获得丰厚奖励"),
+            size = 20,
+            color= 0xffedae,
+            align = cc.TEXT_ALIGNMENT_LEFT,
+            shadow= true,
+            dimensions = cc.size(272, 0)
+        }):align(display.LEFT_TOP,330,115):addTo(bg)
+        local str_1 = _("%s后结束")
+        local s,e = string.find(str_1,"%%s")
+        local str = string.format("[{\"type\":\"text\", \"value\":\"%s\"},{\"type\":\"text\",\"color\":0xa2ff00,\"size\":22,\"value\":\"%s\"},{\"type\":\"text\", \"value\":\"%s\"}]",
+            string.sub(str_1,1,s - 1),User:GetIapLeftTime(),string.sub(str_1,e+1))
+        local title_label = RichText.new({width = 400,size = 20,color = 0xffedae,shadow = true})
+        title_label:Text(str):align(display.LEFT_BOTTOM,330,50):addTo(bg)
+        self.iap_title_label = title_label
+        scheduleAt(self, function()
+            if User:IsIapActived() then
+                local str_1 = _("%s后结束")
+                local s,e = string.find(str_1,"%%s")
+                local str = string.format("[{\"type\":\"text\", \"value\":\"%s\"},{\"type\":\"text\",\"color\":0xa2ff00,\"size\":22,\"value\":\"%s\"},{\"type\":\"text\", \"value\":\"%s\"}]",
+                    string.sub(str_1,1,s - 1),User:GetIapLeftTime(),string.sub(str_1,e+1))
+                self.iap_title_label:Text(str)
+            else
+                self:RefreshActivityListView()
+                self:RefreshActivityCountTips()
+            end
+        end)
+    elseif item_type == self.ITEMS_TYPE.EVERY_DAY_LOGIN then
         local title_label = UIKit:ttfLabel({
             text = _("免费领取海量道具"),
             size = 20,
@@ -636,77 +707,6 @@ function GameUIActivityNew:GetActivityItem(item_type)
             color= sign_color
         }):align(display.CENTER, 52, 17):addTo(sign_bg)
         item.time_label = time_label
-    elseif item_type == self.ITEMS_TYPE.MONTH_CARD then
-        display.newScale9Sprite("store_desc_red_282x92.png",0,0, cc.size(354,92), cc.rect(10,10,262,72))
-            :align(display.RIGHT_CENTER, size.width + 10,size.height/2+10)
-            :addTo(bg)
-        display.newSprite("icon_box_98x108.png"):align(display.LEFT_CENTER,205,82):addTo(bg)
-        local sign_str,sign_color
-        if not User:IsMonthCardActived() then
-            sign_str = _("未激活")
-            sign_color = 0xff4e00
-            local title_label = UIKit:ttfLabel({
-                text = _("连续登录30日每日获得奖励"),
-                size = 20,
-                color= 0xffedae,
-                align = cc.TEXT_ALIGNMENT_LEFT,
-                shadow= true,
-                dimensions = cc.size(272, 0)
-            }):align(display.LEFT_TOP,330,115):addTo(bg)
-        else
-            if User:IsMonthCardTodayRewardsGet() then
-                sign_str = _("已领取")
-                sign_color = 0xa2ff00
-            else
-                sign_str = _("未领取")
-                sign_color = 0xff4e00
-            end
-            local str_1 = _("已激活(%s)")
-            local s,e = string.find(str_1,"%%s")
-            local days = GameDatas.PlayerInitData.intInit.monthCardTotalDays.value
-            local str = string.format("[{\"type\":\"text\", \"value\":\"%s\"},{\"type\":\"text\",\"color\":0xa2ff00,\"size\":22,\"value\":\"%s\"},{\"type\":\"text\", \"value\":\"%s\"}]",
-                string.sub(str_1,1,s - 1),User:GetMonthCardActivateDay().."/"..days,string.sub(str_1,e+1))
-            local title_label = RichText.new({width = 400,size = 20,color = 0xffedae,shadow = true})
-            title_label:Text(str):align(display.LEFT_BOTTOM,330,88):addTo(bg)
-        end
-        local sign_bg = display.newSprite("activity_day_bg_104x34.png")
-            :align(display.LEFT_BOTTOM,330,45)
-            :addTo(bg)
-        local content_label = UIKit:ttfLabel({
-            text = sign_str,
-            size = 20,
-            color= sign_color
-        }):align(display.CENTER, 52, 17):addTo(sign_bg)
-    elseif item_type == self.ITEMS_TYPE.IAP_REWARD then
-        display.newSprite("store_desc_black_335x92.png"):align(display.RIGHT_CENTER, size.width + 10,size.height/2+14):addTo(bg)
-        display.newSprite("store_gem_260x116.png"):align(display.LEFT_CENTER,130,86):addTo(bg)
-        local title_label = UIKit:ttfLabel({
-            text = _("购买金龙币可获得丰厚奖励"),
-            size = 20,
-            color= 0xffedae,
-            align = cc.TEXT_ALIGNMENT_LEFT,
-            shadow= true,
-            dimensions = cc.size(272, 0)
-        }):align(display.LEFT_TOP,330,115):addTo(bg)
-        local str_1 = _("%s后结束")
-        local s,e = string.find(str_1,"%%s")
-        local str = string.format("[{\"type\":\"text\", \"value\":\"%s\"},{\"type\":\"text\",\"color\":0xa2ff00,\"size\":22,\"value\":\"%s\"},{\"type\":\"text\", \"value\":\"%s\"}]",
-            string.sub(str_1,1,s - 1),User:GetIapLeftTime(),string.sub(str_1,e+1))
-        local title_label = RichText.new({width = 400,size = 20,color = 0xffedae,shadow = true})
-        title_label:Text(str):align(display.LEFT_BOTTOM,330,50):addTo(bg)
-        self.iap_title_label = title_label
-        scheduleAt(self, function()
-            if User:IsIapActived() then
-                local str_1 = _("%s后结束")
-                local s,e = string.find(str_1,"%%s")
-                local str = string.format("[{\"type\":\"text\", \"value\":\"%s\"},{\"type\":\"text\",\"color\":0xa2ff00,\"size\":22,\"value\":\"%s\"},{\"type\":\"text\", \"value\":\"%s\"}]",
-                    string.sub(str_1,1,s - 1),User:GetIapLeftTime(),string.sub(str_1,e+1))
-                self.iap_title_label:Text(str)
-            else
-                self:RefreshActivityListView()
-                self:RefreshActivityCountTips()
-            end
-        end)
     end
     -- bg:size(576,190)
     item:addContent(bg)
@@ -1174,6 +1174,8 @@ function GameUIActivityNew:OnAwardButtonClicked(idx)
 end
 
 return GameUIActivityNew
+
+
 
 
 
