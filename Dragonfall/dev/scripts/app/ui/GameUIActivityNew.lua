@@ -83,6 +83,7 @@ function GameUIActivityNew:onCleanup()
     -- Alliance_Manager:GetMyAlliance():RemoveListenerOnType(self, "activities")
     -- User:RemoveListenerOnType(self, "iapGifts")
     User:RemoveListenerOnType(self, "monthCard")
+    User:RemoveListenerOnType(self, "iapGemEvent")
     User:RemoveListenerOnType(self, "buildings")
     NewsManager:RemoveListenerOnType(self,NewsManager.LISTEN_TYPE.NEWS_CHANGED)
     -- ActivityManager:RemoveListenerOnType(self,ActivityManager.LISTEN_TYPE.ACTIVITY_CHANGED)
@@ -343,6 +344,7 @@ function GameUIActivityNew:CreateTabIf_activity()
         User:AddListenOnType(self, "countInfo")
         User:AddListenOnType(self, "buildings")
         User:AddListenOnType(self, "monthCard")
+        User:AddListenOnType(self, "iapGemEvent")
     else
         self:RefreshActivityListView()
     end
@@ -429,6 +431,10 @@ function GameUIActivityNew:OnUserDataChanged_countInfo()
     self:RefreshActivityCountTips()
 end
 function GameUIActivityNew:OnUserDataChanged_monthCard()
+    self:RefreshActivityListView()
+    self:RefreshActivityCountTips()
+end
+function GameUIActivityNew:OnUserDataChanged_iapGemEvent()
     self:RefreshActivityListView()
     self:RefreshActivityCountTips()
 end

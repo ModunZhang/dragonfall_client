@@ -711,7 +711,7 @@ local logic_event_map = {
             if home_page.GetShortcutNode then
                home_page:GetShortcutNode().right_top_order:RefreshOrder()
             end
-            if UIKit:GetUIInstance("GameUISaleOne") and response.limitedProductBuyEnabled then
+            if UIKit:GetUIInstance("GameUISaleOne") and not response.limitedProductBuyEnabled then
                 UIKit:GetUIInstance("GameUISaleOne"):LeftButtonClicked()
             end
             
@@ -2362,6 +2362,22 @@ end
 -- 领取月卡每日奖励
 function NetManager:getMothcardRewardsPromise()
     return get_blocking_request_promise("logic.playerHandler.getMothcardRewards",{},"领取月卡每日奖励失败!"):done(get_player_response_msg)
+end
+-- 上传Ios月卡IAP信息
+function NetManager:getAddIosMonthcardBillingDataPromise(receiptData)
+    return get_blocking_request_promise("logic.playerHandler.addIosMonthcardBillingData",{receiptData = receiptData},"上传Ios月卡IAP信息失败!"):done(get_player_response_msg)
+end
+-- 上传Wp月卡官方IAP信息
+function NetManager:getAddWpOfficialMonthcardBillingDataPromise(receiptData)
+    return get_blocking_request_promise("logic.playerHandler.addWpOfficialMonthcardBillingData",{receiptData = receiptData},"上传Wp月卡官方IAP信息失败!"):done(get_player_response_msg)
+end
+-- 上传Wp月卡AdeasygoIAP信息
+function NetManager:getAddWpAdeasygoMonthcardBillingDataPromise(receiptData)
+    return get_blocking_request_promise("logic.playerHandler.addWpAdeasygoMonthcardBillingData",{receiptData = receiptData},"上传Wp月卡Adeasygo IAP信息失败!"):done(get_player_response_msg)
+end
+-- 上传Android月卡官方IAP信息
+function NetManager:getAddAndroidOfficialMonthcardBillingDataPromise(receiptData)
+    return get_blocking_request_promise("logic.playerHandler.addAndroidOfficialMonthcardBillingData",{receiptData = receiptData},"上传Android月卡官方IAP信息失败!"):done(get_player_response_msg)
 end
 -- 获取累计充值奖励
 function NetManager:getTotalIAPRewardsPromise()

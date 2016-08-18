@@ -559,60 +559,110 @@ end
 --------------------
 function MyApp:verifyAdeasygoPurchase(transaction)
     if transaction.orderType ~= 'Adeasygo' or not transaction.transactionIdentifier then return end
-    NetManager:getVerifyAdeasygoIAPPromise(transaction.transactionIdentifier):next(function( response )
-        dump(response,"response-----")
-        local msg = response.msg
-        if msg.productId then
-            local openRewardIf = function()
-                local GameUIActivityRewardNew_instance = UIKit:GetUIInstance("GameUIActivityRewardNew")
-                if User and not GameUIActivityRewardNew_instance then
-                    local countInfo = User.countInfo
-                    if countInfo.iapCount > 0 and not countInfo.isFirstIAPRewardsGeted then
-                        UIKit:newGameUI("GameUIActivityRewardNew",4):AddToCurrentScene(true) -- 如果首充 弹出奖励界面
+    if transaction.productIdentifier == "dragonfall.mc.100dragoncoins" then
+        NetManager:getAddWpAdeasygoMonthcardBillingDataPromise(transaction.transactionIdentifier):done(function( response )
+            dump(response,"response-----")
+            local msg = response.msg
+            if msg.productId then
+                local openRewardIf = function()
+                    local GameUIActivityRewardNew_instance = UIKit:GetUIInstance("GameUIActivityRewardNew")
+                    if User and not GameUIActivityRewardNew_instance then
+                        local countInfo = User.countInfo
+                        if countInfo.iapCount > 0 and not countInfo.isFirstIAPRewardsGeted then
+                            UIKit:newGameUI("GameUIActivityRewardNew",4):AddToCurrentScene(true) -- 如果首充 弹出奖励界面
+                        end
                     end
                 end
+                UIKit:showMessageDialog(_("恭喜"),_("月卡已经激活"))
             end
-            UIKit:showMessageDialog(_("恭喜"),
-                string.format(_("您已获得%s,到物品里面查看"),
-                    UIKit:getIapPackageName(transaction.productIdentifier)),
-                openRewardIf)
-        end
-    end):catch(function(err)
-        --FIXME:just fix the promise assert error!
-    end)
+        end):catch(function(err)
+            --FIXME:just fix the promise assert error!
+        end)
+    else
+        NetManager:getVerifyAdeasygoIAPPromise(transaction.transactionIdentifier):next(function( response )
+            dump(response,"response-----")
+            local msg = response.msg
+            if msg.productId then
+                local openRewardIf = function()
+                    local GameUIActivityRewardNew_instance = UIKit:GetUIInstance("GameUIActivityRewardNew")
+                    if User and not GameUIActivityRewardNew_instance then
+                        local countInfo = User.countInfo
+                        if countInfo.iapCount > 0 and not countInfo.isFirstIAPRewardsGeted then
+                            UIKit:newGameUI("GameUIActivityRewardNew",4):AddToCurrentScene(true) -- 如果首充 弹出奖励界面
+                        end
+                    end
+                end
+                UIKit:showMessageDialog(_("恭喜"),
+                    string.format(_("您已获得%s,到物品里面查看"),
+                        UIKit:getIapPackageName(transaction.productIdentifier)),
+                    openRewardIf)
+            end
+        end):catch(function(err)
+            --FIXME:just fix the promise assert error!
+        end)
+    end
 end
 
 function MyApp:verifyMicrosoftPurchase(transaction)
     if transaction.orderType ~= 'Microsoft' or not transaction.transactionIdentifier then return end
-    NetManager:getVerifyMicrosoftIAPPromise(transaction.transactionIdentifier):next(function( response )
-        dump(response,"response-----")
-        local msg = response.msg
-        if msg.transactionId then
-            Store.finishTransaction(transaction)
-            local openRewardIf = function()
-                local GameUIActivityRewardNew_instance = UIKit:GetUIInstance("GameUIActivityRewardNew")
-                if User and not GameUIActivityRewardNew_instance then
-                    local countInfo = User.countInfo
-                    if countInfo.iapCount > 0 and not countInfo.isFirstIAPRewardsGeted then
-                        UIKit:newGameUI("GameUIActivityRewardNew",4):AddToCurrentScene(true) -- 如果首充 弹出奖励界面
+    if transaction.productIdentifier == "dragonfall.mc.100dragoncoins" then
+        NetManager:getAddWpOfficialMonthcardBillingDataPromise(transaction.transactionIdentifier):done(function( response )
+            dump(response,"response-----")
+            local msg = response.msg
+            if msg.transactionId then
+                Store.finishTransaction(transaction)
+                local openRewardIf = function()
+                    local GameUIActivityRewardNew_instance = UIKit:GetUIInstance("GameUIActivityRewardNew")
+                    if User and not GameUIActivityRewardNew_instance then
+                        local countInfo = User.countInfo
+                        if countInfo.iapCount > 0 and not countInfo.isFirstIAPRewardsGeted then
+                            UIKit:newGameUI("GameUIActivityRewardNew",4):AddToCurrentScene(true) -- 如果首充 弹出奖励界面
+                        end
                     end
                 end
+                UIKit:showMessageDialog(_("恭喜"),_("月卡已经激活"))
             end
-            UIKit:showMessageDialog(_("恭喜"),
-                string.format(_("您已获得%s,到物品里面查看"),
-                    UIKit:getIapPackageName(transaction.productIdentifier)),
-                openRewardIf)
-        end
-    end):catch(function(err)
-        local msg,code_type = err:reason()
-        local code = msg.code
-        if code_type ~= "syntaxError" then
-            local code_key = UIKit:getErrorCodeKey(code)
-            if code_key == 'duplicateIAPTransactionId' or code_key == 'iapProductNotExist' or code_key == 'iapValidateFaild' then
+        end):catch(function(err)
+            local msg,code_type = err:reason()
+            local code = msg.code
+            if code_type ~= "syntaxError" then
+                local code_key = UIKit:getErrorCodeKey(code)
+                if code_key == 'duplicateIAPTransactionId' or code_key == 'iapProductNotExist' or code_key == 'iapValidateFaild' then
+                    Store.finishTransaction(transaction)
+                end
+            end
+        end)
+    else
+        NetManager:getVerifyMicrosoftIAPPromise(transaction.transactionIdentifier):next(function( response )
+            dump(response,"response-----")
+            local msg = response.msg
+            if msg.transactionId then
                 Store.finishTransaction(transaction)
+                local openRewardIf = function()
+                    local GameUIActivityRewardNew_instance = UIKit:GetUIInstance("GameUIActivityRewardNew")
+                    if User and not GameUIActivityRewardNew_instance then
+                        local countInfo = User.countInfo
+                        if countInfo.iapCount > 0 and not countInfo.isFirstIAPRewardsGeted then
+                            UIKit:newGameUI("GameUIActivityRewardNew",4):AddToCurrentScene(true) -- 如果首充 弹出奖励界面
+                        end
+                    end
+                end
+                UIKit:showMessageDialog(_("恭喜"),
+                    string.format(_("您已获得%s,到物品里面查看"),
+                        UIKit:getIapPackageName(transaction.productIdentifier)),
+                    openRewardIf)
             end
-        end
-    end)
+        end):catch(function(err)
+            local msg,code_type = err:reason()
+            local code = msg.code
+            if code_type ~= "syntaxError" then
+                local code_key = UIKit:getErrorCodeKey(code)
+                if code_key == 'duplicateIAPTransactionId' or code_key == 'iapProductNotExist' or code_key == 'iapValidateFaild' then
+                    Store.finishTransaction(transaction)
+                end
+            end
+        end)
+    end
 end
 
 function MyApp:verifyWindwosPhonePurchase(unSyncTradeList)
@@ -700,42 +750,79 @@ function MyApp:transactionObserver(event)
     elseif transaction_state == 'purchased' then
         local info = DataUtils:getIapInfo(transaction.productIdentifier)
         ext.market_sdk.onPlayerChargeRequst(transaction.transactionIdentifier,transaction.productIdentifier,info.price,info.gem,"USD")
-        NetManager:getVerifyIAPPromise(transaction.transactionIdentifier,transaction.receipt):next(function(response)
-            device.hideActivityIndicator()
-            local msg = response.msg
-            if msg.transactionId then
-                Store.finishTransaction(transaction)
-                ext.market_sdk.onPlayerChargeSuccess(transaction.transactionIdentifier)
-                local openRewardIf = function()
-                    local GameUIActivityRewardNew_instance = UIKit:GetUIInstance("GameUIActivityRewardNew")
-                    if User and not GameUIActivityRewardNew_instance then
-                        local countInfo = User.countInfo
-                        if countInfo.iapCount > 0 and not countInfo.isFirstIAPRewardsGeted then
-                            UIKit:newGameUI("GameUIActivityRewardNew",4):AddToCurrentScene(true) -- 如果首充 弹出奖励界面
+        local isHotfixServer = string.find(NetManager.m_updateServer.basePath,'hotfix') -- 苹果审核
+        if transaction.productIdentifier == "dragonfall.mc.100dragoncoins" and not isHotfixServer then
+            NetManager:getAddIosMonthcardBillingDataPromise(transaction.receipt):done(function(response)
+                device.hideActivityIndicator()
+                local msg = response.msg
+                if msg.transactionId then
+                    Store.finishTransaction(transaction)
+                    ext.market_sdk.onPlayerChargeSuccess(transaction.transactionIdentifier)
+                    local openRewardIf = function()
+                        local GameUIActivityRewardNew_instance = UIKit:GetUIInstance("GameUIActivityRewardNew")
+                        if User and not GameUIActivityRewardNew_instance then
+                            local countInfo = User.countInfo
+                            if countInfo.iapCount > 0 and not countInfo.isFirstIAPRewardsGeted then
+                                UIKit:newGameUI("GameUIActivityRewardNew",4):AddToCurrentScene(true) -- 如果首充 弹出奖励界面
+                            end
                         end
                     end
+                    UIKit:showMessageDialog(_("恭喜"),_("月卡已经激活"))
                 end
-                UIKit:showMessageDialog(_("恭喜"),
-                    string.format(_("您已获得%s,到物品里面查看"),
-                        UIKit:getIapPackageName(transaction.productIdentifier)),
-                    openRewardIf)
-            end
-        end):catch(function(err)
-            device.hideActivityIndicator()
-            local msg,code_type = err:reason()
-            local code = msg.code
-            if code_type ~= "syntaxError" then
-                local code_key = UIKit:getErrorCodeKey(code)
-                if code_key == 'duplicateIAPTransactionId' or code_key == 'iapProductNotExist' or code_key == 'iapValidateFaild' then
+            end):catch(function(err)
+                device.hideActivityIndicator()
+                local msg,code_type = err:reason()
+                local code = msg.code
+                if code_type ~= "syntaxError" then
+                    local code_key = UIKit:getErrorCodeKey(code)
+                    if code_key == 'duplicateIAPTransactionId' or code_key == 'iapProductNotExist' or code_key == 'iapValidateFaild' then
+                        Store.finishTransaction(transaction)
+                    end
+                end
+                if code == 0 then
+                    UIKit:showKeyMessageDialog(_("错误"), _("请求超时"),function()
+                        app:retryConnectServer()
+                    end)
+                end
+            end)
+        else
+            NetManager:getVerifyIAPPromise(transaction.transactionIdentifier,transaction.receipt):next(function(response)
+                device.hideActivityIndicator()
+                local msg = response.msg
+                if msg.transactionId then
                     Store.finishTransaction(transaction)
+                    ext.market_sdk.onPlayerChargeSuccess(transaction.transactionIdentifier)
+                    local openRewardIf = function()
+                        local GameUIActivityRewardNew_instance = UIKit:GetUIInstance("GameUIActivityRewardNew")
+                        if User and not GameUIActivityRewardNew_instance then
+                            local countInfo = User.countInfo
+                            if countInfo.iapCount > 0 and not countInfo.isFirstIAPRewardsGeted then
+                                UIKit:newGameUI("GameUIActivityRewardNew",4):AddToCurrentScene(true) -- 如果首充 弹出奖励界面
+                            end
+                        end
+                    end
+                    UIKit:showMessageDialog(_("恭喜"),
+                        string.format(_("您已获得%s,到物品里面查看"),
+                            UIKit:getIapPackageName(transaction.productIdentifier)),
+                        openRewardIf)
                 end
-            end
-            if code == 0 then
-                UIKit:showKeyMessageDialog(_("错误"), _("请求超时"),function()
-                    app:retryConnectServer()
-                end)
-            end
-        end)
+            end):catch(function(err)
+                device.hideActivityIndicator()
+                local msg,code_type = err:reason()
+                local code = msg.code
+                if code_type ~= "syntaxError" then
+                    local code_key = UIKit:getErrorCodeKey(code)
+                    if code_key == 'duplicateIAPTransactionId' or code_key == 'iapProductNotExist' or code_key == 'iapValidateFaild' then
+                        Store.finishTransaction(transaction)
+                    end
+                end
+                if code == 0 then
+                    UIKit:showKeyMessageDialog(_("错误"), _("请求超时"),function()
+                        app:retryConnectServer()
+                    end)
+                end
+            end)
+        end
     elseif transaction_state == 'purchasing' then
         --不作任何处理
         device.hideActivityIndicator()

@@ -23,62 +23,65 @@ function GameUISaleOne:onEnter()
         return a.price < b.price
     end )
     self.promotionItems = config
-    if not User.gameInfo.limitedProductBuyEnabled then
-        for i,v in ipairs(self.promotionItems) do
-            if v.name == "promotion_product_5_1" then
-                table.remove(self.promotionItems,i)
+    NetManager:getGameInfoPromise():done(function (response)
+        User.gameInfo = response.msg.serverInfo
+        if not User.gameInfo.limitedProductBuyEnabled then
+            for i,v in ipairs(self.promotionItems) do
+                if v.name == "promotion_product_5_1" then
+                    table.remove(self.promotionItems,i)
+                end
             end
         end
-    end
-    local promotionItems = self.promotionItems
-    local body = display.newSprite("background_640x824.png"):align(display.TOP_CENTER, window.cx, window.top - 70)
-    self.body = body
-    self:addTouchAbleChild(body)
-    self.isVerify = string.find(NetManager.m_updateServer.basePath,'hotfix') -- 苹果审核
+        local promotionItems = self.promotionItems
+        local body = display.newSprite("background_640x824.png"):align(display.TOP_CENTER, window.cx, window.top - 70)
+        self.body = body
+        self:addTouchAbleChild(body)
+        self.isVerify = string.find(NetManager.m_updateServer.basePath,'hotfix') -- 苹果审核
 
-    self:CreateSalesBox()
-    self:CreateInfo()
-    self:RefreshInfo()
-    self.pv:gotoPage(math.random(#self.pv.items_))
+        self:CreateSalesBox()
+        self:CreateInfo()
+        self:RefreshInfo()
+        self.pv:gotoPage(math.random(#self.pv.items_))
 
-    local close_btn = WidgetPushButton.new({normal = "x_btn_up_48x48.png",pressed = "x_btn_down_48x48.png"})
-        :onButtonClicked(function(event)
-            if event.name == "CLICKED_EVENT" then
-                self:LeftButtonClicked()
-            end
-        end):align(display.RIGHT_CENTER, 620,606):addTo(body)
+        local close_btn = WidgetPushButton.new({normal = "x_btn_up_48x48.png",pressed = "x_btn_down_48x48.png"})
+            :onButtonClicked(function(event)
+                if event.name == "CLICKED_EVENT" then
+                    self:LeftButtonClicked()
+                end
+            end):align(display.RIGHT_CENTER, 620,606):addTo(body)
 
-    scheduleAt(self, function()
-        if self.pv then
-            local cur_index = self.pv:getCurPageIdx()
-            for i,item in ipairs(self.pv.items_) do
-                local content_node = item.content_node
-                if content_node then
-                    local pro_data,leftTime
-                    if self.isVerify then
-                        pro_data,leftTime = promotionItems[i],100
-                    else
-                        local index = self:GetPackageIndex(content_node.pro_data.name)
-                        if index then
-                            pro_data,leftTime = DataUtils:GetProductAndLeftTimeByIndex(index)
-                        elseif content_node.pro_data.name == "promotion_product_5_1" then
-                            pro_data = GameDatas.StoreItems.promotionItems[9]
-                        elseif content_node.pro_data.name == "promotion_product_5_2" then
-                            pro_data = GameDatas.StoreItems.promotionItems[10]
+        scheduleAt(self, function()
+            if self.pv then
+                local cur_index = self.pv:getCurPageIdx()
+                for i,item in ipairs(self.pv.items_) do
+                    local content_node = item.content_node
+                    if content_node then
+                        local pro_data,leftTime
+                        if self.isVerify then
+                            pro_data,leftTime = promotionItems[i],100
+                        else
+                            local index = self:GetPackageIndex(content_node.pro_data.name)
+                            if index then
+                                pro_data,leftTime = DataUtils:GetProductAndLeftTimeByIndex(index)
+                            elseif content_node.pro_data.name == "promotion_product_5_1" then
+                                pro_data = GameDatas.StoreItems.promotionItems[9]
+                            elseif content_node.pro_data.name == "promotion_product_5_2" then
+                                pro_data = GameDatas.StoreItems.promotionItems[10]
+                            end
                         end
-                    end
-                    if pro_data.name ~= content_node.pro_data.name then
-                        self:CreateSalesBox()
-                        self.pv:gotoPage(cur_index)
-                        self:RefreshInfo()
-                    else
-                        if content_node.leftTime and leftTime then
-                            content_node.leftTime:setString(GameUtils:formatTimeStyle1(leftTime))
+                        if pro_data.name ~= content_node.pro_data.name then
+                            self:CreateSalesBox()
+                            self.pv:gotoPage(cur_index)
+                            self:RefreshInfo()
+                        else
+                            if content_node.leftTime and leftTime then
+                                content_node.leftTime:setString(GameUtils:formatTimeStyle1(leftTime))
+                            end
                         end
                     end
                 end
             end
-        end
+        end)
     end)
 end
 
@@ -355,6 +358,9 @@ function GameUISaleOne:OnBuyButtonClicked()
     else
         app:getStore().purchaseWithProductId(productId,1)
     end
+    if productId == "com.dragonfall.promotion.3000dragoncoins" then
+        self:LeftButtonClicked()
+    end
 end
 function GameUISaleOne:GetPackageIndex(name)
     if string.find(name,"promotion_product_1") then
@@ -369,6 +375,7 @@ function GameUISaleOne:GetPackageIndex(name)
 end
 
 return GameUISaleOne
+
 
 
 

@@ -276,7 +276,7 @@ function User:IsMonthCardTodayRewardsGet()
     return self.monthCard.todayRewardsGet
 end
 function User:GetMonthCardActivateDay()
-    return math.ceil((self.monthCard.finishTime/1000 - app.timer:GetServerTime())/(24*60*60))
+    return GameDatas.PlayerInitData.intInit.monthCardTotalDays.value -math.floor((self.monthCard.finishTime/1000 - app.timer:GetServerTime())/(24*60*60))
 end
 --[end]
 --[[累充相关方法]]

@@ -1283,30 +1283,34 @@ end
 
 function GameUIActivityRewardNew:CreateMonthCardBuyButton()
     if User:IsMonthCardActived() then
-        local button = WidgetPushButton.new({
-            normal = "yellow_btn_up_186x66.png",
-            pressed= "yellow_btn_down_186x66.png"
-        }):setButtonLabel(UIKit:ttfLabel({
-            text = _("领取"),
-            size = 24,
-            color= 0xfff3c7,
-            shadow = true,
-        })):onButtonClicked(function()
-            if User:IsMonthCardTodayRewardsGet() then
-                UIKit:showMessageDialog(_("错误"),_("今日月卡奖励已领取"))
-            else
+        if User:IsMonthCardTodayRewardsGet() then
+            UIKit:ttfLabel({
+                text = _("今日已领取"),
+                size = 22,
+                color= 0x403c2f,
+            }):addTo(self.bg):align(display.CENTER,304,64)
+        else
+            local button = WidgetPushButton.new({
+                normal = "yellow_btn_up_186x66.png",
+                pressed= "yellow_btn_down_186x66.png"
+            }):setButtonLabel(UIKit:ttfLabel({
+                text = _("领取"),
+                size = 24,
+                color= 0xfff3c7,
+                shadow = true,
+            })):onButtonClicked(function()
                 NetManager:getMothcardRewardsPromise():done(function ()
                     GameGlobalUI:showTips(_("提示"),_("今日月卡奖励领取成功"))
                 end)
-            end
-            self:LeftButtonClicked()
-        end):addTo(self.bg):pos(304,64)
+                self:LeftButtonClicked()
+            end):addTo(self.bg):pos(304,64)
+        end
         local days = GameDatas.PlayerInitData.intInit.monthCardTotalDays.value
         UIKit:ttfLabel({
             text = string.format(_("已激活(%s)"),User:GetMonthCardActivateDay().."/"..days),
             size = 22,
             color= 0x007c23,
-        }):addTo(self.bg):align(display.CENTER,304,110)
+        }):addTo(self.bg):align(display.CENTER,304,114)
     else
         local button = WidgetPushButton.new({
             normal = "store_buy_button_n_332x76.png",
@@ -1532,3 +1536,4 @@ function GameUIActivityRewardNew:RefreshIaps()
     end
 end
 return GameUIActivityRewardNew
+

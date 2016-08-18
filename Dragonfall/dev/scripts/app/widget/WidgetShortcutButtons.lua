@@ -257,6 +257,8 @@ function WidgetShortcutButtons:onEnter()
     User:AddListenOnType(self, "dragons")
     User:AddListenOnType(self, "activities")
     User:AddListenOnType(self, "allianceActivities")
+    User:AddListenOnType(self, "monthCard")
+    User:AddListenOnType(self, "iapGemEvent")
 
     if NewsManager then
         NewsManager:AddListenOnType(self,NewsManager.LISTEN_TYPE.UNREAD_NEWS_CHANGED)
@@ -285,6 +287,8 @@ function WidgetShortcutButtons:onExit()
     User:RemoveListenerOnType(self, "dragons")
     User:RemoveListenerOnType(self, "activities")
     User:RemoveListenerOnType(self, "allianceActivities")
+    User:RemoveListenerOnType(self, "monthCard")
+    User:RemoveListenerOnType(self, "iapGemEvent")
     if NewsManager then
         NewsManager:RemoveListenerOnType(self,NewsManager.LISTEN_TYPE.UNREAD_NEWS_CHANGED)
     end
@@ -377,6 +381,14 @@ end
 function WidgetShortcutButtons:OnAllianceDataChanged_activities(alliance, deltaData)
     self:CheckAllianceRewardCount()
 end
+function WidgetShortcutButtons:OnUserDataChanged_monthCard()
+    self:CheckAllianceRewardCount()
+end
+function WidgetShortcutButtons:OnUserDataChanged_iapGemEvent()
+    self:CheckAllianceRewardCount()
+end
+
+
 function WidgetShortcutButtons:OnMapDataChanged()
     self.right_top_order:RefreshOrder()
 end
