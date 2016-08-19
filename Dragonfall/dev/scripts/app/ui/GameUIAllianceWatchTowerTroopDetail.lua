@@ -231,7 +231,7 @@ function GameUIAllianceWatchTowerTroopDetail:GetItem(ITEM_TYPE,item_data)
                     local y = 0
                     for i,v in ipairs(item_data.militaryTechs) do
                         local name = Localize.getMilitaryTechnologyName(v.name)
-                        self:GetSubItem(ITEM_TYPE,i,{name,"Lv"..v.level}):addTo(bg):align(display.LEFT_BOTTOM,0, y)
+                        self:GetSubItem(ITEM_TYPE,i,{name,_("Lv")..v.level}):addTo(bg):align(display.LEFT_BOTTOM,0, y)
                         y = y + 36
                     end
                 else

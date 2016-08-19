@@ -20,31 +20,36 @@ local GameUIActivityRewardNew = import(".GameUIActivityRewardNew")
 local WidgetPushButton = import("..widget.WidgetPushButton")
 local Localize_item = import("..utils.Localize_item")
 --异步列表按钮事件修复
-GameUIActivityNew.ITEMS_TYPE = Enum("EVERY_DAY_LOGIN","CONTINUITY","FIRST_IN_PURGURE","PLAYER_LEVEL_UP")
+GameUIActivityNew.ITEMS_TYPE = Enum("EVERY_DAY_LOGIN","CONTINUITY","FIRST_IN_PURGURE","PLAYER_LEVEL_UP","MONTH_CARD","IAP_REWARD")
 --赛季列表条类型
-GameUIActivityNew.SEASON_ITEMS_TYPE = Enum("HAVE_IN_HAND","OVERDUE","COMING")
+-- GameUIActivityNew.SEASON_ITEMS_TYPE = Enum("HAVE_IN_HAND","OVERDUE","COMING")
 
 local titles = {
     EVERY_DAY_LOGIN = _("每日登陆奖励"),
     CONTINUITY = _("王城援军"),
     FIRST_IN_PURGURE = _("首次充值奖励"),
     PLAYER_LEVEL_UP = _("新手冲级奖励"),
+    MONTH_CARD = _("月卡"),
+    IAP_REWARD = _("累计充值大回馈"),
 }
 
 function GameUIActivityNew:ctor(city, needTips)
     GameUIActivityNew.super.ctor(self,city, _("活动"))
     self.needTips = needTips
-    ActivityManager:GetActivitiesFromServer()
-    ActivityManager:GetAllianceActivitiesFromServer()
+    -- ActivityManager:GetActivitiesFromServer()
+    -- ActivityManager:GetAllianceActivitiesFromServer()
     local countInfo = User.countInfo
     self.player_level_up_time = countInfo.registerTime/1000 + config_intInit.playerLevelupRewardsHours.value * 60 * 60 -- 单位秒
 
     scheduleAt(self, function()
         local current_time = app.timer:GetServerTime()
         if self.activity_list_view and self.tab_buttons:GetSelectedButtonTag() == 'activity' then
-            local count = #self.activity_list_view:getItems()
-            local item = self.activity_list_view:getItems()[count]
-            if item.item_type ~= self.ITEMS_TYPE.PLAYER_LEVEL_UP then return end
+            local item
+            for i,v in ipairs(self.activity_list_view:getItems()) do
+                if v.item_type == self.ITEMS_TYPE.PLAYER_LEVEL_UP then
+                    item = v
+                end
+            end
             if current_time <= self.player_level_up_time and item then
                 if not item.time_label then return end
                 self.player_level_up_time_residue = self.player_level_up_time - current_time
@@ -55,33 +60,35 @@ function GameUIActivityNew:ctor(city, needTips)
                 end
             end
         end
-        if self.season_list_view and self.tab_buttons:GetSelectedButtonTag() == 'season' then
-            for i,item in ipairs(self.season_list_view:getItems()) do
-                local content = item:getContent()
-                if content.finish_time_label then
-                    content.finish_time_label:setString(string.format(_("结束时间：%s"),GameUtils:formatTimeStyle1(content.activity.finishTime/1000 - app.timer:GetServerTime())))
-                elseif content.coming_time_label then
-                    content.coming_time_label:setString(string.format(_("距离开始还有：%s"),GameUtils:formatTimeStyle1(content.activity.startTime/1000 - app.timer:GetServerTime())))
-                elseif content.over_time_label then
-                    content.over_time_label:setString(string.format(_("%s后消失"),GameUtils:formatTimeStyle1(content.activity.removeTime/1000 - app.timer:GetServerTime())))
-                end
-            end
-        end
+        -- if self.season_list_view and self.tab_buttons:GetSelectedButtonTag() == 'season' then
+        --     for i,item in ipairs(self.season_list_view:getItems()) do
+        --         local content = item:getContent()
+        --         if content.finish_time_label then
+        --             content.finish_time_label:setString(string.format(_("结束时间：%s"),GameUtils:formatTimeStyle1(content.activity.finishTime/1000 - app.timer:GetServerTime())))
+        --         elseif content.coming_time_label then
+        --             content.coming_time_label:setString(string.format(_("距离开始还有：%s"),GameUtils:formatTimeStyle1(content.activity.startTime/1000 - app.timer:GetServerTime())))
+        --         elseif content.over_time_label then
+        --             content.over_time_label:setString(string.format(_("%s后消失"),GameUtils:formatTimeStyle1(content.activity.removeTime/1000 - app.timer:GetServerTime())))
+        --         end
+        --     end
+        -- end
     end)
 end
 
 
 function GameUIActivityNew:onCleanup()
     User:RemoveListenerOnType(self, "countInfo")
-    User:RemoveListenerOnType(self, "activities")
-    User:RemoveListenerOnType(self, "allianceActivities")
-    Alliance_Manager:GetMyAlliance():RemoveListenerOnType(self, "activities")
+    -- User:RemoveListenerOnType(self, "activities")
+    -- User:RemoveListenerOnType(self, "allianceActivities")
+    -- Alliance_Manager:GetMyAlliance():RemoveListenerOnType(self, "activities")
     -- User:RemoveListenerOnType(self, "iapGifts")
+    User:RemoveListenerOnType(self, "monthCard")
+    User:RemoveListenerOnType(self, "iapGemEvent")
     User:RemoveListenerOnType(self, "buildings")
     NewsManager:RemoveListenerOnType(self,NewsManager.LISTEN_TYPE.NEWS_CHANGED)
-    ActivityManager:RemoveListenerOnType(self,ActivityManager.LISTEN_TYPE.ACTIVITY_CHANGED)
-    ActivityManager:RemoveListenerOnType(self,ActivityManager.LISTEN_TYPE.ON_RANK_CHANGED)
-    ActivityManager:RemoveListenerOnType(self,ActivityManager.LISTEN_TYPE.ON_LIMIT_CHANGED)
+    -- ActivityManager:RemoveListenerOnType(self,ActivityManager.LISTEN_TYPE.ACTIVITY_CHANGED)
+    -- ActivityManager:RemoveListenerOnType(self,ActivityManager.LISTEN_TYPE.ON_RANK_CHANGED)
+    -- ActivityManager:RemoveListenerOnType(self,ActivityManager.LISTEN_TYPE.ON_LIMIT_CHANGED)
     GameUIActivityNew.super.onCleanup(self)
 end
 
@@ -89,15 +96,15 @@ function GameUIActivityNew:OnMoveInStage()
     GameUIActivityNew.super.OnMoveInStage(self)
     self.tab_buttons = self:CreateTabButtons(
         {
-            {
-                label = _("赛季"),
-                tag = "season",
-                default = true and not self.needTips,
-            },
+            -- {
+            --     label = _("赛季"),
+            --     tag = "season",
+            --     default = true and not self.needTips,
+            -- },
             {
                 label = _("活动"),
                 tag = "activity",
-                default = self.needTips,
+                default = true,
             },
             {
                 label = _("新闻"),
@@ -108,7 +115,7 @@ function GameUIActivityNew:OnMoveInStage()
             self:OnTabButtonClicked(tag)
         end
     ):pos(window.cx, window.bottom + 34)
-    self:RefreshSeasonCountTips()
+    -- self:RefreshSeasonCountTips()
     self:RefreshNewsCountTips()
     self:RefreshActivityCountTips()
 end
@@ -122,208 +129,208 @@ function GameUIActivityNew:OnTabButtonClicked(tag)
         self.current_content:show()
     end
 end
-function GameUIActivityNew:CreateTabIf_season()
-    if not self.season_list_view then
-        local list = UIListView.new({
-            direction = cc.ui.UIScrollView.DIRECTION_VERTICAL,
-            viewRect = cc.rect(window.left+(window.width - 612)/2,window.bottom_top + 20,612,785),
-        }):addTo(self:GetView())
-        list:onTouch(handler(self, self.OnSeasonListViewTouch))
-        self.season_list_view = list
-        User:AddListenOnType(self, "activities")
-        User:AddListenOnType(self, "allianceActivities")
-        Alliance_Manager:GetMyAlliance():AddListenOnType(self, "activities")
-        ActivityManager:AddListenOnType(self,ActivityManager.LISTEN_TYPE.ACTIVITY_CHANGED)
-        ActivityManager:AddListenOnType(self,ActivityManager.LISTEN_TYPE.ON_RANK_CHANGED)
-        ActivityManager:AddListenOnType(self,ActivityManager.LISTEN_TYPE.ON_LIMIT_CHANGED)
-    end
-    self:RefreshSeasonList()
-    return self.season_list_view
-end
-function GameUIActivityNew:OnSeasonListViewTouch(event)
-    if event.name == "clicked" and event.item and event.item:getContent().activity then
-        local content = event.item:getContent()
-        local data = {}
-        data.activity = content.activity
-        data.status = content.status
-        data.isAlliance = content.isAlliance
-        if content.isAlliance and Alliance_Manager:GetMyAlliance():IsDefault() then
-            UIKit:showMessageDialog(_("提示"),_("请加入联盟"))
-            return
-        end
-        app:GetAudioManager():PlayeEffectSoundWithKey("NORMAL_DOWN")
-        UIKit:newGameUI("GameUISeasonDetails",data):AddToCurrentScene()
-    end
-end
-function GameUIActivityNew:RefreshSeasonList()
-    local list = self.season_list_view
-    list:removeAllItems()
-    local activities = ActivityManager:GetLocalActivities()
-    local alliance_activities = ActivityManager:GetLocalAllianceActivities()
+-- function GameUIActivityNew:CreateTabIf_season()
+--     if not self.season_list_view then
+--         local list = UIListView.new({
+--             direction = cc.ui.UIScrollView.DIRECTION_VERTICAL,
+--             viewRect = cc.rect(window.left+(window.width - 612)/2,window.bottom_top + 20,612,785),
+--         }):addTo(self:GetView())
+--         list:onTouch(handler(self, self.OnSeasonListViewTouch))
+--         self.season_list_view = list
+--         User:AddListenOnType(self, "activities")
+--         User:AddListenOnType(self, "allianceActivities")
+--         Alliance_Manager:GetMyAlliance():AddListenOnType(self, "activities")
+--         ActivityManager:AddListenOnType(self,ActivityManager.LISTEN_TYPE.ACTIVITY_CHANGED)
+--         ActivityManager:AddListenOnType(self,ActivityManager.LISTEN_TYPE.ON_RANK_CHANGED)
+--         ActivityManager:AddListenOnType(self,ActivityManager.LISTEN_TYPE.ON_LIMIT_CHANGED)
+--     end
+--     self:RefreshSeasonList()
+--     return self.season_list_view
+-- end
+-- function GameUIActivityNew:OnSeasonListViewTouch(event)
+--     if event.name == "clicked" and event.item and event.item:getContent().activity then
+--         local content = event.item:getContent()
+--         local data = {}
+--         data.activity = content.activity
+--         data.status = content.status
+--         data.isAlliance = content.isAlliance
+--         if content.isAlliance and Alliance_Manager:GetMyAlliance():IsDefault() then
+--             UIKit:showMessageDialog(_("提示"),_("请加入联盟"))
+--             return
+--         end
+--         app:GetAudioManager():PlayeEffectSoundWithKey("NORMAL_DOWN")
+--         UIKit:newGameUI("GameUISeasonDetails",data):AddToCurrentScene()
+--     end
+-- end
+-- function GameUIActivityNew:RefreshSeasonList()
+--     local list = self.season_list_view
+--     list:removeAllItems()
+--     local activities = ActivityManager:GetLocalActivities()
+--     local alliance_activities = ActivityManager:GetLocalAllianceActivities()
 
-    -- 进行中的赛季
-    if #activities.on > 0 or #alliance_activities.on > 0 then
-        self:GetSeasonTitleItem(_("进行中"))
-        ActivityManager:IteratorActivityOn(function (i,activity)
-            self:GetSeasonItem(self.SEASON_ITEMS_TYPE.HAVE_IN_HAND,activity,false)
-        end)
-        ActivityManager:IteratorAllianceActivityOn(function (i,activity)
-            self:GetSeasonItem(self.SEASON_ITEMS_TYPE.HAVE_IN_HAND,activity,true)
-        end)
-    end
-    -- 过期的赛季
-    if #activities.expired > 0 or #alliance_activities.expired > 0 then
-        self:GetSeasonTitleItem(_("已过期"))
-        ActivityManager:IteratorActivityExpired(function (i,activity)
-            self:GetSeasonItem(self.SEASON_ITEMS_TYPE.OVERDUE,activity,false)
-        end)
-        ActivityManager:IteratorAllianceActivityExpired(function (i,activity)
-            self:GetSeasonItem(self.SEASON_ITEMS_TYPE.OVERDUE,activity,true)
-        end)
-    end
-    -- 即将来临的赛季
-    if #activities.next > 0 or #alliance_activities.next > 0 then
-        self:GetSeasonTitleItem(_("即将来临"))
-        ActivityManager:IteratorActivityNext(function (i,activity)
-            self:GetSeasonItem(self.SEASON_ITEMS_TYPE.COMING,activity,false)
-        end)
-        ActivityManager:IteratorAllianceActivityNext(function (i,activity)
-            self:GetSeasonItem(self.SEASON_ITEMS_TYPE.COMING,activity,true)
-        end)
-    end
-    list:reload()
-end
-function GameUIActivityNew:GetSeasonTitleItem(title)
-    local list = self.season_list_view
-    local item = list:newItem()
-    local item_width,item_height = 568, 40
-    item:setItemSize(item_width,item_height)
-    local content = display.newNode()
-    content:setContentSize(cc.size(item_width,item_height))
-    display.newSprite("line_116x16.png"):align(display.RIGHT_CENTER, item_width, item_height/2):addTo(content)
-    display.newSprite("line_116x16.png"):align(display.LEFT_CENTER, 0, item_height/2):addTo(content):flipX(true)
-    UIKit:ttfLabel({
-        text = title,
-        size = 20,
-        color = 0x403c2f
-    }):addTo(content):align(display.CENTER,284,item_height/2)
-    item:addContent(content)
-    list:addItem(item)
-end
-function GameUIActivityNew:GetSeasonItem(season_type,activity,isAlliance)
-    local list = self.season_list_view
-    local item = list:newItem()
-    local content
-    local item_width,item_height
-    if season_type == self.SEASON_ITEMS_TYPE.HAVE_IN_HAND then
-        item_width,item_height = 568, 138
-        item:setItemSize(item_width,item_height)
-        content = WidgetUIBackGround.new({width = item_width,height = item_height},WidgetUIBackGround.STYLE_TYPE.STYLE_2)
-        content.activity = activity
-        content.isAlliance = isAlliance
-        content.status = "on"
-        local title_bg = display.newSprite("title_blue_522x54.png"):align(display.LEFT_CENTER, - 2, item_height - 40):addTo(content)
-        local title_label = UIKit:ttfLabel({
-            text = ActivityManager:GetActivityLocalize(activity.type).." ["..(isAlliance and _("联盟") or _("个人")).."]",
-            size = 20,
-            color = 0xffcb4e,
-            shadow = true
-        }):addTo(title_bg):align(display.LEFT_CENTER,146,title_bg:getContentSize().height/2 + 4)
+--     -- 进行中的赛季
+--     if #activities.on > 0 or #alliance_activities.on > 0 then
+--         self:GetSeasonTitleItem(_("进行中"))
+--         ActivityManager:IteratorActivityOn(function (i,activity)
+--             self:GetSeasonItem(self.SEASON_ITEMS_TYPE.HAVE_IN_HAND,activity,false)
+--         end)
+--         ActivityManager:IteratorAllianceActivityOn(function (i,activity)
+--             self:GetSeasonItem(self.SEASON_ITEMS_TYPE.HAVE_IN_HAND,activity,true)
+--         end)
+--     end
+--     -- 过期的赛季
+--     if #activities.expired > 0 or #alliance_activities.expired > 0 then
+--         self:GetSeasonTitleItem(_("已过期"))
+--         ActivityManager:IteratorActivityExpired(function (i,activity)
+--             self:GetSeasonItem(self.SEASON_ITEMS_TYPE.OVERDUE,activity,false)
+--         end)
+--         ActivityManager:IteratorAllianceActivityExpired(function (i,activity)
+--             self:GetSeasonItem(self.SEASON_ITEMS_TYPE.OVERDUE,activity,true)
+--         end)
+--     end
+--     -- 即将来临的赛季
+--     if #activities.next > 0 or #alliance_activities.next > 0 then
+--         self:GetSeasonTitleItem(_("即将来临"))
+--         ActivityManager:IteratorActivityNext(function (i,activity)
+--             self:GetSeasonItem(self.SEASON_ITEMS_TYPE.COMING,activity,false)
+--         end)
+--         ActivityManager:IteratorAllianceActivityNext(function (i,activity)
+--             self:GetSeasonItem(self.SEASON_ITEMS_TYPE.COMING,activity,true)
+--         end)
+--     end
+--     list:reload()
+-- end
+-- function GameUIActivityNew:GetSeasonTitleItem(title)
+--     local list = self.season_list_view
+--     local item = list:newItem()
+--     local item_width,item_height = 568, 40
+--     item:setItemSize(item_width,item_height)
+--     local content = display.newNode()
+--     content:setContentSize(cc.size(item_width,item_height))
+--     display.newSprite("line_116x16.png"):align(display.RIGHT_CENTER, item_width, item_height/2):addTo(content)
+--     display.newSprite("line_116x16.png"):align(display.LEFT_CENTER, 0, item_height/2):addTo(content):flipX(true)
+--     UIKit:ttfLabel({
+--         text = title,
+--         size = 20,
+--         color = 0x403c2f
+--     }):addTo(content):align(display.CENTER,284,item_height/2)
+--     item:addContent(content)
+--     list:addItem(item)
+-- end
+-- function GameUIActivityNew:GetSeasonItem(season_type,activity,isAlliance)
+--     local list = self.season_list_view
+--     local item = list:newItem()
+--     local content
+--     local item_width,item_height
+--     if season_type == self.SEASON_ITEMS_TYPE.HAVE_IN_HAND then
+--         item_width,item_height = 568, 138
+--         item:setItemSize(item_width,item_height)
+--         content = WidgetUIBackGround.new({width = item_width,height = item_height},WidgetUIBackGround.STYLE_TYPE.STYLE_2)
+--         content.activity = activity
+--         content.isAlliance = isAlliance
+--         content.status = "on"
+--         local title_bg = display.newSprite("title_blue_522x54.png"):align(display.LEFT_CENTER, - 2, item_height - 40):addTo(content)
+--         local title_label = UIKit:ttfLabel({
+--             text = ActivityManager:GetActivityLocalize(activity.type).." ["..(isAlliance and _("联盟") or _("个人")).."]",
+--             size = 20,
+--             color = 0xffcb4e,
+--             shadow = true
+--         }):addTo(title_bg):align(display.LEFT_CENTER,146,title_bg:getContentSize().height/2 + 4)
 
-        content.finish_time_label = UIKit:ttfLabel({
-            text = string.format(_("结束时间：%s"),GameUtils:formatTimeStyle1(activity.finishTime/1000 - app.timer:GetServerTime())),
-            size = 18,
-            color = 0x7e0000
-        }):addTo(content):align(display.LEFT_CENTER,144,item_height/2 - 10)
-        local season_desc_label = UIKit:ttfLabel({
-            text = isAlliance and _("联盟赛事") or _("个人赛事"),
-            size = 18,
-            color = 0x403c2f
-        }):addTo(content):align(display.LEFT_CENTER,144,item_height/2 - 40)
+--         content.finish_time_label = UIKit:ttfLabel({
+--             text = string.format(_("结束时间：%s"),GameUtils:formatTimeStyle1(activity.finishTime/1000 - app.timer:GetServerTime())),
+--             size = 18,
+--             color = 0x7e0000
+--         }):addTo(content):align(display.LEFT_CENTER,144,item_height/2 - 10)
+--         local season_desc_label = UIKit:ttfLabel({
+--             text = isAlliance and _("联盟赛事") or _("个人赛事"),
+--             size = 18,
+--             color = 0x403c2f
+--         }):addTo(content):align(display.LEFT_CENTER,144,item_height/2 - 40)
 
-        local season_icon = display.newSprite(UILib.actvities[activity.type]):align(display.LEFT_CENTER, 10, item_height/2):addTo(content)
-        local hot_icon = display.newSprite("icon_hot_64x76.png"):align(display.RIGHT_TOP, item_width, item_height + 2):addTo(content)
-        local hasReward = false
-        if isAlliance then
-            hasReward = ActivityManager:GetAllianceActivityScoreGotIndex(activity.type) > 0
-        else
-            hasReward = ActivityManager:GetActivityScoreGotIndex(activity.type) > 0
-        end
-        if hasReward then
-            UIKit:ttfLabel({
-                text = _("有奖励可领取"),
-                size = 18,
-                color = 0x007c23
-            }):addTo(content):align(display.RIGHT_CENTER,item_width - 60,item_height/2 - 10)
-        end
-    elseif season_type == self.SEASON_ITEMS_TYPE.OVERDUE then
-        item_width,item_height = 568, 128
-        item:setItemSize(item_width, item_height)
-        content = WidgetUIBackGround.new({width = item_width,height = item_height},WidgetUIBackGround.STYLE_TYPE.STYLE_2)
-        content.activity = activity
-        content.isAlliance = isAlliance
-        content.status = "expired"
-        local title_bg = display.newSprite("title_red_522x54.png"):align(display.LEFT_CENTER, -2, item_height - 40):addTo(content)
-        
-        local title_label = UIKit:ttfLabel({
-            text = ActivityManager:GetActivityLocalize(activity.type).." ["..(isAlliance and _("联盟") or _("个人")).."]",
-            size = 20,
-            color = 0xffcb4e,
-            shadow = true
-        }):addTo(title_bg):align(display.LEFT_CENTER,30,title_bg:getContentSize().height/2 + 4)
-        content.over_time_label = UIKit:ttfLabel({
-            text = string.format(_("%s后消失"),GameUtils:formatTimeStyle1(activity.removeTime/1000 - app.timer:GetServerTime())),
-            size = 18,
-            color = 0x7e0000
-        }):addTo(content):align(display.LEFT_CENTER,28,item_height/2 - 24)
-        local hasReward = false
-        if isAlliance then
-            hasReward = ActivityManager:HaveAllianceRewardByType(activity.type)
-        else 
-            hasReward = ActivityManager:HaveRewardByType(activity.type)
-        end
-        if hasReward then
-            UIKit:ttfLabel({
-                text = _("有奖励可领取"),
-                size = 20,
-                color = 0x007c23
-            }):addTo(content):align(display.RIGHT_CENTER,item_width - 60,item_height/2 - 24)
-        else
-            UIKit:ttfLabel({
-                text = _("无奖励可领取"),
-                size = 20,
-                color = 0x615b44
-            }):addTo(content):align(display.RIGHT_CENTER,item_width - 60,item_height/2 - 24)
-        end
-    elseif season_type == self.SEASON_ITEMS_TYPE.COMING then
-        item_width,item_height = 568, 128
-        item:setItemSize(item_width, item_height)
-        content = WidgetUIBackGround.new({width = item_width,height = item_height},WidgetUIBackGround.STYLE_TYPE.STYLE_2)
-        content.activity = activity
-        content.isAlliance = isAlliance
-        content.status = "next"
-        local title_bg = display.newSprite("title_blue_522x54.png"):align(display.LEFT_CENTER, -2, item_height - 40):addTo(content)
-        local title_label = UIKit:ttfLabel({
-            text = ActivityManager:GetActivityLocalize(activity.type).." ["..(isAlliance and _("联盟") or _("个人")).."]",
-            size = 20,
-            color = 0xffcb4e,
-            shadow = true
-        }):addTo(title_bg):align(display.LEFT_CENTER,30,title_bg:getContentSize().height/2 + 4)
-        content.coming_time_label = UIKit:ttfLabel({
-            text = string.format(_("距离开始还有：%s"),GameUtils:formatTimeStyle1(activity.startTime/1000 - app.timer:GetServerTime())),
-            size = 18,
-            color = 0x007c23
-        }):addTo(content):align(display.LEFT_CENTER,28,item_height/2 - 12)
-        local season_desc_label = UIKit:ttfLabel({
-            text = isAlliance and _("联盟赛事") or _("个人赛事"),
-            size = 18,
-            color = 0x403c2f
-        }):addTo(content):align(display.LEFT_CENTER,28,item_height/2 - 40)
-    end
-    display.newSprite("next_32x38.png"):align(display.RIGHT_CENTER, 560, item_height/2 - 10):addTo(content)
-    item:addContent(content)
-    list:addItem(item)
-end
+--         local season_icon = display.newSprite(UILib.actvities[activity.type]):align(display.LEFT_CENTER, 10, item_height/2):addTo(content)
+--         local hot_icon = display.newSprite("icon_hot_64x76.png"):align(display.RIGHT_TOP, item_width, item_height + 2):addTo(content)
+--         local hasReward = false
+--         if isAlliance then
+--             hasReward = ActivityManager:GetAllianceActivityScoreGotIndex(activity.type) > 0
+--         else
+--             hasReward = ActivityManager:GetActivityScoreGotIndex(activity.type) > 0
+--         end
+--         if hasReward then
+--             UIKit:ttfLabel({
+--                 text = _("有奖励可领取"),
+--                 size = 18,
+--                 color = 0x007c23
+--             }):addTo(content):align(display.RIGHT_CENTER,item_width - 60,item_height/2 - 10)
+--         end
+--     elseif season_type == self.SEASON_ITEMS_TYPE.OVERDUE then
+--         item_width,item_height = 568, 128
+--         item:setItemSize(item_width, item_height)
+--         content = WidgetUIBackGround.new({width = item_width,height = item_height},WidgetUIBackGround.STYLE_TYPE.STYLE_2)
+--         content.activity = activity
+--         content.isAlliance = isAlliance
+--         content.status = "expired"
+--         local title_bg = display.newSprite("title_red_522x54.png"):align(display.LEFT_CENTER, -2, item_height - 40):addTo(content)
+
+--         local title_label = UIKit:ttfLabel({
+--             text = ActivityManager:GetActivityLocalize(activity.type).." ["..(isAlliance and _("联盟") or _("个人")).."]",
+--             size = 20,
+--             color = 0xffcb4e,
+--             shadow = true
+--         }):addTo(title_bg):align(display.LEFT_CENTER,30,title_bg:getContentSize().height/2 + 4)
+--         content.over_time_label = UIKit:ttfLabel({
+--             text = string.format(_("%s后消失"),GameUtils:formatTimeStyle1(activity.removeTime/1000 - app.timer:GetServerTime())),
+--             size = 18,
+--             color = 0x7e0000
+--         }):addTo(content):align(display.LEFT_CENTER,28,item_height/2 - 24)
+--         local hasReward = false
+--         if isAlliance then
+--             hasReward = ActivityManager:HaveAllianceRewardByType(activity.type)
+--         else
+--             hasReward = ActivityManager:HaveRewardByType(activity.type)
+--         end
+--         if hasReward then
+--             UIKit:ttfLabel({
+--                 text = _("有奖励可领取"),
+--                 size = 20,
+--                 color = 0x007c23
+--             }):addTo(content):align(display.RIGHT_CENTER,item_width - 60,item_height/2 - 24)
+--         else
+--             UIKit:ttfLabel({
+--                 text = _("无奖励可领取"),
+--                 size = 20,
+--                 color = 0x615b44
+--             }):addTo(content):align(display.RIGHT_CENTER,item_width - 60,item_height/2 - 24)
+--         end
+--     elseif season_type == self.SEASON_ITEMS_TYPE.COMING then
+--         item_width,item_height = 568, 128
+--         item:setItemSize(item_width, item_height)
+--         content = WidgetUIBackGround.new({width = item_width,height = item_height},WidgetUIBackGround.STYLE_TYPE.STYLE_2)
+--         content.activity = activity
+--         content.isAlliance = isAlliance
+--         content.status = "next"
+--         local title_bg = display.newSprite("title_blue_522x54.png"):align(display.LEFT_CENTER, -2, item_height - 40):addTo(content)
+--         local title_label = UIKit:ttfLabel({
+--             text = ActivityManager:GetActivityLocalize(activity.type).." ["..(isAlliance and _("联盟") or _("个人")).."]",
+--             size = 20,
+--             color = 0xffcb4e,
+--             shadow = true
+--         }):addTo(title_bg):align(display.LEFT_CENTER,30,title_bg:getContentSize().height/2 + 4)
+--         content.coming_time_label = UIKit:ttfLabel({
+--             text = string.format(_("距离开始还有：%s"),GameUtils:formatTimeStyle1(activity.startTime/1000 - app.timer:GetServerTime())),
+--             size = 18,
+--             color = 0x007c23
+--         }):addTo(content):align(display.LEFT_CENTER,28,item_height/2 - 12)
+--         local season_desc_label = UIKit:ttfLabel({
+--             text = isAlliance and _("联盟赛事") or _("个人赛事"),
+--             size = 18,
+--             color = 0x403c2f
+--         }):addTo(content):align(display.LEFT_CENTER,28,item_height/2 - 40)
+--     end
+--     display.newSprite("next_32x38.png"):align(display.RIGHT_CENTER, 560, item_height/2 - 10):addTo(content)
+--     item:addContent(content)
+--     list:addItem(item)
+-- end
 function GameUIActivityNew:CreateTabIf_activity()
     self.player_level_up_time_residue = self.player_level_up_time - app.timer:GetServerTime()
     if not self.activity_list_view then
@@ -336,6 +343,8 @@ function GameUIActivityNew:CreateTabIf_activity()
         self:RefreshActivityListView()
         User:AddListenOnType(self, "countInfo")
         User:AddListenOnType(self, "buildings")
+        User:AddListenOnType(self, "monthCard")
+        User:AddListenOnType(self, "iapGemEvent")
     else
         self:RefreshActivityListView()
     end
@@ -344,46 +353,55 @@ end
 local WidgetFteArrow = import("..widget.WidgetFteArrow")
 function GameUIActivityNew:RefreshActivityListView()
     self.activity_list_view:removeAllItems()
+    local isHotfixServer = string.find(NetManager.m_updateServer.basePath,'hotfix') -- 苹果审核
+    if not isHotfixServer then
+        item = self:GetActivityItem(self.ITEMS_TYPE.MONTH_CARD):zorder(2)
+        self.activity_list_view:addItem(item)
+    end
+    if User:IsIapActived() then
+        item = self:GetActivityItem(self.ITEMS_TYPE.IAP_REWARD):zorder(1)
+        self.activity_list_view:addItem(item)
+    end
     local countInfo = User.countInfo
-    local item = self:GetActivityItem(self.ITEMS_TYPE.EVERY_DAY_LOGIN):zorder(4)
+    local item = self:GetActivityItem(self.ITEMS_TYPE.EVERY_DAY_LOGIN):zorder(6)
     self.activity_list_view:addItem(item)
     local hasTips = false
     if self.needTips
-    and User:HaveEveryDayLoginReward()
-    and not app:GetGameDefautlt():IsPassedTriggerTips("everyDayLogin") then
+        and User:HaveEveryDayLoginReward()
+        and not app:GetGameDefautlt():IsPassedTriggerTips("everyDayLogin") then
         app:GetGameDefautlt():SetPassTriggerTips("everyDayLogin")
         WidgetFteArrow.new(_("每日登陆游戏可以领取奖励")):TurnUp()
-        :addTo(item,100,111):pos(612/2, 30)
+            :addTo(item,100,111):pos(612/2, 30)
         hasTips = true
     end
     --
     if countInfo.day14RewardsCount < #config_day14 then
-        item = self:GetActivityItem(self.ITEMS_TYPE.CONTINUITY):zorder(3)
+        item = self:GetActivityItem(self.ITEMS_TYPE.CONTINUITY):zorder(5)
         self.activity_list_view:addItem(item)
         if self.needTips
-        and User:HaveContinutyReward()
-        and not app:GetGameDefautlt():IsPassedTriggerTips("continuty")
-        and not hasTips then
+            and User:HaveContinutyReward()
+            and not app:GetGameDefautlt():IsPassedTriggerTips("continuty")
+            and not hasTips then
             app:GetGameDefautlt():SetPassTriggerTips("continuty")
             WidgetFteArrow.new(_("连续登陆可以领取奖励")):TurnUp()
-            :addTo(item,100,111):pos(612/2, 30)
+                :addTo(item,100,111):pos(612/2, 30)
             hasTips = true
         end
     end
     if not countInfo.isFirstIAPRewardsGeted then
-        item = self:GetActivityItem(self.ITEMS_TYPE.FIRST_IN_PURGURE):zorder(2)
+        item = self:GetActivityItem(self.ITEMS_TYPE.FIRST_IN_PURGURE):zorder(4)
         self.activity_list_view:addItem(item)
     end
     if self.player_level_up_time - app.timer:GetServerTime() > 0 and not self:CheckFinishAllLevelUpActiIf() then
-        item = self:GetActivityItem(self.ITEMS_TYPE.PLAYER_LEVEL_UP):zorder(1)
+        item = self:GetActivityItem(self.ITEMS_TYPE.PLAYER_LEVEL_UP):zorder(3)
         self.activity_list_view:addItem(item)
         if self.needTips
-        and User:HavePlayerLevelUpReward()
-        and not app:GetGameDefautlt():IsPassedTriggerTips("playerLevelUp")
-        and not hasTips then
+            and User:HavePlayerLevelUpReward()
+            and not app:GetGameDefautlt():IsPassedTriggerTips("playerLevelUp")
+            and not hasTips then
             app:GetGameDefautlt():SetPassTriggerTips("playerLevelUp")
             WidgetFteArrow.new(_("升级城堡可以领取奖励")):TurnUp()
-            :addTo(item,100,111):pos(612/2, 30)
+                :addTo(item,100,111):pos(612/2, 30)
             hasTips = true
         end
     end
@@ -412,30 +430,38 @@ function GameUIActivityNew:OnUserDataChanged_countInfo()
     self:RefreshActivityListView()
     self:RefreshActivityCountTips()
 end
-function GameUIActivityNew:OnUserDataChanged_activities()
-    self:RefreshSeasonList()
-    self:RefreshSeasonCountTips()
+function GameUIActivityNew:OnUserDataChanged_monthCard()
+    self:RefreshActivityListView()
+    self:RefreshActivityCountTips()
 end
-function GameUIActivityNew:OnUserDataChanged_allianceActivities()
-    self:RefreshSeasonList()
-    self:RefreshSeasonCountTips()
+function GameUIActivityNew:OnUserDataChanged_iapGemEvent()
+    self:RefreshActivityListView()
+    self:RefreshActivityCountTips()
 end
-function GameUIActivityNew:OnAllianceDataChanged_activities()
-    self:RefreshSeasonList()
-    self:RefreshSeasonCountTips()
-end
-function GameUIActivityNew:OnActivitiesChanged()
-    self:RefreshSeasonList()
-    self:RefreshSeasonCountTips()
-end
-function GameUIActivityNew:OnActivitiesExpiredLimitChanged()
-    self:RefreshSeasonList()
-    self:RefreshSeasonCountTips()
-end
-function GameUIActivityNew:OnRankChanged()
-    self:RefreshSeasonList()
-    self:RefreshSeasonCountTips()
-end
+-- function GameUIActivityNew:OnUserDataChanged_activities()
+--     self:RefreshSeasonList()
+--     self:RefreshSeasonCountTips()
+-- end
+-- function GameUIActivityNew:OnUserDataChanged_allianceActivities()
+--     self:RefreshSeasonList()
+--     self:RefreshSeasonCountTips()
+-- end
+-- function GameUIActivityNew:OnAllianceDataChanged_activities()
+--     self:RefreshSeasonList()
+--     self:RefreshSeasonCountTips()
+-- end
+-- function GameUIActivityNew:OnActivitiesChanged()
+--     self:RefreshSeasonList()
+--     self:RefreshSeasonCountTips()
+-- end
+-- function GameUIActivityNew:OnActivitiesExpiredLimitChanged()
+--     self:RefreshSeasonList()
+--     self:RefreshSeasonCountTips()
+-- end
+-- function GameUIActivityNew:OnRankChanged()
+--     self:RefreshSeasonList()
+--     self:RefreshSeasonCountTips()
+-- end
 function GameUIActivityNew:OnActivityListViewTouch(event)
     if event.name == "clicked" and event.item then
         if event.item:getChildByTag(111) then
@@ -472,12 +498,83 @@ function GameUIActivityNew:GetActivityItem(item_type)
     }):align(display.CENTER_TOP,306, 188):addTo(bg)
     local content = display.newSprite(UILib.activity_image_config[self.ITEMS_TYPE[item_type]]):align(display.CENTER_BOTTOM,306, 12):addTo(bg)
     local size = content:getContentSize()
-    if item_type ~= self.ITEMS_TYPE.EVERY_DAY_LOGIN then
+    if item_type ~= self.ITEMS_TYPE.EVERY_DAY_LOGIN and item_type ~= self.ITEMS_TYPE.MONTH_CARD then
         display.newSprite("activity_layer_blue_586x114.png"):align(display.RIGHT_CENTER, size.width,size.height/2+2):addTo(content)
     end
     display.newSprite("next_32x38.png"):align(display.LEFT_CENTER, 566, 80):addTo(bg)
 
-    if item_type == self.ITEMS_TYPE.EVERY_DAY_LOGIN then
+    if item_type == self.ITEMS_TYPE.MONTH_CARD then
+        display.newScale9Sprite("store_desc_red_282x92.png",0,0, cc.size(354,92), cc.rect(10,10,262,72))
+            :align(display.RIGHT_CENTER, size.width + 10,size.height/2+10)
+            :addTo(bg)
+        display.newSprite("icon_box_98x108.png"):align(display.LEFT_CENTER,205,82):addTo(bg)
+        local sign_str,sign_color
+        if not User:IsMonthCardActived() then
+            sign_str = _("未激活")
+            sign_color = 0xff4e00
+            local title_label = UIKit:ttfLabel({
+                text = _("连续登录30日每日获得奖励"),
+                size = 20,
+                color= 0xffedae,
+                align = cc.TEXT_ALIGNMENT_LEFT,
+                shadow= true,
+                dimensions = cc.size(272, 0)
+            }):align(display.LEFT_TOP,330,115):addTo(bg)
+        else
+            if User:IsMonthCardTodayRewardsGet() then
+                sign_str = _("已领取")
+                sign_color = 0xa2ff00
+            else
+                sign_str = _("未领取")
+                sign_color = 0xff4e00
+            end
+            local str_1 = _("已激活(%s)")
+            local s,e = string.find(str_1,"%%s")
+            local days = GameDatas.PlayerInitData.intInit.monthCardTotalDays.value
+            local str = string.format("[{\"type\":\"text\", \"value\":\"%s\"},{\"type\":\"text\",\"color\":0xa2ff00,\"size\":22,\"value\":\"%s\"},{\"type\":\"text\", \"value\":\"%s\"}]",
+                string.sub(str_1,1,s - 1),User:GetMonthCardActivateDay().."/"..days,string.sub(str_1,e+1))
+            local title_label = RichText.new({width = 400,size = 20,color = 0xffedae,shadow = true})
+            title_label:Text(str):align(display.LEFT_BOTTOM,330,88):addTo(bg)
+        end
+        local sign_bg = display.newSprite("activity_day_bg_104x34.png")
+            :align(display.LEFT_BOTTOM,441,45)
+            :addTo(bg)
+        local content_label = UIKit:ttfLabel({
+            text = sign_str,
+            size = 20,
+            color= sign_color
+        }):align(display.CENTER, 52, 17):addTo(sign_bg)
+    elseif item_type == self.ITEMS_TYPE.IAP_REWARD then
+        display.newSprite("store_desc_black_335x92.png"):align(display.RIGHT_CENTER, size.width + 10,size.height/2+14):addTo(bg)
+        display.newSprite("store_gem_260x116.png"):align(display.LEFT_CENTER,130,86):addTo(bg)
+        local title_label = UIKit:ttfLabel({
+            text = _("购买金龙币可获得丰厚奖励"),
+            size = 20,
+            color= 0xffedae,
+            align = cc.TEXT_ALIGNMENT_LEFT,
+            shadow= true,
+            dimensions = cc.size(272, 0)
+        }):align(display.LEFT_TOP,330,115):addTo(bg)
+        local str_1 = _("%s后结束")
+        local s,e = string.find(str_1,"%%s")
+        local str = string.format("[{\"type\":\"text\", \"value\":\"%s\"},{\"type\":\"text\",\"color\":0xa2ff00,\"size\":22,\"value\":\"%s\"},{\"type\":\"text\", \"value\":\"%s\"}]",
+            string.sub(str_1,1,s - 1),User:GetIapLeftTime(),string.sub(str_1,e+1))
+        local title_label = RichText.new({width = 400,size = 20,color = 0xffedae,shadow = true})
+        title_label:Text(str):align(display.LEFT_BOTTOM,330,50):addTo(bg)
+        self.iap_title_label = title_label
+        scheduleAt(self, function()
+            if User:IsIapActived() and not tolua.isnull(self.iap_title_label) then
+                local str_1 = _("%s后结束")
+                local s,e = string.find(str_1,"%%s")
+                local str = string.format("[{\"type\":\"text\", \"value\":\"%s\"},{\"type\":\"text\",\"color\":0xa2ff00,\"size\":22,\"value\":\"%s\"},{\"type\":\"text\", \"value\":\"%s\"}]",
+                    string.sub(str_1,1,s - 1),User:GetIapLeftTime(),string.sub(str_1,e+1))
+                self.iap_title_label:Text(str)
+            else
+                self:RefreshActivityListView()
+                self:RefreshActivityCountTips()
+            end
+        end)
+    elseif item_type == self.ITEMS_TYPE.EVERY_DAY_LOGIN then
         local title_label = UIKit:ttfLabel({
             text = _("免费领取海量道具"),
             size = 20,
@@ -719,7 +816,20 @@ function GameUIActivityNew:GetNewsListContent()
     return content
 end
 function GameUIActivityNew:FillNewsItemContent(content,data,idx)
-    content.news_name:setString(data.title)
+    dump(data)
+    local title
+    local language = GameUtils:GetGameLanguage()
+    if data.title[language] then
+        title = data.title[language]
+    elseif data.title['en'] then
+        title = data.title['en']
+    else
+        for k,v in pairs(data.title) do
+            title = v
+            break
+        end
+    end
+    content.news_name:setString(title)
     content.news_time:setString(GameUtils:formatTimeStyle2(data.time/1000))
     content.idx = idx
     content.isRead = false
@@ -747,8 +857,30 @@ function GameUIActivityNew:OpenNewsDetails(data,content)
     dialog.close_btn:setPosition(dialog.title_sprite:getContentSize().width - 25,dialog.title_sprite:getContentSize().height/2+16)
     local body = dialog:GetBody()
     local size = body:getContentSize()
+    local language = GameUtils:GetGameLanguage()
+    local title,new_content
+    if data.content[language] then
+        new_content = data.content[language]
+    elseif data.content['en'] then
+        new_content = data.content['en']
+    else
+        for k,v in pairs(data.content) do
+            new_content = v
+            break
+        end
+    end
+    if data.title[language] then
+        title = data.title[language]
+    elseif data.title['en'] then
+        title = data.title['en']
+    else
+        for k,v in pairs(data.title) do
+            title = v
+            break
+        end
+    end
     UIKit:ttfLabel({
-        text = data.title,
+        text = title,
         size = 22,
         color = 0x403c2f
     }):addTo(body):align(display.CENTER,size.width/2,size.height- 60)
@@ -761,7 +893,7 @@ function GameUIActivityNew:OpenNewsDetails(data,content)
     local content_bg = WidgetUIBackGround.new({width = 556,height = 526},WidgetUIBackGround.STYLE_TYPE.STYLE_5)
         :addTo(body):align(display.TOP_CENTER,size.width/2,size.height- 140)
     local message_label = UIKit:ttfLabel({
-        text = data.content,
+        text = new_content,
         size = 20,
         color = 0x403c2f,
         align = cc.ui.UILabel.TEXT_ALIGN_CENTER,
@@ -862,6 +994,12 @@ function GameUIActivityNew:RefreshActivityCountTips()
             award_num = award_num + 1
         end
         if User:HavePlayerLevelUpReward() then
+            award_num = award_num + 1
+        end
+        if User:IsMonthCardActived() and not User:IsMonthCardTodayRewardsGet() then
+            award_num = award_num + 1
+        end
+        if User:IsIapActived() and User:GetIapRewardedGotIndex() > -1 then
             award_num = award_num + 1
         end
         self.tab_buttons:SetButtonTipNumber('activity', award_num)
@@ -1042,6 +1180,19 @@ function GameUIActivityNew:OnAwardButtonClicked(idx)
 end
 
 return GameUIActivityNew
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

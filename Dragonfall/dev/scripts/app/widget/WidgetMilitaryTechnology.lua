@@ -88,7 +88,7 @@ function WidgetMilitaryTechnology:CreateItem(name, tech)
     }):align(display.LEFT_CENTER, 20 , title_bg:getContentSize().height/2)
         :addTo(title_bg)
     local tech_level = UIKit:ttfLabel({
-        text = string.format("Lv%d", tech.level) ,
+        text = string.format(_("Lv%d"), tech.level) ,
         size = 22,
         color = 0xffedae,
     }):align(display.LEFT_CENTER, temp:getPositionX()+temp:getContentSize().width+20 , title_bg:getContentSize().height/2)
@@ -132,7 +132,7 @@ function WidgetMilitaryTechnology:CreateItem(name, tech)
     ):addTo(content):align(display.LEFT_CENTER, line1:getPositionX(), 20)
 
     function item:LevelUpRefresh(tech)
-        tech_level:setString(string.format("Lv%d",tech.level))
+        tech_level:setString(string.format(_("Lv%d"),tech.level))
         if UtilsForTech:IsMaxLevel(name, tech) then
             upgrade_btn:hide()
             line1:SetText(nil,(UtilsForTech:GetEffect(name, tech) * 100).."%")

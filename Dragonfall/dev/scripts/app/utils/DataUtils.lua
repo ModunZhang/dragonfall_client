@@ -1345,7 +1345,7 @@ function DataUtils:GetAllianceMapBuffByRound(round)
             local levels = string.split(aliance_buff[v],"_")
             table.insert(buff_info, {
                 {Localize.alliance_buff[v],0x403c2f},
-                {string.format("Lv%s~Lv%s",levels[1],levels[2]),0x288400}
+                {string.format(_("Lv%s~Lv%s"),levels[1],levels[2]),0x288400}
             })
         else
             table.insert(buff_info, {
@@ -1424,6 +1424,8 @@ function DataUtils:GetRMBPrice(d_price)
         return 328
     elseif d_price == 99.99 then
         return 648
+    elseif d_price == 71.93 then
+        return 432
     end
 end
 return DataUtils

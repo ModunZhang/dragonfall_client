@@ -118,7 +118,7 @@ function GameUIAcademy:OnUserDataChanged_productionTechs(userData, deltaData)
         for tech_name,tech in pairs(userData.productionTechs) do
             local item = self:GetItemByTag(tech.index)
             if item and item.levelLabel then
-                item.levelLabel:setString("Lv " .. tech.level)
+                item.levelLabel:setString(_("Lv").." ".. tech.level)
             end
             if item and item.changeState then
                 item.changeState(User:IsTechEnable(tech_name, tech))
@@ -132,7 +132,7 @@ function GameUIAcademy:OnUserDataChanged_buildings(userData, deltaData)
         for tech_name,tech in pairs(userData.productionTechs) do
             local item = self:GetItemByTag(tech.index)
             if item and item.levelLabel then
-                item.levelLabel:setString("Lv " .. tech.level)
+                item.levelLabel:setString(_("Lv").." " .. tech.level)
             end
             if item and item.changeState then
                 item.changeState(User:IsTechEnable(tech_name, tech))

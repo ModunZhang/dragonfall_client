@@ -109,7 +109,7 @@ function GameUIQuickTechnology:OnUserDataChanged_productionTechs(userData, delta
             local tech = userData.productionTechs[tech_name]
             local item = self:GetItemByTag(tech.index)
             if item and item.levelLabel then
-                item.levelLabel:setString("Lv " .. tech.level)
+                item.levelLabel:setString(_("Lv").." " .. tech.level)
             end
             if item and item.changeState then
                 item.changeState(User:IsTechEnable(tech_name, tech))

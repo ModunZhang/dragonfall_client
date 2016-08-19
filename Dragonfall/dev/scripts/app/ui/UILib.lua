@@ -621,13 +621,33 @@ local IAP_PACKAGE_IMAGE = {
         small_content = "store_item_content_red_s_588x186.png",
         light_position = {x = 200 ,y= 70}
     },
+    product_6 = {
+        content = "store_item_red_610x514.png",
+        logo = "gem_logo_592x139_5.png",
+        desc = "store_desc_black_335x92.png",
+        npc  = "store_npc_2_171x130.png",
+        more = {normal = "store_more_red_button_n_584x34.png",pressed = "store_more_red_button_l_584x34.png"},
+        small_content = "store_item_content_red_s_588x186.png",
+        light_position = {x = 200 ,y= 70}
+    },
+    monthcard_1 = {
+        content = "store_item_red_610x514.png",
+        logo = "gem_logo_592x139_6.png",
+        desc = "store_desc_red_282x92.png",
+        npc  = "icon_box_98x108.png",
+        more = {normal = "store_more_red_button_n_584x34.png",pressed = "store_more_red_button_l_584x34.png"},
+        small_content = "store_item_content_red_s_588x186.png",
+        light_position = {x = 200 ,y= 70}
+    },
 }
 
 local ACTIVITY_IMAGE_CONFIG = {
     EVERY_DAY_LOGIN = "activity_logo_589x138.png",
     CONTINUITY = "gem_logo_592x139_3.png",
     FIRST_IN_PURGURE = "gem_logo_592x139_4.png",
-    PLAYER_LEVEL_UP = "gem_logo_592x139_1.png"
+    PLAYER_LEVEL_UP = "gem_logo_592x139_1.png",
+    MONTH_CARD = "gem_logo_592x139_6.png",
+    IAP_REWARD = "gem_logo_592x139_5.png"
 }
 
 local PRODUC_TIONTECHS_IMAGE = {
@@ -834,6 +854,8 @@ local PROMOTION_ITEMS = {
     promotion_product_3_2 = "sale_bloodOfHero.png",
     promotion_product_4_1 = "sale_undeadLegion.png",
     promotion_product_4_2 = "sale_dragonCoin.png",
+    promotion_product_5_1 = "sale_small_dragonCoin.png",
+    promotion_product_5_2 = "sale_lucky_dragonCoin.png",
 }
 local ACTVITIES = {
     gacha = "activity_gacha_134x134.png",

@@ -252,7 +252,7 @@ function GameUISettingAccount:CreateAccountPanel()
         align = cc.ui.UILabel.TEXT_ALIGN_LEFT,
     }):addTo(bg):align(display.LEFT_CENTER,14,20)
     UIKit:ttfLabel({
-        text = User.basicInfo.name.."(Lv"..User:GetLevel()..")",
+        text = User.basicInfo.name.."(".._("Lv")..User:GetLevel()..")",
         size = 20,
         align = cc.ui.UILabel.TEXT_ALIGN_RIGHT,
         color = 0x403c2f,
@@ -520,6 +520,7 @@ function GameUISettingAccount:ExchangeBindAccount()
 end
 
 return GameUISettingAccount
+
 
 
 

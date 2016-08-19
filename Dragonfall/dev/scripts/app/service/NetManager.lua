@@ -652,7 +652,17 @@ local logic_event_map = {
         if success then
             local running_scene = display.getRunningScene().__cname
             if running_scene ~= "MainScene" and running_scene ~= "LogoScene" then
-                GameGlobalUI:showNotice(response.type,response.content)
+                local language = GameUtils:GetGameLanguage()
+                if response.content[language] then
+                    GameGlobalUI:showNotice(response.type,response.content[language])
+                elseif response.content['en'] then
+                    GameGlobalUI:showNotice(response.type,response.content['en'])
+                else
+                    for k,v in pairs(response.content) do
+                        GameGlobalUI:showNotice(response.type,v)
+                        break
+                    end
+                end
             end
         end
     end,
@@ -688,6 +698,8 @@ local logic_event_map = {
         if success then
             User.gameInfo["modApplyEnabled"] = response.modApplyEnabled
             User.gameInfo["promotionProductEnabled"] = response.promotionProductEnabled
+            User.gameInfo["iapGemEventFinishTime"] = response.iapGemEventFinishTime
+            User.gameInfo["limitedProductBuyEnabled"] = response.limitedProductBuyEnabled
             local home_page = display.getRunningScene():GetHomePage()
             if home_page.CreateADNode then
                 if User.gameInfo.promotionProductEnabled then
@@ -696,6 +708,13 @@ local logic_event_map = {
                     home_page:RemoveADNode()
                 end
             end
+            if home_page.GetShortcutNode then
+               home_page:GetShortcutNode().right_top_order:RefreshOrder()
+            end
+            if UIKit:GetUIInstance("GameUISaleOne") and not response.limitedProductBuyEnabled then
+                UIKit:GetUIInstance("GameUISaleOne"):LeftButtonClicked()
+            end
+            
         end
     end,
 }
@@ -1873,7 +1892,7 @@ function NetManager:getUpgradeProductionTechPromise(techName,finishNow)
             GameGlobalUI:showTips(
                 _("生产科技升级完成"),
                 Localize.productiontechnology_name[techName]
-                .."Lv"..User.productionTechs[techName].level)
+                .._("Lv")..User.productionTechs[techName].level)
         end
         app:GetAudioManager():PlayeEffectSoundWithKey("TECHNOLOGY")
     end)
@@ -1887,7 +1906,7 @@ local function upgrade_military_tech_promise(techName,finishNow)
         if finishNow then
             GameGlobalUI:showTips(_("军事科技升级完成"),
                 UtilsForTech:GetTechLocalize(techName)
-                .."Lv"..
+                .._("Lv")..
                 User.militaryTechs[techName].level)
             app:GetAudioManager():PlayeEffectSoundWithKey("COMPLETE")
         end
@@ -2340,6 +2359,31 @@ end
 function NetManager:getGameInfoPromise()
     return get_blocking_request_promise("logic.playerHandler.getGameInfo",{},"获取游戏状态信息失败!")
 end
+-- 领取月卡每日奖励
+function NetManager:getMothcardRewardsPromise()
+    return get_blocking_request_promise("logic.playerHandler.getMothcardRewards",{},"领取月卡每日奖励失败!"):done(get_player_response_msg)
+end
+-- 上传Ios月卡IAP信息
+function NetManager:getAddIosMonthcardBillingDataPromise(receiptData)
+    return get_blocking_request_promise("logic.playerHandler.addIosMonthcardBillingData",{receiptData = receiptData},"上传Ios月卡IAP信息失败!"):done(get_player_response_msg)
+end
+-- 上传Wp月卡官方IAP信息
+function NetManager:getAddWpOfficialMonthcardBillingDataPromise(receiptData)
+    return get_blocking_request_promise("logic.playerHandler.addWpOfficialMonthcardBillingData",{receiptData = receiptData},"上传Wp月卡官方IAP信息失败!"):done(get_player_response_msg)
+end
+-- 上传Wp月卡AdeasygoIAP信息
+function NetManager:getAddWpAdeasygoMonthcardBillingDataPromise(receiptData)
+    return get_blocking_request_promise("logic.playerHandler.addWpAdeasygoMonthcardBillingData",{receiptData = receiptData},"上传Wp月卡Adeasygo IAP信息失败!"):done(get_player_response_msg)
+end
+-- 上传Android月卡官方IAP信息
+function NetManager:getAddAndroidOfficialMonthcardBillingDataPromise(receiptData)
+    return get_blocking_request_promise("logic.playerHandler.addAndroidOfficialMonthcardBillingData",{receiptData = receiptData},"上传Android月卡官方IAP信息失败!"):done(get_player_response_msg)
+end
+-- 获取累计充值奖励
+function NetManager:getTotalIAPRewardsPromise()
+    return get_blocking_request_promise("logic.playerHandler.getTotalIAPRewards",{},"获取累计充值奖励失败!"):done(get_player_response_msg)
+end
+
 ----------------------------------------------------------------------------------------------------------------
 function NetManager:getUpdateFileList(cb)
     local fileListJsonPath = string.format("%s:%s%s/res/fileList.json",self.m_updateServer.host,self.m_updateServer.port,self.m_updateServer.basePath)

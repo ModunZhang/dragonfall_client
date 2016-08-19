@@ -227,6 +227,8 @@ local SERVER_ERRORS = {
     [725] = _("现在还不能进行协防"),
     [726] = _("正遭受攻击,不能退出移动城市"),
     [727] = _("目标已不是墨子,不能回复"),
+    [728] = _("还不能领取累计充值奖励"),
+    [729] = _("还不能领取月卡每日奖励"),
 }
 
 local MATERIALS_DESC_MAP = {
@@ -1201,6 +1203,7 @@ IAP_PACKAGE_NAME["com.dragonfall.5500dragoncoins"] = _("探险家礼包")
 IAP_PACKAGE_NAME["com.dragonfall.12000dragoncoins"] = _("铁血军团礼包")
 IAP_PACKAGE_NAME["com.dragonfall.35000dragoncoins"] = _("帝国荣耀礼包")
 IAP_PACKAGE_NAME["com.dragonfall.80000dragoncoins"] = _("龙族王朝礼包")
+IAP_PACKAGE_NAME["dragonfall.mc.100dragoncoins"] = _("特殊礼包")
 
 local VIP_IAP_PACKAGE_NAME = {}
 VIP_IAP_PACKAGE_NAME["com.dragonfall.2500dragoncoins"] = _("新手")
@@ -1208,6 +1211,7 @@ VIP_IAP_PACKAGE_NAME["com.dragonfall.5500dragoncoins"] = _("探险家")
 VIP_IAP_PACKAGE_NAME["com.dragonfall.12000dragoncoins"] = _("铁血军团")
 VIP_IAP_PACKAGE_NAME["com.dragonfall.35000dragoncoins"] = _("帝国荣耀")
 VIP_IAP_PACKAGE_NAME["com.dragonfall.80000dragoncoins"] = _("龙族王朝")
+VIP_IAP_PACKAGE_NAME["dragonfall.mc.100dragoncoins"] = _("特殊礼包")
 
 
 
@@ -1310,6 +1314,8 @@ local PROMOTION_ITEMS = {
     promotion_product_3_2 = _("英雄之血特惠"),
     promotion_product_4_1 = _("不死军团特惠"),
     promotion_product_4_2 = _("金龙币特惠"),
+    promotion_product_5_1 = _("金龙币小袋"),
+    promotion_product_5_2 = _("金龙币福袋"),
 }
 local USER_AGREEMENT = {
     agreement = _("Batcatstudio游戏用户使用许可协议本地化ID")

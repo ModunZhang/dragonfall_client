@@ -61,7 +61,9 @@ User.LISTEN_TYPE = Enum(
     "defenceTroop",
     "activities",
     "allianceActivities",
-    "blocked")
+    "blocked",
+    "monthCard",
+    "iapGemEvent")
 
 property(User, "id", 0)
 property(User, "soldierStars", {})
@@ -266,7 +268,47 @@ function User:IsSoldOut()
 end
 --[end]
 
-
+--[[月卡相关方法]]
+function User:IsMonthCardActived()
+    return self.monthCard.finishTime/1000 >= app.timer:GetServerTime()
+end
+function User:IsMonthCardTodayRewardsGet()
+    return self.monthCard.todayRewardsGet
+end
+function User:GetMonthCardActivateDay()
+    return GameDatas.PlayerInitData.intInit.monthCardTotalDays.value -math.floor((self.monthCard.finishTime/1000 - app.timer:GetServerTime())/(24*60*60))
+end
+--[end]
+--[[累充相关方法]]
+function User:IsIapActived()
+    return self.gameInfo.iapGemEventFinishTime/1000 > app.timer:GetServerTime()
+end
+function User:GetIapLeftTime()
+    return GameUtils:formatTimeStyle1(self.gameInfo.iapGemEventFinishTime/1000 - app.timer:GetServerTime())
+end
+function User:GetIapGemCount()
+    return self.gameInfo.iapGemEventFinishTime == self.iapGemEvent.finishTime and self.iapGemEvent.iapGemCount or 0
+end
+function User:GetIapRewardedIndex()
+    return self.gameInfo.iapGemEventFinishTime == self.iapGemEvent.finishTime and self.iapGemEvent.iapRewardedIndex or -1
+end
+-- 能够领取的奖励index ,-1为没有可领取奖励
+function User:GetIapRewardedGotIndex()
+    local got_index = -1
+    local iapRewards = GameDatas.PlayerInitData.iapRewards
+    local gemCount = self:GetIapGemCount()
+    local iapRewardedIndex = self:GetIapRewardedIndex()
+    if iapRewardedIndex + 1 < 5 then
+        for i=iapRewardedIndex + 1,4 do
+            local v = iapRewards[i]
+            if v.gemNeed <= gemCount then
+                return i
+            end
+        end
+    end
+    return got_index
+end
+--[end]
 --[[countinfo begin]]
 -- 每日登陆奖励是否领取
 function User:HaveEveryDayLoginReward()
@@ -1377,7 +1419,7 @@ local before_map = {
                 GameGlobalUI:showTips(
                     _("生产科技升级完成"),
                     Localize.productiontechnology_name[v.name]
-                    .."Lv"..userData.productionTechs[v.name].level)
+                    .._("Lv")..userData.productionTechs[v.name].level)
             end
         end
 
@@ -1410,7 +1452,7 @@ local before_map = {
                 app:GetPushManager():CancelTechnologyPush(v.id)
                 GameGlobalUI:showTips(_("军事科技升级完成"),
                     UtilsForTech:GetTechLocalize(v.name)
-                    .."Lv"..militaryTechs[v.name].level)
+                    .._("Lv")..militaryTechs[v.name].level)
             end
         end
 
@@ -1607,6 +1649,8 @@ local before_map = {
     activities = function()end,
     allianceActivities = function()end,
     blocked = function()end,
+    monthCard = function()end,
+    iapGemEvent = function()end,
     vipEvents = function(userData, deltaData)
         userData:RefreshOutput()
     end,
@@ -1906,6 +1950,7 @@ function User:PromiseOfFinishTreat()
     return p
 end
 return User
+
 
 
 

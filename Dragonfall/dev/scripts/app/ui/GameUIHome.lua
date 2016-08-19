@@ -110,7 +110,6 @@ function GameUIHome:onEnter()
     self.visible_count = 1
     local city = self.city
 
-    self.order_shortcut = UIKit:newWidgetUI("WidgetShortcutButtons",city):addTo(self)
     -- 上背景
     self.top = self:CreateTop()
     self.bottom = self:CreateBottom()
@@ -340,14 +339,17 @@ function GameUIHome:CreateTop()
     if not User.gameInfo then
         NetManager:getGameInfoPromise():done(function (response)
             User.gameInfo = response.msg.serverInfo
+            dump(response,"gameInfo")
             if User.gameInfo.promotionProductEnabled and not tolua.isnull(self) then
                 self:CreateADNode()
             end
+            self.order_shortcut = UIKit:newWidgetUI("WidgetShortcutButtons",self.city):addTo(self)
         end)
     else
         if User.gameInfo.promotionProductEnabled then
             self:CreateADNode()
         end
+        self.order_shortcut = UIKit:newWidgetUI("WidgetShortcutButtons",self.city):addTo(self)
     end
 
     return top_bg
@@ -362,7 +364,6 @@ function GameUIHome:CreateADNode()
         text = GameUtils:formatTimeStyle1(DataUtils:GetPromtionProductLessLeftTime()),
         size = 16,
         color = 0xffedae,
-        shadow = true
     }):align(display.CENTER, display.right - 55, display.top - 192)
         :addTo(self)
     local sale_button = WidgetPushButton.new()
@@ -866,6 +867,7 @@ end
 
 
 return GameUIHome
+
 
 
 

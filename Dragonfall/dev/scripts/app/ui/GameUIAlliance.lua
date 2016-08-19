@@ -1860,7 +1860,7 @@ function GameUIAlliance:RefreshMemberList()
     local isOnline = (type(archon.online) == 'boolean' and archon.online) and true or false
     self.member_list_bg.player_icon = UIKit:GetPlayerCommonIcon(archon.icon,isOnline)
         :addTo(self.member_list_bg.player_icon_box):pos(63,67)
-    self.member_list_bg.title_label:setString(string.format("%s Lv %s",archon:Name(),User:GetPlayerLevelByExp(archon.levelExp)))
+    self.member_list_bg.title_label:setString(string.format(_("%s Lv %s"),archon:Name(),User:GetPlayerLevelByExp(archon.levelExp)))
     self.member_list_bg.powerLabel:setString(string.formatnumberthousands(archon.power))
     if archon.online then
         self.member_list_bg.loginLabel:setString(_("在线"))

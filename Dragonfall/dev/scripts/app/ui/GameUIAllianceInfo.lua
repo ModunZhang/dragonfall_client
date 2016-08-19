@@ -469,7 +469,7 @@ function GameUIAllianceInfo:LoadMembers()
         :addTo(layer)
         :align(display.LEFT_TOP, 154, 664)
     local title_label = UIKit:ttfLabel({
-        text = archon_data.name.." Lv"..User:GetPlayerLevelByExp(archon_data.levelExp),
+        text = archon_data.name.." ".._("Lv")..User:GetPlayerLevelByExp(archon_data.levelExp),
         size = 22,
         color= 0xffedae,
         align = cc.TEXT_ALIGNMENT_LEFT,

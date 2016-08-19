@@ -18,46 +18,70 @@ end
 
 function GameUISaleOne:onEnter()
     GameUISaleOne.super.onEnter(self)
-    local body = display.newSprite("background_640x824.png"):align(display.TOP_CENTER, window.cx, window.top - 70)
-    self.body = body
-    self:addTouchAbleChild(body)
-    self.isVerify = string.find(NetManager.m_updateServer.basePath,'hotfix') -- 苹果审核
-
-    self:CreateSalesBox()
-    self:CreateInfo()
-    self:RefreshInfo()
-    self.pv:gotoPage(math.random(4))
-
-    local close_btn = WidgetPushButton.new({normal = "x_btn_up_48x48.png",pressed = "x_btn_down_48x48.png"})
-        :onButtonClicked(function(event)
-            if event.name == "CLICKED_EVENT" then
-                self:LeftButtonClicked()
-            end
-        end):align(display.RIGHT_CENTER, 620,606):addTo(body)
-
-    scheduleAt(self, function()
-        if self.pv then
-            local cur_index = self.pv:getCurPageIdx()
-            for i,item in ipairs(self.pv.items_) do
-                local content_node = item.content_node
-                if content_node then
-                    -- local pro_data,leftTime = DataUtils:GetProductAndLeftTimeByIndex(i)
-                    local pro_data,leftTime
-                    if self.isVerify then
-                        pro_data,leftTime = GameDatas.StoreItems.promotionItems[i],100
-                    else
-                        pro_data,leftTime = DataUtils:GetProductAndLeftTimeByIndex(i)
-                    end
-                    if pro_data.name ~= content_node.pro_data.name then
-                        self:CreateSalesBox()
-                        self.pv:gotoPage(cur_index)
-                        self:RefreshInfo()
-                    else
-                        content_node.leftTime:setString(GameUtils:formatTimeStyle1(leftTime))
-                    end
+    local config = clone(GameDatas.StoreItems.promotionItems)
+    table.sort( config, function ( a,b )
+        return a.price < b.price
+    end )
+    self.promotionItems = config
+    NetManager:getGameInfoPromise():done(function (response)
+        User.gameInfo = response.msg.serverInfo
+        if not User.gameInfo.limitedProductBuyEnabled then
+            for i,v in ipairs(self.promotionItems) do
+                if v.name == "promotion_product_5_1" then
+                    table.remove(self.promotionItems,i)
                 end
             end
         end
+        local promotionItems = self.promotionItems
+        local body = display.newSprite("background_640x824.png"):align(display.TOP_CENTER, window.cx, window.top - 70)
+        self.body = body
+        self:addTouchAbleChild(body)
+        self.isVerify = string.find(NetManager.m_updateServer.basePath,'hotfix') -- 苹果审核
+
+        self:CreateSalesBox()
+        self:CreateInfo()
+        self:RefreshInfo()
+        self.pv:gotoPage(math.random(#self.pv.items_))
+
+        local close_btn = WidgetPushButton.new({normal = "x_btn_up_48x48.png",pressed = "x_btn_down_48x48.png"})
+            :onButtonClicked(function(event)
+                if event.name == "CLICKED_EVENT" then
+                    self:LeftButtonClicked()
+                end
+            end):align(display.RIGHT_CENTER, 620,606):addTo(body)
+
+        scheduleAt(self, function()
+            if self.pv then
+                local cur_index = self.pv:getCurPageIdx()
+                for i,item in ipairs(self.pv.items_) do
+                    local content_node = item.content_node
+                    if content_node then
+                        local pro_data,leftTime
+                        if self.isVerify then
+                            pro_data,leftTime = promotionItems[i],100
+                        else
+                            local index = self:GetPackageIndex(content_node.pro_data.name)
+                            if index then
+                                pro_data,leftTime = DataUtils:GetProductAndLeftTimeByIndex(index)
+                            elseif content_node.pro_data.name == "promotion_product_5_1" then
+                                pro_data = GameDatas.StoreItems.promotionItems[9]
+                            elseif content_node.pro_data.name == "promotion_product_5_2" then
+                                pro_data = GameDatas.StoreItems.promotionItems[10]
+                            end
+                        end
+                        if pro_data.name ~= content_node.pro_data.name then
+                            self:CreateSalesBox()
+                            self.pv:gotoPage(cur_index)
+                            self:RefreshInfo()
+                        else
+                            if content_node.leftTime and leftTime then
+                                content_node.leftTime:setString(GameUtils:formatTimeStyle1(leftTime))
+                            end
+                        end
+                    end
+                end
+            end
+        end)
     end)
 end
 
@@ -85,8 +109,7 @@ function GameUISaleOne:CreateSalesBox()
         end
     end):addTo(body)
     if self.isVerify then
-        local promotionItems = GameDatas.StoreItems.promotionItems
-        for i,v in ipairs(promotionItems) do
+        for i,v in ipairs(self.promotionItems) do
             local content_node = self:GetSalesItem(v,100):pos(278,109)
             local item = pv:newItem()
             item.content_node = content_node
@@ -94,17 +117,29 @@ function GameUISaleOne:CreateSalesBox()
             pv:addItem(item)
         end
     else
-        local lessTime = math.huge
-        for i=1,4 do
-            local item = pv:newItem()
-            local pro_data,leftTime = DataUtils:GetProductAndLeftTimeByIndex(i)
-            if lessTime > leftTime then
-                lessTime = leftTime
+        local added_index = {}
+        for i,v in ipairs(self.promotionItems) do
+            local index = self:GetPackageIndex(v.name)
+            local notAdded = true
+            for i,v in ipairs(added_index) do
+                if index == v then
+                    notAdded = false
+                end
             end
-            local content_node = self:GetSalesItem(pro_data,leftTime):pos(278,109)
-            item.content_node = content_node
-            item:addChild(content_node)
-            pv:addItem(item)
+            if notAdded then
+                local item = pv:newItem()
+                local pro_data,leftTime
+                if index then
+                    pro_data,leftTime = DataUtils:GetProductAndLeftTimeByIndex(index)
+                else
+                    pro_data = v
+                end
+                local content_node = self:GetSalesItem(pro_data,leftTime):pos(278,109)
+                item.content_node = content_node
+                item:addChild(content_node)
+                pv:addItem(item)
+                table.insert(added_index, index)
+            end
         end
     end
     pv:reload()
@@ -124,15 +159,28 @@ function GameUISaleOne:GetSalesItem(pro_data,leftTime)
     elseif pro_data.name == "promotion_product_2_2" or
         pro_data.name == "promotion_product_3_1" then
         x,y = 100 , 90
+    elseif pro_data.name == "promotion_product_5_1" or
+        pro_data.name == "promotion_product_5_2" then
+        x,y = 100 , 90
     end
     self:CreateNumberImageNode__(""..(pro_data.promotionPercent * 100).."%"):align(display.CENTER, x,y):addTo(content_node)
-    content_node.leftTime = UIKit:ttfLabel({
-        text = GameUtils:formatTimeStyle1(leftTime),
-        size = 26,
-        color = 0x60ff00
-    }):align(display.CENTER, x, y - 52):addTo(content_node)
-    if self.isVerify then
+    if leftTime then
+        content_node.leftTime = UIKit:ttfLabel({
+            text = GameUtils:formatTimeStyle1(leftTime),
+            size = 26,
+            color = 0x60ff00
+        }):align(display.CENTER, x, y - 52):addTo(content_node)
+    end
+    if self.isVerify and content_node.leftTime then
         content_node.leftTime:hide()
+    end
+    if pro_data.name == "promotion_product_5_1" then
+        UIKit:ttfLabel({
+            text = _("每日限购一次"),
+            size = 22,
+            color = 0xff5000,
+            shadow = true
+        }):align(display.CENTER, x, y - 52):addTo(content_node)
     end
     content_node.pro_data = pro_data
     return content_node
@@ -173,14 +221,14 @@ function GameUISaleOne:CreateInfo()
     local b_size = body:getContentSize()
 
     local currentPageNode = display.newNode()
-    currentPageNode:setContentSize(cc.size(84,18))
+    currentPageNode:setContentSize(cc.size(126,18))
     currentPageNode:align(display.CENTER, b_size.width/2, 616):addTo(body)
     local parent = self
     function currentPageNode:InitPageNode(current_page)
         self:removeAllChildren()
-        local endIndex = 4
+        local endIndex = #parent.pv.items_
         if parent.isVerify then
-            endIndex = 8
+            endIndex = 10
         end
         for i=1,endIndex do
             display.newSprite(current_page == i and "icon_page_1.png" or "icon_page_2.png"):align(display.LEFT_CENTER, (i - 1) * 20, 11):addTo(self)
@@ -231,11 +279,19 @@ end
 function GameUISaleOne:RefreshInfo()
     local curIndex = self.pv:getCurPageIdx()
     self.currentPageNode:InitPageNode(curIndex)
+    local content_node = self.pv.items_[curIndex].content_node
     local pro_data,leftTime
     if self.isVerify then
-        pro_data,leftTime = GameDatas.StoreItems.promotionItems[curIndex],100
+        pro_data,leftTime = self.promotionItems[curIndex],100
     else
-        pro_data,leftTime = DataUtils:GetProductAndLeftTimeByIndex(curIndex)
+        local index = self:GetPackageIndex(content_node.pro_data.name)
+        if index then
+            pro_data,leftTime = DataUtils:GetProductAndLeftTimeByIndex(index)
+        elseif content_node.pro_data.name == "promotion_product_5_1" then
+            pro_data = GameDatas.StoreItems.promotionItems[9]
+        elseif content_node.pro_data.name == "promotion_product_5_2" then
+            pro_data = GameDatas.StoreItems.promotionItems[10]
+        end
     end
     self.box_name:setString(Localize.promotion_items[pro_data.name])
     self.gem_price:setString(string.formatnumberthousands(pro_data.gem))
@@ -277,12 +333,19 @@ function GameUISaleOne:RefreshInfo()
 end
 function GameUISaleOne:OnBuyButtonClicked()
     local curIndex = self.pv:getCurPageIdx()
-    -- local pro_data,leftTime = DataUtils:GetProductAndLeftTimeByIndex(curIndex)
+    local content_node = self.pv.items_[curIndex].content_node
     local pro_data,leftTime
     if self.isVerify then
-        pro_data,leftTime = GameDatas.StoreItems.promotionItems[curIndex],100
+        pro_data,leftTime = self.promotionItems[curIndex],100
     else
-        pro_data,leftTime = DataUtils:GetProductAndLeftTimeByIndex(curIndex)
+        local index = self:GetPackageIndex(content_node.pro_data.name)
+        if index then
+            pro_data,leftTime = DataUtils:GetProductAndLeftTimeByIndex(index)
+        elseif content_node.pro_data.name == "promotion_product_5_1" then
+            pro_data = GameDatas.StoreItems.promotionItems[9]
+        elseif content_node.pro_data.name == "promotion_product_5_2" then
+            pro_data = GameDatas.StoreItems.promotionItems[10]
+        end
     end
     local productId = pro_data.productId
     device.showActivityIndicator()
@@ -295,8 +358,27 @@ function GameUISaleOne:OnBuyButtonClicked()
     else
         app:getStore().purchaseWithProductId(productId,1)
     end
+    if productId == "com.dragonfall.promotion.3000dragoncoins" then
+        self:LeftButtonClicked()
+    end
 end
+function GameUISaleOne:GetPackageIndex(name)
+    if string.find(name,"promotion_product_1") then
+        return 1
+    elseif string.find(name,"promotion_product_2") then
+        return 2
+    elseif string.find(name,"promotion_product_3") then
+        return 3
+    elseif string.find(name,"promotion_product_4") then
+        return 4
+    end
+end
+
 return GameUISaleOne
+
+
+
+
 
 
 
