@@ -563,7 +563,7 @@ function GameUIActivityNew:GetActivityItem(item_type)
         title_label:Text(str):align(display.LEFT_BOTTOM,330,50):addTo(bg)
         self.iap_title_label = title_label
         scheduleAt(self, function()
-            if User:IsIapActived() then
+            if User:IsIapActived() and not tolua.isnull(self.iap_title_label) then
                 local str_1 = _("%s后结束")
                 local s,e = string.find(str_1,"%%s")
                 local str = string.format("[{\"type\":\"text\", \"value\":\"%s\"},{\"type\":\"text\",\"color\":0xa2ff00,\"size\":22,\"value\":\"%s\"},{\"type\":\"text\", \"value\":\"%s\"}]",
@@ -818,7 +818,7 @@ end
 function GameUIActivityNew:FillNewsItemContent(content,data,idx)
     dump(data)
     local title
-    local language = GameUtils:GetGameLanguageFromNative()
+    local language = GameUtils:GetGameLanguage()
     if data.title[language] then
         title = data.title[language]
     elseif data.title['en'] then
@@ -857,7 +857,7 @@ function GameUIActivityNew:OpenNewsDetails(data,content)
     dialog.close_btn:setPosition(dialog.title_sprite:getContentSize().width - 25,dialog.title_sprite:getContentSize().height/2+16)
     local body = dialog:GetBody()
     local size = body:getContentSize()
-    local language = GameUtils:GetGameLanguageFromNative()
+    local language = GameUtils:GetGameLanguage()
     local title,new_content
     if data.content[language] then
         new_content = data.content[language]

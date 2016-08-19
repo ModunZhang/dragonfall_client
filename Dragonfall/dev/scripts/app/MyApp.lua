@@ -596,6 +596,9 @@ function MyApp:verifyAdeasygoPurchase(transaction)
                     string.format(_("您已获得%s,到物品里面查看"),
                         UIKit:getIapPackageName(transaction.productIdentifier)),
                     openRewardIf)
+                if UIKit:GetUIInstance("GameUISaleOne") then
+                    UIKit:GetUIInstance("GameUISaleOne"):LeftButtonClicked()
+                end
             end
         end):catch(function(err)
             --FIXME:just fix the promise assert error!
@@ -651,6 +654,9 @@ function MyApp:verifyMicrosoftPurchase(transaction)
                     string.format(_("您已获得%s,到物品里面查看"),
                         UIKit:getIapPackageName(transaction.productIdentifier)),
                     openRewardIf)
+                if UIKit:GetUIInstance("GameUISaleOne") then
+                    UIKit:GetUIInstance("GameUISaleOne"):LeftButtonClicked()
+                end
             end
         end):catch(function(err)
             local msg,code_type = err:reason()
@@ -805,6 +811,9 @@ function MyApp:transactionObserver(event)
                         string.format(_("您已获得%s,到物品里面查看"),
                             UIKit:getIapPackageName(transaction.productIdentifier)),
                         openRewardIf)
+                    if UIKit:GetUIInstance("GameUISaleOne") then
+                        UIKit:GetUIInstance("GameUISaleOne"):LeftButtonClicked()
+                    end
                 end
             end):catch(function(err)
                 device.hideActivityIndicator()

@@ -652,7 +652,7 @@ local logic_event_map = {
         if success then
             local running_scene = display.getRunningScene().__cname
             if running_scene ~= "MainScene" and running_scene ~= "LogoScene" then
-                local language = GameUtils:GetGameLanguageFromNative()
+                local language = GameUtils:GetGameLanguage()
                 if response.content[language] then
                     GameGlobalUI:showNotice(response.type,response.content[language])
                 elseif response.content['en'] then
