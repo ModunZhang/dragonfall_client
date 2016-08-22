@@ -491,8 +491,8 @@ buff["infantryAtkBonus_1"] = {
 	["order"] = 45,
 	["isSell"] = false,
 	["price"] = 500,
-	["sellPriceInAlliance"] = 25000,
-	["buyPriceInAlliance"] = 25000,
+	["sellPriceInAlliance"] = 24000,
+	["buyPriceInAlliance"] = 24000,
 	["isAdvancedItem"] = true
 }
 buff["infantryAtkBonus_2"] = {
@@ -524,8 +524,8 @@ buff["archerAtkBonus_1"] = {
 	["order"] = 48,
 	["isSell"] = false,
 	["price"] = 500,
-	["sellPriceInAlliance"] = 25000,
-	["buyPriceInAlliance"] = 25000,
+	["sellPriceInAlliance"] = 24000,
+	["buyPriceInAlliance"] = 24000,
 	["isAdvancedItem"] = true
 }
 buff["archerAtkBonus_2"] = {
@@ -557,8 +557,8 @@ buff["cavalryAtkBonus_1"] = {
 	["order"] = 51,
 	["isSell"] = false,
 	["price"] = 550,
-	["sellPriceInAlliance"] = 27500,
-	["buyPriceInAlliance"] = 27500,
+	["sellPriceInAlliance"] = 25000,
+	["buyPriceInAlliance"] = 25000,
 	["isAdvancedItem"] = true
 }
 buff["cavalryAtkBonus_2"] = {
@@ -590,8 +590,8 @@ buff["siegeAtkBonus_1"] = {
 	["order"] = 54,
 	["isSell"] = false,
 	["price"] = 600,
-	["sellPriceInAlliance"] = 30000,
-	["buyPriceInAlliance"] = 30000,
+	["sellPriceInAlliance"] = 25000,
+	["buyPriceInAlliance"] = 25000,
 	["isAdvancedItem"] = true
 }
 buff["siegeAtkBonus_2"] = {
