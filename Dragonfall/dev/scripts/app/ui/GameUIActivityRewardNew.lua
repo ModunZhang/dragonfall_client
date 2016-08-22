@@ -1300,6 +1300,7 @@ function GameUIActivityRewardNew:CreateMonthCardBuyButton()
                 shadow = true,
             })):onButtonClicked(function()
                 NetManager:getMothcardRewardsPromise():done(function ()
+                    app:GetAudioManager():PlayeEffectSoundWithKey("BUY_ITEM")
                     GameGlobalUI:showTips(_("提示"),_("今日月卡奖励领取成功"))
                 end)
                 self:LeftButtonClicked()
