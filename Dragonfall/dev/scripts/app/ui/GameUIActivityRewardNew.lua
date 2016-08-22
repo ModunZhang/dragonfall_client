@@ -18,6 +18,7 @@ local config_intInit = GameDatas.PlayerInitData.intInit
 local config_levelup = GameDatas.Activities.levelup
 local Localize_item = import("..utils.Localize_item")
 local Localize = import("..utils.Localize")
+local utf8 = import("..utils.utf8")
 local UILib = import(".UILib")
 local Localize_item = import("..utils.Localize_item")
 local lights = import("..particles.lights")
@@ -1403,7 +1404,7 @@ function GameUIActivityRewardNew:CreateIapRewardItemLogo()
     local str_1 = _("%s后结束")
     local s,e = string.find(str_1,"%%s")
     local str = string.format("[{\"type\":\"text\", \"value\":\"%s\"},{\"type\":\"text\",\"color\":0xa2ff00,\"size\":22,\"value\":\"%s\"},{\"type\":\"text\", \"value\":\"%s\"}]",
-        string.sub(str_1,1,s - 1),User:GetIapLeftTime(),string.sub(str_1,e+1))
+        utf8.substr(str_1,1,s - 1),User:GetIapLeftTime(),utf8.substr(str_1,e+1))
     local title_label = RichText.new({width = 400,size = 20,color = 0xffedae,shadow = true})
     title_label:Text(str):align(display.LEFT_BOTTOM,60,10):addTo(bg)
     scheduleAt(self, function()
@@ -1411,7 +1412,7 @@ function GameUIActivityRewardNew:CreateIapRewardItemLogo()
             local str_1 = _("%s后结束")
             local s,e = string.find(str_1,"%%s")
             local str = string.format("[{\"type\":\"text\", \"value\":\"%s\"},{\"type\":\"text\",\"color\":0xa2ff00,\"size\":22,\"value\":\"%s\"},{\"type\":\"text\", \"value\":\"%s\"}]",
-                string.sub(str_1,1,s - 1),User:GetIapLeftTime(),string.sub(str_1,e+1))
+                utf8.substr(str_1,1,s - 1),User:GetIapLeftTime(),utf8.substr(str_1,e+1))
             title_label:Text(str)
         else
             self:LeftButtonClicked()
