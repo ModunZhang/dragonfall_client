@@ -2372,8 +2372,15 @@ function NetManager:getAddWpOfficialMonthcardBillingDataPromise(receiptData)
     return get_blocking_request_promise("logic.playerHandler.addWpOfficialMonthcardBillingData",{receiptData = receiptData},"上传Wp月卡官方IAP信息失败!"):done(get_player_response_msg)
 end
 -- 上传Wp月卡AdeasygoIAP信息
-function NetManager:getAddWpAdeasygoMonthcardBillingDataPromise(receiptData)
-    return get_blocking_request_promise("logic.playerHandler.addWpAdeasygoMonthcardBillingData",{receiptData = receiptData},"上传Wp月卡Adeasygo IAP信息失败!"):done(get_player_response_msg)
+function NetManager:getAddWpAdeasygoMonthcardBillingDataPromise(transactionIdentifier)
+    if not self.__AdeasygoUID  then
+        self.__AdeasygoUID = ext.adeasygo.getUid()
+    end
+    local uid = self.__AdeasygoUID
+    return get_blocking_request_promise("logic.playerHandler.addWpAdeasygoMonthcardBillingData",{
+            transactionId=transactionIdentifier,
+            uid = uid
+            },"上传Wp月卡Adeasygo IAP信息失败!"):done(get_player_response_msg)
 end
 -- 上传Android月卡官方IAP信息
 function NetManager:getAddAndroidOfficialMonthcardBillingDataPromise(receiptData)
