@@ -12,6 +12,7 @@ local RichText = import("..widget.RichText")
 local UIListView = import(".UIListView")
 local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local ScheduleActivities = GameDatas.ScheduleActivities.type
+local utf8 = import("..utils.utf8")
 local User = User
 local config_day14 = GameDatas.Activities.day14
 local config_levelup = GameDatas.Activities.levelup
@@ -562,7 +563,7 @@ function GameUIActivityNew:GetActivityItem(item_type)
         local str_1 = _("%s后结束")
         local s,e = string.find(str_1,"%%s")
         local str = string.format("[{\"type\":\"text\", \"value\":\"%s\"},{\"type\":\"text\",\"color\":0xa2ff00,\"size\":22,\"value\":\"%s\"},{\"type\":\"text\", \"value\":\"%s\"}]",
-            string.sub(str_1,1,s - 1),User:GetIapLeftTime(),string.sub(str_1,e+1))
+            utf8.substr(str_1,1,s - 1),User:GetIapLeftTime(),utf8.substr(str_1,e+1))
         local title_label = RichText.new({width = 400,size = 20,color = 0xffedae,shadow = true})
         title_label:Text(str):align(display.LEFT_BOTTOM,330,50):addTo(bg)
         self.iap_title_label = title_label
@@ -571,7 +572,7 @@ function GameUIActivityNew:GetActivityItem(item_type)
                 local str_1 = _("%s后结束")
                 local s,e = string.find(str_1,"%%s")
                 local str = string.format("[{\"type\":\"text\", \"value\":\"%s\"},{\"type\":\"text\",\"color\":0xa2ff00,\"size\":22,\"value\":\"%s\"},{\"type\":\"text\", \"value\":\"%s\"}]",
-                    string.sub(str_1,1,s - 1),User:GetIapLeftTime(),string.sub(str_1,e+1))
+                    utf8.substr(str_1,1,s - 1),User:GetIapLeftTime(),utf8.substr(str_1,e+1))
                 self.iap_title_label:Text(str)
             else
                 self:RefreshActivityListView()
