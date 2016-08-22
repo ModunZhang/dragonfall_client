@@ -528,13 +528,17 @@ function GameUIActivityNew:GetActivityItem(item_type)
                 sign_str = _("未领取")
                 sign_color = 0xff4e00
             end
-            local str_1 = _("已激活(%s)")
-            local s,e = string.find(str_1,"%%s")
             local days = GameDatas.PlayerInitData.intInit.monthCardTotalDays.value
-            local str = string.format("[{\"type\":\"text\", \"value\":\"%s\"},{\"type\":\"text\",\"color\":0xa2ff00,\"size\":22,\"value\":\"%s\"},{\"type\":\"text\", \"value\":\"%s\"}]",
-                string.sub(str_1,1,s - 1),User:GetMonthCardActivateDay().."/"..days,string.sub(str_1,e+1))
-            local title_label = RichText.new({width = 400,size = 20,color = 0xffedae,shadow = true})
-            title_label:Text(str):align(display.LEFT_BOTTOM,330,88):addTo(bg)
+            local title_label = UIKit:ttfLabel({
+                text = "("..User:GetMonthCardActivateDay().."/"..days..")",
+                size = 20,
+                color= 0xa2ff00,
+            }):align(display.RIGHT_BOTTOM,545,88):addTo(bg)
+            UIKit:ttfLabel({
+                text = _("已激活"),
+                size = 20,
+                color= 0xffedae,
+            }):align(display.RIGHT_BOTTOM,title_label:getPositionX() - title_label:getContentSize().width,88):addTo(bg)
         end
         local sign_bg = display.newSprite("activity_day_bg_104x34.png")
             :align(display.LEFT_BOTTOM,441,45)
