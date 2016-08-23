@@ -657,7 +657,7 @@ function AllianceLayer:LoadAllianceByIndex(index, alliance)
                                           :addTo(sprite,0):pos(size.width/2, size.height/2)
                             sprite.door:getAnimation():playWithIndex(0)
                         end
-                        if sprite.door then
+                        if sprite.door and isMyAlliance then
                             sprite.door:setVisible(#allianceData.shrineEvents > 0)
                         end
                     elseif name == "watchTower" then
@@ -670,7 +670,7 @@ function AllianceLayer:LoadAllianceByIndex(index, alliance)
                             sprite.light:setAnchorPoint(cc.p(0.5, 0.34))
                             sprite.light:getAnimation():playWithIndex(0)
                         end
-                        if sprite.light then
+                        if sprite.light and isMyAlliance then
                             sprite.light:setVisible(Alliance_Manager:HasToMyAllianceEvents())
                         end
                     end
