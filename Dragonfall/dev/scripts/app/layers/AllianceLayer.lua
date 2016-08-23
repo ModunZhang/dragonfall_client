@@ -656,6 +656,8 @@ function AllianceLayer:LoadAllianceByIndex(index, alliance)
                             sprite.door = ccs.Armature:create("chuansongmen")
                                           :addTo(sprite,0):pos(size.width/2, size.height/2)
                             sprite.door:getAnimation():playWithIndex(0)
+                        end
+                        if sprite.door then
                             sprite.door:setVisible(#allianceData.shrineEvents > 0)
                         end
                     elseif name == "watchTower" then
@@ -667,6 +669,8 @@ function AllianceLayer:LoadAllianceByIndex(index, alliance)
                             bone:changeDisplayWithIndex(0, true)
                             sprite.light:setAnchorPoint(cc.p(0.5, 0.34))
                             sprite.light:getAnimation():playWithIndex(0)
+                        end
+                        if sprite.light then
                             sprite.light:setVisible(Alliance_Manager:HasToMyAllianceEvents())
                         end
                     end
