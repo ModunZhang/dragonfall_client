@@ -9,6 +9,7 @@ local WidgetAllianceHelper = import("..widget.WidgetAllianceHelper")
 local window = import("..utils.window")
 local Localize = import("..utils.Localize")
 local WidgetInfo = import(".WidgetInfo")
+local UIListView = import("..ui.UIListView")
 local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local intInit = GameDatas.AllianceInitData.intInit
 local moveLimit = GameDatas.AllianceMap.moveLimit
@@ -335,13 +336,22 @@ function WidgetWorldAllianceInfo:LoadInfo(alliance_data)
     if not desc or desc == json.null then
         desc = _("联盟未设置联盟描述")
     end
-    local killTitleLabel = UIKit:ttfLabel({
+    local listview = UIListView.new {
+        viewRect = cc.rect(10, 12, 530,134),
+        direction = cc.ui.UIScrollView.DIRECTION_VERTICAL,
+    }:addTo(desc_bg)
+    local item = listview:newItem()
+    item:setItemSize(530, 134)
+    local desc_label = UIKit:ttfLabel({
         text =  desc,
         size = 20,
         color = 0x403c2f,
         dimensions = cc.size(530,0),
         align = cc.TEXT_ALIGNMENT_CENTER,
-    }):addTo(desc_bg):align(display.CENTER, desc_bg:getContentSize().width/2,desc_bg:getContentSize().height/2)
+    })
+    item:addContent(desc_label)
+    listview:addItem(item)
+    listview:reload()
     if alliance_data.id == Alliance_Manager:GetMyAlliance()._id then
         self:BuildOneButton("icon_goto_38x56.png",_("定位")):onButtonClicked(function()
             self:Located(self.mapIndex)
