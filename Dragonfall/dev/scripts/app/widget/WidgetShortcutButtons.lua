@@ -364,7 +364,7 @@ function WidgetShortcutButtons:OnAllianceDataChanged_shrineEvents(alliance, delt
     self.right_top_order:RefreshOrder()
 end
 function WidgetShortcutButtons:OnUserDataChanged_dragons()
-    self.right_top_order:RefreshOrder()
+    self.left_order_group:RefreshOrder()
 end
 function WidgetShortcutButtons:OnActivitiesChanged()
     self.right_top_order:RefreshOrder()
