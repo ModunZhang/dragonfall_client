@@ -1249,7 +1249,8 @@ function GameUIMail:ShowMailDetails(mail)
 
     -- player head icon
     UIKit:GetPlayerCommonIcon(mail.fromIcon):align(display.CENTER, 76, size.height - 80):addTo(body)
-    if mail.fromName ~= "__system" and  mail.icon ~= -1 then
+    dump(mail,"ShowMailDetails")
+    if mail.fromName ~= "__system" and  mail.icon ~= -1 and mail.fromIcon ~= -1 then
         WidgetPushTransparentButton.new(cc.rect(0,0,114,114)):addTo(body):align(display.CENTER, 76, size.height - 80):onButtonClicked(function()
             UIKit:newGameUI("GameUIAllianceMemberInfo",false,mail.fromId,nil,User.serverId):AddToCurrentScene(true)
         end)
