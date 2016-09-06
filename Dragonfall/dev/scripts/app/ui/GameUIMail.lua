@@ -557,6 +557,9 @@ function GameUIMail:CreateInboxContent()
         end
 
         local from_name = Localize.mails[mail.fromName] or mail.fromName
+        if mail.fromIcon == -1 then
+            from_name = 'MOD'
+        end
         from_name_label:setString(_("From")..":"..((mail.fromAllianceTag~="" and "["..mail.fromAllianceTag.."]"..from_name) or from_name))
         from_name_label:setColor(mail.isRead and UIKit:hex2c4b(0x969696) or UIKit:hex2c4b(0xffedae))
         date_label:setString(GameUtils:formatTimeStyle2(mail.sendTime/1000))
@@ -729,6 +732,9 @@ function GameUIMail:CreateSavedMailContent()
             :align(display.LEFT_CENTER,11, 24):addTo(content_title_bg)
 
         local from_name = Localize.mails[mail.fromName] or mail.fromName
+        if mail.fromIcm == -1 then
+            from_name = 'MOD'
+        end
         from_name_label:setString(_("From")..":"..((mail.fromAllianceTag~="" and "["..mail.fromAllianceTag.."]"..from_name) or from_name))
         date_label:setString(GameUtils:formatTimeStyle2(mail.sendTime/1000))
         mail_content_title_label:setString(mail.title)
@@ -888,6 +894,9 @@ function GameUIMail:CreateSendMailContent()
         local mail_icon = display.newSprite(mail.fromId == "__system" and "icon_system_mail.png" or "mail_state_user_not_read.png")
             :align(display.LEFT_CENTER,11, 24):addTo(content_title_bg)
         local name = Localize.mails[mail.fromName] or mail.fromName
+        if mail.fromIcon == -1 then
+            name = 'MOD'
+        end
         from_name_label:setString(_("From")..":"..((mail.fromAllianceTag~="" and "["..mail.fromAllianceTag.."]".. name or name)))
         date_label:setString(GameUtils:formatTimeStyle2(mail.sendTime/1000))
         mail_content_title_label:setString(mail.title)
@@ -1133,7 +1142,11 @@ end
 
 --已发送邮件详情弹出框
 function GameUIMail:ShowSendMailDetails(mail)
-    local title_string = (mail.fromAllianceTag~="" and "["..mail.fromAllianceTag.."] "..mail.fromName) or mail.fromName
+    local fromName = mail.fromName
+    if mail.fromIcon == -1 then
+        fromName = 'MOD'
+    end
+    local title_string = (mail.fromAllianceTag~="" and "["..mail.fromAllianceTag.."] "..fromName) or fromName
     local dialog = WidgetPopDialog.new(748,title_string):addTo(self,201)
     local bg = dialog:GetBody()
     local size = bg:getContentSize()
@@ -1239,6 +1252,9 @@ end
 --邮件详情弹出框
 function GameUIMail:ShowMailDetails(mail)
     local name = Localize.mails[mail.fromName] or mail.fromName
+    if mail.fromIcon == -1 then
+        name = 'MOD'
+    end
     local title_string = (mail.fromAllianceTag~="" and "["..mail.fromAllianceTag.."] "..name) or name
     local dialog = WidgetPopDialog.new(768,title_string):addTo(self,201)
     local body = dialog:GetBody()
@@ -1249,7 +1265,6 @@ function GameUIMail:ShowMailDetails(mail)
 
     -- player head icon
     UIKit:GetPlayerCommonIcon(mail.fromIcon):align(display.CENTER, 76, size.height - 80):addTo(body)
-    dump(mail,"ShowMailDetails")
     if mail.fromName ~= "__system" and  mail.icon ~= -1 and mail.fromIcon ~= -1 then
         WidgetPushTransparentButton.new(cc.rect(0,0,114,114)):addTo(body):align(display.CENTER, 76, size.height - 80):onButtonClicked(function()
             UIKit:newGameUI("GameUIAllianceMemberInfo",false,mail.fromId,nil,User.serverId):AddToCurrentScene(true)
@@ -2706,6 +2721,7 @@ end
 
 
 return GameUIMail
+
 
 
 
