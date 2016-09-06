@@ -10,6 +10,12 @@ local WidgetMailContacts = class("WidgetMailContacts", WidgetPopDialog)
 function WidgetMailContacts:ctor()
     WidgetMailContacts.super.ctor(self,674,_("最近联系人"))
     local contacts = app:GetGameDefautlt():getRecentContacts()
+    for k,v in pairs(contacts) do
+        if v.icon == -1 then
+            app:GetGameDefautlt():removeRecentContacts(v)
+        end
+    end
+    contacts = app:GetGameDefautlt():getRecentContacts()
     self.contacts = contacts
     local body = self:GetBody()
     local size = body:getContentSize()
