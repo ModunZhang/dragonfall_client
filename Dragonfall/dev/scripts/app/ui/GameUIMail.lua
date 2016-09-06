@@ -550,9 +550,14 @@ function GameUIMail:CreateInboxContent()
                 self.mail_icon:setFilter(filter.newFilter("GRAY", {0.2, 0.3, 0.5, 0.1}))
             end
         else
-            if not mail.isRead then
-                self.mail_icon = display.newSprite(mail.fromId == "__system" and "icon_system_mail.png" or "mail_state_user_not_read.png")
-                    :align(display.LEFT_CENTER,11, 24):addTo(content_title_bg)
+            if mail.fromIcon == -1 or mail.icon == -1 then
+                self.mail_icon = display.newSprite("setting_mod_64x78.png")
+                    :align(display.LEFT_CENTER,11, 24):addTo(content_title_bg):scale(0.5)
+            else
+                if not mail.isRead then
+                    self.mail_icon = display.newSprite(mail.fromId == "__system" and "icon_system_mail.png" or "mail_state_user_not_read.png")
+                        :align(display.LEFT_CENTER,11, 24):addTo(content_title_bg)
+                end
             end
         end
 
@@ -568,10 +573,14 @@ function GameUIMail:CreateInboxContent()
         if mail.rewards and not LuaUtils:table_empty(mail.rewards) then
             mail_content_title_label:setPositionX(60)
         else
-            if mail.isRead then
-                mail_content_title_label:setPositionX(10)
-            else
+            if mail.fromIcon == -1 or mail.icon == -1 then
                 mail_content_title_label:setPositionX(60)
+            else
+                if mail.isRead then
+                    mail_content_title_label:setPositionX(10)
+                else
+                    mail_content_title_label:setPositionX(60)
+                end
             end
         end
         -- 保存按钮
@@ -890,9 +899,16 @@ function GameUIMail:CreateSendMailContent()
                 end
             end):addTo(self)
             :pos(item_width/2, item_height/2)
+        if self.mail_icon then
+            self.mail_icon:setTexture(mail.fromId == "__system" and "icon_system_mail.png" or mail.fromIcon == -1 and "setting_mod_64x78.png" or "mail_state_user_not_read.png")
+        else
+            self.mail_icon = display.newSprite(mail.fromId == "__system" and "icon_system_mail.png" or mail.fromIcon == -1 and "setting_mod_64x78.png" or "mail_state_user_not_read.png")
+                :align(display.LEFT_CENTER,11, 24):addTo(content_title_bg)
+        end
+        if mail.fromIcon == -1 then
+            self.mail_icon:scale(0.5)
+        end
 
-        local mail_icon = display.newSprite(mail.fromId == "__system" and "icon_system_mail.png" or "mail_state_user_not_read.png")
-            :align(display.LEFT_CENTER,11, 24):addTo(content_title_bg)
         local name = Localize.mails[mail.fromName] or mail.fromName
         if mail.fromIcon == -1 then
             name = 'MOD'
@@ -2721,6 +2737,7 @@ end
 
 
 return GameUIMail
+
 
 
 
