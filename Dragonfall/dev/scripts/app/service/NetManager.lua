@@ -810,7 +810,7 @@ function NetManager:getLogicServerInfoPromise()
     if device.platform == 'windows' then
         platform = 'wp'
     elseif device.platform == 'mac' then
-        platform = 'ios'
+        platform = 'wp'
     elseif device.platform == "android" then
         platform = 'android'
     elseif device.platform == "ios" then
@@ -1245,7 +1245,7 @@ function NetManager:getSendPersonalMailPromise(memberId, title, content , contac
     }, "发送个人邮件失败!"):done(get_response_msg):done(function ( response )
         GameGlobalUI:showTips(_("提示"),_("发送邮件成功"))
         app:GetAudioManager():PlayeEffectSoundWithKey("OPEN_MAIL")
-        if contacts then
+        if contacts and contacts.icon ~= -1 then
             -- 保存联系人
             contacts.time = app.timer:GetServerTime()
             app:GetGameDefautlt():addRecentContacts(contacts)
