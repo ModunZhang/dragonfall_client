@@ -18,7 +18,7 @@ static FacebookSDK *s_FacebookSDK = NULL; // pointer to singleton
 void FacebookSDK::Initialize(std::string appId /* = "" */)
 {
 	FBSession^ sess = FBSession::ActiveSession;
-	sess->FBAppId = "1700922490127767";
+	sess->FBAppId = "1959633774263106";
 	sess->WinAppId = WebAuthenticationBroker::GetCurrentApplicationCallbackUri()->DisplayUri;
 }
 

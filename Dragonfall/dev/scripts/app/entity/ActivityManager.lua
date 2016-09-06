@@ -621,10 +621,10 @@ function ActivityManager:GetActivityAllianceRankRewardRegion()
         {2,2},
         {3,3},
         {4,4},
-        {5,7},
-        {8,10},
-        {11,14},
-        {15,20},
+        {5,6},
+        {7,9},
+        {10,13},
+        {14,20},
     }
 end
 -- 获取活动本地化
