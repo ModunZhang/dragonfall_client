@@ -65,6 +65,7 @@ function MapScene:onEnter()
             flag = false
         else
             flag = Alliance_Manager:HasToMyCityEvents()
+                or Alliance_Manager:HasToMyVillageEvents()
         end
         if flag then
             if not app:GetGameDefautlt():IsPassedTriggerTips("warning") then

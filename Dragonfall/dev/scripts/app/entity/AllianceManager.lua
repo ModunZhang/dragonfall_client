@@ -43,6 +43,30 @@ function AllianceManager:HasToMyCityEvents()
     end
     return false
 end
+function AllianceManager:HasToMyVillageEvents()
+    if not self.my_alliance:IsDefault() then
+        local marchEvents = self:GetMyAllianceMarchEvents()
+        for k,event in pairs(marchEvents.attackMarchEvents) do
+            if event ~= json.null
+                and event.defenceVillageData then
+                local vevent = self.my_alliance:FindVillageEventByVillageId(event.defenceVillageData.id)
+                if vevent and User:Id() == vevent.playerData.id then
+                    return true
+                end
+            end
+        end
+        for k,event in pairs(marchEvents.strikeMarchEvents) do
+            if event ~= json.null
+                and event.defenceVillageData then
+                local vevent = self.my_alliance:FindVillageEventByVillageId(event.defenceVillageData.id)
+                if vevent and User:Id() == vevent.playerData.id then
+                    return true
+                end
+            end
+        end
+    end
+    return false
+end
 function AllianceManager:GetToMineMarchEvents()
     local to_my_events = {}
     local marchEvents = self:GetMyAllianceMarchEvents()
