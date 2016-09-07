@@ -7,7 +7,7 @@
 ## 使用
 # mac下通过`xcodebuild`自动打包并生成ipa文件的脚本,并提供将打包文件导出为ipa的功能.无需关心Xcode中的证书配置,脚本自动修改.但是必须提前安装好证书的配置.
 # 1. buildiOS.sh xxx.xcarchive ./output Inhouse # 表示将xxx.xcarchive在Inhouse模式下生成ipa文件到output目录.
-# 2. buildiOS.sh xxx.ipa ./output # 表示将xxx.ipa强制转换成apphoc为true的Inhose模式下的新ipa包到output目录.
+# 2. buildiOS.sh xxx.ipa ./output # 表示将xxx.ipa强制设置apphoc为true在Inhose模式下重新打包成新的ipa包到output目录.
 # 3. 其他形式的调用会运行打包项目操作并生成相应的ipa文件.
 ## 注意:
 # 1.脚本导出app store包的时候强制包含符号文件 .
