@@ -93,7 +93,7 @@ function printAppHoc()
 function archiveAndExportProject()
 {
 	iApphoc=$1
-	iArchiveDirName="Release_Server"
+	iArchiveDirName="Production_Server"
 	iTimestamp=`date "+%Y-%m-%d_%H_%M_%S"`
 	iFinalOutputArchiveName="${OutputName}_${iArchiveDirName}_${iTimestamp}.xcarchive"
 	iArchiveFileFullPath="${OutputDirPath}/${iFinalOutputArchiveName}"
@@ -103,7 +103,7 @@ function archiveAndExportProject()
 	exportArchive2IpaWithConfig ${iArchiveFileFullPath} "${iFinalOutputIpaDirPath}_Inhouse" "Inhouse"
 	exportArchive2IpaWithConfig ${iArchiveFileFullPath} "${iFinalOutputIpaDirPath}_Distribution" "Distribution"
 	#resign ipa for debug server
-	resignIPA2DebugServerAdHoc  "${iFinalOutputIpaDirPath}_Distribution/${SchemeName}.ipa" "${OutputDirPath}/IPAs/Debug_Server_${iTimestamp}_Inhouse"
+	resignIPA2DebugServerAdHoc  "${iFinalOutputIpaDirPath}_Distribution/${SchemeName}.ipa" "${OutputDirPath}/IPAs/Development_Server_${iTimestamp}_Inhouse"
 }
 
 function archiveProject()
