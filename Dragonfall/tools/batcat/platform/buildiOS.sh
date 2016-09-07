@@ -84,7 +84,7 @@ function setAppHoc()
 function printAppHoc()
 {
 	echo "---------------------------------------------------------"
-	echo "appHoc:"
+	echo ">> appHoc value"
 	echo `/usr/libexec/PlistBuddy -c 'print AppHoc' $InfoPlistPath`
 	echo "---------------------------------------------------------"
 }
@@ -118,23 +118,24 @@ function archiveProject()
 
 function normalExportProject()
 {
-	echo "-------- export project --------"
-	read -p "Press [Enter] key to start..."
+	echo "---------------------------------------------------"
+	echo ">> export project"
+	echo "---------------------------------------------------"
 	archiveAndExportProject
 }
 
 function exportArchive2IpaWithConfig()
 {
-	echo "-------- export ipa --------"
+	echo "---------------------------------------------------"
+	echo ">> export ipa"
+	echo "---------------------------------------------------"
 	iArchiveFileFullPath=$1
 	iIpaFileDirectory=$2
 	iProvisionType=$3
 	BakMethod=$(getBuildMethod)
 	setBuildMethod $(getProvisionMethod2PlistConfig $iProvisionType)
 	setBuildTeamID 
-	echo "---------------------------------------------------"
 	/usr/libexec/PlistBuddy -c 'print' ${ExportOptionsPlistPath}
-	echo "---------------------------------------------------"
 	xcodebuild -exportArchive -exportOptionsPlist ${ExportOptionsPlistPath} -archivePath ${iArchiveFileFullPath} -exportPath "${iIpaFileDirectory}"
 	setBuildMethod $BakMethod
 	/usr/libexec/PlistBuddy -c 'print' ${ExportOptionsPlistPath}
@@ -143,13 +144,25 @@ function exportArchive2IpaWithConfig()
 
 function resignIPA2DebugServerAdHoc()
 {
+	echo "---------------------------------------------------"
+	echo ">> resign ipa file"
+	echo "---------------------------------------------------"
 	sourceIPAPath=$1
 	targetIPADirPath=$2
+	if test -f $sourceIPAPath;then
+		echo "Check ipa file: OK"
+	else
+		echo "Error: ipa file was wrong.\n $sourceIPAPath"
+		exit 1
+	fi
 	# Check if the supplied file is an ipa or an app file
 	if [ "${sourceIPAPath##*.}" = "ipa" ]
 		then
 			# Unzip the old ipa quietly
 			unzip -q "$sourceIPAPath" -d temp
+	else
+		echo "Error: ipa file was wrong.\n$sourceIPAPath"
+		exit 1
 	fi
 	APP_NAME=$(ls temp/Payload/)
 	echo "APP_NAME=$APP_NAME" >&2
