@@ -170,14 +170,14 @@ function GameUIAllianceCityEnter:GetEnterButtons()
                             --         UIKit:showSendTroopMessageDialog(attack_func, "dragonMaterials",_("龙材料"))
                             --     end,function()end)
                             -- else
-                                local attack_func = function ()
-                                    UIKit:newGameUI('GameUISendTroopNew',function(dragonType,soldiers)
-                                        NetManager:getHelpAllianceMemberDefencePromise(dragonType, soldiers, playerId):done(function()
-                                            app:GetAudioManager():PlayeEffectSoundWithKey("TROOP_SENDOUT")
-                                        end)
-                                    end,{targetAlliance = alliance,toLocation = toLocation}):AddToCurrentScene(true)
-                                end
-                                UIKit:showSendTroopMessageDialog(attack_func, "dragonMaterials",_("龙材料"))
+                            local attack_func = function ()
+                                UIKit:newGameUI('GameUISendTroopNew',function(dragonType,soldiers)
+                                    NetManager:getHelpAllianceMemberDefencePromise(dragonType, soldiers, playerId):done(function()
+                                        app:GetAudioManager():PlayeEffectSoundWithKey("TROOP_SENDOUT")
+                                    end)
+                                end,{targetAlliance = alliance,toLocation = toLocation}):AddToCurrentScene(true)
+                            end
+                            UIKit:showSendTroopMessageDialog(attack_func, "dragonMaterials",_("龙材料"))
                             -- end
                         else
                             UIKit:showMessageDialog(_("错误"), _("已有协防部队正在行军"), function()end)
@@ -232,7 +232,7 @@ function GameUIAllianceCityEnter:GetEnterButtons()
             local final_func = function ()
                 local attack_func = function ()
                     local newbeeProtect = NetManager:getServerTime()
-                                        < member.newbeeProtectFinishTime
+                        < member.newbeeProtectFinishTime
                     if member.isProtected or newbeeProtect then
                         UIKit:showMessageDialog(_("提示"),_("目标城市已被击溃并进入保护期，可能无法发生战斗，你是否继续派兵?"), function()
                             UIKit:newGameUI('GameUISendTroopNew',function(dragonType,soldiers,total_march_time,gameuialliancesendtroops)
@@ -260,7 +260,7 @@ function GameUIAllianceCityEnter:GetEnterButtons()
             local me = self:GetMyAlliance():GetSelf()
             local masterOfDefender = UtilsForItem:IsItemEventActive(User, "masterOfDefender")
             local newbeeProtect = NetManager:getServerTime()
-                                < me.newbeeProtectFinishTime
+                < me.newbeeProtectFinishTime
             if me.isProtected or newbeeProtect or masterOfDefender then
                 local text
                 local protected = me.isProtected or newbeeProtect
@@ -281,19 +281,32 @@ function GameUIAllianceCityEnter:GetEnterButtons()
         -- attack_button:setButtonEnabled(my_allaince.basicInfo.status == "fight")
         local strike_button = self:BuildOneButton("strike_66x62.png",_("突袭")):onButtonClicked(function()
             local toLocation = self:GetLogicPosition()
-            -- if isProtected then
-            --     UIKit:showMessageDialog(_("提示"),_("突袭玩家城市将失去保护状态，确定继续派兵?"),function ()
-            --         UIKit:newGameUI("GameUIStrikePlayer",1,{memberId = member.id,alliance = alliance, toLocation = toLocation,targetIsProtected = member.masterOfDefender}):AddToCurrentScene(true)
-            --     end)
-            -- else
-            UIKit:newGameUI("GameUIStrikePlayer",1,{
-                memberId = member.id,
-                alliance = alliance,
-                toLocation = toLocation,
-                targetIsProtected = member.isProtected
-                or member.newbeeProtect
-            }):AddToCurrentScene(true)
-            -- end
+            local text
+            local me = self:GetMyAlliance():GetSelf()
+            local newbeeProtect = NetManager:getServerTime() < me.newbeeProtectFinishTime
+            local protected = me.isProtected or newbeeProtect
+            local masterOfDefender = UtilsForItem:IsItemEventActive(User, "masterOfDefender")
+            if protected and masterOfDefender then
+                text = _("突袭玩家城市将失去保护状态以及城防大师效果,确定继续派兵?")
+            elseif protected then
+                text = _("突袭玩家城市将失去保护状态，确定继续派兵?")
+            elseif masterOfDefender then
+                text = _("突袭玩家城市将失去城防大师效果,确定继续派兵?")
+            end
+            if me.isProtected or newbeeProtect or masterOfDefender then
+                UIKit:showMessageDialog(_("提示"),text,function ()
+                    UIKit:newGameUI("GameUIStrikePlayer",1,{memberId = member.id,alliance = alliance, toLocation = toLocation,targetIsProtected = member.isProtected
+                        or member.newbeeProtect}):AddToCurrentScene(true)
+                end)
+            else
+                UIKit:newGameUI("GameUIStrikePlayer",1,{
+                    memberId = member.id,
+                    alliance = alliance,
+                    toLocation = toLocation,
+                    targetIsProtected = member.isProtected
+                    or member.newbeeProtect
+                }):AddToCurrentScene(true)
+            end
             self:LeftButtonClicked()
         end)
         -- strike_button:setButtonEnabled(my_allaince.basicInfo.status == "fight")
@@ -326,6 +339,10 @@ function GameUIAllianceCityEnter:GetEnterButtons()
 end
 
 return GameUIAllianceCityEnter
+
+
+
+
 
 
 
