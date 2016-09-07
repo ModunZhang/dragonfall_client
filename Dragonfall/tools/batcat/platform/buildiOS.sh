@@ -79,16 +79,9 @@ function setBuildTeamID()
 function setAppHoc()
 {
 	/usr/libexec/PlistBuddy -c "set AppHoc $1" $InfoPlistPath
+	finallyVal=`/usr/libexec/PlistBuddy -c 'print AppHoc' $InfoPlistPath`
+	echo ">> finish set appHoc value:${finallyVal}"
 }
-
-function printAppHoc()
-{
-	echo "---------------------------------------------------------"
-	echo ">> appHoc value"
-	echo `/usr/libexec/PlistBuddy -c 'print AppHoc' $InfoPlistPath`
-	echo "---------------------------------------------------------"
-}
-
 
 function archiveAndExportProject()
 {
@@ -97,7 +90,6 @@ function archiveAndExportProject()
 	iTimestamp=`date "+%Y-%m-%d_%H_%M_%S"`
 	iFinalOutputArchiveName="${OutputName}_${iArchiveDirName}_${iTimestamp}.xcarchive"
 	iArchiveFileFullPath="${OutputDirPath}/${iFinalOutputArchiveName}"
-	setAppHoc false
 	archiveProject ${iArchiveFileFullPath}
 	iFinalOutputIpaDirPath="${OutputDirPath}/IPAs/${iArchiveDirName}_${iTimestamp}"
 	exportArchive2IpaWithConfig ${iArchiveFileFullPath} "${iFinalOutputIpaDirPath}_Inhouse" "Inhouse"
@@ -109,7 +101,7 @@ function archiveAndExportProject()
 function archiveProject()
 {
 	iArchiveFileFullPath=$1
-	printAppHoc
+	setAppHoc false
 	cd $PrjDir
 	xcodebuild clean
 	xcodebuild -sdk iphoneos -configuration Release -scheme ${SchemeName} -target "${TargetName}" -archivePath ${iArchiveFileFullPath} CODE_SIGN_IDENTITY="${DistributionCodeIdentity}" PROVISIONING_PROFILE="${DistributionProvision}" archive
@@ -164,6 +156,7 @@ function resignIPA2DebugServerAdHoc()
 		echo "Error: ipa file was wrong.\n$sourceIPAPath"
 		exit 1
 	fi
+	test -f ../temp.ipa && rm -f ../temp.ipa
 	APP_NAME=$(ls temp/Payload/)
 	echo "APP_NAME=$APP_NAME" >&2
 	NEW_PROVISION="${DIR}/../../iOS_profile/dragonrisejlzbworadhoc.mobileprovision"
