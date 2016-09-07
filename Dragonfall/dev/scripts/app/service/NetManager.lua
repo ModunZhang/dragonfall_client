@@ -1982,22 +1982,22 @@ local function hasMyEvents()
     local alliance = Alliance_Manager:GetMyAlliance()
     if not alliance:IsDefault() then
         for i,v in ipairs(alliance.marchEvents.strikeMarchEvents) do
-            if UtilsForEvent:IsMyMarchEvent(v) then
+            if UtilsForEvent:IsMyMarchEvent(v) and v.marchType == "city" then
                 return true
             end
         end
         for i,v in ipairs(alliance.marchEvents.strikeMarchReturnEvents) do
-            if UtilsForEvent:IsMyMarchEvent(v) then
+            if UtilsForEvent:IsMyMarchEvent(v) and v.marchType == "city" then
                 return true
             end
         end
         for i,v in ipairs(alliance.marchEvents.attackMarchEvents) do
-            if UtilsForEvent:IsMyMarchEvent(v) then
+            if UtilsForEvent:IsMyMarchEvent(v) and v.marchType == "city" then
                 return true
             end
         end
         for i,v in ipairs(alliance.marchEvents.attackMarchReturnEvents) do
-            if UtilsForEvent:IsMyMarchEvent(v) then
+            if UtilsForEvent:IsMyMarchEvent(v) and v.marchType == "city" then
                 return true
             end
         end
@@ -2033,6 +2033,11 @@ function NetManager:getUseItemPromise(itemName,params,need_tips)
 end
 --购买并使用道具
 function NetManager:getBuyAndUseItemPromise(itemName,params)
+    if string.find(itemName, "masterOfDefender") and hasMyEvents() then
+        return cocos_promise.promiseFilterNetError(cocos_promise.defer(function()
+            promise.reject({code = 0, msg = _("你正在侦察，进攻或协防，无法使用城防大师")}, "masterOfDefender")
+        end))
+    end
     return get_blocking_request_promise("logic.playerHandler.buyAndUseItem", {
         itemName = itemName,
         params = params,

@@ -550,7 +550,7 @@ function GameUIMail:CreateInboxContent()
                 self.mail_icon:setFilter(filter.newFilter("GRAY", {0.2, 0.3, 0.5, 0.1}))
             end
         else
-            if mail.fromIcon == -1 or mail.icon == -1 then
+            if mail.fromIcon == -1 or mail.toIcon == -1 or mail.toIcon == "-1" then
                 self.mail_icon = display.newSprite("setting_mod_64x78.png")
                     :align(display.LEFT_CENTER,11, 24):addTo(content_title_bg):scale(0.5)
             else
@@ -573,7 +573,7 @@ function GameUIMail:CreateInboxContent()
         if mail.rewards and not LuaUtils:table_empty(mail.rewards) then
             mail_content_title_label:setPositionX(60)
         else
-            if mail.fromIcon == -1 or mail.icon == -1 then
+            if mail.fromIcon == -1 or mail.toIcon == -1 or mail.toIcon == "-1" then
                 mail_content_title_label:setPositionX(60)
             else
                 if mail.isRead then
@@ -736,12 +736,18 @@ function GameUIMail:CreateSavedMailContent()
             end):addTo(self)
             :pos(item_width/2, item_height/2)
         title_bg:setTexture(mail.isRead and "title_grey_482x30.png" or "title_blue_482x30.png")
-
-        local mail_icon = display.newSprite(mail.fromId == "__system" and "icon_system_mail.png" or "mail_state_user_not_read.png")
+        local png = mail.fromId == "__system" and "icon_system_mail.png" or ((mail.fromIcon == -1 or mail.toIcon == -1 or mail.toIcon == "-1") and "setting_mod_64x78.png") or "mail_state_user_not_read.png"
+        if self.mail_icon then
+            self.mail_icon:removeFromParent()
+        end
+        local mail_icon = display.newSprite(png)
             :align(display.LEFT_CENTER,11, 24):addTo(content_title_bg)
-
+        if mail.fromIcon == -1  then
+            mail_icon:scale(0.5)
+        end
+        self.mail_icon = mail_icon
         local from_name = Localize.mails[mail.fromName] or mail.fromName
-        if mail.fromIcm == -1 then
+        if mail.fromIcon == -1 then
             from_name = 'MOD'
         end
         from_name_label:setString(_("From")..":"..((mail.fromAllianceTag~="" and "["..mail.fromAllianceTag.."]"..from_name) or from_name))
@@ -899,17 +905,25 @@ function GameUIMail:CreateSendMailContent()
                 end
             end):addTo(self)
             :pos(item_width/2, item_height/2)
-        if self.mail_icon then
-            self.mail_icon:setTexture(mail.fromId == "__system" and "icon_system_mail.png" or mail.fromIcon == -1 and "setting_mod_64x78.png" or "mail_state_user_not_read.png")
+        local png
+        local isMod = mail.toIcon == -1 or mail.toIcon == "-1" or mail.fromIcon == -1
+        if isMod then
+            png = "setting_mod_64x78.png"
+        elseif mail.fromId == "__system" then
+            png = "icon_system_mail.png"
         else
-            self.mail_icon = display.newSprite(mail.fromId == "__system" and "icon_system_mail.png" or mail.fromIcon == -1 and "setting_mod_64x78.png" or "mail_state_user_not_read.png")
+            png = "mail_state_user_not_read.png"
+        end
+        if self.mail_icon then
+            self.mail_icon:setTexture(png)
+        else
+            self.mail_icon = display.newSprite(png)
                 :align(display.LEFT_CENTER,11, 24):addTo(content_title_bg)
         end
-        if mail.fromIcon == -1 then
+        local name = Localize.mails[mail.fromName] or mail.fromName
+        if isMod then
             self.mail_icon:scale(0.5)
         end
-
-        local name = Localize.mails[mail.fromName] or mail.fromName
         if mail.fromIcon == -1 then
             name = 'MOD'
         end
@@ -1184,7 +1198,7 @@ function GameUIMail:ShowSendMailDetails(mail)
         :addTo(bg)
     local subject_content_label = cc.ui.UILabel.new(
         {cc.ui.UILabel.LABEL_TYPE_TTF,
-            text = Localize.mails[mail.toName] or mail.toName,
+            text = Localize.mails[mail.toName] or ((mail.toIcon == -1 or mail.toIcon == "-1") and "MOD") or mail.toName,
             font = UIKit:getFontFilePath(),
             size = 20,
             dimensions = cc.size(0,24),
@@ -2352,10 +2366,11 @@ function GameUIMail:OpenReplyMail(mail)
         }):align(display.RIGHT_CENTER,120, r_size.height-70)
         :addTo(reply_mail)
     local addressee_input_box_image = display.newSprite("input_box.png",350, r_size.height-70):addTo(reply_mail)
+    local name = mail.fromIcon == -1 and "MOD" or mail.fromAllianceTag~="" and "["..mail.fromAllianceTag.."]"..mail.fromName
+            or mail.fromName
     local addressee_label = cc.ui.UILabel.new(
         {cc.ui.UILabel.LABEL_TYPE_TTF,
-            text = mail.fromAllianceTag~="" and "["..mail.fromAllianceTag.."]"..mail.fromName
-            or mail.fromName,
+            text = name,
             font = UIKit:getFontFilePath(),
             size = 18,
             dimensions = cc.size(410,24),
@@ -2459,6 +2474,7 @@ function GameUIMail:OpenReplyMail(mail)
             on_disabled = "checkbox_selectd.png",
         })
             :align(display.LEFT_CENTER,14,46):addTo(reply_mail)
+        self.mod_check_box:setButtonSelected(mail.fromIcon == -1 or mail.toIcon == -1 or mail.toIcon == "-1")
         UIKit:ttfLabel({
             text = _("以MODs身份发送邮件"),
             size = 22,
@@ -2737,6 +2753,8 @@ end
 
 
 return GameUIMail
+
+
 
 
 
