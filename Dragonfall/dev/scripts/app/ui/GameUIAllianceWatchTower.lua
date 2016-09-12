@@ -495,18 +495,18 @@ end
 
 function GameUIAllianceWatchTower:OnAllianceDataChanged_marchEvents(alliance, deltaData)
     if self.beStriked_list_node:isVisible() then
-        self.beStriked_listview:asyncLoadWithCurrentPosition_()
+        self.beStriked_listview:reload()
     end
     if self.atack_list_node:isVisible() then
-        self.atack_listview:asyncLoadWithCurrentPosition_()
+        self.atack_listview:reload()
     end
 end
 function GameUIAllianceWatchTower:OnMapDataChanged(allianceData, deltaData)
     if self.beStriked_list_node:isVisible() then
-        self.beStriked_listview:asyncLoadWithCurrentPosition_()
+        self.beStriked_listview:reload()
     end
     if self.atack_list_node:isVisible() then
-        self.atack_listview:asyncLoadWithCurrentPosition_()
+        self.atack_listview:reload()
     end
 end
 function GameUIAllianceWatchTower:OnMapAllianceChanged(allianceData, deltaData)
