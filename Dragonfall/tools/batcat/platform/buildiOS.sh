@@ -32,6 +32,8 @@ TeamID="9RNQD8JEQ2" # The Developer Portal team to use for this export.
 DistributionCodeIdentity="iPhone Distribution: Pin Wen Huang (9RNQD8JEQ2)" # Inhouse and Distribution build
 # Provision
 DistributionProvision="65ab5db9-8a57-4a7d-863e-260db8d96c56" # Distribution profile identifier
+# mobileprovision file of ad-hoc
+ADHOC_PROVISION="${DIR}/../../iOS_profile/dragonrisejlzbworadhoc.mobileprovision"
 
 #---------------------------------------------------
 # Main function
@@ -159,14 +161,14 @@ function resignIPA2DebugServerAdHoc()
 	test -f ../temp.ipa && rm -f ../temp.ipa
 	APP_NAME=$(ls temp/Payload/)
 	echo "APP_NAME=$APP_NAME" >&2
-	NEW_PROVISION="${DIR}/../../iOS_profile/dragonrisejlzbworadhoc.mobileprovision"
-	echo "Adding the new provision: $NEW_PROVISION"
-	cp "$NEW_PROVISION" "temp/Payload/$APP_NAME/embedded.mobileprovision"
+	echo "Adding the new provision: $ADHOC_PROVISION"
+	cp "$ADHOC_PROVISION" "temp/Payload/$APP_NAME/embedded.mobileprovision"
 	ENTITLEMENTS="temp/Payload/$APP_NAME/archived-expanded-entitlements.xcent"
-	PLISTFILE="temp/Payload/$APP_NAME/Info.plist"
-	echo "Update plist file: $PLISTFILE" >&2
+	INFOFILENAME=`basename $InfoPlistPath`
+	PLISTFILE="temp/Payload/${APP_NAME}/${INFOFILENAME}"
+	echo "Update plist file: ${PLISTFILE}" >&2
 	/usr/libexec/PlistBuddy -c "set AppHoc true" $PLISTFILE
-	echo "Using Entitlements: $ENTITLEMENTS" >&2
+	echo "Using Entitlements: ${ENTITLEMENTS}" >&2
 	/usr/bin/codesign -f -s "$DistributionCodeIdentity" --entitlements="$ENTITLEMENTS" "temp/Payload/$APP_NAME"
 	if test -d $targetIPADirPath;then
 		echo "Check target path exist: $targetIPADirPath" >&2
