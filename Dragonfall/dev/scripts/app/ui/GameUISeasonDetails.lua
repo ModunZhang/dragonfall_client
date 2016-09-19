@@ -119,13 +119,17 @@ function GameUISeasonDetails:GetListNode()
                             NetManager:getAllianceActivityRankRewardsPromise(activity_type):done(function ()
                                 app:GetAudioManager():PlayeEffectSoundWithKey("BUY_ITEM")
                                 GameGlobalUI:showTips(_("提示"),got_tips)
-                                self:LeftButtonClicked()
+                                if not tolua.isnull(self) then
+                                    self:LeftButtonClicked()
+                                end
                             end)
                         else
                             NetManager:getPlayerActivityRankRewardsPromise(activity_type):done(function ()
                                 app:GetAudioManager():PlayeEffectSoundWithKey("BUY_ITEM")
                                 GameGlobalUI:showTips(_("提示"),got_tips)
-                                self:LeftButtonClicked()
+                                if not tolua.isnull(self) then
+                                    self:LeftButtonClicked()
+                                end
                             end)
                         end
                     end
@@ -346,14 +350,18 @@ function GameUISeasonDetails:GetListNode()
                     end
                     if isAlliance then
                         NetManager:getAllianceActivityScoreRewardsPromise(activity_type):done(function ()
-                            self:RefreshAfterGotPointReward()
+                                if not tolua.isnull(self) then
+                                    self:RefreshAfterGotPointReward()
+                                end
                             app:GetAudioManager():PlayeEffectSoundWithKey("BUY_ITEM")
                             GameGlobalUI:showTips(_("提示"),
                                 _("获得").." "..Localize_item.item_name[item_rewards[1].name].." X "..item_rewards[1].count.." , "..Localize_item.item_name[item_rewards[2].name].." X "..item_rewards[2].count)
                         end)
                     else
                         NetManager:getPlayerActivityScoreRewardsPromise(activity_type):done(function ()
-                            self:RefreshAfterGotPointReward()
+                                if not tolua.isnull(self) then
+                                    self:RefreshAfterGotPointReward()
+                                end
                             app:GetAudioManager():PlayeEffectSoundWithKey("BUY_ITEM")
                             GameGlobalUI:showTips(_("提示"),
                                 _("获得").." "..Localize_item.item_name[item_rewards[1].name].." X "..item_rewards[1].count.." , "..Localize_item.item_name[item_rewards[2].name].." X "..item_rewards[2].count)
