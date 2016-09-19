@@ -152,18 +152,6 @@ function GameUISettingAccount:CreateFacebookPanel()
         :setButtonLabel("normal", UIKit:commonButtonLable({
             text = _("绑定")
         })):onButtonClicked(function()
-        if ext.facebook.isAuthenticated() then -- 是否登录了Facebook
-            local gcName,gcId = ext.facebook.getPlayerNameAndId()
-            UIKit:showMessageDialog(_("提示"),string.format(_("是否确认将账号绑定到Facebook %s"),gcName),function()
-                NetManager:getBindGcPromise("facebook",gcId,gcName):done(function (response)
-                    User.gc = response.msg.playerData[1][2]
-                    GameGlobalUI:showTips(_("提示"),_("绑定账号成功"))
-                    if UIKit:GetUIInstance("GameUISettingAccount") then
-                        self:LeftButtonClicked()
-                    end
-                end)
-            end,function()end)
-        else
             local facebook_scheduleFunc = function ( data )
                 if data.event == "login_success" then
                     local userid,username = data.userid,data.username
@@ -181,7 +169,6 @@ function GameUISettingAccount:CreateFacebookPanel()
             ext.facebook.login(function ( data )
                 GameStatesHelper:getInstance():scheduleFunction(facebook_scheduleFunc,data)
             end)
-        end
         end)
 end
 function GameUISettingAccount:CreateGooglePanel()
