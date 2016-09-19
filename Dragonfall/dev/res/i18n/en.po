@@ -1,9 +1,9 @@
-# This file was generated from /Users/kennydai/Downloads/i18n(3)(3).xlsx
+# This file was generated from /Users/gaozhou/Work/kod.proj/NewDragonfall/Dragonfall/tools/batcat/i18n.xlsx
 msgid ""
 msgstr ""
 "Project-Id-Version: dragonfall\n"
-"POT-Creation-Date: 2016-09-07 18:37+0800\n"
-"PO-Revision-Date: 2016-09-07 18:37+0800\n"
+"POT-Creation-Date: 2016-09-19 16:52+0800\n"
+"PO-Revision-Date: 2016-09-19 16:52+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -147,9 +147,9 @@ msgstr ""
 #: ui/GameUIResource.lua:378 ui/GameUIResource.lua:390
 #: ui/GameUIResource.lua:406 ui/GameUIResource.lua:417
 #: ui/GameUIResource.lua:423 ui/GameUIResource.lua:437 ui/GameUISeason.lua:84
-#: ui/GameUISeasonDetails.lua:121 ui/GameUISeasonDetails.lua:127
-#: ui/GameUISeasonDetails.lua:344 ui/GameUISeasonDetails.lua:351
-#: ui/GameUISeasonDetails.lua:358 ui/GameUISendTroopNew.lua:611
+#: ui/GameUISeasonDetails.lua:121 ui/GameUISeasonDetails.lua:129
+#: ui/GameUISeasonDetails.lua:348 ui/GameUISeasonDetails.lua:357
+#: ui/GameUISeasonDetails.lua:366 ui/GameUISendTroopNew.lua:611
 #: ui/GameUISendTroopNew.lua:621 ui/GameUISendTroopNew.lua:624
 #: ui/GameUISendTroopNew.lua:636 ui/GameUISendTroopNew.lua:639
 #: ui/GameUISendTroopNew.lua:654 ui/GameUISendTroopNew.lua:726
@@ -240,7 +240,7 @@ msgstr "Congrats!"
 
 #: MyApp.lua:576 MyApp.lua:626 MyApp.lua:776
 msgid "月卡已经激活"
-msgstr "The Monthly Pack is activated!"
+msgstr ""
 
 #: MyApp.lua:596 MyApp.lua:654 MyApp.lua:711 MyApp.lua:811
 #, lua-format
@@ -2014,7 +2014,7 @@ msgstr "Science upgraded"
 #: utils/UtilsForEvent.lua:208 widget/WidgetUpgradeMilitaryTech.lua:92
 #: widget/WidgetUpgradeMilitaryTech.lua:308
 msgid "Lv"
-msgstr "Lv"
+msgstr ""
 
 #: entity/User.lua:1453 service/NetManager.lua:1907
 msgid "军事科技升级完成"
@@ -2519,7 +2519,7 @@ msgstr "%s purchased Successfully"
 #: service/NetManager.lua:2010 service/NetManager.lua:2038
 #: utils/Localize.lua:232
 msgid "你正在侦察，进攻或协防，无法使用城防大师"
-msgstr "You're scouting or attacking now, can not use the Defence Master"
+msgstr ""
 
 #: service/NetManager.lua:2019 service/NetManager.lua:2046
 #, lua-format
@@ -2940,11 +2940,11 @@ msgstr "The beginner's gift"
 
 #: ui/GameUIActivityNew.lua:33 ui/GameUIActivityRewardNew.lua:52
 msgid "月卡"
-msgstr "Monthly Pack"
+msgstr ""
 
 #: ui/GameUIActivityNew.lua:34 ui/GameUIActivityRewardNew.lua:1383
 msgid "累计充值大回馈"
-msgstr "Accumulative Purchase Rewards"
+msgstr ""
 
 #: ui/GameUIActivityNew.lua:38 ui/GameUIActivityNew.lua:106
 #: ui/GameUIActivityRewardNew.lua:53
@@ -2985,7 +2985,7 @@ msgstr "Inactive"
 
 #: ui/GameUIActivityNew.lua:517
 msgid "连续登录30日每日获得奖励"
-msgstr "Receive rewards for 30 days"
+msgstr ""
 
 #: ui/GameUIActivityNew.lua:526 ui/GameUIActivityNew.lua:639
 #: ui/GameUIActivityNew.lua:703 ui/GameUIActivityRewardNew.lua:278
@@ -2993,8 +2993,8 @@ msgstr "Receive rewards for 30 days"
 #: ui/GameUIActivityRewardNew.lua:499 ui/GameUIActivityRewardNew.lua:919
 #: ui/GameUIActivityRewardNew.lua:1013 ui/GameUIActivityRewardNew.lua:1520
 #: ui/GameUIMail.lua:1636 ui/GameUIMail.lua:1659 ui/GameUIMission.lua:587
-#: ui/GameUIPveReward.lua:114 ui/GameUISeasonDetails.lua:367
-#: ui/GameUISeasonDetails.lua:429
+#: ui/GameUIPveReward.lua:114 ui/GameUISeasonDetails.lua:375
+#: ui/GameUISeasonDetails.lua:437
 msgid "已领取"
 msgstr "Got"
 
@@ -3006,17 +3006,17 @@ msgstr "not yet"
 #: ui/GameUIActivityNew.lua:532 ui/GameUIActivityRewardNew.lua:1312
 #, lua-format
 msgid "已激活(%s)"
-msgstr "Activated(%s)"
+msgstr ""
 
 #: ui/GameUIActivityNew.lua:552 ui/GameUIActivityRewardNew.lua:1397
 msgid "购买金龙币可获得丰厚奖励"
-msgstr "Buy Dragon coins to earn rewards"
+msgstr ""
 
 #: ui/GameUIActivityNew.lua:559 ui/GameUIActivityNew.lua:568
 #: ui/GameUIActivityRewardNew.lua:1404 ui/GameUIActivityRewardNew.lua:1412
 #, lua-format
 msgid "%s后结束"
-msgstr "Ending in: %s"
+msgstr ""
 
 #: ui/GameUIActivityNew.lua:580
 msgid "免费领取海量道具"
@@ -3097,7 +3097,7 @@ msgstr "Remove"
 #: ui/GameUIActivityRewardNew.lua:1496 ui/GameUIAllianceJoinTips.lua:53
 #: ui/GameUIIapGifts.lua:209 ui/GameUIMail.lua:1646 ui/GameUIMission.lua:227
 #: ui/GameUIMission.lua:566 ui/GameUIPveReward.lua:88
-#: ui/GameUISeasonDetails.lua:335
+#: ui/GameUISeasonDetails.lua:339
 msgid "领取"
 msgstr "Get"
 
@@ -3200,7 +3200,7 @@ msgstr "Online for %s minutes"
 
 #: ui/GameUIActivityRewardNew.lua:1186
 msgid "连续30天每天获得奖励"
-msgstr "Receive rewards for 30 days"
+msgstr ""
 
 #: ui/GameUIActivityRewardNew.lua:1214 ui/GameUIStore.lua:144
 #: ui/GameUIStore.lua:148 ui/GameUIStorePackage.lua:59
@@ -3209,11 +3209,11 @@ msgstr "Includes Everything Shown"
 
 #: ui/GameUIActivityRewardNew.lua:1289
 msgid "今日已领取"
-msgstr "Got"
+msgstr ""
 
 #: ui/GameUIActivityRewardNew.lua:1305
 msgid "今日月卡奖励领取成功"
-msgstr "Got successful!"
+msgstr ""
 
 #: ui/GameUIActivityRewardNew.lua:1323 ui/GameUIAllianceShop.lua:462
 #: ui/GameUIItems.lua:218 ui/GameUIStore.lua:164 ui/GameUIStorePackage.lua:131
@@ -3232,15 +3232,15 @@ msgstr ""
 #: ui/GameUIActivityRewardNew.lua:1429
 #, lua-format
 msgid "已购买:%s"
-msgstr "Bought:%s"
+msgstr ""
 
 #: ui/GameUIActivityRewardNew.lua:1505 ui/GameUIMission.lua:577
-#: ui/GameUISeasonDetails.lua:344
+#: ui/GameUISeasonDetails.lua:348
 msgid "请首先领取前面的奖励"
 msgstr "Please get the previous reward first."
 
 #: ui/GameUIActivityRewardNew.lua:1511 ui/GameUISeasonDetails.lua:76
-#: ui/GameUISeasonDetails.lua:352 ui/GameUISeasonDetails.lua:359
+#: ui/GameUISeasonDetails.lua:358 ui/GameUISeasonDetails.lua:367
 #: ui/GameUITownHall.lua:338 ui/GameUITradeGuild.lua:645
 #: widget/WidgetManufactureNew.lua:249
 msgid "获得"
@@ -3495,7 +3495,7 @@ msgstr "<empty>"
 #: ui/GameUIAlliance.lua:1863
 #, lua-format
 msgid "%s Lv %s"
-msgstr "%s Lv %s"
+msgstr ""
 
 #: ui/GameUIAlliance.lua:1866 ui/GameUIAllianceInfo.lua:492
 #: ui/GameUIAllianceMemberInfo.lua:282
@@ -3986,17 +3986,14 @@ msgstr "Scout"
 #: ui/GameUIAllianceCityEnter.lua:290
 msgid "突袭玩家城市将失去保护状态以及城防大师效果,确定继续派兵?"
 msgstr ""
-"You'll lose your protection and the Defence Master effect if you Scout "
-"others' city,continue?"
 
 #: ui/GameUIAllianceCityEnter.lua:292
 msgid "突袭玩家城市将失去保护状态，确定继续派兵?"
-msgstr "You'll lose your protection if you Scout others' city,continue?"
+msgstr ""
 
 #: ui/GameUIAllianceCityEnter.lua:294
 msgid "突袭玩家城市将失去城防大师效果,确定继续派兵?"
 msgstr ""
-"You'll lose the Defence Master effect if you Scout others' city,continue?"
 
 #: ui/GameUIAllianceCityEnter.lua:326
 msgid "巨石阵等级不足，不能进入其他联盟玩家城市"
@@ -7347,7 +7344,7 @@ msgstr ""
 
 #: ui/GameUIResetEquipment.lua:66
 msgid "消耗相同一个装备，重新随机装备的加成属性"
-msgstr "Consume one same equipment to randomize the attributions"
+msgstr "Consume one same equipment to random the attributions"
 
 #: ui/GameUIResetEquipment.lua:87
 msgid "装备重置成功"
@@ -7443,7 +7440,7 @@ msgstr "Material"
 
 #: ui/GameUISaleOne.lua:179
 msgid "每日限购一次"
-msgstr "Only once per day"
+msgstr ""
 
 #: ui/GameUISaleOne.lua:320 ui/GameUIStore.lua:219
 #: ui/GameUIStorePackage.lua:103
@@ -7464,19 +7461,19 @@ msgid "赛季"
 msgstr "Season"
 
 #: ui/GameUISeason.lua:32 ui/GameUISeason.lua:167
-#: ui/GameUISeasonDetails.lua:400
+#: ui/GameUISeasonDetails.lua:408
 #, lua-format
 msgid "结束时间：%s"
 msgstr "Ending in: %s"
 
 #: ui/GameUISeason.lua:34 ui/GameUISeason.lua:246
-#: ui/GameUISeasonDetails.lua:404
+#: ui/GameUISeasonDetails.lua:412
 #, lua-format
 msgid "距离开始还有：%s"
 msgstr "Starting in: %s"
 
 #: ui/GameUISeason.lua:36 ui/GameUISeason.lua:208
-#: ui/GameUISeasonDetails.lua:408
+#: ui/GameUISeasonDetails.lua:416
 #, lua-format
 msgid "%s后消失"
 msgstr "Disappear in: %s"
@@ -7527,37 +7524,37 @@ msgstr "My Ranking: %s"
 msgid "全部领取"
 msgstr "Claim"
 
-#: ui/GameUISeasonDetails.lua:136 ui/GameUISeasonDetails.lua:150
+#: ui/GameUISeasonDetails.lua:140 ui/GameUISeasonDetails.lua:154
 msgid "我的奖励"
 msgstr "My Rewards"
 
-#: ui/GameUISeasonDetails.lua:146
+#: ui/GameUISeasonDetails.lua:150
 #, lua-format
 msgid "奖励在%s后可领取"
 msgstr "Get rewards in: %s"
 
-#: ui/GameUISeasonDetails.lua:217
+#: ui/GameUISeasonDetails.lua:221
 msgid "查看排名"
 msgstr "Ranking"
 
-#: ui/GameUISeasonDetails.lua:234
+#: ui/GameUISeasonDetails.lua:238
 msgid "积分规则"
 msgstr "Regulation"
 
-#: ui/GameUISeasonDetails.lua:240 ui/GameUISeasonRank.lua:62
+#: ui/GameUISeasonDetails.lua:244 ui/GameUISeasonRank.lua:62
 msgid "分数"
 msgstr "Points"
 
-#: ui/GameUISeasonDetails.lua:367 ui/GameUISeasonDetails.lua:429
+#: ui/GameUISeasonDetails.lua:375 ui/GameUISeasonDetails.lua:437
 msgid "过期"
 msgstr "Expired"
 
-#: ui/GameUISeasonDetails.lua:377
+#: ui/GameUISeasonDetails.lua:385
 #, lua-format
 msgid "联盟分数：%s"
 msgstr "Alliance Points: %s"
 
-#: ui/GameUISeasonDetails.lua:377
+#: ui/GameUISeasonDetails.lua:385
 #, lua-format
 msgid "我的分数：%s"
 msgstr "My Points: %s"
@@ -8511,7 +8508,7 @@ msgstr ""
 
 #: ui/GameUITradeGuild.lua:132
 msgid "我的银币"
-msgstr "My Coins"
+msgstr ""
 
 #: ui/GameUITradeGuild.lua:153 ui/GameUITradeGuild.lua:1112
 msgid "基本资源"
@@ -8962,7 +8959,7 @@ msgstr "Round %d"
 #: ui/GameUIWorldMap.lua:350 utils/DataUtils.lua:1348
 #, lua-format
 msgid "Lv%s~Lv%s"
-msgstr "Lv%s~Lv%s"
+msgstr ""
 
 #: ui/GameUIWorldMap.lua:384
 msgid "当前位置"
@@ -9816,55 +9813,55 @@ msgstr "There's already a Dragon garrisoned in the wall"
 
 #: utils/Localize.lua:219
 msgid "不需要宝石加速"
-msgstr "Don't need Dragon Coins to speed up"
+msgstr ""
 
 #: utils/Localize.lua:220
 msgid "玩家昵称不合法"
-msgstr "Illegal player name"
+msgstr ""
 
 #: utils/Localize.lua:221
 msgid "联盟昵称不合法"
-msgstr "Illegal Alliance name"
+msgstr ""
 
 #: utils/Localize.lua:222
 msgid "无效的活动信息"
-msgstr "Invalid event info"
+msgstr ""
 
 #: utils/Localize.lua:223
 msgid "没有可领取的奖励"
-msgstr "No rewards"
+msgstr ""
 
 #: utils/Localize.lua:224
 msgid "还不能退出联盟"
-msgstr "You can't quit the Alliance yet"
+msgstr ""
 
 #: utils/Localize.lua:225
 msgid "你不是墨子"
-msgstr "You are not MOD"
+msgstr ""
 
 #: utils/Localize.lua:226
 msgid "无效的联盟活动信息"
-msgstr "Invalid Alliance event info"
+msgstr ""
 
 #: utils/Localize.lua:227
 msgid "现在还不能进行协防"
-msgstr "You can't assist now"
+msgstr ""
 
 #: utils/Localize.lua:228
 msgid "正遭受攻击,不能退出移动城市"
-msgstr "You can't move your city when you're under attack"
+msgstr ""
 
 #: utils/Localize.lua:229
 msgid "目标已不是墨子,不能回复"
-msgstr "He/she is not MOD, can't reply"
+msgstr ""
 
 #: utils/Localize.lua:230
 msgid "还不能领取累计充值奖励"
-msgstr "You can't get the rewards yet"
+msgstr ""
 
 #: utils/Localize.lua:231
 msgid "还不能领取月卡每日奖励"
-msgstr "You can't get the rewards yet"
+msgstr ""
 
 #: utils/Localize.lua:236 utils/Localize.lua:237 utils/Localize.lua:238
 #: utils/Localize.lua:239
@@ -10866,8 +10863,8 @@ msgstr "Show you the buildings level in the enemy city"
 #: utils/Localize.lua:557
 msgid "可以查看目标城市协防部队的详细信息：龙的类型，等级和星级"
 msgstr ""
-"Provide the informations of the dragon type, level, star level and the "
-"assistor name of the enemy city"
+"Provide the informations of the dragon type, level and star level of the "
+"enemy city"
 
 #: utils/Localize.lua:558
 msgid "可以查看目标城市协防部队的详细信息：龙的力量，当前生命值和生命值上限"
@@ -11069,7 +11066,7 @@ msgstr ""
 
 #: utils/Localize.lua:636
 msgid "木工小屋数量"
-msgstr "Woodcutter Cabin Amount"
+msgstr "Woodcutter Cain Amount"
 
 #: utils/Localize.lua:637
 msgid "木材保护"
@@ -11085,7 +11082,7 @@ msgstr ""
 
 #: utils/Localize.lua:640
 msgid "农夫小屋数量"
-msgstr "Farmer Cabin Amount"
+msgstr "Farmer Cain Amount"
 
 #: utils/Localize.lua:641
 msgid "粮食保护"
@@ -11102,7 +11099,7 @@ msgstr ""
 
 #: utils/Localize.lua:644
 msgid "石匠小屋数量"
-msgstr "Quarrier Cabin Amount"
+msgstr "Quarrier Cain Amount"
 
 #: utils/Localize.lua:645
 msgid "石料保护"
@@ -11118,7 +11115,7 @@ msgstr ""
 
 #: utils/Localize.lua:648
 msgid "矿工小屋数量"
-msgstr "Miner Cabin Amount"
+msgstr "Miner Cain Amount"
 
 #: utils/Localize.lua:649
 msgid "铁矿保护"
@@ -11589,12 +11586,12 @@ msgstr "joined your Alliance"
 #: utils/Localize.lua:785
 #, lua-format
 msgid "%s被%s邀请加入本联盟"
-msgstr "%s was invited by %s"
+msgstr ""
 
 #: utils/Localize.lua:786
 #, lua-format
 msgid "%s被%s批准加入联盟"
-msgstr "%s was approved by %s"
+msgstr ""
 
 #: utils/Localize.lua:787
 #, lua-format
@@ -12319,7 +12316,7 @@ msgstr "Tranditional Chinese"
 
 #: utils/Localize.lua:1155
 msgid "法语"
-msgstr "French"
+msgstr ""
 
 #: utils/Localize.lua:1159
 msgid "建造或升级任意建筑"
@@ -12459,7 +12456,7 @@ msgstr "Dragon Dynasty Package"
 
 #: utils/Localize.lua:1207 utils/Localize.lua:1215
 msgid "特殊礼包"
-msgstr "Special Gift"
+msgstr ""
 
 #: utils/Localize.lua:1210
 msgid "新手"
@@ -12747,11 +12744,11 @@ msgstr "Dragon Coin Pack"
 
 #: utils/Localize.lua:1318
 msgid "金龙币小袋"
-msgstr "Dragon Coins Packet"
+msgstr ""
 
 #: utils/Localize.lua:1319
 msgid "金龙币福袋"
-msgstr "Dragon Coins Lucky Bag"
+msgstr ""
 
 #: utils/Localize.lua:1322
 msgid "Batcatstudio游戏用户使用许可协议本地化ID"
@@ -13695,7 +13692,7 @@ msgstr "Attack Dark Army(returning)"
 #: utils/UtilsForEvent.lua:128 utils/UtilsForEvent.lua:139
 #, lua-format
 msgid "%sLv%s"
-msgstr "%sLv%s"
+msgstr ""
 
 #: utils/UtilsForEvent.lua:132 utils/UtilsForEvent.lua:149
 #, lua-format
@@ -13731,7 +13728,7 @@ msgstr "Gathering %s Lv%s"
 #: utils/UtilsForEvent.lua:215
 #, lua-format
 msgid "%s Lv%s"
-msgstr "%s Lv%s"
+msgstr ""
 
 #: utils/UtilsForTask.lua:41
 msgid "城市建设"
@@ -14023,7 +14020,7 @@ msgstr "Check your troops "
 
 #: widget/WidgetEventTabButtons.lua:859
 msgid "查看治疗的士兵"
-msgstr "Check your Hospital"
+msgstr ""
 
 #: widget/WidgetEventTabButtons.lua:894
 msgid "查看材料"
@@ -14031,7 +14028,7 @@ msgstr "Check Materials"
 
 #: widget/WidgetEventTabButtons.lua:902
 msgid "查看市政厅"
-msgstr "Check your Town Hall"
+msgstr ""
 
 #: widget/WidgetEventTabButtons.lua:961
 msgid "训练营地空闲"
@@ -14083,7 +14080,7 @@ msgstr "Producing Materials x%d"
 #: widget/WidgetEventTabButtons.lua:1107 widget/WidgetEventsList.lua:539
 #, lua-format
 msgid " %s Lv %d"
-msgstr " %s Lv %d"
+msgstr ""
 
 #: widget/WidgetEventsList.lua:368
 msgid "查看已经拥有的建筑"
@@ -14264,7 +14261,7 @@ msgstr "Building&Science"
 #: widget/WidgetMilitaryTechnology.lua:135
 #, lua-format
 msgid "Lv%d"
-msgstr "Lv%d"
+msgstr ""
 
 #: widget/WidgetMilitaryTechnologyStatus.lua:43
 msgid "请选择一个科技进行研发"

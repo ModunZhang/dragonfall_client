@@ -1,9 +1,9 @@
-# This file was generated from /Users/kennydai/Downloads/i18n(3)(3).xlsx
+# This file was generated from /Users/gaozhou/Work/kod.proj/NewDragonfall/Dragonfall/tools/batcat/i18n.xlsx
 msgid ""
 msgstr ""
 "Project-Id-Version: dragonfall\n"
-"POT-Creation-Date: 2016-09-07 18:37+0800\n"
-"PO-Revision-Date: 2016-09-07 18:37+0800\n"
+"POT-Creation-Date: 2016-09-19 16:52+0800\n"
+"PO-Revision-Date: 2016-09-19 16:52+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -147,9 +147,9 @@ msgstr ""
 #: ui/GameUIResource.lua:378 ui/GameUIResource.lua:390
 #: ui/GameUIResource.lua:406 ui/GameUIResource.lua:417
 #: ui/GameUIResource.lua:423 ui/GameUIResource.lua:437 ui/GameUISeason.lua:84
-#: ui/GameUISeasonDetails.lua:121 ui/GameUISeasonDetails.lua:127
-#: ui/GameUISeasonDetails.lua:344 ui/GameUISeasonDetails.lua:351
-#: ui/GameUISeasonDetails.lua:358 ui/GameUISendTroopNew.lua:611
+#: ui/GameUISeasonDetails.lua:121 ui/GameUISeasonDetails.lua:129
+#: ui/GameUISeasonDetails.lua:348 ui/GameUISeasonDetails.lua:357
+#: ui/GameUISeasonDetails.lua:366 ui/GameUISendTroopNew.lua:611
 #: ui/GameUISendTroopNew.lua:621 ui/GameUISendTroopNew.lua:624
 #: ui/GameUISendTroopNew.lua:636 ui/GameUISendTroopNew.lua:639
 #: ui/GameUISendTroopNew.lua:654 ui/GameUISendTroopNew.lua:726
@@ -240,7 +240,7 @@ msgstr "Félicitations!"
 
 #: MyApp.lua:576 MyApp.lua:626 MyApp.lua:776
 msgid "月卡已经激活"
-msgstr "Coffret Mensuel est activée!"
+msgstr ""
 
 #: MyApp.lua:596 MyApp.lua:654 MyApp.lua:711 MyApp.lua:811
 #, lua-format
@@ -520,10 +520,10 @@ msgstr ""
 "savoir que la population de chaque unité est différente. La population de "
 "l'infanterie et des archers est de 1, ce qui veut dire que la capacité "
 "d'unités est juste le nombre maximum que vous pouvez envoyer. Cependant, la "
-"population de la cavalerie et des sièges est 2, ce qui veut dire que la "
-"capacité d'unités est divisé par 2 pour le maximum que vous pouvez envoyer. "
-"Mais la cavalerie ou les   sièges sont plus puissants que l'infanterie ou "
-"l'archer, il ne faut pas s'en faire avec cela.\n"
+"population de la cavalerie et des engins de siège est 2, ce qui veut dire "
+"que la capacité d'unités est divisé par 2 pour le maximum que vous pouvez "
+"envoyer. Mais la cavalerie ou l'engin de siège est plus puissant que "
+"l'infanterie ou l'archer, il ne faut pas s'en faire avec cela.\n"
 "\n"
 "Quand vous envoyez des troupes, vous pouvez choisir chaque unité dans chaque "
 "position, mais vous devez les assigner un par un en commençant par le "
@@ -646,13 +646,13 @@ msgstr ""
 "PV de l'infanterie: +6%\n"
 "PV des archers: +6%\n"
 "PV de la cavalerie: +6%\n"
-"PV des sièges: +6%\n"
+"PV des engins de siège: +6%\n"
 "\n"
 "Désert:\n"
 "Attaque de l'infanterie: +3%\n"
 "Attaque des archers: +3%\n"
 "Attaque de la cavalerie: +3%\n"
-"Attaque des sièges: +3%"
+"Attaque des engins de siège: +3%"
 
 #: datas/ClientInitGame_FAQ.lua:95
 msgid "龙巢&获得更多的龙"
@@ -689,10 +689,10 @@ msgid ""
 msgstr ""
 "Vous pouvez recruter tous les types de soldats dans la caserne. Le nombre de "
 "soldats que vous pouvez recruter à chaque fois peut être augmenté en "
-"améliorant votre caserne. En améliorant celle-ci, vous pourrez débloquer de "
-"nouvelles unités.\n"
+"améliorant votre caserne. En améliorant votre caserne, vous pourrez débarrer "
+"de nouvelles unités.\n"
 "\n"
-"Une fois que vous aurez débloqué le terrain d'entraînement, le pavillon de "
+"Une fois que vous aurez débarré le terrain d'entraînement, le pavillon de "
 "chasse, l'écurie et l'atelier,  vous pourrez les améliorer pour augmenter la "
 "vitesse de recrutement de chaque type de soldats."
 
@@ -851,8 +851,8 @@ msgstr ""
 "bâtiment pour améliorer des bâtiments de haut niveaux et du matériel "
 "militaire pour développer de la technologie militaire. Quand vous débloquez "
 "le terrain d'entrainement, le pavillon de chasse, l'écurie et l'atelier, "
-"vous pouvez améliorer la force et les PV de l'infanterie, des archers, de la "
-"cavalerie et des sièges avec du matériel militaire."
+"vous pouvez améliorer la force et les PV de l'infanterie, les archers, la "
+"cavalerie et les engins de siège avec du matériel militaire."
 
 #: datas/ClientInitGame_FAQ.lua:140 ui/GameUITownHall.lua:22
 #: utils/Localize.lua:746
@@ -1042,11 +1042,11 @@ msgid ""
 "当攻城武器科技点数达到一定程度，你可以让指定类型的攻城武器晋级。完成晋升后，"
 "该兵种的各项属性将得到大幅提升。"
 msgstr ""
-"L'atelier est la place pour améliorer vos sièges, un haut niveau d'attribut "
-"de sièges donne un haut niveau de science de sièges. Quand le niveau de "
-"science de sièges atteint un certain niveau, vous pouvez promouvoir un type "
-"spécifique d'unité de sièges, les caractéristiques de l'unité augmentera "
-"considérablement."
+"L'atelier est la place pour améliorer vos engins de siège, un haut niveau "
+"d'attribut d'engins de siège donne un haut niveau de science d'engin de "
+"siège. Quand le niveau de science d'engin de siège atteint un certain "
+"niveau, vous pouvez promouvoir un type spécifique d'unité d'engins de siège, "
+"les caractéristiques de l'unité augmentera considérablement."
 
 #: datas/ClientInitGame_FAQ.lua:190
 msgid "联盟宫殿 & 联盟地形"
@@ -1127,7 +1127,7 @@ msgid ""
 msgstr ""
 "Vous pouvez dépenser les points de loyauté pour achetés divers objets dans "
 "le magasin d'alliance. Vous pouvez obtenir des récompenses en loyauté en "
-"aidait les alliés à accélérer. Les items sont divisés en items de base et "
+"aidait les alliés à accélérer. Les items sont divisés en items de bases et "
 "des items avancés. Pour les items avancés, il est nécessaire qu'un joueur "
 "dont la position est intendant ou plus dépense des point d'honneur "
 "d'alliance pour réapprovisionner pour tous les membres."
@@ -1422,7 +1422,7 @@ msgstr ""
 
 #: datas/ClientInitGame_selena_question.lua:118
 msgid "在小屋-信息中使用建筑移动按钮"
-msgstr "Cabine-Info-Déplacer"
+msgstr "***"
 
 #: datas/ClientInitGame_selena_question.lua:119
 msgid "用手指拖动想要移动的建筑"
@@ -1794,7 +1794,7 @@ msgstr "Recruter des troupes Ⅲ : Cavalerie / Siège"
 #: utils/Localize.lua:1370 utils/UtilsForTech.lua:36
 #, lua-format
 msgid "%s血量增加"
-msgstr "Augmentation PV %s"
+msgstr "Augmentation %s PV"
 
 #: entity/Alliance.lua:792 utils/Localize.lua:1368
 #, lua-format
@@ -2066,7 +2066,7 @@ msgstr "Science amélioré"
 #: utils/UtilsForEvent.lua:208 widget/WidgetUpgradeMilitaryTech.lua:92
 #: widget/WidgetUpgradeMilitaryTech.lua:308
 msgid "Lv"
-msgstr "Niv"
+msgstr ""
 
 #: entity/User.lua:1453 service/NetManager.lua:1907
 msgid "军事科技升级完成"
@@ -2119,9 +2119,9 @@ msgid "招募%s X%d完成"
 msgstr "Entraînement complété: %s X%d"
 
 #: entity/User.lua:1818
-#, lua-format
+#, fuzzy, lua-format
 msgid "晋升%s的星级 star %d完成"
-msgstr "Promotion de %s à %d étoiles complétée"
+msgstr "Promotion de % à %d étoiles complétée"
 
 #: entity/User.lua:1830
 #, lua-format
@@ -2593,8 +2593,6 @@ msgstr "Achat de %s avec succès"
 #: utils/Localize.lua:232
 msgid "你正在侦察，进攻或协防，无法使用城防大师"
 msgstr ""
-"Tu es le scoutisme ou attaquer maintenant, ne peut pas utiliser la Maitre de "
-"défense"
 
 #: service/NetManager.lua:2019 service/NetManager.lua:2046
 #, lua-format
@@ -2647,7 +2645,7 @@ msgstr "Protégé"
 
 #: ui/CommonUpgradeUI.lua:448 ui/GameUICityBuildingInfo.lua:84
 msgid "提升任务奖励"
-msgstr "Augmente la récompense"
+msgstr "Augmente la récompense de la tâche"
 
 #: ui/CommonUpgradeUI.lua:481 utils/Localize.lua:901
 msgid "城墙血量"
@@ -2655,7 +2653,7 @@ msgstr "Durabilité des murs"
 
 #: ui/CommonUpgradeUI.lua:482
 msgid "城墙血量每小时回复"
-msgstr "Vitesse  récupération des murs"
+msgstr "Vitesse de récupération de la durabilité des murs"
 
 #: ui/CommonUpgradeUI.lua:490
 msgid "攻击"
@@ -2691,11 +2689,11 @@ msgstr "Vitesse de recrutement des archers"
 
 #: ui/CommonUpgradeUI.lua:523
 msgid "攻城系招募速度"
-msgstr "Vitesse de recrutement des sièges"
+msgstr "Vitesse de recrutement des engins de siège"
 
 #: ui/CommonUpgradeUI.lua:548 widget/WidgetAllianceBuildingUpgrade.lua:84
 msgid "立即升级"
-msgstr "Sur-le-champ"
+msgstr "Amélioration maintenant"
 
 #: ui/CommonUpgradeUI.lua:583 ui/GameUIHasBeenBuild.lua:172
 #: ui/GameUIHospital.lua:177 ui/GameUIItems.lua:238
@@ -2988,7 +2986,7 @@ msgstr "Science"
 #: ui/GameUIQuickTechnology.lua:233 ui/GameUITechnologySpeedUp.lua:20
 #, lua-format
 msgid "正在研发%s到 Level %d"
-msgstr "Recherche: %s Niv%d"
+msgstr "Recherche de %s au Niv%d"
 
 #: ui/GameUIAcademy.lua:163 ui/GameUIQuickTechnology.lua:136
 #: widget/WidgetMilitaryTechnologyStatus.lua:37
@@ -3017,11 +3015,11 @@ msgstr "Cadeau de débutant"
 
 #: ui/GameUIActivityNew.lua:33 ui/GameUIActivityRewardNew.lua:52
 msgid "月卡"
-msgstr "Coffret Mensuel"
+msgstr ""
 
 #: ui/GameUIActivityNew.lua:34 ui/GameUIActivityRewardNew.lua:1383
 msgid "累计充值大回馈"
-msgstr "Achat cumulé récompenses\n"
+msgstr ""
 
 #: ui/GameUIActivityNew.lua:38 ui/GameUIActivityNew.lua:106
 #: ui/GameUIActivityRewardNew.lua:53
@@ -3062,7 +3060,7 @@ msgstr "Inactif"
 
 #: ui/GameUIActivityNew.lua:517
 msgid "连续登录30日每日获得奖励"
-msgstr "Récompensés pour 30 jours"
+msgstr ""
 
 #: ui/GameUIActivityNew.lua:526 ui/GameUIActivityNew.lua:639
 #: ui/GameUIActivityNew.lua:703 ui/GameUIActivityRewardNew.lua:278
@@ -3070,8 +3068,8 @@ msgstr "Récompensés pour 30 jours"
 #: ui/GameUIActivityRewardNew.lua:499 ui/GameUIActivityRewardNew.lua:919
 #: ui/GameUIActivityRewardNew.lua:1013 ui/GameUIActivityRewardNew.lua:1520
 #: ui/GameUIMail.lua:1636 ui/GameUIMail.lua:1659 ui/GameUIMission.lua:587
-#: ui/GameUIPveReward.lua:114 ui/GameUISeasonDetails.lua:367
-#: ui/GameUISeasonDetails.lua:429
+#: ui/GameUIPveReward.lua:114 ui/GameUISeasonDetails.lua:375
+#: ui/GameUISeasonDetails.lua:437
 msgid "已领取"
 msgstr "Reçu"
 
@@ -3083,17 +3081,17 @@ msgstr "Pas encore"
 #: ui/GameUIActivityNew.lua:532 ui/GameUIActivityRewardNew.lua:1312
 #, lua-format
 msgid "已激活(%s)"
-msgstr "Activé(%s)"
+msgstr ""
 
 #: ui/GameUIActivityNew.lua:552 ui/GameUIActivityRewardNew.lua:1397
 msgid "购买金龙币可获得丰厚奖励"
-msgstr "Acheter des pièces pour obtenir des récompenses."
+msgstr ""
 
 #: ui/GameUIActivityNew.lua:559 ui/GameUIActivityNew.lua:568
 #: ui/GameUIActivityRewardNew.lua:1404 ui/GameUIActivityRewardNew.lua:1412
 #, lua-format
 msgid "%s后结束"
-msgstr "Termine dans : %s"
+msgstr ""
 
 #: ui/GameUIActivityNew.lua:580
 msgid "免费领取海量道具"
@@ -3174,7 +3172,7 @@ msgstr "Retirez"
 #: ui/GameUIActivityRewardNew.lua:1496 ui/GameUIAllianceJoinTips.lua:53
 #: ui/GameUIIapGifts.lua:209 ui/GameUIMail.lua:1646 ui/GameUIMission.lua:227
 #: ui/GameUIMission.lua:566 ui/GameUIPveReward.lua:88
-#: ui/GameUISeasonDetails.lua:335
+#: ui/GameUISeasonDetails.lua:339
 msgid "领取"
 msgstr "Prendre"
 
@@ -3278,7 +3276,7 @@ msgstr "En ligne pendant %s minutes"
 
 #: ui/GameUIActivityRewardNew.lua:1186
 msgid "连续30天每天获得奖励"
-msgstr "Récompensés pour 30 jours"
+msgstr ""
 
 #: ui/GameUIActivityRewardNew.lua:1214 ui/GameUIStore.lua:144
 #: ui/GameUIStore.lua:148 ui/GameUIStorePackage.lua:59
@@ -3287,11 +3285,11 @@ msgstr "Inclus tout ce qui est montré"
 
 #: ui/GameUIActivityRewardNew.lua:1289
 msgid "今日已领取"
-msgstr "Reçu"
+msgstr ""
 
 #: ui/GameUIActivityRewardNew.lua:1305
 msgid "今日月卡奖励领取成功"
-msgstr "Obtenu avec succès!"
+msgstr ""
 
 #: ui/GameUIActivityRewardNew.lua:1323 ui/GameUIAllianceShop.lua:462
 #: ui/GameUIItems.lua:218 ui/GameUIStore.lua:164 ui/GameUIStorePackage.lua:131
@@ -3311,15 +3309,15 @@ msgstr ""
 #: ui/GameUIActivityRewardNew.lua:1429
 #, lua-format
 msgid "已购买:%s"
-msgstr "Acheté:%s"
+msgstr ""
 
 #: ui/GameUIActivityRewardNew.lua:1505 ui/GameUIMission.lua:577
-#: ui/GameUISeasonDetails.lua:344
+#: ui/GameUISeasonDetails.lua:348
 msgid "请首先领取前面的奖励"
 msgstr "SVP prenez la récompense précédente en premier"
 
 #: ui/GameUIActivityRewardNew.lua:1511 ui/GameUISeasonDetails.lua:76
-#: ui/GameUISeasonDetails.lua:352 ui/GameUISeasonDetails.lua:359
+#: ui/GameUISeasonDetails.lua:358 ui/GameUISeasonDetails.lua:367
 #: ui/GameUITownHall.lua:338 ui/GameUITradeGuild.lua:645
 #: widget/WidgetManufactureNew.lua:249
 msgid "获得"
@@ -3578,7 +3576,7 @@ msgstr "<vide>"
 #: ui/GameUIAlliance.lua:1863
 #, lua-format
 msgid "%s Lv %s"
-msgstr "%s Niv %s"
+msgstr ""
 
 #: ui/GameUIAlliance.lua:1866 ui/GameUIAllianceInfo.lua:492
 #: ui/GameUIAllianceMemberInfo.lua:282
@@ -3651,29 +3649,29 @@ msgstr ""
 "préparation ou de bataille."
 
 #: ui/GameUIAlliance.lua:2108 ui/GameUIAlliance.lua:2112
-#, lua-format
+#, fuzzy, lua-format
 msgid "%s后才可以退出联盟"
-msgstr "Vous pouvez seulement quitter l'alliance dans %s"
+msgstr "Vous ne pouvez pas quitter l'alliance quand vous êtes sous attaque."
 
 #: ui/GameUIAlliance.lua:2120
 msgid ""
 "您必须在没有部队在外行军的情况下，才可以退出联盟。退出联盟会损失当前未打开的"
 "联盟礼物。"
+msgstr "Vous pouvez seulement quitter l'alliance dans %s"
+
+#: ui/GameUIAlliance.lua:2135
+msgid "联盟邮件"
 msgstr ""
 "Quitter l'alliance vous rendra plus faible qu'avant, êtes-vous sûr de "
 "vouloir quitter?"
 
-#: ui/GameUIAlliance.lua:2135
-msgid "联盟邮件"
-msgstr "Courrier d'alliance"
-
 #: ui/GameUIAlliance.lua:2136
 msgid "发送联盟所有成员"
-msgstr "Écrire à tous"
+msgstr "Courrier d'alliance"
 
 #: ui/GameUIAlliance.lua:2155
 msgid "邀请加入联盟"
-msgstr "Inviter"
+msgstr "Écrire à tous"
 
 #: ui/GameUIAlliance.lua:2161
 msgid "邀请玩家加入"
@@ -3681,268 +3679,266 @@ msgstr "Inviter"
 
 #: ui/GameUIAlliance.lua:2182
 msgid "输入邀请的玩家ID"
-msgstr "Joueur ID"
+msgstr "Inviter"
 
 #: ui/GameUIAlliance.lua:2188 ui/GameUIAllianceInfo.lua:397
 #: ui/GameUIMail.lua:2447 ui/GameUIWriteMail.lua:109
 msgid "发送"
-msgstr "Envoyer"
+msgstr "Joueur ID"
 
 #: ui/GameUIAlliance.lua:2195
 msgid "非法的玩家ID"
-msgstr "Invalide joueur ID"
+msgstr "Envoyer"
 
 #: ui/GameUIAlliance.lua:2200 ui/GameUIAllianceMemberInfo.lua:134
 #: ui/GameUIChatChannel.lua:786
 msgid "邀请发送成功"
-msgstr "Envoyé avec succès"
+msgstr "Invalide joueur ID"
 
 #: ui/GameUIAllianceBasicSetting.lua:29
 msgid "联盟设置"
-msgstr "Configuration d'alliance"
+msgstr "Envoyé avec succès"
 
 #: ui/GameUIAllianceBattle.lua:19
 msgid "联盟会战"
-msgstr "Bataille d'alliance"
+msgstr "Configuration d'alliance"
 
 #: ui/GameUIAllianceBattle.lua:234
 msgid "联盟战荣耀值基础奖励"
-msgstr "Récompense de base d'honneur d'une bataille"
+msgstr "Bataille d'alliance"
 
 #: ui/GameUIAllianceBattle.lua:235
 msgid "联盟战期间最高击杀者"
-msgstr "Tueur no.1 dans la bataille"
+msgstr "Récompense de base d'honneur d'une bataille d'alliance"
 
 #: ui/GameUIAllianceBattle.lua:236
 msgid "可召集其他联盟前来助阵"
-msgstr "Plus le nombre de tués est élevé, plus de récompenses d'honneur"
+msgstr "Tueur no.1 dans la bataille"
 
 #: ui/GameUIAllianceBattle.lua:237
 msgid "将敌方所有玩家城墙摧毁可强制敌方联盟搬迁"
-msgstr "Migrez l'alliance ennemi en détruisant tous ces murs"
+msgstr "Plus le nombre de tués est élevé, plus de récompenses d'honneur"
 
 #: ui/GameUIAllianceBattle.lua:272
 msgid "开始战斗!"
-msgstr "Allons se battre!"
+msgstr "Migrez l'alliance ennemi en détruisant tous ces murs"
 
 #: ui/GameUIAllianceBattle.lua:280 utils/Localize.lua:117
 msgid "联盟操作权限不足"
-msgstr "Vous n'avez pas d'autorité"
+msgstr "Allons se battre!"
 
 #: ui/GameUIAllianceBattle.lua:284 widget/WidgetWorldAllianceInfo.lua:487
 msgid "联盟正在战争准备期或战争期"
-msgstr "Alliance est dans une période de préparation ou de bataille"
+msgstr "Vous n'avez pas d'autorité"
 
 #: ui/GameUIAllianceBattle.lua:288
 msgid "目标联盟未处于和平期，不能宣战"
+msgstr "Alliance est dans une période de préparation ou de bataille"
+
+#: ui/GameUIAllianceBattle.lua:291
+msgid "确定开启联盟会战吗?"
 msgstr ""
 "Vous ne pouvez pas déclarer la guerre quand une alliance ennemi n'est pas en "
 "période de paix"
 
-#: ui/GameUIAllianceBattle.lua:291
-msgid "确定开启联盟会战吗?"
-msgstr "Êtes-vous sûr de déclarer une guerre d'alliance?"
-
 #: ui/GameUIAllianceBattle.lua:306
 msgid "由联盟中，将军以上职位玩家发起联盟战"
-msgstr "Seulement le chef ou les généraux peuvent déclarer la guerre"
+msgstr "Êtes-vous sûr de déclarer une guerre d'alliance?"
 
 #: ui/GameUIAllianceBattle.lua:426 ui/GameUIAllianceBattle.lua:447
 #: ui/GameUIAllianceBattle.lua:611
 msgid "击杀排行"
-msgstr "Classement des tueurs"
+msgstr "Seulement le chef ou les généraux peuvent déclarer la guerre"
 
 #: ui/GameUIAllianceBattle.lua:462
 msgid ""
 "本次联盟会战结束后奖励,总击杀越高奖励越高.获胜方获得70%的总奖励,失败方获得剩"
 "下的,获胜联盟击杀第1名的玩家还将获得金龙币奖励"
+msgstr "Classement des tueurs"
+
+#: ui/GameUIAllianceBattle.lua:539 ui/GameUIAllianceBattle.lua:914
+msgid "击杀积分"
 msgstr ""
 "Récompense de bataille. Plus vous tuer, meilleur sont les récompenses. "
 "L'alliance gagnante obtiendra 70% du total des récompenses et 30% pour "
 "l'alliance défaite. Le tueur no.1 obtiendra des pièces de dragon "
 "supplémentaires!"
 
-#: ui/GameUIAllianceBattle.lua:539 ui/GameUIAllianceBattle.lua:914
-msgid "击杀积分"
-msgstr "Points de tuerie"
-
 #: ui/GameUIAllianceBattle.lua:540 ui/GameUIAllianceBattle.lua:915
 #: ui/GameUIAllianceBattle.lua:1218 ui/GameUIAlliancePalace.lua:484
 #: ui/GameUIWarSummary.lua:147
 msgid "击溃城市"
-msgstr "Détruite"
+msgstr "Points de tuerie"
 
 #: ui/GameUIAllianceBattle.lua:541 ui/GameUIAllianceBattle.lua:916
 #: ui/GameUIWarSummary.lua:150
 msgid "进攻次数"
-msgstr "Attaque"
+msgstr "Détruite"
 
 #: ui/GameUIAllianceBattle.lua:542 ui/GameUIAllianceBattle.lua:917
 msgid "进攻获胜"
-msgstr "Attaque réussie"
+msgstr "Attaque"
 
 #: ui/GameUIAllianceBattle.lua:543 ui/GameUIAllianceBattle.lua:918
 #: ui/GameUIWarSummary.lua:148
 msgid "突袭次数"
-msgstr "Explorer"
+msgstr "Attaque réussie"
 
 #: ui/GameUIAllianceBattle.lua:545 ui/GameUIAllianceBattle.lua:920
 #: ui/GameUIWarSummary.lua:152
 msgid "头号杀手"
-msgstr "Tueur no.1"
+msgstr "Explorer"
 
 #: ui/GameUIAllianceBattle.lua:563
 msgid ""
 "当击溃的敌方城市数量大于等于其联盟的玩家数量，且我方获得联盟战的最终胜利，敌"
 "方联盟则会被强制迁移"
-msgstr ""
-"L'alliance ennemi sera migrée quand vous gagnerez la bataille et vous "
-"détruirez tous les murs ennemis."
+msgstr "Tueur no.1"
 
 #: ui/GameUIAllianceBattle.lua:636
 msgid "联盟对战"
-msgstr "Bataille d'alliance"
+msgstr ""
+"L'alliance ennemi sera migrée quand vous gagnerez la bataille et vous "
+"détruirez tous les murs ennemis."
 
 #: ui/GameUIAllianceBattle.lua:641
 msgid ""
 "系统匹配两个战斗力相近的联盟，将彼此的领地拼接到一起。每场联盟匹配战，根据所"
 "在天梯服务器的等级，只要进行匹配就会有奖励。需要将军和盟主才能开战。"
-msgstr ""
-"There will be a preparation time to summon your allies and get them "
-"prepared. You can't scout or attack your enemy during this period."
+msgstr "Bataille d'alliance"
 
 #: ui/GameUIAllianceBattle.lua:642
 msgid ""
 "成功匹配到对手后，会有一个准备时间。此时无法对敌方进攻或者突袭，也无法移动城"
 "市的位置。请召唤你的盟友，让他们做好战斗准备。"
-msgstr ""
-"Il y aura une période de préparation pour appeler vos alliés et vous "
-"préparer. Vous ne pouvez pas explorer ou attaquer votre ennemi durant cette "
-"période."
+msgstr "***"
 
 #: ui/GameUIAllianceBattle.lua:643
 msgid ""
 "进入战争期后，双方可以派兵攻打对方城市，抢占对方的村落。击杀敌方单位可以增加"
 "本场匹配战的总奖励。若击溃敌方玩家城市，还可以获得额外的荣耀值奖励加成。"
 msgstr ""
+"Il y aura une période de préparation pour appeler vos alliés et vous "
+"préparer. Vous ne pouvez pas explorer ou attaquer votre ennemi durant cette "
+"période."
+
+#: ui/GameUIAllianceBattle.lua:644
+msgid "联盟匹配战结束后，参战双方都会进入保护期，此时不会被其他联盟攻打。"
+msgstr ""
 "Durant la période de bataille, les belligérants peuvent s'attaquer et "
 "s'occuper l'un l'autre. Plus vous tuer, plus vous obtiendrez de la bataille, "
 "et si vous détruisez la cité de votre ennemi, vous obtiendrez des honneurs "
 "supplémentaires pour votre alliance!"
 
-#: ui/GameUIAllianceBattle.lua:644
-msgid "联盟匹配战结束后，参战双方都会进入保护期，此时不会被其他联盟攻打。"
-msgstr ""
-"Les belligérants ne seront pas attaqués par les autres alliance après la "
-"bataille pour une certaine période."
-
 #: ui/GameUIAllianceBattle.lua:662 widget/WidgetKingWarRule.lua:16
 #: widget/WidgetKingWarRule.lua:20 widget/WidgetKingWarRule.lua:24
 #: widget/WidgetKingWarRule.lua:28
 msgid "概述"
-msgstr "Sommaire"
+msgstr ""
+"Les belligérants ne seront pas attaqués par les autres alliance après la "
+"bataille pour une certaine période."
 
 #: ui/GameUIAllianceBattle.lua:663 ui/GameUIAllianceBattle.lua:1244
 #: ui/GameUIAllianceHome.lua:933 utils/Localize.lua:1290
 msgid "准备期"
-msgstr "Préparation"
+msgstr "Sommaire"
 
 #: ui/GameUIAllianceBattle.lua:664 ui/GameUIAllianceBattle.lua:1246
 #: ui/GameUIAllianceHome.lua:935 utils/Localize.lua:1291
 msgid "战争期"
-msgstr "Bataille"
+msgstr "Préparation"
 
 #: ui/GameUIAllianceBattle.lua:665 ui/GameUIAllianceBattle.lua:1248
 #: ui/GameUIAllianceHome.lua:937 utils/Localize.lua:1292
 msgid "保护期"
-msgstr "Protection"
+msgstr "Bataille"
 
 #: ui/GameUIAllianceBattle.lua:677 widget/WidgetWarIntroduce.lua:25
 msgid "明白"
-msgstr "OK"
+msgstr "Protection"
 
 #: ui/GameUIAllianceBattle.lua:687
 msgid "请求开战玩家"
-msgstr "Petition Player"
+msgstr "OK"
 
 #: ui/GameUIAllianceBattle.lua:841 ui/GameUIAlliancePosition.lua:110
 #: ui/GameUICrownEnter.lua:187 widget/WidgetWorldAllianceInfo.lua:356
 #: widget/WidgetWorldAllianceInfo.lua:391
 #: widget/WidgetWorldAllianceInfo.lua:527
 msgid "定位"
-msgstr "Localiser"
+msgstr "***"
 
 #: ui/GameUIAllianceBattle.lua:853 ui/GameUIAllianceBattle.lua:947
 #: ui/GameUIAlliancePalace.lua:230 ui/GameUIMission.lua:525
 #: ui/GameUITownHall.lua:403 ui/GameUIWarSummary.lua:168
 #: ui/GameUIWarSummary.lua:193
 msgid "奖励"
-msgstr "Récompenses"
+msgstr "Localiser une alliance ennemi"
 
 #: ui/GameUIAllianceBattle.lua:879 ui/GameUIAllianceBattle.lua:887
 #: ui/GameUIShrineReport.lua:218 ui/GameUIShrineReportInMail.lua:342
 #: ui/GameUIWarSummary.lua:57 ui/GameUIWarSummary.lua:79
 msgid "胜利"
-msgstr "Gagné"
+msgstr "Localiser"
 
 #: ui/GameUIAllianceBattle.lua:879 ui/GameUIAllianceBattle.lua:887
 #: ui/GameUIAllianceShrine.lua:619 ui/GameUIShrineReport.lua:218
 #: ui/GameUIShrineReportInMail.lua:342 ui/GameUIWarSummary.lua:57
 #: ui/GameUIWarSummary.lua:79
 msgid "失败"
-msgstr "Perdu"
+msgstr "Gagné"
 
 #: ui/GameUIAllianceBattle.lua:921 ui/GameUIWarSummary.lua:153
 msgid "荣耀值奖励"
-msgstr "Prix d'honneur"
+msgstr "Perdu"
 
 #: ui/GameUIAllianceBattle.lua:951 ui/GameUIAllianceCityEnter.lua:115
 #: ui/GameUIWarSummary.lua:200 ui/GameUIWatchTower.lua:395
 #: ui/GameUIWathTowerRegion.lua:385
 msgid "玩家"
-msgstr "Joueur"
+msgstr "Prix d'honneur"
 
 #: ui/GameUIAllianceBattle.lua:961 ui/GameUIAllianceLoyalty.lua:10
 #: ui/GameUIAllianceShop.lua:150 ui/GameUIShrineReportInMail.lua:175
 #: ui/GameUIVipNew.lua:94 ui/GameUIWarSummary.lua:210
 #: widget/WidgetAllianceTop.lua:173 widget/WidgetShrineRewardsInfo.lua:70
 msgid "忠诚值"
-msgstr "Loyauté"
+msgstr "Infos d'alliance"
 
 #: ui/GameUIAllianceBattle.lua:1141 ui/GameUIAllianceInfo.lua:19
 msgid "联盟信息"
-msgstr "Infos d'alliance"
+msgstr "Langage"
 
 #: ui/GameUIAllianceBattle.lua:1195 ui/GameUISetting.lua:34
 msgid "语言"
-msgstr "Langage"
+msgstr "Tué"
 
 #: ui/GameUIAllianceBattle.lua:1216 ui/GameUIAlliancePalace.lua:482
 msgid "击杀部队人口"
-msgstr "Tué"
+msgstr "Être tué"
 
 #: ui/GameUIAllianceBattle.lua:1217 ui/GameUIAlliancePalace.lua:483
 msgid "阵亡部队人口"
-msgstr "Être tué"
+msgstr "Bataille d'alliance gagnée"
 
 #: ui/GameUIAllianceBattle.lua:1219 ui/GameUIAlliancePalace.lua:485
 msgid "联盟战胜利"
-msgstr "Bataille d'alliance gagnée"
+msgstr "Bataille d'alliance perdue"
 
 #: ui/GameUIAllianceBattle.lua:1220 ui/GameUIAlliancePalace.lua:486
 msgid "联盟战失败"
-msgstr "Bataille d'alliance perdue"
+msgstr "Taux de succès"
 
 #: ui/GameUIAllianceBattle.lua:1221 ui/GameUIAlliancePalace.lua:487
 #: ui/GameUIVipNew.lua:88
 msgid "胜率"
-msgstr "Taux de succès"
+msgstr "Paix"
 
 #: ui/GameUIAllianceBattle.lua:1242 ui/GameUIAllianceHome.lua:600
 #: ui/GameUIAllianceHome.lua:931 utils/Localize.lua:1289
 #: widget/WidgetWorldAllianceInfo.lua:238
 msgid "和平期"
-msgstr "Paix"
+msgstr "Niv"
 
 #: ui/GameUIAllianceCityEnter.lua:26 ui/GameUIAllianceEnterBase.lua:204
 #: ui/GameUIAllianceVillageEnter.lua:290
@@ -3973,7 +3969,7 @@ msgstr "Paix"
 #: ui/GameUIWatchTowerTroopDetail.lua:208
 #: ui/GameUIWatchTowerTroopDetail.lua:274
 msgid "等级"
-msgstr "Niv"
+msgstr "Coordonnée"
 
 #: ui/GameUIAllianceCityEnter.lua:111 ui/GameUIAllianceDecorateEnter.lua:66
 #: ui/GameUIAllianceEnterBase.lua:83 ui/GameUIAllianceHome.lua:765
@@ -3985,7 +3981,7 @@ msgstr "Niv"
 #: ui/GameUIWatchTower.lua:256 ui/GameUIWathTowerRegion.lua:256
 #: widget/WidgetAllianceTop.lua:203
 msgid "坐标"
-msgstr "Coordonnée"
+msgstr "Joueur"
 
 #: ui/GameUIAllianceCityEnter.lua:121
 msgid "协防玩家"
@@ -4078,20 +4074,14 @@ msgstr "Explorer"
 #: ui/GameUIAllianceCityEnter.lua:290
 msgid "突袭玩家城市将失去保护状态以及城防大师效果,确定继续派兵?"
 msgstr ""
-"Vous allez perdre votre protection et votre maitre de défense si vous "
-"Explorer une autre cité, voulez-vous continuer?"
 
 #: ui/GameUIAllianceCityEnter.lua:292
 msgid "突袭玩家城市将失去保护状态，确定继续派兵?"
 msgstr ""
-"Vous allez perdre votre protection si vous Explorer une autre cité, voulez-"
-"vous continuer?"
 
 #: ui/GameUIAllianceCityEnter.lua:294
 msgid "突袭玩家城市将失去城防大师效果,确定继续派兵?"
 msgstr ""
-"Vous allez perdre l'effet de votre maitre de défense si vous Explorer une "
-"autre cité, voulez-vous continuer?"
 
 #: ui/GameUIAllianceCityEnter.lua:326
 msgid "巨石阵等级不足，不能进入其他联盟玩家城市"
@@ -4367,7 +4357,7 @@ msgstr "Bloquer"
 #: ui/GameUIAllianceJoinTips.lua:16 ui/GameUIAllianceJoinTips.lua:72
 #: ui/GameUIAllianceMemberInfo.lua:105 ui/GameUIChatChannel.lua:713
 msgid "加入联盟"
-msgstr "Joindre"
+msgstr "Joindre une alliance"
 
 #: ui/GameUIAllianceJoinTips.lua:25
 msgid "联盟强大功能!"
@@ -4375,7 +4365,7 @@ msgstr "Les bénéfices de joindre une alliance"
 
 #: ui/GameUIAllianceJoinTips.lua:30
 msgid "立即加入联盟送金龙币"
-msgstr "Joignez une alliance"
+msgstr "Joignez une alliance et obtenez des pièces"
 
 #: ui/GameUIAllianceJoinTips.lua:135
 msgid "将城市迁入联盟领地，受到联盟保护"
@@ -4564,7 +4554,7 @@ msgstr "L'ennemi est déjà disparu"
 #: ui/GameUIAllianceMosterEnter.lua:177 ui/GameUITradeGuild.lua:154
 #: ui/GameUITradeGuild.lua:1113 widget/WidgetManufactureNew.lua:50
 msgid "建筑材料"
-msgstr "Matériel bätiment"
+msgstr "Matériel de bâtiments"
 
 #: ui/GameUIAllianceNoticeOrDescEdit.lua:38
 msgid "最多输入600个字符"
@@ -4671,8 +4661,8 @@ msgid ""
 "%s地形能产出%s装备材料，每当在自己的领土上完成任务，或者击杀一点战斗力的敌方"
 "单位，就由一定几率获得装备材料。"
 msgstr ""
-"%s peut produire des matériaux d'équipement pour %s quand vous terminez un "
-"évènement du sanctuaire"
+"%s peut produire %s matériaux d'équipement quand vous terminez un évènement "
+"de sanctuaire"
 
 #: ui/GameUIAlliancePalace.lua:456 ui/GameUIKeep.lua:145
 #: ui/GameUIKingwarNotice.lua:40 ui/GameUIKingwarNotice.lua:55
@@ -4738,12 +4728,12 @@ msgstr "Honneur"
 #: ui/GameUIAllianceShop.lua:191 widget/WidgetBuyGoods.lua:78
 #: widget/WidgetStockGoods.lua:72
 msgid "普通道具"
-msgstr "Item de base"
+msgstr "Items de bases"
 
 #: ui/GameUIAllianceShop.lua:227 ui/GameUIAllianceShop.lua:375
 #: widget/WidgetBuyGoods.lua:78 widget/WidgetStockGoods.lua:72
 msgid "高级道具"
-msgstr "Item avancé"
+msgstr "Items avancés"
 
 #: ui/GameUIAllianceShop.lua:462
 msgid "补充"
@@ -4828,7 +4818,9 @@ msgstr "En progrès"
 
 #: ui/GameUIAllianceShrineDetail.lua:85
 msgid "注:一场战斗中,参加并获胜的玩家越多,联盟获得的奖励越多"
-msgstr "Plus de joueurs joignent et gagnent, plus de récompenses d'alliance"
+msgstr ""
+"Plus il y a des joueur qui joignent et gagnent, plus il a de récompenses "
+"d'alliance gagnées"
 
 #: ui/GameUIAllianceShrineDetail.lua:96
 msgid "激活事件"
@@ -4985,13 +4977,13 @@ msgstr "Arrive dans %s"
 #: ui/GameUIAllianceWatchTowerOnlyMarchEvents.lua:413
 #, lua-format
 msgid "突袭%s"
-msgstr "Explore %s"
+msgstr "Explorer %s"
 
 #: ui/GameUIAllianceWatchTower.lua:482
 #: ui/GameUIAllianceWatchTowerOnlyMarchEvents.lua:413
 #, lua-format
 msgid "进攻%s"
-msgstr "Attaque %s"
+msgstr "Attaquer %s"
 
 #: ui/GameUIAllianceWatchTowerOnlyMarchEvents.lua:17
 #: ui/GameUIWathTowerRegion.lua:21
@@ -5085,7 +5077,7 @@ msgstr "Destination"
 #: widget/WidgetEventTabButtons.lua:1079 widget/WidgetEventsList.lua:517
 #, lua-format
 msgid "招募%s x%d"
-msgstr "Recrute %s x %d"
+msgstr "Recruté %s x%d"
 
 #: ui/GameUIBarracks.lua:67
 msgid "招募队列空闲"
@@ -5218,7 +5210,7 @@ msgstr "Construire une cabane de fermiers pour gagner du pain"
 
 #: ui/GameUIBuild.lua:29 ui/GameUIResource.lua:294
 msgid "待建地基"
-msgstr "Fondations disponiles"
+msgstr "Fondement"
 
 #: ui/GameUIBuild.lua:111 ui/GameUIHasBeenBuild.lua:455
 #, lua-format
@@ -5400,7 +5392,7 @@ msgstr "Protéger pain"
 
 #: ui/GameUICityBuildingInfo.lua:79 utils/Localize.lua:616
 msgid "容纳伤兵上限"
-msgstr "Capacité de blessés"
+msgstr "Capacité de soldats blessés"
 
 #: ui/GameUICityBuildingInfo.lua:84
 msgid "增加住宅"
@@ -5432,7 +5424,7 @@ msgstr "Augmenter la vitesse de recrutement de la cavalerie"
 
 #: ui/GameUICityBuildingInfo.lua:114
 msgid "提升攻城机械招募速度"
-msgstr "Augmenter la vitesse de recrutement des sièges"
+msgstr "Augmenter la vitesse de recrutement des engins de siège"
 
 #: ui/GameUICityBuildingInfo.lua:119
 msgid "城墙攻击"
@@ -5633,12 +5625,16 @@ msgstr ""
 #: ui/GameUIDragonEyrieDetail.lua:296
 #, lua-format
 msgid "晋级需要龙的等级到达%d级，集齐已解锁装备，并全部强化到%d星"
-msgstr "Pour promouvoir: Dragon niv%d, tous les équipements niv. %d étoiles"
+msgstr ""
+"Promouvoir demande: Dragon de niveau %d, tous les équipements au niveau %d "
+"étoiles"
 
 #: ui/GameUIDragonEyrieDetail.lua:298
 #, lua-format
 msgid "晋级需要龙的等级到达%d级，集齐全部装备，并全部强化到%d星"
-msgstr "Pour promouvoir: Dragon niv%d, tous les équipements niv. %d étoiles"
+msgstr ""
+"Promouvoir demande: Dragon de niveau %d, tous les équipements au niveau %d "
+"étoiles"
 
 #: ui/GameUIDragonEyrieDetail.lua:302 ui/GameUIDragonEyrieMain.lua:569
 #: ui/GameUIDragonEyrieMain.lua:602
@@ -5943,11 +5939,11 @@ msgstr "Améliorer au niveau %d"
 
 #: ui/GameUIHasBeenBuild.lua:340
 msgid "立即建造"
-msgstr "Sur-le-champ"
+msgstr "Construire maintenant"
 
 #: ui/GameUIHasBeenBuild.lua:397
 msgid "建筑列表"
-msgstr "Liste des bâtiments"
+msgstr "List des bâtiments"
 
 #: ui/GameUIHasBeenBuild.lua:463
 msgid "功能建筑"
@@ -5986,12 +5982,12 @@ msgstr "Amélioration"
 #: ui/GameUIHelp.lua:167
 #, lua-format
 msgid "研发%s血量增加 等级 %d"
-msgstr "Recherche PV %s Niv %d"
+msgstr "Recherche %s PV niveau %d"
 
 #: ui/GameUIHelp.lua:169
 #, lua-format
 msgid "研发%s对%s的攻击到 等级 %d"
-msgstr "Recherche d'attaque %s: contre %s Niv %d"
+msgstr "Recherche d'attaque %s: contre %s niv%d"
 
 #: ui/GameUIHelp.lua:171 utils/UtilsForEvent.lua:74
 #: widget/WidgetMilitaryTechnologyStatus.lua:139
@@ -6146,24 +6142,24 @@ msgstr "Vous avez besoin d'une clé dorée pour débarrer le coffre doré"
 #: ui/GameUIPResourceBuilding.lua:30 ui/GameUIResource.lua:335
 #: ui/GameUISelectTerrain.lua:73 widget/WidgetCitizen.lua:36
 msgid "木材产量"
-msgstr "Prod. de bois"
+msgstr "Production de bois"
 
 #: ui/GameUIKeep.lua:42 ui/GameUIPResourceBuilding.lua:28
 #: ui/GameUIResource.lua:337 ui/GameUISelectTerrain.lua:74
 msgid "铁矿产量"
-msgstr "Prod. de fer"
+msgstr "Production de fer"
 
 #: ui/GameUIKeep.lua:45 ui/GameUIMedal.lua:45 ui/GameUIMedal.lua:81
 #: ui/GameUIPResourceBuilding.lua:29 ui/GameUIResource.lua:339
 #: ui/GameUISelectTerrain.lua:75 widget/WidgetCitizen.lua:50
 msgid "石料产量"
-msgstr "Prod. de roches"
+msgstr "Production de roches"
 
 #: ui/GameUIKeep.lua:48 ui/GameUIMedal.lua:20 ui/GameUIMedal.lua:61
 #: ui/GameUIPResourceBuilding.lua:31 ui/GameUIResource.lua:341
 #: ui/GameUISelectTerrain.lua:76 widget/WidgetCitizen.lua:29
 msgid "粮食产量"
-msgstr "Prod. de pain"
+msgstr "Production de pain"
 
 #: ui/GameUIKeep.lua:53 ui/GameUISelectTerrain.lua:80
 msgid "步兵攻击"
@@ -6179,7 +6175,7 @@ msgstr "Attaque de cavalerie"
 
 #: ui/GameUIKeep.lua:62 ui/GameUISelectTerrain.lua:83
 msgid "攻城器械攻击"
-msgstr "Attaque des sièges"
+msgstr "Attaque d'engins de siège"
 
 #: ui/GameUIKeep.lua:67 ui/GameUISelectTerrain.lua:87
 msgid "步兵生命值"
@@ -6195,7 +6191,7 @@ msgstr "PV de cavalerie"
 
 #: ui/GameUIKeep.lua:76 ui/GameUISelectTerrain.lua:90
 msgid "攻城器械生命值"
-msgstr "PV des sièges"
+msgstr "PV d'engin de siège"
 
 #: ui/GameUIKeep.lua:143
 msgid "城市地形"
@@ -6208,7 +6204,7 @@ msgstr "Conseil: améliorer le château pour débloquer de nouveaux bâtiments"
 #: ui/GameUIKeep.lua:320 widget/WidgetPromoteSoliderList.lua:104
 #: widget/WidgetPromoteSoliderList.lua:176
 msgid "已解锁"
-msgstr "Débloqué"
+msgstr "Débarré"
 
 #: ui/GameUIKeep.lua:320 ui/GameUIPveSelect.lua:66 ui/GameUITradeGuild.lua:684
 #: ui/GameUIWatchTower.lua:160 ui/GameUIWathTowerRegion.lua:151
@@ -6519,7 +6515,7 @@ msgstr "Vous ne pouvez pas envoyer un courrier à vous-même"
 
 #: ui/GameUIMaterialDepot.lua:5 utils/Localize.lua:748 utils/UIKit.lua:819
 msgid "材料库房"
-msgstr "Dépôt de matériel"
+msgstr "Matériel dépôt"
 
 #: ui/GameUIMaterials.lua:11 ui/GameUIMaterials.lua:32
 #: ui/GameUIToolShopSpeedUp.lua:23
@@ -6659,7 +6655,7 @@ msgstr "Science des archers"
 
 #: ui/GameUIMilitaryTechBuilding.lua:17 utils/UtilsForTech.lua:9
 msgid "攻城科技"
-msgstr "Science des sièges"
+msgstr "Science des engins de siège"
 
 #: ui/GameUIMilitaryTechBuilding.lua:20 utils/Localize.lua:817
 #: widget/WidgetTreatSoldier.lua:28
@@ -6679,7 +6675,7 @@ msgstr "Archers"
 #: ui/GameUIMilitaryTechBuilding.lua:23 utils/Localize.lua:820
 #: utils/Localize.lua:821 widget/WidgetTreatSoldier.lua:31
 msgid "攻城"
-msgstr "Sièges"
+msgstr "Engins de siège"
 
 #: ui/GameUIMilitaryTechBuilding.lua:39
 msgid "晋升"
@@ -6938,7 +6934,7 @@ msgstr "Vos pertes"
 #: ui/GameUIPResourceBuilding.lua:38 utils/Localize.lua:896
 #: utils/Localize.lua:906
 msgid "粮食"
-msgstr "Pain"
+msgstr "pain"
 
 #: ui/GameUIOrderHall.lua:17 ui/GameUIOrderHall.lua:254
 #: ui/GameUIUpgradeTechnology.lua:418 utils/Localize.lua:900
@@ -7023,7 +7019,7 @@ msgstr "+5%%%s"
 #: ui/GameUIPResourceBuilding.lua:113
 #, lua-format
 msgid "周围2格范围的%s数量"
-msgstr "Qté de %s dans rayon de 2 cases"
+msgstr "La quantité de %s dans un rayon de 2 cases"
 
 #: ui/GameUIPResourceBuilding.lua:134
 msgid "改建"
@@ -7408,7 +7404,7 @@ msgstr ""
 #: ui/GameUIPveSummary.lua:328
 msgid "购买巨龙装备宝箱,打造装备强化你的巨龙"
 msgstr ""
-"Acheter des coffres de dragon pour forger de l'équipement pour votre dragon"
+"Acheter des caisses de dragon pour forger de l'équipement pour votre dragon"
 
 #: ui/GameUIPveSummary.lua:351
 msgid "在兵营中招募更多单位。升级兵营还能解锁更多的高级兵种"
@@ -7520,7 +7516,7 @@ msgstr "Détruire"
 
 #: ui/GameUIResource.lua:134
 msgid "购买&拆除"
-msgstr "Acheter&Détruire"
+msgstr "Acheter et détruire"
 
 #: ui/GameUIResource.lua:171
 msgid "移动这个建筑"
@@ -7595,7 +7591,7 @@ msgstr "Matériel"
 
 #: ui/GameUISaleOne.lua:179
 msgid "每日限购一次"
-msgstr "Une Seule Fois"
+msgstr ""
 
 #: ui/GameUISaleOne.lua:320 ui/GameUIStore.lua:219
 #: ui/GameUIStorePackage.lua:103
@@ -7616,19 +7612,19 @@ msgid "赛季"
 msgstr "Saison"
 
 #: ui/GameUISeason.lua:32 ui/GameUISeason.lua:167
-#: ui/GameUISeasonDetails.lua:400
+#: ui/GameUISeasonDetails.lua:408
 #, lua-format
 msgid "结束时间：%s"
 msgstr "Termine dans : %s"
 
 #: ui/GameUISeason.lua:34 ui/GameUISeason.lua:246
-#: ui/GameUISeasonDetails.lua:404
+#: ui/GameUISeasonDetails.lua:412
 #, lua-format
 msgid "距离开始还有：%s"
 msgstr "Débute dans : %s"
 
 #: ui/GameUISeason.lua:36 ui/GameUISeason.lua:208
-#: ui/GameUISeasonDetails.lua:408
+#: ui/GameUISeasonDetails.lua:416
 #, lua-format
 msgid "%s后消失"
 msgstr "Disparaît dans : %s"
@@ -7679,37 +7675,37 @@ msgstr "Mon rang: %s"
 msgid "全部领取"
 msgstr "Réclamer"
 
-#: ui/GameUISeasonDetails.lua:136 ui/GameUISeasonDetails.lua:150
+#: ui/GameUISeasonDetails.lua:140 ui/GameUISeasonDetails.lua:154
 msgid "我的奖励"
 msgstr "Mes récompenses"
 
-#: ui/GameUISeasonDetails.lua:146
+#: ui/GameUISeasonDetails.lua:150
 #, lua-format
 msgid "奖励在%s后可领取"
 msgstr "Obtenir les récompenses dans: %s"
 
-#: ui/GameUISeasonDetails.lua:217
+#: ui/GameUISeasonDetails.lua:221
 msgid "查看排名"
 msgstr "Rang"
 
-#: ui/GameUISeasonDetails.lua:234
+#: ui/GameUISeasonDetails.lua:238
 msgid "积分规则"
 msgstr "Règlement"
 
-#: ui/GameUISeasonDetails.lua:240 ui/GameUISeasonRank.lua:62
+#: ui/GameUISeasonDetails.lua:244 ui/GameUISeasonRank.lua:62
 msgid "分数"
 msgstr "Points"
 
-#: ui/GameUISeasonDetails.lua:367 ui/GameUISeasonDetails.lua:429
+#: ui/GameUISeasonDetails.lua:375 ui/GameUISeasonDetails.lua:437
 msgid "过期"
 msgstr "Expiré"
 
-#: ui/GameUISeasonDetails.lua:377
+#: ui/GameUISeasonDetails.lua:385
 #, lua-format
 msgid "联盟分数：%s"
 msgstr "Points de l'alliance: %s"
 
-#: ui/GameUISeasonDetails.lua:377
+#: ui/GameUISeasonDetails.lua:385
 #, lua-format
 msgid "我的分数：%s"
 msgstr "Mes points: %s"
@@ -7719,9 +7715,9 @@ msgid "排行榜"
 msgstr "Rang"
 
 #: ui/GameUISeasonRank.lua:44 ui/GameUISeasonRank.lua:228
-#, lua-format
+#, fuzzy, lua-format
 msgid "我的排名：%d"
-msgstr "Mon rang: %d"
+msgstr "Mon rang: %s"
 
 #: ui/GameUISeasonRank.lua:44 ui/GameUISeasonRank.lua:226
 #: widget/WidgetRankingList.lua:157
@@ -8588,7 +8584,7 @@ msgstr "Attaque contre les archers"
 
 #: ui/GameUITower.lua:73 widget/WidgetSoldierDetails.lua:156
 msgid "对投石车攻击"
-msgstr "Attaque contre les sièges"
+msgstr "Attaque contre les engins de siège"
 
 #: ui/GameUITownHall.lua:35
 msgid "领主大人，在市政厅附近修建住宅，可获得银币产出加成，多多益善！"
@@ -8648,7 +8644,7 @@ msgstr "Il y a une tâche en cours"
 
 #: ui/GameUITownHall.lua:449
 msgid "周围2格范围的住宅数量"
-msgstr "Quantié de logements dans rayon de 2 cases"
+msgstr "La quantité de logements dans un rayon de 2 cases"
 
 #: ui/GameUITownHall.lua:478
 msgid "增加 5% 银币增长"
@@ -8679,7 +8675,7 @@ msgstr ""
 
 #: ui/GameUITradeGuild.lua:132
 msgid "我的银币"
-msgstr "Mon Pièces"
+msgstr ""
 
 #: ui/GameUITradeGuild.lua:153 ui/GameUITradeGuild.lua:1112
 msgid "基本资源"
@@ -8743,7 +8739,7 @@ msgstr "Vendre vos ressources et matériel non-nécessaire"
 
 #: ui/GameUITradeGuild.lua:687
 msgid "需要贸易行会"
-msgstr "Exige une guilde de commerce"
+msgstr "Requière une guilde de commerce"
 
 #: ui/GameUITradeGuild.lua:737
 msgid ""
@@ -8841,7 +8837,7 @@ msgstr "Queue de la recherche"
 
 #: ui/GameUIUpgradeTechnology.lua:392 ui/GameUIUpgradeTechnology.lua:406
 msgid "等级达到"
-msgstr "Niv"
+msgstr "Niveaux"
 
 #: ui/GameUIUpgradeTechnology.lua:402
 msgid "学院等级"
@@ -8854,7 +8850,7 @@ msgstr "Vous avez besoin d'un plus haut niveau d'académie"
 #: ui/GameUIUpgradeTechnology.lua:589
 #, lua-format
 msgid "需要%s等级达到%d"
-msgstr "Besoin de %s Niv. %d"
+msgstr "Besoin de %s niveau %d"
 
 #: ui/GameUIUpgradeTechnology.lua:636
 msgid "已有科技升级队列,需加速完成该队列花费金龙币"
@@ -8991,7 +8987,7 @@ msgstr "Durabilité des murs"
 
 #: ui/GameUIWall.lua:116
 msgid "・防御敌方进攻时，可能会损失城墙的生命值。"
-msgstr "Vous perdrez des murs quand un ennemi vous attaque."
+msgstr "Vous pourriez perdre des murs quand un ennemi vous attaque"
 
 #: ui/GameUIWall.lua:116
 msgid "・当生命值为0时，地方联盟将击溃你的城市，获得额外的联盟积分。"
@@ -9010,17 +9006,18 @@ msgstr "Terrain d'alliance: %s"
 
 #: ui/GameUIWall.lua:220
 msgid "・不驻防巨龙，所有城市中的部队将不会进行防御。"
-msgstr "Vos troupes ne vous défendront pas si un dragon n'est pas en garnison."
+msgstr "Vos troupes ne vous défendront pas si un dragon n'est pas en garnison"
 
 #: ui/GameUIWall.lua:221
 msgid "・驻防巨龙能防御敌方进行的突袭，获得城市的信息"
 msgstr ""
-"Un dragon en garnison défendra votre cité quand l'ennemi vous explorera"
+"Un dragon en garnison défendra avec vos troupe votre cité quand l'ennemi "
+"vous explorera"
 
 #: ui/GameUIWall.lua:332
 #, lua-format
 msgid "选择%s会获得战斗力加成"
-msgstr "Choisir %s pour pouvoir supplémentaire"
+msgstr "Choisir %s pour obtenir un pouvoir supplémentaire"
 
 #: ui/GameUIWarReport.lua:219 ui/GameUIWarReport.lua:286
 msgid "由于使用了城防大师，敌方无法掠夺资源"
@@ -9134,7 +9131,7 @@ msgstr "Ronde %d"
 #: ui/GameUIWorldMap.lua:350 utils/DataUtils.lua:1348
 #, lua-format
 msgid "Lv%s~Lv%s"
-msgstr "Niv%s~Niv%s"
+msgstr ""
 
 #: ui/GameUIWorldMap.lua:384
 msgid "当前位置"
@@ -9187,7 +9184,7 @@ msgstr "%d jours %d heures"
 
 #: utils/GameUtils.lua:635 utils/GameUtils.lua:657
 msgid "不能删除"
-msgstr "Ne pas effacer"
+msgstr "Ne pas être effacé"
 
 #: utils/LocalPushManager.lua:134
 msgid "尊敬的领主，您的城民真诚的恳求您归来，并为您准备了丰厚的礼品"
@@ -9746,7 +9743,7 @@ msgstr "Vous avez déjà envoyé une pétition"
 
 #: utils/Localize.lua:149
 msgid "未能找到战力相匹配的联盟"
-msgstr "No matched Enemy Alliance was found"
+msgstr "***"
 
 #: utils/Localize.lua:150
 msgid "联盟战报不存在"
@@ -9787,7 +9784,7 @@ msgstr "Le joueur est sous protection"
 
 #: utils/Localize.lua:160
 msgid "目标联盟非当前匹配的敌对联盟"
-msgstr "The Alliance is not the matched enemy Alliance"
+msgstr "***"
 
 #: utils/Localize.lua:161
 msgid "村落不存在"
@@ -9999,55 +9996,55 @@ msgstr "Il y a déjà un dragon en garnison sur les murs"
 
 #: utils/Localize.lua:219
 msgid "不需要宝石加速"
-msgstr "Don't need Dragon Coins to speed up"
+msgstr ""
 
 #: utils/Localize.lua:220
 msgid "玩家昵称不合法"
-msgstr "Illegal player name"
+msgstr ""
 
 #: utils/Localize.lua:221
 msgid "联盟昵称不合法"
-msgstr "Illegal Alliance name"
+msgstr ""
 
 #: utils/Localize.lua:222
 msgid "无效的活动信息"
-msgstr "Invalid event info"
+msgstr ""
 
 #: utils/Localize.lua:223
 msgid "没有可领取的奖励"
-msgstr "No rewards"
+msgstr ""
 
 #: utils/Localize.lua:224
 msgid "还不能退出联盟"
-msgstr "You can't quit the Alliance yet"
+msgstr ""
 
 #: utils/Localize.lua:225
 msgid "你不是墨子"
-msgstr "You are not MOD"
+msgstr ""
 
 #: utils/Localize.lua:226
 msgid "无效的联盟活动信息"
-msgstr "Invalid Alliance event info"
+msgstr ""
 
 #: utils/Localize.lua:227
 msgid "现在还不能进行协防"
-msgstr "You can't assist now"
+msgstr ""
 
 #: utils/Localize.lua:228
 msgid "正遭受攻击,不能退出移动城市"
-msgstr "Vous ne pouvez pas déplacer votre cité quand vous êtes sous attaque"
+msgstr ""
 
 #: utils/Localize.lua:229
 msgid "目标已不是墨子,不能回复"
-msgstr "He/she is not MOD, can't reply"
+msgstr ""
 
 #: utils/Localize.lua:230
 msgid "还不能领取累计充值奖励"
-msgstr "Tu ne peux pas avoir la récompense encore"
+msgstr ""
 
 #: utils/Localize.lua:231
 msgid "还不能领取月卡每日奖励"
-msgstr "Tu ne peux pas avoir la récompense encore"
+msgstr ""
 
 #: utils/Localize.lua:236 utils/Localize.lua:237 utils/Localize.lua:238
 #: utils/Localize.lua:239
@@ -10756,7 +10753,7 @@ msgstr "Outil"
 #: utils/Localize.lua:455 utils/Localize.lua:916
 #: widget/WidgetRequirementListview.lua:235
 msgid "木人桩"
-msgstr "Pantin"
+msgstr "Pantins"
 
 #: utils/Localize.lua:456 utils/Localize.lua:917
 #: widget/WidgetRequirementListview.lua:236
@@ -10835,7 +10832,7 @@ msgstr "Augmenter la force du dragon"
 
 #: utils/Localize.lua:486
 msgid "提升攻城攻击和生命"
-msgstr "Augmenter l'attaque et les PV des sièges"
+msgstr "Augmenter l'attaque et les PV des engins de siège"
 
 #: utils/Localize.lua:487
 msgid "提升骑兵攻击和生命"
@@ -10877,7 +10874,7 @@ msgstr "Diminuer le temps total de marche"
 
 #: utils/Localize.lua:499
 msgid "龙之血脉"
-msgstr "Coupe de sang de dragons"
+msgstr "Récipient de sang de dragons"
 
 #: utils/Localize.lua:500
 msgid "步兵强化"
@@ -10889,7 +10886,7 @@ msgstr "Force du dragon"
 
 #: utils/Localize.lua:502
 msgid "攻城强化"
-msgstr "Puissance des sièges"
+msgstr "Puissance des engins de siège"
 
 #: utils/Localize.lua:503
 msgid "骑兵强化"
@@ -10977,19 +10974,19 @@ msgstr "Augmenter la vitesse de marche de la cavalerie"
 
 #: utils/Localize.lua:530
 msgid "攻城系攻击加成"
-msgstr "Augmenter l'attaque des sièges"
+msgstr "Augmenter l'attaque des engins de siège"
 
 #: utils/Localize.lua:531
 msgid "攻城系生命值加成"
-msgstr "Augmenter les PV des sièges"
+msgstr "Augmenter les PV des engins de siège"
 
 #: utils/Localize.lua:532
 msgid "攻城系负重加成"
-msgstr "Augmenter le chargement des sièges"
+msgstr "Augmenter le chargement des engins de siège"
 
 #: utils/Localize.lua:533
 msgid "攻城系行军速度加成"
-msgstr "Augmenter la vitesse de marche des sièges"
+msgstr "Augmenter la vitesse de marche des engins de siège"
 
 #: utils/Localize.lua:535
 msgid "带兵上限加成"
@@ -11122,48 +11119,48 @@ msgid ""
 "学院提供的众多科技。研发科技能够提升城市的资源产出效率和防御能力，学院等级越"
 "高研发速度越快"
 msgstr ""
-"L'académie est un bâtiment où vous pouvez rechercher plusieurs sciences pour "
-"améliorer votre empire. Plus le niveau de l'académie est élevé, plus la "
-"vitesse de recherche sera rapide."
+"L'académie est un important bâtiment de votre empire, où vous pouvez "
+"rechercher plusieurs sciences pour améliorer votre empire. Plus le niveau de "
+"l'académie est élevé, plus la vitesse de recherche sera rapide."
 
 #: utils/Localize.lua:591
 msgid ""
 "训练营地提供步兵的相关科技，增强步兵的各方面属性，建筑等级越高招募步兵的速度"
 "越快"
 msgstr ""
-"Le terrain d'entraînement permet des recherches de sciences d'infanterie "
-"pour améliorer leurs attributions. Augmenter le niveau du terrain "
-"d'entraînement augmente leur vitesse de recrutement."
+"Le terrain d'entraînement est l'endroit où vous pouvez rechercher les "
+"sciences d'infanterie pour améliorer leurs attributions. Augmenter le niveau "
+"du terrain d'entraînement augmente leur vitesse de recrutement."
 
 #: utils/Localize.lua:595
 msgid ""
 "猎手大厅提供弓手的相关科技，增强弓手的各方面属性，建筑等级越高招募弓手的速度"
 "越快"
 msgstr ""
-"Le pavillon de chasse permet des recherches de sciences des archers pour "
-"améliorer leurs attributions. Augmenter le niveau du pavillon de chasse "
-"augmente leur vitesse de recrutement."
+"Le pavillon de chasse est l'endroit où l'on peut faire des recherche en "
+"sciences des archers pour améliorer leurs attributions. Augmenter le niveau "
+"du pavillon de chasse augmente leur vitesse de recrutement."
 
 #: utils/Localize.lua:598
 msgid ""
 "马厩提供骑兵的相关科技，增强骑兵的各方面属性，建筑等级越高招募骑兵的速度越快"
 msgstr ""
-"L'écurie permet des recherches de sciences de cavalerie pour améliorer leurs "
-"attributions. Augmenter le niveau de l'écurie augmente leur vitesse de "
-"recrutement."
+"L'écurie est l'endroit où l'on peut faire des recherche en sciences de "
+"cavalerie pour améliorer leurs attributions. Augmenter le niveau de l'écurie "
+"augmente leur vitesse de recrutement."
 
 #: utils/Localize.lua:602
 msgid ""
 "车间提供攻城器械的相关科技，增强攻城器械的各方面属性，建筑等级越高招募攻城器"
 "械的速度越快"
 msgstr ""
-"L'atelier permet des recherches en sciences des sièges pour améliorer leurs "
-"attributions. Augmenter le niveau de l'atelier augmente leur vitesse de "
-"recrutement."
+"L'atelier est l'endroit où l'on peut faire des recherche en sciences des "
+"engins de siège pour améliorer leurs attributions. Augmenter le niveau de "
+"l'atelier augmente leur vitesse de recrutement."
 
 #: utils/Localize.lua:603
 msgid "攻城器械招募速度"
-msgstr "Vitesse de recrutement des sièges"
+msgstr "Vitesse de recrutement des engins de siège"
 
 #: utils/Localize.lua:605
 msgid ""
@@ -11201,7 +11198,7 @@ msgstr ""
 
 #: utils/Localize.lua:613
 msgid "每小时恢复龙的生命值"
-msgstr "Vitesse de récupération"
+msgstr "Vitesse de recrutement des dragons"
 
 #: utils/Localize.lua:615
 msgid ""
@@ -11254,8 +11251,9 @@ msgstr "Recrutement total"
 msgid ""
 "贸易行会提供玩家之间资源和材料的交易，升级建筑能够提升运输车的总量和生产速度"
 msgstr ""
-"La guilde permet des transactions de ressources et de matériaux entre les "
-"joueurs. Améliorer la guilde augmentera le nombre de paniers et la vitesse "
+"La guilde de commerce permet des transactions de ressources et de matériaux "
+"entre les joueurs. \n"
+"Améliorer la guilde de commerce augmentera le nombre de paniers la vitesse "
 "de recouvrement."
 
 #: utils/Localize.lua:629
@@ -11283,8 +11281,8 @@ msgid ""
 "锯木工坊能够提升可建造的木工小屋数，并防止木材被敌方掠夺。周围建造木材小屋还"
 "可提升木材生产效率"
 msgstr ""
-"La scierie permet d'augmenter le nombre de cabanes de bucherons et protège "
-"votre bois. Construire des cabanes de bucherons autour augmentera la "
+"La scierie est la place pour augmenter le nombre de cabanes de bucherons et "
+"protège votre bois. Construire des cabanes de bucherons autour augmentera la "
 "production de bois."
 
 #: utils/Localize.lua:636
@@ -11300,9 +11298,9 @@ msgid ""
 "磨坊能够提升可建造的农夫小屋数，并防止粮食被敌方掠夺。周围建造农夫小屋还可提"
 "升粮食生产效率"
 msgstr ""
-"Le moulin permet d'augmenter le nombre de cabanes de fermiers et protège "
-"votre pain. Construisez des cabanes de bucherons autour augmentera la "
-"production de pain."
+"Le moulin est la place pour augmenter le nombre de cabanes de fermiers et "
+"protège votre pain. Construisez des cabanes de bucherons autour augmentera "
+"la production de pain."
 
 #: utils/Localize.lua:640
 msgid "农夫小屋数量"
@@ -11317,8 +11315,8 @@ msgid ""
 "石匠工坊能够提升可建造的石料小屋数，并防止石料被敌方掠夺。周围建造石匠小屋还"
 "可提升石料生产效率"
 msgstr ""
-"La carrière permet d'augmenter le nombre de cabanes de tailleurs et protège "
-"vos roches.  Construisez des cabanes de roches autour augmentera la "
+"La carrière est la place pour augmenter le nombre de cabanes de tailleurs et "
+"protège vos roches.  Construisez des cabanes de roches autour augmentera la "
 "production de roches."
 
 #: utils/Localize.lua:644
@@ -11334,8 +11332,8 @@ msgid ""
 "铸造工坊能够提升可建造的矿工小屋数，并防止铁矿被敌方掠夺。周围建造矿工小屋还"
 "可提升铁矿生产效率"
 msgstr ""
-"La fonderie permet d'augmenter le nombre de cabanes de mineurs et protège "
-"votre fer. Construisez des cabanes de mineurs autour augmentera la "
+"La fonderie est la place pour augmenter le nombre de cabanes de mineurs et "
+"protège votre fer. Construisez des cabanes de mineurs autour augmentera la "
 "production de fer."
 
 #: utils/Localize.lua:648
@@ -11351,9 +11349,9 @@ msgid ""
 "市政厅能够提升可建造的住宅数量。在市政厅完成政务可以获得额外的资源奖励。市政"
 "厅等级越高，奖励越高。"
 msgstr ""
-"L'hôtel de ville permet de gagner des récompenses en accomplissant des "
-"tâches. Améliorez-le pour augmenter le nombre de logements et de récompenses "
-"pour les tâches."
+"L'hôtel de ville est la place pour gagner des récompenses en accomplissant "
+"des tâches. Améliorez-le pour augmenter le nombre de logements et de "
+"récompenses pour les tâches."
 
 #: utils/Localize.lua:652
 msgid "住宅数量"
@@ -11401,7 +11399,7 @@ msgstr "Capacité de civils"
 
 #: utils/Localize.lua:667
 msgid "每小时银币产量"
-msgstr "Prod. de pièces(par heure)"
+msgstr "Production de pièces(par heure)"
 
 #: utils/Localize.lua:668
 msgid "每小时城民恢复速度"
@@ -11418,7 +11416,7 @@ msgstr ""
 
 #: utils/Localize.lua:671
 msgid "每小时木材产量"
-msgstr "Prod. de bois(par heure)"
+msgstr "Production de bois(par heure)"
 
 #: utils/Localize.lua:673
 msgid ""
@@ -11431,7 +11429,7 @@ msgstr ""
 
 #: utils/Localize.lua:674
 msgid "每小时粮食产量"
-msgstr "Prod. de pain(par heure)"
+msgstr "Production de pain(par heure)"
 
 #: utils/Localize.lua:676
 msgid ""
@@ -11444,7 +11442,7 @@ msgstr ""
 
 #: utils/Localize.lua:677
 msgid "每小时石料产量"
-msgstr "Prod. de roches(par heure)"
+msgstr "Production de roches(par heure)"
 
 #: utils/Localize.lua:679
 msgid ""
@@ -11457,7 +11455,7 @@ msgstr ""
 
 #: utils/Localize.lua:680
 msgid "每小时铁矿产量"
-msgstr "Prod. de fer(par heure)"
+msgstr "Production de fer(par heure)"
 
 #: utils/Localize.lua:684
 msgid ""
@@ -11702,8 +11700,8 @@ msgid ""
 "大战刚刚结束，这些贪婪的领主就不顾联盟之约，公然抢夺战利品，这样的行为必须受"
 "到惩罚"
 msgstr ""
-"La guerre est tout juste finie, les seigneurs avides qui ignorent les règles "
-"de l'alliance volent les trophées, ils doivent être punis."
+"La guerre est tout juste finie, les seigneurs avides qui ignore les règles "
+"de l'alliance commence a voler les trophées, ils doivent être punis."
 
 #: utils/Localize.lua:719
 msgid "旧仇恨"
@@ -11714,8 +11712,8 @@ msgid ""
 "原来我们的强大早就遭来其他领主的不满，既然他们不顾联盟之约，我们也无需手下留"
 "情"
 msgstr ""
-"Nous sommes enviés pour notre grande puissance. Puisqu'ils ignorent nos "
-"règles, nous avons besoin de nous montrer sans merci avec eux."
+"Nous sommes enviés pour notre grande puissance. Depuis qu'il ignore nos "
+"règles, nous avons besoin de montrer sans merci avec eux."
 
 #: utils/Localize.lua:720
 msgid "抉择"
@@ -11771,7 +11769,7 @@ msgstr "Prison"
 
 #: utils/Localize.lua:742
 msgid "锯木坊"
-msgstr "Scierie"
+msgstr "Moulin"
 
 #: utils/Localize.lua:745
 msgid "铸造坊"
@@ -11822,12 +11820,12 @@ msgstr "joins notre alliance"
 #: utils/Localize.lua:785
 #, lua-format
 msgid "%s被%s邀请加入本联盟"
-msgstr "%s a été invité par %s"
+msgstr ""
 
 #: utils/Localize.lua:786
 #, lua-format
 msgid "%s被%s批准加入联盟"
-msgstr "%s a été approuvé par %s"
+msgstr ""
 
 #: utils/Localize.lua:787
 #, lua-format
@@ -11916,14 +11914,14 @@ msgid "迁移了联盟"
 msgstr "a migré l'alliance"
 
 #: utils/Localize.lua:809
-#, lua-format
+#, fuzzy, lua-format
 msgid "%s正在前往占领Lv%d %s"
-msgstr "%s va occuper Niv. %d %s"
+msgstr "% va occuper niveau %d %s"
 
 #: utils/Localize.lua:810
-#, lua-format
+#, fuzzy, lua-format
 msgid "%s正在前往攻打Lv%d %s"
-msgstr "%s va attaquer Niv. %d %s"
+msgstr "% va attaquer niveau %d %s"
 
 #: utils/Localize.lua:811
 #, lua-format
@@ -12203,23 +12201,23 @@ msgstr "Transférer la position de chef"
 
 #: utils/Localize.lua:959 utils/Localize.lua:1100
 msgid "木材村落"
-msgstr "Village Bois"
+msgstr "Village bois"
 
 #: utils/Localize.lua:960 utils/Localize.lua:1104
 msgid "矿石村落"
-msgstr "Village Rroche"
+msgstr "Village roche"
 
 #: utils/Localize.lua:961 utils/Localize.lua:1101
 msgid "铁矿村落"
-msgstr "Village Fer"
+msgstr "Village fer"
 
 #: utils/Localize.lua:962 utils/Localize.lua:1102
 msgid "粮食村落"
-msgstr "Village Pain"
+msgstr "Village pain"
 
 #: utils/Localize.lua:963 utils/Localize.lua:1103
 msgid "硬币村落"
-msgstr "Village Pièces"
+msgstr "Village pièces"
 
 #: utils/Localize.lua:971
 msgid "孵化红龙"
@@ -12319,75 +12317,75 @@ msgstr "Coulage de pièces"
 
 #: utils/Localize.lua:1002
 msgid "增加建筑速度"
-msgstr "Augmente la vitesse de construction"
+msgstr "Augmentation de vitesse de construction"
 
 #: utils/Localize.lua:1003
 msgid "增加城墙维修速度"
-msgstr "Augmente la vitesse de recouvrement des murs"
+msgstr "Augmentation de vitesse de recouvrement des murs"
 
 #: utils/Localize.lua:1004
 msgid "增加城墙的单位血量防御值"
-msgstr "Augmente la défense de murs"
+msgstr "Augmentation de défense de murs"
 
 #: utils/Localize.lua:1005
 msgid "增加医院的伤兵容量"
-msgstr "Augmente la capacité de l'hôpital"
+msgstr "Augmentation de la capacité de l'hôpital"
 
 #: utils/Localize.lua:1006
 msgid "增加村落的资源采集速度"
-msgstr "Augmente la vitesse de ramassage de ressources"
+msgstr "Augmentation de la vitesse de ramassage de ressources"
 
 #: utils/Localize.lua:1007
 msgid "减少招募普通士兵资源消耗"
-msgstr "Diminue le coût d'entretien des soldats"
+msgstr "Diminution du coût d'entretien des soldats"
 
 #: utils/Localize.lua:1008
 msgid "增加石料产量"
-msgstr "Augmente la production de roches"
+msgstr "Augmentation de la production de roches"
 
 #: utils/Localize.lua:1009
 msgid "增加铁矿产量"
-msgstr "Augmente la production de fer"
+msgstr "Augmentation de la production de fer"
 
 #: utils/Localize.lua:1010
 msgid "增加防御箭塔的攻击力"
-msgstr "Augmente l'attaque des tours"
+msgstr "Augmentation de l'attaque des tours"
 
 #: utils/Localize.lua:1011
 msgid "增加敌方攻城后的返程时间"
-msgstr "Augmente le temps de retour de l'ennemi"
+msgstr "Augmentation du temps de retour de l'ennemi"
 
 #: utils/Localize.lua:1012
 msgid "增加资源保护比例"
-msgstr "Augmente la protection de ressources"
+msgstr "Augmentation de la protection de ressources"
 
 #: utils/Localize.lua:1013
 msgid "提示资源小车数量上限"
-msgstr "Augmente la limite supérieure dans la guilde"
+msgstr "Augmentation de la limite supérieure dans la guilde commerciale"
 
 #: utils/Localize.lua:1014
 msgid "增加木材产量"
-msgstr "Augmente la production de bois"
+msgstr "Augmentation de la production de bois"
 
 #: utils/Localize.lua:1015
 msgid "增加粮食产量"
-msgstr "Augmente la production de pains"
+msgstr "Augmentation de la production de pain"
 
 #: utils/Localize.lua:1016
 msgid "住宅城民上限加成"
-msgstr "Augmente le nombre de civils"
+msgstr "Augmentation du nombre de civils"
 
 #: utils/Localize.lua:1017
 msgid "减少治愈伤兵的时间"
-msgstr "Diminue le temps de guérison des soldats"
+msgstr "Diminution du temps de guérison de soldats"
 
 #: utils/Localize.lua:1018
 msgid "增加生产材料速度"
-msgstr "Augmente vitesse de production de ressources"
+msgstr "Augmentation la vitesse de production de ressources"
 
 #: utils/Localize.lua:1019
 msgid "提升银币产量"
-msgstr "Augmente la production de pièces"
+msgstr "Augmentation de la production de pièces"
 
 #: utils/Localize.lua:1022 utils/Localize.lua:1023 utils/Localize.lua:1024
 #: utils/Localize.lua:1025 utils/Localize.lua:1026 utils/Localize.lua:1027
@@ -12555,7 +12553,7 @@ msgstr "Chinois traditionnel"
 
 #: utils/Localize.lua:1155
 msgid "法语"
-msgstr "le français"
+msgstr ""
 
 #: utils/Localize.lua:1159
 msgid "建造或升级任意建筑"
@@ -12695,7 +12693,7 @@ msgstr "Forfait de la dynastie du dragon"
 
 #: utils/Localize.lua:1207 utils/Localize.lua:1215
 msgid "特殊礼包"
-msgstr "Special Cadeaux"
+msgstr ""
 
 #: utils/Localize.lua:1210
 msgid "新手"
@@ -12983,11 +12981,11 @@ msgstr "Forfait de pièces de dragon"
 
 #: utils/Localize.lua:1318
 msgid "金龙币小袋"
-msgstr "Paquet de pièces de dragon"
+msgstr ""
 
 #: utils/Localize.lua:1319
 msgid "金龙币福袋"
-msgstr "Fukubukuro de pièces de dragon"
+msgstr ""
 
 #: utils/Localize.lua:1322
 msgid "Batcatstudio游戏用户使用许可协议本地化ID"
@@ -13280,37 +13278,37 @@ msgstr "Brume d'incertitude %dh"
 #: utils/Localize_item.lua:59
 #, lua-format
 msgid "%d小时木材生产加成"
-msgstr "Augmente Bois %dh"
+msgstr "Augmentation de bois %dh"
 
 #: utils/Localize_item.lua:60 utils/Localize_item.lua:61
 #: utils/Localize_item.lua:62
 #, lua-format
 msgid "%d小时石料生产加成"
-msgstr "Augmente Roches %dh"
+msgstr "Augmentation de roches %dh"
 
 #: utils/Localize_item.lua:63 utils/Localize_item.lua:64
 #: utils/Localize_item.lua:65
 #, lua-format
 msgid "%d小时铁矿生产加成"
-msgstr "Augmente Fer %dh"
+msgstr "Augmentation de fer %dh"
 
 #: utils/Localize_item.lua:66 utils/Localize_item.lua:67
 #: utils/Localize_item.lua:68
 #, lua-format
 msgid "%d小时粮食生产加成"
-msgstr "Augmene Pain %dh"
+msgstr "Augmentation de pain %dh"
 
 #: utils/Localize_item.lua:69 utils/Localize_item.lua:70
 #: utils/Localize_item.lua:71
 #, lua-format
 msgid "%d小时银币生产加成"
-msgstr "Augmente Pièces %dh"
+msgstr "Augmentation de pièces %dh"
 
 #: utils/Localize_item.lua:72 utils/Localize_item.lua:73
 #: utils/Localize_item.lua:74
 #, lua-format
 msgid "%d小时城民增长加成"
-msgstr "Augmente Civils %dh"
+msgstr "Augmentation de civils %dh"
 
 #: utils/Localize_item.lua:75 utils/Localize_item.lua:76
 #: utils/Localize_item.lua:77
@@ -13334,37 +13332,37 @@ msgstr "Armoirie de dragon %dh"
 #: utils/Localize_item.lua:86
 #, lua-format
 msgid "%d小时行军加速"
-msgstr "Accélére marche %dh"
+msgstr "Accélération de le marche %dh"
 
 #: utils/Localize_item.lua:87 utils/Localize_item.lua:88
 #: utils/Localize_item.lua:89
 #, lua-format
 msgid "%d小时防御加成"
-msgstr "Augmente défense %dh"
+msgstr "Accélération de défense %dh"
 
 #: utils/Localize_item.lua:90 utils/Localize_item.lua:91
 #: utils/Localize_item.lua:92
 #, lua-format
 msgid "%d小时步兵攻击加成"
-msgstr "Bonus attaque Infanterie %dh"
+msgstr "Augmentation de l'attaque de l'infanterie %dh"
 
 #: utils/Localize_item.lua:93 utils/Localize_item.lua:94
 #: utils/Localize_item.lua:95
 #, lua-format
 msgid "%d小时弓手攻击加成"
-msgstr "Bonus attaque Archers %dh"
+msgstr "Augmentation de l'attaque des archers %dh"
 
 #: utils/Localize_item.lua:96 utils/Localize_item.lua:97
 #: utils/Localize_item.lua:98
 #, lua-format
 msgid "%d小时骑兵攻击加成"
-msgstr "Bonus attaque Cavalerie %dh"
+msgstr "Augmentation de l'attaque de la cavalerie %dh"
 
 #: utils/Localize_item.lua:99 utils/Localize_item.lua:100
 #: utils/Localize_item.lua:101
 #, lua-format
 msgid "%d小时攻城机械攻击加成"
-msgstr "Bonus attaque Sièges %dh"
+msgstr "Augmentation de l'attaque des sièges %dh"
 
 #: utils/Localize_item.lua:104 utils/Localize_item.lua:105
 #: utils/Localize_item.lua:106 utils/Localize_item.lua:107
@@ -13408,7 +13406,7 @@ msgstr "%s Fer"
 #: utils/Localize_item.lua:295 utils/Localize_item.lua:296
 #, lua-format
 msgid "%s粮食"
-msgstr "%s Pain"
+msgstr "%s pain"
 
 #: utils/Localize_item.lua:132 utils/Localize_item.lua:133
 #: utils/Localize_item.lua:134 utils/Localize_item.lua:135
@@ -13518,19 +13516,19 @@ msgstr "Super coffre de dragon"
 
 #: utils/Localize_item.lua:176
 msgid "木宝箱"
-msgstr "Coffre en bois"
+msgstr "Caisse en bois"
 
 #: utils/Localize_item.lua:177
 msgid "铜宝箱"
-msgstr "Coffre cuivré"
+msgstr "Caisse cuivrée"
 
 #: utils/Localize_item.lua:178
 msgid "银宝箱"
-msgstr "Coffre argenté"
+msgstr "Caisse argentée"
 
 #: utils/Localize_item.lua:179
 msgid "金宝箱"
-msgstr "Coffre doré"
+msgstr "Caisse dorée"
 
 #: utils/Localize_item.lua:180
 msgid "铜钥匙"
@@ -13793,7 +13791,7 @@ msgstr "Augmenter votre niveau VIP avec %s point de VIP"
 
 #: utils/Localize_item.lua:357
 msgid "不发生战斗的情况下，获得关卡的奖励"
-msgstr "Gagner des récompenses d'étapes sans combattre"
+msgstr "Gagner des récompenses de niveaux sans combattre"
 
 #: utils/Localize_item.lua:360 utils/Localize_item.lua:361
 #: utils/Localize_item.lua:362 utils/Localize_item.lua:363
@@ -13902,12 +13900,12 @@ msgstr "Chargement de troupes"
 #: utils/UtilsForEvent.lua:79
 #, lua-format
 msgid "%s血量增加到 Lv %d"
-msgstr "PV %s Niv %d"
+msgstr "%s PV niveau %d"
 
 #: utils/UtilsForEvent.lua:84
 #, lua-format
 msgid "%s对%s的攻击到 Lv %d"
-msgstr "%s attaque: contre %s Niv %d"
+msgstr "%s attaque: contre %s niveau %d"
 
 #: utils/UtilsForEvent.lua:101
 #, lua-format
@@ -13946,7 +13944,7 @@ msgstr "Attaque des armées noires(retour)"
 #: utils/UtilsForEvent.lua:128 utils/UtilsForEvent.lua:139
 #, lua-format
 msgid "%sLv%s"
-msgstr "%sNiv%s"
+msgstr ""
 
 #: utils/UtilsForEvent.lua:132 utils/UtilsForEvent.lua:149
 #, lua-format
@@ -13977,12 +13975,12 @@ msgstr "Retour (%s)"
 #: utils/UtilsForEvent.lua:176
 #, lua-format
 msgid "正在采集%sLv%s"
-msgstr "Ramassage %s Niv. %s"
+msgstr "Ramassage %s niveau %s"
 
 #: utils/UtilsForEvent.lua:215
 #, lua-format
 msgid "%s Lv%s"
-msgstr "%s Niv%s"
+msgstr ""
 
 #: utils/UtilsForTask.lua:41
 msgid "城市建设"
@@ -14017,7 +14015,7 @@ msgstr "Débloquer %s"
 #: utils/UtilsForTask.lua:105 utils/UtilsForTask.lua:137
 #, lua-format
 msgid "将%s升级到等级%d"
-msgstr "Améliorer %s au Niv %d"
+msgstr "Améliorer %s au niveau %d"
 
 #: utils/UtilsForTask.lua:159 utils/UtilsForTask.lua:244
 #, lua-format
@@ -14027,12 +14025,12 @@ msgstr "Améliorer %s à %d étoiles"
 #: utils/UtilsForTask.lua:180
 #, lua-format
 msgid "将%s技能%s提升到等级%d"
-msgstr "Améliorer %s:%s au Niv %d"
+msgstr "Améliorer %s:%s au niveau %d"
 
 #: utils/UtilsForTask.lua:202 utils/UtilsForTask.lua:223
 #, lua-format
 msgid "将%s科技研发到等级%d"
-msgstr "Améliorer %s au Niv %d"
+msgstr "Améliorer %s au niveau %d"
 
 #: utils/UtilsForTask.lua:268 utils/UtilsForTask.lua:270
 #, lua-format
@@ -14247,7 +14245,7 @@ msgstr "Carrière"
 
 #: widget/WidgetCitizen.lua:74
 msgid "上限"
-msgstr "(Quantité)"
+msgstr "Quantité"
 
 #: widget/WidgetCitizen.lua:100
 msgid "提示：预留一定的空闲城民，兵营将这些空闲城民训练成士兵"
@@ -14276,7 +14274,7 @@ msgstr "Vérifier vos troupes"
 
 #: widget/WidgetEventTabButtons.lua:859
 msgid "查看治疗的士兵"
-msgstr "Vérifier votre hôpital"
+msgstr ""
 
 #: widget/WidgetEventTabButtons.lua:894
 msgid "查看材料"
@@ -14284,7 +14282,7 @@ msgstr "Vérifier votre matériel"
 
 #: widget/WidgetEventTabButtons.lua:902
 msgid "查看市政厅"
-msgstr "Vérifier votre hôtel de ville"
+msgstr ""
 
 #: widget/WidgetEventTabButtons.lua:961
 msgid "训练营地空闲"
@@ -14315,7 +14313,7 @@ msgstr "%s(débloque)"
 #: widget/WidgetEventsList.lua:502 widget/WidgetEventsList.lua:509
 #, lua-format
 msgid "%s (升级到 等级%d)"
-msgstr "%s(améliore au Niv %d)"
+msgstr "%s(améliore au niveau %d)"
 
 #: widget/WidgetEventTabButtons.lua:1059 widget/WidgetEventsList.lua:507
 #, lua-format
@@ -14336,7 +14334,7 @@ msgstr "Produit matériel x%d"
 #: widget/WidgetEventTabButtons.lua:1107 widget/WidgetEventsList.lua:539
 #, lua-format
 msgid " %s Lv %d"
-msgstr " %s Niv %d"
+msgstr ""
 
 #: widget/WidgetEventsList.lua:368
 msgid "查看已经拥有的建筑"
@@ -14386,7 +14384,7 @@ msgstr "Gens que vous avez contacté récemment"
 
 #: widget/WidgetMakeEquip.lua:144
 msgid "立即制造"
-msgstr "Sur-le-champ"
+msgstr "Construire maintenant"
 
 #: widget/WidgetMakeEquip.lua:204
 msgid "好样的领主！等待打造完成后，您即可在“龙巢”中为巨龙穿上该装备！"
@@ -14433,8 +14431,8 @@ msgstr "Matériel produit avec succès"
 #: widget/WidgetManufactureNew.lua:257
 msgid "当前材料库房中的材料已满，你可能无法获得这些材料。是否仍要获取？"
 msgstr ""
-"Votre dépôt de matériel est plein de ce type de matériel, vous pourriez ne "
-"pas obtenir de ce matériel cette fois. Êtes-vous sur de le faire?"
+"Votre matériel dépôt est plein de ce type de matériel, vous pourriez ne pas "
+"obtenir de ce matériel cette fois. Êtes-vous sur de le faire?"
 
 #: widget/WidgetManufactureNew.lua:268
 msgid "所需资源"
@@ -14443,7 +14441,7 @@ msgstr "Besoin de ressources"
 #: widget/WidgetManufactureNew.lua:312
 #, lua-format
 msgid "随机制造%d个材料"
-msgstr "Produire %d matériaux (aléatoire)"
+msgstr "Produire %d matériel (aléatoire)"
 
 #: widget/WidgetManufactureNew.lua:386
 msgid "强行获取"
@@ -14511,13 +14509,13 @@ msgstr "Force spéciale"
 
 #: widget/WidgetMaterials.lua:158
 msgid "建筑&科技"
-msgstr "Bâtiment/Science"
+msgstr "Bâtiment et science"
 
 #: widget/WidgetMilitaryTechnology.lua:91
 #: widget/WidgetMilitaryTechnology.lua:135
 #, lua-format
 msgid "Lv%d"
-msgstr "Niv%d"
+msgstr ""
 
 #: widget/WidgetMilitaryTechnologyStatus.lua:43
 msgid "请选择一个科技进行研发"
@@ -14557,9 +14555,9 @@ msgstr "Promouvoir maintenant"
 
 #: widget/WidgetPromoteSoldier.lua:227
 #: widget/WidgetUpgradeMilitaryTech.lua:214
-#, fuzzy, lua-format
+#, lua-format
 msgid "升级队列已满:%d/1"
-msgstr "Aucune queue de construction disponible"
+msgstr "Aucune queue de construction disponible: %d/1"
 
 #: widget/WidgetPromoteSoldier.lua:237
 msgid "科技点数"
