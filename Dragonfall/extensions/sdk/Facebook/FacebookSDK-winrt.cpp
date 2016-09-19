@@ -68,12 +68,14 @@ std::string FacebookSDK::GetFBUserId()
 void FacebookSDK::Login()
 {
 	FBSession^ sess = FBSession::ActiveSession;
-	if (m_isLogining || sess->LoggedIn)
+	if (m_isLogining)
 	{
 		return;
 	}
 	m_isLogining = true;
+
 	clearFacebookCookies();//clear cookies!
+	Initialize("");
 	Platform::Collections::Vector<Platform::String^>^ permissionList = ref new Platform::Collections::Vector<Platform::String^>();
 	permissionList->Append(L"public_profile");
 	FBPermissions^ permissions = ref new FBPermissions(permissionList->GetView());
