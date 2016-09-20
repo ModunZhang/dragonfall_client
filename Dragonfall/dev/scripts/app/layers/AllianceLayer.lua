@@ -810,6 +810,15 @@ local FIRE_TAG = 11901
 local NEWBEE_TAG = 11902
 local SMOKE_TAG = 12003
 local VILLAGE_TAG = 120994
+local runningTimeLabel = function(color)
+    local time_bg = display.newSprite("online_time_bg_96x36.png")
+                    :align(display.CENTER_BOTTOM):scale(0.8)
+    time_bg.label = UIKit:CreateNumberImageNode({
+        size = 20,
+        color = color or 0xffffedae,
+    }):addTo(time_bg):align(display.CENTER,96/2,36/2)
+    return time_bg
+end
 function AllianceLayer:RefreshObjectInfo(object, mapObj, alliance)
     local x,y = mapObj.location.x, mapObj.location.y
     object.x = x
@@ -867,12 +876,21 @@ function AllianceLayer:RefreshObjectInfo(object, mapObj, alliance)
                 object:removeChildByTag(NEWBEE_TAG)
             end
         end
-        if member.isProtected then
+
+        if member:isProtect() then
             if object:getChildByTag(SMOKE_TAG) then
                 object:removeChildByTag(SMOKE_TAG)
             end
             if not object:getChildByTag(FIRE_TAG) then
-                fire():addTo(object, 2, FIRE_TAG):pos(0,-50)
+                local fire = fire():addTo(object, 2, FIRE_TAG):pos(0,-50)
+                local label = runningTimeLabel(0xffff3c00):addTo(fire, 1):pos(0, -10).label
+                fire:scheduleAt(function()
+                    if member:isProtect() then
+                        label:SetNumString(GameUtils:formatTimeStyle1(member:getProtectedTime()))
+                    else
+                        fire:removeFromParent()
+                    end
+                end)
             end
         else
             if object:getChildByTag(FIRE_TAG) then

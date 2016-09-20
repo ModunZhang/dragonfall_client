@@ -233,7 +233,7 @@ function GameUIAllianceCityEnter:GetEnterButtons()
                 local attack_func = function ()
                     local newbeeProtect = NetManager:getServerTime()
                                         < member.newbeeProtectFinishTime
-                    if member.isProtected or newbeeProtect then
+                    if member:isProtect() or newbeeProtect then
                         UIKit:showMessageDialog(_("提示"),_("目标城市已被击溃并进入保护期，可能无法发生战斗，你是否继续派兵?"), function()
                             UIKit:newGameUI('GameUISendTroopNew',function(dragonType,soldiers,total_march_time,gameuialliancesendtroops)
                                 NetManager:getAttackPlayerCityPromise(dragonType, soldiers, alliance._id, member.id):done(function()
@@ -261,9 +261,9 @@ function GameUIAllianceCityEnter:GetEnterButtons()
             local masterOfDefender = UtilsForItem:IsItemEventActive(User, "masterOfDefender")
             local newbeeProtect = NetManager:getServerTime()
                                 < me.newbeeProtectFinishTime
-            if me.isProtected or newbeeProtect or masterOfDefender then
+            if me:isProtect() or newbeeProtect or masterOfDefender then
                 local text
-                local protected = me.isProtected or newbeeProtect
+                local protected = me:isProtect() or newbeeProtect
                 if protected and masterOfDefender then
                     text = _("进攻玩家城市将失去保护状态以及城防大师效果,确定继续派兵?")
                 elseif protected then
@@ -278,22 +278,15 @@ function GameUIAllianceCityEnter:GetEnterButtons()
             self:LeftButtonClicked()
         end)
         local my_allaince = Alliance_Manager:GetMyAlliance()
-        -- attack_button:setButtonEnabled(my_allaince.basicInfo.status == "fight")
         local strike_button = self:BuildOneButton("strike_66x62.png",_("突袭")):onButtonClicked(function()
             local toLocation = self:GetLogicPosition()
-            -- if isProtected then
-            --     UIKit:showMessageDialog(_("提示"),_("突袭玩家城市将失去保护状态，确定继续派兵?"),function ()
-            --         UIKit:newGameUI("GameUIStrikePlayer",1,{memberId = member.id,alliance = alliance, toLocation = toLocation,targetIsProtected = member.masterOfDefender}):AddToCurrentScene(true)
-            --     end)
-            -- else
             UIKit:newGameUI("GameUIStrikePlayer",1,{
                 memberId = member.id,
                 alliance = alliance,
                 toLocation = toLocation,
-                targetIsProtected = member.isProtected
+                targetIsProtected = member:isProtect()
                 or member.newbeeProtect
             }):AddToCurrentScene(true)
-            -- end
             self:LeftButtonClicked()
         end)
         -- strike_button:setButtonEnabled(my_allaince.basicInfo.status == "fight")

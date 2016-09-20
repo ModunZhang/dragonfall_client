@@ -163,6 +163,9 @@ end
 function Alliance:GetMemberByMapObjectsId(id)
     for _,v in pairs(self.members) do
         if v.mapId == id then
+            if getmetatable(v) ~= memberMeta then
+                setmetatable(v, memberMeta)
+            end
             return v
         end
     end
