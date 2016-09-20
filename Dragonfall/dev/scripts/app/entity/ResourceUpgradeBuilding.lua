@@ -19,7 +19,7 @@ function ResourceUpgradeBuilding:IsAbleToUpgrade(isUpgradeNow)
     local citizen = UtilsForBuilding:GetLevelUpConfigBy(self:BelongCity():GetUser(), house).citizen
     local next_citizen = UtilsForBuilding:GetLevelUpConfigBy(self:BelongCity():GetUser(), house, 1).citizen
     local free_citizen_limit = self:BelongCity():GetUser():GetResProduction("citizen").limit
-    if (next_citizen-citizen)>free_citizen_limit then
+    if (next_citizen-citizen) >= free_citizen_limit then
         return UpgradeBuilding.NOT_ABLE_TO_UPGRADE.FREE_CITIZEN_ERROR
     end
     return ResourceUpgradeBuilding.super.IsAbleToUpgrade(self,isUpgradeNow)
