@@ -17,7 +17,6 @@ property(memberMeta, "status", "normal")
 property(memberMeta, "kill", 0)
 property(memberMeta, "power", 0)
 property(memberMeta, "loyalty", 0)
-property(memberMeta, "isProtected")
 property(memberMeta, "lastBeAttackedTime", 0)
 property(memberMeta, "keepLevel")
 property(memberMeta, "terrain")
@@ -63,6 +62,12 @@ function memberMeta.new(x, y)
 end
 function memberMeta:DecodeFromJson(json)
     return setmetatable(json, memberMeta)
+end
+function memberMeta:isProtect()
+    return self:getProtectedTime() > 0
+end
+function memberMeta:getProtectedTime()
+    return (self.protectFinishTime / 1000) - app.timer:GetServerTime()
 end
 function memberMeta:LastBeAttackedTime()
     return self.lastBeAttackedTime / 1000

@@ -150,6 +150,12 @@ function GameUIAllianceCityEnter:GetEnterButtons()
                 end)
             else
                 help_button = self:BuildOneButton("help_defense_44x56.png",_("协防")):onButtonClicked(function()
+                    if self:GetMyAlliance():GetSelf():isProtect() then
+                        UIKit:showMessageDialog(_("提示"),
+                                            _("当前你正处于击溃状态，无法协防，请等待"))
+                        self:LeftButtonClicked()
+                        return
+                    end
                     local function helpDefencePlayer()
                         if alliance:GetSelf().helpDefenceDisableFinishTime /1000 > app.timer:GetServerTime() then
                             UIKit:showMessageDialog(_("提示"), _("协防冷却中"), function()end)
@@ -232,8 +238,8 @@ function GameUIAllianceCityEnter:GetEnterButtons()
             local final_func = function ()
                 local attack_func = function ()
                     local newbeeProtect = NetManager:getServerTime()
-                        < member.newbeeProtectFinishTime
-                    if member.isProtected or newbeeProtect then
+                                            < member.newbeeProtectFinishTime
+                    if member:isProtect() or newbeeProtect then
                         UIKit:showMessageDialog(_("提示"),_("目标城市已被击溃并进入保护期，可能无法发生战斗，你是否继续派兵?"), function()
                             UIKit:newGameUI('GameUISendTroopNew',function(dragonType,soldiers,total_march_time,gameuialliancesendtroops)
                                 NetManager:getAttackPlayerCityPromise(dragonType, soldiers, alliance._id, member.id):done(function()
@@ -260,53 +266,74 @@ function GameUIAllianceCityEnter:GetEnterButtons()
             local me = self:GetMyAlliance():GetSelf()
             local masterOfDefender = UtilsForItem:IsItemEventActive(User, "masterOfDefender")
             local newbeeProtect = NetManager:getServerTime()
-                < me.newbeeProtectFinishTime
-            if me.isProtected or newbeeProtect or masterOfDefender then
-                local text
-                local protected = me.isProtected or newbeeProtect
-                if protected and masterOfDefender then
-                    text = _("进攻玩家城市将失去保护状态以及城防大师效果,确定继续派兵?")
-                elseif protected then
-                    text = _("进攻玩家城市将失去保护状态，确定继续派兵?")
-                elseif masterOfDefender then
-                    text = _("进攻玩家城市将失去城防大师效果,确定继续派兵?")
+                                < me.newbeeProtectFinishTime
+            if me:isProtect() or newbeeProtect or masterOfDefender then
+                if me:isProtect() then
+                    UIKit:showMessageDialog(_("提示"),
+                                            _("当前你正处于击溃状态，无法进攻，请等待"))
+                else
+                    local text = ""
+                    if newbeeProtect and masterOfDefender then
+                        text = _("进攻玩家城市将失去保护状态以及城防大师效果,确定继续派兵?")
+                    elseif newbeeProtect then
+                        text = _("进攻玩家城市将失去保护状态，确定继续派兵?")
+                    elseif masterOfDefender then
+                        text = _("进攻玩家城市将失去城防大师效果,确定继续派兵?")
+                    end
+                    UIKit:showMessageDialog(_("提示"),text,final_func)
                 end
-                UIKit:showMessageDialog(_("提示"),text,final_func)
             else
                 final_func()
             end
             self:LeftButtonClicked()
         end)
         local my_allaince = Alliance_Manager:GetMyAlliance()
-        -- attack_button:setButtonEnabled(my_allaince.basicInfo.status == "fight")
         local strike_button = self:BuildOneButton("strike_66x62.png",_("突袭")):onButtonClicked(function()
-            local toLocation = self:GetLogicPosition()
-            local text
-            local me = self:GetMyAlliance():GetSelf()
-            local newbeeProtect = NetManager:getServerTime() < me.newbeeProtectFinishTime
-            local protected = me.isProtected or newbeeProtect
-            local masterOfDefender = UtilsForItem:IsItemEventActive(User, "masterOfDefender")
-            if protected and masterOfDefender then
-                text = _("突袭玩家城市将失去保护状态以及城防大师效果,确定继续派兵?")
-            elseif protected then
-                text = _("突袭玩家城市将失去保护状态，确定继续派兵?")
-            elseif masterOfDefender then
-                text = _("突袭玩家城市将失去城防大师效果,确定继续派兵?")
-            end
-            if me.isProtected or newbeeProtect or masterOfDefender then
-                UIKit:showMessageDialog(_("提示"),text,function ()
-                    UIKit:newGameUI("GameUIStrikePlayer",1,{memberId = member.id,alliance = alliance, toLocation = toLocation,targetIsProtected = member.isProtected
-                        or member.newbeeProtect}):AddToCurrentScene(true)
-                end)
-            else
-                UIKit:newGameUI("GameUIStrikePlayer",1,{
-                    memberId = member.id,
-                    alliance = alliance,
-                    toLocation = toLocation,
-                    targetIsProtected = member.isProtected
-                    or member.newbeeProtect
-                }):AddToCurrentScene(true)
-            end
+                local toLocation = self:GetLogicPosition()
+                local final_func = function( )
+                    UIKit:newGameUI("GameUIStrikePlayer",1,{
+                        memberId = member.id,
+                        alliance = alliance,
+                        toLocation = toLocation,
+                        targetIsProtected = member:isProtect()
+                        or member.newbeeProtect
+                    }):AddToCurrentScene(true)
+                end
+                local me = self:GetMyAlliance():GetSelf()
+                local newbeeProtect = NetManager:getServerTime()
+                                        < me.newbeeProtectFinishTime
+                if me:isProtect() or newbeeProtect or masterOfDefender then
+                    if me:isProtect() then
+                        UIKit:showMessageDialog(_("提示"),
+                                                _("当前你正处于击溃状态，无法侦查，请等待"))
+                    else
+                        local text = ""
+                        if newbeeProtect and masterOfDefender then
+                            text = _("突袭玩家城市将失去保护状态以及城防大师效果,确定继续派兵?")
+                        elseif newbeeProtect then
+                            text = _("突袭玩家城市将失去保护状态，确定继续派兵?")
+                        elseif masterOfDefender then
+                            text = _("突袭玩家城市将失去城防大师效果,确定继续派兵?")
+                        end
+                        UIKit:showMessageDialog(_("提示"),text,final_func)
+                    end
+                else
+                    final_func()
+                end
+            -- local masterOfDefender = UtilsForItem:IsItemEventActive(User, "masterOfDefender")
+            -- if protected and masterOfDefender then
+            --     text = _("突袭玩家城市将失去保护状态以及城防大师效果,确定继续派兵?")
+            -- elseif protected then
+            --     text = _("突袭玩家城市将失去保护状态，确定继续派兵?")
+            -- elseif masterOfDefender then
+            --     text = _("突袭玩家城市将失去城防大师效果,确定继续派兵?")
+            -- end
+            -- if me.isProtected or newbeeProtect or masterOfDefender then
+            --     UIKit:showMessageDialog(_("提示"),text,function ()
+            --         UIKit:newGameUI("GameUIStrikePlayer",1,{memberId = member.id,alliance = alliance, toLocation = toLocation,targetIsProtected = member.isProtected
+            --             or member.newbeeProtect}):AddToCurrentScene(true)
+            --     end)
+            -- else
             self:LeftButtonClicked()
         end)
         -- strike_button:setButtonEnabled(my_allaince.basicInfo.status == "fight")
