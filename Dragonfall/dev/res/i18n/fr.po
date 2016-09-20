@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: dragonfall\n"
-"POT-Creation-Date: 2016-09-20 12:14+0800\n"
-"PO-Revision-Date: 2016-09-20 12:14+0800\n"
+"POT-Creation-Date: 2016-09-20 14:40+0800\n"
+"PO-Revision-Date: 2016-09-20 14:40+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -4094,14 +4094,20 @@ msgstr "Tu es en feu, ne peuvent pas scout, attendez s'il vous plaît."
 #: ui/GameUIAllianceCityEnter.lua:312
 msgid "突袭玩家城市将失去保护状态以及城防大师效果,确定继续派兵?"
 msgstr ""
+"Vous allez perdre votre protection et votre maitre de défense si vous "
+"explorer une autre cité, voulez-vous continuer?"
 
 #: ui/GameUIAllianceCityEnter.lua:314
 msgid "突袭玩家城市将失去保护状态，确定继续派兵?"
 msgstr ""
+"Vous allez perdre votre protection si vous explorer une autre cité, voulez-"
+"vous continuer?"
 
 #: ui/GameUIAllianceCityEnter.lua:316
 msgid "突袭玩家城市将失去城防大师效果,确定继续派兵?"
 msgstr ""
+"Vous allez perdre l'effet de votre maitre de défense si vous explorer une "
+"autre cité, voulez-vous continuer?"
 
 #: ui/GameUIAllianceCityEnter.lua:353
 msgid "巨石阵等级不足，不能进入其他联盟玩家城市"
@@ -15019,6 +15025,3 @@ msgstr "Seulement le chef et les généraux peuvent migrer une alliance!"
 #: widget/WidgetWorldAllianceInfo.lua:510
 msgid "是否确认迁移联盟至该领土？"
 msgstr "Êtes-vous sur de migrer l'alliance sur ce terrain?"
-
-#~ msgid "是否确认将账号绑定到Facebook %s"
-#~ msgstr "Êtes vous sur de lier votre compte avec Facebook %s?"
