@@ -1,4 +1,4 @@
-# This file was generated from /Volumes/WorkSpace/NewDragonfall/Dragonfall/tools/batcat/i18n.xlsx
+# This file was generated from /Users/gaozhou/Work/kod.proj/NewDragonfall/Dragonfall/tools/batcat/i18n.xlsx
 msgid ""
 msgstr ""
 "Project-Id-Version: dragonfall\n"
@@ -7,7 +7,7 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: _\n"
 "X-Poedit-Basepath: ../../scripts/app/\n"
-"PO-Revision-Date: 2016-08-30 15:01+0800\n"
+"PO-Revision-Date: 2016-09-20 11:51+0800\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: xls-to-po 1.0\n"
@@ -1634,6 +1634,9 @@ msgstr "驻防成功"
 msgid "购买%s道具成功"
 msgstr "购买%s道具成功"
 
+msgid "你正在侦察，进攻或协防，无法使用城防大师"
+msgstr "你正在侦察，进攻或协防，无法使用城防大师"
+
 msgid "使用%s道具X %d成功"
 msgstr "使用%s道具X %d成功"
 
@@ -2450,6 +2453,9 @@ msgstr "是否确认撤防？"
 msgid "协防"
 msgstr "协防"
 
+msgid "当前你正处于击溃状态，无法协防，请等待"
+msgstr "当前你正处于击溃状态，无法协防，请等待"
+
 msgid "协防冷却中"
 msgstr "协防冷却中"
 
@@ -2474,6 +2480,9 @@ msgstr "进攻"
 msgid "目标城市已被击溃并进入保护期，可能无法发生战斗，你是否继续派兵?"
 msgstr "目标城市正处于保护期，可能无法发生战斗并掠夺资源，是否继续派兵?"
 
+msgid "当前你正处于击溃状态，无法进攻，请等待"
+msgstr "当前你正处于击溃状态，无法进攻，请等待"
+
 msgid "进攻玩家城市将失去保护状态以及城防大师效果,确定继续派兵?"
 msgstr "进攻玩家城市将失去保护状态以及城防大师效果,确定继续派兵?"
 
@@ -2485,6 +2494,9 @@ msgstr "进攻玩家城市将失去城防大师效果,确定继续派兵?"
 
 msgid "突袭"
 msgstr "侦察"
+
+msgid "当前你正处于击溃状态，无法侦查，请等待"
+msgstr "当前你正处于击溃状态，无法侦查，请等待"
 
 msgid "巨石阵等级不足，不能进入其他联盟玩家城市"
 msgstr "巨石阵等级不足，不能进入其他联盟玩家城市"
@@ -6628,9 +6640,6 @@ msgstr "还不能领取累计充值奖励"
 
 msgid "还不能领取月卡每日奖励"
 msgstr "还不能领取月卡每日奖励"
-
-msgid "你正在侦察，进攻或协防，无法使用城防大师"
-msgstr "你正在侦察，进攻或协防，无法使用城防大师"
 
 msgid "用于建造高等级建筑和研发高级科技"
 msgstr "用于建造高等级建筑和研发高级科技"

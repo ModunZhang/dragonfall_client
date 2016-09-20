@@ -177,10 +177,17 @@ function GameUIAllianceMosterEnter:onEnter()
             UIKit:showSendTroopMessageDialog(attack_monster_func,"buildingMaterials",_("建筑材料"))
         end
 
+        if my_alliance:GetSelf():isProtect() then
+            UIKit:showMessageDialog(_("提示"),
+                                            _("当前你正处于击溃状态，无法进攻，请等待"))
+        else
+            final_func()
+        end
+
         -- if my_alliance:GetSelf().masterOfDefender then
         --     UIKit:showMessageDialog(_("提示"),_("进攻该目标将失去保护状态，确定继续派兵?"),final_func)
         -- else
-            final_func()
+
         -- end
         end):addTo(body):align(display.RIGHT_TOP, b_width, 10)
     local s = btn:getCascadeBoundingBox().size

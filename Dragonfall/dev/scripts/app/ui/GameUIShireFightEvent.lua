@@ -96,7 +96,12 @@ function GameUIShireFightEvent:BuildUI()
                 event.target:removeChildByTag(111)
                 needTips = true
             end
-        self:DispathSoliderButtonClicked(needTips)
+        if Alliance_Manager:GetMyAlliance():GetSelf():isProtect() then
+            UIKit:showMessageDialog(_("提示"),
+                                            _("当前你正处于击溃状态，无法进攻，请等待"))
+        else
+            self:DispathSoliderButtonClicked(needTips)
+        end
     end)
     self.dispath_button = dispath_button
     local list,list_node = UIKit:commonListView({

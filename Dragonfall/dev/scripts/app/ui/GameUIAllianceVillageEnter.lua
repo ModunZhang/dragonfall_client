@@ -335,11 +335,13 @@ function GameUIAllianceVillageEnter:GetEnterButtons()
                     end
                     UIKit:showSendTroopMessageDialog(attack_func,"dragonMaterials",_("龙材料"))
                 end
-                -- if checkMeIsProtectedWarinng then
-                --     UIKit:showMessageDialog(_("提示"),_("进攻村落将失去保护状态，确定继续派兵?"),final_func)
-                -- else
+
+                if self.my_alliance:GetSelf():isProtect() then
+                    UIKit:showMessageDialog(_("提示"),
+                                                    _("当前你正处于击溃状态，无法进攻，请等待"))
+                else
                     final_func()
-                -- end
+                end
                 self:LeftButtonClicked()
             end)
             buttons = {attack_button}
@@ -363,11 +365,12 @@ function GameUIAllianceVillageEnter:GetEnterButtons()
                     UIKit:showSendTroopMessageDialog(attack_func,"dragonMaterials",_("龙材料"))
                 end
 
-                -- if checkMeIsProtectedWarinng then
-                --     UIKit:showMessageDialog(_("提示"),_("进攻村落将失去保护状态，确定继续派兵?"),final_func)
-                -- else
+                if self.my_alliance:GetSelf():isProtect() then
+                    UIKit:showMessageDialog(_("提示"),
+                                                    _("当前你正处于击溃状态，无法进攻，请等待"))
+                else
                     final_func()
-                -- end
+                end
                 self:LeftButtonClicked()
             end)
             local strike_button = self:BuildOneButton("strike_66x62.png",_("突袭")):onButtonClicked(function()
@@ -400,12 +403,12 @@ function GameUIAllianceVillageEnter:GetEnterButtons()
                     UIKit:showSendTroopMessageDialog(attack_func, "dragonMaterials",_("龙材料"))
                 end
 
-
-                -- if checkMeIsProtectedWarinng then
-                --     UIKit:showMessageDialog(_("提示"),_("进攻村落将失去保护状态，确定继续派兵?"),final_func)
-                -- else
+                if self.my_alliance:GetSelf():isProtect() then
+                    UIKit:showMessageDialog(_("提示"),
+                                                    _("当前你正处于击溃状态，无法进攻，请等待"))
+                else
                     final_func()
-                -- end
+                end
                 self:LeftButtonClicked()
             end)
             buttons = {attack_button}
