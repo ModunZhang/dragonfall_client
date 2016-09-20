@@ -188,13 +188,16 @@ function DataUtils:buyResource(need, has)
             local currentBuy = 0
             if key == "citizen" then
                 local freeCitizenLimit = User:GetResProduction("citizen").limit
-                while required > 0 and freeCitizenLimit ~= 0 do
+                if freeCitizenLimit <= 0 then
+                    freeCitizenLimit = 1
+                end
+                while required > 0 do
                     local requiredPercent = required / freeCitizenLimit
                     for i=#config,1,-1 do
                         item = config[i]
                         if item.min < requiredPercent then
                             gemUsed = gemUsed + item.gem
-                            local citizenBuyed = math.floor(item.resource * freeCitizenLimit)
+                            local citizenBuyed = math.ceil(item.resource * freeCitizenLimit)
                             required = required - citizenBuyed
                             currentBuy = currentBuy + citizenBuyed
                             break
