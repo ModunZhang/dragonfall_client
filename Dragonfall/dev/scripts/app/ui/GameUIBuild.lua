@@ -2,6 +2,7 @@ local cocos_promise = import("..utils.cocos_promise")
 local promise = import("..utils.promise")
 local window = import("..utils.window")
 local BuildingRegister = import("..entity.BuildingRegister")
+local UpgradeBuilding = import("..entity.UpgradeBuilding")
 local WidgetFteArrow = import("..widget.WidgetFteArrow")
 local WidgetUIBackGround = import("..widget.WidgetUIBackGround")
 local WidgetPushButton = import("..widget.WidgetPushButton")
@@ -138,7 +139,39 @@ function GameUIBuild:OnCityChanged()
         end
     end)
 end
+function GameUIBuild:IsCitizenEnough(type)
+    local house = {type = type, level = 1}
+    local citizen = UtilsForBuilding:GetLevelUpConfigBy(User, house).citizen
+    if citizen >= User:GetResProduction("citizen").limit then
+        local dialog = UIKit:showMessageDialog()
+        dialog:CreateOKButton(
+            {
+                listener = function ()
+                    local dwelling = City:GetLowestestBuildingByType("dwelling")
+                    local jumpto = City:GetRuinsNotBeenOccupied()[1] or dwelling
+                    local scene = display.getRunningScene()
+                    local building_sprite = scene:GetSceneLayer()
+                                            :FindBuildingSpriteByBuilding(jumpto, City)
+                    local x,y = jumpto:GetMidLogicPosition()
+                    scene:GotoLogicPoint(x,y,40):next(function()
+                        if scene.AddIndicateForBuilding then
+                            scene:AddIndicateForBuilding(building_sprite,"dwelling",true)
+                        end
+                    end)
+                    self:LeftButtonClicked()
+                end,
+                btn_name= _("前往"),
+            }
+        )
+        dialog:SetTitle(_("提示"))
+        dialog:SetPopMessage(UpgradeBuilding.NOT_ABLE_TO_UPGRADE.FREE_CITIZEN_ERROR )
+        return false
+    else
+        return true
+    end
+end
 function GameUIBuild:OnBuildOnItem(item)
+    if not self:IsCitizenEnough(item.building.building_type) then return end
     local city = self.build_city
     local User = city:GetUser()
     if UtilsForBuilding:GetFreeBuildQueueCount(User) <= 0 and
