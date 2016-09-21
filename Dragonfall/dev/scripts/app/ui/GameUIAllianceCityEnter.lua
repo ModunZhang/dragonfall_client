@@ -300,6 +300,7 @@ function GameUIAllianceCityEnter:GetEnterButtons()
                     }):AddToCurrentScene(true)
                 end
                 local me = self:GetMyAlliance():GetSelf()
+                local masterOfDefender = UtilsForItem:IsItemEventActive(User, "masterOfDefender")
                 local newbeeProtect = NetManager:getServerTime()
                                         < me.newbeeProtectFinishTime
                 if me:isProtect() or newbeeProtect or masterOfDefender then
