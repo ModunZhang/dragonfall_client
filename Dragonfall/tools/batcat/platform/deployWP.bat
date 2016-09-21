@@ -13,12 +13,12 @@ if not exist %~f1 (
 	goto ERROR
 )
 
-echo./*
-echo. * Uninstall Dragonfall windows phone project from device...
-echo. */
-echo.
+::echo./*
+::echo. * Uninstall Dragonfall windows phone project from device...
+::echo. */
+::echo.
 
-%CMDTOOL% /uninstall %PRODUCT_ID% /targetdevice:de
+::%CMDTOOL% /uninstall %PRODUCT_ID% /targetdevice:de
 
 echo./*
 echo. * Install Dragonfall windows phone project to device...
