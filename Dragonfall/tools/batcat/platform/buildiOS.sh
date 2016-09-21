@@ -1,17 +1,17 @@
 #!/bin/bash --login
 #---------------------------------------------------
 # Date: 2016/08/15
-# Version: 1.0.0 beta
+# Version: 2.0.0
 # by dannyhe
 #---------------------------------------------------
 ## 使用
 # mac下通过`xcodebuild`自动打包并生成ipa文件的脚本,并提供将打包文件导出为ipa的功能.无需关心Xcode中的证书配置,脚本自动修改.但是必须提前安装好证书的配置.
 # 1. buildiOS.sh xxx.xcarchive ./output Inhouse # 表示将xxx.xcarchive在Inhouse模式下生成ipa文件到output目录.
-# 2. 其他形式的调用(3个参数的情况除外)会运行打包项目操作并生成相应的ipa文件.
+# 2. buildiOS.sh xxx.ipa ./output # 表示将xxx.ipa强制设置apphoc为true在Inhose模式下重新打包成新的ipa包到output目录.
+# 3. 其他形式的调用会运行打包项目操作并生成相应的ipa文件.
 ## 注意:
 # 1.脚本导出app store包的时候强制包含符号文件 .
-# 2.TeamID定值为9RNQD8JEQ2.
-# 3.bitcode在任何模式下关闭.
+# 2.bitcode在任何模式下关闭.
 #---------------------------------------------------
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" # current dir path
@@ -32,13 +32,19 @@ TeamID="9RNQD8JEQ2" # The Developer Portal team to use for this export.
 DistributionCodeIdentity="iPhone Distribution: Pin Wen Huang (9RNQD8JEQ2)" # Inhouse and Distribution build
 # Provision
 DistributionProvision="65ab5db9-8a57-4a7d-863e-260db8d96c56" # Distribution profile identifier
+# mobileprovision file of ad-hoc
+ADHOC_PROVISION="${DIR}/../../iOS_profile/dragonrisejlzbworadhoc.mobileprovision"
+
+#---------------------------------------------------
+# Main function
+#---------------------------------------------------
 
 BuildVer=`/usr/libexec/PlistBuddy -c "print CFBundleShortVersionString" $InfoPlistPath`
-OutputName=`date "+%Y-%m-%d_%H_%M_%S"`_${TargetName}_${BuildVer}
-ArchiveFileFullPath=${PrjDir}/Archive/${OutputName}.xcarchive
-IpaFileDirectory=${PrjDir}/Archive/Outputs/${OutputName}
+OutputName=${TargetName}_${BuildVer}
+OutputDirPath=${PrjDir}/Output/${OutputName}
 
-function getProvisionMethod()
+# convert ProvisionType to Xcode method
+function getProvisionMethod2PlistConfig()
 {
 	case $1 in 
 		Distribution)
@@ -54,7 +60,7 @@ function getProvisionMethod()
 			echo "app-store"
 	esac
 }
-
+# Xcode config
 function setBuildMethod()
 {
 	/usr/libexec/PlistBuddy -c "set method $1" $ExportOptionsPlistPath
@@ -67,62 +73,130 @@ function getBuildMethod()
 
 function setBuildTeamID()
 {
-	/usr/libexec/PlistBuddy -c "set method ${TeamID}" $ExportOptionsPlistPath
+	/usr/libexec/PlistBuddy -c "set teamID ${TeamID}" $ExportOptionsPlistPath
+}
+
+# project config
+
+function setAppHoc()
+{
+	/usr/libexec/PlistBuddy -c "set AppHoc $1" $InfoPlistPath
+	finallyVal=`/usr/libexec/PlistBuddy -c 'print AppHoc' $InfoPlistPath`
+	echo ">> finish set appHoc value:${finallyVal}"
+}
+
+function archiveAndExportProject()
+{
+	iApphoc=$1
+	iArchiveDirName="Production_Server"
+	iTimestamp=`date "+%Y-%m-%d_%H_%M_%S"`
+	iFinalOutputArchiveName="${OutputName}_${iArchiveDirName}_${iTimestamp}.xcarchive"
+	iArchiveFileFullPath="${OutputDirPath}/${iFinalOutputArchiveName}"
+	archiveProject ${iArchiveFileFullPath}
+	iFinalOutputIpaDirPath="${OutputDirPath}/IPAs/${iArchiveDirName}_${iTimestamp}"
+	exportArchive2IpaWithConfig ${iArchiveFileFullPath} "${iFinalOutputIpaDirPath}_Inhouse" "Inhouse"
+	exportArchive2IpaWithConfig ${iArchiveFileFullPath} "${iFinalOutputIpaDirPath}_Distribution" "Distribution"
+	#resign ipa for debug server
+	resignIPA2DebugServerAdHoc  "${iFinalOutputIpaDirPath}_Distribution/${SchemeName}.ipa" "${OutputDirPath}/IPAs/Development_Server_${iTimestamp}_Inhouse"
 }
 
 function archiveProject()
 {
+	iArchiveFileFullPath=$1
+	setAppHoc false
 	cd $PrjDir
 	xcodebuild clean
-	xcodebuild -sdk iphoneos -configuration Release -scheme ${SchemeName} -target "${TargetName}" -archivePath ${ArchiveFileFullPath} CODE_SIGN_IDENTITY="${DistributionCodeIdentity}" PROVISIONING_PROFILE="${DistributionProvision}" archive
+	xcodebuild -sdk iphoneos -configuration Release -scheme ${SchemeName} -target "${TargetName}" -archivePath ${iArchiveFileFullPath} CODE_SIGN_IDENTITY="${DistributionCodeIdentity}" PROVISIONING_PROFILE="${DistributionProvision}" archive
 	cd $DIR
 }
 
-function exportArchive()
+function normalExportProject()
 {
-	BakMethod=$(getBuildMethod)
-	setBuildMethod $(getProvisionMethod $ProvisionType)
 	echo "---------------------------------------------------"
-	/usr/libexec/PlistBuddy -c 'print' ${ExportOptionsPlistPath}
+	echo ">> export project"
 	echo "---------------------------------------------------"
-	xcodebuild -exportArchive -exportOptionsPlist ${ExportOptionsPlistPath} -archivePath ${ArchiveFileFullPath} -exportPath ${IpaFileDirectory}
-	setBuildMethod $BakMethod
-	/usr/libexec/PlistBuddy -c 'print' ${ExportOptionsPlistPath}
+	archiveAndExportProject
 }
 
-function normalArchiveAndExport()
+function exportArchive2IpaWithConfig()
 {
-	echo "--Begin--"
-	echo "Archive"
 	echo "---------------------------------------------------"
-	archiveProject
-	echo "PackageApplication"
+	echo ">> export ipa"
 	echo "---------------------------------------------------"
-	exportArchive
-	echo "---------------------------------------------------"
-	echo "--End--"
-}
-
-function exportArchiveWithConfig()
-{
-	echo "--Begin--"
 	iArchiveFileFullPath=$1
 	iIpaFileDirectory=$2
 	iProvisionType=$3
 	BakMethod=$(getBuildMethod)
-	setBuildMethod $(getProvisionMethod $iProvisionType)
-	echo "---------------------------------------------------"
+	setBuildMethod $(getProvisionMethod2PlistConfig $iProvisionType)
+	setBuildTeamID 
 	/usr/libexec/PlistBuddy -c 'print' ${ExportOptionsPlistPath}
-	echo "---------------------------------------------------"
-	xcodebuild -exportArchive -exportOptionsPlist ${ExportOptionsPlistPath} -archivePath ${iArchiveFileFullPath} -exportPath ${iIpaFileDirectory}
+	xcodebuild -exportArchive -exportOptionsPlist ${ExportOptionsPlistPath} -archivePath ${iArchiveFileFullPath} -exportPath "${iIpaFileDirectory}"
 	setBuildMethod $BakMethod
 	/usr/libexec/PlistBuddy -c 'print' ${ExportOptionsPlistPath}
 	echo "--End--"
 }
 
+function resignIPA2DebugServerAdHoc()
+{
+	echo "---------------------------------------------------"
+	echo ">> resign ipa file"
+	echo "---------------------------------------------------"
+	sourceIPAPath=$1
+	targetIPADirPath=$2
+	if test -f $sourceIPAPath;then
+		echo "Check ipa file: OK"
+	else
+		echo "Error: ipa file was wrong.\n $sourceIPAPath"
+		exit 1
+	fi
+	# Check if the supplied file is an ipa or an app file
+	if [ "${sourceIPAPath##*.}" = "ipa" ]
+		then
+			# Unzip the old ipa quietly
+			unzip -q "$sourceIPAPath" -d temp
+	else
+		echo "Error: ipa file was wrong.\n$sourceIPAPath"
+		exit 1
+	fi
+	test -f ../temp.ipa && rm -f ../temp.ipa
+	APP_NAME=$(ls temp/Payload/)
+	echo "APP_NAME=$APP_NAME" >&2
+	echo "Adding the new provision: $ADHOC_PROVISION"
+	cp "$ADHOC_PROVISION" "temp/Payload/$APP_NAME/embedded.mobileprovision"
+	ENTITLEMENTS="temp/Payload/$APP_NAME/archived-expanded-entitlements.xcent"
+	INFOFILENAME=`basename $InfoPlistPath`
+	PLISTFILE="temp/Payload/${APP_NAME}/${INFOFILENAME}"
+	echo "Update plist file: ${PLISTFILE}" >&2
+	/usr/libexec/PlistBuddy -c "set AppHoc true" $PLISTFILE
+	echo "Using Entitlements: ${ENTITLEMENTS}" >&2
+	/usr/bin/codesign -f -s "$DistributionCodeIdentity" --entitlements="$ENTITLEMENTS" "temp/Payload/$APP_NAME"
+	if test -d $targetIPADirPath;then
+		echo "Check target path exist: $targetIPADirPath" >&2
+	else
+		echo "Check target path new: $targetIPADirPath" >&2
+		mkdir -p $targetIPADirPath
+	fi
+	NEW_FILE="${targetIPADirPath}/${SchemeName}.ipa"
+	# Zip up the contents of the temp folder
+	# Navigate to the temporary directory (sending the output to null)
+	# Zip all the contents, saving the zip file in the above directory
+	# Navigate back to the orignating directory (sending the output to null)
+	pushd temp > /dev/null
+	zip -qry ../temp.ipa *
+	popd > /dev/null
+
+	# Move the resulting ipa to the target destination
+	mv temp.ipa "$NEW_FILE"
+
+	# Remove the temp directory
+	rm -rf "temp"
+}
+
 #---------------------------------------------------
-if [ $# -eq 3 ];then
-	exportArchiveWithConfig $@
-else
-	normalArchiveAndExport
+if [ $# -eq 3 ];then #export ipa with archive file
+	exportArchive2IpaWithConfig $@
+elif [ $# -eq 2 ];then #resign ipa to debug model
+	resignIPA2DebugServerAdHoc $@
+else 
+	normalExportProject #normal archive the project and export ipa files
 fi
