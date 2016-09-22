@@ -395,6 +395,38 @@ function GameUIAllianceEnterBase:GetBuildingDesc()
     return _("联盟将军可将联盟建筑移动到空地,玩家可将自己的城市移动到空地处,空地定期刷新放逐者的村落,树木,山脉和湖泊")
 end
 
+function GameUIAllianceEnterBase:AttackCallback(func, checknewbee)
+    self:MarchCallback(_("当前你正处于击溃状态，无法进攻，请等待"),
+                       _("进攻该目标将失去保护状态，确定继续派兵?"),
+                       func,
+                       checknewbee)
+end
+function GameUIAllianceEnterBase:StrikeCallback(func, checknewbee)
+    self:MarchCallback(_("当前你正处于击溃状态，无法侦查，请等待"),
+                       _("突袭玩家城市将失去保护状态，确定继续派兵?"),
+                       func,
+                       checknewbee)
+end
+function GameUIAllianceEnterBase:MarchCallback(disableText, protectText, func, checknewbee)
+    local me = self.my_alliance:GetSelf()
+    local newbeeProtect = false
+    if checknewbee then
+        newbeeProtect = NetManager:getServerTime()
+                      < me.newbeeProtectFinishTime
+    end
+    local protect = me:isProtect() or newbeeProtect
+    if me:isMarchDisabled() then
+        UIKit:showMessageDialog(_("提示"),
+                                disableText)
+    elseif protect then
+        UIKit:showMessageDialog(_("提示"),
+                                protectText,
+                                func)
+    else
+        func()
+    end
+end
+
 return GameUIAllianceEnterBase
 
 

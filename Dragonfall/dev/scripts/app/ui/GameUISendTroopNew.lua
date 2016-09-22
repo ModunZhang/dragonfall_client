@@ -582,7 +582,9 @@ function GameUISendTroopNew:CreateBottomPart()
         :onButtonClicked(function(event)
             if event.name == "CLICKED_EVENT" then
                 UIKit:newWidgetUI("WidgetTroopFormation", self:GetSettingSoldiers(),function (formation)
+                if not tolua.isnull(self) then
                     self:SetMaxSoldierByFormation(formation)
+                end
                 end):AddToCurrentScene()
             end
         end):align(display.CENTER,bottom_bg:getContentSize().width/2,bottom_bg:getContentSize().height/2):addTo(bottom_bg)

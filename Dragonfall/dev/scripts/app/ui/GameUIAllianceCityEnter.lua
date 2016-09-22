@@ -150,12 +150,6 @@ function GameUIAllianceCityEnter:GetEnterButtons()
                 end)
             else
                 help_button = self:BuildOneButton("help_defense_44x56.png",_("协防")):onButtonClicked(function()
-                    if self:GetMyAlliance():GetSelf():isProtect() then
-                        UIKit:showMessageDialog(_("提示"),
-                                            _("当前你正处于击溃状态，无法协防，请等待"))
-                        self:LeftButtonClicked()
-                        return
-                    end
                     local function helpDefencePlayer()
                         if alliance:GetSelf().helpDefenceDisableFinishTime /1000 > app.timer:GetServerTime() then
                             UIKit:showMessageDialog(_("提示"), _("协防冷却中"), function()end)
@@ -192,11 +186,18 @@ function GameUIAllianceCityEnter:GetEnterButtons()
                         end
                         self:LeftButtonClicked()
                     end
-                    if helpedByTroopsCount > 0 then
-                        UIKit:showMessageDialog(_("提示"),_("目标协防数量已满，是否确认继续派兵？"),helpDefencePlayer,function()end)
-                    else
-                        helpDefencePlayer()
-                    end
+                    self:MarchCallback(_("当前你正处于击溃状态，无法协防，请等待"),
+                                       _("协防玩家城市将失去保护状态，确定继续派兵?"),
+                    function()
+                        if helpedByTroopsCount > 0 then
+                            UIKit:showMessageDialog(_("提示"),
+                                                    _("目标协防数量已满，是否确认继续派兵？"),
+                                                    helpDefencePlayer,
+                                                    function() end)
+                        else
+                            helpDefencePlayer()
+                        end
+                    end)
                 end)
                 help_button:setTouchSwallowEnabled(true)
                 if self:GetMyAlliance():GetSelf().helpDefenceDisableFinishTime/1000 > app.timer:GetServerTime() then
@@ -268,14 +269,15 @@ function GameUIAllianceCityEnter:GetEnterButtons()
             local newbeeProtect = NetManager:getServerTime()
                                 < me.newbeeProtectFinishTime
             if me:isProtect() or newbeeProtect or masterOfDefender then
-                if me:isProtect() then
+                if me:isMarchDisabled() then
                     UIKit:showMessageDialog(_("提示"),
                                             _("当前你正处于击溃状态，无法进攻，请等待"))
                 else
+                    local protected = me:isProtect() or newbeeProtect
                     local text = ""
-                    if newbeeProtect and masterOfDefender then
+                    if protected and masterOfDefender then
                         text = _("进攻玩家城市将失去保护状态以及城防大师效果,确定继续派兵?")
-                    elseif newbeeProtect then
+                    elseif protected then
                         text = _("进攻玩家城市将失去保护状态，确定继续派兵?")
                     elseif masterOfDefender then
                         text = _("进攻玩家城市将失去城防大师效果,确定继续派兵?")
@@ -289,52 +291,16 @@ function GameUIAllianceCityEnter:GetEnterButtons()
         end)
         local my_allaince = Alliance_Manager:GetMyAlliance()
         local strike_button = self:BuildOneButton("strike_66x62.png",_("突袭")):onButtonClicked(function()
+            self:StrikeCallback(function()
                 local toLocation = self:GetLogicPosition()
-                local final_func = function( )
-                    UIKit:newGameUI("GameUIStrikePlayer",1,{
-                        memberId = member.id,
-                        alliance = alliance,
-                        toLocation = toLocation,
-                        targetIsProtected = member:isProtect()
-                        or member.newbeeProtect
-                    }):AddToCurrentScene(true)
-                end
-                local me = self:GetMyAlliance():GetSelf()
-                local masterOfDefender = UtilsForItem:IsItemEventActive(User, "masterOfDefender")
-                local newbeeProtect = NetManager:getServerTime()
-                                        < me.newbeeProtectFinishTime
-                if me:isProtect() or newbeeProtect or masterOfDefender then
-                    if me:isProtect() then
-                        UIKit:showMessageDialog(_("提示"),
-                                                _("当前你正处于击溃状态，无法侦查，请等待"))
-                    else
-                        local text = ""
-                        if newbeeProtect and masterOfDefender then
-                            text = _("突袭玩家城市将失去保护状态以及城防大师效果,确定继续派兵?")
-                        elseif newbeeProtect then
-                            text = _("突袭玩家城市将失去保护状态，确定继续派兵?")
-                        elseif masterOfDefender then
-                            text = _("突袭玩家城市将失去城防大师效果,确定继续派兵?")
-                        end
-                        UIKit:showMessageDialog(_("提示"),text,final_func)
-                    end
-                else
-                    final_func()
-                end
-            -- local masterOfDefender = UtilsForItem:IsItemEventActive(User, "masterOfDefender")
-            -- if protected and masterOfDefender then
-            --     text = _("突袭玩家城市将失去保护状态以及城防大师效果,确定继续派兵?")
-            -- elseif protected then
-            --     text = _("突袭玩家城市将失去保护状态，确定继续派兵?")
-            -- elseif masterOfDefender then
-            --     text = _("突袭玩家城市将失去城防大师效果,确定继续派兵?")
-            -- end
-            -- if me.isProtected or newbeeProtect or masterOfDefender then
-            --     UIKit:showMessageDialog(_("提示"),text,function ()
-            --         UIKit:newGameUI("GameUIStrikePlayer",1,{memberId = member.id,alliance = alliance, toLocation = toLocation,targetIsProtected = member.isProtected
-            --             or member.newbeeProtect}):AddToCurrentScene(true)
-            --     end)
-            -- else
+                UIKit:newGameUI("GameUIStrikePlayer",1,{
+                    memberId = member.id,
+                    alliance = alliance,
+                    toLocation = toLocation,
+                    targetIsProtected = member:isProtect()
+                    or member.newbeeProtect
+                }):AddToCurrentScene(true)
+            end)
             self:LeftButtonClicked()
         end)
         -- strike_button:setButtonEnabled(my_allaince.basicInfo.status == "fight")

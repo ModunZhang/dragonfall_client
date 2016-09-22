@@ -884,21 +884,17 @@ function AllianceLayer:RefreshObjectInfo(object, mapObj, alliance)
             if not object:getChildByTag(FIRE_TAG) then
                 local fire = fire():addTo(object, 2, FIRE_TAG):pos(0,-50)
                 if isself then
-                    local label = runningTimeLabel(0xffff3c00)
-                                    :addTo(fire, 1):pos(0, -10).label
-                    fire:scheduleAt(function()
-                        if member:isProtect() then
-                            label:SetNumString(GameUtils:formatTimeStyle1(member:getProtectedTime()))
-                        else
-                            fire:removeFromParent()
-                        end
-                    end)
-                else
-                    fire:scheduleAt(function()
-                        if not member:isProtect() then
-                            fire:removeFromParent()
-                        end
-                    end)
+                    if member:isMarchDisabled() then
+                        local label_bg = runningTimeLabel(0xffff3c00)
+                                        :addTo(fire, 1):pos(0, -10)
+                        label_bg:scheduleAt(function()
+                            if member:isMarchDisabled() then
+                                label_bg.label:SetNumString(GameUtils:formatTimeStyle1(member:getLeftProtectedTime()))
+                            else
+                                label_bg:removeFromParent()
+                            end
+                        end)
+                    end
                 end
             end
         else

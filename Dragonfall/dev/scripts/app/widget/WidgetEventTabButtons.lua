@@ -1045,7 +1045,7 @@ function WidgetEventTabButtons:LoadTechnologyEvents()
 end
 function WidgetEventTabButtons:BuildingDescribe(event)
     local User = self.city:GetUser()
-    local str
+    local str = ""
     if event.location then
         local building = UtilsForBuilding:GetBuildingByEvent(User, event)
         if building.level == 0 then
@@ -1055,11 +1055,14 @@ function WidgetEventTabButtons:BuildingDescribe(event)
         end
     else
         local house = UtilsForBuilding:GetBuildingByEvent(User, event)
-        if house.level == 0 then
-            str = string.format(_("%s (建造)"), Localize.building_name[house.type])
-        else
-            str = string.format(_("%s (升级到 等级%d)"), Localize.building_name[house.type], house.level + 1)
+        if house then
+            if house.level == 0 then
+                str = string.format(_("%s (建造)"), Localize.building_name[house.type])
+            else
+                str = string.format(_("%s (升级到 等级%d)"), Localize.building_name[house.type], house.level + 1)
+            end
         end
+
     end
     local time, percent = UtilsForEvent:GetEventInfo(event)
     return str, percent , GameUtils:formatTimeStyle1(time)
