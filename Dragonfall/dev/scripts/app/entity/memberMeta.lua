@@ -2,6 +2,7 @@ local Enum = import("..utils.Enum")
 local property = import("..utils.property")
 local allianceRight = GameDatas.ClientInitGame.allianceRight
 local right = GameDatas.AllianceInitData.right
+local protectMinutes = GameDatas.AllianceInitData.intInit.protectMinutes
 local memberMeta = {}
 memberMeta.__index = memberMeta
 
@@ -64,10 +65,18 @@ function memberMeta:DecodeFromJson(json)
     return setmetatable(json, memberMeta)
 end
 function memberMeta:isProtect()
-    return self:getProtectedTime() > 0
+    return self.protectStartTime > 0
 end
-function memberMeta:getProtectedTime()
-    return (self.protectFinishTime / 1000) - app.timer:GetServerTime()
+function memberMeta:isMarchDisabled()
+    if self:getLeftProtectedTime() > 0 then
+        return true
+    else
+        return false
+    end
+end
+function memberMeta:getLeftProtectedTime()
+    local protectTime = app.timer:GetServerTime() - (self.protectStartTime / 1000)
+    return protectMinutes.value * 60 - protectTime
 end
 function memberMeta:LastBeAttackedTime()
     return self.lastBeAttackedTime / 1000

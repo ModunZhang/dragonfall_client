@@ -303,7 +303,7 @@ function GameUIAllianceVillageEnter:GetEnterButtons()
     local villageEvent = Alliance_Manager:GetMyAllianceVillageEventsByMapId(self:GetMyAlliance(), village_id)
     local other_villageEvent = Alliance_Manager:GetVillageEventsByMapId(self:GetFocusAlliance(),village_id)
     local alliance_id = self:GetFocusAlliance()._id
-    -- local checkMeIsProtectedWarinng = self:CheckMeIsProtectedWarinng()
+    local checkMeIsProtectedWarinng = self:CheckMeIsProtectedWarinng()
     local focus_alliance = self:GetFocusAlliance()
     if villageEvent and villageEvent.fromAlliance.id == self:GetMyAlliance()._id then --我方占领
         if villageEvent.playerData.id == User:Id() then --自己占领
@@ -335,13 +335,7 @@ function GameUIAllianceVillageEnter:GetEnterButtons()
                     end
                     UIKit:showSendTroopMessageDialog(attack_func,"dragonMaterials",_("龙材料"))
                 end
-
-                if self.my_alliance:GetSelf():isProtect() then
-                    UIKit:showMessageDialog(_("提示"),
-                                                    _("当前你正处于击溃状态，无法进攻，请等待"))
-                else
-                    final_func()
-                end
+                self:AttackCallback(final_func)
                 self:LeftButtonClicked()
             end)
             buttons = {attack_button}
@@ -364,24 +358,16 @@ function GameUIAllianceVillageEnter:GetEnterButtons()
                     end
                     UIKit:showSendTroopMessageDialog(attack_func,"dragonMaterials",_("龙材料"))
                 end
-
-                if self.my_alliance:GetSelf():isProtect() then
-                    UIKit:showMessageDialog(_("提示"),
-                                                    _("当前你正处于击溃状态，无法进攻，请等待"))
-                else
-                    final_func()
-                end
+                self:AttackCallback(final_func)
                 self:LeftButtonClicked()
             end)
             local strike_button = self:BuildOneButton("strike_66x62.png",_("突袭")):onButtonClicked(function()
-                local toLocation = self:GetLogicPosition()
-                -- if checkMeIsProtectedWarinng then
-                --     UIKit:showMessageDialog(_("提示"),_("突袭村落将失去保护状态，确定继续派兵?"),function ()
-                --         UIKit:newGameUI("GameUIStrikePlayer",GameUIStrikePlayer.STRIKE_TYPE.VILLAGE,{alliance = focus_alliance,toLocation = toLocation,defenceAllianceId = alliance_id,defenceVillageId = village_id}):AddToCurrentScene(true)
-                --     end)
-                -- else
+                self:MarchCallback(_("当前你正处于击溃状态，无法侦查，请等待"),
+                                   _("突袭村落将失去保护状态，确定继续派兵?"),
+                function()
+                    local toLocation = self:GetLogicPosition()
                     UIKit:newGameUI("GameUIStrikePlayer",GameUIStrikePlayer.STRIKE_TYPE.VILLAGE,{alliance = focus_alliance,toLocation = toLocation,defenceAllianceId = alliance_id,defenceVillageId = village_id}):AddToCurrentScene(true)
-                -- end
+                end)
                 self:LeftButtonClicked()
             end)
             buttons = {attack_button,strike_button}
@@ -402,13 +388,7 @@ function GameUIAllianceVillageEnter:GetEnterButtons()
                     end
                     UIKit:showSendTroopMessageDialog(attack_func, "dragonMaterials",_("龙材料"))
                 end
-
-                if self.my_alliance:GetSelf():isProtect() then
-                    UIKit:showMessageDialog(_("提示"),
-                                                    _("当前你正处于击溃状态，无法进攻，请等待"))
-                else
-                    final_func()
-                end
+                self:AttackCallback(final_func)
                 self:LeftButtonClicked()
             end)
             buttons = {attack_button}

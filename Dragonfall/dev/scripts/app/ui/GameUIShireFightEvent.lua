@@ -96,9 +96,15 @@ function GameUIShireFightEvent:BuildUI()
                 event.target:removeChildByTag(111)
                 needTips = true
             end
-        if Alliance_Manager:GetMyAlliance():GetSelf():isProtect() then
+        if Alliance_Manager:GetMyAlliance():GetSelf():isMarchDisabled() then
             UIKit:showMessageDialog(_("提示"),
-                                            _("当前你正处于击溃状态，无法进攻，请等待"))
+                                    _("当前你正处于击溃状态，无法进攻，请等待"))
+        elseif Alliance_Manager:GetMyAlliance():GetSelf():isProtect() then
+            UIKit:showMessageDialog(_("提示"),
+                                    _("进攻该目标将失去保护状态，确定继续派兵?"),
+                                    function()
+                                        self:DispathSoliderButtonClicked(needTips)
+                                    end)
         else
             self:DispathSoliderButtonClicked(needTips)
         end
