@@ -1,9 +1,9 @@
-# This file was generated from /Users/gaozhou/Work/kod.proj/NewDragonfall/Dragonfall/tools/batcat/i18n.xlsx
+# This file was generated from /Users/kennydai/Downloads/i18n(5)(1).xlsx
 msgid ""
 msgstr ""
 "Project-Id-Version: dragonfall\n"
-"POT-Creation-Date: 2016-09-22 18:12+0800\n"
-"PO-Revision-Date: 2016-09-22 18:12+0800\n"
+"POT-Creation-Date: 2016-09-23 15:34+0800\n"
+"PO-Revision-Date: 2016-09-23 15:34+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -28,8 +28,8 @@ msgstr ""
 #: ui/GameUIModChatChannel.lua:100 ui/GameUIModChatChannel.lua:136
 #: ui/GameUISaleOne.lua:353 ui/GameUISettingContactUs.lua:97
 #: ui/GameUISettingMod.lua:32 ui/GameUISettingMod.lua:55
-#: ui/GameUISettingServer.lua:57 ui/GameUISettingServer.lua:71
-#: ui/GameUISettingServer.lua:75 ui/GameUIStore.lua:186
+#: ui/GameUISettingServer.lua:64 ui/GameUISettingServer.lua:79
+#: ui/GameUISettingServer.lua:83 ui/GameUIStore.lua:186
 #: ui/GameUIStorePackage.lua:152 ui/GameUIWathTowerRegion.lua:443
 #: ui/GameUIWathTowerRegion.lua:455 utils/cocos_promise.lua:52
 #: utils/cocos_promise.lua:57 widget/WidgetAllianceCreateOrEdit.lua:112
@@ -167,7 +167,7 @@ msgstr ""
 #: ui/GameUISettingAccount.lua:463 ui/GameUISettingAccount.lua:473
 #: ui/GameUISettingAccount.lua:480 ui/GameUISettingAccount.lua:483
 #: ui/GameUISettingLanguage.lua:62 ui/GameUISettingMod.lua:35
-#: ui/GameUISettingServer.lua:61 ui/GameUISettingServer.lua:78
+#: ui/GameUISettingServer.lua:69 ui/GameUISettingServer.lua:86
 #: ui/GameUIShareReport.lua:194 ui/GameUIShareReport.lua:211
 #: ui/GameUIShareReport.lua:215 ui/GameUIShareReport.lua:237
 #: ui/GameUIShareReport.lua:240 ui/GameUIShireFightEvent.lua:100
@@ -1979,7 +1979,7 @@ msgstr "Besoin de plus de ressources et de queue de construction"
 #: ui/GameUIBuild.lua:268 ui/GameUIHospital.lua:306 ui/GameUIItems.lua:227
 #: ui/GameUIKeep.lua:528 ui/GameUIPResourceBuilding.lua:278
 #: ui/GameUIPveAttack.lua:491 ui/GameUIResource.lua:423
-#: ui/GameUIResource.lua:437 ui/GameUISettingServer.lua:61
+#: ui/GameUIResource.lua:437 ui/GameUISettingServer.lua:69
 #: ui/GameUITownHall.lua:250 ui/GameUIUnlockBuilding.lua:279
 #: ui/GameUIUnlockBuilding.lua:322 ui/GameUIUnlockBuilding.lua:366
 #: ui/GameUIUnlockBuilding.lua:386 ui/GameUIUpgradeTechnology.lua:533
@@ -2831,7 +2831,7 @@ msgstr "Accélération"
 #: ui/GameUIHospital.lua:312 ui/GameUIItems.lua:233 ui/GameUIKeep.lua:535
 #: ui/GameUIPResourceBuilding.lua:285 ui/GameUIPveAttack.lua:496
 #: ui/GameUIResource.lua:428 ui/GameUIResource.lua:442
-#: ui/GameUISettingServer.lua:66 ui/GameUITownHall.lua:256
+#: ui/GameUISettingServer.lua:74 ui/GameUITownHall.lua:256
 #: ui/GameUIUnlockBuilding.lua:284 ui/GameUIUnlockBuilding.lua:327
 #: ui/GameUIUnlockBuilding.lua:371 ui/GameUIUnlockBuilding.lua:391
 #: ui/GameUIWatchTower.lua:193 ui/GameUIWathTowerRegion.lua:182
@@ -3374,7 +3374,7 @@ msgstr "Montrer les alliances ouvertes"
 #: ui/GameUIAllianceWatchTowerTroopDetail.lua:238
 #: ui/GameUIAllianceWatchTowerTroopDetail.lua:255 ui/GameUICrownEnter.lua:50
 #: ui/GameUICrownEnter.lua:62 ui/GameUICrownEnter.lua:74
-#: ui/GameUISeasonDetails.lua:103 ui/GameUISettingServer.lua:255
+#: ui/GameUISeasonDetails.lua:103 ui/GameUISettingServer.lua:289
 #: ui/GameUIThroneMain.lua:43 ui/GameUIThroneMain.lua:52
 #: ui/GameUIThroneMain.lua:61 ui/GameUIWall.lua:176 ui/GameUIWall.lua:438
 #: ui/GameUIWarSummary.lua:152 widget/WidgetWorldAllianceInfo.lua:405
@@ -4539,7 +4539,7 @@ msgstr "Merveille dans les batailles"
 
 #: ui/GameUIAllianceMoonGateEnter.lua:40 ui/GameUIAllianceVillageEnter.lua:123
 #: ui/GameUIAllianceVillageEnter.lua:173 ui/GameUIAllianceVillageEnter.lua:217
-#: ui/GameUISettingServer.lua:213
+#: ui/GameUISettingServer.lua:247
 msgid "占领者"
 msgstr "Propriétaire"
 
@@ -7313,7 +7313,7 @@ msgstr ""
 "plus loin. Si vous voulez aller à la prochaine étape, vous devez la défaire."
 
 #: ui/GameUIPveAttack.lua:243 ui/GameUIPveSelect.lua:79
-#: ui/GameUISettingServer.lua:53
+#: ui/GameUISettingServer.lua:60
 msgid "传送"
 msgstr "Téléporter"
 
@@ -7854,7 +7854,7 @@ msgstr "Temps universel"
 msgid "账号绑定"
 msgstr "Compte"
 
-#: ui/GameUISetting.lua:33 ui/GameUISettingServer.lua:39
+#: ui/GameUISetting.lua:33 ui/GameUISettingServer.lua:40
 msgid "选择服务器"
 msgstr "Serveur"
 
@@ -8191,71 +8191,87 @@ msgstr "Être attaqué"
 msgid "金龙币消费提醒"
 msgstr "Note de consommation"
 
-#: ui/GameUISettingServer.lua:57
+#: ui/GameUISettingServer.lua:64
 msgid "你已加入联盟不能切换服务器，退出联盟后重试。"
 msgstr ""
 "Vous ne pouvez pas changer de serveur tant que vous êtes dans une alliance, "
 "quitter l'alliance et réessayer"
 
-#: ui/GameUISettingServer.lua:71 utils/Localize.lua:217
+#: ui/GameUISettingServer.lua:79 utils/Localize.lua:217
 msgid "不能迁移到选定的服务器"
 msgstr "Vous ne pouvez pas migrer sur ce serveur"
 
-#: ui/GameUISettingServer.lua:75 utils/Localize.lua:214
+#: ui/GameUISettingServer.lua:83 utils/Localize.lua:214
 msgid "您有商品正在出售,不能切换服务器"
 msgstr ""
 "Vous ne pouvez pas changer de serveur tant que vous avez quelques choses à "
 "vendre."
 
-#: ui/GameUISettingServer.lua:78
+#: ui/GameUISettingServer.lua:86
 #, lua-format
 msgid "是否确认将该账号迁移至服务器 %s ？（你的游戏进度将不会丢失）"
 msgstr ""
 "Êtes-vous sûr de vouloir migrer votre compte sur le serveur: %s? (Votre "
 "progression ne sera pas perdue)"
 
-#: ui/GameUISettingServer.lua:111
+#: ui/GameUISettingServer.lua:122
 #, lua-format
 msgid "城堡等级 Lv%s"
 msgstr "Château niveau %s"
 
-#: ui/GameUISettingServer.lua:116
+#: ui/GameUISettingServer.lua:127
 msgid "不在联盟中"
 msgstr "Pas dans une alliance"
 
-#: ui/GameUISettingServer.lua:116
+#: ui/GameUISettingServer.lua:127
 msgid "在联盟当中"
 msgstr "Dans une alliance"
 
-#: ui/GameUISettingServer.lua:122
+#: ui/GameUISettingServer.lua:133
 msgid "传送规则"
 msgstr "Règle de migration"
 
-#: ui/GameUISettingServer.lua:126 ui/GameUISettingServer.lua:130
+#: ui/GameUISettingServer.lua:137 ui/GameUISettingServer.lua:144
 msgid "你只能在未加入联盟的情况传送到新的服务器。"
 msgstr ""
 "Vous pouvez migrer sur un nouveau serveur quand vous n'êtes pas dans une "
 "alliance."
 
-#: ui/GameUISettingServer.lua:127 ui/GameUISettingServer.lua:131
-msgid "城堡在Lv10一下(不包括Lv10)可免费传送。"
-msgstr ""
-"Vous pouvez migrer gratuitement quand le niveau de votre château est moins "
-"que 10."
+#: ui/GameUISettingServer.lua:138 ui/GameUISettingServer.lua:145
+msgid "城堡Lv1-10：无转服限制"
+msgstr "Castle Lv1-10: No limit"
 
-#: ui/GameUISettingServer.lua:128 ui/GameUISettingServer.lua:132
-msgid "城堡在Lv10一下(城堡在Lv10以上(包括Lv10)不能传送到新服。)可免费传送。"
-msgstr ""
-"Pour migrer votre château sur un nouveau serveur quand votre château est de "
-"niveau 10 et plus, il vous en coûtera 2000 pièces de dragons."
+#: ui/GameUISettingServer.lua:139 ui/GameUISettingServer.lua:146
+msgid "城堡Lv11-20：新服开启后10天可转服，消耗500金龙币"
+msgstr "Castle Lv11-20: 10 days after the new server started, 500 Dragon Coins"
 
-#: ui/GameUISettingServer.lua:223 widget/WidgetSoldierDetails.lua:171
+#: ui/GameUISettingServer.lua:140 ui/GameUISettingServer.lua:147
+msgid "城堡Lv21-28：新服开启后20天可转服，消耗1000金龙币"
+msgstr ""
+"Castle Lv21-28: 20 days after the new server started, 1000 Dragon Coins"
+
+#: ui/GameUISettingServer.lua:141 ui/GameUISettingServer.lua:148
+msgid "城堡Lv29-35：新服开启后30天可转服，消耗2000金龙币"
+msgstr ""
+"Castle Lv29-35: 30 days after the new server started, 2000 Dragon Coins"
+
+#: ui/GameUISettingServer.lua:142 ui/GameUISettingServer.lua:149
+msgid "城堡Lv36-40：新服开启后50天可转服，消耗4000金龙币"
+msgstr ""
+"Castle Lv36-40: 50 days after the new server started, 4000 Dragon Coins"
+
+#: ui/GameUISettingServer.lua:257 widget/WidgetSoldierDetails.lua:171
 msgid "人口"
 msgstr "Population"
 
-#: ui/GameUISettingServer.lua:233
+#: ui/GameUISettingServer.lua:267 ui/GameUISettingServer.lua:301
 msgid "你拥有一片领地"
 msgstr "Vous avez un manoir ici"
+
+#: ui/GameUISettingServer.lua:309
+#, lua-format
+msgid "%s后可切换至此服务器"
+msgstr "You can transfer after %s days"
 
 #: ui/GameUISettingShield.lua:37
 msgid "屏蔽用户"
@@ -15031,6 +15047,3 @@ msgstr "Seulement le chef et les généraux peuvent migrer une alliance!"
 #: widget/WidgetWorldAllianceInfo.lua:510
 msgid "是否确认迁移联盟至该领土？"
 msgstr "Êtes-vous sur de migrer l'alliance sur ce terrain?"
-
-#~ msgid "是否确认将账号绑定到Facebook %s"
-#~ msgstr "Êtes vous sur de lier votre compte avec Facebook %s?"
