@@ -493,6 +493,7 @@ GameDatas.PlayerInitData = {
 	["dailyTaskRewards"] = {},
 	["iapRewards"] = {},
 	["monthCard"] = {},
+	["switchServerLimit"] = {},
 }
 require("app.datas.PlayerInitData_intInit")
 require("app.datas.PlayerInitData_stringInit")
@@ -502,6 +503,7 @@ require("app.datas.PlayerInitData_dailyTasks")
 require("app.datas.PlayerInitData_dailyTaskRewards")
 require("app.datas.PlayerInitData_iapRewards")
 require("app.datas.PlayerInitData_monthCard")
+require("app.datas.PlayerInitData_switchServerLimit")
 
 GameDatas.ProductionTechLevelUp = {
 	["crane"] = {},

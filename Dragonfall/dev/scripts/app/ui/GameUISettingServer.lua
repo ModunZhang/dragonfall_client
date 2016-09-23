@@ -10,6 +10,7 @@ local UIListView = import(".UIListView")
 local User = User
 local config_fightRewards = GameDatas.AllianceInitData.fightRewards
 local intInit = GameDatas.PlayerInitData.intInit
+local switchServerLimit = GameDatas.PlayerInitData.switchServerLimit
 local Localize = import("..utils.Localize")
 local UILib = import(".UILib")
 
@@ -41,10 +42,16 @@ function GameUISettingServer:BuildUI()
         shadow = true,
         color = 0xffedae
     }):addTo(titleBar):align(display.CENTER,300,28)
-
-    local couldChangeFree = City:GetFirstBuildingByType("keep"):GetLevel() < intInit.switchServerFreeKeepLevel.value
-    local btn_images = couldChangeFree and {normal = 'yellow_btn_up_186x66.png',pressed = 'yellow_btn_down_186x66.png',disabled = "grey_btn_186x66.png"}
-        or {normal = 'green_btn_up_148x76.png',pressed = 'green_btn_down_148x76.png',disabled = "grey_btn_148x78.png"}
+    local list_view ,list_node = UIKit:commonListView({
+        viewRect = cc.rect(0,0,568,460),
+        direction = cc.ui.UIScrollView.DIRECTION_VERTICAL,
+        async = true,
+    })
+    list_node:addTo(bg):pos(20,118)
+    list_view:onTouch(handler(self, self.listviewListener))
+    list_view:setDelegate(handler(self, self.sourceDelegate))
+    self.list_view = list_view
+    local btn_images = {normal = 'green_btn_up_148x76.png',pressed = 'green_btn_down_148x76.png',disabled = "grey_btn_148x78.png"}
 
     self.select_button = WidgetPushButton.new(btn_images)
         :align(display.BOTTOM_CENTER, bg:getContentSize().width/2, 20)
@@ -57,7 +64,8 @@ function GameUISettingServer:BuildUI()
                 UIKit:showMessageDialog(_("错误"),_("你已加入联盟不能切换服务器，退出联盟后重试。"))
                 return
             end
-            if not couldChangeFree and User:GetGemValue() < intInit.switchServerGemUsed.value then
+            local canSwitch,needGem,limitDays = self:getSwitchServerCondition()
+            if canSwitch and User:GetGemValue() < needGem then
                 UIKit:showMessageDialog(_("提示"),_("金龙币不足")):CreateOKButton(
                     {
                         listener = function ()
@@ -67,7 +75,7 @@ function GameUISettingServer:BuildUI()
                     })
                 return
             end
-            if (self.server.openAt - intInit.switchServerLimitDays.value * 24 * 60 * 60 * 1000) > User.countInfo.registerTime  then
+            if not canSwitch then
                 UIKit:showMessageDialog(_("错误"),_("不能迁移到选定的服务器"))
                 return
             end
@@ -85,27 +93,30 @@ function GameUISettingServer:BuildUI()
                 })
         end)
     -- 切换服务器需要花费的金龙币
-    if not couldChangeFree then
+    local num_bg = display.newSprite("back_ground_124x28.png", nil, nil, {class=cc.FilteredSpriteWithOne}):addTo(self.select_button):align(display.CENTER, 0, 22):setTag(1)
+    -- gem icon
+    local gem_icon = display.newSprite("gem_icon_62x61.png"):addTo(num_bg):align(display.CENTER, 20, num_bg:getContentSize().height/2):scale(0.6)
+    local price = UIKit:ttfLabel({
+        text = string.formatnumberthousands(needGem),
+        size = 18,
+        color = 0xffd200,
+    }):align(display.LEFT_CENTER, 50 , num_bg:getContentSize().height/2)
+        :addTo(num_bg)
+    self.num_bg = num_bg
+    self.gem_icon = gem_icon
+    self.price = price
+    if canSwitch and needGem > 0 then
         self.select_button:setButtonLabelOffset(0, 16)
-        local num_bg = display.newSprite("back_ground_124x28.png", nil, nil, {class=cc.FilteredSpriteWithOne}):addTo(self.select_button):align(display.CENTER, 0, 22):setTag(1)
-        -- gem icon
-        local gem_icon = display.newSprite("gem_icon_62x61.png"):addTo(num_bg):align(display.CENTER, 20, num_bg:getContentSize().height/2):scale(0.6)
-        local price = UIKit:ttfLabel({
-            text = string.formatnumberthousands(intInit.switchServerGemUsed.value),
-            size = 18,
-            color = 0xffd200,
-        }):align(display.LEFT_CENTER, 50 , num_bg:getContentSize().height/2)
-            :addTo(num_bg)
+        self.num_bg:show()
+        self.gem_icon:show()
+        self.price:show()
+    else
+        self.select_button:setButtonLabelOffset(0, 0)
+        self.num_bg:hide()
+        self.gem_icon:hide()
+        self.price:hide()
     end
-    local list_view ,list_node = UIKit:commonListView({
-        viewRect = cc.rect(0,0,568,460),
-        direction = cc.ui.UIScrollView.DIRECTION_VERTICAL,
-        async = true,
-    })
-    list_node:addTo(bg):pos(20,118)
-    list_view:onTouch(handler(self, self.listviewListener))
-    list_view:setDelegate(handler(self, self.sourceDelegate))
-    self.list_view = list_view
+
     local tips_bg = UIKit:CreateBoxPanelWithBorder({width = 556,height = 88}):addTo(bg):align(display.TOP_CENTER, 304, bg_height - 22)
     UIKit:ttfLabel({
         text = string.format(_("城堡等级 Lv%s"),City:GetFirstBuildingByType("keep"):GetLevel()),
@@ -124,17 +135,40 @@ function GameUISettingServer:BuildUI()
         color= 0x076886,
     }):align(display.RIGHT_CENTER, info_icon:getPositionX() - 10, tips_bg:getContentSize().height/2):addTo(tips_bg)
     UIKit:addTipsToNode(ruls,{_("你只能在未加入联盟的情况传送到新的服务器。"),
-        _("城堡在Lv10一下(不包括Lv10)可免费传送。"),
-        _("城堡在Lv10一下(城堡在Lv10以上(包括Lv10)不能传送到新服。)可免费传送。"),
+        _("城堡Lv1-10：无转服限制"),
+        _("城堡Lv11-20：新服开启后10天可转服，消耗500金龙币"),
+        _("城堡Lv21-28：新服开启后20天可转服，消耗1000金龙币"),
+        _("城堡Lv29-35：新服开启后30天可转服，消耗2000金龙币"),
+        _("城堡Lv36-40：新服开启后50天可转服，消耗4000金龙币"),
     },tips_bg,cc.size(420,0),-310,-190)
     UIKit:addTipsToNode(info_icon,{_("你只能在未加入联盟的情况传送到新的服务器。"),
-        _("城堡在Lv10一下(不包括Lv10)可免费传送。"),
-        _("城堡在Lv10一下(城堡在Lv10以上(包括Lv10)不能传送到新服。)可免费传送。"),
+        _("城堡Lv1-10：无转服限制"),
+        _("城堡Lv11-20：新服开启后10天可转服，消耗500金龙币"),
+        _("城堡Lv21-28：新服开启后20天可转服，消耗1000金龙币"),
+        _("城堡Lv29-35：新服开启后30天可转服，消耗2000金龙币"),
+        _("城堡Lv36-40：新服开启后50天可转服，消耗4000金龙币"),
     },tips_bg,cc.size(420,0),-310,-190)
     self:FetchServers()
 
 end
-
+function GameUISettingServer:getSwitchServerCondition()
+    if not self.server then
+        return
+    end
+    local openAt = self.server.openAt
+    local keepLevel = City:GetFirstBuildingByType("keep"):GetLevel()
+    local needGem = 0
+    local limitDays = 0
+    for i,v in ipairs(switchServerLimit) do
+        if keepLevel <= v.keepLevelMax then
+            needGem = v.needGem
+            limitDays = v.limitDays
+            break
+        end
+    end
+    local canSwitch = openAt + (limitDays * 24 * 60 * 60) <= app.timer:GetServerTime() * 1000
+    return canSwitch,needGem,limitDays
+end
 function GameUISettingServer:FetchServers()
     NetManager:getServersPromise():done(function(response)
         if response.msg.code == 200 then
@@ -264,9 +298,18 @@ function GameUISettingServer:FillDataItem(content,data)
         content.unselected:show()
     end
     if data.serverId == self.current_code then
-        content.here_label:show()
+        content.here_label:setString(_("你拥有一片领地"))
     else
-        content.here_label:hide()
+        local canSwitch,needGem,limitDays = self:getSwitchServerCondition()
+        local time
+        if limitDays then
+            time = app.timer:GetServerTime() * 1000 - (data.openAt + (limitDays * 24 * 60 * 60))
+        end
+        if time and time > 0 then
+            content.here_label:setString(string.format(_("%s后可切换至此服务器"),GameUtils:formatTimeStyle1(time)))
+        else
+            content.here_label:hide()
+        end
     end
 end
 
@@ -302,9 +345,24 @@ function GameUISettingServer:RefreshServerInfo()
             self.select_button:getChildByTag(1):setFilter(filter.newFilter("GRAY", {0.2, 0.3, 0.5, 0.1}))
         end
     end
+    local canSwitch,needGem,limitDays = self:getSwitchServerCondition()
+    if canSwitch and needGem > 0 then
+        self.select_button:setButtonLabelOffset(0, 16)
+        self.price:setString(string.formatnumberthousands(needGem))
+        self.price:show()
+        self.num_bg:show()
+        self.gem_icon:show()
+    else
+        self.select_button:setButtonLabelOffset(0, 0)
+        self.price:hide()
+        self.num_bg:hide()
+        self.gem_icon:hide()
+    end
 end
 
 return GameUISettingServer
+
+
 
 
 
