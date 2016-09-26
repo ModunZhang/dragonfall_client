@@ -53,6 +53,8 @@ function WidgetUseMutiItems:ctor(item_name,params)
         resource_type = "stone"
     elseif string.find(item_name,"iron") then
         resource_type = "iron"
+    elseif string.find(item_name,"coin") then
+        resource_type = "coin"
     end
     local max_count = params and params.max_count or User:GetItemCount(item_name)
     local eventType = params and params.eventType
@@ -140,7 +142,7 @@ function WidgetUseMutiItems:onEnter()
     local item_name = self.item_name
     local resource_type = self.resource_type
 
-    if resource_type then
+    if resource_type ~= "coin" then
         local resource_data = self:GetResourcesData()[resource_type]
         self:AddProgressTimer(resource_data)
         scheduleAt(self, function()
@@ -157,6 +159,13 @@ function WidgetUseMutiItems:onEnter()
             end
             self:RefreshSpecifyResource(resource_type,resource_max)
             self:RefreshProtectPercent(resource_type)
+        end)
+    else
+        local resource_data = self:GetResourcesData()[resource_type]
+        self:AddCoinProgressTimer(resource_data)
+        scheduleAt(self, function()
+            local value = User:GetResValueByType("coin") + self:GetSliderSelectResValue()
+            self.resource_label:setString(GameUtils:formatNumber(value))
         end)
     end
 end
@@ -214,6 +223,11 @@ function WidgetUseMutiItems:GetResourcesData()
             resource_current_value=User:GetResValueByType("iron"),
             type = "iron"
         },
+        coin = {
+            resource_icon="res_coin_81x68.png",
+            resource_current_value=User:GetResValueByType("coin"),
+            type = "coin"
+        },
     }
 end
 
@@ -258,6 +272,32 @@ function WidgetUseMutiItems:AddProgressTimer(parms)
     local p_percent = DataUtils:GetResourceProtectPercent(r_type) * 100
     progresstimer:setPercentage(math.min(p_percent,r_percent))
     self.protectPro = progresstimer
+    local icon_bg = display.newSprite("back_ground_43x43.png", 0 , bar:getContentSize().height/2):addTo(bar)
+    display.newSprite(resource_icon, icon_bg:getContentSize().width/2 , icon_bg:getContentSize().height/2):addTo(icon_bg):scale(0.5)
+end
+
+function WidgetUseMutiItems:AddCoinProgressTimer(parms)
+    local resource_icon = parms.resource_icon
+    local resource_current_value = parms.resource_current_value
+    local r_type = parms.type
+    local c_size = self.body:getContentSize()
+    -- 进度条
+    local bar = display.newSprite("progress_bar_540x40_1.png"):addTo(self.body):pos(310,c_size.height-50)
+    local progressFill = display.newSprite("progress_bar_540x40_3.png")
+    ProgressTimer = cc.ProgressTimer:create(progressFill)
+    ProgressTimer:setType(display.PROGRESS_TIMER_BAR)
+    ProgressTimer:setBarChangeRate(cc.p(1,0))
+    ProgressTimer:setMidpoint(cc.p(0,0))
+    ProgressTimer:align(display.LEFT_BOTTOM, 0, 0):addTo(bar)
+    ProgressTimer:setPercentage(100)
+    self.progressTimer = ProgressTimer
+    self.resource_label = UIKit:ttfLabel({
+        text = GameUtils:formatNumber(resource_current_value),
+        size = 20,
+        color = 0xfff3c7,
+        shadow = true
+    }):addTo(bar,2):align(display.LEFT_CENTER,30 , bar:getContentSize().height/2)
+   
     local icon_bg = display.newSprite("back_ground_43x43.png", 0 , bar:getContentSize().height/2):addTo(bar)
     display.newSprite(resource_icon, icon_bg:getContentSize().width/2 , icon_bg:getContentSize().height/2):addTo(icon_bg):scale(0.5)
 end

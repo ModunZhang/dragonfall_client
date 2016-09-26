@@ -4,6 +4,7 @@ local Localize = import("..utils.Localize")
 local WidgetPushButton = import(".WidgetPushButton")
 local WidgetUIBackGround = import(".WidgetUIBackGround")
 local WidgetPopDialog = import(".WidgetPopDialog")
+local WidgetUseItems = import(".WidgetUseItems")
 local UILib = import("..ui.UILib")
 local GameUINpc = import("..ui.GameUINpc")
 
@@ -310,7 +311,19 @@ function WidgetMakeEquip:ctor(equip_type, black_smith, city, needTips)
     local  condition_bg_2 = display.newSprite("back_ground_548x40_2.png")
         :addTo(condition_bg)
         :align(display.BOTTOM_CENTER, 284, 10)
-
+    local button = WidgetPushButton.new()
+        :addTo(condition_bg):align(display.BOTTOM_CENTER, 284, 10)
+        :onButtonClicked(function(event)
+            if event.name == "CLICKED_EVENT" then
+                if not self.is_coin_enough then
+                    WidgetUseItems.new():Create({
+                        item_name = "coinClass_1"
+                    }):AddToCurrentScene()
+                end
+            end
+        end)
+    button:setContentSize(cc.size(condition_bg_2:getContentSize().width ,condition_bg_2:getContentSize().height))
+    button:setTouchSwallowEnabled(true)
     cc.ui.UIImage.new("res_coin_81x68.png"):addTo(condition_bg_2, 2)
         :align(display.CENTER, 30, 20):scale(0.3)
 
@@ -343,6 +356,7 @@ function WidgetMakeEquip:onEnter()
         local label = string.format( _("需要银币 %s/%s"),  GameUtils:formatNumber(coin),GameUtils:formatNumber(need_coin))
         self.coin_label:setString(label)
         local is_enough = coin >= need_coin
+        self.is_coin_enough = is_enough
         self.coin_label:setColor(is_enough and UIKit:hex2c3b(0x403c2f) or display.COLOR_RED)
         self.coin_check_box:setButtonSelected(is_enough)
     end)

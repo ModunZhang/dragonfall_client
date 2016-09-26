@@ -159,14 +159,15 @@ function GameUISettingServer:getSwitchServerCondition()
     local keepLevel = City:GetFirstBuildingByType("keep"):GetLevel()
     local needGem = 0
     local limitDays = 0
-    for i,v in ipairs(switchServerLimit) do
+    for i=0,4 do
+        local v = switchServerLimit[i]
         if keepLevel <= v.keepLevelMax then
             needGem = v.needGem
             limitDays = v.limitDays
             break
         end
     end
-    local canSwitch = openAt + (limitDays * 24 * 60 * 60) <= app.timer:GetServerTime() * 1000
+    local canSwitch = openAt + (limitDays * 24 * 60 * 60 * 1000) <= app.timer:GetServerTime() * 1000
     return canSwitch,needGem,limitDays
 end
 function GameUISettingServer:FetchServers()
@@ -300,16 +301,26 @@ function GameUISettingServer:FillDataItem(content,data)
     if data.serverId == self.current_code then
         content.here_label:setString(_("你拥有一片领地"))
     else
-        local canSwitch,needGem,limitDays = self:getSwitchServerCondition()
-        local time
-        if limitDays then
-            time = app.timer:GetServerTime() * 1000 - (data.openAt + (limitDays * 24 * 60 * 60))
-        end
-        if time and time > 0 then
-            content.here_label:setString(string.format(_("%s后可切换至此服务器"),GameUtils:formatTimeStyle1(time)))
-        else
-            content.here_label:hide()
-        end
+        scheduleAt(content, function()
+            local limitDays
+            local time
+            local keepLevel = City:GetFirstBuildingByType("keep"):GetLevel()
+            for i=0,4 do
+                local v = switchServerLimit[i]
+                if keepLevel <= v.keepLevelMax then
+                    limitDays = v.limitDays
+                    break
+                end
+            end
+            if limitDays then
+                time = (data.openAt + (limitDays * 24 * 60 * 60 * 1000)) - app.timer:GetServerTime() * 1000 
+            end
+            if time and time > 0 then
+                content.here_label:setString(string.format(_("%s后可切换至此服务器"),GameUtils:formatTimeAsTimeAfterStyle(time/1000)))
+            else
+                content.here_label:setString(_("可切换至此服务器"))
+            end
+        end)
     end
 end
 
@@ -346,7 +357,7 @@ function GameUISettingServer:RefreshServerInfo()
         end
     end
     local canSwitch,needGem,limitDays = self:getSwitchServerCondition()
-    if canSwitch and needGem > 0 then
+    if btn_status and canSwitch and needGem > 0 then
         self.select_button:setButtonLabelOffset(0, 16)
         self.price:setString(string.formatnumberthousands(needGem))
         self.price:show()
@@ -361,6 +372,10 @@ function GameUISettingServer:RefreshServerInfo()
 end
 
 return GameUISettingServer
+
+
+
+
 
 
 

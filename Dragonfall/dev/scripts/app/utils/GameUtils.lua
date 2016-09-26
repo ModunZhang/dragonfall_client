@@ -116,7 +116,29 @@ function GameUtils:formatTimeAsTimeAgoStyle( time )
 
     return timeText
 end
+function GameUtils:formatTimeAsTimeAfterStyle( time )
+    local timeText = nil
+    if(time == 1) then
+        timeText = string.format(_("%d秒"), 1)
+    elseif(time < 60) then
+        timeText = string.format(_("%d秒"), time)
+    elseif(time == 60) then
+        timeText = string.format(_("%d分钟"), 1)
+    elseif(time < 3600) then
+        time = math.ceil(time / 60)
+        timeText = string.format(_("%d分钟"), time)
+    elseif(time == 3600) then
+        timeText = string.format(_("%d小时"), 1)
+    elseif(time < 86400) then
+        time = math.floor(time / 3600)
+        timeText = string.format(_("%d小时"), time)
+    elseif(time >= 86400) then
+        time = math.floor(time / 86400)
+        timeText = string.format(_("%d天"), time)
+    end
 
+    return timeText
+end
 function GameUtils:getUpdatePath(  )
     return device.writablePath .. "update/" .. ext.getAppVersion() .. "/"
 end

@@ -1,9 +1,9 @@
-# This file was generated from /Users/kennydai/Downloads/i18n(5)(1).xlsx
+# This file was generated from /Users/kennydai/Downloads/i18n(7).xlsx
 msgid ""
 msgstr ""
 "Project-Id-Version: dragonfall\n"
-"POT-Creation-Date: 2016-09-23 15:34+0800\n"
-"PO-Revision-Date: 2016-09-23 15:34+0800\n"
+"POT-Creation-Date: 2016-09-26 11:15+0800\n"
+"PO-Revision-Date: 2016-09-26 11:15+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -199,10 +199,10 @@ msgstr ""
 #: widget/WidgetAllianceCreateOrEdit.lua:118
 #: widget/WidgetAllianceCreateOrEdit.lua:126
 #: widget/WidgetAllianceCreateOrEdit.lua:129 widget/WidgetBuyGoods.lua:142
-#: widget/WidgetMakeEquip.lua:152 widget/WidgetMakeEquip.lua:201
-#: widget/WidgetMakeEquip.lua:449 widget/WidgetMakeEquip.lua:462
-#: widget/WidgetMakeEquip.lua:507 widget/WidgetMakeEquip.lua:512
-#: widget/WidgetMakeEquip.lua:517 widget/WidgetManufactureNew.lua:199
+#: widget/WidgetMakeEquip.lua:153 widget/WidgetMakeEquip.lua:202
+#: widget/WidgetMakeEquip.lua:463 widget/WidgetMakeEquip.lua:476
+#: widget/WidgetMakeEquip.lua:521 widget/WidgetMakeEquip.lua:526
+#: widget/WidgetMakeEquip.lua:531 widget/WidgetManufactureNew.lua:199
 #: widget/WidgetManufactureNew.lua:382 widget/WidgetMarchEvents.lua:628
 #: widget/WidgetMarchEvents.lua:632 widget/WidgetMoveHouse.lua:27
 #: widget/WidgetPlayerNode.lua:222 widget/WidgetPromoteSoldier.lua:130
@@ -269,7 +269,7 @@ msgstr "Nous avons déjà récupéré votre dernier achat"
 #: ui/GameUIWarSummary.lua:182 utils/UIKit.lua:742 utils/UIKit.lua:850
 #: widget/WidgetInput.lua:115 widget/WidgetSelectSoldiers.lua:116
 #: widget/WidgetSelectSoldiers.lua:126 widget/WidgetTroopFormation.lua:159
-#: widget/WidgetUseMutiItems.lua:69
+#: widget/WidgetUseMutiItems.lua:71
 msgid "确定"
 msgstr "OK"
 
@@ -1986,8 +1986,8 @@ msgstr "Besoin de plus de ressources et de queue de construction"
 #: ui/GameUIUpgradeTechnology.lua:605 ui/GameUIWatchTower.lua:187
 #: ui/GameUIWathTowerRegion.lua:176 widget/WidgetAccelerateGroup.lua:124
 #: widget/WidgetAllianceCreateOrEdit.lua:92
-#: widget/WidgetAllianceCreateOrEdit.lua:97 widget/WidgetMakeEquip.lua:449
-#: widget/WidgetMakeEquip.lua:512 widget/WidgetManufactureNew.lua:204
+#: widget/WidgetAllianceCreateOrEdit.lua:97 widget/WidgetMakeEquip.lua:463
+#: widget/WidgetMakeEquip.lua:526 widget/WidgetManufactureNew.lua:204
 #: widget/WidgetPromoteSoldier.lua:320 widget/WidgetRecruitSoldier.lua:394
 #: widget/WidgetRecruitSoldier.lua:428 widget/WidgetSpeedUp.lua:119
 #: widget/WidgetTreatSoldier.lua:235 widget/WidgetUpgradeMilitaryTech.lua:119
@@ -2703,7 +2703,7 @@ msgstr "Sur-le-champ"
 #: ui/GameUIHospital.lua:177 ui/GameUIItems.lua:238
 #: ui/GameUIPResourceBuilding.lua:254 ui/GameUIResource.lua:419
 #: ui/GameUITownHall.lua:260 ui/GameUIUpgradeTechnology.lua:467
-#: widget/WidgetMakeEquip.lua:152 widget/WidgetPromoteSoldier.lua:130
+#: widget/WidgetMakeEquip.lua:153 widget/WidgetPromoteSoldier.lua:130
 #: widget/WidgetRecruitSoldier.lua:306 widget/WidgetTreatSoldier.lua:246
 #: widget/WidgetUpgradeMilitaryTech.lua:128 widget/WidgetUseItems.lua:1150
 #, lua-format
@@ -3298,7 +3298,7 @@ msgstr "Obtenu avec succès!"
 #: ui/GameUIActivityRewardNew.lua:1323 ui/GameUIAllianceShop.lua:462
 #: ui/GameUIItems.lua:218 ui/GameUIStore.lua:164 ui/GameUIStorePackage.lua:131
 #: ui/GameUITradeGuild.lua:65 ui/GameUITradeGuild.lua:316
-#: widget/WidgetBuyGoods.lua:126 widget/WidgetMakeEquip.lua:468
+#: widget/WidgetBuyGoods.lua:126 widget/WidgetMakeEquip.lua:482
 #: widget/WidgetStockGoods.lua:132
 msgid "购买"
 msgstr "Acheter"
@@ -3374,7 +3374,7 @@ msgstr "Montrer les alliances ouvertes"
 #: ui/GameUIAllianceWatchTowerTroopDetail.lua:238
 #: ui/GameUIAllianceWatchTowerTroopDetail.lua:255 ui/GameUICrownEnter.lua:50
 #: ui/GameUICrownEnter.lua:62 ui/GameUICrownEnter.lua:74
-#: ui/GameUISeasonDetails.lua:103 ui/GameUISettingServer.lua:289
+#: ui/GameUISeasonDetails.lua:103 ui/GameUISettingServer.lua:290
 #: ui/GameUIThroneMain.lua:43 ui/GameUIThroneMain.lua:52
 #: ui/GameUIThroneMain.lua:61 ui/GameUIWall.lua:176 ui/GameUIWall.lua:438
 #: ui/GameUIWarSummary.lua:152 widget/WidgetWorldAllianceInfo.lua:405
@@ -4539,7 +4539,7 @@ msgstr "Merveille dans les batailles"
 
 #: ui/GameUIAllianceMoonGateEnter.lua:40 ui/GameUIAllianceVillageEnter.lua:123
 #: ui/GameUIAllianceVillageEnter.lua:173 ui/GameUIAllianceVillageEnter.lua:217
-#: ui/GameUISettingServer.lua:247
+#: ui/GameUISettingServer.lua:248
 msgid "占领者"
 msgstr "Propriétaire"
 
@@ -5062,7 +5062,7 @@ msgstr "Info troupes"
 #: ui/GameUIHelpDefence.lua:377 ui/GameUIIntensifyEquipment.lua:269
 #: ui/GameUISendTroopNew.lua:201 ui/GameUIShowDragonUpStarAnimation.lua:68
 #: ui/GameUIStrikePlayer.lua:160 ui/GameUIWatchTowerMyTroopsDetail.lua:146
-#: ui/GameUIWatchTowerTroopDetail.lua:202 widget/WidgetMakeEquip.lua:115
+#: ui/GameUIWatchTowerTroopDetail.lua:202 widget/WidgetMakeEquip.lua:116
 #: widget/WidgetSelectDragon.lua:68 widget/WidgetSoldierDetails.lua:166
 #: widget/WidgetSoldierPromoteDetails.lua:135
 msgid "生命值"
@@ -5075,7 +5075,7 @@ msgstr "PV"
 #: ui/GameUISendTroopNew.lua:217 ui/GameUIShowDragonUpStarAnimation.lua:60
 #: ui/GameUIWall.lua:179 ui/GameUIWall.lua:413
 #: ui/GameUIWatchTowerMyTroopsDetail.lua:149
-#: ui/GameUIWatchTowerTroopDetail.lua:205 widget/WidgetMakeEquip.lua:112
+#: ui/GameUIWatchTowerTroopDetail.lua:205 widget/WidgetMakeEquip.lua:113
 #: widget/WidgetSelectDragon.lua:37
 msgid "攻击力"
 msgstr "Attaque"
@@ -5182,7 +5182,7 @@ msgstr "Vert"
 msgid "制造装备不能免费加速"
 msgstr "Ne peut pas accélérer gratuitement la forge d'un équipement"
 
-#: ui/GameUIBlackSmithSpeedUp.lua:18 widget/WidgetMakeEquip.lua:31
+#: ui/GameUIBlackSmithSpeedUp.lua:18 widget/WidgetMakeEquip.lua:32
 msgid "制造装备"
 msgstr "Forger équipement"
 
@@ -5598,7 +5598,7 @@ msgstr "Attribution"
 #: ui/GameUIDragonEyrieDetail.lua:823 ui/GameUIDragonEyrieDetail.lua:855
 #: ui/GameUIDragonEyrieMain.lua:499 ui/GameUIIntensifyEquipment.lua:275
 #: ui/GameUISendTroopNew.lua:264 ui/GameUIShowDragonUpStarAnimation.lua:76
-#: widget/WidgetMakeEquip.lua:118 widget/WidgetSelectDragon.lua:52
+#: widget/WidgetMakeEquip.lua:119 widget/WidgetSelectDragon.lua:52
 msgid "带兵量"
 msgstr "Unité de capacité"
 
@@ -5607,7 +5607,7 @@ msgstr "Unité de capacité"
 msgid "巨龙%d星装备"
 msgstr "Équipement de %d étoiles"
 
-#: ui/GameUIDragonEquipmentMake.lua:78 widget/WidgetMakeEquip.lua:191
+#: ui/GameUIDragonEquipmentMake.lua:78 widget/WidgetMakeEquip.lua:192
 msgid "制造"
 msgstr "Forger"
 
@@ -6964,7 +6964,7 @@ msgstr "Pain"
 
 #: ui/GameUIOrderHall.lua:17 ui/GameUIOrderHall.lua:254
 #: ui/GameUIUpgradeTechnology.lua:418 utils/Localize.lua:900
-#: widget/WidgetMakeEquip.lua:318 widget/WidgetRequirementListview.lua:219
+#: widget/WidgetMakeEquip.lua:331 widget/WidgetRequirementListview.lua:219
 msgid "银币"
 msgstr "Pièces"
 
@@ -8260,18 +8260,22 @@ msgid "城堡Lv36-40：新服开启后50天可转服，消耗4000金龙币"
 msgstr ""
 "Castle Lv36-40: 50 days after the new server started, 4000 Dragon Coins"
 
-#: ui/GameUISettingServer.lua:257 widget/WidgetSoldierDetails.lua:171
+#: ui/GameUISettingServer.lua:258 widget/WidgetSoldierDetails.lua:171
 msgid "人口"
 msgstr "Population"
 
-#: ui/GameUISettingServer.lua:267 ui/GameUISettingServer.lua:301
+#: ui/GameUISettingServer.lua:268 ui/GameUISettingServer.lua:302
 msgid "你拥有一片领地"
 msgstr "Vous avez un manoir ici"
 
-#: ui/GameUISettingServer.lua:309
+#: ui/GameUISettingServer.lua:319
 #, lua-format
 msgid "%s后可切换至此服务器"
 msgstr "You can transfer after %s days"
+
+#: ui/GameUISettingServer.lua:321
+msgid "可切换至此服务器"
+msgstr "You can transfer to this server now"
 
 #: ui/GameUISettingShield.lua:37
 msgid "屏蔽用户"
@@ -9212,12 +9216,32 @@ msgstr "Voilà %d jours"
 msgid "很久"
 msgstr "Longtemps avant"
 
-#: utils/GameUtils.lua:486
+#: utils/GameUtils.lua:122 utils/GameUtils.lua:124
+#, lua-format
+msgid "%d秒"
+msgstr "%d secondes"
+
+#: utils/GameUtils.lua:126 utils/GameUtils.lua:129
+#, lua-format
+msgid "%d分钟"
+msgstr "%d minutes"
+
+#: utils/GameUtils.lua:131 utils/GameUtils.lua:134
+#, lua-format
+msgid "%d小时"
+msgstr "%d heures"
+
+#: utils/GameUtils.lua:136
+#, lua-format
+msgid "%d天"
+msgstr "%d jours"
+
+#: utils/GameUtils.lua:507
 #, lua-format
 msgid "%d天%d小时"
 msgstr "%d jours %d heures"
 
-#: utils/GameUtils.lua:635 utils/GameUtils.lua:657
+#: utils/GameUtils.lua:656 utils/GameUtils.lua:678
 msgid "不能删除"
 msgstr "Ne pas effacer"
 
@@ -14416,40 +14440,40 @@ msgstr "Contact récent"
 msgid "向其他玩家发送邮件,会自动添加到最近联系人列表"
 msgstr "Gens que vous avez contacté récemment"
 
-#: widget/WidgetMakeEquip.lua:144
+#: widget/WidgetMakeEquip.lua:145
 msgid "立即制造"
 msgstr "Sur-le-champ"
 
-#: widget/WidgetMakeEquip.lua:204
+#: widget/WidgetMakeEquip.lua:205
 msgid "好样的领主！等待打造完成后，您即可在“龙巢”中为巨龙穿上该装备！"
 msgstr ""
 "Super monseigneur! Vous pouvez mettre de l'équipement à votre dragon après "
 "qu'il soit forgé."
 
-#: widget/WidgetMakeEquip.lua:293
+#: widget/WidgetMakeEquip.lua:294
 msgid "制造队列"
 msgstr "Queue de construction"
 
-#: widget/WidgetMakeEquip.lua:343
+#: widget/WidgetMakeEquip.lua:356
 #, lua-format
 msgid "需要银币 %s/%s"
 msgstr "Besoin de pièces %s/%s"
 
-#: widget/WidgetMakeEquip.lua:404
+#: widget/WidgetMakeEquip.lua:418
 #, lua-format
 msgid "制造队列 %d/%d"
 msgstr "Queue de construction %d/%d"
 
-#: widget/WidgetMakeEquip.lua:463
+#: widget/WidgetMakeEquip.lua:477
 msgid "材料不足"
 msgstr "Pas assez de matériel"
 
-#: widget/WidgetMakeEquip.lua:491
+#: widget/WidgetMakeEquip.lua:505
 #, lua-format
 msgid "完成当前制造队列,需要%d"
 msgstr "Besoin de %d pièces de dragon pour terminer le dernier bâtiment"
 
-#: widget/WidgetMakeEquip.lua:498
+#: widget/WidgetMakeEquip.lua:512
 #, lua-format
 msgid "银币不足,需要%d"
 msgstr "Pas assez de pièces, besoin %d de pièces de dragon pour remplacer"
@@ -14948,15 +14972,15 @@ msgstr "Acheter et utiliser"
 msgid "拥有:%d"
 msgstr "Possédé:%d"
 
-#: widget/WidgetUseMutiItems.lua:96
+#: widget/WidgetUseMutiItems.lua:98
 msgid "使用数量"
 msgstr "Quantité utilisée"
 
-#: widget/WidgetUseMutiItems.lua:118
+#: widget/WidgetUseMutiItems.lua:120
 msgid "剩余时间"
 msgstr "Restant"
 
-#: widget/WidgetUseMutiItems.lua:135
+#: widget/WidgetUseMutiItems.lua:137
 msgid "道具数量"
 msgstr "Vous possédez"
 
