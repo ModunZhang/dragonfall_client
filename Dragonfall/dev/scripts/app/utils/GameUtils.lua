@@ -119,22 +119,22 @@ end
 function GameUtils:formatTimeAsTimeAfterStyle( time )
     local timeText = nil
     if(time == 1) then
-        timeText = string.format(_("%d秒"), 1)
+        timeText = string.format(_("%d秒后"), 1)
     elseif(time < 60) then
-        timeText = string.format(_("%d秒"), time)
+        timeText = string.format(_("%d秒后"), time)
     elseif(time == 60) then
-        timeText = string.format(_("%d分钟"), 1)
+        timeText = string.format(_("%d分钟后"), 1)
     elseif(time < 3600) then
         time = math.ceil(time / 60)
-        timeText = string.format(_("%d分钟"), time)
+        timeText = string.format(_("%d分钟后"), time)
     elseif(time == 3600) then
-        timeText = string.format(_("%d小时"), 1)
+        timeText = string.format(_("%d小时后"), 1)
     elseif(time < 86400) then
         time = math.floor(time / 3600)
-        timeText = string.format(_("%d小时"), time)
+        timeText = string.format(_("%d小时后"), time)
     elseif(time >= 86400) then
         time = math.floor(time / 86400)
-        timeText = string.format(_("%d天"), time)
+        timeText = string.format(_("%d天后"), time)
     end
 
     return timeText
