@@ -316,7 +316,7 @@ function GameUISettingServer:FillDataItem(content,data)
                 time = (data.openAt + (limitDays * 24 * 60 * 60 * 1000)) - app.timer:GetServerTime() * 1000 
             end
             if time and time > 0 then
-                content.here_label:setString(string.format(_("%s后可切换至此服务器"),GameUtils:formatTimeAsTimeAfterStyle(time/1000)))
+                content.here_label:setString(string.format(_("%s可切换至此服务器"),GameUtils:formatTimeAsTimeAfterStyle(time/1000)))
             else
                 content.here_label:setString(_("可切换至此服务器"))
             end
