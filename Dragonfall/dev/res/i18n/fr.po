@@ -1,9 +1,9 @@
-# This file was generated from /Users/kennydai/Downloads/i18n(8).xlsx
+# This file was generated from /Users/kennydai/Downloads/i18n(1)(3).xlsx
 msgid ""
 msgstr ""
 "Project-Id-Version: dragonfall\n"
-"POT-Creation-Date: 2016-09-26 14:29+0800\n"
-"PO-Revision-Date: 2016-09-26 14:29+0800\n"
+"POT-Creation-Date: 2016-10-07 16:50+0800\n"
+"PO-Revision-Date: 2016-10-07 16:50+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -2259,16 +2259,16 @@ msgid "点击建筑：%s"
 msgstr "Cliquer sur le bâtiment: %s"
 
 #: scenes/MyCityFteScene.lua:211 scenes/MyCityScene.lua:545
-#: scenes/OtherCityScene.lua:158 scenes/OtherCityScene.lua:161
-#: ui/FullScreenPopDialogUI.lua:36 ui/GameUIAllianceBattle.lua:291
-#: ui/GameUIAllianceInfo.lua:418 ui/GameUIAllianceInfo.lua:421
-#: ui/GameUIAllianceInfo.lua:425 ui/GameUIAllianceInfo.lua:429
-#: ui/GameUIEditName.lua:55 ui/GameUIItems.lua:497 ui/GameUIItems.lua:502
-#: ui/GameUIItems.lua:507 ui/GameUIMission.lua:666 ui/GameUIPower.lua:244
-#: ui/GameUITownHall.lua:374 ui/GameUITownHall.lua:378
-#: ui/GameUITradeGuild.lua:338 ui/GameUIWriteMail.lua:146
-#: ui/GameUIWriteMail.lua:149 ui/GameUIWriteMail.lua:154
-#: widget/WidgetAccelerateGroup.lua:124
+#: scenes/OtherCityScene.lua:149 scenes/OtherCityScene.lua:163
+#: scenes/OtherCityScene.lua:166 ui/FullScreenPopDialogUI.lua:36
+#: ui/GameUIAllianceBattle.lua:291 ui/GameUIAllianceInfo.lua:418
+#: ui/GameUIAllianceInfo.lua:421 ui/GameUIAllianceInfo.lua:425
+#: ui/GameUIAllianceInfo.lua:429 ui/GameUIEditName.lua:55
+#: ui/GameUIItems.lua:497 ui/GameUIItems.lua:502 ui/GameUIItems.lua:507
+#: ui/GameUIMission.lua:666 ui/GameUIPower.lua:244 ui/GameUITownHall.lua:374
+#: ui/GameUITownHall.lua:378 ui/GameUITradeGuild.lua:338
+#: ui/GameUIWriteMail.lua:146 ui/GameUIWriteMail.lua:149
+#: ui/GameUIWriteMail.lua:154 widget/WidgetAccelerateGroup.lua:124
 #: widget/WidgetAllianceBuildingUpgrade.lua:88 widget/WidgetBuyGoods.lua:129
 #: widget/WidgetBuyGoods.lua:134 widget/WidgetBuyGoods.lua:138
 #: widget/WidgetChangeMap.lua:31 widget/WidgetManufactureNew.lua:204
@@ -2524,11 +2524,15 @@ msgstr ""
 "Augmenter la puissance de vos troupes en faisant des recherches en sciences "
 "militaires"
 
-#: scenes/OtherCityScene.lua:158
+#: scenes/OtherCityScene.lua:150
+msgid "由于诡计之雾的效果,不能查看驻防部队信息"
+msgstr "Because of the Fog of Trick effect, you can't check his/her troop info"
+
+#: scenes/OtherCityScene.lua:163
 msgid "玩家未驻防！"
 msgstr "Le seigneur n'a pas de garnison"
 
-#: scenes/OtherCityScene.lua:162
+#: scenes/OtherCityScene.lua:167
 msgid "巨石阵等级大于13才可以查看驻防信息！"
 msgstr ""
 "Vous avez besoin d'un Stonehenge de niveau 13 (ou plus) pour de l'info sur "
