@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: dragonfall\n"
-"POT-Creation-Date: 2016-10-07 16:50+0800\n"
-"PO-Revision-Date: 2016-10-07 16:50+0800\n"
+"POT-Creation-Date: 2016-12-26 13:42+0800\n"
+"PO-Revision-Date: 2016-12-26 13:42+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zh_TW\n"
@@ -1006,7 +1006,7 @@ msgstr "想要提升龍的技能等級，你需要下面哪一種資源？"
 #: datas/ClientInitGame_selena_question.lua:27
 #: ui/GameUIDragonEyrieDetail.lua:689 ui/GameUIDragonSkill.lua:188
 #: ui/GameUIDragonSkill.lua:216 utils/Localize.lua:895
-#: utils/Localize.lua:1299 widget/WidgetRequirementListview.lua:247
+#: utils/Localize.lua:1302 widget/WidgetRequirementListview.lua:247
 #: widget/WidgetUseItems.lua:230 widget/WidgetUseItems.lua:236
 msgid "英雄之血"
 msgstr "英雄之血"
@@ -1564,12 +1564,12 @@ msgid "招募部队Ⅲ：骑兵/攻城武器"
 msgstr "招募部隊Ⅲ：騎兵/攻城武器"
 
 #: entity/Alliance.lua:793 ui/GameUIStrikeReport.lua:545
-#: utils/Localize.lua:1370 utils/UtilsForTech.lua:36
+#: utils/Localize.lua:1373 utils/UtilsForTech.lua:36
 #, lua-format
 msgid "%s血量增加"
 msgstr "%s血量增加"
 
-#: entity/Alliance.lua:795 utils/Localize.lua:1368
+#: entity/Alliance.lua:795 utils/Localize.lua:1371
 #, lua-format
 msgid "%s对%s的攻击"
 msgstr "%s對%s的攻擊"
@@ -3548,17 +3548,17 @@ msgid "概述"
 msgstr "概述"
 
 #: ui/GameUIAllianceBattle.lua:663 ui/GameUIAllianceBattle.lua:1244
-#: ui/GameUIAllianceHome.lua:933 utils/Localize.lua:1290
+#: ui/GameUIAllianceHome.lua:933 utils/Localize.lua:1293
 msgid "准备期"
 msgstr "準備期"
 
 #: ui/GameUIAllianceBattle.lua:664 ui/GameUIAllianceBattle.lua:1246
-#: ui/GameUIAllianceHome.lua:935 utils/Localize.lua:1291
+#: ui/GameUIAllianceHome.lua:935 utils/Localize.lua:1294
 msgid "战争期"
 msgstr "戰爭期"
 
 #: ui/GameUIAllianceBattle.lua:665 ui/GameUIAllianceBattle.lua:1248
-#: ui/GameUIAllianceHome.lua:937 utils/Localize.lua:1292
+#: ui/GameUIAllianceHome.lua:937 utils/Localize.lua:1295
 msgid "保护期"
 msgstr "保護期"
 
@@ -3644,7 +3644,7 @@ msgid "胜率"
 msgstr "勝率"
 
 #: ui/GameUIAllianceBattle.lua:1242 ui/GameUIAllianceHome.lua:600
-#: ui/GameUIAllianceHome.lua:931 utils/Localize.lua:1289
+#: ui/GameUIAllianceHome.lua:931 utils/Localize.lua:1292
 #: widget/WidgetWorldAllianceInfo.lua:238
 msgid "和平期"
 msgstr "和平期"
@@ -8705,7 +8705,7 @@ msgstr "瞭望塔等級不足，暫時不能查看"
 msgid "联盟未处于战争期"
 msgstr "聯盟未處於戰爭期"
 
-#: ui/GameUIWorldMap.lua:259 utils/Localize.lua:1302
+#: ui/GameUIWorldMap.lua:259 utils/Localize.lua:1305
 msgid "野怪等级"
 msgstr "野怪等級"
 
@@ -12379,84 +12379,96 @@ msgstr "世界-1"
 msgid "世界-2"
 msgstr "世界-2"
 
-#: utils/Localize.lua:1295
+#: utils/Localize.lua:1286
+msgid "世界-3"
+msgstr ""
+
+#: utils/Localize.lua:1287
+msgid "世界-4"
+msgstr ""
+
+#: utils/Localize.lua:1288
+msgid "世界-5"
+msgstr ""
+
+#: utils/Localize.lua:1298
 msgid "村落采集速度"
 msgstr "村落采集速度"
 
-#: utils/Localize.lua:1296
+#: utils/Localize.lua:1299
 msgid "圣地战玩家获得忠诚值"
 msgstr "聖地戰玩家獲得忠誠值"
 
-#: utils/Localize.lua:1297
+#: utils/Localize.lua:1300
 msgid "圣地战联盟获得荣耀值"
 msgstr "聖地戰聯盟獲得榮耀值"
 
-#: utils/Localize.lua:1298
+#: utils/Localize.lua:1301
 msgid "巨龙经验值"
 msgstr "巨龍經驗值"
 
-#: utils/Localize.lua:1300 widget/WidgetSoldierDetails.lua:186
+#: utils/Localize.lua:1303 widget/WidgetSoldierDetails.lua:186
 #: widget/WidgetSoldierPromoteDetails.lua:169
 msgid "行军速度"
 msgstr "行軍速度"
 
-#: utils/Localize.lua:1301
+#: utils/Localize.lua:1304
 msgid "巨龙力量"
 msgstr "巨龍攻擊力"
 
-#: utils/Localize.lua:1305
+#: utils/Localize.lua:1308
 msgid "草地产出绿龙材料，更容易培养绿龙"
 msgstr "草地產出綠龍材料，更容易培養綠龍"
 
-#: utils/Localize.lua:1306
+#: utils/Localize.lua:1309
 msgid "沙漠产出红龙材料,更容易培养红龙"
 msgstr "沙漠產出紅龍材料,更容易培養紅龍"
 
-#: utils/Localize.lua:1307
+#: utils/Localize.lua:1310
 msgid "雪地产出蓝龙材料，更容易培养蓝龙"
 msgstr "雪地產出藍龍材料，更容易培養藍龍"
 
-#: utils/Localize.lua:1310
+#: utils/Localize.lua:1313
 msgid "远古学识特惠"
 msgstr "遠古學識特惠"
 
-#: utils/Localize.lua:1311
+#: utils/Localize.lua:1314
 msgid "富饶之地特惠"
 msgstr "富饒之地特惠"
 
-#: utils/Localize.lua:1312
+#: utils/Localize.lua:1315
 msgid "龙族宝藏特惠"
 msgstr "龍族寶藏特惠"
 
-#: utils/Localize.lua:1313
+#: utils/Localize.lua:1316
 msgid "好运连连特惠"
 msgstr "好運連連特惠"
 
-#: utils/Localize.lua:1314
+#: utils/Localize.lua:1317
 msgid "贵族传承特惠"
 msgstr "貴族傳承特惠"
 
-#: utils/Localize.lua:1315
+#: utils/Localize.lua:1318
 msgid "英雄之血特惠"
 msgstr "英雄之血特惠"
 
-#: utils/Localize.lua:1316
+#: utils/Localize.lua:1319
 msgid "不死军团特惠"
 msgstr "不死軍團特惠"
 
-#: utils/Localize.lua:1317
+#: utils/Localize.lua:1320
 msgid "金龙币特惠"
 msgstr "金龍幣特惠"
 
-#: utils/Localize.lua:1318
+#: utils/Localize.lua:1321
 msgid "金龙币小袋"
 msgstr "金龍幣小袋"
 
-#: utils/Localize.lua:1319
+#: utils/Localize.lua:1322
 msgid "金龙币福袋"
 msgstr "金龍幣福袋"
 
-#: utils/Localize.lua:1322
+#: utils/Localize.lua:1325
 msgid "Batcatstudio游戏用户使用许可协议本地化ID"
 msgstr ""
 "《Batcatstudio遊戲用戶使用許可協議》 \n"
@@ -12584,51 +12596,51 @@ msgstr ""
 "成都蝠貓科技有限公司 \n"
 "二〇一五年五月 "
 
-#: utils/Localize.lua:1325
+#: utils/Localize.lua:1328
 msgid "游乐场赛季"
 msgstr "遊樂場賽季"
 
-#: utils/Localize.lua:1326
+#: utils/Localize.lua:1329
 msgid "资源掠夺赛季"
 msgstr "資源掠奪賽季"
 
-#: utils/Localize.lua:1327
+#: utils/Localize.lua:1330
 msgid "冒险家赛季"
 msgstr "冒險家賽季"
 
-#: utils/Localize.lua:1328
+#: utils/Localize.lua:1331
 msgid "黑龙军团赛季"
 msgstr "黑龍軍團賽季"
 
-#: utils/Localize.lua:1329
+#: utils/Localize.lua:1332
 msgid "杀戮之王赛季"
 msgstr "殺戮之王賽季"
 
-#: utils/Localize.lua:1330
+#: utils/Localize.lua:1333
 msgid "军备竞赛赛季"
 msgstr "軍備競賽賽季"
 
-#: utils/Localize.lua:1333
+#: utils/Localize.lua:1336
 msgid "抽奖赢分数，兑换丰厚奖励"
 msgstr "抽獎贏分數，兌換豐厚獎勵"
 
-#: utils/Localize.lua:1334
+#: utils/Localize.lua:1337
 msgid "掠夺资源赢分数，兑换丰厚奖励"
 msgstr "掠奪資源贏分數，兌換豐厚獎勵"
 
-#: utils/Localize.lua:1335
+#: utils/Localize.lua:1338
 msgid "探索飞艇赢分数，兑换丰厚奖励"
 msgstr "探索飛艇贏分數，兌換豐厚獎勵"
 
-#: utils/Localize.lua:1336
+#: utils/Localize.lua:1339
 msgid "击败黑龙军团赢分数，兑换丰厚奖励"
 msgstr "擊敗黑龍軍團贏分數，兌換豐厚獎勵"
 
-#: utils/Localize.lua:1337
+#: utils/Localize.lua:1340
 msgid "攻打获取英雄之血赢分数，兑换丰厚奖励"
 msgstr "攻打玩家，獲取英雄之血贏分數，兌換豐厚獎勵"
 
-#: utils/Localize.lua:1338
+#: utils/Localize.lua:1341
 msgid "招募士兵赢分数，兑换丰厚奖励"
 msgstr "招募士兵贏分數，兌換豐厚獎勵"
 
