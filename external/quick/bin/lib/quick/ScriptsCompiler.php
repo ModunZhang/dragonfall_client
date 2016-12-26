@@ -309,7 +309,7 @@ class ScriptsCompiler
         // create ZIP archive
         $zipfile = $this->config['output'];
         $zip = new ZipArchive();
-        if (!$zip->open($zipfile, ZIPARCHIVE::OVERWRITE | ZIPARCHIVE::CM_STORE))
+        if (!$zip->open($zipfile, ZIPARCHIVE::CREATE | ZIPARCHIVE::CM_STORE))
         {
             return false;
         }
