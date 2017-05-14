@@ -1283,6 +1283,9 @@ local ALLIANCE_DECORATE_NAME = {
 local SERVER_NAME = {
     ["cache-server-1"] = _("世界-1"),
     ["cache-server-2"] = _("世界-2"),
+    ["cache-server-3"] = _("世界-3"),
+    ["cache-server-4"] = _("世界-4"),
+    ["cache-server-5"] = _("世界-5"),
 }
 
 local PERIOD_TYPE = {

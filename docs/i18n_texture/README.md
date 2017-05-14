@@ -24,8 +24,8 @@ python setup.py install
 
 4. 导出po文件成功后用poedit软件依次打开所有的po文件保存一次,让它自动更新mo文件
 
-** 最后所有操作成功后会发现所有的po文件和mo文件均有变动 **
- 
+**最后所有操作成功后会发现所有的po文件和mo文件均有变动**
+
 #### 新建本地化文件(项目中没有的语言)
 
 1. 新建一个对应语言的po文件并保存到我们项目中`dev/res/i18n`
@@ -59,17 +59,17 @@ python setup.py install
 ##### images下文件夹说明
 
 	_CanCompress: 将被直接压缩为pvrtc4/etc1+alpha/dds的散图
-	
+
 	_Compressed: iOS已经被合成最终大图的图
-	
+
 	_Compressed_mac: Player已经被合成最终大图的图
-	
+
 	_Compressed_wp: Windows Phone下合成的大图
-	
+
 	_Compressed_android: Android下合成的大图
-	
+
 	rgba444_single: 将被压缩为rgba4444格式的散图
-	
+
 ##### 贴图操作说明:
 
 1. 所有的大图项目在`PackImages`文件夹下,TextPacker的项目文件也在里面,使用项目脚本`buildTexture.py`导出
