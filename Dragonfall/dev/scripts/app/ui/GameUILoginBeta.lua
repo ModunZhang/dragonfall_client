@@ -321,89 +321,141 @@ function GameUILoginBeta:OpenUserAgreement()
 end
 function GameUILoginBeta:createGameNotice()
     self:setProgressText(_("正在获取游戏公告..."))
-    local request = network.createHTTPRequest(function(event)
-        local ok = (event.name == "completed")
-        local request = event.request
-        if not ok then
-            -- 请求失败，显示错误代码和错误消息
-            -- print(request:getErrorCode(), request:getErrorMessage())
-            if request:getErrorCode() ~= 0 and request:getErrorMessage() then
-                self:performWithDelay(function()
-                    self.progress_bar:hide()
-                    self.tips_ui:hide()
-                    self:showStartState()
-                end, 0.5)
-            end
-            return
-        end
-        local code = request:getResponseStatusCode()
-        if code ~= 200 then
-            -- 请求结束，但没有返回 200 响应代码
-            -- print("code===",code)
-            self:performWithDelay(function()
-                self.progress_bar:hide()
-                self.tips_ui:hide()
-                self:showStartState()
-            end, 0.5)
-            return
-        end
 
-        -- 请求成功，显示服务端返回的内容
-        local response = request:getResponseString()
-
-        local results = json.decode(response)
-        if not results or results.code ~= 200 then
-            self:performWithDelay(function()
-                self.progress_bar:hide()
-                self.tips_ui:hide()
-                self:showStartState()
-            end, 0.5)
-            return
-        end
-        if string.trim(results.data) ~= "" then
-            local dialog = UIKit:newWidgetUI("WidgetNoticePopDialog",550,_("公告"),display.top-130):addTo(self.ui_layer,2)
-            local body = dialog:GetBody()
-            local size = body:getContentSize()
-            WidgetPushButton.new({normal = 'tmp_button_battle_up_234x82.png',pressed = 'tmp_button_battle_down_234x82.png'},{scale9 = true})
-                :setButtonLabel("normal", UIKit:commonButtonLable({
-                    text = _("确定")
-                }))
-                :addTo(body)
-                :pos(size.width/2,54)
-                :onButtonClicked(function()
-                    dialog:LeftButtonClicked()
-                end)
-                :setButtonSize(188,66)
-            local bg = display.newScale9Sprite("background_notice_128x128_2.png", 0, 0,cc.size(568,390),cc.rect(15,15,98,98))
-                :align(display.CENTER_BOTTOM,size.width/2,96)
-                :addTo(body)
-            local user_agreement_label = UIKit:ttfLabel({
-                text = results.data,
-                size = 22,
-                color = 0xffedae,
-                align = cc.ui.UILabel.TEXT_ALIGN_CENTER,
-                dimensions = cc.size(526, 0),
-            })
-            local w,h =  user_agreement_label:getContentSize().width,user_agreement_label:getContentSize().height
-            -- 提示内容
-            local  listview = UIListView.new{
-                viewRect = cc.rect(15,10, w, 376),
-                direction = cc.ui.UIScrollView.DIRECTION_VERTICAL
-            }:addTo(bg)
-            local item = listview:newItem()
-            item:setItemSize(w,h)
-            item:addContent(user_agreement_label)
-            listview:addItem(item)
-            listview:reload()
-        end
+    if not self.notice or string.trim(self.notice) == "" then
         self:performWithDelay(function()
             self.progress_bar:hide()
             self.tips_ui:hide()
             self:showStartState()
         end, 0.5)
-    end, string.format("%s/dragonfall/get-notice?env=%s&platform=%s",GameUtils:getGateServerDomain(),string.urlencode(CONFIG_IS_DEBUG and "development" or "production"),string.urlencode(GameUtils:getPlatformForServer())), "GET")
-    request:setTimeout(10)
-    request:start()
+        return
+    end
+
+    if string.trim(self.notice) ~= "" then
+        local dialog = UIKit:newWidgetUI("WidgetNoticePopDialog",550,_("公告"),display.top-130):addTo(self.ui_layer,2)
+        local body = dialog:GetBody()
+        local size = body:getContentSize()
+        WidgetPushButton.new({normal = 'tmp_button_battle_up_234x82.png',pressed = 'tmp_button_battle_down_234x82.png'},{scale9 = true})
+            :setButtonLabel("normal", UIKit:commonButtonLable({
+                text = _("确定")
+            }))
+            :addTo(body)
+            :pos(size.width/2,54)
+            :onButtonClicked(function()
+                dialog:LeftButtonClicked()
+            end)
+            :setButtonSize(188,66)
+        local bg = display.newScale9Sprite("background_notice_128x128_2.png", 0, 0,cc.size(568,390),cc.rect(15,15,98,98))
+            :align(display.CENTER_BOTTOM,size.width/2,96)
+            :addTo(body)
+        local user_agreement_label = UIKit:ttfLabel({
+            text = self.notice,
+            size = 22,
+            color = 0xffedae,
+            align = cc.ui.UILabel.TEXT_ALIGN_CENTER,
+            dimensions = cc.size(526, 0),
+        })
+        local w,h =  user_agreement_label:getContentSize().width,user_agreement_label:getContentSize().height
+        -- 提示内容
+        local  listview = UIListView.new{
+            viewRect = cc.rect(15,10, w, 376),
+            direction = cc.ui.UIScrollView.DIRECTION_VERTICAL
+        }:addTo(bg)
+        local item = listview:newItem()
+        item:setItemSize(w,h)
+        item:addContent(user_agreement_label)
+        listview:addItem(item)
+        listview:reload()
+    end
+    self:performWithDelay(function()
+        self.progress_bar:hide()
+        self.tips_ui:hide()
+        self:showStartState()
+    end, 0.5)
+
+    -- local request = network.createHTTPRequest(function(event)
+    --     local ok = (event.name == "completed")
+    --     local request = event.request
+    --     if not ok then
+    --         -- 请求失败，显示错误代码和错误消息
+    --         -- print(request:getErrorCode(), request:getErrorMessage())
+    --         if request:getErrorCode() ~= 0 and request:getErrorMessage() then
+    --             self:performWithDelay(function()
+    --                 self.progress_bar:hide()
+    --                 self.tips_ui:hide()
+    --                 self:showStartState()
+    --             end, 0.5)
+    --         end
+    --         return
+    --     end
+    --     local code = request:getResponseStatusCode()
+    --     if code ~= 200 then
+    --         -- 请求结束，但没有返回 200 响应代码
+    --         -- print("code===",code)
+    --         self:performWithDelay(function()
+    --             self.progress_bar:hide()
+    --             self.tips_ui:hide()
+    --             self:showStartState()
+    --         end, 0.5)
+    --         return
+    --     end
+
+    --     -- 请求成功，显示服务端返回的内容
+    --     local response = request:getResponseString()
+
+    --     local results = json.decode(response)
+    --     if not results or results.code ~= 200 then
+    --         self:performWithDelay(function()
+    --             self.progress_bar:hide()
+    --             self.tips_ui:hide()
+    --             self:showStartState()
+    --         end, 0.5)
+    --         return
+    --     end
+    --     if string.trim(results.data) ~= "" then
+    --         local dialog = UIKit:newWidgetUI("WidgetNoticePopDialog",550,_("公告"),display.top-130):addTo(self.ui_layer,2)
+    --         local body = dialog:GetBody()
+    --         local size = body:getContentSize()
+    --         WidgetPushButton.new({normal = 'tmp_button_battle_up_234x82.png',pressed = 'tmp_button_battle_down_234x82.png'},{scale9 = true})
+    --             :setButtonLabel("normal", UIKit:commonButtonLable({
+    --                 text = _("确定")
+    --             }))
+    --             :addTo(body)
+    --             :pos(size.width/2,54)
+    --             :onButtonClicked(function()
+    --                 dialog:LeftButtonClicked()
+    --             end)
+    --             :setButtonSize(188,66)
+    --         local bg = display.newScale9Sprite("background_notice_128x128_2.png", 0, 0,cc.size(568,390),cc.rect(15,15,98,98))
+    --             :align(display.CENTER_BOTTOM,size.width/2,96)
+    --             :addTo(body)
+    --         local user_agreement_label = UIKit:ttfLabel({
+    --             text = results.data,
+    --             size = 22,
+    --             color = 0xffedae,
+    --             align = cc.ui.UILabel.TEXT_ALIGN_CENTER,
+    --             dimensions = cc.size(526, 0),
+    --         })
+    --         local w,h =  user_agreement_label:getContentSize().width,user_agreement_label:getContentSize().height
+    --         -- 提示内容
+    --         local  listview = UIListView.new{
+    --             viewRect = cc.rect(15,10, w, 376),
+    --             direction = cc.ui.UIScrollView.DIRECTION_VERTICAL
+    --         }:addTo(bg)
+    --         local item = listview:newItem()
+    --         item:setItemSize(w,h)
+    --         item:addContent(user_agreement_label)
+    --         listview:addItem(item)
+    --         listview:reload()
+    --     end
+    --     self:performWithDelay(function()
+    --         self.progress_bar:hide()
+    --         self.tips_ui:hide()
+    --         self:showStartState()
+    --     end, 0.5)
+    -- end, string.format("%s/dragonfall/get-notice?env=%s&platform=%s",GameUtils:getGateServerDomain(),string.urlencode(CONFIG_IS_DEBUG and "development" or "production"),string.urlencode(GameUtils:getPlatformForServer())), "GET")
+    -- request:setTimeout(10)
+    -- request:start()
 end
 
 function GameUILoginBeta:showStartState()
@@ -476,6 +528,7 @@ function GameUILoginBeta:GetServerInfo()
                     end)
                     return
                 end
+                self.notice = content.data.content or ""
                 local ip, port = unpack(string.split(content.data.entry, ":"))
                 NetManager.m_gateServer.host = ip
                 NetManager.m_gateServer.port = tonumber(port)

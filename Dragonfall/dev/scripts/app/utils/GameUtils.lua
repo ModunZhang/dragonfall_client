@@ -348,7 +348,14 @@ function GameUtils:GetServerInfo(param, callback)
         end
         app:GetGameDefautlt():SetFirstGetGate()
     end, 
-    string.format("%s/dragonfall/check-version?env=%s&version=%s&platform=%s",GameUtils:getGateServerDomain(),string.urlencode(param.env), string.urlencode(param.version),platform), "GET")
+    string.format("%s/dragonfall/check-version?env=%s&version=%s&platform=%s&deviceId=%s",
+        GameUtils:getGateServerDomain(),
+        string.urlencode(param.env), 
+        string.urlencode(param.version),
+        platform,
+        device.getOpenUDID()
+        ),
+    "GET")
     request:setTimeout(6.18)
     request:start()
 end
