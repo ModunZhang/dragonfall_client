@@ -57,7 +57,7 @@ CONFIG_APP_REVIEW = {
 CONFIG_GATE_SERVER_DOMAIN = {
     ios = "http://gate.batcatstudio.com",
     android = "http://gate-aiyingyong.batcatstudio.com",
-    winrt = "http://gate-scmobile.batcatstudio.com"
+    winrt = "http://gate-scmobile2.batcatstudio.com"
 }
 
 CONFIG_IS_LOCAL = false
