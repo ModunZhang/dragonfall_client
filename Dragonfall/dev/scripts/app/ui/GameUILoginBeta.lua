@@ -528,7 +528,7 @@ function GameUILoginBeta:GetServerInfo()
                     end)
                     return
                 end
-                self.notice = content.data.content or ""
+                self.notice = content.data.notice or ""
                 local ip, port = unpack(string.split(content.data.entry, ":"))
                 NetManager.m_gateServer.host = ip
                 NetManager.m_gateServer.port = tonumber(port)
