@@ -29,7 +29,7 @@ function GameUISetting:BuildUI()
 		color= 0x28251d
 	}):align(display.CENTER,278,29):addTo(header_bg)
 	local buttons_info = {
-		{text = _("账号绑定"),image = "setting_account_56x65.png"},
+		-- {text = _("账号绑定"),image = "setting_account_56x65.png"},
 		{text = _("选择服务器"),image = "setting_server_55x62.png"},
 		{text = _("语言"),image = "setting_language_71x70.png"},
 		{text = _("游戏说明"),image = "setting_declare_48x67.png"},
@@ -67,7 +67,7 @@ function GameUISetting:BuildUI()
 	        {normal = "setting_btn_n_112x112.png", pressed = "setting_btn_h_112x112.png"},
 	        {scale9 = false}
     	)
-    	button:setTag(i)
+    	button:setTag(i + 1)
     	button:setButtonLabel(UIKit:ttfLabel({
 	    		color = 0x403c2f,
 	    		text = v.text,
@@ -107,7 +107,8 @@ end
 function GameUISetting:OnButtonClicked(button)
 	local tag = button:getTag()
 	if tag == 1 then
-		UIKit:newGameUI("GameUISettingAccount"):AddToCurrentScene(true)
+		-- 弃用第一个账号设置菜单 所有按钮的tag+1往后移动
+		-- UIKit:newGameUI("GameUISettingAccount"):AddToCurrentScene(true)
 	elseif tag == 2 then
 		UIKit:newGameUI("GameUISettingServer"):AddToCurrentScene(true)
 	elseif tag == 3 then
